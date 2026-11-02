@@ -106,6 +106,9 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         g.rules.traits.insert(role.into());
     }
     let rates = founding.ecology_rates;
+    // Life history is stated in minutes and read at the world's unit (1072).
+    let unit = g.rules.tick_microseconds();
+    let minutes = |m: u64| crate::rules::minutes_ticks(m, unit);
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
         let role = Role::of(founding.web, i);
@@ -175,7 +178,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 key: own.clone(),
             },
             Query::Age {
-                at_least: lifespan,
+                at_least: minutes(lifespan),
             },
         ]);
         age.period = Some(1);
@@ -191,12 +194,12 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             hazard.priority += 1;
             for q in &mut hazard.requires {
                 if let Query::Age { at_least } = q {
-                    *at_least = rates::MATURE;
+                    *at_least = minutes(rates::MATURE);
                 }
             }
             hazard.effects.clear();
             hazard.risk = Some(Risk {
-                per_million: rates::HAZARD_PER_MILLION,
+                per_million: crate::rules::per_minute_per_tick(rates::HAZARD_PER_MILLION, unit),
                 effects: vec![Effect::Death],
             });
             g.rules.processes.insert(hazard.id.clone(), hazard);
@@ -222,7 +225,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 at_least: rates.birth_gate(founding.stock_min, consumer),
             },
         ]);
-        birth.period = Some(rates.birth_period(consumer) * if predator { 2 } else { 1 });
+        birth.period = Some(minutes(rates.birth_period(consumer) * if predator { 2 } else { 1 }));
         birth.priority = 40;
         birth.note = true;
         g.rules.processes.insert(birth.id.clone(), birth);
@@ -280,7 +283,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     Query::Sensed { reading: "sense:soil-share".into(), at_least: 2 },
                 ]);
             }
-            grow.period = Some(2);
+            grow.period = Some(minutes(2));
             grow.priority = 0;
             g.rules.processes.insert(grow.id.clone(), grow);
         } else {

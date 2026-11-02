@@ -130,7 +130,7 @@ fn verify<H: PartialEq>(
             Err("checkpoint history mismatch".to_string())
         }
     };
-    let session = Session::replay(
+    let mut session = Session::replay(
         genesis,
         old.branch,
         old.entries,
@@ -149,6 +149,8 @@ fn verify<H: PartialEq>(
     }
     // Nothing is exposed on a failed old hash or outcome. Also require the
     // authenticated bridge to be reproducible as an ordinary Saved4 prefix.
+    // A v1 or v2 world founded its life history in ticks (case 1073).
+    session.life_history = LifeHistory::Ticks;
     VerifiedLegacy(session).migrate(mode)
 }
 

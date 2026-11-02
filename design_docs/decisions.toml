@@ -5393,6 +5393,31 @@ draws_on = ["1072", "processes.6", "processes.7", "record.7"]
 [cases."1076"]
 title = "A paced choice falls on each member's own tick"
 source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Pacing keys on each member's identity, so grouped and individual execution choose alike."
+draws_on = ["sim-execution D15", "sim-execution D16", "processes.7"]
+
+[cases."1077"]
+title = "The ecology is retuned to world time, one ecology for every game"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured."
+draws_on = ["1074", "ecology.2", "ecology.3", "world.8"]
+amends = ["1072"]
+
+[cases."1078"]
+title = "A steady web needs a different meal, larger producers and a biomass pyramid"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding."
+draws_on = ["1077", "ecology.2", "ecology.3", "ecology.4"]
+
+[cases."1079"]
+title = "Living worlds and sensing without nerves: the research brief's rulings"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly."
+draws_on = ["1071", "bodies.10", "bodies.15", "processes.19", "world.4"]
 
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"

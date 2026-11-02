@@ -15,6 +15,24 @@ pub fn year_ticks(tick_microseconds: u64) -> Tick {
     (YEAR_MICROSECONDS / tick_microseconds.max(1)).max(1)
 }
 
+/// A minute of world time in microseconds: life history is stated in minutes
+/// (case 1072) and read at each world's own unit.
+pub const MINUTE_MICROSECONDS: u64 = 60_000_000;
+
+/// The ticks `minutes` of world time take at a unit of `tick_microseconds`,
+/// rounded up and never fewer than one; at a minute, the same number.
+pub fn minutes_ticks(minutes: u64, tick_microseconds: u64) -> Tick {
+    minutes.saturating_mul(MINUTE_MICROSECONDS).div_ceil(tick_microseconds.max(1)).max(1)
+}
+
+/// A chance per minute, in millionths, as a chance per tick at a unit of
+/// `tick_microseconds`: scaled by the tick's share of a minute, capped at
+/// certainty; at a minute, the same chance.
+pub fn per_minute_per_tick(per_million: u32, tick_microseconds: u64) -> u32 {
+    let scaled = u128::from(per_million) * u128::from(tick_microseconds) / u128::from(MINUTE_MICROSECONDS);
+    u32::try_from(scaled.min(1_000_000)).unwrap_or(1_000_000)
+}
+
 /// What ends an epoch, Mesocosm's three rules (ruling 451). A timed epoch's
 /// budget is the rules' `epoch_ticks`.
 #[derive(

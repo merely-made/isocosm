@@ -348,8 +348,8 @@ impl Founding {
                 entities: 1_000_001 + u64::from(self.sites),
                 ..Limits::default()
             },
-            // A year at the default minute (ruling 451).
-            epoch_ticks: crate::rules::year_ticks(crate::rules::DEFAULT_TICK_MICROSECONDS),
+            // A year (ruling 451), set below at the world's own unit.
+            epoch_ticks: 1,
             collection_buffer: 16,
             competitions: BTreeMap::new(),
             similitude: None,
@@ -361,6 +361,8 @@ impl Founding {
             epoch: Default::default(),
             deep_time: Default::default(),
         };
+        // The epoch is a year at the world's own unit (case 1072).
+        rules.epoch_ticks = crate::rules::year_ticks(rules.tick_microseconds());
         let mut sites = BTreeMap::new();
         // A map lays its own sites below; without one, a ring and a chord.
         for i in 0..u64::from(if self.map.is_some() { 0 } else { self.sites }) {

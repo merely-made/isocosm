@@ -8,7 +8,7 @@
 
 use super::cells::{Cell, Cells, DIRECTIONS, HEADROOM};
 use super::flood::Found;
-use super::{Clearance, Kind, Passage, PlaceId, Places};
+use super::{Clearance, Kind, Passage, Place, PlaceId, Places};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// One crossing, from the lesser place's cell to the greater's, and the
@@ -94,10 +94,15 @@ pub(super) fn of(c: &Cells<'_>, places: &Places, found: &[Found]) -> Vec<Passage
             }
         }
     }
+    assemble(crossings, &places.places)
+}
+
+/// The passages of gathered crossings, measured between `places`' centres.
+pub(super) fn assemble(crossings: Crossings, places: &BTreeMap<PlaceId, Place>) -> Vec<Passage> {
     crossings
         .into_iter()
         .map(|(between, set)| {
-            let place = |k: usize| places.places.get(&between[k]);
+            let place = |k: usize| places.get(&between[k]);
             let centre = |k: usize| place(k).map_or(between[k].cell, |p| p.centre);
             let wet = (0..2).any(|k| place(k).is_some_and(|p| p.kind == Kind::Water));
             passage(between, set, [centre(0), centre(1)], wet)

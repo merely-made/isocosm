@@ -8,6 +8,7 @@ use std::collections::BTreeMap;
 
 mod read;
 mod movement;
+mod time; pub use time::LifeHistory;
 pub use read::{CheckpointV1, CheckpointV2, SavedV1, SavedV2, LegacyCohort, LegacyEntity, LegacyGenesis, LegacyPart, LegacyPopulation};
 
 mod command;
@@ -23,7 +24,9 @@ pub struct Entry {
 }
 
 /// Saves have their own version: `crate::VERSION` also gates every genesis.
-pub const SAVE_VERSION: u32 = 4;
+/// v5 records how the world's life history was founded (case 1073).
+pub const SAVE_VERSION: u32 = 5;
+
 
 /// An epoch boundary's per-field entries (rulings 633 and 651).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -38,6 +41,8 @@ pub struct Saved {
     /// v4 records the exact movement semantics; absent only in genuine v3.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub movement: Option<Movement>,
+    #[serde(default, skip_serializing_if = "Option::is_none")] // v5 on (1073)
+    pub life_history: Option<LifeHistory>,
     pub genesis: Genesis,
     pub genesis_digest: Key,
     pub branch: Key,
@@ -55,6 +60,7 @@ pub struct Session {
     pub branch: Key,
     pub entries: Vec<Entry>,
     pub checkpoints: Vec<Checkpoint>,
+    pub life_history: LifeHistory, // kept when it saves again (1073)
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -77,6 +83,7 @@ impl Session {
             branch: "branch:trunk".into(),
             entries: vec![],
             checkpoints: vec![],
+            life_history: LifeHistory::WorldTime,
         })
     }
     pub fn advance(&mut self, ticks: Tick) -> Result<Work> {
@@ -215,6 +222,7 @@ impl Session {
         Saved {
             version: SAVE_VERSION,
             movement: Some(self.sim.state.movement),
+            life_history: Some(self.life_history),
             genesis: self.sim.genesis.as_ref().clone(),
             genesis_digest: crate::digest(&self.sim.genesis),
             branch: self.branch.clone(),
@@ -242,10 +250,11 @@ impl Session {
         }
     }
     pub fn load(saved: Saved, mode: Execution) -> Result<Self> {
-        let movement = match (saved.version, saved.movement) {
-            (3, None) => Movement::ImmediateV3,
-            (SAVE_VERSION, Some(movement)) => movement,
-            _ => return Err("save version or movement semantics mismatch".into()),
+        let (movement, life_history) = match (saved.version, saved.movement, saved.life_history) {
+            (3, None, None) => (Movement::ImmediateV3, LifeHistory::Ticks),
+            (4, Some(movement), None) => (movement, LifeHistory::Ticks),
+            (SAVE_VERSION, Some(movement), Some(life)) => (movement, life),
+            _ => return Err("save version, movement or life-history semantics mismatch".into()),
         };
         if crate::digest(&saved.genesis) != saved.genesis_digest {
             return Err("save version or genesis digest mismatch".into());
@@ -281,7 +290,7 @@ impl Session {
         if let Some(d) = first_divergence(&saved.witness, &session.sim.witness()) {
             return Err(format!("save state diverges first at {}", d.label));
         }
-        Ok(session)
+        Ok(Self { life_history, ..session })
     }
     /// Replays a saved history to `tick`, calling `at` on reaching each of
     /// `stops` (ascending), before any entry at that tick.

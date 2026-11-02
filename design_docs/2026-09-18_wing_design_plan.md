@@ -11983,7 +11983,79 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       reading: a grouped cohort on a paced tick evaluates only the members
       whose own identity is due, so execution mode never changes a choice.
 
-      Links: area Processes and rules · draws on processes.7, D15, D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
+      Links: area Processes and rules · draws on processes.7, sim-execution D15, sim-execution D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
+
+1077. **The ecology is retuned to world time, one ecology for every game.**
+      Ruled by Mark on 2026-11-01 ("Retune the ecology for world time", "Yes,
+      one ecology in world time"), after every generated web was measured
+      dying out within a world day: rates tuned per tick before 1072 made a
+      tick a minute left creatures living tens of minutes, eating every three
+      and breeding every fourteen, stripping their producers within the hour.
+      The reading: each role's lifespans, birth spacing, metabolism, feeding
+      and growth become world-time data, measured until a year-long web holds
+      steady (every role alive at month twelve, populations bounded); people
+      then join as a slow omnivore, their preset measured against that web;
+      Mesocosm's critters live biologically plausible spans too, its tempo
+      dial carrying play's pace, and A1's gate is re-measured. This replaces
+      1072's keeping of A1's values as minutes.
+
+      Links: area Ecology · amends 1072 · draws on 1074, ecology.2, ecology.3, world.8 · summary The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured.
+      *Measured how* (Mark, 2026-11-01: "Stricter", "State it per year,
+      convert at founding", "Rising hazard, every lineage", "Opt-in per
+      founding"): the web holds steady when every role is alive at month
+      twelve on all five seeds, each lineage's largest and smallest monthly
+      counts over months three to twelve stay within four times, and no
+      month after the second loses more than a third of a lineage; hazard is
+      stated per year and converted at founding; every lineage's hazard rises
+      with age past maturity at a rate it draws, lifespan becoming the
+      emergent tail rather than a ceiling, its shape Gompertz (Mark:
+      "Gompertz"), the hazard doubling at a period each lineage draws and
+      evaluated per whole year of age; people are opt-in per VTT
+      founding, a quick-start world authoring them anyway.
+
+1078. **A steady web needs a different meal, larger producers and a biomass
+      pyramid.** Ruled by Mark on 2026-11-01, after the creature-minds
+      session's S10 arms (40cf7241, f346d32a, 006e3d08) found that retuning
+      the time unit alone collapses the same way: feeding had no hunger gate,
+      a bite built body one for one, a bite killed a whole producer, and every
+      level grew as fast as what it ate. Mark chose "Feed only while hungry",
+      "Meals lose mass to soil", "Producers keep a reserve" ("perhaps more
+      kinds of producers, but i do agree about size") and "Breeding by what
+      food affords", and "Yes, a biomass pyramid", echoing his earlier "they
+      wouldn't evolve to do so if there wasn't an abundance of producers".
+      The reading: animals feed only below a hunger threshold; most of a
+      bite returns to the site as soil, only a share building body;
+      producers are many bites large, so grazing wounds rather than kills,
+      with more kinds of producers; births are spaced by stored surplus, not
+      a fixed gate and period; founding sizes each level well below the one
+      it eats. These join 1077's retune; the mind's needs keep their number
+      and order, feeding stays an eat effect and moves stay move processes,
+      for the lineage policy (58c97ec7).
+
+      Links: area Ecology · draws on 1077, ecology.2, ecology.3, ecology.4 · summary Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding.
+
+1079. **Living worlds and sensing without nerves: the research brief's
+      rulings.** Ruled by Mark on 2026-11-01 on the six questions of
+      `design_docs/2026-11-01_living_worlds_research.md` (1071's brief). A
+      world entity's agency is a world setting with three options, "all 3
+      ought to be options": its acts only emergent from its processes and
+      fields; emergent and directable by a GM or the world's disposition
+      through the intents any entity uses, a place able to take a turn at the
+      table; or a world mind with goals that chooses like a sophont. A member
+      keeps one prior reading per sense, so gradients and trends can be read
+      ("Yes, one prior reading per sense"). Use shapes a body's conducting
+      network, growth adding capacity where flow runs and idle routes
+      shrinking ("Yes, use shapes growth"). Influence fields (a place's
+      aura, a regional effect) share the reach field's machinery as a
+      separate kind that never mixes with knowledge ("Share the machinery,
+      separate kinds"). Bodies without nerves join their systems by slower
+      signalling of their form, by degree and with a lag ("Yes, slow
+      signalling by form"). The two licences were checked: only Ironsworn's
+      SRD and asset texts are CC BY 4.0, its rulebooks being non-commercial
+      and out; USGS-authored material is US public domain, credited, its
+      third-party images excluded.
+
+      Links: area Bodies and anatomy · draws on 1071, bodies.10, bodies.15, world.4, processes.19 · summary World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

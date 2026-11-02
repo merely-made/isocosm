@@ -174,6 +174,22 @@ impl Volume {
         Some(self.ground.material(self.to_ground(at)).unwrap_or(self.materials.rock))
     }
 
+    /// Column `(x, z)` over `[lo, hi)` as runs `[y0, y1)` of one material,
+    /// lowest first: the column rule with its edits laid over it where the
+    /// volume is paged, read cell by cell where it is realized.
+    pub(crate) fn column(&self, x: i64, z: i64, [lo, hi]: [i64; 2]) -> Vec<([i64; 2], u8)> {
+        if let Some(p) = &self.columns { return p.column(x, z, [lo, hi]); }
+        let mut out: Vec<([i64; 2], u8)> = Vec::new();
+        for y in lo..hi {
+            let m = self.material([x, y, z]).unwrap_or(self.materials.rock);
+            match out.last_mut() {
+                Some((run, last)) if *last == m => run[1] = y + 1,
+                _ => out.push(([y, y + 1], m)),
+            }
+        }
+        out
+    }
+
     /// The highest cell `Ground` may hold anything in, plus one.
     pub fn ceiling(&self) -> i64 {
         if let Some(p) = &self.columns { return p.high+1; }

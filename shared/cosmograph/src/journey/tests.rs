@@ -366,7 +366,7 @@ fn v4_witnesses_movement_and_keeps_explicit_v3_semantics() {
         s.sim.state.movement = movement;
         assert!(act(&mut s, id, None, "test:first").accepted());
         let saved = s.save();
-        assert_eq!(saved.version, 4);
+        assert_eq!(saved.version, crate::history::SAVE_VERSION, "movement is witnessed from v4 on");
         assert_eq!(saved.movement, Some(movement));
         replay(&s);
         let mut missing = saved.clone(); missing.movement = None;
