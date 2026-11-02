@@ -37,6 +37,7 @@ impl GameIntent {
             | Self::ResolveVolley { tick, .. }
             | Self::AdvanceMotion { tick, .. }
             | Self::Steps { tick, .. }
+            | Self::Wound { tick, .. }
             | Self::ConfigureMovementProfile { tick, .. }
             | Self::ReviseCanon { tick, .. }
             | Self::Wait { tick, .. } => *tick,
@@ -69,6 +70,7 @@ impl GameIntent {
             | Self::DetachItem { subject, .. }
             | Self::AdvanceMotion { subject, .. }
             | Self::Steps { subject, .. }
+            | Self::Wound { subject, .. }
             | Self::ConfigureMovementProfile { subject, .. }
             | Self::Wait { subject, .. } => Some(*subject),
             Self::ResolveVolley { actor, .. } => Some(*actor),

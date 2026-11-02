@@ -263,6 +263,9 @@ pub enum GameIntent {
     /// runs from `step`, re-solved on apply and replay to the claimed end.
     Steps { tick: Tick, subject: SubjectId, revision: BodyRevisionId, step: u64,
         runs: Vec<crate::MotionRun>, end: crate::MotionPose, rules: MotionRules },
+    /// A named part severed through the harm path strikes take, the game
+    /// reconciling what the sim cut: the host's debug injury.
+    Wound { tick: Tick, subject: SubjectId, part: isometer_core::PartId },
 }
 
 
