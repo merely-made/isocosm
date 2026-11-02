@@ -1721,12 +1721,19 @@ point, a dice roll, a system's rules, a loot table, a dialogue line or a
 quest; never pathfinds an individual, checks line of sight or resolves a
 single blow; and never decides what is fun. It records outcomes, resolved by
 the foreground game's rules or by the background's outcome model
-(Processes 1).
+(Processes 1). Movement splits by grain: the sim chooses which place, which
+meal and whether a route exists, from the place graph; in view a game's
+foreground finds the path, poses the body and places the feet, and the sim
+commits the arrival it accepts; out of view a body arrives after its route's
+travel time, with no per-step walking.
 
-Links: draws on 10, 114, processes.1 · summary Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun.
+Links: draws on 10, 114, 1084, processes.1 · summary Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun; it moves bodies at place grain.
 
 *Reviewed 2026-10-22, new: from the design record's §2 and §3.8 (Mark, on
 §3.8: "sounds pretty right to me"), then "One Stack statement".*
+
+*Refined 2026-11-02 from case 1084, movement by grain (Mark: "Split by grain
+(Recommended)").*
 
 ### Stack 13. The contract's discipline
 
@@ -1763,12 +1770,18 @@ The embeddable core, `cosmograph-host` as a library, founds worlds and holds the
 world and its session (Mesocosm's included), the clock with an explicit step
 (each product picks wall-clock or explicit pacing), and a driver typed
 through a product trait. Three uniform product hosts sit on isomere's
-`Assembly` over it.
+`Assembly` over it. In a round the minute tick runs off the frame thread by
+default, the foreground walking on toward the last targets until its answers
+arrive; running it in step is a setting for debugging and exact-frame
+captures.
 
-Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927, 1081 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it; a round's tick runs off the frame thread by default.
 
 *Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
 and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
+
+*Refined 2026-11-02 from case 1081 (Mark: "Both, but this is what I meant by
+performance!").*
 
 ### Host 2. Inspection is endpoints
 
@@ -1776,11 +1789,18 @@ The core's inspection is a Graphshell endpoint behind a feature in
 `cosmograph-host`; each product's panels are an endpoint module behind a feature
 in an existing crate. No new crate names are made for it. Every snapshot
 records tick, entry count and state hash, and an intent checks it, so a
-change through any endpoint stales every endpoint (Record 1).
+change through any endpoint stales every endpoint (Record 1). The endpoints
+and the world-graph viewer are one workbench: outside any game it reads,
+analyses and edits entities and worlds' data and generation, and each game
+embeds the same, limited by play to what its subject may know. The
+adaptation phase is seen and done there.
 
-Links: draws on 896, 900, 901, 903, 910, 920, record.1 · summary Inspection is feature-gated Graphshell endpoints; any change stales every endpoint's snapshot.
+Links: draws on 896, 900, 901, 903, 910, 920, 1083, record.1 · summary Inspection is feature-gated Graphshell endpoints, one workbench outside games and embedded within play's limits in each; any change stales every endpoint's snapshot.
 
 *Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+*Refined 2026-11-02 from case 1083 (Mark: "That just makes sense to me as
+the place to see and do the adaptation phase").*
 
 ### Host 3. Only world keys go through the core
 

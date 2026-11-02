@@ -12105,6 +12105,66 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1072, 978, processes.1, processes.7 · summary A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span.
 
+1081. **In a round the minute tick runs on a worker by default, or in step
+      as a setting; its cost is the performance concern.** Ruled by Mark on
+      2026-11-02. The question: a minute tick costs about 2.5 s of real time
+      on a seeded world (the 2.5D session's measurements; the execution
+      plan's findings of 2026-10-31), far more than a 1/60 s frame. Answer:
+      "Both, but this is what I meant by performance! Like this is my
+      original concern being put to me like it is a surprise". The reading:
+      by default a round's minute tick runs off the frame thread, its bodies
+      walking on toward the last minute's targets until its answers arrive;
+      running it in step, the picture holding at each boundary, is a setting
+      for debugging and exact-frame captures. Replay is exact either way,
+      since the recorded handback carries the result. The tick's own cost is
+      the concern Mark raised first, and case 1084 answers it.
+
+      Links: area Host and network · draws on 1080, host.1 · summary A round's minute tick runs on a worker by default and in step as a setting; replay is exact either way; the tick's cost is the performance concern.
+
+1082. **The foreground cap's default waits for a measured step.** Ruled by
+      Mark on 2026-11-02: "Measure first (Recommended)". The cap on how many
+      bodies a round steps sixty times a second is a world rule (case 1080),
+      older saves reading it as none. The handback and the foreground set are
+      built with 16 as a placeholder; a step is timed, and the default comes
+      back to Mark as a number with its cost.
+
+      Links: area Processes and rules · draws on 1080, processes.1 · summary The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then.
+
+1083. **The adaptation phase is seen and done in the sim's own workbench,
+      which each game embeds within play's limits.** Ruled by Mark on
+      2026-11-02, answering 1080's open question: "I don't think what I
+      described is a big variation in what we've been planning. I just
+      figure that you could use the sim outside the game to read and analyze
+      and edit entities and worlds' data/generation, and then that same
+      thing could be used in each game to provide play-constrained info
+      about the world. That just makes sense to me as the place to see and
+      do the adaptation phase". The reading: the sim's inspection endpoints
+      and the world-graph viewer (H9) are one workbench: outside any game it
+      reads, analyses and edits entities and worlds' data and generation;
+      each game embeds the same, limited by play to what its subject may
+      know. The adaptation phase is seen and done there; a round is not
+      itself that phase.
+
+      Links: area Host and network · draws on 1080, 1036, host.2, record.3 · summary The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there.
+
+1084. **Movement splits by grain: the sim chooses at the place graph's
+      grain, a game's foreground walks the path in view, and out of view a
+      body arrives after its route's travel time.** Ruled by Mark on
+      2026-11-02: "Split by grain (Recommended)", on the execution plan's
+      question of where near-tier movement lives (raised 2026-10-30). The
+      evidence: a played tick on main was about 1.9 s, nearly all of it
+      cold food-route search (about 0.4 s each), walking plans and resting
+      bodies' settling, with bookkeeping under 3%; Stack 12 already said the
+      sim never pathfinds an individual. The reading: the sim chooses which
+      place, which meal and whether a route exists, from PG7's Places; in a
+      round the foreground finds the path, poses the body and places the
+      feet, and the sim commits the arrival it accepts as the handback of
+      case 1080; out of view a body arrives after its route's travel time,
+      with no per-step walking. Route search, walking and foot placement
+      leave the tick and move toward conatus.
+
+      Links: area Stack and engine · draws on 1080, 1081, 841, 842, stack.12, stack.7, processes.16 · summary The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -214,7 +214,8 @@ three design docs that cite it. The record holds the words.
 | 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | none |
+| 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1082 | The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Ecology
 
@@ -668,6 +669,7 @@ three design docs that cite it. The record holds the words.
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | none |
 | 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
 | 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 1084 | The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Host and network
 
@@ -698,6 +700,8 @@ three design docs that cite it. The record holds the words.
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
 | 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
+| 1081 | A round's minute tick runs on a worker by default and in step as a setting; replay is exact either way; the tick's cost is the performance concern. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1083 | The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there. | none |
 
 ## Mesocosm
 

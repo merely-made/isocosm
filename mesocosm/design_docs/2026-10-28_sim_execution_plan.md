@@ -594,6 +594,28 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - Needs: D42; E4 alongside; the spatial costs of the 2026-10-31 finding gone first
 - Rulings: 482, 483, 600, D42
 
+### E10. Rounds: the sixty-step foreground and movement by grain
+A round runs world time at 1, 2, 4 or 8 times real time (case 1080). Bodies
+in the foreground step sixty times a real second in the product, and the sim
+records only each minute's handback, checked by its invariants. The sim
+chooses at place grain; in view the foreground finds the path, and out of
+view a body arrives after its route's travel time (case 1084). Route search,
+walking plans and settling leave the tick. The tick runs off the frame thread
+by default, or in step as a setting (case 1081). The foreground cap is a
+world rule whose default is set from a measured step (case 1082). In order:
+the handback contract and the foreground set (cosmograph); round pacing
+(`cosmograph-host`); arrival by travel time out of view; Mesocosm's
+foreground layer; Eponym's motion loop handing back through the same
+contract.
+- Done when: a round at each speed replays its save to the recorded hash; a
+  refused handback leaves the source unchanged; foreground and native
+  displacement agree in distribution; a played tick no longer runs route
+  search or walking plans, re-measured against the 2026-10-31 finding; a
+  Mesocosm round renders smooth walking (capture); a foreground step is
+  timed and its cap brought to Mark.
+- Needs: PG7's Places (landed); conatus for paths and foot placement
+- Rulings: 1080, 1081, 1082, 1083, 1084, D30
+
 ## Deferred and parked
 - **Playable-loop forager route search** (the `playable-loop` branch, unpushed at 2026-10-23): its cost is deliberation the A1 battery does not exercise and no battery measures it. Owned by `bodies`; `sim-execution` reads its cost once a battery exists. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`.
 
@@ -601,7 +623,7 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`. Recommendation (2026-10-31, not ruled): the TD2 aim is the bar, split by tier and measured in release: 0.1 s a played tick for the near tier (the rendered area plus roots, a few hundred individuals), and an aggregate whose cost grows with sites and lineages, not with members (D24); 966 and 976 retire as bars.
 - **The `cargo test` profile.** The played seed 0 runs far slower under the `cargo test` profile than release, and with debug assertions off drops substantially. The likely source is named but "not strictly separated": the journal's full `State` clone verifying each rollback (`journal.rs:66`) and `passed_by`'s population rescan (`schedule/mod.rs:314`). No action decided. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:350-355`.
 - **Occurrence index in E2's key (conditional).** If the actor, tick and process key collides for a grouped cohort, E2 brings the fork to Mark. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:128-131`.
-- **Where near-tier movement lives (raised 2026-10-30).** Doctrine Stack 12 says the sim "never pathfinds an individual, checks line of sight or resolves a single blow"; rulings 841 and 842 say chosen native steps are "resolved by a game"; yet food-route search, Places derivation and walking plans run in the sim's tick (`shared/isocosm/src/spatial/`, `foraging`, `embodiment`), and that was most of the head's 12.5 s tick (D30). Options: keep it in the tick (one authority, but cost grows with members times path and the region of case 124 is out of reach); the game layer resolves it (Stack 12 and conatus's "Product profiles conduct. Conatus advances spatial state.", but the sim's choice loses its reachability read); or split by grain. Recommendation (2026-10-31, not ruled): split by grain. The sim chooses the goal at the place graph's grain (which place, which meal, whether a route exists, from `place-graph-engine` PG7's Places); the game and conatus find the path, pose the body and place the feet; the sim commits the arrival it accepts, which replay already records as a command. Route search, walking and foot placement move toward conatus (`bodies`).
+- **Where near-tier movement lives (raised 2026-10-30).** Ruled 2026-11-02 as case 1084, split by grain (doctrine Stack 12); the round's foreground is E10. As raised: Doctrine Stack 12 says the sim "never pathfinds an individual, checks line of sight or resolves a single blow"; rulings 841 and 842 say chosen native steps are "resolved by a game"; yet food-route search, Places derivation and walking plans run in the sim's tick (`shared/isocosm/src/spatial/`, `foraging`, `embodiment`), and that was most of the head's 12.5 s tick (D30). Options: keep it in the tick (one authority, but cost grows with members times path and the region of case 124 is out of reach); the game layer resolves it (Stack 12 and conatus's "Product profiles conduct. Conatus advances spatial state.", but the sim's choice loses its reachability read); or split by grain. Recommendation (2026-10-31, not ruled): split by grain. The sim chooses the goal at the place graph's grain (which place, which meal, whether a route exists, from `place-graph-engine` PG7's Places); the game and conatus find the path, pose the body and place the feet; the sim commits the arrival it accepts, which replay already records as a command. Route search, walking and foot placement move toward conatus (`bodies`).
 - **The tier band's length (D26's "a world rule").** Options: a fixed number of ticks (simple, blind to pace); a multiple of the member's decision period (tied to D19, kinds differ); a span of play time (moves with the tempo). Recommendation (2026-10-31, not ruled): twice the member's decision period by default (20 ticks for producers, 4 for consumers, 10 for decomposers), so a member decides at least once on each side before it switches.
 - **Threads against shards.** E2 (draws keyed by actor, tick and process) is cheap and unblocks both; E3 (parallel evaluation in a pass) pays where work is per individual but gives nothing on the web's one Worker, and much of that work may leave the tick (above); S6's shards (`sim` S6) serve a played region and the web as separate Workers, but the merge is undesigned. Recommendation (2026-10-31, not ruled): E2 now, with every lane keying new draws that way; E3 after movement's home is settled; S6 when a played world spans a region. Thread count never changes a result (Processes 7); default all cores natively, one on the web.
 
