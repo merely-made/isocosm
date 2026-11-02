@@ -1976,15 +1976,26 @@ Links: draws on 185, 186, 234, 235, 238, 877 · summary Each player lives their 
 
 Eponym's strike system resolves each blow in the foreground and hands it
 back in the sim's terms (Processes 1). Motion and contact run game-side
-(`eponym-motion` over conatus); the sim keeps motion's data and admission, is
-handed a solver, never depends on Rapier, and no host supplies a final
-position. Worn items on a severed part drop through the sim's handoff, which
+(`eponym-motion` over conatus); the sim keeps motion's data and admission and
+never depends on Rapier. Eponym's bodies hold native poses, and a round hands
+them back once a minute through the shared contract, the sim admitting each
+handed-back pose against its invariants; round speed runs the fixed solver
+steps as substeps. The standalone client and the borrowed mode share that
+path. Worn items on a severed part drop through the sim's handoff, which
 carries no participant.
 
-Links: draws on 233, 597, 943, processes.1 · summary Blows resolve in the foreground and hand back; motion and contact are game-side; the sim is handed a solver.
+*Not yet built:* native poses, the client's rewiring and the round path;
+borrowed mode still records a patch per step.
+
+Links: draws on 233, 597, 943, 1095, 1096, 1097, processes.1 · summary Blows resolve in the foreground and hand back; motion and contact are game-side; bodies hold native poses and hand back once a minute.
 
 *Reviewed 2026-10-22, new. Mark moved the handback principle up to
 Processes 1 ("Move the handback principle up"); this statement cites it.*
+
+*Refined 2026-11-02 from cases 1095 to 1097 (Mark: "Give Eponym native
+poses", "Rewire the client", "Substeps (Recommended)"); "no host supplies a
+final position" left with it, a handed-back pose being admitted, not
+supplied.*
 
 ### Eponym 3. Eponym's world is native Cosmograph
 

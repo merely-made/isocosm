@@ -770,6 +770,9 @@ three design docs that cite it. The record holds the words.
 | 835 | Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings. | none |
 | 877 | Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate. | none |
 | 943 | F5: worn items on a severed non-played part drop through the sim's EponymHandoff::Dropped, which carries no participant. | none |
+| 1095 | Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops. | none |
+| 1096 | Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path. | none |
+| 1097 | At round speed n, Eponym runs n fixed 1/60 s solver steps per frame. | none |
 
 ## The VTT
 

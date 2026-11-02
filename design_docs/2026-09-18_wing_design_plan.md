@@ -12292,6 +12292,40 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on ecology.1, 684, 1058, 1077, 1080, 1083 · summary The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking.
 
+1095. **Eponym's bodies hold native poses, so its rounds hand back like
+      the others'.** Ruled by Mark on 2026-11-02: "Give Eponym native
+      poses", over a patch-grain handback (recommended) and keeping
+      per-step recording. Asked when the foreground lane found Eponym's
+      borrowed mode recording every 60 Hz step as a `Patch` command
+      (`eponym-play/src/contract/mode/actions/motion.rs:51`), its bodies
+      holding no pose in the sim (no spatial templates or poses in
+      `eponym-play` or `eponym-client`), so the handback of case 1080 would
+      refuse them, and doctrine Eponym 2 saying "no host supplies a final
+      position". The reading: Eponym worlds found spatial templates and
+      poses in the sim, so the one handback contract serves all three
+      games; per-step recording stops; once a minute the sim admits the
+      handed-back pose against its invariants.
+
+      Links: area Eponym · draws on 1080, eponym.2, eponym.3, processes.1 · summary Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops.
+
+1096. **Eponym's standalone client joins the sim's spatial clock.** Ruled
+      by Mark on 2026-11-02: "Rewire the client", over giving the client
+      round speed only. Today the client's `tick_motion`
+      (`eponym-client/src/bin/session/actions.rs`) logs each step in
+      Eponym's own intent log over a world that advances plainly, with no
+      spatial minute. The reading: the client and the borrowed mode share
+      one path, the round's pacing, the worker tick and the handback.
+
+      Links: area Eponym · draws on 1095, 1081, 1080 · summary Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path.
+
+1097. **Round speed runs Eponym's fixed solver steps as substeps.** Ruled
+      by Mark on 2026-11-02: "Substeps (Recommended)". Eponym's solver
+      steps a fixed 1/60 s (`eponym-motion` `FIXED_DT_SECONDS`). The
+      reading: at speed n, n fixed steps run per frame, so physics,
+      determinism and saved motion logs keep their meaning.
+
+      Links: area Eponym · draws on 1080, eponym.2 · summary At round speed n, Eponym runs n fixed 1/60 s solver steps per frame.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

@@ -5522,7 +5522,28 @@ title = "At the adaptation phase the player picks among what prospered, and each
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking."
-draws_on = ["ecology.1", "684", "1058", "1077", "1080", "1083"]
+draws_on = ["684", "1058", "1077", "1080", "1083", "ecology.1"]
+
+[cases."1095"]
+title = "Eponym's bodies hold native poses, so its rounds hand back like the others'"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops."
+draws_on = ["1080", "eponym.2", "eponym.3", "processes.1"]
+
+[cases."1096"]
+title = "Eponym's standalone client joins the sim's spatial clock"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path."
+draws_on = ["1080", "1081", "1095"]
+
+[cases."1097"]
+title = "Round speed runs Eponym's fixed solver steps as substeps"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "At round speed n, Eponym runs n fixed 1/60 s solver steps per frame."
+draws_on = ["1080", "eponym.2"]
 
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
@@ -6195,8 +6216,8 @@ draws_on = ["185", "186", "234", "235", "238", "877"]
 title = "Fighting and motion"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Blows resolve in the foreground and hand back; motion and contact are game-side; the sim is handed a solver."
-draws_on = ["233", "597", "943", "processes.1"]
+summary = "Blows resolve in the foreground and hand back; motion and contact are game-side; bodies hold native poses and hand back once a minute."
+draws_on = ["233", "597", "943", "1095", "1096", "1097", "processes.1"]
 
 [statements."eponym.3"]
 title = "Eponym's world is native Cosmograph"
