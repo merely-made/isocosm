@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use crate::{MotionPose, identity::SubjectId};
 use isometer_space::places::PlaceId;
 mod binding;
+mod memo;
 mod reading;
 pub mod actions;
 pub mod clock;

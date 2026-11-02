@@ -10,7 +10,7 @@ pub(super) fn add(at: [i64; 3], offset: [i64; 3]) -> Result<[i64; 3], String> {
 }
 
 pub(super) fn root(sim: &Simulation, binding: &PoseBinding) -> Result<[i64; 3], String> {
-    let v = sim.volume(binding.site, binding.window.min, binding.window.max, binding.window.depth)?;
+    let v = crate::contract::mode::memo::volume(&sim, binding.site, &binding.window)?;
     let cell = binding.pose.cell().map_err(|e| format!("Eponym clock pose: {e:?}"))?;
     Ok(crate::walking::to_site(&v, cell))
 }
@@ -20,8 +20,8 @@ pub(super) fn saved_root(binding: &PoseBinding, physical: &Physical) -> Result<[
 }
 
 fn clear(sim: &Simulation, binding: &PoseBinding, physical: &Physical) -> Result<PlaceId, String> {
-    let v = sim.volume(binding.site, binding.window.min, binding.window.max, binding.window.depth)?;
-    let places = Places::derive(&v, physical.places)?;
+    let v = crate::contract::mode::memo::volume(&sim, binding.site, &binding.window)?;
+    let places = crate::contract::mode::memo::places(sim, binding.site, &binding.window, physical.places)?;
     let at = saved_root(binding, physical)?;
     let patch = places.place_at(at).ok_or("Eponym actual root has no realized patch")?;
     for cell in [at, physical.eye] {
@@ -45,7 +45,7 @@ pub(super) fn rebound(sim: &Simulation, binding: &PoseBinding, physical: &Physic
     let mut next = binding.clone();
     next.patch = clear(sim, binding, physical)?;
     next.body_revision = body.body_revision; next.terrain_revision = sim.terrain_revision();
-    let v = sim.volume(binding.site, binding.window.min, binding.window.max, binding.window.depth)?;
+    let v = crate::contract::mode::memo::volume(&sim, binding.site, &binding.window)?;
     let origin = crate::walking::to_site(&v, [0; 3]);
     let mut shift = [0; 3];
     for k in 0..3 { shift[k] = physical.frame_origin[k].checked_sub(origin[k]).ok_or("Eponym frame shift overflows")?; }

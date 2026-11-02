@@ -9,12 +9,12 @@
 
 use crate::contract::mode::{
     self, Presentation, PoseBinding, SpatialBindingInput,
-    actions::{self, Action, ActionConfig, ActionInput, CombatPolicy, FallPayment, MotionPolicy, SubjectProfile, game_source},
+    actions::{self, Action, ActionConfig, ActionInput, CombatPolicy, FallPayment, MotionPolicy, Run, SubjectProfile, game_source},
     clock::{self, Config, Physical, Profile},
 };
 use crate::fixtures::{session, three_lives};
 use crate::identity::SubjectId;
-use crate::{GameIntent, MotionInput, MotionSolver};
+use crate::{GameIntent, MotionInput, MotionPose, MotionSolver};
 use cosmograph::directing::readings::{self, Mode, View};
 use cosmograph::operations::Window;
 use cosmograph::schema::Id;
@@ -33,6 +33,8 @@ pub struct NativeClock {
     pub keeper: SubjectId,
     pub entity: Id,
     pub participant: Id,
+    /// The host's solver; still unless a test hands it another.
+    pub solver: MotionSolver,
 }
 
 impl NativeClock {
@@ -59,7 +61,7 @@ impl NativeClock {
         let input = ActionInput { kind: "eponym:actions".into(), version: 1, expected_native: mode::source(&self.native),
             expected_game: game_source(&self.game), subject: self.keeper, action };
         let (access, view) = (self.access(), self.view());
-        let (outcome, game) = actions::submit(&mut self.native, self.game.clone(), &input, access, &view, MotionSolver::STILL)?;
+        let (outcome, game) = actions::submit(&mut self.native, self.game.clone(), &input, access, &view, self.solver)?;
         self.game = game;
         Ok(outcome)
     }
@@ -69,6 +71,27 @@ impl NativeClock {
         let step = self.binding().pose.step + 1;
         self.submit(Action::Motion { step, input,
             payment: FallPayment { wounds: Vec::new(), hunger: Vec::new(), fatigue: Vec::new() } })
+    }
+
+    /// The keeper's pose after `runs`, stepped locally as a host steps it.
+    pub fn local(&self, runs: &[Run]) -> MotionPose {
+        let b = self.binding();
+        let volume = self.native.sim.volume(b.site, b.window.min, b.window.max, b.window.depth).unwrap();
+        let ground = volume.ground();
+        let rules = actions::motion_rules(&self.native, &self.game, self.keeper).expect("keeper motion rules");
+        runs.iter().flat_map(|r| std::iter::repeat_n(r.input, r.steps as usize))
+            .fold(b.pose, |pose, input| self.solver.advance(&ground, pose, input, rules).expect("a local step").pose)
+    }
+
+    /// A round's minute of motion, its end pose stepped locally (case 1117).
+    pub fn steps(&mut self, runs: Vec<Run>) -> Result<String, String> {
+        let end = self.local(&runs);
+        self.submit(Action::Steps { runs, end, falls: Vec::new() })
+    }
+
+    /// Submits any action for the keeper.
+    pub fn act(&mut self, action: Action) -> Result<String, String> {
+        self.submit(action)
     }
 
     /// The sim's minute, its handbacks taken by the configured clock.
@@ -134,5 +157,5 @@ pub fn native_clock_in_rounds() -> NativeClock {
     let game = clock::configure(&handoff.native, &handoff.game, &clocked).expect("clock configured");
     let participant = handoff.native.sim.state().population.groups.keys().copied()
         .find(|p| handoff.native.sim.plays(*p) == Some(entity)).expect("the keeper's participant");
-    NativeClock { native: handoff.native, game, keeper, entity, participant }
+    NativeClock { native: handoff.native, game, keeper, entity, participant, solver: MotionSolver::STILL }
 }
