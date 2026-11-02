@@ -202,9 +202,16 @@ impl Simulation {
                 .map(|p| p.id.clone())
                 .collect();
         }
-        let risky = definition.risk.as_ref().is_some_and(|r| {
-            crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
-                < u64::from(r.per_million)
+        let risky = definition.risk.as_ref().is_some_and(|r| match &r.aging {
+            // A rising hazard draws per tick at the actor's age (1077).
+            Some(aging) => {
+                let age = self.state.population.get(actor)
+                    .map_or(0, |e| self.state.tick.saturating_sub(e.born));
+                aging.per_tick(age).is_some_and(|chance|
+                    crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000_000_000 < chance)
+            },
+            None => crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
+                < u64::from(r.per_million),
         });
         // A risk that does not fall, on a process that otherwise does
         // nothing, is no act: nothing is staged, numbered or written (E7b).

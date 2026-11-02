@@ -195,7 +195,7 @@ fn inspection_includes_commitments_guards_and_risks_and_never_changes_rules() {
         amount: 1.into(),
     });
     p.risk = Some(Risk {
-        per_million: 1,
+        aging: None, per_million: 1,
         effects: vec![Effect::Wound {
             who: Binding::Actor,
             cells: 1.into(),

@@ -15,6 +15,7 @@ mod validated_run;
 mod independence;
 pub(crate) mod rates;
 mod web;
+pub mod world_time;
 #[cfg(test)]
 mod web_tests;
 pub(crate) use web::Role;
@@ -201,6 +202,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             hazard.risk = Some(Risk {
                 per_million: crate::rules::per_minute_per_tick(rates::HAZARD_PER_MILLION, unit),
                 effects: vec![Effect::Death],
+                aging: None,
             });
             g.rules.processes.insert(hazard.id.clone(), hazard);
         }
@@ -333,6 +335,9 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             .traits
             .insert(LEVELS[role.level()].into());
         g.lineages.get_mut(&lineage).unwrap().kingdom = KINGDOMS[role.level()].into();
+    }
+    if rates == Rates::WorldTime {
+        world_time::configure(founding, g)?;
     }
     Ok(())
 }

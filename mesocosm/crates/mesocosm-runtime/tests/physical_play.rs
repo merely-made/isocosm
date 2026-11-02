@@ -166,6 +166,20 @@ fn native_walking_and_actual_children_share_checked_poses_and_replay() {
         let _ = game.advance_clock(&mut session).unwrap();
         assert_placements(&session, &game);
     }
+    // A newborn's walk falls due a period after its own birth (1104), so
+    // run on, at most one walk period, until some newborn has stepped.
+    let walk = session.sim.genesis().rules.processes.values()
+        .filter(|p| p.id.starts_with("body:walk:")).filter_map(|p| p.period).max().unwrap();
+    for _ in 0..walk {
+        let changes = game.driver.as_ref().unwrap().records.iter().flat_map(|r| &r.changes);
+        let born: Vec<_> = changes.clone()
+            .filter_map(|c| matches!(c.admission, Admission::Birth { .. }).then_some(c.actor)).collect();
+        if changes.into_iter().any(|c| born.contains(&c.actor) && matches!(c.admission, Admission::Step { .. })) {
+            break;
+        }
+        let _ = game.advance_clock(&mut session).unwrap();
+        assert_placements(&session, &game);
+    }
     let changes: Vec<_> = game
         .driver
         .as_ref()

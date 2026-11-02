@@ -130,7 +130,7 @@ fn risky_harm_is_refused_even_when_only_its_risk_wounds() {
         .get_mut("body:hazard")
         .unwrap();
     p.risk = Some(Risk {
-        per_million: 1_000_000,
+        aging: None, per_million: 1_000_000,
         effects: std::mem::take(&mut p.effects),
     });
     assert!(refuse(&world).contains("without risk or notes"));

@@ -102,8 +102,9 @@ impl Genesis {
         }
         for group in self.population.groups.values() {
             let e = &group.entity;
-            if e.born != 0 || e.arrived != 0 || !e.visits.is_empty() || e.journey.is_some() {
-                return Err("founding bodies must begin at tick zero".into());
+            // Founders arrive as the world starts; they may be born before it (1078).
+            if e.born > self.started || e.arrived != self.started || !e.visits.is_empty() || e.journey.is_some() {
+                return Err("founding bodies must arrive as the world starts".into());
             }
             if !self.sites.contains_key(&e.place) || !self.lineages.contains_key(&e.lineage) {
                 return Err("entity references an absent place or lineage".into());

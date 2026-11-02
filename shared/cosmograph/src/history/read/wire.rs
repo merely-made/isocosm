@@ -144,7 +144,7 @@ impl LegacyGenesis {
         let groups = self.population.groups.iter().map(|(&first,g)| {
             Ok((first,population::Cohort { count:g.count, entity:std::sync::Arc::new(g.entity.native()?), pool:Default::default() }))
         }).collect::<Result<_>>()?;
-        Ok(Genesis { version:self.version, seed:self.seed, dynamics:self.dynamics,
+        Ok(Genesis { started: 0, version:self.version, seed:self.seed, dynamics:self.dynamics,
             founding:self.founding.clone(), world:self.world.clone(), rules:self.rules.clone(),
             lineages:self.lineages.clone(), sites:self.sites.clone(),
             population:population::Population { groups, next_id:self.population.next_id },

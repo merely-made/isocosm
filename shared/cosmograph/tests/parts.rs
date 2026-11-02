@@ -290,7 +290,7 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
         vec![expresses(first)],
         vec![],
     );
-    stumble.risk = Some(Risk {
+    stumble.risk = Some(Risk { aging: None,
         per_million: 250_000,
         effects: vec![mark(WORN, true)],
     });

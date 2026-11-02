@@ -32,6 +32,9 @@ pub enum Rates {
     /// eat 3, are born every 14 ticks and pay upkeep every 10, and every
     /// lineage's lifespan, the ceiling under its death hazard, is drawn from 100 to 140.
     A1,
+    /// The ecology in world time (cases 1077, 1078): each role's life,
+    /// metabolism, feeding and growth from `world_time::role_time`.
+    WorldTime,
 }
 
 impl Rates {
@@ -42,8 +45,8 @@ impl Rates {
     pub(super) fn birth_gate(self, stock_min: u64, consumer: bool) -> u64 {
         match (self, consumer) {
             (Self::Stock, _) => (stock_min + 2) * 3,
-            (Self::A1, true) => 9,
-            (Self::A1, false) => 12,
+            (Self::A1 | Self::WorldTime, true) => 9,
+            (Self::A1 | Self::WorldTime, false) => 12,
         }
     }
 

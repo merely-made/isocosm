@@ -27,11 +27,14 @@ impl Web {
     /// The lineage a founding cohort joins, by `draw`: evenly in a web of
     /// levels, as the generator always drew; by each role's share in a web
     /// of diets.
-    pub(crate) fn founder(self, lineages: u32, draw: u64) -> u64 {
-        if self == Self::Levels {
+    pub(crate) fn founder(self, lineages: u32, draw: u64, rates: super::Rates) -> u64 {
+        let world_time = rates == super::Rates::WorldTime;
+        if self == Self::Levels && !world_time {
             return draw % u64::from(lineages);
         }
-        let share = |i: u32| Role::of(self, i).founders();
+        // A world-time founding is a biomass pyramid (1078).
+        let share = |i: u32| if world_time { super::world_time::founders(Role::of(self, i)) }
+            else { Role::of(self, i).founders() };
         let total: u64 = (0..lineages).map(share).sum();
         let mut left = draw % total.max(1);
         for i in 0..lineages {
