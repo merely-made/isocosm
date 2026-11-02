@@ -95,6 +95,20 @@ impl SessionApp {
         self.take_answers();
     }
 
+    /// Sets the round's speed from now on (case 1097).
+    pub(super) fn set_speed(&mut self, speed: cosmograph_host::drive::Speed) {
+        let set = self.model.borrow_mut().round_mut().map(|round| round.set_speed(speed)).is_some();
+        self.status = vec![if set { format!("Round speed {}x", speed.factor()) } else { "Not in a round".into() }];
+    }
+
+    /// The panel's round line: speed, the world's minute, a minute in flight.
+    pub(super) fn round_line(&self) -> Option<String> {
+        let model = self.model.borrow();
+        let round = model.round()?;
+        Some(format!("Round {}x; minute {}{}", round.speed().factor(), model.game().world().sim().state().tick,
+            if round.in_flight() { "; next minute in flight" } else { "" }))
+    }
+
     /// The minute now, waited for: a scenario's fixture control.
     pub(super) fn minute_now(&mut self) {
         let sent = self.model.borrow_mut().minute_now();

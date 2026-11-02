@@ -211,6 +211,9 @@ impl SessionApp {
             },
             None => lines.push("Action: idle".into()),
         }
+        if let Some(line) = self.round_line() {
+            lines.push(line);
+        }
         if let Some(pose) = model.drawn_pose(played) {
             let at = pose.position.map(|v| v as f64 / MOTION_SCALE as f64);
             lines.push(format!(
