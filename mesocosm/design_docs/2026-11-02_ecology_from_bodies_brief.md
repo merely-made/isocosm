@@ -1,7 +1,8 @@
 # Ecology from bodies and selection
 
 **Status:** 2026-11-02: design brief from a conversation with Mark, who
-agreed with all seven of its ideas, the seventh most of all (§1). It is not a
+agreed with all seven of its ideas, the seventh most of all (§1); three
+of its open questions were answered as cases 1146 to 1148 (§7). It is not a
 plan: it changes no code, and the work it implies belongs to the plans named
 in §6. Mark's words are quoted with their date.
 
@@ -221,12 +222,21 @@ dung lawns (3.6) are the first symbioses no one authors.
 - 3.7: the sim plan's S5 (deep time) and the overlay plan's EB7; the coarse
   step in the execution plan (E6) or the time ladder (1075).
 
-## 7. Open, for Mark
+## 7. Answered and open
 
-- Which comes first after the two-year run (1116): 3.1's size law, or 3.3's
-  regional measure, which needs no new mechanism.
-- Whether 3.7 evolves worlds (worldgen offers only persisting webs) or also
-  keeps evolving them in play, every boundary revising rate constants.
-- Which constants are heritable, and within what bounds a world sets.
-- Whether 3.1 scales by mass, by the leg length speed already reads, or by
-  both (§5).
+Answered by Mark on 2026-11-02:
+
+- Which first: after the two-year bar, 3.4's seed bank, then 3.1 ("3.4 seed
+  bank, then 3.1"), both in the food-web lane's `ecology/world_time.rs`,
+  after the bodied plants and per-head breeding of case 1145 (case 1146).
+- Evolution in play: "Yes, slowly"; rate constants keep drifting at the
+  world's pace (case 1147).
+- The figure 3.1 reads: "Mass for rates, leg for speed"; rates scale with
+  mass to the three-quarter power, speed keeps leg length (case 1148).
+
+Open:
+
+- Which constants are heritable, and within what bounds a world sets (to be
+  asked when 3.7 comes up).
+- Whether a round's foreground skips dormant bodies (the foreground layer's,
+  when 3.4 lands).
