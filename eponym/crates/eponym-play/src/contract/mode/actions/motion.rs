@@ -3,7 +3,6 @@
 
 use super::*;
 use crate::founding::{ENERGY,FATIGUE,HUNGER};
-use isometer_space::places::Places;
 
 /// Exact native debit choices, used only if the existing fall law charges them.
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
@@ -38,12 +37,12 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
     if rules.speed == 0 && (input.move_x != 0 || input.move_z != 0) {
         return Err("Eponym current supports cannot move".into());
     }
-    let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+    let volume = crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
     let outcome = solver.advance(&volume.ground(),prior,input,rules).map_err(debug)?;
     if outcome.pose.step != step { return Err("Eponym solver returned another fixed step".into()); }
     outcome.pose.validate().map_err(debug)?;
     let site_cell = crate::walking::to_site(&volume,outcome.pose.cell().map_err(debug)?);
-    let patch = Places::derive(&volume,actor.places.unwrap_or_default())?.place_at(site_cell)
+    let patch = crate::contract::mode::memo::places(&session.sim,actor.site,&actor.window,actor.places.unwrap_or_default())?.place_at(site_cell)
         .ok_or("Eponym accepted contact has no native patch")?;
     let mut next = actor.clone(); next.pose = outcome.pose; next.patch = patch;
     // Validate the exact offered contact against current native geometry before
@@ -83,7 +82,7 @@ pub(super) fn steps(session:&mut Session, mode:&mut ModeState, actions:&ActionSt
     if !falls.windows(2).all(|w| w[0].step < w[1].step) { return Err("Eponym falls are out of step order".into()); }
     let mut pose = actor.current(session)?;
     let first = pose.step;
-    let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+    let volume = crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
     let ground = volume.ground();
     let mut rules = rules(session,mode,actions,actor)?;
     let mut mobile = mobile(session,actor.entity)?;
@@ -123,15 +122,16 @@ pub(super) fn steps(session:&mut Session, mode:&mut ModeState, actions:&ActionSt
     if falls.next().is_some() { return Err("an Eponym fall payment names no step of this minute".into()); }
     if pose != end { return Err("Eponym minute motion ends away from its claimed pose".into()); }
     let cell = crate::walking::to_site(&volume,pose.cell().map_err(debug)?);
-    let patch = Places::derive(&volume,actor.places.unwrap_or_default())?.place_at(cell)
+    let patch = crate::contract::mode::memo::places(&session.sim,actor.site,&actor.window,actor.places.unwrap_or_default())?.place_at(cell)
         .ok_or("Eponym accepted contact has no native patch")?;
     let mut next = actor.clone(); next.pose = pose; next.patch = patch;
     if patch.site != actor.site { return Err("Eponym minute motion left its site".into()); }
     clock::motion(mode,actor,&next)?;
     *mode.bindings.iter_mut().find(|b|b.subject == actor.subject).ok_or("missing Eponym actor binding")? = next;
-    Ok(format!("motion {}..={}: {pose:?}
-{}",first + 1,pose.step,receipts.join("
-")))
+    // The end pose is the input's; the outcome names the steps and charges.
+    let mut outcome = format!("motion {}..={}",first + 1,pose.step);
+    for receipt in &receipts { outcome.push('\n'); outcome.push_str(receipt); }
+    Ok(outcome)
 }
 
 /// The subject's motion rules as its current anatomy projects them.

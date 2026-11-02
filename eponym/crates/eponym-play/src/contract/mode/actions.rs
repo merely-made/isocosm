@@ -270,7 +270,7 @@ fn check_target(session:&Session, mode:&ModeState, actor:&PoseBinding, target:Op
     if target == actor.entity { return Ok(()); }
     let target = mode.bindings.iter().find(|b|b.entity == target).ok_or("Eponym target has no actual physical binding")?;
     if target.site != actor.site || target.current(session)?.cell().map_err(debug)? !=
-        actor.in_frame(session,&session.sim.volume(target.site,target.window.min,target.window.max,target.window.depth)?)?
+        actor.in_frame(session,&*crate::contract::mode::memo::volume(&session.sim, target.site, &target.window)?)?
             .cell().map_err(debug)? {
         return Err("Eponym material target is not at the actor's actual position".into());
     }

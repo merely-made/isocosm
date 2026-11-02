@@ -22,7 +22,7 @@ pub struct ProjectLocation {
 }
 
 fn actor_at(session:&Session,actor:&PoseBinding)->Result<[i64;3],String> {
-    let volume=session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+    let volume=crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
     Ok(crate::walking::to_site(&volume,actor.current(session)?.cell().map_err(debug)?))
 }
 

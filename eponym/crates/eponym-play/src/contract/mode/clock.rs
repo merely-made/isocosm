@@ -7,7 +7,7 @@ use super::*;
 use std::collections::{BTreeMap, BTreeSet};
 use cosmograph::{Command, Simulation, spatial as native};
 use isometer_core::Yaw;
-use isometer_space::{Edit, Op, Shape, places::{Places, Rules as PlaceRules}};
+use isometer_space::{Edit, Op, Shape, places::Rules as PlaceRules};
 use actions::{ActionState, SubjectProfile, OrdinaryAccess, game_source};
 use cosmograph::directing::readings::View;
 use cosmograph_overlay::Seat;

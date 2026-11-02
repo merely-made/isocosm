@@ -28,13 +28,13 @@ pub(super) fn act(session:&mut Session, mode:&ModeState, actions:&mut ActionStat
             } else {
                 let imported = actions.imported.as_ref().ok_or("Eponym material target has no actual saved location")?;
                 let (site,point) = imported.item_at(session,mode,crate::ItemId(target))?;
-                let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+                let volume = crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
                 let here = crate::walking::to_site(&volume,actor.current(session)?.cell().map_err(debug)?);
                 if site != actor.site || point != here { return Err("Eponym saved material target is not at the actor".into()); }
             }
         }
     }
-    let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+    let volume = crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
     let at = crate::walking::to_site(&volume,actor.current(session)?.cell().map_err(debug)?);
     let previous: BTreeSet<_> = session.sim.state().projects.records.keys().copied().collect();
     if let Some(id) = project {
