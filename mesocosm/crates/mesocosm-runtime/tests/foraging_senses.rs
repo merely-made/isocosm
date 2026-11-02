@@ -310,6 +310,10 @@ fn the_sight_witness_moves_with_rotated_sensory_anatomy() {
     let sensor = e
         .living()
         .filter(|(id, p)| *id != e.body.as_ref().unwrap().root && p.cells.values().any(|n| *n > 1))
+        // The front-most part off the root's column: it sees the food, and
+        // it moves when the body turns.
+        .filter(|(id, _)| bounds.get(id).is_some_and(|[lo, hi]|
+            lo[0] + hi[0] != 2 * pose.at[0] || lo[2] + hi[2] != 2 * pose.at[2]))
         .max_by_key(|(id, _)| bounds.get(id).map(|[lo, hi]| lo[0] + hi[0]))
         .unwrap()
         .0;

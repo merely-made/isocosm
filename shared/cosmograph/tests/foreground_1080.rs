@@ -16,7 +16,8 @@ use cosmograph::{
 };
 use std::collections::BTreeMap;
 
-/// Seed 7's played world with whole-body stands (`embodiment::declare`),
+/// Seed 8's played world (seed 7's under case 1106's floor founds no posed
+/// deliberative critter) with whole-body stands (`embodiment::declare`),
 /// a posed deliberative founder taken up and its tile framed.
 fn framed(cap: Option<u32>) -> (Session, Id, Id) {
     framed_with(cap, false)
@@ -30,8 +31,8 @@ fn framed_with(cap: Option<u32>, habitat: bool) -> (Session, Id, Id) {
 /// The same, its genesis rules then set by `rule`.
 fn framed_ruled(cap: Option<u32>, habitat: bool, rule: impl FnOnce(&mut cosmograph::simulation::Genesis)) -> (Session, Id, Id) {
     let mut g = Founding {
-        seed: 7, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
-        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        seed: 8, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(8) })),
         played: Some(Played { lineage: 1, region_sites: 2 }), ..Default::default()
     }.generate().unwrap();
     if habitat { embodiment::declare_site(&mut g).unwrap() } else { embodiment::declare(&mut g).unwrap() }
@@ -215,8 +216,8 @@ fn step_cost() {
 #[test]
 fn a_first_handback_poses_a_patched_body_at_cell_grain() {
     let g = Founding {
-        seed: 7, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
-        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        seed: 8, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(8) })),
         ..Default::default()
     }.generate().unwrap();
     let t = g.rules.spatial_templates.clone().unwrap();

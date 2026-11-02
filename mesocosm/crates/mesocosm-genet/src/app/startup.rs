@@ -259,6 +259,21 @@ fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecolo
 mod tests {
     use super::*;
 
+    /// An A1 candidate founded without producers, which setup refuses:
+    /// under case 1106's floor every generated candidate is otherwise viable.
+    fn barren(seed: u64) -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+        let mut founded = mesocosm_runtime::Founded::generated(seed, 256).unwrap();
+        let mut founding = founded.genesis.founding.clone().unwrap();
+        founding.ecology_rates = cosmograph::ecology::Rates::A1;
+        founded.genesis = founding.generate().unwrap();
+        for group in founded.genesis.population.groups.values_mut() {
+            if group.entity.traits.contains("life:producer") {
+                std::sync::Arc::make_mut(&mut group.entity).alive = false;
+            }
+        }
+        mesocosm_runtime::runtime::ecology::Setup::generated_classified(founded, cosmograph::Execution::Individuals)
+    }
+
     #[test]
     fn explicit_a1_regenerates_an_unmarked_foundation_before_setup_authors_it() {
         let founded = mesocosm_runtime::Founded::generated(9, 256).unwrap();
@@ -291,8 +306,7 @@ mod tests {
         let mut tried = Vec::new();
         let error = select_a1_candidate(1_792_230_697_480_612_000, 12, false, 256, |seed| {
             tried.push(seed);
-            let founded = mesocosm_runtime::Founded::generated(seed, 256).unwrap();
-            a1_setup(founded, None)
+            barren(seed)
         }).unwrap_err();
         assert_eq!(tried, [1_792_230_697_480_612_000]);
         assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(_)));
@@ -302,9 +316,11 @@ mod tests {
     fn unchosen_search_selects_first_viable_derived_candidate_and_cap_one_exhausts() {
         let base = 1_792_230_697_480_612_000;
         let mut tried = Vec::new();
+        // The first two candidates are barren, so the search must go on.
         let selected = select_a1_candidate(base, 12, true, 256, |seed| {
             tried.push(seed);
-            a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(), None)
+            if tried.len() <= 2 { barren(seed) }
+            else { a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(), None) }
         }).unwrap();
         assert!(tried.len() > 1);
         assert_eq!(selected.seed, tried[tried.len() - 1]);
@@ -314,7 +330,7 @@ mod tests {
         let mut capped = Vec::new();
         let error = select_a1_candidate(base, 1, true, 256, |seed| {
             capped.push(seed);
-            a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(), None)
+            barren(seed)
         }).unwrap_err();
         assert_eq!(capped, [base]);
         assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(_)));
@@ -377,7 +393,9 @@ mod tests {
                 }
                 Ok(runtime)
             }).unwrap();
-        assert!(selected.attempts > 8);
+        // It took more than eight attempts before case 1106's founding floor; with
+        // every lineage founded, the second candidate places the critter.
+        assert_eq!(selected.attempts, 2);
         assert!(selected.attempts <= HostConfig::default().candidate_attempts);
     }
 
@@ -407,4 +425,5 @@ pub(super) fn configured(config: &HostConfig, authored: &mesocosm_runtime::Autho
             },
             (None, None) => generated(config, authored.affinity().cloned()),
         }
+
 }
