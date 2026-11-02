@@ -28,11 +28,13 @@ preserve other products' work and stage only the intended paths.
 
 ## Guardrails
 
-- No real-time puppeteering of a party: configure, don't command (founding
-  record §1, care granularity).
-- Body switching is never a menu operation; control changes through death or
-  a recorded world event, with consequences (founding plan, "One life, then
-  continuation").
+- Companions take orders as in-world asks they weigh and may refuse, never
+  as puppeteering (founding record §1, care granularity, refined by case
+  1142).
+- Driving a companion needs its agreement, is a recorded act, one body at a
+  time, and the companion may end it; otherwise control changes through
+  death or a recorded world event (founding plan, "One life, then
+  continuation", refined by case 1144).
 - No Nemesis system: rival-hierarchy promotion is patented to August 2036
   (founding record §1, game tastes).
 - The social simulation ships with its legibility surface, and relationship

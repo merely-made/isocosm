@@ -413,6 +413,7 @@ three design docs that cite it. The record holds the words.
 | 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | none |
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | none |
+| 1137 | The creator's variant rounds and voxel editor are built side by side. | none |
 
 ## Record and history
 
@@ -528,6 +529,7 @@ three design docs that cite it. The record holds the words.
 | 1090 | Every founded lineage starts with at least six members. | none |
 | 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1138 | Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -586,6 +588,8 @@ three design docs that cite it. The record holds the words.
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
+| 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | none |
+| 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | none |
 
 ## Presentation
 
@@ -617,6 +621,9 @@ three design docs that cite it. The record holds the words.
 | 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
 | 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md) |
 | 1136 | The layered look resolution moves into isometer-mesh for every product. | none |
+| 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | none |
+| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | none |
+| 1143 | First person's eye sits at the most sense-celled part, else the root's top. | none |
 
 ## Stack and engine
 
@@ -880,6 +887,7 @@ three design docs that cite it. The record holds the words.
 | 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | none |
 
 ## Naming
 
