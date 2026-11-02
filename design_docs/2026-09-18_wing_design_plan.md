@@ -12851,6 +12851,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1119, 1112, bodies.16 · summary Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length.
 
+1149. **Bodies get microvoxels in the look now and finer body cells later.**
+      Asked by Mark on 2026-11-02, "hmmm. what about microvoxels?", after the
+      denizen rulings; a body's geometry was in sim cells (a limb about
+      three), so a denizen at a game's cell size read as blocks, while
+      Isocosm's token layers were already finer than a tile (the hood, 10 by 8
+      by 24). Ruled: "Both layers". The reading: the sim keeps cell grain, and
+      the look draws each part at a number of microvoxels per cell, shaped by
+      its form and the layered look, the creator's voxel editor working at
+      that grain; finer body cells, a body base unit smaller than terrain's so
+      wounds and contact resolve finer, follow later where play needs them.
+
+      Links: area Presentation · draws on 1129, 1139, 1134, bodies.2 · summary Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -980,8 +980,9 @@ speed bounds a round's handback and sets travel time out of view (Stack 12).
 
 *Built:* the speed (`cosmograph::speed`), a founding's default baseline from
 its stated cell size, and travel time out of view (the execution plan's
-E10). *Not yet built:* joint ranges and the swing cap (case 1088), the
-route's difficulty beyond its length, and the handback's reach check.
+E10), and the handback's reach check (case 1123). *Not yet built:* joint
+ranges and the swing cap (case 1088), and the route's difficulty beyond its
+length.
 
 Links: draws on 1085, 1087, 1088, 1112, bodies.1, stack.12 · summary Speed is a world baseline times the root of leg over a reference leg, legless bodies at body lengths a second, stride capped by drawn joint ranges; it bounds handbacks and sets out-of-view travel.
 

@@ -5902,6 +5902,13 @@ area = "Bodies and anatomy"
 summary = "Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length."
 draws_on = ["1112", "1119", "bodies.16"]
 
+[cases."1149"]
+title = "Bodies get microvoxels in the look now and finer body cells later"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later."
+draws_on = ["1129", "1134", "1139", "bodies.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
