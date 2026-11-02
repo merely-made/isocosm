@@ -47,6 +47,10 @@ fn step(mode: &mut ModeState, state: &mut State, answer: &native::Resolution) ->
     Ok(changes)
 }
 
+fn rounds_sim(sim: &Simulation) -> bool {
+    sim.genesis().rules.spatial_templates.is_some()
+}
+
 pub(super) fn ordered(mode: &mut ModeState, state: &mut State, actions: &mut ActionState,
     sim: &Simulation, steps: &[native::Resolution], births: &[native::BirthResolution],
     reports: &[native::BirthReport], order: &[native::Publication]) -> Result<Vec<Change>, String> {
@@ -63,8 +67,23 @@ pub(super) fn ordered(mode: &mut ModeState, state: &mut State, actions: &mut Act
                 let report = reports.iter().find(|r| r.request.child == *child).ok_or("published birth report absent")?;
                 changes.extend(birth::publish(mode, state, actions, sim, births, report)?);
             },
+            // A round's accepted handback re-poses its bound subject (case
+            // 1095): the game's exact pose stands, the sim's patch is taken.
+            native::Publication::Drawn { actor, patch, .. } if rounds_sim(sim)
+                && mode.bindings.iter().any(|b| b.entity == *actor) => {
+                let before = mode.bindings.iter().find(|b| b.entity == *actor).cloned().ok_or("bound subject absent")?;
+                let physical = state.physical.get(&before.subject).cloned()
+                    .ok_or("handed-back subject has no clock physical")?;
+                let mut after = before.clone();
+                after.patch = *patch;
+                after.terrain_revision = sim.terrain_revision();
+                if after != before {
+                    install(mode, state, Change { before: Some(before), after, physical }, &mut changes)?;
+                }
+            },
             // The sim's tier line (E5) and re-settling (D38) only matter for
-            // a played subject; re-posing a saved binding is not built yet.
+            // a played subject; re-posing a saved binding outside a round is
+            // not built.
             native::Publication::Unplaced(id) | native::Publication::Drawn { actor: id, .. } => {
                 if mode.bindings.iter().any(|b| b.entity == *id) {
                     return Err("tier or re-settle publication for a played subject is not supported".into());
