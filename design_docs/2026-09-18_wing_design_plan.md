@@ -11766,6 +11766,9 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       plays both or not, and the sim's entities tell the same way.
 
       Links: area Processes and rules · draws on processes.11, processes.19, record.3 · summary Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities.
+      *Visits* (Mark, 2026-11-01: "Keep it; merge"): a visit writes no note
+      itself; telling reads the teller's residence and visits and writes the
+      place note then, sparing the note budget creature travel.
       *Then* (Mark, 2026-11-01: "Keep as pack/world data, tune in play",
       "Fix both next"): the baseline draw's numbers (base, relation bonus,
       caution weight, bounds) live in the world's rules as data, tuned in
@@ -11896,6 +11899,9 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       sensing.
 
       Links: area Bodies and anatomy · draws on 1009, bodies.1, bodies.10, world.4, directing.3 · summary Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient.
+      *Accepted* (Mark, 2026-11-01: "Merge, accept those calls"): the eye-path
+      tests run with the baseline sense off, and the independent spread crowd
+      refuses a sensing world until its gradient is modelled.
       *Built how* (Mark, 2026-11-01: "Lineage-drawn radius", "Readings and
       wiring now", "Computed reading"): an animal's touch is contact and its
       smell reaches a radius each lineage draws within world bounds, through
@@ -11906,6 +11912,32 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       trajectories change under the flag; the world entity's sense is a
       computed reading of its site's fields and recent activity, storing
       nothing.
+
+1072. **One background minute everywhere; individuals in the foreground at
+      sixty steps a second; long waits by a ladder of coarse steps.** Ruled
+      by Mark on 2026-11-01, refining 1070 after asking why Mesocosm and the
+      VTT standardize at a minute: "it's because of the stepback to the
+      aggregation layer where cohorts act… and the need to batch operations
+      on meaningful timescales for the game… all three should be 60 tps when
+      they're examining individuals, keep the minute, week, month, year,
+      decade, century, millennia, etc. for when you need to wait a long time
+      no matter the game; not a primary mechanic in isocosm and eponym like it
+      is in mesocosm, but secondary in isocosm (timeskips) and tertiary in
+      eponym (you might use an old world advanced as the seed for a new
+      game)", then "Yes, that's it". With "A1 as minutes; a people preset",
+      "Version bump, migrate at load" and "Eponym 60; Mesocosm stays 10,
+      tunable". The reading: every game keeps the minute as the sim's
+      background tick, where cohorts aggregate and batch; examining
+      individuals runs in the foreground at sixty steps a real second, finer
+      than a tick (Processes 1, 7); waiting steps through a ladder of coarse
+      units by aggregation, Mesocosm's primary mechanic, the VTT's timeskips
+      and Eponym's advanced seed worlds; background minutes per real second is
+      a separate dial (Mesocosm's ten); life history is world-time durations
+      equal to A1's at a minute, people taking a preset chosen at founding
+      with numbers from a measured draw; older worlds migrate at load under a
+      version bump.
+
+      Links: area Processes and rules · replaces 1070 · draws on processes.1, processes.7, 978 · summary The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

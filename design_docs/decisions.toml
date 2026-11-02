@@ -5361,6 +5361,14 @@ area = "Bodies and anatomy"
 summary = "Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient."
 draws_on = ["1009", "bodies.1", "bodies.10", "directing.3", "world.4"]
 
+[cases."1072"]
+title = "One background minute everywhere; individuals in the foreground at sixty steps a second; long waits by a ladder of coarse steps"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset."
+draws_on = ["978", "processes.1", "processes.7"]
+replaces = ["1070"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

@@ -948,7 +948,9 @@ and the activity of tides, plates and vents in a world entity. A baseline
 sense comes with being active, and organs such as eyes extend its range and
 acuity. The ladder runs inert, sensing, sentient, sapient.
 
-*Not yet built:* any baseline sense (BO18 builds it for every form).
+*Built behind `Bodies.sensing`, on for new foundings:* every form's baseline
+reading; owed: processes reading the world entity's sense, and the spread
+crowd's gradient.
 
 Links: draws on 1071, bodies.1, bodies.10, world.4 · summary Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; inert, sensing, sentient, sapient.
 
