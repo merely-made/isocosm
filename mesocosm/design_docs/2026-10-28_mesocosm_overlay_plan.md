@@ -396,6 +396,26 @@ and asynchronous adoption are open.
 - Rulings: epoch plan §2 (Mark), 2026-08-03
 - From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:103-131`.
 
+### EB7. The coarse forward copy (case 1094)
+At the adaptation phase each candidate is weighed by a copy run coarse over years of world
+time, and the player picks among what prospered. The copy's horizon is stated in world time
+(`rules::Span`), Mesocosm's `scoring` pace becoming a span, older saves reading ticks. The
+review (`lineage/review.rs`) is what the player picks from.
+- Done when: a candidate's copy runs a world year quickly enough for the phase, picking the
+  candidates the exact copy picks on horizons where both run, measured on seeds 9, 3 and 7.
+- Needs: a coarse step that pays (E6's rate models, or case 1075's coarser rung); a web that
+  lives a year (case 1077's retune).
+- Rulings: 684, 1075, 1077, 1083, 1094, ecology.1
+- 2026-11-02: grouped execution plus E4's bands, the coarse copy today's machinery makes
+  (`lineage/boundary/coarse_tests.rs`, `coarse_readout`), is slower than the exact copy, not
+  faster: the played line's policy candidates at 20, 180 and 600 ticks took 6.8, 36 and 107 s
+  against 4.8, 18 and 35 s exact, one replayed source per turn. It agreed on 12 of 14 turns
+  at 20 ticks; at 180 and 600 all 14 agree, likely because the A1 web is gone by then and the
+  candidates tie. Grouping saves little at about 1.2 members per state, and folding costs
+  more than it saves. Replaying the source for every candidate (`boundary::score`) cost
+  about seven times the copies' own ticks at 20; `ScoringSource` removes it. `standing` now
+  counts a band's pool.
+
 ## Deferred and parked
 
 - **NPC speciation**: an unplayed lineage splits on a significant event; the player's split
