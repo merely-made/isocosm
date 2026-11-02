@@ -12683,6 +12683,17 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on presentation.1, 1130 · summary A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview.
 
+1132. **Eponym's treatment step asserts the wound doctrine as it stands.**
+      Ruled by Mark on 2026-11-02: "Assert doctrine as is (Recommended)". The
+      headed acceptance expected the wound share at 0 after an injury and a
+      rest, but since Mark's note of 2026-10-18 to ruling 227 the share counts
+      lost and severed cells over all cells, so one severed three-cell limb of
+      forty stays at 7 and rest heals only lost cells. The reading: after the
+      rest the scenario asserts a wound of 7, one lost part and the rest
+      event.
+
+      Links: area Eponym · draws on 227, 1127 · summary Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

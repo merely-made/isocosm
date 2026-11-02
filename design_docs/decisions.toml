@@ -5783,6 +5783,13 @@ area = "Presentation"
 summary = "A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview."
 draws_on = ["1130", "presentation.1"]
 
+[cases."1132"]
+title = "Eponym's treatment step asserts the wound doctrine as it stands"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it."
+draws_on = ["227", "1127"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

@@ -49,6 +49,7 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 | [2026-10-28_board_on_isometer_plan.md](2026-10-28_board_on_isometer_plan.md) | The VTT's board on isometer: the scene board's remaining drawing, the DOM board's fate, appearance and the smallest display. | 2026-10-28: cut; the scene board is built behind its flag; the sim-on path is `vtt-overlay` V2. |
 | [2026-10-28_session_network_plan.md](2026-10-28_session_network_plan.md) | One session layer for every product: H7 (`isonetry` remade), the carrier gates K0 to K2, the no-second-runtime gate, and the deferred authority tiers. | 2026-10-28: cut; the remake has begun (`family`, `family_network`); H7's gates open. |
 | [2026-11-01_living_worlds_research.md](2026-11-01_living_worlds_research.md) | Survey of openly licensed sources on living worlds and sensing without nerves, mapped to Bodies 10 and 15, World 4, Processes 15 and 19, with the questions that need rulings. | Research brief, 2026-11-01 (case 1071); nothing ruled. |
+| [2026-11-02_denizen_plan.md](2026-11-02_denizen_plan.md) | Cases 1128-1131: denizen body plans and a creator, shared looks in Eponym, orders and direct control, a shared perspective camera. | 2026-11-02: plan; P1-P8 open, Q1-Q10 for Mark. |
 | [2026-07-07_optional_intelligence_vision.md](2026-07-07_optional_intelligence_vision.md) | Optional intelligence: a vision record. | Parked. |
 
 ## Archive

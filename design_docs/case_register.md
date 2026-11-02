@@ -410,7 +410,7 @@ three design docs that cite it. The record holds the words.
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md) |
+| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 
 ## Record and history
 
@@ -807,6 +807,7 @@ three design docs that cite it. The record holds the words.
 | 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
 | 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | [denizen](2026-11-02_denizen_plan.md) |
 | 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md) |
+| 1132 | Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it. | none |
 
 ## The VTT
 
