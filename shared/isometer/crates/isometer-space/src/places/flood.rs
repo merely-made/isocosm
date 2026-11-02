@@ -41,7 +41,7 @@ pub(super) fn components(c: &Cells<'_>, seeds: Vec<[i64; 3]>) -> Vec<Found> {
         match c.cell(s) {
             Cell::Water => {
                 let cells = flood6(s, &mut seen, |a| c.cell(a) == Cell::Water, |_| false).0;
-                found.push(made(c, Kind::Water, cells, None));
+                found.push(made(c.v.site, Kind::Water, cells, None));
             },
             Cell::Air => match c.rules.cover {
                 Cover::Sealed => {
@@ -50,12 +50,12 @@ pub(super) fn components(c: &Cells<'_>, seeds: Vec<[i64; 3]>) -> Vec<Found> {
                         walkable.extend(cells.iter().copied().filter(|&a| c.stance(a)));
                         sky.extend(cells);
                     } else {
-                        found.push(made(c, Kind::Room, cells, None));
+                        found.push(made(c.v.site, Kind::Room, cells, None));
                     }
                 },
                 Cover::Roofed if !c.open(s) => {
                     let cells = flood6(s, &mut seen, |a| c.air(a) && !c.open(a), |_| false).0;
-                    found.push(made(c, Kind::Room, cells, None));
+                    found.push(made(c.v.site, Kind::Room, cells, None));
                 },
                 Cover::Roofed => {
                     if c.stance(s) {
@@ -149,7 +149,7 @@ fn capped(c: &Cells<'_>, component: Vec<[i64; 3]>, least: [i64; 3]) -> Vec<Found
     };
     let cap = c.rules.cap.sides().map(i64::from);
     if span(0) <= cap[0] && span(2) <= cap[1] {
-        return vec![made(c, Kind::Patch, component, Some(least))];
+        return vec![made(c.v.site, Kind::Patch, component, Some(least))];
     }
     let grid = |a: [i64; 3]| [a[0].div_euclid(cap[0]), a[2].div_euclid(cap[1])];
     let mut by: BTreeMap<[i64; 2], BTreeSet<[i64; 3]>> = BTreeMap::new();
@@ -162,14 +162,14 @@ fn capped(c: &Cells<'_>, component: Vec<[i64; 3]>, least: [i64; 3]) -> Vec<Found
         for &s in cells {
             if !stood.contains(&s) {
                 let piece = walk(c, s, &mut stood, |b| cells.contains(&b));
-                out.push(made(c, Kind::Patch, piece, Some(least)));
+                out.push(made(c.v.site, Kind::Patch, piece, Some(least)));
             }
         }
     }
     out
 }
 
-fn made(c: &Cells<'_>, kind: Kind, mut cells: Vec<[i64; 3]>, component: Option<[i64; 3]>) -> Found {
+pub(super) fn made(site: crate::SiteId, kind: Kind, mut cells: Vec<[i64; 3]>, component: Option<[i64; 3]>) -> Found {
     cells.sort_unstable();
     let least = cells[0];
     let n = cells.len() as i64;
@@ -181,10 +181,7 @@ fn made(c: &Cells<'_>, kind: Kind, mut cells: Vec<[i64; 3]>, component: Option<[
             bounds[1][k] = bounds[1][k].max(a[k]);
         }
     }
-    let id = PlaceId {
-        site: c.v.site,
-        cell: least,
-    };
+    let id = PlaceId { site, cell: least };
     Found {
         place: Place {
             id,

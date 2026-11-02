@@ -1,0 +1,26 @@
+# Checked at commit by prek (`prek install --allow-missing-config`), and over
+# the whole tree with `prek run --all-files`: the 600-line ceiling (ruling 592,
+# mere:stack.7), no hand-written JSON in a pack (ruling 624), and the decisions
+# manifest regenerated and staged. Rulings: eidetic's line-ceiling plan.
+repos:
+  - repo: local
+    hooks:
+      - id: line-ceiling
+        name: line ceiling
+        entry: line-ceiling
+        language: rust
+        types: [text]
+        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:line-ceiling-v0.0.2:line-ceiling"]
+      - id: pack-json
+        name: no hand-written JSON in a pack
+        entry: "Pack files people write are TOML (data formats brief F1, ruling 624); JSON in a pack belongs under fixtures/:"
+        language: fail
+        files: '(^|/)packs/.*\.json$'
+        exclude: '(^|/)fixtures/'
+      - id: responsa-regen
+        name: responsa regen
+        entry: responsa regen --stage
+        language: rust
+        pass_filenames: false
+        files: '(design_docs/.*\.md|\.rs)$'
+        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]

@@ -31,10 +31,13 @@ not prohibit shared libraries or atomic changes across products.
 | each product's `design_docs/PROJECT_DESCRIPTION.md` | Goals and pillars (maintainer-owned) |
 | each product's `LICENSES.md` | The licence grants (doctrine, Licensing 3) |
 
-`responsa` (eidetic's decisions tool, run here through `shared/responsa`)
+`responsa` (eidetic's decisions tool; install it with `cargo install --locked
+--git https://github.com/merely-made/eidetic --tag responsa-v0.0.2 responsa`)
 reads the records: `lookup <case | plan D-key | statement | path>`, `lookup
---area <name>`, `lookup --history <key>`. The pre-commit hook keeps
-`design_docs/decisions.toml` and the case register current.
+--area <name>`, `lookup --history <key>`. The pre-commit hook (prek, from
+`.pre-commit-config.yaml`; enable it per clone with `prek install
+--allow-missing-config`) keeps `design_docs/decisions.toml` and the case
+register current, and checks the 600-line ceiling and pack formats.
 
 ## Working here
 
@@ -90,5 +93,7 @@ so a plain `cargo test` compiles none of them; run
 `cargo check --workspace --all-features --all-targets` after touching a
 sibling repo and before committing anything in `isonetry`. On 2026-07-17 all
 four campaign features were found uncompilable behind the default build.
+`prek run --all-files` runs the commit checks over the whole tree; run it with
+the cargo checks before landing.
 
 sem is described once in `Code/CLAUDE.md`.
