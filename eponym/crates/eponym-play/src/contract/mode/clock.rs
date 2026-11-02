@@ -100,6 +100,18 @@ pub struct Record {
     pub arrivals: Vec<native::ArrivalResolution>, pub births: Vec<native::BirthResolution>,
     pub arrival_reports: Vec<native::ArrivalReport>, pub birth_reports: Vec<native::BirthReport>,
     pub order: Vec<native::Publication>, pub changes: Vec<Change>, pub refresh_entries: Vec<Key>,
+    /// A round's minute handbacks and what the sim made of them (cases 1095,
+    /// 1102); absent before rounds.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub handbacks: Vec<native::Handback>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub handback_reports: Vec<native::HandbackReport>,
+}
+
+/// Whether this native world plays in rounds: an Eponym world founded with
+/// the rounds marker declares spatial templates (case 1102).
+pub(crate) fn rounds(session: &Session) -> bool {
+    session.sim.genesis().rules.spatial_templates.is_some()
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

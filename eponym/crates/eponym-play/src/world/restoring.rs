@@ -25,10 +25,13 @@ impl World {
                 _ => return Err(WorldError::InvalidMaterialProfile),
             }
         } else { Self::generate_version(save.seed, save.config, save.generator_version)? };
+        // A rounds marker follows any profile marker (case 1102).
+        let rounds = matches!(save.intents.get(usize::from(material)), Some(WorldIntent::Rounds));
+        if rounds { world = world.in_rounds()?; }
         if save.base_hash != world.base_hash {
             return Err(WorldError::BaseDiverged { saved: save.base_hash, regrown: world.base_hash });
         }
-        for intent in save.intents.into_iter().skip(usize::from(material)) { world.apply(intent)?; }
+        for intent in save.intents.into_iter().skip(usize::from(material) + usize::from(rounds)) { world.apply(intent)?; }
         Ok(world)
     }
 }
