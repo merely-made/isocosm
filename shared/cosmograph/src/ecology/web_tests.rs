@@ -439,3 +439,40 @@ fn combined_readout() {
         }
     }
 }
+
+/// Upkeep paid `slower` times less often by every lineage in `roles`.
+fn easier(mut g: Genesis, roles: &[Role], slower: u64) -> Genesis {
+    for i in (0..5).filter(|&i| roles.contains(&Role::of(Web::Diets, i))) {
+        let upkeep = g.rules.processes.get_mut(&format!("ecology:upkeep-{i}")).unwrap();
+        upkeep.period = upkeep.period.map(|p| p * slower);
+    }
+    g
+}
+
+/// The best stabilizer arm (sessile producers, a refuge in one site of
+/// four, wind 30, ceiling 6) with consumers' upkeep halved: whether
+/// consumers then live on what producers make.
+/// `cargo test rates_readout -- --ignored --nocapture`.
+#[test]
+#[ignore = "a readout, not a control"]
+fn rates_readout() {
+    type Arm = fn(Genesis) -> Genesis;
+    fn best(g: Genesis) -> Genesis {
+        ceiling(scattered(with_refuges(sessile(g), 4), 30), 6)
+    }
+    let arms: [(&str, Arm); 3] = [
+        ("best, grazers' upkeep halved", |g| easier(best(g), &[Role::Grazer], 2)),
+        ("best, every consumer's upkeep halved", |g| {
+            easier(best(g), &[Role::Grazer, Role::Predator, Role::Omnivore], 2)
+        }),
+        ("walking, refuge, wind 30, ceiling 6, grazers' upkeep halved", |g| {
+            easier(ceiling(scattered(with_refuges(g, 4), 30), 6), &[Role::Grazer], 2)
+        }),
+    ];
+    for seed in [9, 3, 7] {
+        for (label, arm) in arms {
+            let g = arm(founding(seed, Web::Diets, 5).generate().unwrap());
+            census(g, Web::Diets, 5, &format!("seed {seed}, {label}"), 600);
+        }
+    }
+}
