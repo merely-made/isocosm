@@ -202,3 +202,50 @@ fn a_founding_without_a_preset_carries_no_pressure() {
     let back: Founding = serde_json::from_str(&serde_json::to_string(&preset).unwrap()).unwrap();
     assert_eq!(back, preset);
 }
+
+#[test]
+fn a_span_waits_its_world_time_on_the_one_clock() {
+    // Case 1075: spans of any length, the named rungs fixed in world time.
+    let day = Span::new(1, Rung::Day);
+    assert_eq!(day.ticks(DEFAULT_TICK_MICROSECONDS).unwrap(), 1_440);
+    assert_eq!(Span::new(1, Rung::Week).ticks(DEFAULT_TICK_MICROSECONDS).unwrap(), 10_080);
+    assert_eq!(Span::new(1, Rung::Month).ticks(DEFAULT_TICK_MICROSECONDS).unwrap(), 43_830);
+    assert_eq!(Span::new(1, Rung::Year).ticks(DEFAULT_TICK_MICROSECONDS).unwrap(), year_ticks(DEFAULT_TICK_MICROSECONDS));
+    assert_eq!(Span::new(3, Rung::Millennium).ticks(DEFAULT_TICK_MICROSECONDS).unwrap(), 3_000 * 525_960);
+    assert_eq!(day.ticks(1_000_000).unwrap(), 86_400);
+    assert!(day.ticks(0).is_err());
+    let mut s = Session::new(genesis(1), Execution::Grouped).unwrap();
+    s.advance_span(Span::new(2, Rung::Day)).unwrap();
+    assert_eq!(s.sim.state().tick, 2_880);
+}
+
+#[test]
+fn the_rules_identity_is_their_content_not_their_version() {
+    // Case 1073: a format-only bump moves no hash; a content change does.
+    let rules = genesis(1).rules;
+    let mut bumped = rules.clone();
+    bumped.version += 1;
+    assert_eq!(bumped.revision(), rules.revision());
+    assert_eq!(rules.revision(), cosmograph::digest(&rules), "every existing world keeps its hash");
+    let mut changed = rules.clone();
+    changed.collection_buffer += 1;
+    assert_ne!(changed.revision(), rules.revision());
+}
+
+#[test]
+fn a_v4_save_replays_as_ticks_and_saves_again_with_its_meaning() {
+    use cosmograph::history::{LifeHistory, SAVE_VERSION};
+    let mut s = Session::new(genesis(2), Execution::Grouped).unwrap();
+    s.advance(30).unwrap();
+    let mut saved = s.save();
+    assert_eq!((saved.version, saved.life_history), (SAVE_VERSION, Some(LifeHistory::WorldTime)));
+    assert_eq!(Session::load(saved.clone(), Execution::Grouped).unwrap().life_history, LifeHistory::WorldTime);
+    saved.version = 4;
+    saved.life_history = None;
+    let old = Session::load(saved.clone(), Execution::Grouped).unwrap();
+    assert_eq!(old.life_history, LifeHistory::Ticks);
+    assert_eq!(old.sim.state_hash(), s.sim.state_hash(), "the bump moves no hash");
+    assert_eq!(old.save().life_history, Some(LifeHistory::Ticks));
+    saved.life_history = Some(LifeHistory::WorldTime);
+    assert!(Session::load(saved, Execution::Grouped).is_err(), "a v4 save cannot claim v5's meaning");
+}

@@ -44,6 +44,15 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                     "Propose downtime for the table's consent.", NULL, DOMAIN));
                 time_acts.push(Act::Send(VttIntent::Time(TimeIntent::Downtime { ticks })));
             }
+            // Timeskips wait a span of the ladder as consented downtime (case 1075).
+            use cosmograph::rules::{Rung, Span};
+            let unit = session.sim.genesis().rules.tick_microseconds();
+            for rung in [Rung::Day, Rung::Week, Rung::Month, Rung::Year] {
+                let ticks = Span::new(1, rung).ticks(unit)?;
+                time_actions.push(action(&format!("vtt.propose-{}", rung.name()), &format!("Propose a {} of downtime", rung.name()),
+                    &format!("Propose a {} ({ticks} ticks) for the table's consent, stepped on the one clock.", rung.name()), NULL, DOMAIN));
+                time_acts.push(Act::Send(VttIntent::Time(TimeIntent::Downtime { ticks })));
+            }
         } else if seat == Seat::Player && rostered {
             let released = game.time_holds().iter().rev().find(|hold| hold.participant == participant)
                 .is_some_and(|hold| hold.released);
