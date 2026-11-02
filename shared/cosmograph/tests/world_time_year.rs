@@ -51,7 +51,9 @@ fn a_world_time_web_holds_a_year() {
     let mut months = vec![living(&s)];
     eprintln!("seed {seed} month 0 {:?} roles {roles:?}", months[0]);
     let span = env("WORLD_TIME_DAYS", 0);
-    let (step, steps) = if span > 0 { (span * 1440 / 6, 6) } else { (month, 12) };
+    // Twelve months by default; WORLD_TIME_MONTHS runs longer (1116).
+    let length = env("WORLD_TIME_MONTHS", 12) as usize;
+    let (step, steps) = if span > 0 { (span * 1440 / 6, 6) } else { (month, length) };
     for m in 1..=steps {
         // A day at a time keeps each advance inside the operation budget.
         let mut left = step;
@@ -96,13 +98,13 @@ fn a_world_time_web_holds_a_year() {
             events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
         months.push(now);
     }
-    if steps != 12 { return; }
+    if span > 0 { return; }
     let names: Vec<String> = months[0].keys().cloned().collect();
     let mut verdict = Vec::new();
     for name in &names {
         let series: Vec<u64> = months.iter().map(|m| m.get(name).copied().unwrap_or(0)).collect();
-        let alive = series[12] > 0;
-        let window = &series[3..=12];
+        let alive = series[steps] > 0;
+        let window = &series[3..=steps];
         let (lo, hi) = (*window.iter().min().unwrap(), *window.iter().max().unwrap());
         let bounded = lo > 0 && hi <= lo * 4;
         let steady = series.windows(2).skip(2).all(|w| w[1] * 3 >= w[0] * 2);
