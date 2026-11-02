@@ -131,6 +131,8 @@ pub(crate) enum Command {
     Save,
     Load,
     Close,
+    /// A round's speed (case 1097): world time against real time.
+    Speed(Speed),
 }
 
 /// The session's keys, declared once (M3 of the isomere plan).
@@ -186,6 +188,11 @@ pub(crate) static KEYMAP: LazyLock<Keymap<'static, Press, Command>> = LazyLock::
         Binding::one("R", "rest", Press::character("r"), Command::Rest),
         Binding::one("I", "injury", Press::character("i"), Command::Injure),
         Binding::one("J", "join part 2", Press::character("j"), Command::Join),
+        Binding::group(
+            "1 2 4 8",
+            "round speed",
+            Speed::ALL.iter().map(|s| (Press::character(&s.factor().to_string()), Command::Speed(*s))).collect(),
+        ),
         Binding::one("Ctrl+S", "save", Press::with_ctrl("s"), Command::Save),
         Binding::one("Ctrl+L", "load", Press::with_ctrl("l"), Command::Load),
         Binding::one(
@@ -254,6 +261,8 @@ impl SessionApp {
                 }
                 actions::latch(&mut self.latched[index], hold);
             },
+            // Pacing, not a world act: it applies at once.
+            Command::Speed(speed) => self.set_speed(speed),
             // Swallow the repeat: a held Space must not toggle sixty times.
             Command::Charge if repeat => {},
             Command::Close => self.closing = true,
@@ -282,7 +291,7 @@ impl SessionApp {
             Command::Rest => self.rest(),
             Command::Injure => self.injure(),
             Command::Join => self.join_limb(PartId(2)),
-            Command::Move(_) | Command::Close => {},
+            Command::Move(_) | Command::Close | Command::Speed(_) => {},
         }
     }
 
