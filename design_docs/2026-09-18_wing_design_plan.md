@@ -12000,6 +12000,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       1072's keeping of A1's values as minutes.
 
       Links: area Ecology · amends 1072 · draws on 1074, ecology.2, ecology.3, world.8 · summary The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured.
+      *Measured how* (Mark, 2026-11-01: "Stricter", "State it per year,
+      convert at founding", "Rising hazard, every lineage", "Opt-in per
+      founding"): the web holds steady when every role is alive at month
+      twelve on all five seeds, each lineage's largest and smallest monthly
+      counts over months three to twelve stay within four times, and no
+      month after the second loses more than a third of a lineage; hazard is
+      stated per year and converted at founding; every lineage's hazard rises
+      with age past maturity at a rate it draws, lifespan becoming the
+      emergent tail rather than a ceiling; people are opt-in per VTT
+      founding, a quick-start world authoring them anyway.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
