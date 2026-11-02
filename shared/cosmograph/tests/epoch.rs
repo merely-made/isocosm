@@ -34,6 +34,18 @@ fn a_year_counts_the_worlds_own_unit() {
 }
 
 #[test]
+fn life_history_minutes_read_at_the_worlds_unit() {
+    // Case 1072: life history is stated in minutes; at a minute the ticks are
+    // the same numbers, at a second sixty times as many.
+    assert_eq!(minutes_ticks(140, DEFAULT_TICK_MICROSECONDS), 140);
+    assert_eq!(minutes_ticks(140, 1_000_000), 8_400);
+    assert_eq!(minutes_ticks(2, 3_600_000_000), 1, "never fewer than one tick");
+    assert_eq!(per_minute_per_tick(25_000, DEFAULT_TICK_MICROSECONDS), 25_000);
+    assert_eq!(per_minute_per_tick(25_000, 1_000_000), 416);
+    assert_eq!(per_minute_per_tick(25_000, 3_600_000_000), 1_000_000, "capped at certainty");
+}
+
+#[test]
 fn generated_worlds_take_a_year_and_serialize_as_before() {
     let rules = genesis(1).rules;
     assert_eq!(rules.epoch_ticks, 525_960);

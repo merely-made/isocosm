@@ -9,9 +9,13 @@
 
 use serde::{Deserialize, Serialize};
 
-/// Ticks an individual lives before the death hazard begins (906).
+// Life history is world time (case 1072): lifespans, maturity, the hazard,
+// birth and growth periods are stated in minutes, A1's values at the minute
+// it was tuned at, and founding reads them at the world's own unit.
+
+/// Minutes an individual lives before the death hazard begins (906).
 pub(super) const MATURE: u64 = 60;
-/// The hazard per tick once mature: 2.5 percent, a mean wait of 40 ticks (906).
+/// The hazard per minute once mature: 2.5 percent, a mean wait of 40 minutes (906).
 pub(super) const HAZARD_PER_MILLION: u32 = 25_000;
 /// How often a played world's producers, consumers and decomposers decide,
 /// in ticks (the execution plan's D19).
@@ -55,8 +59,8 @@ impl Rates {
         if self == Self::A1 && consumer { 3 } else { 1 }
     }
 
-    /// A lineage's lifespan: the base plus a draw of 0 to 40 (the ceiling the
-    /// hazard works under).
+    /// A lineage's lifespan in minutes: the base plus a draw of 0 to 40 (the
+    /// ceiling the hazard works under).
     pub(super) fn lifespan(self, draw: u64) -> u64 {
         let base = if self == Self::A1 { 100 } else { 20 };
         base + draw % 41
