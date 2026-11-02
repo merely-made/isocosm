@@ -31,3 +31,31 @@ fn a_fall_after_a_minute_keeps_the_revision_with_the_body() {
         }
     }
 }
+
+/// A named wound severs its part whatever tick the sim is at, and the game
+/// reconciles the cut: the host's debug injury (the session acceptance's
+/// `lost-parts`).
+#[test]
+fn a_named_wound_severs_its_part_after_a_minute() {
+    for rounds in [false, true] {
+        let f = if rounds { timed_action_world_in_rounds() } else { timed_action_world() };
+        let (mut a, played) = (f.action, f.keeper);
+        let tick = a.session().game().next_tick();
+        let advance = if rounds { GameIntent::Minute { tick } } else { GameIntent::Rest { tick, subject: played } };
+        a.apply_game_batch(&[advance]).expect("the sim ticks");
+        let before = a.session().game().current_anatomy(played).unwrap().revision;
+        let tick = a.session().game().next_tick();
+        let part = isometer_core::PartId(1);
+        let events = a.apply_game_batch(&[GameIntent::Wound { tick, subject: played, part }])
+            .unwrap_or_else(|e| panic!("rounds={rounds}: {e:?}"));
+        assert!(events.iter().any(|e| matches!(e, GameEvent::AnatomyReconciled { .. })), "rounds={rounds}: {events:?}");
+        let game = a.session().game();
+        let record = game.current_anatomy(played).unwrap();
+        assert_eq!(record.revision.0, before.0 + 1, "rounds={rounds}");
+        assert_eq!(game.bodies().get(played).unwrap().revision, record.revision, "rounds={rounds}");
+        assert!(record.document.part(part).unwrap().severed, "rounds={rounds}: part 1 severed");
+        let tick = game.next_tick();
+        assert!(a.clone().apply_game_batch(&[GameIntent::Wound { tick, subject: played, part }]).is_err(),
+            "rounds={rounds}: a severed part cannot be wounded again");
+    }
+}

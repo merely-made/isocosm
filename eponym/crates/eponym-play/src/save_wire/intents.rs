@@ -94,4 +94,5 @@ intents! {
     Minute { tick:Tick },
     Steps { tick:Tick, subject:SubjectId, revision:BodyRevisionId, step:u64,
         runs:Vec<MotionRun>, end:MotionPose, rules:MotionRules },
+    Wound { tick:Tick, subject:SubjectId, part:PartId },
 }
