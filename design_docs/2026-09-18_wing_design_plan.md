@@ -12008,7 +12008,9 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       month after the second loses more than a third of a lineage; hazard is
       stated per year and converted at founding; every lineage's hazard rises
       with age past maturity at a rate it draws, lifespan becoming the
-      emergent tail rather than a ceiling; people are opt-in per VTT
+      emergent tail rather than a ceiling, its shape Gompertz (Mark:
+      "Gompertz"), the hazard doubling at a period each lineage draws and
+      evaluated per whole year of age; people are opt-in per VTT
       founding, a quick-start world authoring them anyway.
 
 Two earlier decisions this record relies on without restating: the founding
