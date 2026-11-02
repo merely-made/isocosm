@@ -130,10 +130,10 @@ fn sealed_witness_source_or_execution_tampering_refuses_actual_restore() {
     let mut execution = saved;
     execution.spatial.ecology.as_mut().unwrap().witness.execution = Execution::Grouped;
     let error = Runtime::resume_game_with_mode(execution, 30, None).err().expect("execution seal must refuse");
-    // A resume replays the history in its seal's execution. Paced, a Grouped
-    // cohort chooses on its first member's phase and an individual on its own,
-    // so the replay refuses before the seals are compared (sim-execution D43).
-    assert!(error.contains("diverges first"), "{error}");
+    // A resume replays the history in its seal's execution. Since case 1076
+    // a paced member chooses on its own identity in either mode, so the
+    // replay matches and the seals' comparison refuses it.
+    assert!(error.contains("seals differ"), "{error}");
 }
 
 #[test]
