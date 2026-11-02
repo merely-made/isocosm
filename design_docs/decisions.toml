@@ -5657,6 +5657,27 @@ area = "Eponym"
 summary = "In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local."
 draws_on = ["1080", "1081", "1095"]
 
+[cases."1114"]
+title = "A bodied plant keeps a root store no bite reaches and regrows from it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty."
+draws_on = ["1078", "1105", "1110", "bodies.13"]
+
+[cases."1115"]
+title = "World-time plants are founded small and single-seeded"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding."
+draws_on = ["1114", "world.8"]
+
+[cases."1116"]
+title = "The food web runs two years before people join it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "All five seeds run two years before people are added; a year-two crash is fixed first."
+draws_on = ["1078", "1111"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

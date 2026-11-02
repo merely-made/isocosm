@@ -274,6 +274,8 @@ three design docs that cite it. The record holds the words.
 | 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | none |
 | 1110 | A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant. | none |
 | 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | none |
+| 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | none |
+| 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | none |
 
 ## Bodies and anatomy
 
@@ -520,6 +522,7 @@ three design docs that cite it. The record holds the words.
 | 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1090 | Every founded lineage starts with at least six members. | none |
 | 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | none |
+| 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 

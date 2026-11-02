@@ -12503,6 +12503,38 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1095, 1081, 1080 · summary In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local.
 
+1114. **A bodied plant keeps a root store no bite reaches and regrows from
+      it.** Ruled by Mark on 2026-11-02: "Adopt as proposed (Recommended)",
+      on the food-web lane's proposal for case 1105. The reading: an adult
+      plant of 60 holds a root store of 20 below ground, which no bite
+      reaches (case 1110), and 40 over its exposed parts; growth (2 every 720
+      minutes from soil and light, on the plant's own clock) fills the exposed
+      part furthest below its share, then the store; regrowth moves 2 from
+      the store into the most wounded exposed part every 240 minutes, so a
+      stripped plant refills in about 3.3 days while the store holds; upkeep
+      and seeding draw on the store; a plant dies only when every part is
+      empty. A grazer's bite of 3 is about 7.5 per cent of the exposed matter.
+
+      Links: area Ecology · draws on 1105, 1110, 1078, bodies.13 · summary A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty.
+
+1115. **World-time plants are founded small and single-seeded.** Ruled by
+      Mark on 2026-11-02: "Adopt (Recommended)". The reading: world-time
+      producers are drawn with one or two stretches of four to eight
+      segments, fronds on the lit side, one seed a seeding, sensing and
+      grazing mouths on and no hazard, so their exposed parts number five to
+      seventeen.
+
+      Links: area World generation · draws on 1114, world.8 · summary World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding.
+
+1116. **The food web runs two years before people join it.** Ruled by Mark
+      on 2026-11-02: "Two-year run first (Recommended)". All five seeds pass
+      the year bar on a laid map, but producers peak in months eight to nine
+      and fall about 40 per cent by month twelve while grazers rise to six
+      times their founding. The reading: all five seeds run two years, and a
+      year-two crash is fixed before people are added.
+
+      Links: area Ecology · draws on 1078, 1111 · summary All five seeds run two years before people are added; a year-two crash is fixed first.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
