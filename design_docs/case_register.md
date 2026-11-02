@@ -211,8 +211,8 @@ three design docs that cite it. The record holds the words.
 | 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
-| 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | none |
-| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | none |
+| 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | none |
 
 ## Ecology
@@ -260,6 +260,7 @@ three design docs that cite it. The record holds the words.
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
 | 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | none |
+| 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | none |
 
 ## Bodies and anatomy
 
@@ -423,7 +424,7 @@ three design docs that cite it. The record holds the words.
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
 | 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [DOC README](DOC_README.md) |
 | 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [DOC README](DOC_README.md) |
-| 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | none |
+| 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## World generation
 

@@ -12013,6 +12013,27 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       evaluated per whole year of age; people are opt-in per VTT
       founding, a quick-start world authoring them anyway.
 
+1078. **A steady web needs a different meal, larger producers and a biomass
+      pyramid.** Ruled by Mark on 2026-11-01, after the creature-minds
+      session's S10 arms (40cf7241, f346d32a, 006e3d08) found that retuning
+      the time unit alone collapses the same way: feeding had no hunger gate,
+      a bite built body one for one, a bite killed a whole producer, and every
+      level grew as fast as what it ate. Mark chose "Feed only while hungry",
+      "Meals lose mass to soil", "Producers keep a reserve" ("perhaps more
+      kinds of producers, but i do agree about size") and "Breeding by what
+      food affords", and "Yes, a biomass pyramid", echoing his earlier "they
+      wouldn't evolve to do so if there wasn't an abundance of producers".
+      The reading: animals feed only below a hunger threshold; most of a
+      bite returns to the site as soil, only a share building body;
+      producers are many bites large, so grazing wounds rather than kills,
+      with more kinds of producers; births are spaced by stored surplus, not
+      a fixed gate and period; founding sizes each level well below the one
+      it eats. These join 1077's retune; the mind's needs keep their number
+      and order, feeding stays an eat effect and moves stay move processes,
+      for the lineage policy (58c97ec7).
+
+      Links: area Ecology · draws on 1077, ecology.2, ecology.3, ecology.4 · summary Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
