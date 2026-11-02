@@ -22,6 +22,28 @@ impl Paged {
         }
         self.rule.rule(self.top(x,z),y)
     }
+    /// The column's runs over `[lo, hi)`: the rule's rock, soil, water and
+    /// air, each edit laid over them in order.
+    pub(super) fn column(&self, x:i64, z:i64, [lo,hi]:[i64;2]) -> Vec<([i64;2],u8)> {
+        let (top,r) = (self.top(x,z),&self.rule);
+        let mut out = vec![([i64::MIN,top-r.soil+1],r.m.rock), ([top-r.soil+1,top+1],r.m.soil),
+            ([top+1,r.water+1],r.m.water), ([top.max(r.water)+1,i64::MAX],r.m.air)];
+        out.retain(|(s,_)| s[0]<s[1]);
+        for edit in &self.edits {
+            let m = edit.op.material(r.m);
+            for span in runs(&edit.shape,x,z) { lay(&mut out,span,m); }
+        }
+        let mut clipped: Vec<([i64;2],u8)> = Vec::new();
+        for (s,m) in out {
+            let s = [s[0].max(lo),s[1].min(hi)];
+            if s[0]>=s[1] { continue; }
+            match clipped.last_mut() {
+                Some((run,last)) if *last==m && run[1]==s[0] => run[1]=s[1],
+                _ => clipped.push((s,m)),
+            }
+        }
+        clipped
+    }
     fn surface(&self,x:i64,z:i64) -> i64 {
         let mut high = self.top(x,z).max(self.rule.water);
         for edit in &self.edits {
@@ -32,6 +54,19 @@ impl Paged {
         while self.material([x,high,z]) == self.rule.m.air { high-=1; }
         high
     }
+}
+
+/// Lays `m` over `[a, b)` in sorted, disjoint runs.
+fn lay(out:&mut Vec<([i64;2],u8)>, [a,b]:[i64;2], m:u8) {
+    if a>=b { return; }
+    let mut next = Vec::with_capacity(out.len()+2);
+    for &(s,was) in out.iter() {
+        if s[0]<a.min(s[1]) { next.push(([s[0],a.min(s[1])],was)); }
+        if b.max(s[0])<s[1] { next.push(([b.max(s[0]),s[1]],was)); }
+    }
+    next.push(([a,b],m));
+    next.sort_unstable_by_key(|(s,_)| s[0]);
+    *out = next;
 }
 
 impl Volume {

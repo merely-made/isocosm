@@ -7,10 +7,12 @@
 //! over walkable surface, splits where a step passes the world's climb, and
 //! a patch wider than the world's cap is cut on the cap's grid. Every
 //! passage records the clearances a body must fit (ruling 418), so one graph
-//! serves every body. Derived from the volume and never stored: an edit
-//! re-derives the places its dirty region reaches ([`Places::rederive`]).
+//! serves every body. Derived from the volume's columns and never stored
+//! (`columns`): an edit re-derives the places its dirty region reaches
+//! cell by cell ([`Places::rederive`]).
 
 mod cells;
+mod columns;
 mod flood;
 mod join;
 #[cfg(test)]
@@ -186,8 +188,16 @@ pub struct Places {
 }
 
 impl Places {
-    /// Every place of `volume`, derived whole.
+    /// Every place of `volume`, derived whole from its columns (PG7).
     pub fn derive(volume: &Volume, rules: Rules) -> Result<Self> {
+        check(rules)?;
+        columns::derive(volume, rules)
+    }
+
+    /// Every place of `volume`, derived cell by cell: the reference the
+    /// column derivation must equal.
+    #[cfg(test)]
+    pub(super) fn by_cells(volume: &Volume, rules: Rules) -> Result<Self> {
         check(rules)?;
         let cells = Cells::new(volume, rules);
         let mut places = Self {
