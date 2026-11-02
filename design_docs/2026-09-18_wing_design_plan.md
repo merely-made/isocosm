@@ -12165,6 +12165,108 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Stack and engine · draws on 1080, 1081, 841, 842, stack.12, stack.7, processes.16 · summary The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time.
 
+1085. **A body's speed is a world baseline scaled by size, times a factor
+      from its anatomy.** Ruled by Mark on 2026-11-02, asked when the
+      handback's reach check found no walking speed in the sim (native
+      walking moves one cell per chosen step; between sites, authored pace
+      profiles carry no body). Answer: "1, +2 as a factor on the baseline of
+      1... so things can travel at different, physically relevant rates
+      relative to journeying difficulty. we need to derive a 'movement
+      speed' parameter... does inverse kinematics help in this regard?...
+      would it help if we reduced the range of possible animations for
+      parts... like prescribing motion in some angle of the joint's mobility
+      (given there is no 'bone structure' and 'ball and socket joint' to
+      limit mobility). perhaps we can then make that a reliable enough
+      metric for fauna, and have something like drift, contiguous and
+      noncontiguous growth/spread, to define ecological ranges... right?"
+      The reading: a world rule of cells per world second, scaled by body
+      size, is the baseline; an anatomy factor (case 1087) multiplies it;
+      travel is relative to the route's difficulty. The same speed bounds a
+      round's handback and sets travel time out of view (case 1084). Ranges
+      follow from spread (cases 1089, 1092).
+
+      Links: area Bodies and anatomy · draws on 1080, 1084, processes.16 · summary A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel.
+
+1086. **The foreground cap is 16, re-measured once feet are placed.** Ruled
+      by Mark on 2026-11-02: "16, re-measure in phase 4 (Recommended)". The
+      measurement (release, 7 bodies, 60 steps each): a foreground step costs
+      20 to 24 µs a body, about 700 bodies to a 60 Hz frame; a step that
+      re-plants the feet by the settling search costs about 350 µs, about 47
+      to a frame, so 16 is about 5.6 ms of a 16.7 ms frame. Re-timed when
+      E10's foreground places feet.
+
+      Links: area Processes and rules · draws on 1082, 1080 · summary The foreground cap defaults to 16 bodies, re-measured once the foreground places feet.
+
+1087. **The anatomy factor is the Froude rule with stride capped by joint
+      swing.** Ruled by Mark on 2026-11-02: "Froude × joint swing
+      (Recommended)". The question answered his asking whether inverse
+      kinematics helps: it places feet, not speed. Animals of every size
+      walk at about the same Froude number, v² over g times leg length, near
+      0.25, and change gait near 0.5, so v = √(Fr·g·L) (about 1.5 m/s for a
+      0.9 m human leg against a measured 1.4). The reading: speed follows
+      leg length by that rule; stride is capped by each joint's swing range
+      (about 2L·sin(swing/2)); bodies without legs move in body lengths per
+      second.
+
+      Links: area Bodies and anatomy · draws on 1085, 1088 · summary Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second.
+
+1088. **Joints carry mobility, drawn per lineage.** Ruled by Mark on
+      2026-11-02: "Yes, drawn per lineage (Recommended)", on his proposal to
+      prescribe motion within an angle of each joint's mobility. Today a
+      joint is only a shape name (`anatomy.rs`, a part with a parent and
+      children). The reading: each joint carries an axis and an angle range,
+      drawn within what its form allows, as other lineage traits are;
+      animation keeps within them, and they feed stride length and foot
+      placement.
+
+      Links: area Bodies and anatomy · draws on 1087, bodies.1, bodies.11 · summary Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them.
+
+1089. **Births scatter along routes, so a lineage can return to a site.**
+      Ruled by Mark on 2026-11-02: "Births scatter along routes
+      (Recommended)". The food-web lane found that a site whose decomposers
+      die out keeps its soil locked in dead matter for good, nothing in the
+      web moving between sites (3 of 4 sites on seed 9, all 4 on seed 31,
+      by month 12). The reading: some births land at a neighbouring site
+      (the Birth effect's scatter); this is noncontiguous spread, beside
+      Ecology 4's overflow, and a lineage's range is read from where it
+      persists.
+
+      Links: area Ecology · draws on 1078, 1085, ecology.4 · summary Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist.
+
+1090. **Every founded lineage starts with at least six.** Ruled by Mark on
+      2026-11-02: "Founding floor of 6 (Recommended)". At 240 population,
+      predators and omnivores were founded at 0 to 4 a lineage, so one
+      death read as a 33 to 50 per cent monthly loss, and on seed 31 two
+      predator lineages were never founded.
+
+      Links: area World generation · draws on 1078, world.8 · summary Every founded lineage starts with at least six members.
+
+1091. **Dead matter awaiting decomposers is `world:detritus`.** Ruled by
+      Mark on 2026-11-02: "world:detritus", over the lane's `world:litter`.
+      The site account holds bite losses, upkeep and corpse leftovers until
+      decomposers turn them into soil (case 1078).
+
+      Links: area Naming · draws on 1078, naming.4 · summary The site account of dead matter awaiting decomposers is world:detritus.
+
+1092. **Seeds and spores scatter on air and water; a walker's young at their
+      own speed.** Ruled by Mark on 2026-11-02: "Media + own speed
+      (Recommended)". The reading: a scattered birth's chance is keyed by
+      what carries it: seeds and spores ride the existing `world:air` and
+      `world:water` conditions; a walker's young disperse at the walking
+      speed of case 1085, the chance per route read from speed and route
+      length. No new names.
+
+      Links: area Ecology · draws on 1089, 1085, ecology.4 · summary Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length.
+
+1093. **A lineage trait shapes its scatter too.** Said by Mark on
+      2026-11-02, after 1092: "probably lineage traits too", taken as adding
+      the card's third option to the medium and the speed. The reading: each
+      lineage draws a scatter propensity like its other life-history traits
+      (seed or spore count, how readily young leave), which scales the chance
+      its medium or speed gives.
+
+      Links: area Ecology · draws on 1092, bodies.7 · summary A drawn lineage trait scales the scatter chance its medium or walking speed gives.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -5454,6 +5454,69 @@ area = "Stack and engine"
 summary = "The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time."
 draws_on = ["841", "842", "1080", "1081", "processes.16", "stack.7", "stack.12"]
 
+[cases."1085"]
+title = "A body's speed is a world baseline scaled by size, times a factor from its anatomy"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel."
+draws_on = ["1080", "1084", "processes.16"]
+
+[cases."1086"]
+title = "The foreground cap is 16, re-measured once feet are placed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The foreground cap defaults to 16 bodies, re-measured once the foreground places feet."
+draws_on = ["1080", "1082"]
+
+[cases."1087"]
+title = "The anatomy factor is the Froude rule with stride capped by joint swing"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second."
+draws_on = ["1085", "1088"]
+
+[cases."1088"]
+title = "Joints carry mobility, drawn per lineage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them."
+draws_on = ["1087", "bodies.1", "bodies.11"]
+
+[cases."1089"]
+title = "Births scatter along routes, so a lineage can return to a site"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist."
+draws_on = ["1078", "1085", "ecology.4"]
+
+[cases."1090"]
+title = "Every founded lineage starts with at least six"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Every founded lineage starts with at least six members."
+draws_on = ["1078", "world.8"]
+
+[cases."1091"]
+title = "Dead matter awaiting decomposers is `world:detritus`"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The site account of dead matter awaiting decomposers is world:detritus."
+draws_on = ["1078", "naming.4"]
+
+[cases."1092"]
+title = "Seeds and spores scatter on air and water; a walker's young at their own speed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length."
+draws_on = ["1085", "1089", "ecology.4"]
+
+[cases."1093"]
+title = "A lineage trait shapes its scatter too"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A drawn lineage trait scales the scatter chance its medium or walking speed gives."
+draws_on = ["1092", "bodies.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6016,6 +6079,13 @@ area = "Bodies and anatomy"
 summary = "Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; inert, sensing, sentient, sapient."
 draws_on = ["1071", "bodies.1", "bodies.10", "world.4"]
 
+[statements."bodies.16"]
+title = "Speed follows the body"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel."
+draws_on = ["1085", "1087", "1088", "bodies.1", "stack.12"]
+
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
@@ -6090,8 +6160,8 @@ draws_on = ["267", "283", "383", "879"]
 title = "Spread is overflow along routes"
 source = "design_docs/doctrine.md"
 area = "Ecology"
-summary = "Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
-draws_on = ["498", "590", "718", "827", "828", "831"]
+summary = "Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
+draws_on = ["498", "590", "718", "827", "828", "831", "1089", "1091", "1092", "1093"]
 
 [statements."ecology.5"]
 title = "Light and life"
@@ -6860,8 +6930,8 @@ draws_on = ["412", "413", "414", "415"]
 title = "Founded lineages are drawn within what bodies allow"
 source = "design_docs/doctrine.md"
 area = "World generation"
-summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless."
-draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "sim-execution D46"]
+summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless."
+draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "1090", "sim-execution D46"]
 
 [statements."world.9"]
 title = "Places carry quality and alignment"

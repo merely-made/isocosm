@@ -667,10 +667,20 @@ overflow. A body that takes in grazes any living body of another lineage at
 its site, weighted by what each holds; a dead body rots back to its site;
 carrion comes later.
 
-Links: draws on 498, 590, 718, 827, 828, 831 · summary Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
+Births spread too: some land at a neighbouring site, seeds and spores
+carried by a site's air and water, a walker's young at its walking speed over
+the route's length (Bodies 16), each scaled by a drawn lineage trait. A
+lineage's range is read from where it persists. The dead's leftovers wait as detritus until decomposers make soil
+of them.
+
+Links: draws on 498, 590, 718, 827, 828, 831, 1089, 1091, 1092, 1093 · summary Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
 
 *Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
 rules".*
+
+*Refined 2026-11-02 from cases 1089, 1091 and 1092 (Mark: "Births scatter
+along routes (Recommended)", "world:detritus", "Media + own speed
+(Recommended)").*
 
 ### Ecology 5. Light and life
 
@@ -956,6 +966,25 @@ Links: draws on 1071, bodies.1, bodies.10, world.4 · summary Sensing separates 
 
 *Reviewed 2026-11-01, new, from case 1071 (Mark: "Adopt as drafted").*
 
+### Bodies 16. Speed follows the body
+
+A body's speed is the world's baseline, cells per world second scaled by
+size, times a factor from its anatomy: leg length by the Froude rule (walking
+near 0.25, a gait change near 0.5), stride capped by each joint's swing;
+bodies without legs move in body lengths per second. Joints carry an axis and
+an angle range, drawn per lineage within what the form allows, and
+animation, stride and foot placement keep within them. Travel is relative to
+the route's difficulty. The same speed bounds a round's handback and sets
+travel time out of view (Stack 12).
+
+*Not yet built:* all of it; the handback's reach check waits for it.
+
+Links: draws on 1085, 1087, 1088, bodies.1, stack.12 · summary Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel.
+
+*Reviewed 2026-11-02, new, from cases 1085, 1087 and 1088 (Mark: "1, +2 as
+a factor on the baseline of 1", "Froude × joint swing (Recommended)", "Yes,
+drawn per lineage (Recommended)").*
+
 ## Record and history
 
 ### Record 1. Consistency is chosen per domain
@@ -1210,16 +1239,20 @@ In worlds that ask for bodies, flora and fauna draw recipes by kingdom (myco
 and micro become territories and surfaces); each reproduces in one cell of its
 root, draws its life history within what its body supports, and draws its
 variance, absence and riff odds within bounds a world may widen (Mesocosm's
-by default). Generated consumers graze and carry living sense tissue. Other
-worlds keep extentless bodies as the scale control.
+by default). Generated consumers graze and carry living sense tissue. Every
+founded lineage starts with at least six members. Other worlds keep
+extentless bodies as the scale control.
 
 *Not yet built:* consumers' sense tissue (the execution plan's D46, the bodies
 plan's BO18).
 
-Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless.
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
 
 *Refined 2026-10-31 from the execution plan's D46 (Mark: "Fix founding
 (Recommended)", then "Refine World 8, bodies owes it (Recommended)").*
+
+*Refined 2026-11-02 from case 1090 (Mark: "Founding floor of 6
+(Recommended)").*
 
 ### World 9. Places carry quality and alignment
 
