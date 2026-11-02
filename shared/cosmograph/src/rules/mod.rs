@@ -317,6 +317,11 @@ pub struct Rules {
     /// it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub banding: Option<crate::band::Banding>,
+    /// How fast bodies walk (doctrine Bodies 16, case 1095): set, a member
+    /// out of view travels to its meal in its route's time instead of a
+    /// step a tick (case 1084); absent, worlds step and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub speed: Option<crate::speed::Speed>,
     /// The crafts and deeds a world's sophonts read (778); absent in worlds
     /// without them, which hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]

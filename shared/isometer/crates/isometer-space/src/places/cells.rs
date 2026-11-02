@@ -190,6 +190,8 @@ impl<'a> Cells<'a> {
     /// First cell of each air/water run. Floods visit complete rooms and
     /// water bodies themselves; every walkable stance begins an air run.
     /// Solid cells and interior sky seeds cannot discover another place.
+    /// The reference derivation's seeds.
+    #[cfg(test)]
     pub fn everywhere(&self) -> Vec<[i64; 3]> {
         let mut out = Vec::new();
         for x in self.v.min[0]..self.v.max[0] {

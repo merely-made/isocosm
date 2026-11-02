@@ -6,13 +6,19 @@ use crate::spatial::{Request, StagedStep};
 
 impl Staged<'_> {
     pub(super) fn step(&mut self, action: &str, key: &str) -> Result<()> {
-        if self.stage.step.is_some() || self.stage.terrain.is_some() || self.stage.count != 1 {
+        if self.stage.step.is_some() || self.stage.travel.is_some() || self.stage.terrain.is_some() || self.stage.count != 1 {
             return Err("step needs one geometry act on one native member".into());
         }
         let profile = self.sim.genesis.rules.step_profiles.get(key).ok_or("step profile absent")?.clone();
         if profile.process != self.stage.process { return Err("step profile names another chosen process".into()); }
         let cells = self.compute(|read, draw, parts| profile.cells.resolve(read, draw, parts))?.resolved()?;
         if cells == 0 { return Err("chosen step has no resolved cell budget".into()); }
+        if self.sim.travels_out_of_view(self.stage.actor) {
+            let target = self.stage.target.ok_or("a traveller walks to a meal")?;
+            let travel = self.sim.departure(self.stage.actor, target, key)?;
+            self.stage.travel = Some((self.stage.actor, travel));
+            return Ok(());
+        }
         let actor = &self.stage.bodies[&self.stage.actor];
         let request = Request {
             action: action.into(), process: self.stage.process.clone(), profile: key.into(),
