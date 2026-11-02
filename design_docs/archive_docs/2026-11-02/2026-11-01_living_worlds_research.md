@@ -79,3 +79,7 @@ Mark, case 1071: "we could draw upon like ways that people have designed worlds,
    *Ruled, 1079:* "Share the machinery, separate kinds": influence fields use the reach field's machinery as a separate kind that never mixes with knowledge.
 6. **Sources:** Ironsworn's Delve licence and USGS's reuse statement should be confirmed before either is cited in a shipped pack.
    *Ruled, 1079:* both checked: only Ironsworn's SRD and asset texts are CC BY 4.0 (its rulebooks are non-commercial and out), and USGS-authored material is US public domain, credited, its third-party images excluded.
+
+---
+
+*Archived 2026-11-02.* The six questions of section C are ruled by case 1079, and its follow-through is extracted into plans (DOC_POLICY section 8): the world's agency setting and the influence fields are `LW1` and `LW2` in `mesocosm/design_docs/2026-10-28_sim_plan.md`; the per-sense prior reading, use-shaped conducting networks and slow signalling by form are `BO19` to `BO21` in `mesocosm/design_docs/2026-10-28_bodies_plan.md`. Mark: "Extract, then archive", then "Split: sim + bodies". This copy is history: the survey and its sources stand as of 2026-11-01. The case record's cite of this file (case 1079) is as ruled.

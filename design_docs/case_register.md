@@ -407,8 +407,8 @@ three design docs that cite it. The record holds the words.
 | 872 | Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour. | none |
 | 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
 | 1049 | A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes. | none |
-| 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md) |
-| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md) |
+| 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1085 | A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel. | none |
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
@@ -643,7 +643,7 @@ three design docs that cite it. The record holds the words.
 | 77 | Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web. | none |
 | 78 | Favor a clean boundary between componentized parts either way, since lack of one would bite later and performance improves with hardware. | none |
 | 92 | The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim. | none |
-| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 192 | Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591) | none |
 | 197 | The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 203 | The tick stamp is a newtype over the sim's u64 count. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
