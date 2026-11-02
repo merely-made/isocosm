@@ -32,6 +32,7 @@ use crate::founding::spread::GENERATOR_VERSION as SPREAD_GENERATOR_VERSION;
 
 mod spread;
 mod restoring;
+mod rounds;
 
 pub const GENERATOR_VERSION: u32 = 4;
 /// Rock held under the lifted window's lowest soil.
@@ -75,6 +76,9 @@ pub enum WorldIntent {
     SpreadMaterialProfile { profile: Box<crate::SpreadMaterialProfile> },
     /// An authored native material edit, appended to preserve archive tags.
     MaterialEdit { tick: Tick, edit: Edit },
+    /// The world plays in rounds (case 1102): a founding marker after any
+    /// profile marker, appended to preserve archive tags.
+    Rounds,
 }
 
 impl WorldIntent {
@@ -83,7 +87,7 @@ impl WorldIntent {
             Self::Carve { tick, .. } | Self::InheritSite { tick, .. }
             | Self::MaterialEdit { tick, .. } => *tick,
             Self::MaterialProfile { .. } | Self::OwnedMaterialProfile { .. }
-                | Self::SpreadMaterialProfile { .. } => Tick(0),
+                | Self::SpreadMaterialProfile { .. } | Self::Rounds => Tick(0),
         }
     }
 }
@@ -414,6 +418,7 @@ impl World {
         let event = match intent.clone() {
             WorldIntent::MaterialProfile { .. } | WorldIntent::OwnedMaterialProfile { .. } | WorldIntent::SpreadMaterialProfile { .. }
                 => return Err(WorldError::InvalidMaterialProfile),
+            WorldIntent::Rounds => return Err(WorldError::Refused),
             WorldIntent::Carve {
                 tick,
                 by,

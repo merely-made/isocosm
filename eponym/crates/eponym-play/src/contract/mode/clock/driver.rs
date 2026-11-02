@@ -28,12 +28,13 @@ fn advance_inner(session: &mut Session, mode: &mut ModeState, actions: &mut Acti
     state.validate(mode)?; state.validate_native(session)?;
     let (before_entries, _) = publication::refresh_inner(session, mode, state, actions)?;
     let arrivals = arrival::inputs(session, mode, state)?;
+    let handbacks = if rounds(session) { handbacks(session, mode, state)? } else { Vec::new() };
     let mut terrain: Vec<native::TerrainResolution> = Vec::new();
     let mut steps: Vec<native::Resolution> = Vec::new();
     let mut births: Vec<native::BirthResolution> = Vec::new();
     let limit = session.sim.genesis().rules.limits.events_per_advance;
     loop {
-        match session.prepare_birth_spatial(1, &terrain, &steps, &arrivals, &births)? {
+        match session.prepare_round_spatial(1, &terrain, &steps, &arrivals, &births, &handbacks)? {
             native::Preparation::Terrain(pending) => {
                 finite(&terrain, &steps, &arrivals, limit)?;
                 if terrain.iter().any(|r| r.request.action == pending.request.action) {
@@ -64,6 +65,7 @@ fn advance_inner(session: &mut Session, mode: &mut ModeState, actions: &mut Acti
             native::Preparation::Ready(prepared) => {
                 let accepted = prepared.steps.clone(); let reports = prepared.arrivals.clone();
                 let born = prepared.births.clone(); let order = prepared.order.clone();
+                let handback_reports = prepared.handbacks.clone();
                 let out = prepared.publish(session)?;
                 let entry = session.entries.last().ok_or("native spatial entry is absent")?.clone();
                 let mut changes = arrival::publish(mode, state, &arrivals, &reports)?;
@@ -74,12 +76,31 @@ fn advance_inner(session: &mut Session, mode: &mut ModeState, actions: &mut Acti
                 let (refresh_entries, refreshed) = publication::refresh_inner(session, mode, state, actions)?;
                 changes.extend(refreshed);
                 state.records.push(Record { entry: entry.id, outcome: entry.outcome, before_entries, terrain, steps,
-                    arrivals, births, arrival_reports: reports, birth_reports: born, order, changes, refresh_entries });
+                    arrivals, births, arrival_reports: reports, birth_reports: born, order, changes, refresh_entries,
+                    handbacks, handback_reports });
                 state.validate(mode)?; state.validate_native(session)?;
                 return Ok(format!("native spatial advanced to {}: {:?}", out.tick, out.result));
             },
         }
     }
+}
+
+/// Each bound subject's pose handed back for the minute, at cell grain.
+fn handbacks(session: &Session, mode: &ModeState, state: &State) -> Result<Vec<native::Handback>, String> {
+    let t = session.sim.genesis().rules.spatial_templates.as_ref().ok_or("rounds need templates")?;
+    let mut out = Vec::new();
+    for b in &mode.bindings {
+        let Some(physical) = state.physical.get(&b.subject) else { continue };
+        let Some(e) = session.sim.state().population.get(b.entity).filter(|e| e.alive && e.body.is_some()) else { continue };
+        let volume = session.sim.volume(b.site, b.window.min, b.window.max, b.window.depth)?;
+        let at = crate::walking::to_site(&volume, b.pose.cell().map_err(|e| format!("Eponym handback pose: {e:?}"))?);
+        out.push(native::Handback { actor: b.entity, site: b.site, body_revision: e.body_revision,
+            terrain_revision: session.sim.terrain_revision(), contacts: Vec::new(),
+            geometry: native::ArrivalGeometry { window: t.window.clone(), places: t.places,
+                pose: native::Pose { at, yaw: physical.yaw, feet: Default::default() },
+                eye: std::array::from_fn(|k| at[k] + t.eye[k]) } });
+    }
+    Ok(out)
 }
 
 fn finite(terrain: &[native::TerrainResolution], steps: &[native::Resolution], arrivals: &[native::ArrivalResolution],

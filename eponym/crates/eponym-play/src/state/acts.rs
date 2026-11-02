@@ -334,6 +334,7 @@ impl GameState {
                 }]
             },
             GameIntent::AdvanceMotion { .. }
+            | GameIntent::Minute { .. }
             | GameIntent::ResolveVolley { .. }
             | GameIntent::ExternalVolley { .. }
             | GameIntent::ProjectAct { .. }

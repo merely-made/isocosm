@@ -172,37 +172,47 @@ fn network(subject: SubjectId) -> FunctionalNetwork {
 }
 
 pub fn timed_action_world() -> Fixture {
-    build_timed_action_world(crate::MotionSolver::STILL, None)
+    build_timed_action_world(crate::MotionSolver::STILL, None, false)
 }
 
 /// The same world, its motion solved by `solver`; the plain fixture admits
 /// motion steps without moving, the sim linking no solver (ruling 597).
 pub fn timed_action_world_solving(solver: crate::MotionSolver) -> Fixture {
-    build_timed_action_world(solver, None)
+    build_timed_action_world(solver, None, false)
 }
 
 /// Opt-in variant for native external-volley tests. The default fixture stays
 /// exactly two bodies so its occlusion and severance controls remain stable.
 pub fn timed_action_world_solving_with_practice_striker(solver: crate::MotionSolver) -> Fixture {
-    build_timed_action_world(solver, Some(false))
+    build_timed_action_world(solver, Some(false), false)
 }
 
 pub fn timed_action_world_with_practice_striker() -> Fixture {
-    build_timed_action_world(crate::MotionSolver::STILL, Some(false))
+    build_timed_action_world(crate::MotionSolver::STILL, Some(false), false)
 }
 
 /// Opt-in practice actor founded at the non-played target for world-harm
 /// tests; ordinary shared fixture geometry remains unchanged.
 pub fn timed_action_world_with_practice_striker_at_target() -> Fixture {
-    build_timed_action_world(crate::MotionSolver::STILL, Some(true))
+    build_timed_action_world(crate::MotionSolver::STILL, Some(true), false)
+}
+
+/// The same world played in rounds (case 1102): the sim ticks only at a
+/// minute intent, and poses are handed back there.
+pub fn timed_action_world_in_rounds() -> Fixture {
+    build_timed_action_world(crate::MotionSolver::STILL, None, true)
 }
 
 fn build_timed_action_world(
     solver: crate::MotionSolver,
     practice_at_target: Option<bool>,
+    rounds: bool,
 ) -> Fixture {
     let keeper = three_lives::KEEPER;
     let mut world = World::generate(7, WorldConfig::default()).unwrap();
+    if rounds {
+        world = world.in_rounds().expect("a fresh world takes the rounds marker");
+    }
     // Keep the native bodies apart on a level practice lane. The generated
     // dressing starts on a hill; widening the old spacing otherwise puts the
     // target three cells below a horizontal strike. Author the actual Ground

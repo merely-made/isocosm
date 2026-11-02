@@ -12419,6 +12419,59 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area World generation · draws on 1090, world.8 · summary Every generated world founds each lineage with at least six; pinned fixtures are re-recorded.
 
+1107. **Between minutes, a borrowed action is checked against the game's
+      own patch.** Ruled by Mark on 2026-11-02: "Check against the game
+      (Recommended)". Every borrowed Eponym action first required the sim's
+      patch to equal the binding's (`contract/mode/binding.rs:9`), so with
+      per-step patches stopped (1095) a body that crossed into another patch
+      mid-minute would fail until the minute's handback. The reading: in a
+      round the check accepts any sim patch at the binding's site and checks
+      the feet against the binding's own patch; acts reading the sim's patch
+      see it as of the last minute.
+
+      Links: area Eponym · draws on 1095, 1080 · summary In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute.
+
+1108. **Eponym's borrowed mode is tested through real access.** Ruled by
+      Mark on 2026-11-02: "Real access and view", over a crate-internal
+      motion entry for fixtures (recommended). Nothing drove the borrowed
+      mode end to end, so case 1107's check was built but untested. The
+      reading: the harness builds a genuine `OrdinaryAccess` and awareness
+      `View` and submits motion through `actions::submit`, as play does.
+
+      Links: area Eponym · draws on 1107, 1095, method.4 · summary Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does.
+
+1109. **The year-matrix runs on a laid map.** Ruled by Mark on 2026-11-02:
+      "Run on a laid map (Recommended)". Its four sites had no laid terrain,
+      so case 1103's reading fell back to a strength of 100. The reading: the
+      matrix runs on a laid two-by-two grid map, exercising the terrain
+      reading; map-less worlds keep 100.
+
+      Links: area Ecology · draws on 1103, 1078 · summary The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100.
+
+1110. **A part is exposed to a bite by its cells' position.** Ruled by Mark
+      on 2026-11-02: "Its cells' position (Recommended)", over a role tag or
+      a reserve part. A bite picked its part by holdings
+      (`anatomy::bitten`). The reading: a bite reaches parts above ground or
+      on the body's surface, read from geometry, so roots underground are out
+      of reach. With case 1105's bite scale settled by measurement: smaller
+      bites (1/20 of an adult) kept soil at 6,000 to 12,000 on seed 9, where
+      larger producers drained one site to 0.
+
+      Links: area Ecology · draws on 1105, 1078, bodies.5, bodies.12 · summary A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant.
+
+1111. **Crowding sends animals on, and scarcity slows breeding.** Ruled by
+      Mark on 2026-11-02. Asked what reins in consumers that grow up to five
+      times over a year while producers decline from month eight, he
+      answered "Crowding leads to migration? I guess that would require the
+      broader world, huh"; told that the matrix's four sites and their routes
+      already allow it, but that a world-wide overshoot needs breeding to
+      respond too: "Migration + breeding (Recommended)". The reading: a
+      consumer's sensed crowding (case 1071's senses) sends some adults
+      along routes to emptier sites, and its breeding slows when food is
+      scarce.
+
+      Links: area Ecology · draws on 1071, 1078, 1104, processes.16, bodies.15 · summary Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

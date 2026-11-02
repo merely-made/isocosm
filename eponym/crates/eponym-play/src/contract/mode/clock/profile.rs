@@ -159,11 +159,14 @@ impl State {
             }
             let command = Command::AdvanceBirthSpatial { ticks: 1, terrain: record.terrain.clone(),
                 steps: record.steps.clone(), arrivals: record.arrivals.clone(), births: record.births.clone(),
-                handbacks: Vec::new() };
+                handbacks: record.handbacks.clone() };
             let accepted: BTreeSet<_> = record.order.iter().filter_map(|p|
                 if let native::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
-            let outcome = format!("birth spatial advanced 1; answers {}", cosmograph::digest(&(
+            let mut outcome = format!("birth spatial advanced 1; answers {}", cosmograph::digest(&(
                 &record.arrival_reports, accepted, &record.birth_reports, &record.order)));
+            if !record.handback_reports.is_empty() {
+                outcome.push_str(&format!("; handbacks {}", cosmograph::digest(&record.handback_reports)));
+            }
             if entry.command != command || entry.outcome != record.outcome || entry.outcome != outcome {
                 return Err("clock saved answers differ from the accepted native entry".into());
             }

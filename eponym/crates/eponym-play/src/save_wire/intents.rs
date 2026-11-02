@@ -91,4 +91,5 @@ intents! {
     AuthoredSpread { tick:Tick, step:crate::AuthorSpreadStep },
     ExternalVolley { tick:Tick, actor:SubjectId, actor_revision:BodyRevisionId,
         target:SubjectId, strikes:Vec<crate::timed_action::StrikeReceipt>, rules:CombatRules },
+    Minute { tick:Tick },
 }
