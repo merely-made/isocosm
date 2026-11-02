@@ -5369,6 +5369,31 @@ summary = "The minute is everyone's background tick; individuals step at sixty a
 draws_on = ["978", "processes.1", "processes.7"]
 replaces = ["1070"]
 
+[cases."1073"]
+title = "A world's identity follows its rules' content, not their version"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Record and history"
+summary = "A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump."
+draws_on = ["1040", "1072", "schema.9"]
+
+[cases."1074"]
+title = "People are animals in the food web"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food."
+draws_on = ["1072", "ecology.4", "world.8"]
+
+[cases."1075"]
+title = "The time ladder is configurable spans now and aggregation later; one clock, detail by attention"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history."
+draws_on = ["1072", "processes.6", "processes.7", "record.7"]
+
+[cases."1076"]
+title = "A paced choice falls on each member's own tick"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

@@ -11939,6 +11939,52 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · replaces 1070 · draws on processes.1, processes.7, 978 · summary The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset.
 
+1073. **A world's identity follows its rules' content, not their version.**
+      Ruled by Mark on 2026-11-01, after the timescale lane found that the
+      state hash folds in a rules digest carrying a version tag, so a
+      format-only bump moves every hash and pin (Mark: "i'm ok with 1 but hm.
+      we probably need to change this limitation, no?", then "Hash the rules'
+      content, not version"). The reading: the rules digest in a world's
+      identity covers the rules' content, so a bump that changes no meaning
+      moves no hash; life history in world time enters as a save-format bump
+      (v4 to v5), older saves replaying under the meaning they were made with.
+
+      Links: area Record and history · draws on 1040, 1072, schema.9 · summary A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump.
+
+1074. **People are animals in the food web.** Ruled by Mark on 2026-11-01,
+      after a people preset kept everyone from ageing out but let all starve
+      (Mark: "people (meaning humans?) are animals, and omnivores i guess. how
+      are the omnivore creatures doing?", then "People in the food web
+      now"). The reading: people are a consumer lineage in the ecology's food
+      web, omnivores, their metabolism (upkeep, meals) in world time, founded
+      with enough food to live; tuned from there.
+
+      Links: area Ecology · draws on 1072, ecology.4, world.8 · summary People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food.
+
+1075. **The time ladder is configurable spans now and aggregation later;
+      one clock, detail by attention.** Ruled by Mark on 2026-11-01 ("wait,
+      could we do 3 and 2? arbitrarily configurable spans per tick or
+      aggregating every rung once e7/e8 land?", then "Yes"), after asking:
+      "is there no unification? what do rts games... sim games... strategy
+      games... like, what do they do to manage the progression of a sim world
+      at different rates?" The reading: the wait ladder is spans of any
+      length, stepped tick by tick now and aggregated rung by rung once the
+      sim execution plan's E7 and E8 land; the unification is the one the
+      doctrine already holds, a single clock (Processes 7) with detail by
+      attention (Processes 6) and deep time as the history mode (Record 7),
+      so a rung is how coarse a step the unwatched aggregate takes.
+
+      Links: area Processes and rules · draws on 1072, processes.6, processes.7, record.7 · summary The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history.
+
+1076. **A paced choice falls on each member's own tick.** Ruled by Mark on
+      2026-11-01 ("Pace by each member's own identity"), after A1's saves
+      were found to diverge between individual and grouped execution: a
+      cohort decided on its first member's tick (introduced by D41). The
+      reading: a grouped cohort on a paced tick evaluates only the members
+      whose own identity is due, so execution mode never changes a choice.
+
+      Links: area Processes and rules · draws on processes.7, D15, D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
