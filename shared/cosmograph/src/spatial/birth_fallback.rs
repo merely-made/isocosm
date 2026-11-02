@@ -32,6 +32,7 @@ impl Session {
         -> Result<(SpatialAdvance, Vec<BirthResolution>)> {
         let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
+            handbacks: Vec::new(),
         };
         let (attempt, automatic) = self.stage_spatial_with(command, Some(fallback))?;
         let out = match attempt {

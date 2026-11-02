@@ -195,8 +195,8 @@ impl Session {
             Command::AdvanceGeometry { ticks, resolutions } => self.advance_geometry(*ticks, resolutions),
             Command::AdvanceSpatial { ticks, terrain, steps, arrivals } =>
                 self.advance_spatial(*ticks, terrain, steps, arrivals),
-            Command::AdvanceBirthSpatial { ticks, terrain, steps, arrivals, births } =>
-                self.advance_birth_spatial(*ticks, terrain, steps, arrivals, births),
+            Command::AdvanceBirthSpatial { ticks, terrain, steps, arrivals, births, handbacks } =>
+                self.advance_birth_spatial(*ticks, terrain, steps, arrivals, births, handbacks),
             Command::BirthSpatial { command, births } => self.birth_spatial(command, births),
             _ => run(&mut self.sim, command),
         }

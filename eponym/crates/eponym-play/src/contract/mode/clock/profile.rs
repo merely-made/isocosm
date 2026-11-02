@@ -158,7 +158,8 @@ impl State {
                 before = Some(at);
             }
             let command = Command::AdvanceBirthSpatial { ticks: 1, terrain: record.terrain.clone(),
-                steps: record.steps.clone(), arrivals: record.arrivals.clone(), births: record.births.clone() };
+                steps: record.steps.clone(), arrivals: record.arrivals.clone(), births: record.births.clone(),
+                handbacks: Vec::new() };
             let accepted: BTreeSet<_> = record.order.iter().filter_map(|p|
                 if let native::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
             let outcome = format!("birth spatial advanced 1; answers {}", cosmograph::digest(&(

@@ -22,6 +22,39 @@ impl Simulation {
         w.is_empty() || w.foreground(id, 1) || w.buffered(self.state.tick).contains(&id)
     }
 
+    /// The bodies a participant's round steps in the foreground (cases
+    /// 1080, 1082): the frame tier's set for that participant, its played
+    /// bodies and the near members posed in its camera frames, played first,
+    /// then nearest a frame's centre, then by identity, cut at the world's
+    /// cap. Computed from the world as it stands; nothing is stored.
+    pub fn foreground(&self, participant: Id) -> Vec<Id> {
+        let played: BTreeSet<Id> = self.played(participant).into_iter().collect();
+        let frames = self.state.attention.frames_of(participant);
+        let centre = |r: &Region| match r {
+            Region::Frame { site, min, max } => Some((*site, [(min[0] + max[0]) / 2, (min[1] + max[1]) / 2])),
+            _ => None,
+        };
+        let centres: Vec<(Id, [i64; 2])> = frames.iter().filter_map(centre).collect();
+        let mut chosen: Vec<(bool, u64, Id)> = Vec::new();
+        for (&id, r) in &self.state.spatial_poses {
+            let Some(e) = self.state.population.get(id) else { continue };
+            if !e.alive || e.resident_site() != Some(r.site) || !self.near(id) {
+                continue;
+            }
+            let framed = frames.iter().any(|f| f.frames(r.site, r.pose.at));
+            if !played.contains(&id) && !framed {
+                continue;
+            }
+            let distance = centres.iter().filter(|(site, _)| *site == r.site)
+                .map(|(_, c)| r.pose.at[0].abs_diff(c[0]).max(r.pose.at[2].abs_diff(c[1])))
+                .min().unwrap_or(u64::MAX);
+            chosen.push((!played.contains(&id), distance, id));
+        }
+        chosen.sort();
+        let cap = self.genesis.rules.limits.foreground() as usize;
+        chosen.into_iter().take(cap).map(|(_, _, id)| id).collect()
+    }
+
     /// Unplaces every posed member that is neither near nor buffered.
     /// Whether this advance may move members on or off the physical path:
     /// any but an older spatial command, whose record publishes no tier.
