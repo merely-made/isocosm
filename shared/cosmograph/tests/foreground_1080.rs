@@ -109,7 +109,12 @@ fn a_refused_handback_leaves_the_source_unchanged_and_is_recorded() {
     let mut stale = moved(&s, critter);
     stale.body_revision += 1;
     let mut far = moved(&s, critter);
-    let food = s.sim.state().spatial_poses.keys().copied().find(|id| *id != critter).unwrap();
+    // The farthest other body posed at the critter's site.
+    let site = s.sim.state().spatial_poses[&critter].site;
+    let at = far.geometry.pose.at;
+    let food = s.sim.state().spatial_poses.iter().filter(|(id, r)| **id != critter && r.site == site)
+        .max_by_key(|(_, r)| r.pose.at[0].abs_diff(at[0]).max(r.pose.at[2].abs_diff(at[2])))
+        .map(|(id, _)| *id).expect("another body at the site");
     far.contacts = vec![food];
     let mut plain = s.clone();
     minute(&mut plain, &[]);
