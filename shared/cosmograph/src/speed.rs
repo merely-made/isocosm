@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! A body's walking speed (doctrine Bodies 16; cases 1085, 1087, 1095).
+//! A body's walking speed (doctrine Bodies 16; cases 1085, 1087, 1112).
 //! Animals of every size walk near one Froude number, so speed goes as the
 //! square root of leg length: a world's baseline is the speed of a body whose
 //! leg is the world's reference, and any other leg scales it by the root of

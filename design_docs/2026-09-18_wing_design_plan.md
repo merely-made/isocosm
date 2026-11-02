@@ -12472,6 +12472,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1071, 1078, 1104, processes.16, bodies.15 · summary Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce.
 
+1112. **Speed is relative Froude: a world's baseline times the root of leg
+      over its reference leg.** Ruled by Mark on 2026-11-02: "Relative
+      Froude (Recommended)", on how case 1085's size and case 1087's Froude
+      factor combine. Options were relative Froude, absolute Froude from a
+      metric cell scale and g, and size times leg proportion. The reading: a
+      legged body's speed is the world's baseline, the speed of a body whose
+      leg is the world's reference, times the square root of its own leg
+      over that reference; size enters only through leg length. Legless
+      bodies move a world rate in body lengths per world second. Joint swing
+      caps stride once case 1088's ranges exist. New foundings set the
+      baseline from their stated cell size, a one-cell leg walking at Froude
+      0.25 under Earth's gravity (about 49.5 cells a second at a millimetre
+      cell).
+
+      Links: area Bodies and anatomy · draws on 1085, 1087, 1088 · summary Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
