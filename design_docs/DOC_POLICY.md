@@ -201,13 +201,14 @@ became core on 2026-10-22. What is local:
   `design_docs/2026-09-18_wing_design_plan.md`, named in
   `design_docs/decisions_config.toml`. Its cases are the wing's, numbered
   across all three products; `case_register.md` is generated beside it.
-- **The decisions tool** is eidetic's `responsa`, run here through
-  `shared/responsa`, a runner on this repository's eidetic pin:
-  `regen [--stage]`,
+- **The decisions tool** is eidetic's `responsa`, installed by tag (`cargo
+  install --locked --git https://github.com/merely-made/eidetic --tag
+  responsa-v0.0.2 responsa`, since 2026-11-01; eidetic's line-ceiling plan
+  D11): `regen [--stage]`,
   `check`, `lookup <case | plan D-key | plan keyword | statement |
   other-repository key | path>`, `lookup --area <name>` and
   `lookup --history <key>` (the commits that touched a decision's links).
-  The pre-commit hook runs it; after a merge that touched the generated
+  The prek pre-commit hook runs `regen --stage`; after a merge that touched the generated
   files, run `responsa regen --stage`. Its journal is an impresa
   journal rebuilt from git history.
 - **Consolidation** (core §11, rule 5): governed code is read from
