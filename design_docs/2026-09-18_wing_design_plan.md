@@ -12607,6 +12607,31 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1080, 1112, 1085 · summary A handback is refused beyond a tick's walk across the ground plus a cell; no version gate.
 
+1124. **A wound after a minute is fixed in the game, not worked around.**
+      Ruled by Mark on 2026-11-02: "Fix the revision bug (Recommended)". The
+      client's injury, applied after any minute intent, was refused with
+      `StaleRevision { known: 1, current: 0 }`, on the round and the
+      non-round fixtures alike, so an existing harm and revision interaction
+      that rounds expose. The reading: find why a minute leaves the anatomy
+      revision behind what harm expects and fix it, with a wound-after-a-
+      minute test in both fixtures.
+
+      Links: area Eponym · draws on 1120, bodies.12 · summary A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds.
+
+1125. **The client gets round speed keys now.** Ruled by Mark on 2026-11-02:
+      "Add speed keys now (Recommended)". The reading: keys and a panel
+      readout for 1x, 2x, 4x and 8x through the pacer (case 1080).
+
+      Links: area Eponym · draws on 1080, 1122 · summary The standalone client gets 1x, 2x, 4x and 8x keys and a readout.
+
+1126. **A world that cannot take rounds is refused with a hint.** Ruled by
+      Mark on 2026-11-02: "Refuse with the hint (Recommended)", on the lane's
+      own call. An authored material world that cannot take the rounds
+      marker is refused, with a hint to set `EPONYM_ROUNDS=0`, rather than
+      played without rounds.
+
+      Links: area Eponym · draws on 1122, 1102, method.8 · summary An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

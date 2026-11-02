@@ -799,6 +799,9 @@ three design docs that cite it. The record holds the words.
 | 1120 | Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay. | none |
 | 1121 | The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted. | none |
 | 1122 | New standalone worlds are founded in rounds by default; a setting turns it off. | none |
+| 1124 | A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds. | none |
+| 1125 | The standalone client gets 1x, 2x, 4x and 8x keys and a readout. | none |
+| 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
 
 ## The VTT
 

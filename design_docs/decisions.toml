@@ -5727,6 +5727,27 @@ area = "Processes and rules"
 summary = "A handback is refused beyond a tick's walk across the ground plus a cell; no version gate."
 draws_on = ["1080", "1085", "1112"]
 
+[cases."1124"]
+title = "A wound after a minute is fixed in the game, not worked around"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds."
+draws_on = ["1120", "bodies.12"]
+
+[cases."1125"]
+title = "The client gets round speed keys now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The standalone client gets 1x, 2x, 4x and 8x keys and a readout."
+draws_on = ["1080", "1122"]
+
+[cases."1126"]
+title = "A world that cannot take rounds is refused with a hint"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds."
+draws_on = ["1102", "1122", "method.8"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
