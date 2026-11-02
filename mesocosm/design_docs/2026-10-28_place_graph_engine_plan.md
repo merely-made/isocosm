@@ -1,7 +1,7 @@
 # The place graph and its world store
 
 **Status:** 2026-10-30: cut on 2026-10-28 from `2026-08-05_place_graph_engine_plan.md` and `2026-08-14_resident_views_composition_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. SP1 to SP5 are built: the site map and skeleton in `shared/cosmograph/src/map/`, the lift, edits and places over `Ground` in `shared/isometer/crates/isometer-space/`. Open: their re-certification (the lift's bytes moved when cliffs were drawn), SP6 (nisus under `Ground`, waiting on mere's T2), SP8 (the region), the resident-surface obligations, passage survival at coarse levels, the VRAM residency policy, the standing field-admission gate and PG7 (Places from the column rule and its exceptions, the cost `sim-execution` D30 names).
+`archive_docs/2026-10-28/`. SP1 to SP5 are built: the site map and skeleton in `shared/cosmograph/src/map/`, the lift, edits and places over `Ground` in `shared/isometer/crates/isometer-space/`. Open: their re-certification (the lift's bytes moved when cliffs were drawn), SP6 (nisus under `Ground`, waiting on mere's T2), SP8 (the region), the resident-surface obligations, passage survival at coarse levels, the VRAM residency policy, the standing field-admission gate. PG7 (Places from the column rule and its exceptions) is built: `Places::derive` reads columns (`isometer-space/src/places/columns/`).
 
 **For:** the spatial spine from world map to voxels and the resident planes the products draw from it: the lift at power-of-two cell sizes, edits as asserted facts, places and passages derived from the volume, `Ground` and its move to nisus, the region, and what a field must declare before it becomes a resident plane. Phases keep their SP labels; new ones are PG.
 
@@ -119,4 +119,5 @@ Before any product field enters `ResidentChunk`, its card names authority class,
 
 ## Progress
 - 2026-10-30: PG7 added, the Places cost `sim-execution` D30 named.
+- 2026-11-01: PG7 built. `Places::derive` reads each column once as runs (the rule's layers with the edits laid over them, `Volume::column`); rooms and water are runs joined across their sides, patches walk a stance graph with the same necks, cap and passages. The cell-by-cell derivation stays as the test reference (`Places::by_cells`) and serves `rederive`. Its tests (`places/columns/tests.rs`) hold the done-condition: equal on seeded edit sequences under both covers, with necks and a cutting cap, over paged and realized volumes; a shell of fills walls in a room that a control without seeds beside solid exceptions misses; a window without edits derives without realizing a volume. On a played world (one seed, 20 ticks) the state hash is unchanged and a 256-square window derives in about 0.14 s where it took 0.71 s.
 - 2026-10-28: cut from `2026-08-05_place_graph_engine_plan.md` and `2026-08-14_resident_views_composition_plan.md`.
