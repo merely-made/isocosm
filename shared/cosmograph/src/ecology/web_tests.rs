@@ -534,3 +534,57 @@ fn loss_readout() {
         }
     }
 }
+
+/// A1's consumer rates rederived for a third kept of each bite. A grazer
+/// breeding at A1's pace (a child of 8 every 14 ticks, upkeep 1 every 10)
+/// needs about 0.67 a tick of body, so 2 a tick eaten: meals of 6 every 3
+/// ticks, 4 of them dung. Fed only while below 10, a grazer at rest eats
+/// 0.3 a tick and a producer grows 0.8, so a producer carries about 2.7
+/// grazers at rest and 0.4 breeding. A short bite still pays 4 to dung.
+fn third_kept(mut g: Genesis) -> Genesis {
+    for (_, feed) in feeds(&mut g) {
+        for e in &mut feed.effects {
+            if let Effect::Eat { amount, .. } = e {
+                *amount = Amount::Fixed(6);
+            }
+        }
+    }
+    sated(lossy(g, 4), 10)
+}
+
+/// The founding's consumers cut to every third cohort: producers outweigh
+/// what eats them about five times rather than a pyramid's 5 to 3.
+fn plants_first(mut g: Genesis) -> Genesis {
+    let consumers = of_kind(&g, "life:consumer");
+    let mut n = 0;
+    g.population.groups.retain(|_, c| {
+        if !consumers.contains(&c.entity.lineage) {
+            return true;
+        }
+        n += 1;
+        n % 3 == 1
+    });
+    g
+}
+
+/// The rederived rates, alone, on sessile producers carried by wind, with
+/// the refuge, and on a founding where producers outweigh consumers.
+/// `cargo test third_readout -- --ignored --nocapture`.
+#[test]
+#[ignore = "a readout, not a control"]
+fn third_readout() {
+    type Arm = fn(Genesis) -> Genesis;
+    let arms: [(&str, Arm); 5] = [
+        ("walking, third kept", third_kept),
+        ("sessile, wind 30, third kept", |g| third_kept(scattered(sessile(g), 30))),
+        ("sessile, refuge, wind 30, third kept", |g| third_kept(scattered(with_refuges(sessile(g), 4), 30))),
+        ("walking, plants first, third kept", |g| third_kept(plants_first(g))),
+        ("sessile, wind 30, plants first, third kept", |g| third_kept(plants_first(scattered(sessile(g), 30)))),
+    ];
+    for seed in [9, 3, 7] {
+        for (label, arm) in arms {
+            let g = arm(founding(seed, Web::Diets, 5).generate().unwrap());
+            census(g, Web::Diets, 5, &format!("seed {seed}, {label}"), 600);
+        }
+    }
+}
