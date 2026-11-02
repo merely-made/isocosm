@@ -5608,6 +5608,13 @@ area = "World generation"
 summary = "Every generated world founds each lineage with at least six; pinned fixtures are re-recorded."
 draws_on = ["1090", "world.8"]
 
+[cases."1107"]
+title = "Between minutes, a borrowed action is checked against the game's own patch"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute."
+draws_on = ["1080", "1095"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

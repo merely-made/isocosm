@@ -782,6 +782,7 @@ three design docs that cite it. The record holds the words.
 | 1100 | Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1101 | Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged. | none |
 | 1102 | A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged. | none |
+| 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | none |
 
 ## The VTT
 

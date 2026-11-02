@@ -12419,6 +12419,18 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area World generation · draws on 1090, world.8 · summary Every generated world founds each lineage with at least six; pinned fixtures are re-recorded.
 
+1107. **Between minutes, a borrowed action is checked against the game's
+      own patch.** Ruled by Mark on 2026-11-02: "Check against the game
+      (Recommended)". Every borrowed Eponym action first required the sim's
+      patch to equal the binding's (`contract/mode/binding.rs:9`), so with
+      per-step patches stopped (1095) a body that crossed into another patch
+      mid-minute would fail until the minute's handback. The reading: in a
+      round the check accepts any sim patch at the binding's site and checks
+      the feet against the binding's own patch; acts reading the sim's patch
+      see it as of the last minute.
+
+      Links: area Eponym · draws on 1095, 1080 · summary In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
