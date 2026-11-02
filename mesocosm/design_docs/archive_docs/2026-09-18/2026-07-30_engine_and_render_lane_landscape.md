@@ -2,7 +2,7 @@
 
 **Status: historical research, updated 2026-08-04.** Candidate labels in
 this document do not override the engine composition ruling in
-[2026-08-14_resident_views_composition_plan.md](../../2026-08-14_resident_views_composition_plan.md)
+[2026-08-14_resident_views_composition_plan.md](../2026-10-28/2026-08-14_resident_views_composition_plan.md)
 or its
 [2026-08-18 critical review](../../2026-08-18_engine_ecology_rulings_and_review.md).
 This document was rewritten after a
@@ -50,7 +50,7 @@ share a renderer — see §5 for what they *must* share.
 Working dimensionality. **The Mesocosm row was ruled 2026-08-05**: the pivot
 camera stands (worldgen x Barony, first person) and volumetric world truth
 is permitted; see the
-[place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md) §0.
+[place-graph engine plan](../2026-10-28/2026-08-05_place_graph_engine_plan.md) §0.
 Verticality is a *simulation affordance*: the third axis must be
 mechanically legible (wings escape, canopy holds resources, burrows hide),
 and 3D rendering is not the only projection that can make it so. The other
@@ -821,7 +821,7 @@ interchange semantics, and the baseline remains available on weaker adapters.
   was built for Minecraft-shaped worlds. (Narrowed 2026-08-05: volumetric world
   truth is now permitted and planned; the guard that stands is admission by
   trace, never by prior-art availability. See the
-  [place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md).)
+  [place-graph engine plan](../2026-10-28/2026-08-05_place_graph_engine_plan.md).)
 - Do not make Paredros inherit the lens if close-camera editing and destruction
   prove that meshes serve it better.
 - Do not migrate `mesocosm-core` into Bones because the concepts resemble one

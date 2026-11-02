@@ -1019,7 +1019,7 @@ build explicitly used `--target-dir ./target`.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the
 product bench W4 lifts out. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Owns:** how the three vessels present voxel worlds and bodies through the
@@ -1049,7 +1049,7 @@ execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan
 ## Rulings (Mark, 2026-09-11)
 
 1. **Paredros is orthographic.** A true isometric game. This closes the camera
-   question the [Paredros execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+   question the [Paredros execution plan](../../../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
    left open until the spatial laws could judge it, and it retires the
    Barony/Delver close-perspective reference lane. Camera is not person:
    Paredros stays second person in agency.
@@ -1257,7 +1257,7 @@ CSS Transforms Level 2: `matrix3d`, `translate3d`, `rotate3d`, `scale3d`,
 `rotate`, `scale` properties. Lowering projects each element to netrender's
 existing column-major 4x4 `Transform` and z-sorts within a 3D rendering
 context. Netrender's `Transform` was ready; Livery parsed none of these until
-genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum, now in the [retired banners](archive_docs/2026-10-18/2026-09-11_orthographic_voxel_presentation_plan_retired.md#status-banners)).
+genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum, now in the [retired banners](../2026-10-18/2026-09-11_orthographic_voxel_presentation_plan_retired.md#status-banners)).
 
 Founded in genet on 2026-09-12 as
 `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`
@@ -1279,7 +1279,7 @@ number for a body whose parts move every frame.
 
 ### L2. One appearance crate
 
-**Closed 2026-09-15** by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md)
+**Closed 2026-09-15** by the [isometer family plan](../2026-10-10/2026-09-14_isometer_family_plan.md)
 step 11: the merged crate is `isometer-mesh` at
 `shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
 document, greedy quads and projection beside isometry-voxel's recipes,
@@ -1649,7 +1649,7 @@ PNGs. A separate Section GPU test verifies tint changes, reset pixels, invalid
 input, unchanged geometry and preserved material facts.
 
 Compact receipts and source-blob identities are retained under
-`testing/bench/receipts/2026-09-13/`; full PNGs are under
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/`; full PNGs are under
 `Code/testing/specimen-bench/native-final/`. The source record identifies the
 actual executable, avoiding the older binary under `mesocosm/target`. Those
 captures use development path overrides, with source blobs recorded before
@@ -1726,7 +1726,7 @@ The previous 167-frame/15-capture bench acceptance also passes. Both Mesocosm's
 release and Isometry's separate root workspace all-features/all-targets checks
 pass. The native build uses the committed Git dependencies without sibling
 overrides. Compact receipts and source identities are under
-`testing/bench/receipts/2026-09-13/proportions/`; PNGs and saved comparison files
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/proportions/`; PNGs and saved comparison files
 remain under `Code/testing/specimen-proportions-2026-09-13/`.
 
 ### Generation wiring and gap filling (2026-09-13)
@@ -1791,7 +1791,7 @@ dependencies. An unrelated task held the shared Cargo cache lock, so the final
 frozen build used a separate offline lock directory over the already-present
 sources, with cache cleanup disabled. Source identities, native receipts and
 the one post-build formatting-only change are recorded under
-`testing/bench/receipts/2026-09-13/generation/`; images remain under
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/generation/`; images remain under
 `Code/testing/generation-wiring-2026-09-13/`.
 
 ### Composable anatomy (2026-09-13)
@@ -1834,7 +1834,7 @@ all-features/all-targets check pass. One host content-selection/roundtrip test
 also passes.
 
 Source identities and compact receipts are under
-`testing/bench/receipts/2026-09-13/structure/`; captures remain under
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/structure/`; captures remain under
 `Code/testing/structure-generation-2026-09-13/`. The capture review confirms
 distinct but blocky structures. This slice broadens combinations of existing
 parts; it does not yet expand the finite voxel shape bank or qualify population
@@ -1909,7 +1909,7 @@ workspace all-features/all-targets check, pass.
 Native review changed the initial stream from simultaneous clumped marks to
 staggered emissions with individual scripted arrival times. Saved requests and
 ticks reopen with `--effect-experiment FILE`. Compact receipts and source
-identities live at `testing/bench/receipts/2026-09-13/effects/`; images remain at
+identities live at `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/effects/`; images remain at
 `Code/testing/effects-2026-09-13/final/`.
 
 **Remaining scope:** the receiver is a material sample on a demonstration plane.
@@ -1970,7 +1970,7 @@ movements and 50 feeding events. Reset and a separate process reopening the
 saved specimen reproduce the hashes and activity. Restyling changes viewport
 pixels while preserving world state and activity; restoring styling restores
 the viewport. Playback, pause, hidden/planar transitions and reroll cancellation
-are exercised. See [receipts](../testing/bench/receipts/2026-09-13/world-trial/source.json).
+are exercised. See receipts (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/world-trial/source.json`).
 This closes the bounded Idle trial, not broader controlled intents, contact
 localization, material reactions, transparency, sound or integrated cost.
 Checkpoint stopping has a focused injected-state test; a natural checkpoint
@@ -2018,7 +2018,7 @@ Independent ray/AABB tests derive silhouettes and nearest depth from explicit
 voxel occupancy for all three families at two poses, including overlap. Their
 magnified framing is separate from the native fixed-camera coverage receipt.
 
-**Receipt:** [21 native configurations](../testing/bench/receipts/2026-09-13/population/matrix.json)
+**Receipt:** 21 native configurations (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/population/matrix.json`)
 cover 1/16/128/1000 bodies and independent design counts through 1000.
 All 4,746 frames' scenario runs pass; admitted runs submit all requested
 parts without clipping, cache eviction or warm mesh uploads. At 1000 bodies,
@@ -2049,7 +2049,7 @@ settings. Layer groups occupy distinct positions 40 units apart along the
 camera axis. Tight lateral packing is a renderer stress fixture, not admitted
 ecological placement. Volume-key grouping still determines GPU batching.
 
-[Twenty-three native cases](../testing/bench/receipts/2026-09-13/density/matrix.json)
+Twenty-three native cases (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/density/matrix.json`)
 pass the existing style/yaw/reset and warm-cache checks. Unclipped dense
 layouts cover 33-35% of the viewport; tightly cropped layouts cover 93-95%.
 The crop submits 960 bodies and reports 350-371 conservative bounds crossing
@@ -2084,10 +2084,10 @@ This closes the bounded dense/layered fixture receipt. Real generated anatomy
 through ecological projection, terrain and causal effects together, transparent
 compositing, full memory accounting and application working limits remain open.
 The raw capture/profile paths, source identities and repeat commands are in
-[the source receipt](../testing/bench/receipts/2026-09-13/density/source.json).
+the source receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/density/source.json`).
 
 **Integrated generated-world receipt (2026-09-13).** The existing Section path
-now has a [three-source native matrix](../testing/bench/receipts/2026-09-13/integrated-world/matrix.json):
+now has a three-source native matrix (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/integrated-world/matrix.json`):
 axial consumer, rooted producer, and size-2 cat-like consumer, reopened from
 retained requests, palettes and volume content. Each passes 391 frames, eight
 ordinary Idle steps, activity hiding/restoration, hidden-step reset/replay,
@@ -2122,10 +2122,10 @@ oracle remains open. Default window captures clip the lower viewport, so
 pixel checks cover its captured portion. Complete terrain accounting, larger
 ecological populations, transparency, uptake/contact effects and full memory
 remain next gates. Exact sources, executable identity, repeat command and
-measurement limits are in the [source receipt](../testing/bench/receipts/2026-09-13/integrated-world/source.json).
+measurement limits are in the source receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/integrated-world/source.json`).
 
 **Uptake and terrain accounting receipt (2026-09-13).** The next
-[three-world matrix](../testing/bench/receipts/2026-09-13/uptake-world/matrix.json)
+three-world matrix (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/uptake-world/matrix.json`)
 adds actual positive soil uptake from the runtime's accepted flow batch.
 Internal substance-to-reserve bookkeeping is excluded. Biographical activity
 JSON stays unchanged; `Trial::uptakes()` carries exact flow provenance with
@@ -2156,7 +2156,7 @@ map with zero upload bytes while still encoding a trace pass. A separate GPU
 test proves cold full upload, unchanged retention, carved-slot upload of exactly
 516 bytes per slot in its fixture, and no duplicate upload at the same revision.
 Seven runtime tests, this GPU test, 39 Section tests and the 190-frame lifecycle
-scenario pass. [Source identity and repeat commands](../testing/bench/receipts/2026-09-13/uptake-world/source.json)
+scenario pass. Source identity and repeat commands (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/uptake-world/source.json`)
 record the limits. General contact reactions, native carving intents, scaled
 ecological workloads and GPU timing remain open; uptake does not supply missing
 impact normals or material-contact facts.
@@ -2171,7 +2171,7 @@ trial limits/checkpoints refuse before queuing. Numeric overflow also refuses
 before queuing. Rejected attempts advance ecology, so rejection is not a promise
 of an unchanged world hash.
 
-The [three-world receipt](../testing/bench/receipts/2026-09-13/carving-world/matrix.json)
+The three-world receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/carving-world/matrix.json`)
 independently samples solids in each requested cube. Axial/roots/cat remove
 18/18/9 voxels, matching the accepted events, with 1032/1032/516 uploaded bytes
 and 4/4/2 pointer/atlas write calls. Targets offset +64 on X are actually rejected
@@ -2191,7 +2191,7 @@ Ten runtime tests and two presentation tests pass. Native checks pass three
 227-frame world traces, a 46-frame axial visibility case, the 449-frame uptake
 regression and the 189-frame playback lifecycle. All recorded viewports fit the
 capture at zoom 0.75; the trial height allowance includes the new controls.
-[Sources, verification script and commands](../testing/bench/receipts/2026-09-13/carving-world/source.json)
+Sources, verification script and commands (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/carving-world/source.json`)
 retain the evidence and view-dependent visibility limit. General contact/material
 reactions and larger ecological workloads remain separate next gates.
 
@@ -2252,7 +2252,7 @@ from Side and Oblique cameras over all covered pixels, including exposed
 edges; native controls change orbit pixels; reset reproduces exact pixels;
 camera changes preserve world identity; existing bench and planar scenarios
 still pass. Native scenario: `testing/bench/spatial.scenario`. Receipts:
-`testing/bench/receipts/2026-09-13/spatial/`.
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/spatial/`.
 
 ### Spatial coverage extension (2026-09-13)
 
@@ -2300,7 +2300,7 @@ Native receipt: the 24-combination matrix plus density, selected attachments,
 replay and isolation-refusal checks passed in 336 frames (32 captures). Original
 orbit controls passed in 207 frames, bench regression in 167, and planar effects
 in 125. Native images are under `Code/testing/spatial-coverage-2026-09-13/`;
-compact receipts are under `testing/bench/receipts/2026-09-13/spatial-coverage/`.
+compact receipts are under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/spatial-coverage/`.
 
 The complete effects system remains open: world collision and material/item
 responses, gameplay rule packs and guarantees, effect composition, transparent
@@ -2354,13 +2354,13 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 lanes edit mesocosm-genet.
 
 **Progress (2026-09-14):** steps 1 to 7 of the
-[extraction plan](archive_docs/2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
+[extraction plan](../2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
 with step 8, the Paredros retarget (e138186, by the Paredros session), and
 the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
-core types, owned by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md).
+core types, owned by the [isometer family plan](../2026-10-10/2026-09-14_isometer_family_plan.md).
 
 ### L10. The detail ladder (2026-10-01)
 
@@ -2369,7 +2369,7 @@ ruling numbers in this lane are the wing design record's (423 to 426, 432 to
 434). One detail ladder replaces the four near-to-far renderers the one-game
 assessment found: the isometer scene, the VTT's DOM board, the VTT atlas on
 sprigging's canvas and Mesocosm's minimap on the HUD lane
-([session notes, §9.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
+([session notes, §9.2](../2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
 It answers the hybrid switch policy among the open decisions below.
 
 **The rungs (423),** near to far, all in the one isometric camera (382, 387):
@@ -2518,7 +2518,7 @@ The VTT's overmap readings that camera draws are its overlay plan's V2
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's
-[standards-to-features ledger](../../../genet/design_docs/2026-09-07_standards_to_features_ledger.md),
+standards-to-features ledger (`genet/design_docs/2026-09-07_standards_to_features_ledger.md`),
 which is the authority on where Livery stands. The status column here is a
 file-mention count over the livery crates on 2026-09-11, a hint and not a
 conformance claim; the ledger's census numbers win.
@@ -2596,7 +2596,7 @@ consumer. That edit is genet's, in the same session the lane opens.
   the finest; live faces during rotation (ruling 6 above) stand. The ladder's
   five rungs (423), its terrain rings (425) and the open transition are in
   the record and the
-  [session notes' §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
+  [session notes' §10](../2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
   *2026-10-01:* the transition is ruled (426): seamless where the rungs share
   geometry, by ordered dither with hysteresis where they do not. Sprite to
   live parts is the seamless step, and it owes a measurement this plan's

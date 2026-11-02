@@ -109,3 +109,7 @@ in-app combat loop is unchanged.
 - 2026-07-17: Doc created from an audit of the geometry pins. Eight-way movement
   decided and landed. The seam itself is specified but unscheduled: it needs a
   product reason, and it should be built once for hex *and* pointcrawl together.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

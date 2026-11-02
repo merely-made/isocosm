@@ -12,7 +12,7 @@ The no-second-runtime gate still governs.
 
 **W1, 2026-09-18:** keep. Tier: stack, branching. Sovereignty over a shared
 carrier. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 ## 1. The debt

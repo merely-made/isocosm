@@ -60,7 +60,7 @@ for the move.
   1,000 draws, with 4b's two hunting checks passing again under 454 (186
   tests, clippy and rustfmt clean, `mesocosm-genet` checks). Findings
   records the extension list, the density and the cost; receipts under
-  `testing/bench/receipts/2026-10-01/isocosm/`.
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-10-01/isocosm/`.
 - 2026-10-01: rulings 451 to 456 carried into §9's checkpoint 6 brief and
   status as the checkpoint opened and its step 5 was assessed: the epoch
   rule and deep time (451, 452), the minimal body on the core part (453),
@@ -286,7 +286,7 @@ for the move.
   Mark; results land here when reviewed.
 - 2026-09-25: rulings 192 and 193: Isocosm absorbs `mesocosm-core` family
   by family, each moved file under the 600-line ceiling. The
-  [Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) orders the
+  [Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md) orders the
   families for W5; each lands under this plan's S1 and S2.
 - 2026-09-25: ruling 191 applied to §2.8's arc row: the VTT offers running
   arcs to the DM as suggested hooks.

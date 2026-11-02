@@ -4,7 +4,7 @@ On 2026-10-18 Mark made the old numbered rulings cases (precedent, numbered 1
 to 984 in the design record), kept new rule numbers for himself, and asked
 every active doc to lose its stacked status banners, old progress entries,
 stale counters and pasted copies. This file holds, verbatim, what left the live
-[campaign retirement plan](../../2026-10-15_campaign_retirement_plan.md): its
+[campaign retirement plan](../2026-10-28/2026-10-15_campaign_retirement_plan.md): its
 2026-10-17 status paragraph and the 2026-10-16 progress entry, which the
 2026-10-17 entry that closes R1 supersedes. Relative links in the moved text
 are kept as written, so they resolve from the live doc's folder, not from this

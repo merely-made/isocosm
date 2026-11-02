@@ -10,12 +10,12 @@ re-measured there before R1 is put again.
 
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Founds the lane the
-[glyph expression plan](../../2026-09-15_glyph_expression_plan.md)'s ruling 1 names,
+[glyph expression plan](../2026-10-28/2026-09-15_glyph_expression_plan.md)'s ruling 1 names,
 and answers its finding R2. Consumes the
 [traits brief](../../2026-08-29_traits_and_perception_brief.md)'s rarity ladder and
 §8 questions, the [ProcessDef plan](../2026-09-26/2026-08-01_processdef_plan.md)'s PD3 pack
 door, and the
-[functional generation plan](../../2026-09-09_functional_generation_plan.md)'s
+[functional generation plan](../2026-10-28/2026-09-09_functional_generation_plan.md)'s
 blueprints. Answers Mark's 2026-09-04 framing at the foot of the
 [trophic grammar plan](2026-09-04_trophic_grammar_plan.md) §4: "make beginning
 body types; start investigating a beginning set of traits."

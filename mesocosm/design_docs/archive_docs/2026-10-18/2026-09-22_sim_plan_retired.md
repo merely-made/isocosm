@@ -4,7 +4,7 @@
 kept as precedent and numbered 1 to 984 in the design record, with new rules
 numbered by him alone, and asked every active doc to lose its stacked status
 banners, old progress entries, stale counters and pasted copies. This file
-holds, verbatim, what left the live [sim plan](../../2026-09-22_sim_plan.md):
+holds, verbatim, what left the live [sim plan](../2026-10-28/2026-09-22_sim_plan.md):
 its stacked status banners and the progress entries that no longer describe
 open work (the newest, which do, stay). Case numbers in the moved text are the
 old ruling numbers, which the design record and its archive keep.
@@ -303,7 +303,7 @@ magic (§2.3, §2.7), parked with divinity and magic under ruling 279. Rulings
 381 and 382, one host with modes and a default view, sit above the sim and
 change nothing in this plan. Rulings 389 to 392 do: the spatial spine, which
 connects the world map's sites to the voxels under them, is planned in the
-rewritten [place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md)
+rewritten [place-graph engine plan](../2026-10-28/2026-08-05_place_graph_engine_plan.md)
 §A, and §2.2 gains the site's skeleton, the edge profile and the lift's
 owner. Its phases SP1 to SP5 run beside S2 without moving `mesocosm-core`'s
 places ahead of ruling 195 or touching mere ahead of ruling 363.
@@ -444,7 +444,7 @@ Checkpoint 9, systems, is ready to open.
   positives, the native all-target check and all nine consumer compilers
   passed. The complete reviews are in
   [lane queue Progress](2026-10-10_lane_queue_plan.md#progress) and the scope
-  is in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  is in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   The ongoing thousand-draw probe describes its frozen earlier build;
   current-main reproduction, full C10 and journey certification remain open.
 
@@ -458,7 +458,7 @@ Checkpoint 9, systems, is ready to open.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 
@@ -466,7 +466,7 @@ Checkpoint 9, systems, is ready to open.
   loss allocations become free-pool allocations during adapter transfer;
   lost IDs, existing keys and unknown old losses are preserved. The focused
   positives, two intended compiled controls and exact restoration are in
-  [CHECKPOINT_10.md](../../../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
+  CHECKPOINT_10.md (`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-10/isocosm/CHECKPOINT_10.md`).
   Ordinary HEAL draws, injury coverage and fresh full C10 remain open.
 
 - **2026-10-11, rulings 812 and 813:** an adapter's recorded losses keep
@@ -611,7 +611,7 @@ Landings only (ruling 613); the full log to 2026-10-06 is archived as
   fixtures predate authored Character, so arbitrary synthetic v2 Character
   archives and historical postcard decoding are not certified. Exact source,
   commands and the failed fixture attempt are recorded in
-  [Q2_NATIVE_METADATA.md](../../../testing/bench/receipts/2026-10-10/isocosm/Q2_NATIVE_METADATA.md).
+  Q2_NATIVE_METADATA.md (`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-10/isocosm/Q2_NATIVE_METADATA.md`).
   Consumer contract/replication and V2/E3 completion remain open.
 - 2026-10-09: checkpoint 9 unparked, certified and merged at `df6f0527` (Findings).
 - 2026-10-10, lane `lane-repro`: Q3's native account repairs and ruling
@@ -628,7 +628,7 @@ Landings only (ruling 613); the full log to 2026-10-06 is archived as
   crowd certified for part-bound processes on 1,000 draws, 4b's hunting checks
   passing again; 186 tests, clippy and rustfmt clean, `mesocosm-genet` checks
   (rulings 446, 451 to 456). Receipts under
-  `testing/bench/receipts/2026-10-01/isocosm/`.
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-10-01/isocosm/`.
 - 2026-10-01: the 2026-09-25 scale points remeasured on the current core
   (Findings).
 - 2026-09-27: checkpoint 5 integrated from `5ba6fae` (source `41d30b6`): 111

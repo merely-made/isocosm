@@ -487,3 +487,7 @@ composition again (fog + secrets + a check).
     genet `hover()` loop, a general capability for any hoverable widget). The
     overmap writes it to `UiState.overmap_hover`, which lifts the hovered node
     on the painted leaf and brightens its label.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

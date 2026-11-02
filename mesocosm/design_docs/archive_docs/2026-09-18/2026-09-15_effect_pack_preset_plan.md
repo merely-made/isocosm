@@ -6,7 +6,7 @@ committed. Implements gate **G3** of the
 ("admit a default effect pack and two contrasting journey rules through
 product adjudication") as one replayable specimen-bench preset, over the
 bench and trial the
-[presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md#bench-c-visible-disposable-world-trial)
+[presentation plan](../2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md#bench-c-visible-disposable-world-trial)
 already owns. Ruled by Mark, 2026-09-15.
 
 ## 0. The slice
@@ -558,7 +558,7 @@ the kernel-facing adapter, outside this slice. Flagged, not taken.
 9. `structure-cli` and `population` named as excluded, with their HEAD
    failure hashes, in every step's green claim.
 
-**Receipts**, under `testing/bench/receipts/2026-09-15/effect-pack/`.
+**Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/effect-pack/`.
 
 10. For one preset run: accepted events per kind, the grant list, the
     withheld-mark count, `trial-mark-budget-dropped == 0`, and the
@@ -604,7 +604,7 @@ experiencing the glyph is the main thing, that a glyph is *had* rather than
 performed, and that a critter's access is **embodied** — a trait or part bears
 it. That replaces the acquiring act with the **bearer** as the journey-rule
 axis, so **§3 in full and rulings 2, 5 and 6 above are superseded** by the
-[glyph expression plan](../../2026-09-15_glyph_expression_plan.md). The rest of this
+[glyph expression plan](../2026-10-28/2026-09-15_glyph_expression_plan.md). The rest of this
 plan — §§0-2 and 4-8, and rulings 1, 3, 4 and 7 — remains the record of steps 0
 to 3, which landed. The new plan says file by file what is kept, reworked or
 retired; nothing landed is discarded, and `Acquiring` becomes `Bearer`.
@@ -667,7 +667,7 @@ recorded in [2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_eva
 which takes W1's recommendations in full.
 
 **Why.** Tier: mixed. The plan is superseded on its own account by the
-[glyph expression plan](../../2026-09-15_glyph_expression_plan.md),
+[glyph expression plan](../2026-10-28/2026-09-15_glyph_expression_plan.md),
 which replaces its acquiring-act axis, and its done-condition is one
 fixture, which §6 does not allow as a done-condition.
 

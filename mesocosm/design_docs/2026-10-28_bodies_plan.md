@@ -237,6 +237,27 @@ critter can detect remote food (doctrine World 8). Today most do not
 - Rulings: `sim-execution` D46
 - From: the runtime triage's group 4 (2026-10-28)
 
+#### BO19. A prior reading per sense
+Case 1079 ("Yes, one prior reading per sense"): a member keeps one previous reading of each sense it has, so a gradient or a trend can be read, as a bacterium compares a concentration now with one a moment ago (chemotaxis). The sim's sense readings are per tick today, so this is one new value per member and sense, in the save.
+- Done when: a member with a sense holds its present and its prior reading, a seeded consumer that has only that sense climbs a gradient by comparing them, saves and replays from a draw alike, and a saved founding that does not name it replays unchanged (as with `Bodies::sensing`).
+- Needs: BO18 (`Bodies::sensing`, the baseline sense by form)
+- Rulings: 1079; doctrine Bodies 15
+- From: `design_docs/archive_docs/2026-11-02/2026-11-01_living_worlds_research.md` section B and section C, question 2.
+
+#### BO20. Use shapes a body's conducting network
+Case 1079 ("Yes, use shapes growth"): a system's conducting cells grow where flow runs and idle routes shrink (Physarum's rule), a development touching Bodies 6 and 10, the matter paid for along the route and returned when a route shrinks (doctrine Processes 15).
+- Done when: in a seeded draw a body's conducting cells widen where a process routes flow and an idle route narrows over the same run; every cell's matter is paid for or returned, so the account balances; a narrowed trunk shorts what lies beyond as Bodies 10 has it; and the run replays exactly.
+- Needs: -
+- Rulings: 1079; doctrine Bodies 6, Bodies 10
+- From: `design_docs/archive_docs/2026-11-02/2026-11-01_living_worlds_research.md` section B and section C, question 3.
+
+#### BO21. Slow signalling by form
+Case 1079 ("Yes, slow signalling by form"): a body without nerves joins its systems by a slower signal of its own form, electrical or chemical in plants and fungi, by degree and with a lag. The nervous system joins systems for a process where a sense reaches both (doctrine Bodies 10); this is its non-neural variant.
+- Done when: a plant or fungus body joins two systems where a sense reaches both through a signal that arrives after a lag set by its form and the distance, by degree; a nervous body's joining is unchanged; and without either, systems work alone as Bodies 10 says.
+- Needs: BO18; BO19 for a sense the lag is read against
+- Rulings: 1079; doctrine Bodies 10
+- From: `design_docs/archive_docs/2026-11-02/2026-11-01_living_worlds_research.md` section B and section C, question 4.
+
 ### Binding
 
 #### BO13. The body-binding module in conatus
@@ -323,6 +344,7 @@ One merged list; each names the phase that owns it.
 - 2026-10-28: the old body plan's receipt paths are Windows-style and unreachable on this machine.
 
 ## Progress
+- 2026-11-02: case 1079's follow-through placed (the living-worlds research brief, extracted before it is archived, DOC_POLICY section 8): BO19 to BO21 here, LW1 and LW2 in the sim plan. Mark: "Extract, then archive", then "Split: sim + bodies".
 - 2026-11-01: BO18 built as case 1071 (doctrine Bodies 15), behind `Bodies::sensing` (on for new foundings, off where a saved founding does not name it): animals touch at contact and smell within a radius each lineage draws in 4 to 16 cells (`bodied::embody`, `Rules::senses`), through air and water without a line of sight (`spatial/foraging/senses.rs` `Smell`); plants read light, soil and crowding at their site, and produce only while their shares cover one act (`ecology:produce-*` requires `Query::Sensed`); molds and microbes read their lineage's matter here against neighbouring sites, and a sensing territory's directed overflow goes down its gradient (`spread/direction.rs`); the world entity reads its site's births and deaths at the last tick (`senses.rs`, computed, nothing stored). No sense cell is added: of the 424 played fauna founders on `foraging_play`'s 18 seeds, all 424 smell and 60 carry sense tissue, as before. `foraging_play`'s ordinary A1 test passes; 1 of its 18 seeds walks (…882, at tick 1, food 2 cells away); 15 never place the critter and 2 have no edible food placed at its site. Still owed: a process that reads the world entity's sense; the independent spread crowd's reading of the gradient (it refuses a sensing world).
 - 2026-10-31: BO18 added (`sim-execution` D46).
 - 2026-10-28: cut from the body appearance, foot placement, senses and body binding plans.

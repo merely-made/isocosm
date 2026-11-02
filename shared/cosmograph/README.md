@@ -222,7 +222,7 @@ diversifies. The
 separates exact equivalence from possible approximate reductions.
 
 The first baseline, measured on 2026-09-25 in the receipts under
-`mesocosm/testing/bench/receipts/2026-09-25/isocosm/`, found time per tick
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-25/isocosm/`, found time per tick
 growing about with the square of the population at the largest sizes run,
 because every evaluation first totalled matter over the whole stored world and
 every accepted one cloned the whole simulation, reach field included. With
@@ -269,7 +269,7 @@ reduction's implementation and the instrument, not an approximation's error,
 and only for this one process.
 
 Under the fight in rounds and the mind (rulings 221 to 223 and 227), the check
-ran again on 2026-09-26, in `mesocosm/testing/bench/receipts/2026-09-26/isocosm/`.
+ran again on 2026-09-26, in `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-26/isocosm/`.
 With food contested (`probe.json`), all 30 readings were certified within
 their bounds, the largest distance 0.052 on an inspected member's strain, and
 no difference was detected. With water contested as well (`probe-water.json`,

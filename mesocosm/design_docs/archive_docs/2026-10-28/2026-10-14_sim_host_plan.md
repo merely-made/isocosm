@@ -255,7 +255,7 @@ for the VTT and later the other games, not evidence that all three have shipped
 peer play. It starts with an assessment, whose forks go to Mark before code:
 what Graphshell's network carrier (`graphshell_endpoint::network`)
 already carries for the endpoints; Stickleback's joined spaces, which the
-[Stickleback plan](../../design_docs/2026-08-08_stickleback_migration_plan.md)
+[Stickleback plan](../../../../design_docs/archive_docs/2026-10-28/2026-08-08_stickleback_migration_plan.md)
 adopts for campaign sync (K0 to K2); the stack's transport (murm,
 `mere-transport`); how much of `isonetry`'s replication core (protocol,
 host and client state machines, rolling log hash, iroh link) carries over;

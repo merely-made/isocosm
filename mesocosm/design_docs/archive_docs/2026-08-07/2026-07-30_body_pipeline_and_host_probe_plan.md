@@ -86,7 +86,7 @@ presentation from topology.
 
 The implemented `mesocosm.body/v0` is the smaller first proof: flattened
 voxels, cell attribution, flat provenance, species, mass, and collision hints.
-The [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md) owns
+The [wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md) owns
 the v1 artifact split and its acceptance receipts.
 
 ### Authoring input, canonical body document, and caches

@@ -13,12 +13,12 @@ around since 2026-07-07.
 **Related:**
 [next_horizons_landscape](2026-07-07_next_horizons_landscape.md) (this answers its
 open question B.4 and takes its lane 4, the schema/ABI widening),
-[shared_authority](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)
+[shared_authority](../2026-10-28/2026-07-09_shared_authority_and_collaborative_building_plan.md)
 (this supersedes that doc's "Next Game Slice" section: a game lane was living in a
 governance doc),
 [board_to_text_narration](2026-07-07_board_to_text_narration_plan.md) (narration is
 the third renderer of the event this plan defines),
-[environmental_surfaces](../../2026-07-08_environmental_surfaces_plan.md) (surfaces react
+[environmental_surfaces](../2026-10-28/2026-07-08_environmental_surfaces_plan.md) (surfaces react
 to the same resolved event),
 [campaign_packs](2026-07-08_campaign_packs_plan.md) (choreography ships as pack
 data).
@@ -525,3 +525,7 @@ disk, the knight still strikes, the goblin still falls, and the winner still che
   exchange animating (71 frames against the 1 a still board draws). 134 workspace
   tests green. Also fixed a real animation bug the spike had masked (finding 11) and
   closed the spawn-without-a-sheet gap (finding 12).
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

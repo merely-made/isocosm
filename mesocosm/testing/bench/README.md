@@ -50,7 +50,7 @@ one channel value. It performs no layout or shaping. External GPU texture
 references refuse replay: capturing the live Isometer producer remains a
 separate integration task. Export overhead is excluded from timing claims.
 
-The [2026-09-27 receipt](receipts/2026-09-27/paint-capture/source.json)
+The 2026-09-27 receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-27/paint-capture/source.json`)
 records a native 2464 by 1504 capture and an independent Classic replay with
 zero changed pixels: 221 commands, 73 text runs, 1,228 glyphs and three full
 font resources. Missing-font and existing-packet controls both reject. The
@@ -69,7 +69,7 @@ text rendering, live Isometer texture import or whole-loop performance.
 The core's own `cosmograph-scale` binary measures what it runs by size, outside
 this host: time per tick, evaluations, stored groups, history growth and heap,
 for both generator families and both execution modes, with fitted scaling
-curves. Its receipts are in `receipts/2026-09-25/isocosm/`: `scale.json`, its
+curves. Its receipts are in `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-25/isocosm/`: `scale.json`, its
 larger rungs in `scale-extension.json`, a living history in
 `scale-living.json`, and `analyze.py`, which rederives `analysis.json` from
 those three. `viability.json` and `ablation-matter.json` are diagnostics: which
@@ -90,7 +90,7 @@ their own `probe-source.json`. `verify.py` recomputes every distance and
 equivalence verdict from the raw per-draw readings, independently of the Rust
 check, and re-runs the difference tests with its own permutations.
 
-`receipts/2026-09-26/isocosm/` holds checkpoint 2 of the batch ruled 217 to
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-26/isocosm/` holds checkpoint 2 of the batch ruled 217 to
 240. `probe.json` is the certified check again, under the fight in rounds of
 rulings 221 to 223 and the mind of ruling 227. `probe-water.json` contests
 water as well as food, two competitions a tick settled at its end (rulings 236
@@ -150,7 +150,7 @@ than one draw in a hundred, and the controls' refusals carry no bound.
 `verify.py` applies the same rule and, where the worlds hunted, prints each
 arm's refusals beside its bound.
 
-`receipts/2026-09-27/isocosm/` holds checkpoint 5, Part B's steps 1 to 3:
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-27/isocosm/` holds checkpoint 5, Part B's steps 1 to 3:
 part shapes and the function catalogue, with the part a process binds
 (rulings 338 to 341 and 360); declared conversions, the diffusion kernel and
 the dev source (342 to 344, 357 and 358); and the flow record (345 and 359).
@@ -209,7 +209,7 @@ The scenario uses actual host pointer routing. Its pixel checks compare the
 viewport content independently of the controls, exclude the overlaid button,
 and use explicit fixture geometry for the authored transform. Full-resolution
 PNGs remain in the local capture directory; compact JSON is retained under
-`receipts/2026-09-13/`.
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/`.
 
 Source ownership, qualified acceptance and the remaining trial/cost work live
 in the [wing plan](../../design_docs/archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md#bench-b-one-interactive-genet-viewport).
@@ -257,7 +257,7 @@ size, native mass editing and export. Reopen a saved specimen with the same
 `generation-reopen.scenario` checks preserved size and return to the base;
 `generation-refusal.scenario` checks an unfundable request and save refusal.
 Compact native receipts and source identities are in
-`receipts/2026-09-13/generation/`. The starting anatomies are structural
+`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/generation/`. The starting anatomies are structural
 prototypes; finished species likeness and surface markings remain open.
 
 ## Compose anatomy
@@ -289,7 +289,7 @@ generation streams.
 stretches, length 3, consumer, against the independently observed bench hash.
 Both CLI generation and native loading select the rich bench palette for
 explicit structures; earlier CLI requests preserve their original palette.
-Compact receipts live in `receipts/2026-09-13/structure/`.
+Compact receipts live in `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/structure/`.
 
 ## Glyph effect experiment
 
@@ -396,8 +396,8 @@ refuses advanced snapshots, whose history and checkpoint must accompany them.
 The prior trial report's predation attribution is corrected from donor to eater;
 its regression test is `world::generation::trial::tests::predation_is_credited_to_eater_not_victim`.
 
-Native receipts and source identities: [world-trial receipt](receipts/2026-09-13/world-trial/source.json),
-[expression receipt](receipts/2026-09-15/expression/source.json).
+Native receipts and source identities: world-trial receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/world-trial/source.json`),
+expression receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/expression/source.json`).
 
 ## Population cost workload
 
@@ -429,7 +429,7 @@ Kinds are `appearance`, `assembly`, and `geometry`. Run:
 cargo run --release -p mesocosm-genet -- --population FILE --frames 1800 --scenario testing/bench/population.scenario --receipt OUTPUT.json --capture OUTPUT.png
 ```
 
-[The retained matrix](receipts/2026-09-13/population/matrix.json) includes actual
+The retained matrix (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/population/matrix.json`) includes actual
 counts, foreground coverage, first/steady CPU stage distributions and build-load
 snapshots. Raw frame profiles and PNGs remain in the recorded local artifact
 directory. The workload uses the body renderer directly, so its figures exclude
@@ -462,7 +462,7 @@ Cold setup, preparation and three warmups are outside steady distributions.
 This includes CPU and GPU completion; it is not GPU-only timing or native
 document/presentation cost.
 
-[Dense/layered receipts](receipts/2026-09-13/density/source.json) retain the 23
+Dense/layered receipts (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/density/source.json`) retain the 23
 inputs and both measurement paths. Native foreground reaches 93-95% in crop
 cases; explicit clipping counts accompany those figures. A four/eight-layer
 oracle verifies unchanged silhouette and doubled body intersections per ray.

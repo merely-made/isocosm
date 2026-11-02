@@ -24,7 +24,7 @@ the wing design record; see
 **Owns:** how Paredros presents one played session through genet and
 netrender, with movement, combat, equipment and inspection all reading the
 same `GameState`. This is the Paredros consumer of Mesocosm's
-[orthographic voxel presentation plan](../../../../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md)
+[orthographic voxel presentation plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md)
 rulings 2, 13, 14 and lane L7. It does not own the shared scene contract,
 the appearance crate (L2), ground tile layers (L4), or Livery's CSS work;
 those stay with Mesocosm and genet.
@@ -138,7 +138,7 @@ new renderling use.
 A `genet-probe` scenario under `eponym/testing/session/` that moves the
 played subject, charges and releases a strike, severs a part, and captures
 before and after. Receipts and captures follow Mesocosm's
-`testing/bench/receipts/<date>/` layout.
+`Code/testing/isocosm/mesocosm-bench-receipts/<date>/` layout.
 
 **Done when:** the scenario asserts a changed viewport region and changed
 sheet text after the volley, the world hash is unchanged by presentation
@@ -252,7 +252,7 @@ and the brick map for revision-driven rebuilds.
 ## Retiring the body sheet (2026-09-15)
 
 M5 of the
-[isomere plan](../../../../mesocosm/design_docs/2026-09-15_isomere_plan.md). This is
+[isomere plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-15_isomere_plan.md). This is
 the rationale the archive convention asks for. There is no home for retired
 *code* in this repository — `design_docs/archive_docs/<date>/` takes retired
 documents, and git history keeps everything else — so the body sheet is

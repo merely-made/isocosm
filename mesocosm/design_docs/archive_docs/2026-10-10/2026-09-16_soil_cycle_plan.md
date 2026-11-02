@@ -3,7 +3,7 @@
 **Superseded 2026-10-10; archived under wing design record rulings 793 and
 802.** S1 landed on `mesocosm-core`, which is deleted. Soil is keyed by
 isometer's columns (703) and rot is checkpoint 10's (718, its S4). M1 to M4
-are the [sim plan](../../2026-09-22_sim_plan.md)'s S10, SC1 to SC4, with §3a's
+are the [sim plan](../2026-10-28/2026-09-22_sim_plan.md)'s S10, SC1 to SC4, with §3a's
 audit and §3b's assessment as their evidence; S3, S5, S6 and S7 are listed
 there as carried and not phased. S2's near-against-far table was never run
 and its subject, legacy deep time, is gone.

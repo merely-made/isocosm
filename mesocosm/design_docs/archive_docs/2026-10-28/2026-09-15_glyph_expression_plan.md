@@ -26,7 +26,7 @@ remaining conditions; its archived plan and the deleted bench are history.
 
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Supersedes the acquiring-act axis of the
-[effect pack preset plan](archive_docs/2026-09-18/2026-09-15_effect_pack_preset_plan.md) §3 and its
+[effect pack preset plan](../2026-09-18/2026-09-15_effect_pack_preset_plan.md) §3 and its
 rulings 2, 5 and 6. That plan's shared declaration (`wing-glyphs/src/pack.rs`),
 `mesocosm-core`'s execution table, the bench's journey binding, the read-only
 invariant, the amount curve and the probe fields are kept and reworked here;
@@ -35,7 +35,7 @@ its steps 0 to 3 stay the record of what landed.
 **W1, 2026-09-18:** keep. Tier: mixed, sim canon and overlay embodiment.
 Canon and expression table are the sim's; the part-to-process binding is
 Mesocosm's. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 Implements the next move under the
@@ -555,7 +555,7 @@ pack plan made in choosing an axis unilaterally.
 9. `structure-cli` and `population` named as excluded, with their HEAD failure
    hashes, in every step's green claim.
 
-**Receipts**, under `testing/bench/receipts/2026-09-15/expression/`: for one
+**Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/expression/`: for one
 run, the expression table, the embodied glyph set per tick, the expressing part
 ids, the journey snapshot and `trial-mark-budget-dropped == 0`; a capture pair
 before and after a severing, same journey, different embodied set; and a capture
@@ -907,7 +907,7 @@ before quoting it in a green claim.
    unchanged after the bearing is lost; `spatial-coverage` keeps all 32
    viewports byte-identical; `structure-cli` and `population` are named as
    excluded with their HEAD failure hashes in every green claim.
-7. **Receipts**, under `testing/bench/receipts/2026-09-15/experience/`: the
+7. **Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/experience/`: the
    condition table for one run; per experienced glyph the encounter, deed and
    manner; the journey snapshot and its `motif()` groups; and the regenerated
    `testing/glyphs/journey.json` with both world hashes unmoved.
@@ -1125,7 +1125,7 @@ control that does not exist.
    heir to a line that lived through it. **Deep time belongs to the
    hagiograph**, ruled the history organ and kept in mere's eidetic core, not
    to isoscape. The
-   [isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) carries those
+   [isoscape family plan](../2026-10-10/2026-09-16_isoscape_family_plan.md) carries those
    rulings and the measurements.
 5. **The bench gains an advance-to-boundary control**, so a scenario reaches
    an epoch boundary in one action instead of waiting on Play.
@@ -1250,7 +1250,7 @@ Measured in the tree today; the rest are cited inline above.
   `trial-expressing-parts` empty, `trial-borne-by` becomes journeyed, the
   journey and grant count are byte-identical across the change, and the
   viewport changes; 167 frames, 8 captures, receipts under
-  `testing/bench/receipts/2026-09-15/expression/`. Deviation: the bench
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/expression/`. Deviation: the bench
   has no action that severs a part of the bound body, and a button
   calling the phenotype's sever directly would change a body with no
   `Event::Severed` behind it, so the scenario uses death, which empties

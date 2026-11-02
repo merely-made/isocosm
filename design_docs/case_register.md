@@ -20,7 +20,7 @@ three design docs that cite it. The record holds the words.
 | 50 | A tenet is the relation that a process yields an effect, with an opinion of that and the trust people place in it. | none |
 | 51 | Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79) | none |
 | 56 | Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity. | none |
-| 62 | Significant dead go to the planes after life, and summoning them back is a possible, costly act. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 62 | Significant dead go to the planes after life, and summoning them back is a possible, costly act. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 64 | A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 67 | Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 68 | A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive. | none |
@@ -53,7 +53,7 @@ three design docs that cite it. The record holds the words.
 | 420 | The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells. | none |
 | 421 | A world takes the large preset, 256 base units, by default when its founder picks none. | none |
 | 422 | An entity names its site until its game places it, then its patch or room; places are the finest location the sim holds. | none |
-| 538 | Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 538 | Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 608 | Version-1 saves are verified with their SHA-256 hash as a v1 reader only; saving again writes v2 with the FNV witness. | none |
 | 634 | A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string. | none |
 | 641 | A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints. | none |
@@ -72,7 +72,7 @@ three design docs that cite it. The record holds the words.
 | 989 | Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time. | [DOC README](DOC_README.md) |
 | 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [DOC README](DOC_README.md) |
 | 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [DOC README](DOC_README.md) |
-| 1014 | A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1014 | A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1024 | "Any group decision-making" covers faction and polity; a constitution makes a faction a polity. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Processes and rules
@@ -84,23 +84,23 @@ three design docs that cite it. The record holds the words.
 | 10 | Processes are choices under scarcity, plus agentless field processes and rung transitions as two further shapes; games add handles and verbs on the sim's verbs. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 14 | A graph derived from the bricks, at the rung above them, drives processes; derived candidate locations are asserted when persisted. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 28 | Water is salva; nondeterministic water is legitimate when a field directs it, since outcomes read the field, not particles. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
-| 32 | The sim's process definition is founded from Paredros's world-conditions schema with its stop rule lifted and Law A record fields added. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
+| 32 | The sim's process definition is founded from Paredros's world-conditions schema with its stop rule lifted and Law A record fields added. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 53 | Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions. | none |
 | 54 | A critter has habitats, habits and memories but no home it owns; being named lets a sapient assert a home one-sidedly. | none |
-| 63 | A faction acts by consent, peer to peer; a polity adds a constitution; all governance forms are considered and ranked by alignment. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
+| 63 | A faction acts by consent, peer to peer; a polity adds a constitution; all governance forms are considered and ranked by alignment. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 65 | A polity without support does nothing and dies only when people agree it has. (amended by 136) | none |
 | 66 | Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction. | none |
 | 75 | Background and foreground agree; the background is cheaper by aggregation; transition losses preserve similitude; things of no note are fungible behind a configurable buffer. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 84 | Information spread is to be modelled cheaply and distributionally, with how a person learned a thing resolved on demand. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 84 | Information spread is to be modelled cheaply and distributionally, with how a person learned a thing resolved on demand. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 86 | Agrees five points on how knowledge resolves, listed elsewhere in the record. | none |
 | 87 | A secret is valuable leverage kept by a taboo; telling it turns on relation, opinion, goals and perhaps personality. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 93 | Deep time is the same sim, not a separate history generator. | none |
 | 94 | Value bears on scarcity, capability and material need; need derives from alignment, acts and predilection. | none |
 | 95 | Taking an action is analogous to crafting; values, abilities and needs shape what is made; a fey mood may be a triggered need. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
-| 113 | Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 114 | A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim, matching it in distribution when no player choices are made. (amended by 538) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 115 | Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
+| 113 | Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 114 | A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim, matching it in distribution when no player choices are made. (amended by 538) | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 115 | Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 117 | Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event. | none |
 | 118 | Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told. | none |
 | 119 | Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default. | none |
@@ -126,19 +126,19 @@ three design docs that cite it. The record holds the words.
 | 206 | When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217) | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 207 | The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 208 | What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows. | none |
-| 209 | The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 209 | The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507) | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 211 | An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 217 | The larger reserve does not win an escalated fight; the probe's other readings of ruling 206 stand and the fight is reworked around strain. | none |
 | 219 | The interpreter's query and effect meanings exist once, in shared functions called by both the crowd and the individual runner. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 221 | In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 222 | A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 223 | A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 221 | In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 222 | A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 223 | A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 232 | Eponym's blows are resolved in the foreground and handed back as vigour drained and wounds to parts, agreeing with the sim's fight in distribution. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 236 | Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240) | none |
 | 240 | Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds. | none |
 | 241 | Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own. | none |
 | 256 | The sim's clock counts a fine unit and each process runs on its own period in world time. | none |
-| 257 | The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 257 | The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 258 | The scheduler indexes processes by the traits they require now, with results identical; per-entity due-event queues are decided before M2's first receipts. | none |
 | 259 | The operation budget counts only the evaluations that run; budgeted sessions take a new baseline. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 261 | The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266) | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -173,7 +173,7 @@ three design docs that cite it. The record holds the words.
 | 440 | Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 454 | Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 507 | From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check. | none |
-| 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 554 | A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 605 | When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 817 | Migration departs and arrives after the traversed route's authored travel time; no next route before arrival. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
@@ -209,10 +209,10 @@ three design docs that cite it. The record holds the words.
 | 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
 | 1052 | The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
-| 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1082 | The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -226,7 +226,7 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 57 | Reproduction rerolls expression and the epoch boundary changes the lineage; NPC lineages adapt at the epoch boundary by default, as does the player's. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 97 | The materials of a world are its critters across all kingdoms. | [games wing founding](2026-07-30_games_wing_founding.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
+| 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | none |
 | 139 | Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics. | [games wing founding](2026-07-30_games_wing_founding.md) |
 | 182 | Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
@@ -289,7 +289,7 @@ three design docs that cite it. The record holds the words.
 | 26 | glTF is the body's render, animation and interchange model, generated from the part tree; the sim body stays a part tree. | none |
 | 39 | Kingdom is class and scale is orthogonal to it; micro (germs) and macro (huge creatures) are playable alongside plant, animal, fungus. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 58 | A spread is a body; a fungus is one body even when separate and germs are many bodies that revise genes on the fly. (amended by 488) | none |
-| 123 | Harm is both vigour (a reserve drained first) and wounds (to parts); vigour returns with rest and wounds heal slowly or never. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
+| 123 | Harm is both vigour (a reserve drained first) and wounds (to parts); vigour returns with rest and wounds heal slowly or never. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 227 | The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 273 | Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds. | none |
 | 276 | Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492) | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
@@ -407,8 +407,8 @@ three design docs that cite it. The record holds the words.
 | 872 | Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour. | none |
 | 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
 | 1049 | A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes. | none |
-| 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md) |
-| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | none |
+| 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1085 | A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel. | none |
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
@@ -431,10 +431,10 @@ three design docs that cite it. The record holds the words.
 | 70 | The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial. | none |
 | 71 | Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 80 | Of note is literal: a note on the thing, made by the sim as a player would make one. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
-| 104 | Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105). | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 105 | Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 104 | Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105). | none |
+| 105 | Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 125 | Noting and promotion belong to the world; collection and merging belong to the record. | none |
-| 126 | A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 126 | A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 127 | Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 129 | A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 130 | A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not. | none |
@@ -454,21 +454,21 @@ three design docs that cite it. The record holds the words.
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
 | 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [DOC README](DOC_README.md) |
 | 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [DOC README](DOC_README.md) |
-| 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 
 ## World generation
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 11 | Terrain runs from region to planetary system, configurable in complexity, size, climate, composition and world effects including glyphs and anatomy constraints. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
-| 12 | Terrain always has a destructible, constructible interior for all three games; Isometry's height-and-kind per cell is a far-rung view of that volume. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
+| 12 | Terrain always has a destructible, constructible interior for all three games; Isometry's height-and-kind per cell is a far-rung view of that volume. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 13 | The base unit is free per world; cells within a chunk are power-of-two multiples of it (2026-10-18, correcting 396's reading). | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 48 | A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities. | none |
-| 72 | A world map is a grid of sites in any shape; defines region, location, wilderness, biome and environment. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 72 | A world map is a grid of sites in any shape; defines region, location, wilderness, biome and environment. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 73 | A world has one shape, any shape, not switchable. | none |
 | 74 | Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92) | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 88 | Nesting is allocated dynamically as locations are generated, not fixed at founding. | none |
-| 89 | Founding is a flow of key details plus a seed; authoring may go as deep as wanted, displacing generated content; a world editor is owed. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 89 | Founding is a flow of key details plus a seed; authoring may go as deep as wanted, displacing generated content; a world editor is owed. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 90 | A world is realigned to another ruleset by a generative round that advances time. | none |
 | 91 | History depth is the founder's choice; the generated timeline can be revisited; the client is not overwhelmed and may zoom in and edit. | none |
 | 99 | What kind of entity a world is (inert, sentient, sophont, god, turtle, flora, fauna, dead) stays open to the world. | none |
@@ -560,7 +560,7 @@ three design docs that cite it. The record holds the words.
 | 35 | Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed. | none |
 | 59 | Play is directing, not driving; a creature suggests its own perceptions and the player schedules behavior, with players not limited by diegetic senses. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 60 | Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy. | [denizen](2026-11-02_denizen_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 61 | Death is final across the board; each game's trick: extra lives via cohort in Mesocosm and Paredros, and Isometry treats death as nearly defeatable. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 61 | Death is final across the board; each game's trick: extra lives via cohort in Mesocosm and Paredros, and Isometry treats death as nearly defeatable. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 103 | The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller. | none |
 | 152 | Outside the world, a player directs only who they play; everything else is asked in the world through that entity. | [denizen](2026-11-02_denizen_plan.md) |
 | 153 | Two players may direct the same entity, which weighs conflicting directives by its opinion of each. | none |
@@ -591,7 +591,7 @@ three design docs that cite it. The record holds the words.
 | 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
+| 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | [denizen](2026-11-02_denizen_plan.md) |
 | 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | [denizen](2026-11-02_denizen_plan.md) |
 
@@ -599,7 +599,7 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 18 | A game's grid is a projection: the sim volume is cubic, and any tile shape is a voxel region an overlay lays over it. (amended by 604) | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md) |
+| 18 | A game's grid is a projection: the sim volume is cubic, and any tile shape is a voxel region an overlay lays over it. (amended by 604) | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 22 | Lighting wants all five rows: shadows, ambient occlusion, global illumination, point lights with day and night, transparency with water. | none |
 | 23 | Terrain gets per-axis scale (x, y, z) under W3, and paging is fixed one way or another in every consumer. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 296 | The host's atlas budget defaults to 8 MiB. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
@@ -614,7 +614,7 @@ three design docs that cite it. The record holds the words.
 | 425 | Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget. | none |
 | 426 | Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 432 | A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434) | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
-| 437 | Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 437 | Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 438 | Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 847 | Resident corpses stay visible in the same native awareness and close-up; in-transit corpses stay absent; showing grants no control. | none |
 | 868 | Faction claims and biomes use independently configurable map layers showing both meanings; settings grant no knowledge. | none |
@@ -643,9 +643,9 @@ three design docs that cite it. The record holds the words.
 | 77 | Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web. | none |
 | 78 | Favor a clean boundary between componentized parts either way, since lack of one would bite later and performance improves with hardware. | none |
 | 92 | The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim. | none |
-| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 192 | Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 197 | The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 192 | Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591) | none |
+| 197 | The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 203 | The tick stamp is a newtype over the sim's u64 count. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 204 | Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys. | none |
 | 254 | The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core. | none |
@@ -829,69 +829,69 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 156 | A DM may take up any unclaimed entity to play, and may edit the world. | [session network](2026-10-28_session_network_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 188 | A VTT campaign may run with the sim off, as a plain board. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 189 | An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 190 | An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 191 | The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 156 | A DM may take up any unclaimed entity to play, and may edit the world. | [session network](2026-10-28_session_network_plan.md) |
+| 188 | A VTT campaign may run with the sim off, as a plain board. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 189 | An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538) | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 190 | An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 191 | The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 243 | With the sim on, a battlemap is projected from the generated volume and the DM's map is an edit over it. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [campaign retirement](2026-10-28_campaign_retirement_plan.md), [content packs](2026-10-28_content_packs_plan.md) |
-| 244 | Moves within a battlemap reach the sim as per-tick batches, never a call per token. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 245 | At a VTT table, sharing a character and the DM playing the unclaimed are on by default. | [session network](2026-10-28_session_network_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 246 | Downtime needs each player's yes. | [session network](2026-10-28_session_network_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 247 | The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 248 | A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 250 | An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 244 | Moves within a battlemap reach the sim as per-tick batches, never a call per token. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 245 | At a VTT table, sharing a character and the DM playing the unclaimed are on by default. | [session network](2026-10-28_session_network_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 246 | Downtime needs each player's yes. | [session network](2026-10-28_session_network_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 247 | The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 248 | A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 250 | An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 323 | With Cleromancy off, the VTT's >choose seeds its draw from the command's seed and domain, so the choice replays from the command alone. | none |
-| 539 | Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 540 | Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 542 | An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 543 | Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 539 | Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 540 | Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 542 | An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 543 | Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 598 | The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915) | none |
 | 599 | The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm. | none |
 | 768 | A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on. | none |
 | 807 | Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted. | none |
-| 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 814 | The VTT declares its note kinds (reveal, narration, history) in the world's founding rules; native admission still refuses undeclared kinds. | none |
-| 851 | Every saved bound table player, disconnected included, holds downtime unless they release their own hold. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 852 | A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 851 | Every saved bound table player, disconnected included, holds downtime unless they release their own hold. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 852 | A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 853 | Each player opts their played native body into or out of a party; membership grants no control. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 854 | The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 855 | A self-released downtime hold covers current and future proposals until the player explicitly retakes it. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 856 | The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 855 | A self-released downtime hold covers current and future proposals until the player explicitly retakes it. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 856 | The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 857 | Players may withdraw their own earlier party memberships after changing bodies; new joins and disclosures name the current body. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 858 | Disclosed map facts remain in the party's recorded map after the contributing member leaves. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 859 | Each player approves their currently played body's departure and the DM applies approved departures together through native admission. | none |
-| 860 | Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 860 | Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 865 | A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it. | none |
 | 871 | Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure. | none |
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 915 | isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
-| 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
-| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
+| 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1028 | Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1031 | The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1031 | The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1034 | PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move. | none |
 | 1035 | A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1043 | Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |
-| 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
-| 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
-| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
-| 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md), [DOC README](DOC_README.md) |
+| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Naming
@@ -913,7 +913,7 @@ three design docs that cite it. The record holds the words.
 | 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
-| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
 | 1091 | The site account of dead matter awaiting decomposers is world:detritus. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Licensing and sources
@@ -921,20 +921,20 @@ three design docs that cite it. The record holds the words.
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 40 | Include a ruleset if nobody will sue or object: Daggerheart no, Lancer yes with attribution, ICON and CAIN need a question to Massif Press. | none |
-| 522 | The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
+| 522 | The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
 | 914 | The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917) | none |
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
-| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md) |
-| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md) |
-| 1068 | Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
+| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
+| 1068 | Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 
 ## Method and documents
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
+| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 193 | Moved modules are decomposed under the 600-line ceiling along seams the code already has. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 198 | The consistency pass is applied; a dated line keeps the words of its date and a later name reaches it only as a note. | none |
 | 255 | Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts. | none |

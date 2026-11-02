@@ -6,13 +6,13 @@
 unimplemented, so the correction is free. Rewrite is a lane under the
 record's W2 or W3; until it lands this plan's done-conditions are not
 authoritative. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
-The [games wing founding record](../../design_docs/2026-07-30_games_wing_founding.md) remains
+The [games wing founding record](../../../../design_docs/2026-07-30_games_wing_founding.md) remains
 authority for settled laws. Mesocosm's local body rules live in the
-[phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md). The
-[dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns current ordering;
+[phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md). The
+[dependency ledger](../2026-09-26/2026-08-07_dependency_ledger.md) owns current ordering;
 the execution waves plan is historical.
 
 ---
@@ -121,26 +121,26 @@ they are not additional user rulings or a final storage schema.
 
 Checked against the code on 2026-09-28:
 
-- [`isocosm::Entity` and `Part`](../../shared/isocosm/src/schema.rs) carry
+- [`isocosm::Entity` and `Part`](../../../../shared/cosmograph/src/schema.rs) carry
   a body revision, symbolic part IDs, parent links, severed state, shape and
   functions. The entity's `place` names a site. Its identity is the member ID
-  used by [`Population::get`](../../shared/isocosm/src/population.rs), which
+  used by [`Population::get`](../../../../shared/cosmograph/src/population.rs), which
   can resolve a member inside a cohort interval; a cohort row is not one
   critter. There is no entity-local position or facing in this schema.
-- [`BodyDocument`](../../shared/isometer/crates/isometer-core/src/body.rs)
+- [`BodyDocument`](../../../../shared/isometer/crates/isometer-core/src/body.rs)
   carries concrete attachments, extents, pivots, volume references, part
   mass and provenance. It has neither an Isocosm entity identity nor an
   authoritative body revision. `PartId(u32)` indexes its part vector;
   Isocosm's part IDs are `u64` keys. The two are not interchangeable.
-- [`SceneBody`](../../shared/isometer/src/bodies.rs) already takes a
+- [`SceneBody`](../../../../shared/isometer/src/bodies.rs) already takes a
   `SubjectKey(u64)`, a borrowed `BodyDocument`, pose, scale, materials and
-  presentation policy. [`LiveBodyProjector`](../../shared/isometer/crates/isometer-mesh/src/live.rs)
+  presentation policy. [`LiveBodyProjector`](../../../../shared/isometer/crates/isometer-mesh/src/live.rs)
   caches volume geometry and returns a `BodyDependencyRevision`. That stamp
   describes geometry dependencies, not the sim's `body_revision`.
-- The current [`section` adapter](../crates/mesocosm-genet/src/section/bodies.rs)
+- The current [`section` adapter](../../../crates/mesocosm-genet/src/section/bodies.rs)
   reads a `mesocosm-core::Organism`'s concrete body and position. The
-  [`bench producer`](../crates/mesocosm-genet/src/app/bench/producer.rs)
-  reads its specimen, while the [`sim panel`](../crates/mesocosm-genet/src/app/bench/sim.rs)
+  `bench producer` (`mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs`, deleted in `91f2e050`)
+  reads its specimen, while the [`sim panel`](../../../crates/mesocosm-genet/src/app/bench/sim.rs)
   owns a separate Isocosm `Session`. These are existing independent
   consumers, not an implemented Isocosm entity-to-scene connection.
 
@@ -175,8 +175,8 @@ does not lift every cohort member into an individual or record an inspection.
 An explicit player examination follows the existing inspection command and
 retention policy.
 
-[`watch`](../../shared/isocosm/src/watch.rs) observes selected accepted
-scheduled acts; [`flows`](../../shared/isocosm/src/flows.rs) reports matter
+[`watch`](../../../../shared/cosmograph/src/watch.rs) observes selected accepted
+scheduled acts; [`flows`](../../../../shared/cosmograph/src/flows.rs) reports matter
 moves for the requested completed tick or command. Neither is a complete
 body/placement change stream, a player intent API, or foreground adjudication.
 Until such a stream exists, refresh from the relevant accepted state and its
@@ -184,7 +184,7 @@ declared dependencies. Preserve `Session::advance`'s atomic span; requesting
 per-tick observations is an explicit host choice, not a reason to alter
 transaction semantics for rendering.
 
-[`isometer` picking](../../shared/isometer/src/query.rs) answers for the
+[`isometer` picking](../../../../shared/isometer/src/query.rs) answers for the
 completed frame. The host validates that receipt, resolves the source address,
 and submits an intent through the appropriate game/sim boundary. It never
 submits `SubjectKey`, renderer `PartId`, or a geometry stamp as world truth.
@@ -1054,7 +1054,7 @@ states. Broader body-plan generation remains the next substantive C0 question.
 generator request to version 4 and refuses older explicit versions. Generated
 founders now receive declared lineage tissue; the earlier version-1/2 replay
 receipts below are historical. See the
-[trophic grammar plan](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md) for the material
+[trophic grammar plan](../2026-10-10/2026-09-04_trophic_grammar_plan.md) for the material
 contract and current validation. Requests that omit a version use the current
 default. This update does not supply a new headed creator receipt.
 
@@ -1279,7 +1279,7 @@ need their own consumer evidence. They do not block C0-C2.
 ## 12. Shared v0 format implementation, 2026-09-09
 
 **Status: implemented and focused verification passed in the working tree.** This is the first implementation slice from the
-[cross-port audit](2026-08-18_engine_ecology_rulings_and_review.md#7-cross-port-sharing-audit-2026-09-09),
+[cross-port audit](../../2026-08-18_engine_ecology_rulings_and_review.md#7-cross-port-sharing-audit-2026-09-09),
 authorized after the repository consolidation. It does not advance the wire
 version or close the v1 subject/topology gates above.
 
@@ -1307,7 +1307,7 @@ work. Preserve existing license notices and concurrent product changes.
 ### Dependency review
 
 The following is the format-extraction baseline. The subsequent renderer and
-source migration is recorded in the [wing consolidation plan](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
+source migration is recorded in the [wing consolidation plan](../../../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
 
 The format library requires only Serde and Postcard; this slice leaves platform
 pins unchanged. Mesocosm retains primary Netrender `6f1a4fe7` and the RG3

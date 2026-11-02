@@ -195,7 +195,7 @@ lands.
   not the rule. The board over the sim's volume is the VTT overlay plan's
   battlemap view (its §4, "projected from the generated volume in the game's
   grid", landing across V2 and V3) and the held
-  [board-on-isometer plan](../../2026-09-15_board_on_isometer_plan.md), with
+  [board-on-isometer plan](../2026-10-28/2026-09-15_board_on_isometer_plan.md), with
   paging wired first (rulings 282, 288 to 292).
 - **Seeds are draws (ruling 15).** W2's "repeated seeds replay, different
   seeds vary the place" is the record's own test; seed 91 in the network

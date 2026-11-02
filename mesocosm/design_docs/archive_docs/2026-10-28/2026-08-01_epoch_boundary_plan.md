@@ -14,15 +14,15 @@ stand, the last two confirmed by rulings 57 and 202. This pass adds the
 record's test and its owner to §3, marks the boundary's sim side where the
 overlay plan now owns it (§11, §12), and supersedes the word `borg` (ruling
 200); its done-conditions are authoritative again. The evaluation stays in
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 This owns what happens *between* epochs: how a run is judged, how a lineage
 splits, what a player may aim at, and why a young critter is different from an
-old one. The [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md) owns bodies and
+old one. The [phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md) owns bodies and
 capability. The process vocabulary is the sim's process definition
 ([sim plan](2026-09-22_sim_plan.md) §3.1; the ProcessDef plan is archived at
-[archive_docs/2026-09-26/](archive_docs/2026-09-26/2026-08-01_processdef_plan.md),
+[archive_docs/2026-09-26/](../2026-09-26/2026-08-01_processdef_plan.md),
 ruling 309). The [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)
 §1.2 owns the epoch loop's turn structure, which this sits on top of (carried
 there from the founding plan, archived 2026-09-26 under ruling 308).
@@ -43,7 +43,7 @@ weighs evidence and world readings, and commits a program revision that future
 descendants may realize. It is not silently triggered by every birth.
 
 The exact reproduction choice and epoch-ending rule remain open. The
-[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns their
+[playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns their
 integration order and full proof; this plan continues to own what the lineage
 boundary means once opened.
 

@@ -103,7 +103,7 @@ Progress for current execution.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 
@@ -111,7 +111,7 @@ Progress for current execution.
   loss allocations become free-pool allocations during adapter transfer;
   lost IDs, existing keys and unknown old losses are preserved. The focused
   positives, two intended compiled controls and exact restoration are in
-  [CHECKPOINT_10.md](../../../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
+  CHECKPOINT_10.md (`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-10/isocosm/CHECKPOINT_10.md`).
   Ordinary HEAL draws, injury coverage and fresh full C10 remain open.
 
 - **2026-10-11, Q6 protocol qualified:** version five and ALPN v5 passed
@@ -211,7 +211,7 @@ Progress for current execution.
   works under 810 and 811; the native all-target check, 31 focused harm tests
   and nine compiling planted faults passed their final restored controls.
   The exact source and receipt scope is in `CHECKPOINT_10.md` under
-  `testing/bench/receipts/2026-10-10/isocosm/`. Known function/free losses
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-10-10/isocosm/`. Known function/free losses
   heal while unknown IDs remain; original tombstones revive with paid new
   cells and no matter copied back from a fragment. Empty Part loss metadata
   preserves JSON/postcard witness preimages, a narrower result than archive

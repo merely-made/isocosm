@@ -8,7 +8,7 @@ left open.
 **Date:** 2026-09-14
 
 **Status, 2026-09-14:** assessment. No code moved. Owns the execution of lane
-L9 in [the orthographic voxel presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-isometer-founded-2026-09-14),
+L9 in [the orthographic voxel presentation plan](../2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-isometer-founded-2026-09-14),
 whose six done conditions are restated in §7 as tests and receipts. The lane's
 sequencing precondition is met: `shared/wing-scenario` landed at cc7828f.
 

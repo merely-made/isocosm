@@ -4,7 +4,7 @@ On 2026-10-18 Mark made the old numbered rulings cases (precedent, numbered 1
 to 984 in the design record), kept new rule numbers for himself, and asked
 every active doc to lose its stacked status banners, old progress entries,
 stale counters and pasted copies. This file holds, verbatim, what left the live
-[board on isometer plan](../../2026-09-15_board_on_isometer_plan.md): its
+[board on isometer plan](../2026-10-28/2026-09-15_board_on_isometer_plan.md): its
 stacked status paragraphs and the dated current-state section (2026-10-10,
 2026-09-27 and the earlier assessment status), and every progress entry except
 the three that describe the open switch decision and the integrated paging.

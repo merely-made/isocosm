@@ -1,6 +1,6 @@
 # Re-expressing the legacy families in Isocosm: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [families re-expression plan](../../2026-10-08_families_reexpression_plan.md): its stacked status banners and the Current state section that sat with them, and the Progress entries other than the five that describe the open work (the campaign, the record and social seam, the world move and the follow-ups).
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [families re-expression plan](../2026-10-28/2026-10-08_families_reexpression_plan.md): its stacked status banners and the Current state section that sat with them, and the Progress entries other than the five that describe the open work (the campaign, the record and social seam, the world move and the follow-ups).
 
 ## Status banners
 

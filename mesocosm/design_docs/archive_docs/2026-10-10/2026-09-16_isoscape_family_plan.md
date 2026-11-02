@@ -17,7 +17,7 @@ pipeline's presets, is not founded.
 (deep time) is next, orchestrated through subagents. No crate founded, no
 code moved yet. The glyph expression plan's experience slice waits on Phase
 D, by Mark's ruling of the same day
-([glyph expression plan](../../2026-09-15_glyph_expression_plan.md), rulings on the
+([glyph expression plan](../2026-10-28/2026-09-15_glyph_expression_plan.md), rulings on the
 feat rule and pre-history).
 
 **W1, 2026-09-18:** keep. Tier: sim and stack generation. Index defect:
@@ -31,7 +31,7 @@ to Isocosm instead: ruling 192 made Isocosm absorb `mesocosm-core`, places
 among its families, and ruling 392 makes Isocosm own the lift from site to
 volume, leaving isoscape the founding pipeline and presets. The spine is
 planned in the rewritten
-[place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md) §A.
+[place-graph engine plan](../2026-10-28/2026-08-05_place_graph_engine_plan.md) §A.
 Ruling 11's terrain models beside isometer's seam are that plan's decision
 1: they stand if Isocosm may depend on isometer-core, and move into Isocosm
 if not. Phase D stands as written. *Ruled later that day (393):* they move
@@ -933,7 +933,7 @@ world-history Law C test.
   reaches ticks 1,000 and 2,000 with no checkpoint. Review found the last
   boundary noted only during an advance run, fixed before commit. Spatial
   coverage byte-identical over 32 captures. The three saved comparisons in
-  `receipts/2026-09-13/integrated-world` no longer load: their hashes predate
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/integrated-world` no longer load: their hashes predate
   the two `WorldRules` fields added that evening (`c2a26c2`, `2594031`).
 - **2026-09-16.** D6 landed: `WorldRecord` is a transparent newtype over
   `hagiograph::Record<(Feat, Scale), SpeciesId>`, `Mark` a type alias, every

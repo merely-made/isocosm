@@ -21,7 +21,7 @@ words are quoted verbatim as numbered rulings in the
 [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md) §0, the readings this
 record's author added are on the
 [readings docket](../2026-09-24/2026-09-21_wing_readings_docket.md), and the compiled
-result is the [sim plan](../../2026-09-22_sim_plan.md). Where this file and those
+result is the [sim plan](../2026-10-28/2026-09-22_sim_plan.md). Where this file and those
 disagree, they win.
 
 **Who spoke.** Mark ruled; the assistant asked, checked and recorded. In
@@ -476,7 +476,7 @@ Administrative: ruling 128 amended Mesocosm's CLAUDE.md portable-profile
 line; the readings docket was archived to `archive_docs/2026-09-24/` once
 nothing was held; relic, tale and tract joined Mesocosm's terminology; Law
 A was amended for materials at Mark's word; and the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) was drafted as
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md) was drafted as
 W5, its M0 done the same day. Then, at Mark's word, work went parallel:
 the overlay plan's M1 and an S2 probe of the sim plan opened as lanes, and a
 read-only consistency pass over the record and the plans went to the RPG
@@ -1104,7 +1104,7 @@ the border and overview, catches a deliberately mismatched source, restores
 the original viewport exactly, and suspends/resumes an existing trial's epoch
 advance. The first native run caught a renderer-capacity mismatch that CPU
 tests had missed; admission now counts actual occupied bricks before
-allocation. The [receipt](../../../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md)
+allocation. The receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-29/spine/SP3_TERRAIN.md`)
 preserves that failure alongside the corrected passing runs. This completes
 the approved terrain connection and both documentation lanes, not the later
 body, edits, paging or shared-store implementation.
@@ -1441,7 +1441,7 @@ default layers and stacking come from the bench as readings with numbers.
 the mode host, measuring the briefs' open items and building, Mark chose
 time at scale, the gap §9.2 ranked second. Its assessment remeasured the
 09-25 scale points on today's core
-(`mesocosm/testing/bench/receipts/2026-10-01/isocosm/SCALE_REMEASURE.md`):
+(`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-01/isocosm/SCALE_REMEASURE.md`):
 
 - the quadratic is gone, cost growing as n^1.02 over 512 to 4,096 members,
   33 ms a tick at 4,096 against 18.2 s on 09-25, about 77 ms at 10,000 by

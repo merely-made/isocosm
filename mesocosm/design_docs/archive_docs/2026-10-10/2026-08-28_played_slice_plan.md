@@ -3,7 +3,7 @@
 **Superseded 2026-10-10; archived under wing design record ruling 793.** It
 retired into the [Mesocosm overlay
 plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M3 by ruling 196, and M3 was
-built as the [directing plan](../../2026-10-08_directing_interim_m4_plan.md)'s D1
+built as the [directing plan](../2026-10-28/2026-10-08_directing_interim_m4_plan.md)'s D1
 to D5, the switch landing 2026-10-10. Nothing was left open here.
 
 **Status, 2026-09-25: control rewritten for directing.** The wing design
@@ -11,7 +11,7 @@ record's ruling 175 makes directing the first Mesocosm overlay's control,
 as ruling 60 ruled Mesocosm's mode on 2026-09-19, and at Mark's word
 (ruling 199) this slice's control is rewritten now, in the section
 "Control: directing" below. W1's keep of 2026-09-18 predates ruling 60.
-The build is the [Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s
+The build is the [Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md)'s
 M3, only on Isocosm (ruling 194), and this plan retires into that one when
 M3 lands (ruling 196).
 
@@ -102,7 +102,7 @@ world, the slab camera following the played critter as presentation only,
 the minimap, the vitals chrome, and the receipts' discipline.
 
 **Where it is built.** Only on Isocosm, as the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M3 (ruling
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md)'s M3 (ruling
 194); nothing of it is prototyped on this host. This plan retires into that
 one when M3 lands (ruling 196).
 

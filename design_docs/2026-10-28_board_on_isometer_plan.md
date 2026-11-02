@@ -6,8 +6,8 @@
 archived in `archive_docs/2026-10-28/`. The authored scene board is built behind
 the `ISOCOSM_SCENE_BOARD` flag beside the DOM board, with per-tile diffing and
 paged residency. Open are the DOM board's fate, the sim-on lifted-site path,
-what the scene board does not yet draw, the appearance theory, the smallest
-supported display and headed acceptance.
+what the scene board does not yet draw, the smallest supported display and headed
+acceptance. 2026-10-31: the appearance theory is ruled (case 1019, BD5: voxel source, classes bind) and built (the look editor with its live preview, `AppearanceSet`, item looks from cases 1035 and 1043).
 
 **For:** drawing the VTT board through the shared isometer scene while keeping
 the locked 2:1 lens, the tileset-as-stylesheet contract, and every tile and
@@ -129,7 +129,7 @@ question for this plan to rule"; it is held here, and it is a question for Mark.
 It bears on BD4's tints and on `content-packs` (appearance preview, a real
 tileset).
 - Ruled 2026-10-30, case 1019 (Mark: "Voxel source, classes bind"): a look is an isometer `Appearance` recipe; packs bind class names to layers and palettes; the preview and the board read one recipe (doctrine VTT 7).
-- Done when: not stated; owed
+- Done when: ruled 2026-10-30 (case 1019); the look editor, its live preview and `AppearanceSet` are built (Progress 2026-10-30), and item looks (Progress 2026-10-31).
 - Needs: BD4
 - Rulings: PROJECT_DESCRIPTION pillar 3, 1019
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:332-334`
@@ -217,7 +217,7 @@ roadmap's distribution residue goes to `content-packs`.
   `archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md:178,382-391`.
 - **What "Genet text acceptance" means**: the old plan names it open in its
   status line and last progress entry but never says what it is. The wing
-  record (case 438, `2026-09-18_wing_design_plan.md:4370-4395`) put three
+  record (case 438 in `2026-09-18_wing_design_plan.md`) put three
   options for a far mark's glyph display: (A) pixel icons from the display,
   (B) Genet text over the scene, (C) strokes per glyph; Mark chose A. Does the
   phrase mean acceptance of Genet-drawn text over the scene (labels, overlays),
@@ -254,7 +254,7 @@ roadmap's distribution residue goes to `content-packs`.
   as the old plan says.
 - 2026-10-28: the eight-way, one-diagonal-cost test `budget_caps_the_reach` is
   in `crates/isocosm-core/src/path.rs:159`.
-- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isocosm-genet/src/main.rs:168`.
+- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isocosm-genet/src/main.rs:168` (now `:171`, 2026-11-02).
 - 2026-10-28: the old plan's timing and single-sample figures (M4 layout median,
   regrow times) are machine-specific and are not carried as thresholds.
 - 2026-10-30: under BD5's ruling (1019, 1022, 1028) both boards draw a

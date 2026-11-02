@@ -39,7 +39,7 @@ session.
    event log the host validates and rebroadcasts. Late joiners get a snapshot
    plus the log tail. This remains the tactical consistency model, not the
    ownership model for a campaign. The 2026-07-11 revision in the
-   [shared-authority plan](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)
+   [shared-authority plan](../2026-10-28/2026-07-09_shared_authority_and_collaborative_building_plan.md)
    adds signed multi-writer p2panda campaign spaces and keeps sequencing only
    where a domain requires it.
 3. **Tile-as-DOM-element, viewport-windowed.** The map lives in
@@ -519,3 +519,7 @@ clicks (`_attack_rng.png`); bumping STR 10->14 via the stepper re-derives
   retained bg-image decode) and documented two more for later (absolute
   inset sizing; paint/hit divergence on clipped overflow). Remaining
   I2 residue: a "new empty map" entry point.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

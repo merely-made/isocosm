@@ -8,13 +8,13 @@ following the general model discussion sections 7.2 and 7.3.
 
 **W1, 2026-09-18:** keep. Tier: sim. Index defect: filed below the Archive
 heading. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 ## Composition design, 2026-09-28
 
 **Status: design refinement, not implemented.** Wing design record rulings
-[404 to 407](../../design_docs/2026-09-18_wing_design_plan.md#0-rulings-this-record-rests-on)
+[404 to 407](../../../../design_docs/2026-09-18_wing_design_plan.md#0-cases-this-record-rests-on)
 extend the intended model beyond the bounded evaluator whose receipt remains
 below. Its three operators and charge routing are foundations, not the extent
 of the effect vocabulary or a complete spellcasting model.

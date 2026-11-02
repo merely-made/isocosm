@@ -185,7 +185,7 @@ regrowth as a second trait with re-rooting and unprovisioned births (713 to
 then the certification: no milligram lost through a wound or a severing, a
 hazard rate of zero wounding nothing, healing only where the trait allows,
 planted faults in `c10_faults.py`, the crowd agreeing on draws. Follow the
-checkpoint 9 receipts' shape (`mesocosm/testing/bench/receipts/2026-10-08/`).
+checkpoint 9 receipts' shape (`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-08/`).
 No dependencies. Under 600 words.
 
 **Q9. The VTT's V2, push mode** (798, 794, 795, 768, 769, 247, 799, 801).

@@ -8,7 +8,7 @@ which is deleted. Development is native
 `shared/isocosm/src/lineage/revise.rs` (752, 765), every line revising, not
 the player's alone. Its open phases moved: P5, contested flow, to the [epoch
 boundary plan](../../2026-08-01_epoch_boundary_plan.md)'s current state; P6 is the
-[wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md)'s
+[wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md)'s
 gates W3 to W5; P0's headed judgment and VB3 to VB5's visual acceptance are
 in the [after-pass plan](../2026-10-18/2026-10-10_after_pass_plan.md)'s A4; sub-part body
 change (D3a) is checkpoint 10's cell loss (469).
@@ -22,7 +22,7 @@ acceptance gaps are recorded below. VB2's first surface grammar and persisted
 content, branching layouts, jointed appendage chains and foot/canopy spacing are integrated and replay-verified; further refinement and recognition remain
 open.** This document owns Mesocosm's body rules. The
 cross-vessel boundary lives in the
-[wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md), and
+[wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md), and
 ordering remains with the
 [dependency ledger](../2026-09-26/2026-08-07_dependency_ledger.md).
 The [ProcessDef plan](../2026-09-26/2026-08-01_processdef_plan.md) owns the extensible
@@ -144,7 +144,7 @@ than an implicit mutation.
 Direct arrangement and auto-arrange therefore author the same kind of program
 through the same validator. For a shared lineage, co-players adopt that program
 together. They do not promise that every descendant will carry an identical
-body. The [epoch-boundary plan](../../2026-08-01_epoch_boundary_plan.md) owns what
+body. The [epoch-boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md) owns what
 happens when one player does not adopt the proposal.
 
 ### Processes and paths
@@ -476,7 +476,7 @@ Retire the trait array when all of these are true:
 the array stays.** **Superseded the same day: Mark ruled condition 5,
 2026-09-02: delete.** **Deleted 2026-09-04, and §D4 closes: all five
 conditions now hold.** See the [playable ecology plan](2026-08-31_playable_ecology_plan.md)
-PE3 for the record and the [epoch boundary plan](../../2026-08-01_epoch_boundary_plan.md).
+PE3 for the record and the [epoch boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md).
 
 **The deletion receipt.** Five files went, 1,318 lines of them:
 `mesocosm-core/src/epoch.rs` (the module, `EXTINCTION_FLOOR`, `Round`,
@@ -615,7 +615,7 @@ path are playable.
 ### D7. What crosses the wing?
 
 This is owned by the
-[wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md).
+[wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md).
 Mesocosm's local consequence is simple: do not implement chronicle v1 as
 another flat anatomy snapshot. A body profile carries a body revision and its
 topology; a chronicle carries causal facts addressed to that revision. Geometry
@@ -1574,7 +1574,7 @@ rather than part of it.
   three authored world profiles as data since they seed PE4's world criteria.
   A deletion slice does it. This closes §D4 and P4's seventh clause; no code
   changed in this pass. See the [playable ecology plan](2026-08-31_playable_ecology_plan.md)
-  PE3 and the [epoch boundary plan](../../2026-08-01_epoch_boundary_plan.md).
+  PE3 and the [epoch boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md).
 
 - **2026-09-02, P4 partial (P4a, the lineage program): a line commits a
   program, and its descendants are born under it.** `mesocosm-core::program`

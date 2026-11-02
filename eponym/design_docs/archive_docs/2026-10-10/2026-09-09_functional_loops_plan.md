@@ -33,7 +33,7 @@ again. The evaluation stays in
 §3. The world conditions plan and the execution plan this plan cites were
 archived the same day (rulings 315 and 313); the links point at the archived
 copies, and the
-[Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md) is Eponym's
+[Eponym overlay plan](../2026-10-28/2026-09-25_eponym_overlay_plan.md) is Eponym's
 executable plan.
 
 ## Direction

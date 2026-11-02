@@ -3,7 +3,7 @@
 **Superseded 2026-10-10 by the native sim and its plans; archived under wing
 design record rulings 793 and 802.** PE0 to PE3 landed on `mesocosm-core`,
 which 732's push deleted. Its open phases now live elsewhere: PE4's trophic
-build is the [sim plan](../../2026-09-22_sim_plan.md)'s S8 and its
+build is the [sim plan](../2026-10-28/2026-09-22_sim_plan.md)'s S8 and its
 impossible-world and anti-affix conditions are S9; PE5's second form is
 checkpoint 11 (a mold a territory, micro life a surface, 488); PE6's scale
 is S4 with the [aggregation research](../../2026-09-22_aggregation_research.md);
@@ -41,7 +41,7 @@ does not replace their detailed plans:
   expression, packs, and validation;
 - [the phenotype plan](2026-07-31_phenotype_plan.md) owns developmental
   programs, body realization, and capability;
-- [the epoch-boundary plan](../../2026-08-01_epoch_boundary_plan.md) owns lineage
+- [the epoch-boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md) owns lineage
   review, significance, speciation, and authorship;
 - [the traits and perception brief](../../2026-08-29_traits_and_perception_brief.md)
   owns the unresolved acquisition-cost and perception choices;
@@ -900,11 +900,11 @@ detailed requirements and research live in the plan that owns each mechanism.
 
 | Concern | Owning record | First integration gate | Required before admission |
 | --- | --- | --- | --- |
-| Individual/cohort execution | [Scale](2026-08-29_scale_plan.md) and [place graph](../../2026-08-05_place_graph_engine_plan.md) | PE6 | Exact zero-tick aggregate/materialize round trip; persistent pointable subjects; named reductions; per-evaluator all-individual comparison envelope; unsupported-process fallback. |
+| Individual/cohort execution | [Scale](2026-08-29_scale_plan.md) and [place graph](../2026-10-28/2026-08-05_place_graph_engine_plan.md) | PE6 | Exact zero-tick aggregate/materialize round trip; persistent pointable subjects; named reductions; per-evaluator all-individual comparison envelope; unsupported-process fallback. |
 | Generated material vocabulary | [Elements and traits](../../2026-08-29_elements_and_traits_memo.md#storage-shape-shared-by-all-three) | PE4 | Saved world-local definitions and compact ids; exact mass reconciliation; measured local-palette versus wider-cell decision only when the one-byte baseline binds. |
 | Sub-part body mutation | [Phenotype D3a](2026-07-31_phenotype_plan.md#d3a-when-do-voxel-cells-become-body-state) | First played case in PE2 or PE3 that cannot use whole-part loss | New immutable volume or explicit body patch; atomic body revision; bounded revision-safe mesh/collider work; truthful fallback. **P3 (2026-09-01) named the first candidate case and did not open it:** a live cut lands on the boundary between two parts, and whole-part loss cannot express it without creating or destroying matter. |
 | Generated trait execution | [ProcessDef](../2026-09-26/2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs) and [acquisition](../../2026-08-29_traits_and_perception_brief.md) | PE2 then PE3 | Event-driven condition, discrete development program, and native repeated process remain separate; each is typed and bounded; the exact realized candidate and digest persist. |
-| Environmental fields | [Resident views](../../2026-08-14_resident_views_composition_plan.md#field-admission-boundary-2026-09-01) and [elements](../../2026-08-29_elements_and_traits_memo.md#field-dimensionality-is-part-of-admission) | First PE4 world rule that needs a new field | Named consumer, honest domain, cadence, sources/sinks, boundaries, units/range, conservation, scale rule, cost, and control. |
+| Environmental fields | [Resident views](../2026-10-28/2026-08-14_resident_views_composition_plan.md#field-admission-boundary-2026-09-01) and [elements](../../2026-08-29_elements_and_traits_memo.md#field-dimensionality-is-part-of-admission) | First PE4 world rule that needs a new field | Named consumer, honest domain, cadence, sources/sinks, boundaries, units/range, conservation, scale rule, cost, and control. |
 
 **Generated trait execution, first half met (2026-09-01).** PE2 built the
 condition program: event-driven, typed, bounded, with declared inputs, and it

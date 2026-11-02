@@ -2,7 +2,7 @@
 
 **Archived 2026-09-26 (wing design record ruling 315).** Ruling 32 founded
 the sim's process definition on this plan's schema with its stop rule
-lifted, and the [sim plan](../../../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+lifted, and the [sim plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md)
 §3.1 takes eight of its twelve parts from here by name. Mark: "Archive now."
 The sim plan's §3.1 is the definition; this copy is its source text, cited
 by the sim plan and the record. Its Eponym-owned sections, evaluator

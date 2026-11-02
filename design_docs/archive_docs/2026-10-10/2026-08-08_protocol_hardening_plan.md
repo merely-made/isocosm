@@ -81,7 +81,7 @@ two-peer receipt exists.
   consequence.
 - Version negotiation refuses; it never degrades silently.
 - Extracted receipts from the archived plans
-  ([ledger](../../2026-08-08_extracted_receipts.md)) that touch travel land
+  ([ledger](../2026-10-28/2026-08-08_extracted_receipts.md)) that touch travel land
   here, not in a revived roadmap.
 
 ## Findings

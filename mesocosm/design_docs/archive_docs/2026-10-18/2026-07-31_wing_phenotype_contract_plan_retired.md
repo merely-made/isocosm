@@ -1,6 +1,6 @@
 # Wing construction, embodiment and continuity: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [wing construction, embodiment and continuity plan](../../2026-07-31_wing_phenotype_contract_plan.md): its four stacked status paragraphs and the Current state section that sat with them, and the Progress entries other than the three that describe the open creator scope.
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [wing construction, embodiment and continuity plan](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md): its four stacked status paragraphs and the Current state section that sat with them, and the Progress entries other than the three that describe the open creator scope.
 
 ## Status banners
 

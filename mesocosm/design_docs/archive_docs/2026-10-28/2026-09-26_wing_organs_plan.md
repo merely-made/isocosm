@@ -31,7 +31,7 @@ earlier status line follows as written.)*
 §7.4, "Glyph canon, the journey, and divinity", and its impresa finding of
 2026-09-21, moved here on 2026-09-26 under wing design record ruling 310
 ("Split out the organs") when the rest of the general model was archived at
-[archive_docs/2026-09-26/](archive_docs/2026-09-26/2026-08-06_general_model_plan.md).
+[archive_docs/2026-09-26/](../2026-09-26/2026-08-06_general_model_plan.md).
 The words are the general model's; only the heading levels changed. Two
 organs live here, both wing material no single game owns: the
 **hagioglyph**, the divinity organ (the glyph canon, the journey, ascension,
@@ -46,7 +46,7 @@ the impresa; the [sim plan](2026-09-22_sim_plan.md) §2.7 and §2.8 place both
 organs among the sim's nouns; the
 [glyph expression plan](2026-09-15_glyph_expression_plan.md) is the next
 move under §1. The hagiograph, which the hagioglyph consumes, is the
-[isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md)'s.
+[isoscape family plan](../2026-10-10/2026-09-16_isoscape_family_plan.md)'s.
 
 ---
 
@@ -337,8 +337,8 @@ zero-removal/rejected actions, unchanged core history/hash, exact reset/replay,
 and actual control transfer followed by another body's carve. The collection
 does not follow that control transfer.
 
-The [public-API example](../crates/mesocosm-runtime/examples/glyph_journey.rs)
-produces [this JSON receipt](../testing/glyphs/journey.json). An unmodified
+The public-API example (`mesocosm/crates/mesocosm-runtime/examples/glyph_journey.rs`, deleted in `91f2e050`)
+produces [this JSON receipt](../../../testing/glyphs/journey.json). An unmodified
 seed-0 founder removes 15 voxels at `[0,12,0]`, earning the one configured base
 glyph. Its four-tick metric observations are `15,0,0,0`; settlement is 15.
 The copied shared journey qualifies for both routes, ascends, reincarnates,

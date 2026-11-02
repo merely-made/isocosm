@@ -13,7 +13,7 @@ plus the overlay. Split the world half into the sim; second person,
 standing agreements and place lineage stand. Rewrite is a lane under the
 record's W2 or W3; until it lands this plan's done-conditions are not
 authoritative. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3.
 
 ---
@@ -531,7 +531,7 @@ world-supporting organisms each need their own concrete evidence. First prove
 that one unfamiliar rule makes an ordinary place interesting to inhabit.
 
 The first concrete fixture is the execution plan's
-[damaged crossing](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md#first-encounter-the-damaged-crossing):
+[damaged crossing](../2026-09-26/2026-08-07_paredros_execution_plan.md#first-encounter-the-damaged-crossing):
 a useful destination, two bodies, a learnable material rule, and inhabitants
 with independent needs and partial knowledge. Its authored setup tests this
 proposal before procedural encounter generation.
@@ -605,7 +605,7 @@ prediction and rollback stay out of scope.
 ## 3. Phases
 
 **Superseded 2026-08-07** by the
-[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md), on the audit
+[execution plan](../2026-09-26/2026-08-07_paredros_execution_plan.md), on the audit
 finding that this order could not test the premise (offers before deeds
 and explanation; succession before either). The charter rulings above are
 untouched and bind the successor. Preserved below as founding history.

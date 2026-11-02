@@ -4,7 +4,7 @@
 802.** TG1's typed intake and TG2's typed matter are native
 (`shared/isocosm/src/mosaic/ports.rs`, `shared/isocosm/src/matter/`; 750,
 766), and TG3a's graft allowance is `shared/isocosm/src/rules/graft.rs`. TG3
-to TG7 are the [sim plan](../../2026-09-22_sim_plan.md)'s S8, restated over native
+to TG7 are the [sim plan](../2026-10-28/2026-09-22_sim_plan.md)'s S8, restated over native
 Isocosm, TG7's "lexicon" renamed the term table as a working name, since
 native's lexicon is what a line has learned (764). Nothing is left here to
 govern: the 2026-09-04 rulings and stop rules are cited from S8, and this

@@ -17,7 +17,7 @@ the DOM board and a constant, and §3.6 rewrites the geometry under them.
 Rewrite is a lane under the record's W2 or W3; until it lands this plan's
 done-conditions are not authoritative. Evaluated against the wing design
 record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 **Owns:** drawing Isometry's board through the wing's shared scene, `isometer`,
@@ -460,7 +460,7 @@ a lane saw. This section is the current one, and it names its build.
   Six native sessions prove the 1 MiB / 247 omitted to 2 MiB / zero
   transition, restart persistence, zero headroom pixel drift and the
   32,424-pixel overlay-absent control. Raw failed attempts are retained.
-  [Integration receipt](../testing/scene-board-paging/integration.md)
+  [Integration receipt](../../../testing/scene-board-paging/integration.md)
   qualifies each gate's source, Eponym's exact lock and the final
   formatting-only change. Cost-table `headed` rows are headless harness
   measurements at headed-pane dimensions, and their `frame` covers
