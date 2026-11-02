@@ -48,9 +48,13 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
         .is_some_and(|m|m == volume.materials.air || m == volume.materials.water) {
         return Err("Eponym solver contact is not a clear native cell".into());
     }
-    let patch_receipt = session.command(Command::Patch {entity:actor.entity,patch:Some(patch)})?;
+    // In a round the sim learns the patch from the minute's handback, not
+    // from every step (cases 1095, 1107).
+    let mut receipts = Vec::new();
+    if !super::super::clock::rounds(session) {
+        receipts.push(session.command(Command::Patch {entity:actor.entity,patch:Some(patch)})?);
+    }
     next.current(session)?;
-    let mut receipts = vec![patch_receipt];
     if let Some(distance) = outcome.landed_distance.filter(|d|*d > crate::SAFE_FALL) {
         let harm = distance.saturating_sub(crate::SAFE_FALL).saturating_mul(10).clamp(0,100) as u16;
         receipts.extend(super::combat::injury(session,actor.entity,harm,&[],&payment.wounds)?);
