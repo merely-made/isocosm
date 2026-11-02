@@ -5650,6 +5650,13 @@ area = "Bodies and anatomy"
 summary = "Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088."
 draws_on = ["1085", "1087", "1088"]
 
+[cases."1113"]
+title = "In a round, motion reaches the sim once a minute; what remains is made local"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local."
+draws_on = ["1080", "1081", "1095"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

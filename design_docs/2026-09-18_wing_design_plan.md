@@ -12488,6 +12488,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1085, 1087, 1088 · summary Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088.
 
+1113. **In a round, motion reaches the sim once a minute; what remains is
+      made local.** Ruled by Mark on 2026-11-02: "Batch per minute, then
+      local (Recommended)". The finding: in Eponym's borrowed mode one 60 Hz
+      motion step cost 0.5 to 0.9 s in release (about 1.5 s in a dev build),
+      each step rebuilding the sim's volume and deriving places over the
+      whole 128 by 128 by 8 window and re-encoding a record growing about
+      580 bytes a step, so a minute of play cost 30 to 90 minutes. The
+      reading: in a round the client steps its physics locally and submits
+      one motion action a minute, as the sim hears from a body once a minute
+      (case 1095); the per-step envelope stays outside rounds; the per-action
+      work that remains derives a neighbourhood or caches by terrain
+      revision.
+
+      Links: area Eponym · draws on 1095, 1081, 1080 · summary In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

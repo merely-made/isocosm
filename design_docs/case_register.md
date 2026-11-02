@@ -405,7 +405,7 @@ three design docs that cite it. The record holds the words.
 | 1085 | A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel. | none |
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | none |
-| 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | none |
+| 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Record and history
 
@@ -788,6 +788,7 @@ three design docs that cite it. The record holds the words.
 | 1102 | A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged. | none |
 | 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | none |
 | 1108 | Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does. | none |
+| 1113 | In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local. | none |
 
 ## The VTT
 
