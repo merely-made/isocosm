@@ -72,6 +72,9 @@ pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
         "injure" => state.injure(),
         "revise-canon" => state.revise_canon(),
         "save" => state.save(),
+        // A round's minute now: a fixture control, so a scenario need not
+        // wait out a real minute (case 1096).
+        "minute" => state.minute_now(),
         "load" => state.load(),
         _ => return false,
     }

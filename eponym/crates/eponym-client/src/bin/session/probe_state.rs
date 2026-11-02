@@ -20,14 +20,13 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     let yes = |value: bool| if value { "yes" } else { "no" };
     let body = game.bodies().get(played);
 
-    let position = match game.movement().pose(played) {
+    let position = match model.drawn_pose(played) {
         Some(pose) => {
             let at = pose.position.map(|v| v as f64 / MOTION_SCALE as f64);
             format!("{:.3},{:.3},{:.3}", at[0], at[1], at[2])
         },
-        None => game
-            .movement()
-            .position(played)
+        None => model
+            .drawn_position(played)
             .map(|at| format!("{},{},{}", at[0], at[1], at[2]))
             .unwrap_or_else(|| "none".into()),
     };
@@ -92,16 +91,14 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("position", position)
         .with_field(
             "step",
-            game.movement()
-                .pose(played)
+            model.drawn_pose(played)
                 .map_or(0, |pose| pose.step)
                 .to_string(),
         )
         .with_field(
             "grounded",
-            yes(game
-                .movement()
-                .pose(played)
+            yes(model
+                .drawn_pose(played)
                 .is_some_and(|pose| pose.grounded)),
         )
         .with_field("supports", supports)

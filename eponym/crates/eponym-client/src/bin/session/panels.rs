@@ -135,7 +135,7 @@ impl SessionApp {
         let game = model.game();
         let played = game.played().unwrap_or(model.session().control().played());
         game.bodies().get(played).filter(|body| body.alive())?;
-        game.movement().position(played)
+        model.drawn_position(played)
     }
 
     pub(super) fn nearby_items(&self) -> Vec<Item> {
@@ -211,7 +211,7 @@ impl SessionApp {
             },
             None => lines.push("Action: idle".into()),
         }
-        if let Some(pose) = game.movement().pose(played) {
+        if let Some(pose) = model.drawn_pose(played) {
             let at = pose.position.map(|v| v as f64 / MOTION_SCALE as f64);
             lines.push(format!(
                 "Position {:.3}, {:.3}, {:.3}; step={} grounded={}",
@@ -271,7 +271,7 @@ impl SessionApp {
         vec![
             format!(
                 "Player at {:?}; vitality={} wound={} dressings={} lost parts={}",
-                game.movement().position(played),
+                model.drawn_position(played),
                 game.bodies().get(played).map_or(0, |body| body.vitality),
                 game.bodies().get(played).map_or(0, |body| body.wound),
                 game.items()
@@ -288,7 +288,7 @@ impl SessionApp {
             format!(
                 "Target {} at {:?}; vitality={} {}",
                 body.name.as_ref().map_or("unnamed", |name| name.as_str()),
-                game.movement().position(self.target),
+                model.drawn_position(self.target),
                 body.vitality,
                 body.died_at.map_or("alive", |_| "dead")
             ),

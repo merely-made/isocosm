@@ -42,6 +42,7 @@ use cambium_genet_winit_host::{Key, NamedKey};
 use isomere::host::{Assembly, Ctx, HostOptions, Init, KeyPress, Product, Runner};
 use isomere::{Binding, Keymap};
 use isometer::core::PartId;
+use cosmograph_host::drive::{Speed, TickMode};
 use eponym_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
 use eponym_play::identity::SubjectId;
 use eponym_play::fixtures::session as session_fixture;
@@ -51,6 +52,8 @@ use eponym_play::{CombatRules, ItemId};
 
 #[path = "actions.rs"]
 mod actions;
+#[path = "round.rs"]
+mod round;
 #[path = "panels.rs"]
 mod panels;
 #[path = "projects.rs"]
@@ -210,6 +213,10 @@ pub(crate) struct SessionApp {
     pub(crate) latched: [Option<Instant>; 4],
     pub(crate) last_motion: Instant,
     pub(crate) last_charge: Instant,
+    /// When the last round frame was paced.
+    pub(crate) last_round: Instant,
+    /// World acts waiting for the minute in flight (case 1121).
+    pub(crate) queued: Vec<round::Queued>,
     /// The opt-in acquisition journal. `None` when the rules were refused, so
     /// a rejected canon costs the session nothing. Never in any save.
     pub(crate) glyphs: Option<GlyphReading>,
@@ -249,6 +256,18 @@ impl SessionApp {
             },
             // Swallow the repeat: a held Space must not toggle sixty times.
             Command::Charge if repeat => {},
+            Command::Close => self.closing = true,
+            // The four world verbs are one press, one deed: an auto-repeat
+            // falls through rather than queueing a dozen of them.
+            Command::Take | Command::Rest | Command::Injure | Command::Join if repeat => return false,
+            command => self.world(move |state| state.act(command)),
+        }
+        true
+    }
+
+    /// A world command, run when no minute is in flight.
+    fn act(&mut self, command: Command) {
+        match command {
             Command::Charge => {
                 if self.charging {
                     self.release();
@@ -257,18 +276,14 @@ impl SessionApp {
                 }
             },
             Command::Aim(direction) => self.prepare(direction),
-            Command::Close => self.closing = true,
             Command::Save => self.save(),
             Command::Load => self.load(),
-            // The four world verbs are one press, one deed: an auto-repeat
-            // falls through rather than queueing a dozen of them.
-            _ if repeat => return false,
             Command::Take => self.take_dressing(),
             Command::Rest => self.rest(),
             Command::Injure => self.injure(),
             Command::Join => self.join_limb(PartId(2)),
+            Command::Move(_) | Command::Close => {},
         }
-        true
     }
 
     /// Whether accepted events are waiting for the journal to read them.
@@ -290,7 +305,8 @@ impl SessionApp {
 
     /// True while a frame is still owed to an animation.
     fn animating(&self) -> bool {
-        self.charging || self.motion_running()
+        // A round's minutes fall due whether or not anything moves.
+        self.charging || self.motion_running() || self.in_rounds()
     }
 }
 
@@ -387,13 +403,17 @@ pub fn run() -> i32 {
         Ok(start) => start,
         Err(why) => { eprintln!("session: founding refused: {why}"); return 1; },
     };
+    let smoking = std::env::var_os("PAREDROS_SESSION_SMOKE").is_some();
+    // A driven or smoke run takes its minutes in step, so a scenario reads the
+    // same world every run; play takes them on a worker (case 1121).
+    let mode = if options.driven || smoking { TickMode::InStep } else { TickMode::Worker };
+    model.borrow_mut().start_rounds(Speed::X1, mode);
     let scene = Rc::new(RefCell::new(SceneProducer::new(SceneModelSource::new(
         model.clone(),
     ))));
     let saves = std::env::var_os("PAREDROS_SESSION_SAVES")
         .map(PathBuf::from)
         .unwrap_or_else(|| std::env::temp_dir().join("paredros-session"));
-    let smoking = std::env::var_os("PAREDROS_SESSION_SMOKE").is_some();
     let state = SessionApp {
         model,
         scene,
@@ -409,6 +429,8 @@ pub fn run() -> i32 {
         glyphs,
         last_motion: Instant::now(),
         last_charge: Instant::now(),
+        last_round: Instant::now(),
+        queued: Vec::new(),
         status: vec!["Ready: aim with the arrows, then charge and strike.".into()],
         selected: None,
         published_error: None,

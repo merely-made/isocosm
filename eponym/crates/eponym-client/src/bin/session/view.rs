@@ -20,11 +20,16 @@ pub(super) type Logic = fn(&SessionApp) -> Child;
 
 pub(super) fn button(label: String, class: &'static str, action: impl Fn(&mut SessionApp) + 'static) -> Child {
     let aria = label.clone();
+    // A click is a world act: it waits for a minute in flight (case 1121).
+    let action = std::rc::Rc::new(action);
     Box::new(focusable(clickable(
         el("button", text(label))
             .attr("class", class)
             .attr("aria-label", aria),
-        move |state: &mut SessionApp, _| action(state),
+        move |state: &mut SessionApp, _| {
+            let action = action.clone();
+            state.world(move |state| action(state));
+        },
     )))
 }
 
@@ -47,9 +52,9 @@ fn viewport(state: &SessionApp) -> Child {
                 // a mouse-only player has the same verb the keyboard has.
                 PointerPhase::Down => {
                     state.pick(event.local, event.size);
-                    state.begin_charge();
+                    state.world(SessionApp::begin_charge);
                 },
-                PointerPhase::Up => state.release(),
+                PointerPhase::Up => state.world(SessionApp::release),
                 PointerPhase::Cancel => state.charging = false,
                 PointerPhase::Move => {},
             },

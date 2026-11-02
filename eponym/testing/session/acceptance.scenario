@@ -18,13 +18,19 @@ assert text Status
 capture opened
 remember start
 
-# Movement reaches the accepted world, not just the drawn frame.
+# Movement is drawn at once and reaches the accepted world at the minute
+# (cases 1118, 1120): the drawn position moves, the world's hash waits for
+# the minute, which a scenario takes now rather than waiting one out.
 act move-right
 settle 3
-assert event motion-advanced
-differs start position hash
+differs start position
 more start step
+same start hash
 assert snap grounded == yes
+act minute
+settle 3
+assert event motion-advanced
+differs start hash
 
 # The charged volley: aim, join a limb, charge, release. The target loses the
 # authored limb it wears the dressing on.
@@ -95,6 +101,8 @@ settle 2
 assert snap saves == 1
 remember saved
 act move-forward
+settle 2
+act minute
 settle 2
 differs saved position hash
 click role:button Load

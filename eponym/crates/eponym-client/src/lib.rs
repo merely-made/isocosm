@@ -40,6 +40,7 @@ pub mod borrowed;
 #[cfg(feature = "r1-proof")]
 pub mod residency;
 pub mod room;
+pub mod round;
 pub mod scene;
 // The timed-action fixture world, shared by the producer tests and the
 // document host so neither grows a third copy of it.

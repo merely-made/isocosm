@@ -26,6 +26,11 @@ const REVISION_SEED: u64 = 11;
 impl SessionApp {
     /// One fixed 60 Hz motion step in the latched direction.
     pub(super) fn move_played(&mut self, toward: [i32; 3]) {
+        // In a round the step is drawn here and the minute takes it to the
+        // world (cases 1118, 1120).
+        if self.in_rounds() {
+            return self.step_round(toward);
+        }
         let intent = {
             let model = self.model.borrow();
             let game = model.game();
@@ -80,9 +85,8 @@ impl SessionApp {
         let game = model.game();
         game.bodies().get(played).is_some_and(|body| body.alive())
             && (self.steering() != [0, 0, 0]
-                || game
-                    .movement()
-                    .pose(played)
+                || model
+                    .drawn_pose(played)
                     .is_some_and(|pose| !pose.grounded))
     }
 
@@ -96,6 +100,9 @@ impl SessionApp {
 
     /// Advances motion at a fixed 60 Hz, catching up at most eight steps.
     pub(super) fn tick_motion(&mut self) {
+        if self.in_rounds() {
+            return self.tick_round();
+        }
         if !self.motion_running() {
             self.last_motion = Instant::now();
             return;
@@ -114,7 +121,10 @@ impl SessionApp {
 
     /// Accumulates charge while the strike is held.
     pub(super) fn tick_charge(&mut self) {
-        if !self.charging || self.last_charge.elapsed() < CHARGE_INTERVAL {
+        // Charge waits out a minute in flight, then resumes on its interval.
+        if !self.charging || self.last_charge.elapsed() < CHARGE_INTERVAL
+            || self.model.borrow().minute_pending()
+        {
             return;
         }
         let tick = {
