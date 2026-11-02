@@ -18,12 +18,14 @@ mod mind;
 pub(crate) mod pace;
 mod recipe;
 mod systems;
+mod telling;
 
 pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
 pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance, MovementTies, PolicyVariation};
+pub use telling::{DEFAULT_HOPS, PLACE_NOTE, Telling};
 pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect, EffectKind};
 pub use feeding::{FeedingSources, PortFeeding};
@@ -297,6 +299,10 @@ pub struct Rules {
     /// means the defaults, and worlds without it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub directing: Option<Directing>,
+    /// What the world rules of telling (1066); absent means the defaults,
+    /// and worlds without it hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub telling: Option<Telling>,
     /// How far members fold into the population model's bands (the
     /// execution plan's E4, D29); absent, nothing folds, and worlds without
     /// it hash as before.
@@ -387,6 +393,10 @@ impl Rules {
     pub fn directing(&self) -> Directing {
         self.directing.clone().unwrap_or_default()
     }
+    /// The world's telling rules, or the defaults (1066).
+    pub fn telling(&self) -> Telling {
+        self.telling.clone().unwrap_or_default()
+    }
     /// The most ticks this world's deep time may take (ruling 452).
     pub fn deep_time_ceiling(&self) -> crate::Result<Tick> {
         deep_time_ceiling(self.epoch, self.epoch_ticks, self.deep_time)
@@ -394,6 +404,7 @@ impl Rules {
     pub fn validate(&self) -> crate::Result<()> {
         crate::validation::rules(self)?;
         if let Some(defence) = &self.defence { defence.validate(self)?; }
+        if let Some(telling) = &self.telling { telling.validate(self)?; }
         if let Some(collapse) = &self.global_collapse { collapse.validate(self)?; }
         if let Some(witness) = &self.ecology_witness { witness.validate(self)?; }
         if let Some(companions) = &self.companions { companions.validate(self)?; }

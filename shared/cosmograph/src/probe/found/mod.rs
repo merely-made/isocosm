@@ -319,6 +319,7 @@ impl ProbeFounding {
             systems: Default::default(),
             carriage: None,
             directing: None,
+            telling: None,
             banding: None,
             social: None,
             spread_capacity: None,
