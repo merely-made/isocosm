@@ -6447,8 +6447,8 @@ draws_on = ["1085", "1087", "1088", "1112", "bodies.1", "stack.12"]
 title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
-draws_on = ["180", "184", "187", "432", "445", "847", "868", "869", "870"]
+summary = "Every surface derives from the participant's knowledge and control; other bodies are asked in the world, and driven only by recorded agreement, one at a time."
+draws_on = ["180", "184", "187", "432", "445", "847", "868", "869", "870", "1142", "1144"]
 
 [statements."directing.2"]
 title = "Each game foregrounds one rung"

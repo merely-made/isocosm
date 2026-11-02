@@ -1380,9 +1380,15 @@ the creative observer's, showing the truth and never editing (the world editor
 edits), and in Eponym it is also where tag-in lives; a mode switch changes only how the known is
 shown. Settings choose how the known is presented, never what is known. The
 sim and the host hold the whole world, so a surface reads through the
-participant's knowledge, never from host state directly.
+participant's knowledge, never from host state directly. Another body is
+offered only as an ask through the played creature: an order to a companion
+(go, hold, fight, carry) is an in-world ask under its agreement, weighed by
+its willingness, and accepted it becomes the companion's own goal. In
+survival a player drives another body only where its agreement allows, a
+recorded act, one body at a time; the creature left acts by its own mind, and
+the driven one may end it.
 
-Links: draws on 445, 180, 184, 187, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+Links: draws on 445, 180, 184, 187, 432, 847, 868, 869, 870, 1142, 1144 · summary Every surface derives from the participant's knowledge and control; other bodies are asked in the world, and driven only by recorded agreement, one at a time.
 
 *Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
 nothing". Mark: "maybe it's more like presentation is contingent upon
@@ -1395,6 +1401,10 @@ original rule that knowledge follows seat and subject, never mode. Mark: "All
 as drafted". Mesocosm's survival and creative (180, 184) folded in at Mark's
 word ("M3 into Directing 1") in the Mesocosm review, and Eponym's (187, with
 tag-in) in the Eponym review ("As drafted, 187 into Directing 1").*
+
+*Refined 2026-11-02 from cases 1142 and 1144 (Mark: "In-world asks
+(Recommended)", "Agreed, recorded, one at a time (Recommended)"): orders are
+asks, and driving in survival is agreed and recorded; tag-in stays creative's.*
 
 ### Directing 2. Each game foregrounds one rung
 
