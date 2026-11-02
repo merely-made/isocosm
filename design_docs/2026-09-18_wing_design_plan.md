@@ -12267,6 +12267,32 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1092, bodies.7 · summary A drawn lineage trait scales the scatter chance its medium or walking speed gives.
 
+1094. **At the adaptation phase the player picks among what prospered, and
+      each candidate is tested by a coarse copy over years.** Ruled by Mark
+      on 2026-11-02, asking "if we don't step the sim after there's
+      something to learn and adjust from, then when do creatures get the
+      chance to adapt, besides locally? and also, that is a crucial
+      mechanic. how should that work w/rt the roguelike of it all... or, how
+      should adaptation reach the sim? except through deep time?" He chose
+      "Pick what prospered" and "Coarse, over years". The reading: Ecology
+      1's forward copy stays the test of every change to a lineage. Play is
+      lived (memory, culture, the player imitated, births and their
+      selection), and a lineage itself changes only at the adaptation phase
+      (1083), whose candidates are what play showed: variants that bred,
+      behaviours that spread, what the played critter discovered. Each is
+      weighed by a copy run coarse (grouped or in the aggregate) over years
+      of world time, long enough to see generations and quick enough for
+      the phase. The player sees what prospered and how each fared, and
+      picks one or splits the line to take a variant; every other lineage
+      picks by its copy, and deep time is the same phase with nobody
+      picking. His question on leaves ("why wouldn't grazers eat the leaves
+      instead of the parts of the plant that produce leaves? or fruit,
+      etc.") went to 1078's lane as a cue, not ruled: a bite reaching only
+      exposed parts, and fruit grown to be eaten, carrying seed.
+
+      Links: area Ecology · draws on ecology.1, 684, 1058, 1077, 1080, 1083 · summary The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking.
+
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

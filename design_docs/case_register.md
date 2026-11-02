@@ -267,6 +267,7 @@ three design docs that cite it. The record holds the words.
 | 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | none |
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | none |
 | 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | none |
+| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | none |
 
 ## Bodies and anatomy
 
