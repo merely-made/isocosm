@@ -123,11 +123,7 @@ impl Simulation {
         self.protect_attention();
         let mut queue = BTreeSet::new();
         for p in self.genesis.rules.processes.values() {
-            if let Some(period) = p.period
-                && let Some(due) = self
-                    .state
-                    .tick
-                    .checked_add(period - self.state.tick % period)
+            if let Some(due) = self.next_due(p, self.state.tick)
                 && due <= end
             {
                 queue.insert((due, p.priority, p.id.clone()));
@@ -234,8 +230,7 @@ impl Simulation {
             self.passed_by(gates.as_ref(), from, bound);
             self.pass = None;
             self.frame = None;
-            let next = due.checked_add(process.period.unwrap());
-            if let Some(next) = next.filter(|next| *next <= end) {
+            if let Some(next) = self.next_due(process, due).filter(|next| *next <= end) {
                 queue.insert((next, priority, id));
             }
         }
@@ -325,11 +320,39 @@ impl Simulation {
         (start, usize::try_from(period).unwrap_or(usize::MAX), count, 1)
     }
 
+    /// Whether `p` falls due at this tick for a body born at `born` (1104):
+    /// a body's periodic processes run on its own clock, offset by its birth,
+    /// so members do not pulse together. The world's own processes keep the
+    /// world's clock.
+    pub(crate) fn due_for(&self, p: &Process, born: Tick) -> bool {
+        let tick = self.state.tick;
+        match p.period {
+            None => true,
+            Some(period) if period <= 1 || p.causation == Causation::Agentless => tick % period.max(1) == 0,
+            Some(period) => tick > born && (tick - born) % period == 0,
+        }
+    }
+
+    /// The first tick after `after` at which `p` falls due for some living
+    /// body, by each body's own clock (1104).
+    fn next_due(&self, p: &Process, after: Tick) -> Option<Tick> {
+        let period = p.period?.max(1);
+        if period == 1 || p.causation == Causation::Agentless {
+            return after.checked_add(period - after % period);
+        }
+        let next = (after + 1) % period;
+        let wait = self.state.population.groups.values()
+            .filter(|g| g.entity.alive)
+            .map(|g| (g.entity.born % period + period - next) % period)
+            .min()?;
+        after.checked_add(1 + wait)
+    }
+
     /// How a group is evaluated: the calls, each standing for some members,
     /// or none when the process passes it by whole.
     fn calls(&self, process: &Process, first: Id, count: u64) -> Option<(u64, u64)> {
         let entity = self.body_at_start(first)?;
-        if !entity.alive {
+        if !entity.alive || !self.due_for(process, entity.born) {
             return None;
         }
         if process.causation == Causation::Agentless {

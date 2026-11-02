@@ -73,7 +73,8 @@ impl Simulation {
         let producer=self.genesis.rules.institution_producers.get(key).ok_or("institution producer is undeclared")?;
         let p=self.genesis.rules.processes.get(&producer.process).ok_or("institution producer process is absent")?;
         if self.pass.is_none() || actor!=producer.actor || p.causation!=Causation::Choice
-            || !p.period.is_some_and(|period|period>0 && self.state.tick%period==0) {
+            || !p.period.is_some_and(|period|period>0)
+            || !self.body_at_start(actor).is_some_and(|b|self.due_for(p,b.born)) {
             return Err("institution producer requires its actual scheduled native body/process pass".into());
         }
         let body=self.body_at_start(actor).ok_or("institution producer body is absent")?;

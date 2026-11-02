@@ -108,3 +108,20 @@ fn a_world_time_web_holds_a_year() {
     let pass = verdict.iter().all(|v| v.1 && v.2 && v.3);
     eprintln!("seed {seed} PASS {pass}");
 }
+
+/// A laid world reads each site's air and water from its terrain (1103),
+/// and a strength the site already holds is kept.
+#[test]
+fn laid_terrain_gives_scatter_strengths() {
+    for seed in [5u64, 9, 11] {
+        let grid = cosmograph::map::Grid::drawn(seed);
+        let founding = Founding { seed, sites: grid.width * grid.height, population: 240, cohort_size: 1,
+            lineages: 10, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
+            map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() };
+        let g = founding.generate().unwrap();
+        let read = |key: &str| -> Vec<i64> { g.sites.values().map(|s| s.conditions[key]).collect() };
+        let (air, water) = (read("world:air"), read("world:water"));
+        assert!(air.iter().chain(&water).all(|v| (0..=100).contains(v)), "{air:?} {water:?}");
+        assert!(water.contains(&100) && air.iter().any(|&a| a > 0), "seed {seed}: {air:?} {water:?}");
+    }
+}

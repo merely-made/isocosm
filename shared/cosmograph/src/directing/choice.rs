@@ -421,7 +421,8 @@ impl Simulation {
         let mut best = Choice::default();
         let mut top = i64::MIN;
         let mut candidates = Vec::new();
-        let due = |p: &&Process| p.period.is_some_and(|n| tick % n == 0);
+        let born = self.body_at_start(actor).map_or(0, |e| e.born);
+        let due = |p: &&Process| p.period.is_some() && self.due_for(p, born);
         let choices = rules
             .processes
             .values()

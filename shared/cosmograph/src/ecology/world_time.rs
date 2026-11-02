@@ -20,13 +20,13 @@ use std::collections::BTreeMap;
 
 const DAY: u64 = 1440;
 
-/// The medium seeds and spores ride (1092), and its strength at every site
-/// where a founding does not set one: a candidate pending its ruling.
+/// The media seeds and spores ride (1092): a lineage draws one.
 const AIR: &str = "world:air";
-const AIR_STRENGTH: i64 = 100;
-
-/// The fewest members a world-time founding gives each lineage (1090).
-pub const FOUNDING_FLOOR: u64 = 6;
+const WATER: &str = "world:water";
+const MEDIA: [&str; 2] = [AIR, WATER];
+/// A medium's strength where neither the site's region or world (1103) nor
+/// a laid terrain gives one: a candidate pending its ruling.
+const UNLAID_STRENGTH: i64 = 100;
 
 /// The founded soil, as a multiple of the stock world's (1074: enough
 /// founded food).
@@ -70,10 +70,10 @@ pub struct RoleTime {
     pub founders: u64,
     /// Founders' ages are drawn from zero to this many days.
     pub founding_age_days: u64,
-    /// What carries its young to a neighbouring site (1092), and the range
-    /// its lineage draws a scatter propensity from, in millionths of
-    /// births (1093). A walker's young wait on walking speed (1085).
-    pub medium: Option<&'static str>,
+    /// Whether its young ride a medium to a neighbouring site (1092), and
+    /// the range its lineage draws a scatter propensity from, in millionths
+    /// of births (1093). A walker's young wait on walking speed (1085).
+    pub spreads: bool,
     pub scatter: (u32, u32),
 }
 
@@ -83,23 +83,23 @@ pub(crate) fn role_time(role: Role) -> RoleTime {
         Role::Producer => RoleTime { maturity_days: 30, hazard_per_million: 100_000, doubling_years: 3,
             upkeep: DAY, adult: 60, child: 10, feed: 0, bite: 0, kept: 0, grow: 720, regrow: 240,
             breed: 90 * DAY, founders: 40, founding_age_days: 730,
-            medium: Some(AIR), scatter: (50_000, 150_000) },
+            spreads: true, scatter: (50_000, 150_000) },
         Role::Grazer => RoleTime { maturity_days: 120, hazard_per_million: 200_000, doubling_years: 2,
             upkeep: 1_680, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
             breed: 90 * DAY, founders: 8, founding_age_days: 1_095,
-            medium: None, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0) },
         Role::Omnivore => RoleTime { maturity_days: 180, hazard_per_million: 150_000, doubling_years: 3,
             upkeep: 2_400, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 2, founding_age_days: 1_460,
-            medium: None, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0) },
         Role::Predator => RoleTime { maturity_days: 365, hazard_per_million: 120_000, doubling_years: 3,
             upkeep: 2_160, adult: 15, child: 8, feed: DAY, bite: 9, kept: 3, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 1, founding_age_days: 1_825,
-            medium: None, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0) },
         Role::Decomposer => RoleTime { maturity_days: 21, hazard_per_million: 500_000, doubling_years: 1,
             upkeep: 720, adult: 8, child: 3, feed: 240, bite: 3, kept: 1, grow: 0, regrow: 0,
             breed: 45 * DAY, founders: 12, founding_age_days: 180,
-            medium: Some(AIR), scatter: (50_000, 150_000) },
+            spreads: true, scatter: (50_000, 150_000) },
     }
 }
 
@@ -134,9 +134,8 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     g.rules.accounts.insert(DETRITUS.into(), AccountKind::Matter { lineage: "world:ground".into(),
         reserve: false, provision: false });
-    g.rules.conditions.insert(AIR.into());
+    media(g);
     for site in g.sites.values_mut() {
-        site.conditions.entry(AIR.into()).or_insert(AIR_STRENGTH);
         site.accounts.insert(DETRITUS.into(), 0);
         if let Some(soil) = site.accounts.get_mut("world:soil") { *soil *= SOIL_FACTOR; }
     }
@@ -174,7 +173,8 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // Some births land next door (1089): the lineage's drawn propensity
         // picks a birth to scatter, and the medium's strength at the parent's
         // site whether it goes.
-        if let Some(medium) = time.medium {
+        if time.spreads {
+            let medium = MEDIA[(crate::draw(founding.seed, "medium", &[u64::from(i)]) % 2) as usize];
             let (low, high) = time.scatter;
             let propensity = low + (crate::draw(founding.seed, "scatter", &[u64::from(i)])
                 % u64::from(high - low + 1)) as u32;
@@ -259,4 +259,33 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// A world-time founding's lineage shares: the role's founders.
 pub(crate) fn founders(role: Role) -> u64 {
     role_time(role).founders
+}
+
+/// Each site's air and water strength for scattering (1103), out of a
+/// hundred: what its region or world sets controls; otherwise it is read
+/// from the laid terrain, water from how far the site stands above the sea
+/// and air from its exposure, its height and relief within the world's.
+/// The readings are candidates.
+fn media(g: &mut Genesis) {
+    g.rules.conditions.extend(MEDIA.map(Into::into));
+    let Some(skeleton) = g.rules.skeleton.clone() else {
+        for site in g.sites.values_mut() {
+            for m in MEDIA { site.conditions.entry(m.into()).or_insert(UNLAID_STRENGTH); }
+        }
+        return;
+    };
+    let read = |key: &str| -> Vec<i64> { g.sites.values().filter_map(|s| s.conditions.get(key).copied()).collect() };
+    let (heights, reliefs) = (read(&skeleton.elevation), read(&skeleton.relief));
+    let (low, high) = (heights.iter().copied().min().unwrap_or(0), heights.iter().copied().max().unwrap_or(0));
+    let roughest = reliefs.iter().copied().max().unwrap_or(0).max(1);
+    let share = |part: i64, whole: i64| (i128::from(part.max(0)) * 100 / i128::from(whole.max(1))) as i64;
+    for site in g.sites.values_mut() {
+        let height = site.conditions.get(&skeleton.elevation).copied().unwrap_or(low);
+        let relief = site.conditions.get(&skeleton.relief).copied().unwrap_or(0);
+        let sea = site.conditions.get(&skeleton.water).copied().unwrap_or(low);
+        let water = 100 - share(height - sea, high - sea);
+        let air = (share(height - low, high - low) + share(relief, roughest)) / 2;
+        site.conditions.entry(WATER.into()).or_insert(water.clamp(0, 100));
+        site.conditions.entry(AIR.into()).or_insert(air.clamp(0, 100));
+    }
 }

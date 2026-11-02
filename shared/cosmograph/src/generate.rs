@@ -5,6 +5,9 @@ use crate::{Result, population::Population, rules::*, schema::*, simulation::Gen
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+/// The fewest members a founding gives each lineage (1090, 1106).
+pub const FOUNDING_FLOOR: u64 = 6;
+
 /// The declared, versioned generator domain, saved with every bench receipt.
 /// Generated topology, metabolic wiring, stocks and cadence all vary.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -454,9 +457,10 @@ impl Founding {
         let mut remaining = self.population;
         let mut group = 0;
         // A world-time founding gives every lineage at least six (1090),
-        // dealt in turn before the pyramid's draw.
+        // dealt in turn before the draw. Every generated world is ruled
+        // (1106) and waits on its pinned fixtures being re-recorded.
         let floor = if self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime {
-            u64::from(self.lineages) * crate::ecology::world_time::FOUNDING_FLOOR.div_ceil(self.cohort_size.max(1))
+            u64::from(self.lineages) * FOUNDING_FLOOR.div_ceil(self.cohort_size.max(1))
         } else { 0 };
         while remaining > 0 {
             let i = if group < floor { group % u64::from(self.lineages) }

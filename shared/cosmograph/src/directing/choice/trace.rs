@@ -79,7 +79,7 @@ impl Simulation {
                 "place": target.place, "resident_site": target.resident_site(), "journey": target.journey,
                 "held": crate::meaning::mass(&crate::anatomy::books(target), &self.genesis.rules)
             }))).unwrap_or(serde_json::Value::Null),
-            food_due: process.period.is_some_and(|period| self.state.tick % period == 0),
+            food_due: process.period.is_some() && self.due_for(process, body.born),
             food_target: target, food_feasible: self.feasible(actor, target, process, site) };
         RECORDING.with(|slot| {
             if let Some(record) = slot.borrow_mut().as_mut() { record.attempts.push(attempt); }
