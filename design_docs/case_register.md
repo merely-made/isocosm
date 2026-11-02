@@ -388,6 +388,7 @@ three design docs that cite it. The record holds the words.
 | 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
 | 1049 | A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes. | none |
 | 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md) |
+| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | none |
 
 ## Record and history
 

@@ -12034,6 +12034,29 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1077, ecology.2, ecology.3, ecology.4 · summary Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding.
 
+1079. **Living worlds and sensing without nerves: the research brief's
+      rulings.** Ruled by Mark on 2026-11-01 on the six questions of
+      `design_docs/2026-11-01_living_worlds_research.md` (1071's brief). A
+      world entity's agency is a world setting with three options, "all 3
+      ought to be options": its acts only emergent from its processes and
+      fields; emergent and directable by a GM or the world's disposition
+      through the intents any entity uses, a place able to take a turn at the
+      table; or a world mind with goals that chooses like a sophont. A member
+      keeps one prior reading per sense, so gradients and trends can be read
+      ("Yes, one prior reading per sense"). Use shapes a body's conducting
+      network, growth adding capacity where flow runs and idle routes
+      shrinking ("Yes, use shapes growth"). Influence fields (a place's
+      aura, a regional effect) share the reach field's machinery as a
+      separate kind that never mixes with knowledge ("Share the machinery,
+      separate kinds"). Bodies without nerves join their systems by slower
+      signalling of their form, by degree and with a lag ("Yes, slow
+      signalling by form"). The two licences were checked: only Ironsworn's
+      SRD and asset texts are CC BY 4.0, its rulebooks being non-commercial
+      and out; USGS-authored material is US public domain, credited, its
+      third-party images excluded.
+
+      Links: area Bodies and anatomy · draws on 1071, bodies.10, bodies.15, world.4, processes.19 · summary World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
