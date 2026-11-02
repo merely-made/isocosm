@@ -802,6 +802,7 @@ three design docs that cite it. The record holds the words.
 | 1124 | A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds. | none |
 | 1125 | The standalone client gets 1x, 2x, 4x and 8x keys and a readout. | none |
 | 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
+| 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | none |
 
 ## The VTT
 

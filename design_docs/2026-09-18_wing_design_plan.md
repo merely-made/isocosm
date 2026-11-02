@@ -12632,6 +12632,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1122, 1102, method.8 · summary An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds.
 
+1127. **The debug injury names the part it severs.** Ruled by Mark on
+      2026-11-02: "It names its part (Recommended)", reopening case 1124
+      when the lane found no revision bug: an unnamed wound's part is drawn
+      over the body's living cells seeded by entity and tick (case 716), so
+      at tick 0 it fell on a limb and at later ticks elsewhere, severing
+      nothing; the game bumps the anatomy revision only on a cut, correctly,
+      and the client's debug injury, which reconciled a hard-coded part 1,
+      was refused as stale. Real wounds were unaffected. The reading: the
+      debug injury lowers a severed wound on a named part through the harm
+      path strikes use, and the game reconciles it. Replaces 1124's fix.
+
+      Links: area Eponym · draws on 1124, 716 · summary The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
