@@ -57,7 +57,7 @@ pub(super) fn rebound(sim: &Simulation, binding: &PoseBinding, physical: &Physic
 pub(super) fn current(sim: &Simulation, binding: &PoseBinding, physical: &Physical) -> Result<(), String> {
     let (next, held) = rebound(sim, binding, physical)?;
     let body = sim.state().population.get(binding.entity).ok_or("Eponym physical body is absent")?;
-    if next != *binding || held != *physical || body.patch != Some(binding.patch) {
+    if next != *binding || held != *physical || !patch_agrees(sim, body.patch, binding) {
         return Err("Eponym clock physical binding differs from current native geometry".into());
     }
     Ok(())

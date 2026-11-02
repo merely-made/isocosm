@@ -11,7 +11,7 @@ impl PoseBinding {
         let body = session.sim.state().population.get(self.entity).ok_or("bound Eponym entity is absent")?;
         if body.resident_site() != Some(self.site) || body.arrived != self.resident_since
             || body.body.is_none() || body.body_revision != self.body_revision
-            || body.patch != Some(self.patch) || self.patch.site != self.site
+            || !super::clock::patch_agrees(&session.sim, body.patch, self) || self.patch.site != self.site
             || session.sim.terrain_revision() != self.terrain_revision {
             return Err("Eponym physical binding is stale, departed or lacks current native geometry".into());
         }

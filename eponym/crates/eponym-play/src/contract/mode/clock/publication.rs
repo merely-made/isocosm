@@ -103,7 +103,8 @@ pub(super) fn refresh_inner(session: &mut Session, mode: &mut ModeState, state: 
     for before in mode.bindings.clone() {
         let Some(physical) = state.physical.get(&before.subject) else { continue; };
         let Ok((after, physical)) = geometry::rebound(&session.sim, &before, physical) else { continue; };
-        if session.sim.state().population.get(after.entity).is_some_and(|e| e.patch != Some(after.patch)) {
+        // In a round the minute's handback tells the sim the patch (1107).
+        if !rounds(session) && session.sim.state().population.get(after.entity).is_some_and(|e| e.patch != Some(after.patch)) {
             session.command(Command::Patch { entity: after.entity, patch: Some(after.patch) })?;
         }
         geometry::current(&session.sim, &after, &physical)?;
