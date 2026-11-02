@@ -136,6 +136,11 @@ impl Windows {
             .filter(|r| matches!(r, Region::Frame { .. })).collect()
     }
 
+    /// Every participant with an active window.
+    pub(crate) fn participants(&self) -> BTreeSet<Id> {
+        self.active.values().map(|c| c.participant).collect()
+    }
+
     /// The camera frames one participant's active windows examine.
     pub(crate) fn frames_of(&self, participant: Id) -> Vec<Region> {
         self.active.values().filter(|c| c.participant == participant)

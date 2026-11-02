@@ -315,6 +315,7 @@ impl Founding {
             directing: None,
             telling: None,
             banding: None,
+            speed: None,
             social: None,
             spread_capacity: None,
             material_recipes: BTreeMap::new(),

@@ -30,7 +30,7 @@ fn a_frame_keeps_its_members_posed_and_the_rest_leave_the_physical_path() {
     assert!(members.len() > 4, "a site with members to frame");
     for (x, (id, arrived)) in members.iter().enumerate() {
         let pose = Pose { at: [x as i64, 0, 0], yaw: Default::default(), feet: Default::default() };
-        s.sim.state.spatial_poses.insert(*id, Resident { site, arrived: *arrived, pose });
+        s.sim.state.spatial_poses.insert(*id, Resident { site, arrived: *arrived, pose, travel: None });
     }
     let frame = Region::Frame { site, min: [0, 0], max: [2, 1] };
     s.attach_window(p, "mesocosm".into(), WindowAttention { examined: Some(frame), ..Default::default() }).unwrap();

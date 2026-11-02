@@ -11,6 +11,8 @@ use crate::{rules::Process, simulation::Genesis};
 mod food;
 mod route;
 mod senses;
+mod travel;
+pub use travel::Travel;
 pub use route::{FoodRoute, RouteSearch, geometry};
 pub(crate) use route::Cache as RouteCache;
 pub use senses::{Detection, FoodDetection};
@@ -50,6 +52,9 @@ pub struct Resident {
     pub site: Id,
     pub arrived: Tick,
     pub pose: Pose,
+    /// Its way to a meal, out of view (case 1084); absent, it stands.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub travel: Option<Travel>,
 }
 
 pub(super) fn validate(t: &Templates, rules: &Rules) -> Result<()> {
@@ -112,6 +117,7 @@ pub(crate) fn founding_poses(g: &Genesis) -> BTreeMap<Id, Resident> {
                         site,
                         arrived: g.population.get(id)?.arrived,
                         pose: Pose { at: stand.at, yaw: stand.yaw, feet: stand.feet.clone() },
+                        travel: None,
                     },
                 ))
             })
@@ -179,6 +185,7 @@ impl Simulation {
                 site,
                 arrived,
                 pose,
+                travel: None,
             },
         );
     }

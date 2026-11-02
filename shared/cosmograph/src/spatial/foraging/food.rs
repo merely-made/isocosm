@@ -152,8 +152,11 @@ impl Simulation {
                 return None;
             }
             let feed = &self.genesis.rules.processes[&f.feed];
-            if self.food_need_score(actor, feed) <= 0 {
+            if self.food_need_score(actor, feed) <= 0 || self.travelling(actor) {
                 return Some(None);
+            }
+            if self.travels_out_of_view(actor) {
+                return Some(self.travel_target(actor, &p.id, f));
             }
             if f.reachable {
                 return Some(self.food_route(actor, &p.id).ok()

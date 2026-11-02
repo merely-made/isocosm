@@ -76,6 +76,7 @@ pub mod schema;
 pub mod senses;
 pub mod spread;
 pub mod simulation;
+pub mod speed;
 pub mod site_authoring;
 pub mod social;
 mod location_authoring;

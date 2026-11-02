@@ -5643,6 +5643,13 @@ area = "Ecology"
 summary = "Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce."
 draws_on = ["1071", "1078", "1104", "bodies.15", "processes.16"]
 
+[cases."1112"]
+title = "Speed is relative Froude: a world's baseline times the root of leg over its reference leg"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088."
+draws_on = ["1085", "1087", "1088"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6209,8 +6216,8 @@ draws_on = ["1071", "bodies.1", "bodies.10", "world.4"]
 title = "Speed follows the body"
 source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
-summary = "Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel."
-draws_on = ["1085", "1087", "1088", "bodies.1", "stack.12"]
+summary = "Speed is a world baseline times the root of leg over a reference leg, legless bodies at body lengths a second, stride capped by drawn joint ranges; it bounds handbacks and sets out-of-view travel."
+draws_on = ["1085", "1087", "1088", "1112", "bodies.1", "stack.12"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"

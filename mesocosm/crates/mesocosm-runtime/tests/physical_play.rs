@@ -59,6 +59,8 @@ fn founded() -> Founded {
     }
     let mind = founded.genesis.rules.mind.clone();
     body::declare(&mut founded.genesis).unwrap();
+    // These checks walk by the game's steps, as a round's bodies do (1084).
+    founded.genesis.rules.speed = None;
     founded.genesis.rules.mind = mind;
     let periods: std::collections::BTreeMap<_, _> = founded.genesis.rules.spatial_templates
         .as_ref().unwrap().foraging.iter().map(|(walk, f)|
