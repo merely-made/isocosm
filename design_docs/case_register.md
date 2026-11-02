@@ -276,6 +276,7 @@ three design docs that cite it. The record holds the words.
 | 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | none |
 | 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | none |
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | none |
+| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [brief](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Bodies and anatomy
 

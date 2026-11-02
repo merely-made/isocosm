@@ -5692,6 +5692,13 @@ area = "Eponym"
 summary = "Between minutes a host draws a borrowed body from its own locally stepped pose."
 draws_on = ["1113", "1117"]
 
+[cases."1119"]
+title = "The ecology is derived from bodies and finished by selection"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence."
+draws_on = ["1077", "1078", "1094", "ecology.1", "ecology.2", "bodies.7", "record.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

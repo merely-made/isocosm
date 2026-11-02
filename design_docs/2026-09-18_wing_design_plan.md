@@ -12554,6 +12554,26 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       Links: area Eponym · draws on 1113, 1117 · summary Between minutes a host draws a borrowed body from its own locally stepped pose.
 
 
+
+1119. **The ecology is derived from bodies and finished by selection.** Ruled
+      by Mark on 2026-11-02 on the seven ideas of
+      `mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md`: "agreed...
+      i absolutely agree with 1-7, 7 most of all", after asking how adaptation
+      reaches the sim "except through deep time" and noting that leaf-eaters
+      "wouldn't evolve to do so if there wasn't an abundance of producers
+      anyway". The reading: rates follow from body size and temperature by
+      metabolic scaling rather than a table per role; food differs in quality
+      and a body extracts what its digestive system allows; a web's health is
+      read by region, sites free to crash and recolonize; dormant stages and
+      seasons carry populations through troughs; density-dependent disease
+      ends booms; creatures may change the terrain; and above all, rate
+      constants are heritable within bounds a world sets, deep time selects
+      them, and worlds whose webs persisted are offered. Which comes first,
+      whether evolution continues in play, and which constants are heritable
+      stay open (the brief's §7).
+
+      Links: area Ecology · draws on 1077, 1078, 1094, ecology.1, ecology.2, bodies.7, record.7 · summary Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
