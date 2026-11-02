@@ -297,9 +297,9 @@ fn changing_a_residents_body_invalidates_a_cached_route_without_changing_terrain
         .route
         .unwrap();
     assert_complete(&f, &route);
-    // Admitted geometry can change independently of terrain. A broad new food
-    // part now occupies the old approach, which cannot reuse its old witness.
-    let mut body = f
+    // Admitted geometry can change independently of terrain. A food part
+    // now occupies the old approach, which cannot reuse its old witness.
+    let body = f
         .session
         .sim
         .state()
@@ -309,7 +309,23 @@ fn changing_a_residents_body_invalidates_a_cached_route_without_changing_terrain
         .body
         .clone()
         .unwrap();
-    body.parts[0].half_extent[0] += 8;
+    // The food part nearest the actor moves into the approach, however the
+    // food is turned: the shift that leaves it one cell from the actor.
+    let state = f.session.sim.state();
+    let own = native::embodiment::boxes(state.population.get(f.actor).unwrap().body.as_ref().unwrap(),
+        &state.spatial_poses[&f.actor].pose).unwrap();
+    let food_pose = &state.spatial_poses[&f.food].pose;
+    let near = native::embodiment::part_boxes(&body, food_pose).unwrap()
+        .into_iter().min_by_key(|(_, b)| native::foraging::gap(&own, &[*b])).unwrap().0;
+    let fill = i32::try_from(f.distance()).unwrap() - 1;
+    let body = [[-fill, 0], [fill, 0], [0, -fill], [0, fill]].into_iter().find_map(|[dx, dz]| {
+        let mut moved = body.clone();
+        let a = moved.parts.iter_mut().find(|p| p.id == near)?.attachment.as_mut()?;
+        a.offset[0] += dx;
+        a.offset[2] += dz;
+        let boxes = native::embodiment::boxes(&moved, food_pose).ok()?;
+        (native::foraging::gap(&own, &boxes) == 1 && !native::embodiment::intersects(&own, &boxes)).then_some(moved)
+    }).expect("a food part moves into the approach");
     f.session
         .command(Command::Embody {
             entity: f.food,
