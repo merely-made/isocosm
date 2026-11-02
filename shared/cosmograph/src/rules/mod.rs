@@ -144,6 +144,14 @@ pub enum Query {
         among: BTreeSet<Key>,
         amount: u64,
     },
+    /// At least `at_least` live members of `among` reside at the actor's
+    /// site for each of `per` there (1145): a count read per head, such as
+    /// prey per member of a lineage.
+    MembersPer {
+        among: BTreeSet<Key>,
+        per: BTreeSet<Key>,
+        at_least: u64,
+    },
     /// The actor has a live part expressing `function` (ruling 338). A
     /// process requires at most one, and binds the lowest-numbered such part
     /// as `Binding::Part`; its receipt reads that part's address.

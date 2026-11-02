@@ -144,7 +144,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
         || p.commitments.iter().chain(&p.effects).any(|e| scattered(e) || e.branches().any(scattered))
         || p.requires.iter().any(|q| {
             let reads = match q {
-                Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. }
+                Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
                 | Query::Sensed { .. } => return true,
                 Query::Project { .. } | Query::ProjectDecision
                 | Query::InstitutionDecision | Query::Institution { .. } => return true,

@@ -39,7 +39,9 @@ fn a_world_time_web_holds_a_year() {
     let grid = cosmograph::map::Grid { width: 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
     let genesis = Founding { seed, sites: 4, population: env("WORLD_TIME_POP", 240),
         cohort_size: 1, lineages, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
-        map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() }.generate().unwrap();
+        map: Some(cosmograph::map::Layout::Grid(grid)),
+        bodies: (env("WORLD_TIME_BODIED", 0) == 1).then(|| cosmograph::bodied::Bodies { clutch: [1, 1], ..Default::default() }),
+        ..Default::default() }.generate().unwrap();
     let media: Vec<(i64, i64)> = genesis.sites.values().map(|s| (s.conditions["world:air"], s.conditions["world:water"])).collect();
     eprintln!("seed {seed} air and water by site {media:?}");
     let roles: BTreeMap<String, String> = genesis.lineages.iter().map(|(k, l)| (k.clone(),
@@ -82,7 +84,7 @@ fn a_world_time_web_holds_a_year() {
         let st = s.sim.state();
         let mean: BTreeMap<String, u64> = now.keys().map(|k| { let i = k.trim_start_matches("lineage:");
             let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
-                .fold((0u64, 0u64), |(a, b), g| (a + g.entity.accounts.get(&format!("matter:{i}-0")).copied().unwrap_or(0) * g.count, b + g.count));
+                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&format!("matter:{i}-0")).copied().unwrap_or(0) * g.count, b + g.count));
             (k.clone(), sum / n.max(1)) }).collect();
         let soil: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:soil").copied().unwrap_or(0)).collect();
         let light: Vec<u64> = st.sites.values().map(|site| site.accounts.get("sim:energy").copied().unwrap_or(0)).collect();
@@ -93,6 +95,12 @@ fn a_world_time_web_holds_a_year() {
             by_site.entry(g.entity.place).or_insert_with(|| vec![0; lineages as usize])[i] += g.count;
         }
         eprintln!("seed {seed} sites {by_site:?}");
+        let store: BTreeMap<String, u64> = now.keys().filter_map(|k| { let i = k.trim_start_matches("lineage:");
+            let key = format!("reserve:{i}");
+            let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
+                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&key).copied().unwrap_or(0) * g.count, b + g.count));
+            (sum > 0).then(|| (k.clone(), sum / n.max(1))) }).collect();
+        eprintln!("seed {seed} store {store:?}");
         eprintln!("seed {seed} body {mean:?} soil {soil:?} detritus {detritus:?} light {light:?}");
         eprintln!("seed {seed} month {m} ({:?}) {now:?} births {} starved {} hazard {}", started.elapsed(),
             events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
