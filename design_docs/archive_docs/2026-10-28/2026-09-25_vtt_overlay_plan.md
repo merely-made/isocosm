@@ -56,23 +56,23 @@ which this is the game most likely to fill; the played loop W5 names; and
 the order in which `isometry-campaign`'s world moves into Isocosm for this
 overlay's needs (§4). **Does not own:** the sim, whose schema, process
 definitions, record and generator the
-[sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md) owns, so every
+[sim plan](../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md) owns, so every
 move lands under its phases; the bench (W4), where calibration is checked;
 the other overlays (the record's §5.5 and §5.6); the substrate's geometry and
 turns, which stay this product's; the rulesets, which are packs (ruling 41,
 the record's §5.1); or naming. **Consumes:** the record; the sim plan; the
-contract crate's [README](../shared/isocosm-overlay/README.md);
-[PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) for the pillars; the
-[watchtower plan](archive_docs/2026-10-10/2026-09-05_watchtower_plan.md), whose pack is the first
+contract crate's [README](../../../shared/cosmograph-overlay/README.md);
+[PROJECT_DESCRIPTION.md](../../PROJECT_DESCRIPTION.md) for the pillars; the
+[watchtower plan](../2026-10-10/2026-09-05_watchtower_plan.md), whose pack is the first
 adventure-pack fixture; the
-[protocol hardening plan](archive_docs/2026-10-10/2026-08-08_protocol_hardening_plan.md), whose
+[protocol hardening plan](../2026-10-10/2026-08-08_protocol_hardening_plan.md), whose
 `Intent -> Resolved` envelope is the handoff's shape at the table; the
 [shared authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)
 for edit mode, its tiers and creative mode; the
-[overmap presentation plan](archive_docs/2026-10-10/2026-08-02_overmap_presentation_plan.md) for the
+[overmap presentation plan](../2026-10-10/2026-08-02_overmap_presentation_plan.md) for the
 far view; the [board-on-isometer plan](2026-09-15_board_on_isometer_plan.md),
 held, for the battlemap as a scene; and the
-[vessel briefs](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
+[vessel briefs](../../../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
 §2.
 
 ---
@@ -80,7 +80,7 @@ held, for the battlemap as a scene; and the
 ## 0. Done-conditions
 
 W5's done-conditions are the record's
-[the wing's phases](2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for the VTT, they are
+[the wing's phases](../../2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for the VTT, they are
 met by §1 (the profile), §3 (the core and the contract) and §2's phase V4
 (the played loop).
 
@@ -413,7 +413,7 @@ what each left open lands here, so it has a live owner.
   map views and party-membership editing (W7). Each waits on V2's campaign
   over a drawn world, since parties and their knowledge then come from the
   sim. The watchtower's five failing atlas and door tests stay open here
-  (from the [after-pass plan](../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md)
+  (from the [after-pass plan](../../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md)
   §A2).
 
 ## Findings
@@ -458,7 +458,7 @@ what each left open lands here, so it has a live owner.
 ## Progress
 
 - **2026-10-18:** the progress entries of 2026-10-12 and 2026-10-13 moved to
-  [the archive](archive_docs/2026-10-18/2026-09-25_vtt_overlay_plan_retired.md#progress-entries-matched-to-their-cases-2026-10-18);
+  [the archive](../2026-10-18/2026-09-25_vtt_overlay_plan_retired.md#progress-entries-matched-to-their-cases-2026-10-18);
   the choices they call pending were decided as cases 851, 852 and 865 to 873.
 
 - **2026-10-13, TG7 source placement:** Mesocosm's entry; it lives in the [sim

@@ -489,3 +489,7 @@ multiplier appears in its log. 185 workspace tests green under `--all-features`.
   its effects; host-computed (reads secrets), DM-only. Adversarially reviewed.
   173 workspace tests green. C7 (factions as participants) is next, and waits on
   the moot/murm rebase.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

@@ -1,6 +1,6 @@
 # Content packs
 
-**Status:** 2026-10-28: cut from `2026-10-17_private_pack_authoring_plan.md`, `2026-08-08_extracted_receipts.md` and the pack parts of `2026-10-15_campaign_retirement_plan.md`, which are archived in `archive_docs/2026-10-28/`, with the Massif Press ask from the sim plan (`mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md`). The private terminal authoring tool `pack-author` is landed (`crates/isocosm-system/src/pack_author/`, feature `pack-authoring`) over `ContentPackManifest` as the schema and `GeneratorPack::load` as the loader. The manifest carries optional `license` and `credit` (blank refused by `validate`). Nothing outside tests reads those terms yet. Open: showing terms to the table, authoring them, the appearance preview and a real tileset, distribution, and the licences of rulesets that may ship.
+**Status:** 2026-10-28: cut from `2026-10-17_private_pack_authoring_plan.md`, `2026-08-08_extracted_receipts.md` and the pack parts of `2026-10-15_campaign_retirement_plan.md`, which are archived in `archive_docs/2026-10-28/`, with the Massif Press ask from the sim plan (`mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md`). The private terminal authoring tool `pack-author` is landed (`crates/isocosm-system/src/pack_author/`, feature `pack-authoring`) over `ContentPackManifest` as the schema and `GeneratorPack::load` as the loader. The manifest carries optional `license` and `credit` (blank refused by `validate`). Nothing outside tests reads those terms yet. 2026-11-01: edition packs landed (cases 1064, 1067): the bundled `packs/5e-srd`, `packs/pf2e-srd` and `packs/ars5` are `[edition]` packs the founding pins; pack transfer at join is not built. Open: showing terms to the table, authoring them, the appearance preview and a real tileset, distribution, and the licences of rulesets that may ship.
 
 **For:** packs as the unit content ships in: what a pack declares about its terms and how the VTT and the authoring tool treat them, the authoring tool's residue, how packs are distributed, how a pack's appearance is previewed and given a real tileset, and which rulesets may ship in a pack. Mark's doctrine statements are Licensing 1 (rulesets), Licensing 2 (publication) and Licensing 3 (licences follow the layer).
 Not here: where the manifest schema lives after `isocosm-campaign` retires, which is `campaign-retirement`'s question (this plan waits on it); the session carrier packs are distributed over, which is `session-network` (K0, K1); the stylesheet-versus-voxel appearance ruling, which is `board-on-isometer`; the sim's generator and pack-requirement semantics (a pack displaces generated content where the world meets its requirements), which are `sim` and `vtt-overlay` V2.
@@ -23,16 +23,16 @@ The VTT surfaces a pack's declared `license` and `credit` to the table, and deci
 - From: `crates/isocosm-campaign/src/content/pack.rs:104-140`; `crates/isocosm-genet/src/boot.rs:25`
 
 ### CP2. Authoring-tool toolchain residue
-`cargo` 1.97.1 cannot resolve the workspace since Eidetic's chartulary manifest overrides a workspace dependency's `default-features` (a cargo 1.98+ form) while declaring `rust-version = "1.97.1"`; the plan called it "outside this plan". The authoring gates ran rustc and rustdoc 1.97.1 under cargo 1.99.1. A package-wide `-D warnings` run also exposed an existing `needless_borrow` in `crates/isocosm-system/src/sys/generator.rs`, left unchanged and not re-checked.
-- Done when: not stated; owed.
-- Needs: an Eidetic supplier fix; the shared MSRV policy (mere's family composition thesis brief)
+`cargo` 1.97.1 could not resolve the workspace because Eidetic's chartulary manifest overrode a workspace dependency's `default-features` (a cargo 1.98+ form) while declaring `rust-version = "1.97.1"`; the plan called it "outside this plan". **Blocker cleared 2026-11-02:** Eidetic `6bea2a3` (2026-10-20, "Let cargo 1.97.1 resolve muniment's workspace dependency") is an ancestor of the pinned `613799af`, and `cargo +1.97.1 metadata --format-version 1 --offline` exits 0 from the workspace root. The authoring gates ran rustc and rustdoc 1.97.1 under cargo 1.99.1. A package-wide `-D warnings` run also exposed an existing `needless_borrow` in `crates/isocosm-system/src/sys/generator.rs`, left unchanged and not re-checked.
+- Done when: cargo 1.97.1 resolves the workspace (met 2026-11-02, above); the `needless_borrow` is re-checked or fixed.
+- Needs: nothing for resolution (the Eidetic fix is `6bea2a3`); the shared MSRV policy (mere's family composition thesis brief) governs the qualification
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-10-17_private_pack_authoring_plan.md:30-33,195-200`
 
 ### CP3. Appearance preview and a real tileset
-Two residues split out of the campaign-packs plan in the 2026-08-08 extraction: a pack appearance preview and a real tileset (shared with the gameplay roadmap's residue). They depend on which theory of appearance the VTT takes.
+Two residues split out of the campaign-packs plan in the 2026-08-08 extraction: a pack appearance preview and a real tileset (shared with the gameplay roadmap's residue). They depend on which theory of appearance the VTT takes (ruled 2026-10-30, case 1019).
 - Done when: not stated; owed.
-- Needs: `board-on-isometer`'s owed stylesheet-versus-voxel appearance ruling
+- Needs: `board-on-isometer`'s stylesheet-versus-voxel appearance ruling, which is made (case 1019, 2026-10-30: "Voxel source, classes bind"). Whether the look editor's live preview (built, board plan Progress 2026-10-30) is this phase's appearance preview is not decided here.
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-08-08_extracted_receipts.md:24-26,32-34`
 
@@ -76,3 +76,4 @@ The authoring tool's optional git dependencies (`mere-source-edit` on branch mai
 
 - 2026-10-28: cut from the private pack authoring plan, the extracted-receipts residues and the pack lines of the campaign retirement plan.
 - 2026-11-01: edition packs, step 1 of cases 1064 and 1067: the loader, the subsystem registry (`founding/subsystems.rs`, decision points from the adapters' action groups) with the founding conflict check, the 5e SRD, Pathfinder 2e and effect records moved into `packs/` (`effects.toml` stays compiled), founding offering the bundled editions and pinning the chosen pack. Next: sending a campaign's packs at join, checked against the pins.
+- 2026-11-02: CP2's cargo 1.97.1 blocker cleared: `cargo +1.97.1 metadata --format-version 1 --offline` exits 0 from the root, Eidetic `6bea2a3` being in the pin (closure round, Mark: "Apply all"). The `needless_borrow` stays unchecked.

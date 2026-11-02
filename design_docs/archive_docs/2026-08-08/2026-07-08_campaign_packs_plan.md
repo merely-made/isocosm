@@ -375,3 +375,7 @@ alongside.
   clips its rows to the pane body while the board renders behind it
   (2026-07-09_isometry_genet_clip_fix.png). The known gap noted on the P2
   entries is now closed: a scrolled data_grid window is viewport-clipped.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

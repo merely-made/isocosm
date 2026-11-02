@@ -1,6 +1,6 @@
 # Living worlds and non-neural sensing: an open-source survey
 
-**Status:** 2026-11-01: research brief, from case 1071's queued brief. Read-only; nothing here is a ruling.
+**Status:** 2026-11-01: research brief, from case 1071's queued brief. 2026-11-02: its six questions (§C) and both licence checks are ruled by case 1079 (2026-11-01); the survey itself is not a ruling.
 **For:** how openly licensed descriptions of living worlds and of sensing without nerves bear on the sim (Bodies 10 and 15, World 4, Processes 15 and 19) and on the three games.
 
 Mark, case 1071: "we could draw upon like ways that people have designed worlds, existing open source descriptions of worlds that have a living aspect to them … maybe will lend us insight into actual, like, individuals, like critters and creatures and other types of entities that also need means of figuring out what's going on."
@@ -14,9 +14,9 @@ Mark, case 1071: "we could draw upon like ways that people have designed worlds,
 | [Fate Core SRD, the Bronze Rule](https://fate-srd.com/fate-system-toolkit/bronze-rule) | CC BY 3.0 | Anything can be written as a character, a storm or the scene itself included, with its own aspects, skills and stress. |
 | [SRD 5.1, legendary creatures: lair actions and regional effects](https://5thsrd.org/gamemaster_rules/legendary_creatures/) | CC BY 4.0 | A place acts on its own initiative count, and a powerful being's home warps the land around it (the kraken's weather within six miles). The effects fade when the being dies. |
 | Ars Magica Definitive core, chapter 12: realm auras, regiones, vis sources ([OriginalMadman/Ars-Magica-Open-License](https://github.com/OriginalMadman/Ars-Magica-Open-License)) | CC BY-SA 4.0 | A place carries a scored aura of a realm. Strong auras warp those who live in them, regiones layer a place into more intense levels, and vis collects at sites. |
-| Ironsworn Delve moves reference ([DOKK copy](https://dokk.org/library/ironsworn_starforged_delve_moves_reference_2020)) | CC BY 4.0 as listed; **to verify** at ironswornrpg.com, since the core Ironsworn book is CC BY-NC-SA and so excluded | A threat has a menace track that advances on its own, and its last box means the threat reaches its goal. |
+| Ironsworn Delve moves reference ([DOKK copy](https://dokk.org/library/ironsworn_starforged_delve_moves_reference_2020)) | CC BY 4.0 for the SRD and asset texts only, checked (case 1079); the rulebooks, including the core Ironsworn book (CC BY-NC-SA), are non-commercial and so excluded | A threat has a menace track that advances on its own, and its last box means the threat reaches its goal. |
 | [Daisyworld](https://en.wikipedia.org/wiki/Daisyworld) and [Gaia hypothesis](https://en.wikipedia.org/wiki/Gaia_hypothesis) (Wikipedia) | CC BY-SA 4.0 | A planet whose life regulates its temperature through albedo feedback, with no agent intending it. |
-| [*This Dynamic Earth*](https://pubs.usgs.gov/gip/dynamic/dynamic.html) and the [*This Dynamic Planet* map](https://pubs.usgs.gov/imap/2800) (USGS) | US federal work, public domain; **to verify** against USGS's reuse statement | Plates, rifts, subduction, hotspots, and where volcanoes and earthquakes sit relative to them. |
+| [*This Dynamic Earth*](https://pubs.usgs.gov/gip/dynamic/dynamic.html) and the [*This Dynamic Planet* map](https://pubs.usgs.gov/imap/2800) (USGS) | US federal work, public domain, checked (case 1079): credited, and USGS's third-party images excluded | Plates, rifts, subduction, hotspots, and where volcanoes and earthquakes sit relative to them. |
 | [NOAA tides and water levels tutorial](https://oceanservice.noaa.gov/education/tutorial_tides/) | US federal work, public domain | Tides as forcing by the moon and sun, shaped by the basin; spring and neap cycles. |
 | [WorldEngine](https://github.com/Mindwerks/worldengine) / [plate-tectonics](https://github.com/Mindwerks/plate-tectonics) | MIT / LGPL-3.0 | A world generator that runs plate motion, erosion, rainfall and biomes as a process over time. |
 | [Cataclysm: Dark Days Ahead](https://github.com/CleverRaven/Cataclysm-DDA) | CC BY-SA 3.0 (its README) | A fungal force (the Mycus) that spreads across the map and converts what it touches: a world-scale actor made of terrain and creatures. |
@@ -65,11 +65,17 @@ Mark, case 1071: "we could draw upon like ways that people have designed worlds,
 - **Eponym's** critters gain legible "what's going on" senses that aren't eyes, which Mark's line asks for.
 - **The VTT** gains druidic and fungal flavour with a mechanical footing: speaking with plants could read what the plant actually sensed.
 
-## C. What would need a ruling
+## C. What needed a ruling (ruled by case 1079, 2026-11-01)
 
 1. **Whether the world entity's acts are emergent only, or can be directed.** Daisyworld-style feedback (no will) fits World 4's inert and sentient positions. A storyteller with goals, which World 4 also allows, needs a ruling on how its directed acts enter: as processes, or as hooks (VTT 4).
+   *Ruled, 1079:* a world setting with three options, "all 3 ought to be options": acts only emergent from its processes and fields; emergent and directable by a GM or the world's disposition through the intents any entity uses; or a world mind with goals that chooses like a sophont.
 2. **A temporal-gradient sense:** whether a member may keep one prior reading per sense to compare (chemotaxis), which is new per-member state.
+   *Ruled, 1079:* "Yes, one prior reading per sense".
 3. **Use-adapting networks:** whether a system's conducting cells may grow or wither by flow (Physarum), a development process touching Bodies 6 and 10.
+   *Ruled, 1079:* "Yes, use shapes growth": growth adds capacity where flow runs and idle routes shrink.
 4. **A non-neural joining system:** whether Bodies 10's joining role gets a slower electrical or chemical variant for plants and fungi, or stays the nervous system's alone.
+   *Ruled, 1079:* "Yes, slow signalling by form", by degree and with a lag.
 5. **Field sources and decay:** whether influence fields (auras, regional effects, quorum signals, stigmergic marks) share Processes 19's reach field or get their own, since the reach field was ruled for knowledge.
+   *Ruled, 1079:* "Share the machinery, separate kinds": influence fields use the reach field's machinery as a separate kind that never mixes with knowledge.
 6. **Sources:** Ironsworn's Delve licence and USGS's reuse statement should be confirmed before either is cited in a shipped pack.
+   *Ruled, 1079:* both checked: only Ironsworn's SRD and asset texts are CC BY 4.0 (its rulebooks are non-commercial and out), and USGS-authored material is US public domain, credited, its third-party images excluded.

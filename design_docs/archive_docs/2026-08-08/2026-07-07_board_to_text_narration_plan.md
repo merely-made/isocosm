@@ -70,3 +70,7 @@ scope here. The factual layers above stand alone without it.
   workspace build was transiently blocked by an unrelated genet/stylo pin
   conflict during a concurrent edit). N3 (model fluency) stays deferred until
   the vates seam lands.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

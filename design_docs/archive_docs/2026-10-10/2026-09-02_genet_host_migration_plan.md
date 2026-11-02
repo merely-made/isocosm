@@ -4,7 +4,7 @@
 landed 2026-09-03 and §6 closed for genet and isometry; the mere and
 woodshed bumps were those repos' work. Its Z5 note, the 820-versus-1040
 design figure Mere's ruling S60 sent here as Mark's call, is carried into
-the [VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s §7: the side panel
+the [VTT overlay plan](../2026-10-28/2026-09-25_vtt_overlay_plan.md)'s §7: the side panel
 diet kept 820 and fitted the panel to it.
 
 **Status:** M0 through M4 landed and committed (2026-09-03). §6 closed for genet and isometry; mere's pin is blocked on another session's migration and woodshed's bump stays deferred, both recorded in Progress. Founded from the 2026-09-02 wing assessment. First in the audit order ahead of protocol H2, because nothing headed could be receipted until the desktop built.

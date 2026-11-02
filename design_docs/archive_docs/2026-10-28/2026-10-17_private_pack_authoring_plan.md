@@ -213,7 +213,7 @@ admission or identity authority.
 
 ## Verification, 2026-10-17
 
-[Qualification receipt](receipts/2026-10-17_pack_authoring/qualification.json)
+[Qualification receipt](../receipts/2026-10-17_private_pack_authoring_plan_receipts.md)
 and adjacent logs record:
 
 - 68 tests pass with `pack-authoring`: 49 existing library tests, eight authoring
@@ -491,7 +491,7 @@ Package tests: 85 with `pack-authoring` (75 before, plus three lease, three
 history and three structure unit tests and one binary test; two ignored
 helpers, the lease child process and the measurement) and 58 default.
 Scoped all-target Clippy, rustfmt and `git diff --check` pass. Receipts:
-[`receipts/2026-10-19_pack_authoring/`](receipts/2026-10-19_pack_authoring/)
+[`receipts/2026-10-19_pack_authoring/`](../receipts/2026-10-17_private_pack_authoring_plan_receipts.md)
 here; raw logs, transcripts and harnesses are in
 `Code/testing/pack-author-hardening-20261019/` and
 `Code/testing/taplo-fork-20261019/`, together with the fresh-clone check of

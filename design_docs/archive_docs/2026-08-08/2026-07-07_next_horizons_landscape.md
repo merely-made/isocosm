@@ -470,3 +470,7 @@ generators/command-grammar research agent). Per-agent findings and
 citations are in the workflow transcript. Licensing and genet-capability
 strands were adversarially verified against primary sources and in-repo
 `file:line`.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

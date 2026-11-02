@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-10-22:** every area reviewed, 133 statements, within the budget in `doctrine_budget.toml`; the design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-02:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); the design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -1618,7 +1618,7 @@ Links: draws on 847, 868, 869, 870, directing.1 · summary Map meanings are inde
 ## Stack and engine
 
 What binds every product on the stack is mere's doctrine
-(`../mere/design_docs/doctrine.md`, cited as `mere:stack.<n>`); the statements
+(`mere/design_docs/doctrine.md`, cited as `mere:stack.<n>`); the statements
 here say how the wing stands on it. Stack 1, 2 and 11 moved there whole on
 2026-10-22, and the stack-wide halves of Stack 3 and 14.
 

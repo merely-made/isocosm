@@ -408,7 +408,7 @@ three design docs that cite it. The record holds the words.
 | 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
 | 1049 | A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes. | none |
 | 1071 | Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md), [bodies](../mesocosm/design_docs/2026-10-28_bodies_plan.md) |
-| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | none |
+| 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | [living worlds research](2026-11-01_living_worlds_research.md), [DOC README](DOC_README.md) |
 | 1085 | A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel. | none |
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
@@ -869,7 +869,7 @@ three design docs that cite it. The record holds the words.
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
-| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
 | 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
@@ -888,7 +888,7 @@ three design docs that cite it. The record holds the words.
 | 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
-| 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
+| 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md), [DOC README](DOC_README.md) |
 | 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
@@ -926,8 +926,8 @@ three design docs that cite it. The record holds the words.
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
-| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md) |
-| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md) |
+| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
+| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
 | 1068 | Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## Method and documents

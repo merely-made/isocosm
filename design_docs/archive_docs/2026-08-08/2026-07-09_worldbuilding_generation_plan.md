@@ -26,7 +26,7 @@ Wildermyth-shaped narrative arcs without putting nondeterminism into replay.
   rephrase, but runtime play cannot depend on them.
 - Uses [board_to_text_narration_plan](2026-07-07_board_to_text_narration_plan.md)
   as the factual projection for generated scenes and future recaps.
-- Complements [environmental_surfaces_plan](../../2026-07-08_environmental_surfaces_plan.md):
+- Complements [environmental_surfaces_plan](../2026-10-28/2026-07-08_environmental_surfaces_plan.md):
   custom world laws can decide what fire, water, iron, names, moons, oaths, or
   blood do, while the substrate only stores surface/state facts.
 
@@ -129,7 +129,7 @@ for shape; adapt, don't copy.
    split: "filtered on the wire versus filtered at render is a
    session-policy choice above this module." This resolves open question 3:
    the answer is wire-culled by construction, not render-hidden.
-   *(Generalized 2026-07-09 by the [shared-authority doc](../../2026-07-09_shared_authority_and_collaborative_building_plan.md):
+   *(Generalized 2026-07-09 by the [shared-authority doc](../2026-10-28/2026-07-09_shared_authority_and_collaborative_building_plan.md):
    "host-private" means the GM ring, the set of edit-mode holders, which
    may be more than one app; with co-DMs the `CampaignStore` syncs over a
    directed whisper-shaped channel among them, still never the hashed log.
@@ -752,3 +752,7 @@ their Armillary-owned authority session.
   Isometry now reports campaign acceptance/rejection against the initiating
   request and reserves bridge failure for actor/runtime failure. Turnstone's
   action/effect plan and Strophe's project-worker plan point at the same seam.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

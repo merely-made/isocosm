@@ -1,13 +1,15 @@
 # The family session layer
 
-**Status:** 2026-10-28: cut from `mesocosm/design_docs/2026-10-14_sim_host_plan.md` (H7),
+**Status:** 2026-10-28: cut from `mesocosm/design_docs/archive_docs/2026-10-28/2026-10-14_sim_host_plan.md` (H7),
 `2026-08-08_stickleback_migration_plan.md`,
 `2026-07-09_shared_authority_and_collaborative_building_plan.md` and
 `2026-10-15_campaign_retirement_plan.md` (the H7 follow-on), which are archived
 in their products' `archive_docs/2026-10-28/`. `isonetry` has begun its remake:
 `family`, `family_network` and `source_time` modules exist, with a host-signed
-record lane over `JoinedSpace` and in-process and loopback tests. Open are the
-production admission and peer setup, the network gate, retiring the old VTT
+record lane over `JoinedSpace` and in-process and loopback tests. 2026-11-01: the
+working table's invite and join flow is built (case 1060; `1f1d38f4` and after),
+and its headed run stops at custody (Djinn refuses the app). Open are the
+production admission and peer setup (H7d), the network gate, retiring the old VTT
 event authority, the Stickleback adoption of `campaign_sync.rs` (K0 to K2) and
 the demand-gated tiers of the shared-authority plan.
 

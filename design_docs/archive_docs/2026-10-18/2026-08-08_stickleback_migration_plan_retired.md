@@ -4,7 +4,7 @@ On 2026-10-18 Mark made the old numbered rulings cases (precedent, numbered 1
 to 984 in the design record), kept new rule numbers for himself, and asked
 every active doc to lose its stacked status banners, old progress entries,
 stale counters and pasted copies. This file holds, verbatim, what left the live
-[stickleback migration plan](../../2026-08-08_stickleback_migration_plan.md):
+[stickleback migration plan](../2026-10-28/2026-08-08_stickleback_migration_plan.md):
 the 2026-10-17 status paragraph, the current-state section and the dated H7
 notes under it, the original plan-status paragraph, and the progress entries of
 2026-10-10 (Q1) and 2026-08-08. Relative links in the moved text are kept as
@@ -79,7 +79,7 @@ durability is not claimed.
 *The dated migration design and receipts below remain as written (793).*
 
 **Status: plan.** Founded from the 2026-08-08 wing audit. The
-[shared-authority plan](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)'s
+[shared-authority plan](../2026-10-28/2026-07-09_shared_authority_and_collaborative_building_plan.md)'s
 **sequencing gate stands and governs**: no second Isometry runtime. Its
 earlier tiers (host-owned private stores, peer-side Lua revalidation,
 regenerated secrets, commit-reveal mechanics) are **superseded by this

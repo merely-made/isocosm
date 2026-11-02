@@ -4,7 +4,7 @@
 design record rulings 793 and 801).** What the overmap shows (territory
 around known sites, a generated backdrop, selectable cells, a past
 standpoint from the reach field) and its three open questions are restated
-in the [VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s §5.1. The
+in the [VTT overlay plan](../2026-10-28/2026-09-25_vtt_overlay_plan.md)'s §5.1. The
 drawing moves to the presentation plan's L10, where the overmap becomes a
 second camera and the canvas renderer retires (437); the hull-on-canvas
 machinery planned here is not built.
@@ -48,7 +48,7 @@ done-conditions are authoritative again. The evaluation stays in
 §1. The overmap is a far view (ruling 212): it reads the crowd, so what
 lands here is presentation over the sim's readings, and what the campaign
 takes from the sim lands under the
-[VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s V2.
+[VTT overlay plan](../2026-10-28/2026-09-25_vtt_overlay_plan.md)'s V2.
 
 ---
 

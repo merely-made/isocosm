@@ -130,7 +130,7 @@ scene geometry/lighting consumers or a complete edition port. Ars weapon
 changes expose +2 Damage and Magic Resistance/penetration information; a full
 Ars combat resolver is not implemented. Every cast receipt is experimental.
 
-The [supported profiles and source credits](../../../crates/isometry-system/data/effects/README.md)
+The [supported profiles and source credits](../../../crates/isocosm-system/data/effects/README.md)
 name the remaining exceptions: D&D confinement, object/equipment geometry and
 Strength advantage, the existing critical-damage approximation, PF2e group
 casting, Ars stress/botch, full resistance and laboratory devices. These are
@@ -272,7 +272,10 @@ cross-repository links checked successfully. No new decision was invented
 for the operational instruction to proceed.
 
 Synthetic `.family` ledgers, host `.redb` stores, lock files and full local
-logs remain ignored under `magic_weapon_play/` for replay. Public evidence
+logs remain, outside the repository, under
+`Code/testing/isocosm/magic-weapon-play/` for replay (moved there 2026-11-02,
+Mark: "Move to Code/testing", from the then-untracked
+`mesocosm/design_docs/archive_docs/2026-10-30/magic_weapon_play/`). Public evidence
 is the PNGs and this compact receipt. All application processes launched by
 this lane are closed after capture; no existing evidence was removed.
 

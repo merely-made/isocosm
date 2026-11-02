@@ -195,3 +195,7 @@ gating this lane:
   of a full dense pane (~4-5k elements, ~80ms release) is a separate raster
   concern (the camera-offset composite and tile caching in the follow-ons),
   not a scaling one.
+
+---
+
+*Archived 2026-08-08.* Moved here by the wing audit pass (`d60fcd8f`); its status above is as it stood then, not current, and its residues are in the [extracted-receipts ledger](../2026-10-28/2026-08-08_extracted_receipts.md).

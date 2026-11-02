@@ -636,7 +636,7 @@ and the strength of event-driven musical responses should be configurable.
 [Firewheel](https://crates.io/crates/firewheel) is a candidate audio foundation,
 not a selected wing-wide composition system. Its audio graph and custom effects
 can support event-driven audio, while games own the meaning of their events
-and the choice of response. `hocket/Cargo.toml` already declares Firewheel
+and the choice of response. `woodshed/ports/hocket/Cargo.toml` already declares Firewheel
 (checked 2026-09-09); inspect that consumer before introducing another audio
 runtime. This observation does not establish game integration or an adaptive
 score. See the [upstream project](https://github.com/BillyDM/firewheel).
@@ -981,7 +981,7 @@ tactical session.
 
 **Authority:** lenses hold revocable per-domain grants. Isocosm's shape
 generalizes unchanged — a client sends an *ask*, never a verdict, and the
-grant holder resolves (`isocosm/design_docs/2026-07-14_adjudication_and_representation_plan.md`).
+grant holder resolves (`isocosm/design_docs/archive_docs/2026-08-08/2026-07-14_adjudication_and_representation_plan.md`).
 
 **Time** is causal order; wall time is presentation. Cross-game clocks (a
 colony decade against a tactics session) are unresolvable any other way, and
@@ -1006,7 +1006,7 @@ overstated it, and the correction matters.
   Trusted/Unsigned/Broken, tamper cases proven Broken); B5 proved
   distribution over a real retinue link with moot curation and a refused
   mid-flight scope-widening tamper.
-  (`mere/design_docs/mere_docs/implementation_strategy/2026-07-17_participant_gate_packs_plan.md`)
+  (`mere/design_docs/archive_docs/2026-10-06_completed_plans/2026-07-17_participant_gate_packs_plan.md`)
 - Isocosm has landed: typed worldgen (W0–W5: factions, places, characters,
   routes, laws, history, storylets), parties and recruitment, app-side
   adjudication, split-party per-map clocks, a pointcrawl overmap on the graph
