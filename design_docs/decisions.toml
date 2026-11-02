@@ -5393,6 +5393,9 @@ draws_on = ["1072", "processes.6", "processes.7", "record.7"]
 [cases."1076"]
 title = "A paced choice falls on each member's own tick"
 source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Pacing keys on each member's identity, so grouped and individual execution choose alike."
+draws_on = ["sim-execution D15", "sim-execution D16", "processes.7"]
 
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"

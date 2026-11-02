@@ -11983,7 +11983,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       reading: a grouped cohort on a paced tick evaluates only the members
       whose own identity is due, so execution mode never changes a choice.
 
-      Links: area Processes and rules · draws on processes.7, D15, D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
+      Links: area Processes and rules · draws on processes.7, sim-execution D15, sim-execution D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

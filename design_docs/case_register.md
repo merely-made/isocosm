@@ -212,6 +212,8 @@ three design docs that cite it. The record holds the words.
 | 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
 | 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | none |
+| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | none |
+| 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | none |
 
 ## Ecology
 
@@ -256,6 +258,7 @@ three design docs that cite it. The record holds the words.
 | 984 | The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to. | none |
 | 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
 
 ## Bodies and anatomy
 
@@ -419,6 +422,7 @@ three design docs that cite it. The record holds the words.
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
 | 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [DOC README](DOC_README.md) |
 | 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [DOC README](DOC_README.md) |
+| 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | none |
 
 ## World generation
 
