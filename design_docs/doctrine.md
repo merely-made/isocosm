@@ -1245,19 +1245,23 @@ and micro become territories and surfaces); each reproduces in one cell of its
 root, draws its life history within what its body supports, and draws its
 variance, absence and riff odds within bounds a world may widen (Mesocosm's
 by default). Generated consumers graze and carry living sense tissue. Every
-founded lineage starts with at least six members. Other worlds keep
+founded lineage starts with at least six members, unless a player's
+designed lineage is founded rarer, down to one. Other worlds keep
 extentless bodies as the scale control.
 
 *Not yet built:* consumers' sense tissue (the execution plan's D46, the bodies
 plan's BO18).
 
-Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, 1138, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
 
 *Refined 2026-10-31 from the execution plan's D46 (Mark: "Fix founding
 (Recommended)", then "Refine World 8, bodies owes it (Recommended)").*
 
 *Refined 2026-11-02 from case 1090 (Mark: "Founding floor of 6
 (Recommended)").*
+
+*Refined 2026-11-02 from case 1138 (Mark: "Founding count
+(Recommended)"): a player's designed lineage may found below six.*
 
 ### World 9. Places carry quality and alignment
 

@@ -12811,6 +12811,46 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Directing and play · draws on 1130, 187, directing.1, eponym.1 · summary Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it.
 
+1145. **The year-two crash is met by bodied plants and breeding read per
+      head.** Ruled by Mark on 2026-11-02: "Bodied plants + food per head
+      (Recommended)". The two-year run on the laid map collapsed between
+      months 17 and 19 on all five seeds, four dying out: grazers grew to
+      about one per plant, plants were worn to nothing because their regrowth
+      is capped by light, and the absolute gate of case 1111 (a grazer breeds
+      only where 30 plants live) never closed as plants thinned; soil and
+      detritus were sound. The reading: build cases 1114 and 1115, so grazing
+      wounds plants without killing them, and make 1111's breeding read food
+      per head (prey per member) through a new count-comparison query; then
+      rerun two years.
+
+      Links: area Ecology · draws on 1116, 1111, 1114, 1115 · summary The year-two crash is met by bodied plants and breeding gated on food per head.
+
+1146. **After the two-year bar, the seed bank comes first, then metabolic
+      scaling.** Ruled by Mark on 2026-11-02: "3.4 seed bank, then 3.1
+      (Recommended)". On case 1119's brief (§7, which first). The reading: a
+      dormant stage that buffers crashes (brief 3.4) follows the two-year bar,
+      then mass-and-temperature scaling (3.1) replaces world-time's per-role
+      rates in one step.
+
+      Links: area Ecology · draws on 1119, 1116 · summary The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates.
+
+1147. **Evolution continues slowly in play.** Ruled by Mark on 2026-11-02:
+      "Yes, slowly (Recommended)". On case 1119's brief (§7, whether evolution
+      continues in play). The reading: heritable rate constants keep drifting
+      and being selected during play at the world's pace, so a long life may
+      see lineages change.
+
+      Links: area Ecology · draws on 1119, ecology.1 · summary Heritable constants keep drifting and being selected in play at the world's pace.
+
+1148. **Rates scale with mass; speed keeps leg length.** Ruled by Mark on
+      2026-11-02: "Mass for rates, leg for speed (Recommended)". On case
+      1119's brief (§7, the figure 3.1 reads), asked because speed (case 1112)
+      reads leg length and metabolic scaling classically reads mass. The
+      reading: upkeep, meals, maturity and lifespan scale with mass to the
+      three-quarter power; walking speed keeps leg length.
+
+      Links: area Bodies and anatomy · draws on 1119, 1112, bodies.16 · summary Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

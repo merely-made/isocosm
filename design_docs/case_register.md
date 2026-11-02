@@ -278,6 +278,9 @@ three design docs that cite it. The record holds the words.
 | 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | none |
+| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | none |
+| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | none |
 
 ## Bodies and anatomy
 
@@ -414,6 +417,7 @@ three design docs that cite it. The record holds the words.
 | 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
+| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | none |
 
 ## Record and history
 
