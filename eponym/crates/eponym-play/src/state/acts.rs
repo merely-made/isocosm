@@ -211,6 +211,19 @@ impl GameState {
                     self.exert(subject, 1, 1, tick, events)?
                 }
             },
+            GameIntent::Wound { part, .. } => {
+                self.living(subject)?;
+                let record = self.current_anatomy(subject)?;
+                if record.document.part(*part).ok_or(AnatomyError::MissingPart(*part))?.severed {
+                    return Err(AnatomyError::SeveredPart(*part).into());
+                }
+                let (_, died, mut events) = self.harm(tick, subject, 0, &[*part])?;
+                // The debug injury it replaces was a fall; its cause stays.
+                if died {
+                    events.push(GameEvent::Died { tick, subject, cause: DeathCause::Fall });
+                }
+                events
+            },
             GameIntent::Wait { .. } => {
                 self.living(subject)?;
                 self.exert(
@@ -334,6 +347,7 @@ impl GameState {
                 }]
             },
             GameIntent::AdvanceMotion { .. }
+            | GameIntent::Steps { .. }
             | GameIntent::Minute { .. }
             | GameIntent::ResolveVolley { .. }
             | GameIntent::ExternalVolley { .. }

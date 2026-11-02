@@ -188,6 +188,9 @@ impl TimedActionSession {
     pub fn network(&self) -> &FunctionalNetwork {
         &self.network
     }
+    pub fn rules(&self) -> &TimedActionRules {
+        &self.rules
+    }
     pub fn action(&self) -> Option<&TimedAction> {
         self.action.as_ref()
     }

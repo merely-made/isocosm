@@ -212,12 +212,13 @@ three design docs that cite it. The record holds the words.
 | 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
 | 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1082 | The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 1086 | The foreground cap defaults to 16 bodies, re-measured once the foreground places feet. | none |
-| 1104 | A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together. | none |
+| 1086 | The foreground cap defaults to 16 bodies, re-measured once the foreground places feet. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1104 | A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1123 | A handback is refused beyond a tick's walk across the ground plus a cell; no version gate. | none |
 
 ## Ecology
 
@@ -255,7 +256,7 @@ three design docs that cite it. The record holds the words.
 | 949 | 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged. | none |
 | 971 | The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored. | none |
 | 972 | Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence. | none |
-| 973 | Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night. | none |
+| 973 | Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 980 | A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun. | none |
 | 982 | The light credit is 500 per site per tick at full sun. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 983 | The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
@@ -263,17 +264,23 @@ three design docs that cite it. The record holds the words.
 | 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
-| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | none |
-| 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | none |
-| 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | none |
-| 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | none |
-| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 1103 | Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them. | none |
-| 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | none |
-| 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | none |
-| 1110 | A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant. | none |
-| 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | none |
+| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1103 | Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1110 | A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | none |
+| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | none |
+| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | none |
 
 ## Bodies and anatomy
 
@@ -404,8 +411,13 @@ three design docs that cite it. The record holds the words.
 | 1079 | World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly. | none |
 | 1085 | A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel. | none |
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
-| 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | none |
-| 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
+| 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
+| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | none |
 
 ## Record and history
 
@@ -487,7 +499,7 @@ three design docs that cite it. The record holds the words.
 | 415 | A lift carries caves and overhangs as columns plus a sparse list of exception cells that differ from the column rule. | none |
 | 512 | The generator draws each founded lineage's recipe by its kingdom; the eight authored Mesocosm bodies ship as founding presets. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 525 | Only worlds that ask for bodies found lineages from recipes; the ecology family keeps extentless bodies as the scale control. | none |
-| 547 | The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike. | none |
+| 547 | The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike. | [denizen](2026-11-02_denizen_plan.md) |
 | 548 | The generator draws each founded lineage's life history by the founding seed, within what its body supports; the probe sets its own. | none |
 | 549 | In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist. | none |
 | 550 | The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable. | none |
@@ -518,8 +530,10 @@ three design docs that cite it. The record holds the words.
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 | 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 1090 | Every founded lineage starts with at least six members. | none |
-| 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | none |
+| 1090 | Every founded lineage starts with at least six members. | [denizen](2026-11-02_denizen_plan.md) |
+| 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1138 | Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -545,12 +559,12 @@ three design docs that cite it. The record holds the words.
 | 6 | Foregrounding is choosing a domain, ensemble, mechanics, controls, perspective and timescale; the ensemble can change within one game. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 35 | Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed. | none |
 | 59 | Play is directing, not driving; a creature suggests its own perceptions and the player schedules behavior, with players not limited by diegetic senses. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
-| 60 | Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy. | [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 60 | Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy. | [denizen](2026-11-02_denizen_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 61 | Death is final across the board; each game's trick: extra lives via cohort in Mesocosm and Paredros, and Isometry treats death as nearly defeatable. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 103 | The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller. | none |
-| 152 | Outside the world, a player directs only who they play; everything else is asked in the world through that entity. | none |
+| 152 | Outside the world, a player directs only who they play; everything else is asked in the world through that entity. | [denizen](2026-11-02_denizen_plan.md) |
 | 153 | Two players may direct the same entity, which weighs conflicting directives by its opinion of each. | none |
-| 187 | Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
+| 187 | Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives. | [denizen](2026-11-02_denizen_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 210 | A player may pin any pointable thing: entities, places, items, lineages, factions and events. | none |
 | 212 | Examining is what the view shows at full detail up close; that is watched, runs in detail and is logged; far views stay crowd. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 213 | A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care. | none |
@@ -574,10 +588,12 @@ three design docs that cite it. The record holds the words.
 | 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [DOC README](DOC_README.md) |
 | 1051 | A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
+| 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | [denizen](2026-11-02_denizen_plan.md) |
+| 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Presentation
 
@@ -606,6 +622,12 @@ three design docs that cite it. The record holds the words.
 | 870 | Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping. | none |
 | 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | none |
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
+| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md) |
+| 1136 | The layered look resolution moves into isometer-mesh for every product. | [denizen](2026-11-02_denizen_plan.md) |
+| 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
+| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md) |
+| 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Stack and engine
 
@@ -718,7 +740,7 @@ three design docs that cite it. The record holds the words.
 | 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 1081 | A round's minute tick runs on a worker by default and in step as a setting; replay is exact either way; the tick's cost is the performance concern. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 1083 | The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there. | none |
+| 1083 | The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Mesocosm
 
@@ -762,7 +784,7 @@ three design docs that cite it. The record holds the words.
 | 233 | Eponym's motion and contact solver runs on the game side over the stack's conatus. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 234 | Where a first Eponym life begins in time is the player's pick, with society the default. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 235 | How a first Eponym life begins is the player's call among a new outsider, a birth into a lineage, or a named drawn denizen. | none |
-| 238 | At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
+| 238 | At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world. | [denizen](2026-11-02_denizen_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 239 | Isocosm absorbs Eponym's simulation in the plan's order, and driving is built only on Isocosm with no prototype over Session. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 597 | Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier. | none |
 | 767 | Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
@@ -771,8 +793,8 @@ three design docs that cite it. The record holds the words.
 | 777 | Eponym keeps its admitted anatomy snapshot beside native geometry, with a game revision moving only on severing. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 778 | Crafts and deed weights are keys a rules pack declares, not closed native enums; other games can declare their own. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 808 | A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements. | none |
-| 816 | Eponym develops admitted bodies from a selected native recipe supplying physiology and geometry, retaining conserved stocks. | none |
-| 818 | Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body. | none |
+| 816 | Eponym develops admitted bodies from a selected native recipe supplying physiology and geometry, retaining conserved stocks. | [denizen](2026-11-02_denizen_plan.md) |
+| 818 | Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body. | [denizen](2026-11-02_denizen_plan.md) |
 | 819 | Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted. | none |
 | 825 | A saved version tag selects a declared native founding profile supplying the two precise-contact fixture recipes; restore regenerates and authenticates it. | none |
 | 835 | Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings. | none |
@@ -786,8 +808,21 @@ three design docs that cite it. The record holds the words.
 | 1100 | Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1101 | Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged. | none |
 | 1102 | A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged. | none |
-| 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | none |
-| 1108 | Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does. | none |
+| 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1108 | Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1113 | In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1117 | A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step. | none |
+| 1118 | Between minutes a host draws a borrowed body from its own locally stepped pose. | none |
+| 1120 | Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay. | none |
+| 1121 | The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted. | none |
+| 1122 | New standalone worlds are founded in rounds by default; a setting turns it off. | none |
+| 1124 | A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds. | none |
+| 1125 | The standalone client gets 1x, 2x, 4x and 8x keys and a readout. | none |
+| 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
+| 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | [denizen](2026-11-02_denizen_plan.md) |
+| 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md) |
+| 1132 | Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it. | none |
+| 1135 | The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## The VTT
 
@@ -853,9 +888,10 @@ three design docs that cite it. The record holds the words.
 | 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
 | 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
-| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Naming
 
@@ -877,7 +913,7 @@ three design docs that cite it. The record holds the words.
 | 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
 | 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1091 | The site account of dead matter awaiting decomposers is world:detritus. | none |
+| 1091 | The site account of dead matter awaiting decomposers is world:detritus. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Licensing and sources
 
@@ -897,7 +933,7 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
+| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 193 | Moved modules are decomposed under the 600-line ceiling along seams the code already has. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 198 | The consistency pass is applied; a dated line keeps the words of its date and a later name reaches it only as a note. | none |
 | 255 | Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts. | none |

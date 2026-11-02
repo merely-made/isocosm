@@ -12,19 +12,25 @@ assert snap ready == yes
 assert snap error == none
 assert snap viewport-error == none
 assert text Subject sheet
-assert text Equipment
+assert text Items
 assert text Acquisition journal
 assert text Status
 capture opened
 remember start
 
-# Movement reaches the accepted world, not just the drawn frame.
+# Movement is drawn at once and reaches the accepted world at the minute
+# (cases 1118, 1120): the drawn position moves, the world's hash waits for
+# the minute, which a scenario takes now rather than waiting one out.
 act move-right
 settle 3
-assert event motion-advanced
-differs start position hash
+differs start position
 more start step
+same start hash
 assert snap grounded == yes
+act minute
+settle 3
+assert event motion-advanced
+differs start hash
 
 # The charged volley: aim, join a limb, charge, release. The target loses the
 # authored limb it wears the dressing on.
@@ -68,7 +74,7 @@ assert text paredros-fixture:reach
 
 # Treatment through the controls themselves. The injury debug has no button of
 # its own, so it is the one act between the two clicks.
-click role:button Take dressing
+click role:button Take item 69
 settle 2
 act injure
 settle 2
@@ -80,7 +86,9 @@ assert event rested
 more before-rest glyphs
 assert snap glyph-last == paredros-fixture:mend
 assert text paredros-fixture:mend
-assert snap wound == 0
+# A severed part's whole lattice stays in the wound share (the 2026-10-18
+# note to ruling 227; case 1132): one 3-cell limb of 40 cells reads 7.
+assert snap wound == 7
 assert snap lost-parts == 1
 
 # A part button in the sheet names the same identity a viewport pick does.
@@ -95,6 +103,8 @@ settle 2
 assert snap saves == 1
 remember saved
 act move-forward
+settle 2
+act minute
 settle 2
 differs saved position hash
 click role:button Load

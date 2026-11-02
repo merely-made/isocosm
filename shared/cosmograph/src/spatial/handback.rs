@@ -74,6 +74,7 @@ impl Simulation {
             return Err("handback source changed".into());
         }
         let g = &h.geometry;
+        self.within_reach(e, h)?;
         let patch = geometry::check_pose(self, e, h.site, g)?;
         let t = self.genesis.rules.spatial_templates.as_ref().ok_or("handback needs templates")?;
         let reach = t.foraging.values().map(|f| f.reach).max().unwrap_or(0);
@@ -112,6 +113,27 @@ impl Simulation {
             }
         }
         Ok(patch)
+    }
+
+    /// A body hands back no farther from the pose the sim held than it walks
+    /// in one tick at its speed (cases 1112, 1113): the straight line across
+    /// the ground, a cell of grain allowed. Falls are not walking, so height
+    /// is not counted. A world without speeds keeps no such bound, and a
+    /// body's first pose has no start to measure from.
+    fn within_reach(&self, e: &crate::schema::Entity, h: &Handback) -> Result<()> {
+        let (Some(speed), Some(held)) = (self.genesis.rules.speed, self.state.spatial_poses.get(&h.actor)) else {
+            return Ok(());
+        };
+        let doc = e.body.as_ref().ok_or("handback body absent")?;
+        // Milli-cells a second times the tick's microseconds, in cells.
+        let reach = (u128::from(speed.of(doc)) * u128::from(self.genesis.rules.tick_microseconds()))
+            .div_ceil(1_000_000_000).saturating_add(1);
+        let (to, from) = (h.geometry.pose.at, held.pose.at);
+        let [dx, dz] = [0, 2].map(|k| u128::from(to[k].abs_diff(from[k])));
+        if dx * dx + dz * dz > reach.saturating_mul(reach) {
+            return Err("handback pose is beyond the body's reach in a tick".into());
+        }
+        Ok(())
     }
 
     fn publish_handback(&mut self, h: &Handback, patch: PlaceId) -> Result<()> {

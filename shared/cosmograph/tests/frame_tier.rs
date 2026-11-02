@@ -17,12 +17,12 @@ use cosmograph::{
 #[test]
 fn a_frame_draws_members_in_and_only_roots_stay_posed_outside_it() {
     let g = Founding {
-        seed: 7,
+        seed: 2,
         population: 256,
         sites: 6,
         ecology: true,
         bodies: Some(Bodies::default()),
-        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(2) })),
         played: Some(Played { lineage: 1, region_sites: 2 }),
         ..Default::default()
     }
@@ -46,6 +46,7 @@ fn a_frame_draws_members_in_and_only_roots_stay_posed_outside_it() {
         .filter(|g| g.entity.alive && g.entity.body.is_some() && g.entity.journey.is_none() && g.entity.resident_site() == Some(site))
         .map(|g| g.count).sum::<u64>();
     s.attach_window(p, "mesocosm".into(), WindowAttention { examined: Some(frame.clone()), ..Default::default() }).unwrap();
+    // Seed 2 since case 1106's floor: most seeds' quarters draw no one.
     // How full a frame gets depends on its ground; this world's quarter has
     // few stands, so the test asks only that drawing adds members. A draw
     // stops at its first member with no stance (D40), so a frame fills over

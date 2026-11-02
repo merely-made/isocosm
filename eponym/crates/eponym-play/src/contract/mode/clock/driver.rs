@@ -92,7 +92,7 @@ fn handbacks(session: &Session, mode: &ModeState, state: &State) -> Result<Vec<n
     for b in &mode.bindings {
         let Some(physical) = state.physical.get(&b.subject) else { continue };
         let Some(e) = session.sim.state().population.get(b.entity).filter(|e| e.alive && e.body.is_some()) else { continue };
-        let volume = session.sim.volume(b.site, b.window.min, b.window.max, b.window.depth)?;
+        let volume = crate::contract::mode::memo::volume(&session.sim, b.site, &b.window)?;
         let at = crate::walking::to_site(&volume, b.pose.cell().map_err(|e| format!("Eponym handback pose: {e:?}"))?);
         out.push(native::Handback { actor: b.entity, site: b.site, body_revision: e.body_revision,
             terrain_revision: session.sim.terrain_revision(), contacts: Vec::new(),

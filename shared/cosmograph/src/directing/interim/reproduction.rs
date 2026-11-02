@@ -27,10 +27,12 @@ use profile::{Form, world};
 // route's border and stand at the edge it enters by.
 // Rerecorded 2026-11-01 under case 1071: a new founding senses, so its
 // animals draw smell radii and its plants grow on what they sense.
+// Rerecorded 2026-11-02 under case 1106: every generated world founds each
+// lineage with at least six.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "33040552f89ddc5308e89006caa3360d4d50ac459aad6ceae874e93e5241aa96");
+    assert_eq!(crate::digest(&genesis), "3d2cf022f009b0d7e9c8e2dcc229630dcbe493f3495c9d72c07a4b265038e3df");
     genesis
 }
 

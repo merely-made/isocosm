@@ -16,7 +16,8 @@ use cosmograph::{
 };
 use std::collections::BTreeMap;
 
-/// Seed 7's played world with whole-body stands (`embodiment::declare`),
+/// Seed 8's played world (seed 7's under case 1106's floor founds no posed
+/// deliberative critter) with whole-body stands (`embodiment::declare`),
 /// a posed deliberative founder taken up and its tile framed.
 fn framed(cap: Option<u32>) -> (Session, Id, Id) {
     framed_with(cap, false)
@@ -24,13 +25,19 @@ fn framed(cap: Option<u32>) -> (Session, Id, Id) {
 
 /// The same, on the whole-site habitat's stands where `habitat` (v6).
 fn framed_with(cap: Option<u32>, habitat: bool) -> (Session, Id, Id) {
+    framed_ruled(cap, habitat, |_| {})
+}
+
+/// The same, its genesis rules then set by `rule`.
+fn framed_ruled(cap: Option<u32>, habitat: bool, rule: impl FnOnce(&mut cosmograph::simulation::Genesis)) -> (Session, Id, Id) {
     let mut g = Founding {
-        seed: 7, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
-        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        seed: 8, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(8) })),
         played: Some(Played { lineage: 1, region_sites: 2 }), ..Default::default()
     }.generate().unwrap();
     if habitat { embodiment::declare_site(&mut g).unwrap() } else { embodiment::declare(&mut g).unwrap() }
     g.rules.limits.foreground = cap;
+    rule(&mut g);
     let t = g.rules.spatial_templates.clone().unwrap();
     let mut s = Session::new(g, Execution::Individuals).unwrap();
     let p: u64 = s.command(Command::Join).unwrap().strip_prefix("participant:").unwrap().parse().unwrap();
@@ -209,8 +216,8 @@ fn step_cost() {
 #[test]
 fn a_first_handback_poses_a_patched_body_at_cell_grain() {
     let g = Founding {
-        seed: 7, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
-        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        seed: 8, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(8) })),
         ..Default::default()
     }.generate().unwrap();
     let t = g.rules.spatial_templates.clone().unwrap();
@@ -240,4 +247,35 @@ fn a_first_handback_poses_a_patched_body_at_cell_grain() {
     assert_eq!(s.sim.state().spatial_poses[&actor].pose.at, stand.at, "the first handback poses the body");
     let restored = Session::load(s.save(), Execution::Individuals).unwrap();
     assert_eq!(restored.sim.state_hash(), s.sim.state_hash());
+}
+
+/// Case 1113: with world speeds a handback lands no farther from the held
+/// pose than the body walks in a tick; without them it keeps no such bound.
+#[test]
+fn a_handback_beyond_a_ticks_walk_is_refused() {
+    let crawl = cosmograph::speed::Speed { baseline: 1, leg: 1, legless: 1 };
+    let (mut slow, _, critter) = framed_ruled(None, false, |g| g.rules.speed = Some(crawl));
+    let (mut free, _, _) = framed_ruled(None, false, |g| g.rules.speed = None);
+    // The same handback, moved to a stand of its site four or more cells off.
+    let near = moved(&slow, critter);
+    let held = slow.sim.state().spatial_poses[&critter].pose.at;
+    let t = slow.sim.genesis().rules.spatial_templates.clone().unwrap();
+    let stand = t.stands[&near.site].iter()
+        .find(|x| (0..3).step_by(2).any(|k| x.at[k].abs_diff(held[k]) >= 4)).expect("a far stand").clone();
+    let mut far = near.clone();
+    far.geometry.pose = cosmograph::spatial::Pose { at: stand.at, yaw: stand.yaw, feet: Default::default() };
+    far.geometry.eye = std::array::from_fn(|k| stand.at[k] + t.eye[k]);
+    far.geometry.window = embodiment::site_window(&t, stand.at);
+    let mut moved_slow = slow.clone();
+    minute(&mut moved_slow, std::slice::from_ref(&near));
+    assert!(moved_slow.sim.spatial_handbacks()[0].patch.is_ok(), "a step within reach: {:?}", moved_slow.sim.spatial_handbacks());
+    minute(&mut slow, std::slice::from_ref(&far));
+    assert!(slow.sim.spatial_handbacks()[0].patch.as_ref().is_err_and(|e| e.contains("reach in a tick")),
+        "{:?}", slow.sim.spatial_handbacks());
+    assert_eq!(slow.sim.state().spatial_poses[&critter].pose.at, held, "the body stays where the sim had it");
+    minute(&mut free, std::slice::from_ref(&far));
+    assert!(!free.sim.spatial_handbacks()[0].patch.as_ref().is_err_and(|e| e.contains("reach")),
+        "a world without speeds keeps no reach bound: {:?}", free.sim.spatial_handbacks());
+    let restored = Session::load(slow.save(), Execution::Individuals).unwrap();
+    assert_eq!(restored.sim.state_hash(), slow.sim.state_hash());
 }

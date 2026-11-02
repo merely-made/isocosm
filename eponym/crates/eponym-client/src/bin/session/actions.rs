@@ -11,7 +11,7 @@
 use std::time::{Duration, Instant};
 
 use isometer::core::PartId;
-use eponym_play::identity::{BodyRevisionId, SubjectId, Tick};
+use eponym_play::identity::{SubjectId, Tick};
 use eponym_play::timed_action::Direction;
 use eponym_play::{
     CanonRevisionCause, GameEvent, GameIntent, ItemId, MotionInput, StrikeOutcome,
@@ -26,6 +26,11 @@ const REVISION_SEED: u64 = 11;
 impl SessionApp {
     /// One fixed 60 Hz motion step in the latched direction.
     pub(super) fn move_played(&mut self, toward: [i32; 3]) {
+        // In a round the step is drawn here and the minute takes it to the
+        // world (cases 1118, 1120).
+        if self.in_rounds() {
+            return self.step_round(toward);
+        }
         let intent = {
             let model = self.model.borrow();
             let game = model.game();
@@ -80,9 +85,8 @@ impl SessionApp {
         let game = model.game();
         game.bodies().get(played).is_some_and(|body| body.alive())
             && (self.steering() != [0, 0, 0]
-                || game
-                    .movement()
-                    .pose(played)
+                || model
+                    .drawn_pose(played)
                     .is_some_and(|pose| !pose.grounded))
     }
 
@@ -96,6 +100,9 @@ impl SessionApp {
 
     /// Advances motion at a fixed 60 Hz, catching up at most eight steps.
     pub(super) fn tick_motion(&mut self) {
+        if self.in_rounds() {
+            return self.tick_round();
+        }
         if !self.motion_running() {
             self.last_motion = Instant::now();
             return;
@@ -114,7 +121,10 @@ impl SessionApp {
 
     /// Accumulates charge while the strike is held.
     pub(super) fn tick_charge(&mut self) {
-        if !self.charging || self.last_charge.elapsed() < CHARGE_INTERVAL {
+        // Charge waits out a minute in flight, then resumes on its interval.
+        if !self.charging || self.last_charge.elapsed() < CHARGE_INTERVAL
+            || self.model.borrow().minute_pending()
+        {
             return;
         }
         let tick = {
@@ -211,28 +221,13 @@ impl SessionApp {
 
     /// The injury debug cut: a fall and the anatomy reconciliation that removes
     /// part 1, applied as one batch so the open action repairs with it.
+    /// The debug injury: part 1 severed by name, the game reconciling the
+    /// cut whatever tick the sim is at.
     pub(super) fn injure(&mut self) {
         let mut model = self.model.borrow_mut();
         let played = model.played();
-        let Some(old) = model.game().bodies().get(played).map(|body| body.revision) else {
-            return;
-        };
-        let first = model.game().next_tick();
-        let second = Tick(first.0 + 1);
-        let result = model.apply_batch(&[
-            GameIntent::Fall {
-                tick: first,
-                subject: played,
-                distance: 5,
-            },
-            GameIntent::ReconcileAnatomy {
-                tick: second,
-                subject: played,
-                from_revision: old,
-                revision: BodyRevisionId(old.0 + 1),
-                severed_parts: vec![PartId(1)],
-            },
-        ]);
+        let tick = model.game().next_tick();
+        let result = model.apply(GameIntent::Wound { tick, subject: played, part: PartId(1) });
         self.status = vec![match result {
             Ok(events) => format!(
                 "Injury cut: {} events; part 1 removed, surviving contributors retained",
@@ -242,13 +237,6 @@ impl SessionApp {
         }];
     }
 
-    /// Publishes one authored canon revision.
-    ///
-    /// **A fixture control, not a product action.** Eponym has no authored
-    /// canon and no world criterion that settles one; this act exists so the
-    /// journal and the scenario can show what a published revision does. A
-    /// real revision comes from a settled period or an admitted promotion,
-    /// which this host does not own.
     pub(super) fn revise_canon(&mut self) {
         let revision = self
             .glyphs

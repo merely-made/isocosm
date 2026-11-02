@@ -72,6 +72,13 @@ pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
         "injure" => state.injure(),
         "revise-canon" => state.revise_canon(),
         "save" => state.save(),
+        // A round's minute now: a fixture control, so a scenario need not
+        // wait out a real minute (case 1096).
+        "minute" => state.minute_now(),
+        "speed-1" | "speed-2" | "speed-4" | "speed-8" => {
+            let factor = label.trim_start_matches("speed-").parse().unwrap_or(1);
+            state.set_speed(cosmograph_host::drive::Speed::from_factor(factor).unwrap_or(cosmograph_host::drive::Speed::X1));
+        },
         "load" => state.load(),
         _ => return false,
     }

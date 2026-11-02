@@ -37,6 +37,7 @@ netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }
 cosmograph = { path = "../../../shared/cosmograph" }
 cosmograph-overlay = { path = "../../../shared/cosmograph-overlay" }
+cosmograph-host = { path = "../../../cosmograph-host" }
 netrender = { workspace = true }
 # P1/P2 document-host lane deps: the Cambium host, its producer seam, the
 # scenario driver, and the paint-list path netrender rasterizes.

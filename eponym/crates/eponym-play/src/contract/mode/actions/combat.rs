@@ -32,7 +32,7 @@ pub(super) fn action(session:&mut Session, mode:&ModeState, actions:&mut ActionS
             let target_profile = actions.profiles.iter().find(|p|p.subject == target.subject)
                 .ok_or("Eponym strike target has no authored anatomy label")?;
             let target_record = anatomy(session,mode,target_profile)?;
-            let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
+            let volume = crate::contract::mode::memo::volume(&session.sim, actor.site, &actor.window)?;
             let target_pose = target.in_frame(session,&volume)?;
             let strikes = charge.release(record,policy,*tick)?;
             if strikes.is_empty() {

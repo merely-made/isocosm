@@ -57,7 +57,7 @@ pub(super) fn panel(state: &SessionApp) -> Child {
             { continue; }
             let Ok(location) = game.project_location(id) else { continue; };
             let (work_site, at) = location.position();
-            if site != Some(work_site) || game.movement().position(model.played()) != Some(at) { continue; }
+            if site != Some(work_site) || model.drawn_position(model.played()) != Some(at) { continue; }
             rows.push(Box::new(el("p", text(format!("{}: {} / {}",
                 label(&project.recipe), project.progress, definition.total)))));
             let carrying = project.carrier == Some(actor);
