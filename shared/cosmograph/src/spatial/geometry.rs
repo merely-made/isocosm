@@ -249,7 +249,14 @@ pub(super) fn check_arrival(
     {
         return Err("arrival placement source changed".into());
     }
-    let terrain = sim.site_geometry(request.to, &geometry.window, geometry.places)?;
+    check_pose(sim, actor, request.to, geometry)
+}
+
+/// A member's pose in `site`'s tile: its window the native one, a realized
+/// patch under it, its whole body supported and clear, its eye in the same
+/// patch. Arrivals and foreground handbacks share it.
+pub(super) fn check_pose(sim: &Simulation, actor: &Entity, site: Id, geometry: &ArrivalGeometry) -> Result<PlaceId> {
+    let terrain = sim.site_geometry(site, &geometry.window, geometry.places)?;
     if let Some(t) = sim
         .genesis()
         .rules

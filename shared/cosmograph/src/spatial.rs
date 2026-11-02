@@ -24,6 +24,8 @@ mod birth_command;
 mod templates;
 mod tier;
 mod settle;
+mod handback;
+pub use handback::{Handback, HandbackReport};
 pub mod embodiment;
 pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, entering, STANDS as STANDS_PER_SITE};
@@ -135,6 +137,7 @@ pub(crate) struct Resolutions {
     pub birth_pending: Option<BirthPending>,
     command_outcome: Option<String>,
     work: Option<crate::simulation::Work>,
+    handbacks: Vec<HandbackReport>,
 }
 
 pub fn validate(rules: &Rules) -> Result<()> {

@@ -667,10 +667,20 @@ overflow. A body that takes in grazes any living body of another lineage at
 its site, weighted by what each holds; a dead body rots back to its site;
 carrion comes later.
 
-Links: draws on 498, 590, 718, 827, 828, 831 · summary Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
+Births spread too: some land at a neighbouring site, seeds and spores
+carried by a site's air and water, a walker's young at its walking speed over
+the route's length (Bodies 16), each scaled by a drawn lineage trait. A
+lineage's range is read from where it persists. The dead's leftovers wait as detritus until decomposers make soil
+of them.
+
+Links: draws on 498, 590, 718, 827, 828, 831, 1089, 1091, 1092, 1093 · summary Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
 
 *Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
 rules".*
+
+*Refined 2026-11-02 from cases 1089, 1091 and 1092 (Mark: "Births scatter
+along routes (Recommended)", "world:detritus", "Media + own speed
+(Recommended)").*
 
 ### Ecology 5. Light and life
 
@@ -956,6 +966,25 @@ Links: draws on 1071, bodies.1, bodies.10, world.4 · summary Sensing separates 
 
 *Reviewed 2026-11-01, new, from case 1071 (Mark: "Adopt as drafted").*
 
+### Bodies 16. Speed follows the body
+
+A body's speed is the world's baseline, cells per world second scaled by
+size, times a factor from its anatomy: leg length by the Froude rule (walking
+near 0.25, a gait change near 0.5), stride capped by each joint's swing;
+bodies without legs move in body lengths per second. Joints carry an axis and
+an angle range, drawn per lineage within what the form allows, and
+animation, stride and foot placement keep within them. Travel is relative to
+the route's difficulty. The same speed bounds a round's handback and sets
+travel time out of view (Stack 12).
+
+*Not yet built:* all of it; the handback's reach check waits for it.
+
+Links: draws on 1085, 1087, 1088, bodies.1, stack.12 · summary Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel.
+
+*Reviewed 2026-11-02, new, from cases 1085, 1087 and 1088 (Mark: "1, +2 as
+a factor on the baseline of 1", "Froude × joint swing (Recommended)", "Yes,
+drawn per lineage (Recommended)").*
+
 ## Record and history
 
 ### Record 1. Consistency is chosen per domain
@@ -1210,16 +1239,20 @@ In worlds that ask for bodies, flora and fauna draw recipes by kingdom (myco
 and micro become territories and surfaces); each reproduces in one cell of its
 root, draws its life history within what its body supports, and draws its
 variance, absence and riff odds within bounds a world may widen (Mesocosm's
-by default). Generated consumers graze and carry living sense tissue. Other
-worlds keep extentless bodies as the scale control.
+by default). Generated consumers graze and carry living sense tissue. Every
+founded lineage starts with at least six members. Other worlds keep
+extentless bodies as the scale control.
 
 *Not yet built:* consumers' sense tissue (the execution plan's D46, the bodies
 plan's BO18).
 
-Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless.
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
 
 *Refined 2026-10-31 from the execution plan's D46 (Mark: "Fix founding
 (Recommended)", then "Refine World 8, bodies owes it (Recommended)").*
+
+*Refined 2026-11-02 from case 1090 (Mark: "Founding floor of 6
+(Recommended)").*
 
 ### World 9. Places carry quality and alignment
 
@@ -1721,12 +1754,19 @@ point, a dice roll, a system's rules, a loot table, a dialogue line or a
 quest; never pathfinds an individual, checks line of sight or resolves a
 single blow; and never decides what is fun. It records outcomes, resolved by
 the foreground game's rules or by the background's outcome model
-(Processes 1).
+(Processes 1). Movement splits by grain: the sim chooses which place, which
+meal and whether a route exists, from the place graph; in view a game's
+foreground finds the path, poses the body and places the feet, and the sim
+commits the arrival it accepts; out of view a body arrives after its route's
+travel time, with no per-step walking.
 
-Links: draws on 10, 114, processes.1 · summary Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun.
+Links: draws on 10, 114, 1084, processes.1 · summary Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun; it moves bodies at place grain.
 
 *Reviewed 2026-10-22, new: from the design record's §2 and §3.8 (Mark, on
 §3.8: "sounds pretty right to me"), then "One Stack statement".*
+
+*Refined 2026-11-02 from case 1084, movement by grain (Mark: "Split by grain
+(Recommended)").*
 
 ### Stack 13. The contract's discipline
 
@@ -1763,12 +1803,18 @@ The embeddable core, `cosmograph-host` as a library, founds worlds and holds the
 world and its session (Mesocosm's included), the clock with an explicit step
 (each product picks wall-clock or explicit pacing), and a driver typed
 through a product trait. Three uniform product hosts sit on isomere's
-`Assembly` over it.
+`Assembly` over it. In a round the minute tick runs off the frame thread by
+default, the foreground walking on toward the last targets until its answers
+arrive; running it in step is a setting for debugging and exact-frame
+captures.
 
-Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927, 1081 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it; a round's tick runs off the frame thread by default.
 
 *Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
 and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
+
+*Refined 2026-11-02 from case 1081 (Mark: "Both, but this is what I meant by
+performance!").*
 
 ### Host 2. Inspection is endpoints
 
@@ -1776,11 +1822,18 @@ The core's inspection is a Graphshell endpoint behind a feature in
 `cosmograph-host`; each product's panels are an endpoint module behind a feature
 in an existing crate. No new crate names are made for it. Every snapshot
 records tick, entry count and state hash, and an intent checks it, so a
-change through any endpoint stales every endpoint (Record 1).
+change through any endpoint stales every endpoint (Record 1). The endpoints
+and the world-graph viewer are one workbench: outside any game it reads,
+analyses and edits entities and worlds' data and generation, and each game
+embeds the same, limited by play to what its subject may know. The
+adaptation phase is seen and done there.
 
-Links: draws on 896, 900, 901, 903, 910, 920, record.1 · summary Inspection is feature-gated Graphshell endpoints; any change stales every endpoint's snapshot.
+Links: draws on 896, 900, 901, 903, 910, 920, 1083, record.1 · summary Inspection is feature-gated Graphshell endpoints, one workbench outside games and embedded within play's limits in each; any change stales every endpoint's snapshot.
 
 *Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+*Refined 2026-11-02 from case 1083 (Mark: "That just makes sense to me as
+the place to see and do the adaptation phase").*
 
 ### Host 3. Only world keys go through the core
 

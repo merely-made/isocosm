@@ -12070,6 +12070,203 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1071, bodies.10, bodies.15, world.4, processes.19 · summary World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly.
 
+1080. **Two time modes: a round at real-time speeds with a sixty-step
+      foreground, and world-simming on the dial and the ladder.** Ruled by
+      Mark on 2026-11-02, on the foreground lane's forks: Eponym plays in real
+      time ("Real time, 60 Hz foreground"); a foreground step is a product
+      layer whose handback alone is recorded ("Product layer, handback
+      recorded"); what is examined is the frame tier's set, capped ("The frame
+      tier's set, capped"); and, asked how long a step is, "ten minutes a real
+      second... that applies to if you're not in a round, like if you're
+      examining the world or letting time pass in simming the world to pick a
+      place to play a round with your lineage, no? in a round, it's a bit like
+      rimworld: you can go realtime, double time, triple time, but the point
+      is not to go as fast as you would when you're, like, running the
+      worldgen... have you been conflating, like, observing a round with,
+      like, simming history?" Then "1x, 2x, 4x, 8x", and on a round's span:
+      "it could be up to a whole life if you wanted... so 1, but no cap... you
+      could just keep switching to the next critter, or choose to track
+      one... maybe i should consider the concept of 'the round' as really just
+      stepping out into the cosmograph and participating in the menu/
+      adaptation phase of the sim and game. idk!" The reading: in a round,
+      world time runs at one, two, four or eight times real time; examined
+      bodies (the frame tier's set, capped by a world rule) step sixty times
+      a real second in the product, each step a sixtieth of a second of
+      world time times the speed, choices, meals and metabolism staying on
+      the minute; at each tick boundary the sim records the handback as
+      ordinary commands checked by its invariants, the product logging its
+      own inputs; a round has no fixed span and may run a whole life or
+      more, switching to another critter or tracking one; out of a round
+      (watching or simming the world, picking a place) time runs on the
+      background dial and the coarse ladder; Mesocosm's ten-a-second head
+      tempo is world-simming speed, not a round's. Open, in Mark's words:
+      whether "the round" is better seen as stepping out into the
+      cosmograph's menu and adaptation phase.
+
+      Links: area Processes and rules · draws on 1072, 978, processes.1, processes.7 · summary A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span.
+
+1081. **In a round the minute tick runs on a worker by default, or in step
+      as a setting; its cost is the performance concern.** Ruled by Mark on
+      2026-11-02. The question: a minute tick costs about 2.5 s of real time
+      on a seeded world (the 2.5D session's measurements; the execution
+      plan's findings of 2026-10-31), far more than a 1/60 s frame. Answer:
+      "Both, but this is what I meant by performance! Like this is my
+      original concern being put to me like it is a surprise". The reading:
+      by default a round's minute tick runs off the frame thread, its bodies
+      walking on toward the last minute's targets until its answers arrive;
+      running it in step, the picture holding at each boundary, is a setting
+      for debugging and exact-frame captures. Replay is exact either way,
+      since the recorded handback carries the result. The tick's own cost is
+      the concern Mark raised first, and case 1084 answers it.
+
+      Links: area Host and network · draws on 1080, host.1 · summary A round's minute tick runs on a worker by default and in step as a setting; replay is exact either way; the tick's cost is the performance concern.
+
+1082. **The foreground cap's default waits for a measured step.** Ruled by
+      Mark on 2026-11-02: "Measure first (Recommended)". The cap on how many
+      bodies a round steps sixty times a second is a world rule (case 1080),
+      older saves reading it as none. The handback and the foreground set are
+      built with 16 as a placeholder; a step is timed, and the default comes
+      back to Mark as a number with its cost.
+
+      Links: area Processes and rules · draws on 1080, processes.1 · summary The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then.
+
+1083. **The adaptation phase is seen and done in the sim's own workbench,
+      which each game embeds within play's limits.** Ruled by Mark on
+      2026-11-02, answering 1080's open question: "I don't think what I
+      described is a big variation in what we've been planning. I just
+      figure that you could use the sim outside the game to read and analyze
+      and edit entities and worlds' data/generation, and then that same
+      thing could be used in each game to provide play-constrained info
+      about the world. That just makes sense to me as the place to see and
+      do the adaptation phase". The reading: the sim's inspection endpoints
+      and the world-graph viewer (H9) are one workbench: outside any game it
+      reads, analyses and edits entities and worlds' data and generation;
+      each game embeds the same, limited by play to what its subject may
+      know. The adaptation phase is seen and done there; a round is not
+      itself that phase.
+
+      Links: area Host and network · draws on 1080, 1036, host.2, record.3 · summary The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there.
+
+1084. **Movement splits by grain: the sim chooses at the place graph's
+      grain, a game's foreground walks the path in view, and out of view a
+      body arrives after its route's travel time.** Ruled by Mark on
+      2026-11-02: "Split by grain (Recommended)", on the execution plan's
+      question of where near-tier movement lives (raised 2026-10-30). The
+      evidence: a played tick on main was about 1.9 s, nearly all of it
+      cold food-route search (about 0.4 s each), walking plans and resting
+      bodies' settling, with bookkeeping under 3%; Stack 12 already said the
+      sim never pathfinds an individual. The reading: the sim chooses which
+      place, which meal and whether a route exists, from PG7's Places; in a
+      round the foreground finds the path, poses the body and places the
+      feet, and the sim commits the arrival it accepts as the handback of
+      case 1080; out of view a body arrives after its route's travel time,
+      with no per-step walking. Route search, walking and foot placement
+      leave the tick and move toward conatus.
+
+      Links: area Stack and engine · draws on 1080, 1081, 841, 842, stack.12, stack.7, processes.16 · summary The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time.
+
+1085. **A body's speed is a world baseline scaled by size, times a factor
+      from its anatomy.** Ruled by Mark on 2026-11-02, asked when the
+      handback's reach check found no walking speed in the sim (native
+      walking moves one cell per chosen step; between sites, authored pace
+      profiles carry no body). Answer: "1, +2 as a factor on the baseline of
+      1... so things can travel at different, physically relevant rates
+      relative to journeying difficulty. we need to derive a 'movement
+      speed' parameter... does inverse kinematics help in this regard?...
+      would it help if we reduced the range of possible animations for
+      parts... like prescribing motion in some angle of the joint's mobility
+      (given there is no 'bone structure' and 'ball and socket joint' to
+      limit mobility). perhaps we can then make that a reliable enough
+      metric for fauna, and have something like drift, contiguous and
+      noncontiguous growth/spread, to define ecological ranges... right?"
+      The reading: a world rule of cells per world second, scaled by body
+      size, is the baseline; an anatomy factor (case 1087) multiplies it;
+      travel is relative to the route's difficulty. The same speed bounds a
+      round's handback and sets travel time out of view (case 1084). Ranges
+      follow from spread (cases 1089, 1092).
+
+      Links: area Bodies and anatomy · draws on 1080, 1084, processes.16 · summary A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel.
+
+1086. **The foreground cap is 16, re-measured once feet are placed.** Ruled
+      by Mark on 2026-11-02: "16, re-measure in phase 4 (Recommended)". The
+      measurement (release, 7 bodies, 60 steps each): a foreground step costs
+      20 to 24 µs a body, about 700 bodies to a 60 Hz frame; a step that
+      re-plants the feet by the settling search costs about 350 µs, about 47
+      to a frame, so 16 is about 5.6 ms of a 16.7 ms frame. Re-timed when
+      E10's foreground places feet.
+
+      Links: area Processes and rules · draws on 1082, 1080 · summary The foreground cap defaults to 16 bodies, re-measured once the foreground places feet.
+
+1087. **The anatomy factor is the Froude rule with stride capped by joint
+      swing.** Ruled by Mark on 2026-11-02: "Froude × joint swing
+      (Recommended)". The question answered his asking whether inverse
+      kinematics helps: it places feet, not speed. Animals of every size
+      walk at about the same Froude number, v² over g times leg length, near
+      0.25, and change gait near 0.5, so v = √(Fr·g·L) (about 1.5 m/s for a
+      0.9 m human leg against a measured 1.4). The reading: speed follows
+      leg length by that rule; stride is capped by each joint's swing range
+      (about 2L·sin(swing/2)); bodies without legs move in body lengths per
+      second.
+
+      Links: area Bodies and anatomy · draws on 1085, 1088 · summary Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second.
+
+1088. **Joints carry mobility, drawn per lineage.** Ruled by Mark on
+      2026-11-02: "Yes, drawn per lineage (Recommended)", on his proposal to
+      prescribe motion within an angle of each joint's mobility. Today a
+      joint is only a shape name (`anatomy.rs`, a part with a parent and
+      children). The reading: each joint carries an axis and an angle range,
+      drawn within what its form allows, as other lineage traits are;
+      animation keeps within them, and they feed stride length and foot
+      placement.
+
+      Links: area Bodies and anatomy · draws on 1087, bodies.1, bodies.11 · summary Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them.
+
+1089. **Births scatter along routes, so a lineage can return to a site.**
+      Ruled by Mark on 2026-11-02: "Births scatter along routes
+      (Recommended)". The food-web lane found that a site whose decomposers
+      die out keeps its soil locked in dead matter for good, nothing in the
+      web moving between sites (3 of 4 sites on seed 9, all 4 on seed 31,
+      by month 12). The reading: some births land at a neighbouring site
+      (the Birth effect's scatter); this is noncontiguous spread, beside
+      Ecology 4's overflow, and a lineage's range is read from where it
+      persists.
+
+      Links: area Ecology · draws on 1078, 1085, ecology.4 · summary Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist.
+
+1090. **Every founded lineage starts with at least six.** Ruled by Mark on
+      2026-11-02: "Founding floor of 6 (Recommended)". At 240 population,
+      predators and omnivores were founded at 0 to 4 a lineage, so one
+      death read as a 33 to 50 per cent monthly loss, and on seed 31 two
+      predator lineages were never founded.
+
+      Links: area World generation · draws on 1078, world.8 · summary Every founded lineage starts with at least six members.
+
+1091. **Dead matter awaiting decomposers is `world:detritus`.** Ruled by
+      Mark on 2026-11-02: "world:detritus", over the lane's `world:litter`.
+      The site account holds bite losses, upkeep and corpse leftovers until
+      decomposers turn them into soil (case 1078).
+
+      Links: area Naming · draws on 1078, naming.4 · summary The site account of dead matter awaiting decomposers is world:detritus.
+
+1092. **Seeds and spores scatter on air and water; a walker's young at their
+      own speed.** Ruled by Mark on 2026-11-02: "Media + own speed
+      (Recommended)". The reading: a scattered birth's chance is keyed by
+      what carries it: seeds and spores ride the existing `world:air` and
+      `world:water` conditions; a walker's young disperse at the walking
+      speed of case 1085, the chance per route read from speed and route
+      length. No new names.
+
+      Links: area Ecology · draws on 1089, 1085, ecology.4 · summary Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length.
+
+1093. **A lineage trait shapes its scatter too.** Said by Mark on
+      2026-11-02, after 1092: "probably lineage traits too", taken as adding
+      the card's third option to the medium and the speed. The reading: each
+      lineage draws a scatter propensity like its other life-history traits
+      (seed or spore count, how readily young leave), which scales the chance
+      its medium or speed gives.
+
+      Links: area Ecology · draws on 1092, bodies.7 · summary A drawn lineage trait scales the scatter chance its medium or walking speed gives.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -55,6 +55,7 @@ impl Session {
         steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<Preparation> {
         let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
+            handbacks: Vec::new(),
         };
         self.prepare_spatial_command(command)
     }
@@ -65,8 +66,17 @@ impl Session {
     pub fn try_advance_birth_spatial_with_flows(&mut self, ticks: Tick,
         terrain: &[TerrainResolution], steps: &[Resolution], arrivals: &[ArrivalResolution],
         births: &[BirthResolution]) -> Result<SpatialAdvance> {
+        self.try_advance_round_spatial(ticks, terrain, steps, arrivals, births, &[])
+    }
+
+    /// The same tick with a round's foreground handbacks (case 1080),
+    /// checked and applied before the minute's passes run.
+    pub fn try_advance_round_spatial(&mut self, ticks: Tick,
+        terrain: &[TerrainResolution], steps: &[Resolution], arrivals: &[ArrivalResolution],
+        births: &[BirthResolution], handbacks: &[Handback]) -> Result<SpatialAdvance> {
         let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
+            handbacks: handbacks.to_vec(),
         };
         match self.stage_spatial_command(command)? {
             StagedAdvance::Terrain(pending) => Ok(SpatialAdvance::Terrain(pending)),
@@ -126,19 +136,21 @@ impl Session {
 
     pub(crate) fn advance_spatial(&mut self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution]) -> Result<String> {
-        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, None)
+        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, None, &[])
     }
 
     pub(crate) fn advance_birth_spatial(&mut self, ticks: Tick, terrain: &[TerrainResolution],
-        steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<String> {
-        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, Some(births))
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution],
+        handbacks: &[Handback]) -> Result<String> {
+        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, Some(births), handbacks)
     }
 
     fn advance_spatial_inputs(&mut self, ticks: Tick, terrain: &[TerrainResolution],
-        steps: &[Resolution], arrivals: &[ArrivalResolution], births: Option<&[BirthResolution]>) -> Result<String> {
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: Option<&[BirthResolution]>,
+        handbacks: &[Handback]) -> Result<String> {
         let _span = crate::profile::Span::new("spatial.command");
         let count = terrain.len().checked_add(steps.len()).and_then(|n| n.checked_add(arrivals.len()))
-            .ok_or("spatial input count overflow")?;
+            .and_then(|n| n.checked_add(handbacks.len())).ok_or("spatial input count overflow")?;
         if ticks != 1 || count > self.sim.genesis().rules.limits.events_per_advance {
             return Err("spatial advance needs one tick within the authored input budget".into());
         }
@@ -180,6 +192,9 @@ impl Session {
             }
         }
         candidate.sim.spatial_resolutions = held;
+        if !handbacks.is_empty() {
+            candidate.sim.hand_back(handbacks)?;
+        }
         let work = match { let _c = crate::profile::Span::new("spatial.command.advance"); candidate.advance(ticks) } {
             Ok(work) => work,
             Err(why) => {
@@ -200,6 +215,7 @@ impl Session {
         let accepted = spatial.accepted.clone();
         let born = spatial.birth_reports.clone();
         let order = spatial.order.clone();
+        let handed = spatial.handbacks.clone();
         let auto_births = spatial.auto_births.clone();
         candidate.sim.geometry_resolutions = Default::default();
         candidate.sim.spatial_resolutions = Resolutions { work: Some(work), reports: reports.clone(),
@@ -207,10 +223,15 @@ impl Session {
             birth_reports: born.clone(),
             auto_births,
             order: order.clone(),
+            handbacks: handed.clone(),
             ..Default::default() };
-        let outcome = if births.is_some() {
+        let mut outcome = if births.is_some() {
             format!("birth spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted, born, order)))
         } else { format!("spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted))) };
+        // A minute without handbacks records exactly as before rounds.
+        if !handed.is_empty() {
+            outcome.push_str(&format!("; handbacks {}", crate::digest(&handed)));
+        }
         { let _c = crate::profile::Span::new("spatial.command.assign"); *self = candidate; }
         Ok(outcome)
     }

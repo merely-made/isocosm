@@ -136,6 +136,13 @@ impl Windows {
             .filter(|r| matches!(r, Region::Frame { .. })).collect()
     }
 
+    /// The camera frames one participant's active windows examine.
+    pub(crate) fn frames_of(&self, participant: Id) -> Vec<Region> {
+        self.active.values().filter(|c| c.participant == participant)
+            .filter_map(|c| c.attention.examined.clone())
+            .filter(|r| matches!(r, Region::Frame { .. })).collect()
+    }
+
     pub(crate) fn foreground(&self, first: Id, count: u64) -> bool {
         self.root_cache.range(first..first + count).next().is_some()
     }

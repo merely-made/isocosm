@@ -12,6 +12,7 @@ pub(super) fn census(session: &Session) -> Result<(), String> {
             steps,
             arrivals,
             births,
+            ..
         } = &entry.command
         else {
             continue;
@@ -165,6 +166,7 @@ pub(super) fn run(session: &Session) -> Result<(), String> {
             steps,
             arrivals,
             births,
+            ..
         } = &entry.command
         else {
             continue;

@@ -5419,6 +5419,104 @@ area = "Bodies and anatomy"
 summary = "World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly."
 draws_on = ["1071", "bodies.10", "bodies.15", "processes.19", "world.4"]
 
+[cases."1080"]
+title = "Two time modes: a round at real-time speeds with a sixty-step foreground, and world-simming on the dial and the ladder"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span."
+draws_on = ["978", "1072", "processes.1", "processes.7"]
+
+[cases."1081"]
+title = "In a round the minute tick runs on a worker by default, or in step as a setting; its cost is the performance concern"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "A round's minute tick runs on a worker by default and in step as a setting; replay is exact either way; the tick's cost is the performance concern."
+draws_on = ["1080", "host.1"]
+
+[cases."1082"]
+title = "The foreground cap's default waits for a measured step"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then."
+draws_on = ["1080", "processes.1"]
+
+[cases."1083"]
+title = "The adaptation phase is seen and done in the sim's own workbench, which each game embeds within play's limits"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "The sim's workbench reads, analyses and edits worlds and their generation outside a game; each game embeds it limited by play; the adaptation phase lives there."
+draws_on = ["1036", "1080", "host.2", "record.3"]
+
+[cases."1084"]
+title = "Movement splits by grain: the sim chooses at the place graph's grain, a game's foreground walks the path in view, and out of view a body arrives after its route's travel time"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time."
+draws_on = ["841", "842", "1080", "1081", "processes.16", "stack.7", "stack.12"]
+
+[cases."1085"]
+title = "A body's speed is a world baseline scaled by size, times a factor from its anatomy"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A body's speed is a world baseline scaled by size times an anatomy factor, relative to the route's difficulty; it bounds the handback and out-of-view travel."
+draws_on = ["1080", "1084", "processes.16"]
+
+[cases."1086"]
+title = "The foreground cap is 16, re-measured once feet are placed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The foreground cap defaults to 16 bodies, re-measured once the foreground places feet."
+draws_on = ["1080", "1082"]
+
+[cases."1087"]
+title = "The anatomy factor is the Froude rule with stride capped by joint swing"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second."
+draws_on = ["1085", "1088"]
+
+[cases."1088"]
+title = "Joints carry mobility, drawn per lineage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them."
+draws_on = ["1087", "bodies.1", "bodies.11"]
+
+[cases."1089"]
+title = "Births scatter along routes, so a lineage can return to a site"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist."
+draws_on = ["1078", "1085", "ecology.4"]
+
+[cases."1090"]
+title = "Every founded lineage starts with at least six"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Every founded lineage starts with at least six members."
+draws_on = ["1078", "world.8"]
+
+[cases."1091"]
+title = "Dead matter awaiting decomposers is `world:detritus`"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The site account of dead matter awaiting decomposers is world:detritus."
+draws_on = ["1078", "naming.4"]
+
+[cases."1092"]
+title = "Seeds and spores scatter on air and water; a walker's young at their own speed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length."
+draws_on = ["1085", "1089", "ecology.4"]
+
+[cases."1093"]
+title = "A lineage trait shapes its scatter too"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A drawn lineage trait scales the scatter chance its medium or walking speed gives."
+draws_on = ["1092", "bodies.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5981,6 +6079,13 @@ area = "Bodies and anatomy"
 summary = "Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; inert, sensing, sentient, sapient."
 draws_on = ["1071", "bodies.1", "bodies.10", "world.4"]
 
+[statements."bodies.16"]
+title = "Speed follows the body"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel."
+draws_on = ["1085", "1087", "1088", "bodies.1", "stack.12"]
+
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
@@ -6055,8 +6160,8 @@ draws_on = ["267", "283", "383", "879"]
 title = "Spread is overflow along routes"
 source = "design_docs/doctrine.md"
 area = "Ecology"
-summary = "Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
-draws_on = ["498", "590", "718", "827", "828", "831"]
+summary = "Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
+draws_on = ["498", "590", "718", "827", "828", "831", "1089", "1091", "1092", "1093"]
 
 [statements."ecology.5"]
 title = "Light and life"
@@ -6104,15 +6209,15 @@ draws_on = ["816", "818", "819", "825", "835"]
 title = "One sim host under three product hosts"
 source = "design_docs/doctrine.md"
 area = "Host and network"
-summary = "The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
-draws_on = ["381", "884", "892", "896", "898", "901", "925", "926", "927"]
+summary = "The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it; a round's tick runs off the frame thread by default."
+draws_on = ["381", "884", "892", "896", "898", "901", "925", "926", "927", "1081"]
 
 [statements."host.2"]
 title = "Inspection is endpoints"
 source = "design_docs/doctrine.md"
 area = "Host and network"
-summary = "Inspection is feature-gated Graphshell endpoints; any change stales every endpoint's snapshot."
-draws_on = ["896", "900", "901", "903", "910", "920", "record.1"]
+summary = "Inspection is feature-gated Graphshell endpoints, one workbench outside games and embedded within play's limits in each; any change stales every endpoint's snapshot."
+draws_on = ["896", "900", "901", "903", "910", "920", "1083", "record.1"]
 
 [statements."host.3"]
 title = "Only world keys go through the core"
@@ -6705,8 +6810,8 @@ stack = true
 title = "Three tiers, and what the sim never does"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
-summary = "Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun."
-draws_on = ["10", "114", "processes.1"]
+summary = "Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun; it moves bodies at place grain."
+draws_on = ["10", "114", "1084", "processes.1"]
 
 [statements."stack.13"]
 title = "The contract's discipline"
@@ -6825,8 +6930,8 @@ draws_on = ["412", "413", "414", "415"]
 title = "Founded lineages are drawn within what bodies allow"
 source = "design_docs/doctrine.md"
 area = "World generation"
-summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless."
-draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "sim-execution D46"]
+summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless."
+draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "1090", "sim-execution D46"]
 
 [statements."world.9"]
 title = "Places carry quality and alignment"

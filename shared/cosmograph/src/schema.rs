@@ -489,6 +489,19 @@ pub struct Limits {
     /// Retired by ruling 284, which limits an advance's work and not its
     /// ticks. Kept so saved worlds keep their digest; nothing reads it.
     pub advance_ticks: u64,
+    /// The most bodies a participant's round steps in the foreground (case
+    /// 1082); absent, `FOREGROUND`, a placeholder until a step is measured.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub foreground: Option<u32>,
+}
+
+/// The foreground cap's placeholder until Mark sets it (case 1082).
+pub const FOREGROUND: u32 = 16;
+
+impl Limits {
+    pub fn foreground(&self) -> u32 {
+        self.foreground.unwrap_or(FOREGROUND)
+    }
 }
 
 impl Default for Limits {
@@ -502,6 +515,7 @@ impl Default for Limits {
             notes: 100_000,
             history: 1_000_000,
             advance_ticks: 100_000,
+            foreground: None,
         }
     }
 }

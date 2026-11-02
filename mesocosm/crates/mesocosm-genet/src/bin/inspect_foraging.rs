@@ -44,6 +44,7 @@ fn main() -> Result<(), String> {
             steps,
             arrivals,
             births,
+            ..
         } = &entry.command
         else {
             continue;

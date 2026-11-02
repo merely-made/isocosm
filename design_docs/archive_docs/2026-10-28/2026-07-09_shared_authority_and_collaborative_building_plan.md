@@ -19,7 +19,7 @@ determinism discipline, which tier 3 promotes from optimization to
 load-bearing), [optional_intelligence_vision](2026-07-07_optional_intelligence_vision.md)
 (DM-authority as the trust boundary), and the personae suite vision
 (capabilities as the one collaboration primitive; cross-repo,
-`repos/personae/design_docs/2026-07-08_personae_across_the_suite.md`).
+`repos/dramatis/design_docs/2026-07-08_personae_across_the_suite.md`).
 
 **W1, 2026-09-18:** keep. Tier: stack, federation. The gate is why §5 can stay
 open safely. Evaluated against the wing design record; see

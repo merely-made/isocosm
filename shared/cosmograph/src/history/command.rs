@@ -132,6 +132,10 @@ pub enum Command {
         steps: Vec<crate::spatial::Resolution>,
         arrivals: Vec<crate::spatial::ArrivalResolution>,
         births: Vec<crate::spatial::BirthResolution>,
+        /// A round's foreground handbacks for the minute (case 1080);
+        /// absent before rounds, which serialize and hash as before.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        handbacks: Vec<crate::spatial::Handback>,
     },
     /// A controlled process with exact quantities selected from owned lots.
     ActOwned {
