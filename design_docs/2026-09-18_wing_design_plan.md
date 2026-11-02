@@ -12535,6 +12535,24 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1078, 1111 · summary All five seeds run two years before people are added; a year-two crash is fixed first.
 
+1117. **A round's minute motion carries its inputs and is re-solved.**
+      Ruled by Mark on 2026-11-02: "Inputs + end pose (Recommended)", over
+      the end pose alone and a per-world choice. Measured in a dev build: one
+      derivation over the window took 183 ms and re-solving the minute's
+      3,600 steps 1.24 s. The reading: in a round the minute's motion action
+      carries its inputs and claimed end pose; the borrowed mode derives the
+      volume once, re-solves the batch and refuses a mismatch; falls within
+      the minute are charged by step index; held input is run-length encoded.
+
+      Links: area Eponym · draws on 1113, 1095, eponym.2 · summary A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step.
+
+1118. **Between minutes a host draws its own stepped pose.** Ruled by Mark
+      on 2026-11-02: "Host draws its own (Recommended)". The reading: a host
+      draws a borrowed body from its locally stepped pose between minutes,
+      as Eponym's standalone client does; the binding moves once a minute.
+
+      Links: area Eponym · draws on 1113, 1117 · summary Between minutes a host draws a borrowed body from its own locally stepped pose.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

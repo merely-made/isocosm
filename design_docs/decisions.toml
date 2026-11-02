@@ -5678,6 +5678,20 @@ area = "Ecology"
 summary = "All five seeds run two years before people are added; a year-two crash is fixed first."
 draws_on = ["1078", "1111"]
 
+[cases."1117"]
+title = "A round's minute motion carries its inputs and is re-solved"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step."
+draws_on = ["1095", "1113", "eponym.2"]
+
+[cases."1118"]
+title = "Between minutes a host draws its own stepped pose"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Between minutes a host draws a borrowed body from its own locally stepped pose."
+draws_on = ["1113", "1117"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

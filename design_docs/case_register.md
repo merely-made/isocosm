@@ -792,6 +792,8 @@ three design docs that cite it. The record holds the words.
 | 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | none |
 | 1108 | Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does. | none |
 | 1113 | In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local. | none |
+| 1117 | A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step. | none |
+| 1118 | Between minutes a host draws a borrowed body from its own locally stepped pose. | none |
 
 ## The VTT
 
