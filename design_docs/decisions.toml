@@ -5790,6 +5790,34 @@ area = "Eponym"
 summary = "Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it."
 draws_on = ["227", "1127"]
 
+[cases."1133"]
+title = "A denizen body plan is a drawn family in the recipe grammar"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds."
+draws_on = ["1128", "bodies.6", "world.8"]
+
+[cases."1134"]
+title = "The creator designs an individual that seeds a lineage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common."
+draws_on = ["1128", "1133", "bodies.11", "eponym.1"]
+
+[cases."1135"]
+title = "The creator opens for lives not born in play"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides."
+draws_on = ["1128", "eponym.1", "vtt.2"]
+
+[cases."1136"]
+title = "The shared look lives in isometer-mesh"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "The layered look resolution moves into isometer-mesh for every product."
+draws_on = ["1129", "stack.3", "vtt.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

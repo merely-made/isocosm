@@ -411,6 +411,8 @@ three design docs that cite it. The record holds the words.
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | none |
+| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | none |
 
 ## Record and history
 
@@ -614,6 +616,7 @@ three design docs that cite it. The record holds the words.
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
 | 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md) |
+| 1136 | The layered look resolution moves into isometer-mesh for every product. | none |
 
 ## Stack and engine
 
@@ -808,6 +811,7 @@ three design docs that cite it. The record holds the words.
 | 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | [denizen](2026-11-02_denizen_plan.md) |
 | 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md) |
 | 1132 | Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it. | none |
+| 1135 | The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides. | none |
 
 ## The VTT
 

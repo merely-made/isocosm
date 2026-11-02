@@ -12694,6 +12694,48 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 227, 1127 · summary Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it.
 
+1133. **A denizen body plan is a drawn family in the recipe grammar.** Ruled
+      by Mark on 2026-11-02: "A drawn denizen family (Recommended)". The
+      grammar already branches and grows jointed chains (the authored jointed
+      roster), which the generated lottery did not use; the only drawn
+      proportion was limb scale, 1 to 2. The reading: an upright trunk, a
+      head and paired jointed limb chains, counts and proportions drawn per
+      lineage within bounds a world may widen; a humanoid is one region of
+      that space; sapience stays measured, never declared (Directing 3).
+
+      Links: area Bodies and anatomy · draws on 1128, bodies.6, world.8 · summary A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds.
+
+1134. **The creator designs an individual that seeds a lineage.** Said by
+      Mark on 2026-11-02, answering what the creator edits: "the idea would be to use the individual to seed a lineage, picking between what's common and unique about the individual (what applies and doesn't apply to the lineage...) then you probably need a bit of procedural variance; maybe generate a round of variants and pick examples that would fit within your designed lineage, then use those to figure out what the lineage's typical distribution of appearances could be. you could do as many rounds as we could handle to give the lineage more examples to generalize from, and in the extreme case of one example, we can do some minor variance (palette swaps, for example) treating that example as a blueprint. besides that, a voxel editor would be nice for shaping the individual's body, with snapping to editable body plan templates...? idk! spitballin. i do think that it should also be possible for a player's denizen to be able to be the last of its kind... so maybe an adjustable portion of how rare the lineage is, from 1 to very common? idk! last, i do like the idea of taking critters from mesocosm and making them into playable denizens in eponym, but i figure that will need designing when both are more developed/unified on the sim backend..." The
+      reading, as working direction with its pieces still to rule: the
+      designed individual seeds a lineage, the designer marking which traits
+      are the lineage's and which the individual's own; rounds of drawn
+      variants are kept or discarded as fitting the lineage, and the kept
+      examples set the lineage's distribution, a single example being a
+      blueprint with minor variance such as palette swaps; a voxel editor
+      shapes the individual, snapping to editable body-plan templates; the
+      lineage's rarity is adjustable, from the last of its kind to very
+      common; Mesocosm critters made playable in Eponym wait for the two to
+      meet on the sim backend.
+
+      Links: area Bodies and anatomy · draws on 1128, 1133, bodies.11, eponym.1 · summary The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common.
+
+1135. **The creator opens for lives not born in play.** Ruled by Mark on
+      2026-11-02: "Lives not born in play (Recommended)". The reading: a
+      generated outsider, an authored quick-start founder or a VTT character
+      at creation; a life born in play stays drawn, with look overrides
+      only.
+
+      Links: area Eponym · draws on 1128, eponym.1, vtt.2 · summary The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides.
+
+1136. **The shared look lives in isometer-mesh.** Ruled by Mark on
+      2026-11-02: "isometer-mesh (Recommended)". isometer-mesh already owned
+      `Appearance`, layer composing and the bake; the layered resolution
+      lived in `isocosm-views`. The reading: the layered resolution moves
+      into isometer-mesh, for every product.
+
+      Links: area Presentation · draws on 1129, vtt.7, stack.3 · summary The layered look resolution moves into isometer-mesh for every product.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
