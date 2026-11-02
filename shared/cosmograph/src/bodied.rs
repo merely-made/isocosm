@@ -83,6 +83,16 @@ pub struct Bodies {
     pub hazard: [u64; 2],
     #[serde(default, skip_serializing_if = "unset")]
     pub wound: [u32; 2],
+    /// Whether every active form senses (1071, Bodies 15): animals by touch
+    /// and a smell radius, plants by light, soil and crowding, territories by
+    /// their gradient, the world by its site. A saved founding that does not
+    /// name it was founded without, so it reads as `false`.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub sensing: bool,
+    /// Inclusive bounds, in base cells, on the smell radius each animal
+    /// lineage draws; a world may widen them.
+    #[serde(default, skip_serializing_if = "unset")]
+    pub smell: [u64; 2],
 }
 
 fn unset<T: Default + PartialEq>(value: &T) -> bool {
@@ -104,6 +114,8 @@ impl Default for Bodies {
             grazing: true,
             hazard: [0, 0],
             wound: [0, 0],
+            sensing: true,
+            smell: crate::senses::SMELL,
         }
     }
 }
@@ -123,6 +135,9 @@ impl Bodies {
         }
         if self.hazard[1] > 0 && self.wound[0] == 0 {
             return Err("a hazard that hits for no cells".into());
+        }
+        if self.sensing && (self.smell[0] == 0 || self.smell[0] > self.smell[1]) {
+            return Err("a smell radius outside its bounds".into());
         }
         Ok(())
     }
@@ -330,6 +345,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
         (default_kinds(), roster())
     };
     let (mut producers, mut consumers) = (0, 0);
+    let mut senses = crate::senses::Senses::default();
     let affinity = g.rules.affinity.clone().unwrap_or_default();
     affinity.validate()?;
     let mut added: BTreeMap<Key, BTreeSet<Key>> = BTreeMap::new();
@@ -345,6 +361,11 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             _ => continue,
         };
         bodied.insert(key.clone());
+        if b.sensing && !producer {
+            // An animal's smell reaches a radius its lineage draws (1071).
+            let [s0, s1] = b.smell;
+            senses.smell.insert(key.clone(), s0 + crate::draw(g.seed, "smell", &[index]) % (s1 - s0 + 1));
+        }
         let (traits, clutch, anamorphic) = life(g.seed, index, b);
         let varied = b.proportions.then(||
             proportions::drawn(g.seed, index, producer, &traits, &authored)).flatten();
@@ -417,6 +438,9 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     g.rules.kinds = kinds;
     g.rules.affinity = Some(affinity);
     g.rules.traits.extend(TRAITS.map(String::from));
+    if b.sensing {
+        g.rules.senses = Some(senses);
+    }
     let rules = g.rules.clone();
     let seed = g.seed;
     for (first, group) in g.population.groups.iter_mut() {

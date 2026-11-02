@@ -73,6 +73,7 @@ pub mod rng;
 pub mod rules;
 mod schedule;
 pub mod schema;
+pub mod senses;
 pub mod spread;
 pub mod simulation;
 pub mod site_authoring;

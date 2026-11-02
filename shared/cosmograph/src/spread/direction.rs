@@ -43,6 +43,9 @@ pub fn resolved_overflow_routes(state: &mut State, rules: &Rules, actor: Id, fro
     if excess == 0 { return Err("directed territory has no local capacity excess".into()); }
     let count = u64::try_from(selected.len()).map_err(|_| "directed overflow route count overflows")?;
     for choice in &mut selected { choice.offered = excess / count; }
+    if rules.senses.is_some() {
+        down_gradient(state, from, &identity, limit, excess, &mut selected)?;
+    }
     owned::operation(state, rules, crate::projects::SpreadDebit::Overflow, &identity, at,
         |candidate| overflow_at(candidate, &identity, at, limit, &selected))
 }
@@ -79,4 +82,23 @@ impl Simulation {
         } else { result?; }
         Ok(())
     }
+}
+
+/// A sensing territory (1071) spreads down its gradient: each destination
+/// is offered the excess in proportion to how much less than what stays
+/// here it holds. Where none holds less, the even split stands.
+fn down_gradient(state: &State, from: Id, identity: &Identity, stays: u64, excess: u64,
+    selected: &mut [Dispatch]) -> Result<()> {
+    let source = state.sites.get(&from).ok_or("directed overflow source site is absent")?;
+    let mut weights = Vec::with_capacity(selected.len());
+    for choice in selected.iter() {
+        let to = source.routes[choice.route].to;
+        weights.push(u128::from(stays.saturating_sub(held(state, Substrate::Site(to), identity)?)));
+    }
+    let total: u128 = weights.iter().sum();
+    if total == 0 { return Ok(()); }
+    for (choice, w) in selected.iter_mut().zip(weights) {
+        choice.offered = u64::try_from(u128::from(excess) * w / total).unwrap_or(excess);
+    }
+    Ok(())
 }

@@ -62,6 +62,8 @@ pub struct Detection {
 pub enum FoodDetection {
     Contact,
     Sight(Detection),
+    /// Within the actor's smell radius through air and water (1071).
+    Smell,
 }
 
 pub(super) struct Sight {
@@ -150,6 +152,70 @@ impl Sight {
     }
 }
 
+/// The open cells an animal's smell reaches (1071): from its own boxes
+/// through air and water, never rock, within its radius of them, with no
+/// line of sight. One reading per actor and pass, like `Sight`.
+pub(super) struct Smell {
+    site: Id,
+    lo: [i64; 3],
+    size: [usize; 3],
+    reached: Vec<bool>,
+}
+
+impl Smell {
+    pub(super) fn read(sim: &Simulation, actor: Id, radius: u64) -> Option<Self> {
+        let _span = crate::profile::Span::new("foraging.smell.read");
+        if radius == 0 || !sim.body_at_start(actor)?.alive {
+            return None;
+        }
+        let at = sim.spatial_pose_at_start(actor)?;
+        let boxes = sim.placed_boxes(actor)?;
+        let t = sim.genesis.rules.spatial_templates.as_ref()?;
+        let terrain = sim.site_geometry(at.site, &embodiment::site_window(t, at.pose.at), t.places).ok()?;
+        let r = i64::try_from(radius).ok()?;
+        let lo = [0, 1, 2].map(|k| boxes.iter().map(|b| b[0][k]).min().unwrap_or(0) - r);
+        let hi = [0, 1, 2].map(|k| boxes.iter().map(|b| b[1][k]).max().unwrap_or(0) + r);
+        let size = [0, 1, 2].map(|k| usize::try_from(hi[k] - lo[k]).unwrap_or(0));
+        let mut smell = Self { site: at.site, lo, size, reached: vec![false; size[0] * size[1] * size[2]] };
+        let mut queue = std::collections::VecDeque::new();
+        for [blo, bhi] in &boxes {
+            for x in blo[0]..bhi[0] { for y in blo[1]..bhi[1] { for z in blo[2]..bhi[2] {
+                if let Some(i) = smell.index([x, y, z]) && !smell.reached[i] {
+                    smell.reached[i] = true;
+                    queue.push_back([x, y, z]);
+                }
+            } } }
+        }
+        while let Some(c) = queue.pop_front() {
+            for (k, d) in [(0, 1), (0, -1), (1, 1), (1, -1), (2, 1), (2, -1)] {
+                let mut n = c;
+                n[k] += d;
+                let Some(i) = smell.index(n) else { continue };
+                if !smell.reached[i] && clear(&terrain.volume, n) {
+                    smell.reached[i] = true;
+                    queue.push_back(n);
+                }
+            }
+        }
+        Some(smell)
+    }
+
+    fn index(&self, c: [i64; 3]) -> Option<usize> {
+        let d = [0, 1, 2].map(|k| usize::try_from(c[k] - self.lo[k]).ok().filter(|v| *v < self.size[k]));
+        Some((d[0]? * self.size[1] + d[1]?) * self.size[2] + d[2]?)
+    }
+
+    pub(super) fn detects(&self, sim: &Simulation, target: Id) -> bool {
+        if sim.spatial_pose_at_start(target).is_none_or(|r| r.site != self.site) {
+            return false;
+        }
+        sim.placed_boxes(target).is_some_and(|boxes| boxes.iter().any(|[lo, hi]| {
+            (lo[0]..hi[0]).any(|x| (lo[1]..hi[1]).any(|y| (lo[2]..hi[2])
+                .any(|z| self.index([x, y, z]).is_some_and(|i| self.reached[i]))))
+        }))
+    }
+}
+
 fn clear(volume: &isometer_space::volume::Volume, cell: [i64; 3]) -> bool {
     volume
         .material(cell)
@@ -171,11 +237,14 @@ impl Simulation {
         if gap <= f.reach {
             return Some(FoodDetection::Contact);
         }
-        if gap > f.search {
-            return None;
+        // Sight is reported where it reaches; smell where it alone does.
+        let seen = (gap <= f.search).then(|| Sight::read(self, actor, f.search)
+            .and_then(|s| s.detects(self, target))).flatten();
+        if let Some(d) = seen {
+            return Some(FoodDetection::Sight(d));
         }
-        Sight::read(self, actor, f.search)?
-            .detects(self, target)
-            .map(FoodDetection::Sight)
+        let smell = self.smell_radius(actor);
+        (gap <= smell && Smell::read(self, actor, smell).is_some_and(|s| s.detects(self, target)))
+            .then_some(FoodDetection::Smell)
     }
 }

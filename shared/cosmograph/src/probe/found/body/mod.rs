@@ -312,6 +312,7 @@ impl BodyFounding {
             defence: None,
             global_collapse: None,
             spatial_templates: None,
+            senses: None,
             ecology_witness: None,
             founding_events: false,
             companions: None,

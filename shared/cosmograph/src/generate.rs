@@ -327,6 +327,7 @@ impl Founding {
             defence: None,
             global_collapse: Some(extinction()),
             spatial_templates: None,
+            senses: None,
             ecology_witness: None,
             founding_events: false,
             companions: None,

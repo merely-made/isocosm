@@ -41,7 +41,8 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Wounded { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Age { .. } | Query::Condition { .. } | Query::Mood { .. } | Query::MoodBelow { .. }
-        | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. } => false,
+        | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. }
+        | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         Query::Related { .. }
         | Query::Project { .. }
@@ -138,6 +139,20 @@ impl Simulation {
             .is_some_and(|b| b.alive && among.contains(&b.lineage) && b.resident_site() == Some(site));
         let firsts = self.searched(&selector, site).into_iter().filter(here);
         firsts.filter_map(|first| self.target_span(first).map(|(_, count)| count)).sum()
+    }
+
+    /// The matter the live members of `lineage` hold at `site` as the pass
+    /// began, each group counted whole (a territory's gradient, 1071).
+    pub(crate) fn matter_at(&self, site: Id, lineage: &Key) -> u128 {
+        let among = BTreeSet::from([lineage.clone()]);
+        let selector = Target { same_place: true, alive: Some(true), lineage: None, among: among.clone(), weighted: false };
+        let here = |first: &Id| self.body_at_start(*first)
+            .is_some_and(|b| b.alive && &b.lineage == lineage && b.resident_site() == Some(site));
+        self.searched(&selector, site).into_iter().filter(here).filter_map(|first| {
+            let (_, count) = self.target_span(first)?;
+            let each = crate::meaning::mass(self.books_at_start(first)?.as_ref(), &self.genesis.rules);
+            Some(each.saturating_mul(u128::from(count)))
+        }).fold(0u128, u128::saturating_add)
     }
 
     /// Live index pieces and preserved bodies can name the same original

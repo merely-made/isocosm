@@ -30,6 +30,12 @@ fn blind(g: &mut Genesis, actor: u64) {
     }
 }
 
+/// The organ alone: a world without the baseline sense of case 1071, so
+/// an animal's eyes are all that reach past contact.
+fn organs_only(f: Fixture) -> Fixture {
+    rebuild(f, |g| g.rules.senses = None)
+}
+
 fn detected(f: &Fixture) -> Option<native::foraging::FoodDetection> {
     f.session.sim.food_detection(f.actor, f.food, &f.walk)
 }
@@ -125,7 +131,7 @@ fn terrain_hides_food_from_choice_and_removing_it_reveals_the_same_meal() {
 
 #[test]
 fn absent_senses_and_short_ranges_refuse_remote_food_but_contact_remains() {
-    let f = control(true, 256, true);
+    let f = organs_only(control(true, 256, true));
     let actor = f.actor;
     let mut f = rebuild(f, |g| blind(g, actor));
     assert_eq!(detected(&f), None);
@@ -133,7 +139,7 @@ fn absent_senses_and_short_ranges_refuse_remote_food_but_contact_remains() {
         f.tick();
     }
     assert_eq!(f.steps(), 0);
-    let f = control(true, 256, true);
+    let f = organs_only(control(true, 256, true));
     let walk = f.walk.clone();
     let mut f = rebuild(f, |g| {
         g.rules
@@ -242,7 +248,7 @@ fn unplaced_cohort_members_do_not_acquire_the_representatives_visibility() {
 
 #[test]
 fn sensory_reallocation_changes_detection_while_reusing_identical_terrain() {
-    let mut f = control(true, 256, true);
+    let mut f = organs_only(control(true, 256, true));
     assert!(detected(&f).is_some());
     let at = f.game.members[&f.actor].clone();
     let before = f
@@ -395,4 +401,21 @@ fn old_rule_grammar_omits_sight_and_keeps_its_original_sensorless_search() {
     }
     assert!(f.steps() > 0);
     f.game.validate_replay(&f.session).unwrap();
+}
+
+/// Case 1071: an animal without eyes still smells its food within its
+/// lineage's radius, through air and water, and no farther.
+#[test]
+fn an_eyeless_animal_smells_food_within_its_radius() {
+    let f = control(true, 256, true);
+    let actor = f.actor;
+    let f = rebuild(f, |g| blind(g, actor));
+    let radius = f.session.sim.smell_radius(actor);
+    assert!(radius > 0, "a sensing world gives its animals a smell radius");
+    assert_eq!(detected(&f), Some(native::foraging::FoodDetection::Smell));
+    let f = rebuild(f, |g| {
+        let lineage = g.population.get(actor).unwrap().lineage.clone();
+        g.rules.senses.as_mut().unwrap().smell.insert(lineage, 1);
+    });
+    assert_eq!(detected(&f), None, "food beyond the radius is not smelt");
 }
