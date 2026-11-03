@@ -84,6 +84,10 @@ impl Host {
             Some((name, rest)) => (name, rest.trim()),
             None => (label.trim(), ""),
         };
+        if let Some(view) = name.strip_prefix("view-").and_then(isometer::View::parse) {
+            self.view = view;
+            return true;
+        }
         if let Some(key) = key_named(name) {
             self.press_key(&key);
             // A dev step key takes rounds here, not in a frame.
@@ -170,7 +174,7 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         "right" => Some(Key::Named(NamedKey::ArrowRight)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
-        "e" | "q" | "s" | "t" | "r" | "z" | "v" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
+        "e" | "q" | "s" | "t" | "r" | "z" | "v" | "y" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
         | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" => Some(Key::Character(name.into())),
         _ => None,
     }

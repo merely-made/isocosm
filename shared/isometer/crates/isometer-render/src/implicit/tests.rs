@@ -294,3 +294,75 @@ fn gpu_surface_agrees_with_picker_and_respects_terrain_depth() {
         }
     }
 }
+
+/// Under a perspective the body is drawn where its rays meet it and the
+/// terrain depth, which is not linear along a ray, still hides it: a wall
+/// well behind the block shows it, one between the eye and the block hides it,
+/// and an eye inside the block's box (a corner behind the eye) still draws.
+#[test]
+fn gpu_surface_draws_under_a_perspective_and_respects_terrain_depth() {
+    let gpu =
+        crate::Renderer::headless(48, 48).expect("implicit GPU qualification requires an adapter");
+    let (device, queue) = (gpu.device(), gpu.queue());
+    let size = wgpu::Extent3d { width: 48, height: 48, depth_or_array_layers: 1 };
+    let make = |format, usage| {
+        device.create_texture(&wgpu::TextureDescriptor {
+            label: Some("implicit perspective test"),
+            size,
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format,
+            usage,
+            view_formats: &[],
+        })
+    };
+    let colour = make(
+        wgpu::TextureFormat::Rgba8UnormSrgb,
+        wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::COPY_SRC,
+    );
+    let terrain = make(
+        wgpu::TextureFormat::Depth32Float,
+        wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
+    );
+    let renderer = Renderer::new(device, wgpu::TextureFormat::Rgba8UnormSrgb, [48, 48]);
+    let surface = Surface { parts: vec![block(Vec3::ZERO, 4)], blend: 0.2 };
+    let draw = |eye: Vec3, wall_z: f32| {
+        let matrix = Mat4::perspective_rh(1.0, 1.0, 0.1, 40.0) * Mat4::look_to_rh(eye, Vec3::Z, Vec3::Y);
+        let depth = matrix.project_point3(Vec3::new(0., 0., wall_z)).z;
+        let mut encoder = device.create_command_encoder(&Default::default());
+        let view = terrain.create_view(&Default::default());
+        {
+            let _pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("terrain depth fixture"),
+                color_attachments: &[],
+                depth_stencil_attachment: Some(wgpu::RenderPassDepthStencilAttachment {
+                    view: &view,
+                    depth_ops: Some(wgpu::Operations { load: wgpu::LoadOp::Clear(depth), store: wgpu::StoreOp::Store }),
+                    stencil_ops: None,
+                }),
+                timestamp_writes: None,
+                occlusion_query_set: None,
+                multiview_mask: None,
+            });
+        }
+        renderer
+            .encode(device, queue, &mut encoder, &colour, &terrain, Frame {
+                clip_from_world: matrix.to_cols_array_2d(),
+                clip: clip(),
+                toward_sun: [0., 1., 0.],
+                ambient: 1.,
+                sun: [0.; 3],
+            }, &[&surface])
+            .unwrap();
+        gpu.read_back(encoder, &colour).unwrap()
+    };
+    let eye = Vec3::new(0., 0., -6.);
+    let behind = draw(eye, 12.0);
+    assert!(behind.pixel(24, 24)[3] > 0, "the block shows against a distant wall");
+    assert_eq!(behind.pixel(0, 0)[3], 0, "and not where no ray meets it");
+    let before = draw(eye, -3.0);
+    assert_eq!(before.pixel(24, 24)[3], 0, "a wall between the eye and the block hides it");
+    let inside = draw(Vec3::new(0.2, 0., -0.5), 12.0);
+    assert!(inside.pixel(24, 24)[3] > 0, "from inside the box the far wall of the block still draws");
+}

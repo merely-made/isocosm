@@ -60,6 +60,11 @@ impl mesquite::Product for Probe {
             fields: [
                 ("mode", "played".into()),
                 ("camera", s.host.config.camera.name().into()),
+                ("view", s.host.view.slug().into()),
+                (
+                    "eye",
+                    yes_no(s.picture.snapshot().is_some_and(|picture| picture.eye.is_some())),
+                ),
                 ("render-scale", s.host.config.render_scale.to_string()),
                 ("frames", s.host.frames.to_string()),
                 ("dev", s.host.config.dev.to_string()),

@@ -77,3 +77,21 @@ pub(super) fn part_box(live: LiveBody<'_>, mesh: &BodyMesh, part: PartId) -> Opt
     }
     (min[0] <= max[0]).then_some((min, max))
 }
+
+/// First person's body (case 1143): `document` with every part not wholly
+/// below the eye severed, so the body does not fill its own view and its
+/// lower parts show at the frame's edge. The eye is the top of `sensing`
+/// (the part the sim names), else of the root; the part it sits on is not
+/// drawn. Parts are severed in the copy only, never in the world.
+pub fn below_the_eye(document: &BodyDocument, sensing: Option<PartId>) -> BodyDocument {
+    let part = sensing.filter(|part| document.part(*part).is_some_and(|p| !p.severed)).unwrap_or(document.root);
+    let top = |id: PartId| Some(document.world_pivot(id)?[1] + document.part(id)?.half_extent[1]);
+    let mut drawn = document.clone();
+    let Some(eye) = top(part) else { return drawn };
+    for p in &mut drawn.parts {
+        if top(p.id).is_none_or(|t| t >= eye) {
+            p.severed = true;
+        }
+    }
+    drawn
+}

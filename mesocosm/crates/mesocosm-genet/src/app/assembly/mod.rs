@@ -136,6 +136,7 @@ impl State {
                 terrain_y: at[1] as f32,
                 focus: host.config.dev.then(|| host.followed()).flatten(),
                 selection: host.inspection.selected,
+                looking: host.looking(),
             };
             if let Err(why) =
                 self.picture

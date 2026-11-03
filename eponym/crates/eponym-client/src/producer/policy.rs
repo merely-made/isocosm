@@ -72,71 +72,11 @@ impl CameraPolicy {
     }
 }
 
+/// Which camera the scene is seen through, and the perspective presets
+/// (cases 1131, 1140): the shared views, `isometer`'s.
+pub use isometer::{PerspectivePolicy, View};
+
 /// How a subject is coloured. Identity, not decoration: the tests read it back.
-/// Which camera the scene is seen through (cases 1131, 1140): the dimetric
-/// overview the [`CameraPolicy`] frames, or a perspective on the played body.
-/// Switching writes no world state and leaves the overview as it was.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub enum View {
-    #[default]
-    Overview,
-    OverTheShoulder,
-    FirstPerson,
-}
-
-impl View {
-    /// The next view in the switch's cycle.
-    pub fn next(self) -> Self {
-        match self {
-            Self::Overview => Self::OverTheShoulder,
-            Self::OverTheShoulder => Self::FirstPerson,
-            Self::FirstPerson => Self::Overview,
-        }
-    }
-
-    pub fn name(self) -> &'static str {
-        match self {
-            Self::Overview => "overview",
-            Self::OverTheShoulder => "over the shoulder",
-            Self::FirstPerson => "first person",
-        }
-    }
-}
-
-/// Eponym's perspective presets, in world cells, facing where the player
-/// aims. The far plane keeps the view's ground about the overview's, within
-/// the terrain residency budget.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct PerspectivePolicy {
-    pub vertical_fov: f32,
-    pub near: f32,
-    pub far: f32,
-    /// First person's look below level, in radians.
-    pub pitch: f32,
-    pub shoulder_distance: f32,
-    pub shoulder_rise: f32,
-}
-
-impl Default for PerspectivePolicy {
-    fn default() -> Self {
-        Self { vertical_fov: 1.2, near: 0.02, far: 28.0, pitch: 0.12, shoulder_distance: 3.0, shoulder_rise: 1.5 }
-    }
-}
-
-impl PerspectivePolicy {
-    /// The camera for a perspective `view` from `eye` toward `heading`;
-    /// `None` for the overview, which the [`CameraPolicy`] frames.
-    pub fn camera(self, view: View, eye: [f32; 3], heading: [f32; 3], aspect: f32) -> Option<SlabCamera> {
-        match view {
-            View::Overview => None,
-            View::FirstPerson => SlabCamera::first_person(eye, heading, self.pitch, self.vertical_fov,
-                aspect, self.near, self.far),
-            View::OverTheShoulder => SlabCamera::over_the_shoulder(eye, heading, self.shoulder_distance,
-                self.shoulder_rise, self.vertical_fov, aspect, self.near, self.far),
-        }
-    }
-}
-
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Appearance {
     /// The played subject.

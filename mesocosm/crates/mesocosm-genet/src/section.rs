@@ -28,6 +28,7 @@ pub use light::{Block as SkyBlock, SunSource};
 mod terrain;
 pub use terrain::{TerrainStyle, terrain_cell};
 mod inspection;
+pub mod perspective;
 mod view;
 
 pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
@@ -152,6 +153,8 @@ pub struct Section {
     /// same reason: it frames the world and decides nothing in it.
     mode: CameraMode,
     view_depth: Option<f32>,
+    /// A perspective camera standing in for the slab, set by the host.
+    perspective: Option<isometer::SlabCamera>,
     custom_forward: Option<[f32; 3]>,
     body_mode: BodyMode,
     body_budget: usize,
@@ -198,6 +201,7 @@ impl Section {
             half_height: half_height_or_default(framing.half_height),
             mode: framing.mode,
             view_depth: None,
+            perspective: None,
             custom_forward: None,
             body_mode: BodyMode::default(),
             body_budget: DEFAULT_BODY_BUDGET,
@@ -330,9 +334,9 @@ impl Section {
         let camera = self.view(frame.centre);
         let ground_source = GroundTerrain(&frame.scene.ground);
         let paged=frame.scene.window.is_paged();
-        if paged && (self.columns.is_none() || self.column_half!=camera.half_height) {
-            self.columns = Some(isometer::ColumnTerrain::new(frame.scene.window.clone(),terrain_cell(camera.half_height)));
-            self.column_half=camera.half_height;
+        if paged && (self.columns.is_none() || self.column_half!=self.half_height) {
+            self.columns = Some(isometer::ColumnTerrain::new(frame.scene.window.clone(),terrain_cell(self.half_height)));
+            self.column_half=self.half_height;
             self.residency.borrow_mut().rebuild();
         }
         let framed=if paged {

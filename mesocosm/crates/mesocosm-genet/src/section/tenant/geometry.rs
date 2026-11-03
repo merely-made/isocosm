@@ -10,6 +10,9 @@ use tenant::{Palette, PaletteMesh};
 
 pub(super) fn camera(slab: SlabCamera) -> tenant::Camera {
     let [right, up, forward] = slab.basis();
+    if let Some(frustum) = slab.frustum() {
+        return perspective(slab, [right, up, forward], frustum);
+    }
     let reach = slab.reach() + 1.0;
     let eye = [0, 1, 2].map(|i| slab.centre[i] - forward[i] * reach);
     tenant::Camera {
@@ -27,6 +30,29 @@ pub(super) fn camera(slab: SlabCamera) -> tenant::Camera {
         ],
         near: 0.0,
         far: 2.0 * reach,
+    }
+}
+
+/// The eye's own view and a right-handed perspective whose depth runs 0 at the
+/// near plane to 1 at the far, the interval the traced depth prepass is written in.
+fn perspective(slab: SlabCamera, [right, up, forward]: [[f32; 3]; 3], frustum: isometer::Frustum) -> tenant::Camera {
+    let eye = slab.centre;
+    let (near, far) = (frustum.near, frustum.far);
+    tenant::Camera {
+        view: [
+            [right[0], up[0], -forward[0], 0.0],
+            [right[1], up[1], -forward[1], 0.0],
+            [right[2], up[2], -forward[2], 0.0],
+            [-dot(right, eye), -dot(up, eye), dot(forward, eye), 1.0],
+        ],
+        projection: [
+            [1.0 / frustum.tan[0], 0.0, 0.0, 0.0],
+            [0.0, 1.0 / frustum.tan[1], 0.0, 0.0],
+            [0.0, 0.0, far / (near - far), -1.0],
+            [0.0, 0.0, near * far / (near - far), 0.0],
+        ],
+        near,
+        far,
     }
 }
 

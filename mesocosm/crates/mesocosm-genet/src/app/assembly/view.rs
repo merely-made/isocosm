@@ -133,7 +133,7 @@ pub(super) fn root(state: &State) -> Child {
                     el(
                         "div",
                         text(format!(
-                            "tick {} · E / Space attend · S speciate · Z / V turn",
+                            "tick {} · E / Space attend · S speciate · Z / V turn · Y view",
                             state.host.runtime.tick()
                         )),
                     )
