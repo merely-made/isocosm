@@ -26,6 +26,13 @@ repos:
         pass_filenames: false
         files: '(design_docs/.*\.md|\.rs)$'
         additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
+      - id: responsa-check
+        name: responsa check
+        entry: responsa check
+        language: rust
+        pass_filenames: false
+        always_run: true
+        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
       - id: clippy
         name: clippy
         entry: cargo clippy --locked --all-targets
