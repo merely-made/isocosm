@@ -32,7 +32,7 @@ pub use bodies::{
     BodyFrameStats, BodyLayer, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody, below_the_eye, eye_of,
     SceneVolumes, SubjectKey,
 };
-pub use camera::{Cutaway, Frustum, PerspectivePolicy, Projection, SlabCamera, SlabWindow, View};
+pub use camera::{Cutaway, Frustum, PerspectivePolicy, Projection, REFERENCE_BODY_HEIGHT, SlabCamera, SlabWindow, View};
 pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke};
 pub use producer::{
     BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,

@@ -72,7 +72,20 @@ impl Default for PerspectivePolicy {
     }
 }
 
+/// The height in cells of the body the default policy's distances were set
+/// for: Eponym's, standing about two cells.
+pub const REFERENCE_BODY_HEIGHT: f32 = 2.0;
+
 impl PerspectivePolicy {
+    /// The policy with its distances (near, far and the shoulder's) scaled to
+    /// a body `height` cells tall, so a creature of any size is framed alike.
+    /// Field of view and pitch are angles and stay.
+    pub fn for_body(self, height: f32) -> Self {
+        let k = if height.is_finite() && height > 0.0 { height / REFERENCE_BODY_HEIGHT } else { 1.0 };
+        Self { near: self.near * k, far: self.far * k, shoulder_distance: self.shoulder_distance * k,
+            shoulder_rise: self.shoulder_rise * k, ..self }
+    }
+
     /// The camera for a perspective `view` from `eye` toward `heading`;
     /// `None` for the overview, which its host frames.
     pub fn camera(self, view: View, eye: [f32; 3], heading: [f32; 3], aspect: f32) -> Option<SlabCamera> {
@@ -99,6 +112,16 @@ mod tests {
         for v in seen {
             assert_eq!(View::parse(v.slug()), Some(v));
         }
+    }
+
+    #[test]
+    fn a_larger_body_scales_the_distances_and_not_the_angles() {
+        let base = PerspectivePolicy::default();
+        let big = base.for_body(REFERENCE_BODY_HEIGHT * 12.0);
+        assert_eq!((big.far, big.shoulder_distance), (base.far * 12.0, base.shoulder_distance * 12.0));
+        assert_eq!((big.vertical_fov, big.pitch), (base.vertical_fov, base.pitch));
+        assert_eq!(base.for_body(REFERENCE_BODY_HEIGHT), base);
+        assert_eq!(base.for_body(f32::NAN), base);
     }
 
     #[test]

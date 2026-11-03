@@ -21,7 +21,17 @@ impl Host {
         if self.view == View::Overview {
             return Looking::overview();
         }
-        Looking { view: self.view, sensing: self.sensing(), heading: self.heading() }
+        Looking { view: self.view, sensing: self.sensing(), heading: self.heading(), height: self.height() }
+    }
+
+    /// How tall the played body stands, in cells.
+    fn height(&self) -> f32 {
+        self.scene.as_ref()
+            .and_then(|scene| scene.body(scene.played?))
+            .map_or(isometer::REFERENCE_BODY_HEIGHT, |body| {
+                let aabb = body.document.aabb();
+                (aabb.max[1] - aabb.min[1]) as f32
+            })
     }
 
     /// The played body's most sensing part, by the sim.

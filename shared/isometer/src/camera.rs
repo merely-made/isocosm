@@ -22,7 +22,7 @@ use isometer_render::ClipSlab;
 mod projection;
 pub use projection::{Frustum, Projection};
 mod views;
-pub use views::{PerspectivePolicy, View};
+pub use views::{PerspectivePolicy, REFERENCE_BODY_HEIGHT, View};
 
 /// World up. Every camera keeps it; it defines the standing wall, not merely
 /// the screen basis.

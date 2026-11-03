@@ -107,7 +107,8 @@ struct Fragment { @location(0) colour:vec4<f32>, @builtin(frag_depth) depth:f32 
         if t>finish {break;}
     }
     if !hit {discard;}
-    let depth=(frame.clip*vec4(p,1.)).z;
+    let clipped=frame.clip*vec4(p,1.);
+    let depth=clipped.z/clipped.w;
     if depth>terrain_depth+0.000001 || depth<0. || depth>1. {discard;}
     let e=0.025;
     let normal=normalize(vec3(field(p+vec3(e,0.,0.),body).d-field(p-vec3(e,0.,0.),body).d,

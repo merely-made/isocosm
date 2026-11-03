@@ -21,11 +21,13 @@ pub struct Looking {
     pub sensing: Option<PartId>,
     /// Flat: what first person and the shoulder face.
     pub heading: [f32; 3],
+    /// The played body's height in cells: the policy's distances scale to it.
+    pub height: f32,
 }
 
 impl Looking {
     pub fn overview() -> Self {
-        Self { view: View::Overview, sensing: None, heading: [0.0, 0.0, 1.0] }
+        Self { view: View::Overview, sensing: None, heading: [0.0, 0.0, 1.0], height: isometer::REFERENCE_BODY_HEIGHT }
     }
 }
 
@@ -48,6 +50,7 @@ pub fn seen(scene: &SiteScene, looking: &Looking) -> (SiteScene, Option<[f32; 3]
     {
         body.document = isometer::below_the_eye(&body.document, looking.sensing);
     }
+
     (seen, eye)
 }
 
@@ -60,5 +63,5 @@ pub fn facing(yaw: isometer::core::Yaw) -> [f32; 3] {
 
 /// The shared presets from `eye`, or `None` for the overview.
 pub fn camera(looking: &Looking, eye: [f32; 3], aspect: f32) -> Option<SlabCamera> {
-    PerspectivePolicy::default().camera(looking.view, eye, looking.heading, aspect)
+    PerspectivePolicy::default().for_body(looking.height).camera(looking.view, eye, looking.heading, aspect)
 }
