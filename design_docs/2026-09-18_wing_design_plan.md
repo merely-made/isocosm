@@ -12864,6 +12864,98 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 1129, 1139, 1134, bodies.2 · summary Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later.
 
+1150. **First person draws only the played body's parts below the eye.** Ruled
+      by Mark on 2026-11-02: "Parts below the eye only", over hiding the
+      played body (recommended) and drawing it whole. The eye sat on the
+      keeper's sensor atop its root, so half the first-person frame was its
+      own body. The reading: first person draws the played body's parts wholly
+      below the eye; the part the eye sits on is hidden.
+
+      Links: area Presentation · draws on 1131, 1143 · summary First person draws only the played body's parts below the eye.
+
+1151. **The close views face the aim.** Ruled by Mark on 2026-11-02: "Aim
+      direction (Recommended)". Eponym bodies had no facing, and the lane had
+      faced the overview's direction. The reading: first person and over the
+      shoulder face where the player aims.
+
+      Links: area Presentation · draws on 1131 · summary First person and over the shoulder face the player's aim.
+
+1152. **Eponym's app-local cameras retire.** Ruled by Mark on 2026-11-02:
+      "Retire them (Recommended)". Eponym's proof binaries kept their own
+      perspective cameras and a residency that errors over budget where the
+      shared one drops and reports, which capped the far plane at 28 cells.
+      The reading: each moves onto the shared camera and residency or is
+      deleted where its proof is superseded, the call per binary coming back
+      to Mark; the far cap is then revisited.
+
+      Links: area Presentation · draws on 1140 · summary Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited.
+
+1153. **Plant stems stand up so grazers can reach them.** Ruled by Mark on
+      2026-11-02: "Stand the stems up", over counting every part but the root
+      as exposed (recommended) and fronds only. In body space y is up, and a
+      world-time plant's segment chain lay along z at the root's height, so by
+      position (case 1110) only its 2 to 5 fronds, holding 10 to 25 of its 40
+      tissue, stood above ground. The reading: the world-time plant recipe
+      stands its stems on y, exposed by position.
+
+      Links: area Ecology · draws on 1110, 1114 · summary World-time plant stems rise on y, so they are exposed to grazing by position.
+
+1154. **Reach holds for every bodied plant.** Ruled by Mark on 2026-11-02:
+      "Every bodied plant (Recommended)". Reach had been scoped to storing
+      plants to spare 24 pinned cosmograph tests. The reading: reach by
+      position applies to every bodied plant, and those tests are re-recorded.
+
+      Links: area Ecology · draws on 1110, 1106 · summary Reach by position applies to every bodied plant; 24 pinned tests are re-recorded.
+
+1155. **Grazer overshoot: stricter per-head ratios, then the seed bank.**
+      Ruled by Mark on 2026-11-02: "Both". With bodied plants and food per
+      head (3, 6 and 5 prey a head for grazers, omnivores and predators),
+      plants held at 75 to 260 through month 24 and every lineage lived on
+      seeds 5, 9 and 11, but grazers boomed to 96 to 145 by months 16 to 18
+      and fell about 85 per cent, and omnivores grew five to eight times.
+      Reordered by case 1159.
+
+      Links: area Ecology · draws on 1145, 1146 · summary Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day.
+
+1156. **The count-comparison query is `MembersPer`.** Ruled by Mark on
+      2026-11-02: "Keep MembersPer (Recommended)". It holds where at least a
+      number of one lineage's members live at the actor's site for each member
+      of another.
+
+      Links: area Naming · draws on 1145 · summary The per-head member comparison is named MembersPer.
+
+1157. **Isocosm's first person sees through the selected token, else the
+      seat's own.** Ruled by Mark on 2026-11-02: "Selected, else own
+      (Recommended)". A token is one rigid look, not a sim body, so its eye
+      falls back to the top of the root (case 1143); a DM's seat owns no
+      token.
+
+      Links: area The VTT · draws on 1131, 1143 · summary Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root.
+
+1158. **Isocosm's close views face the token's facing.** Ruled by Mark on
+      2026-11-02: "The token's facing (Recommended)". Tokens carry a grid
+      facing the r key turns; switching only reads it. Isocosm cycles its
+      views with V.
+
+      Links: area The VTT · draws on 1131 · summary Isocosm's close views face the token's grid facing; V cycles them.
+
+1159. **The ecology follows the restructuring's order, stems first.** Ruled by
+      Mark on 2026-11-02: "Adopt, keep stems first (Recommended)". On a review
+      session's restructuring of case 1119's brief. The order: stand the stems
+      up and widen reach; an executable two-year persistence test over actual
+      bodies, regional, with local loss and recolonisation visible over stable
+      sampling areas and an asserted bar; maintenance demand from the body
+      (mass for maintenance, leg geometry for locomotion, fractional demand
+      accumulated deterministically, a stated reference temperature);
+      heritable life history with deep-time adaptation through the operation
+      play uses; perception, memory and learning; then dormancy, food quality,
+      disease and terrain. Verified: founding configures ecology before
+      embodying (`generate.rs`); the year harness prints its verdict without
+      asserting and returns early when a span is set; its bodied switch bodies
+      plants only. Reorders 1146 and 1155.
+
+      Links: area Ecology · draws on 1119, 1146, 1145 · summary Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

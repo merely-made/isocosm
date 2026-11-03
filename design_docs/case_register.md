@@ -281,6 +281,10 @@ three design docs that cite it. The record holds the words.
 | 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1153 | World-time plant stems rise on y, so they are exposed to grazing by position. | none |
+| 1154 | Reach by position applies to every bodied plant; 24 pinned tests are re-recorded. | none |
+| 1155 | Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day. | none |
+| 1159 | Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest. | none |
 
 ## Bodies and anatomy
 
@@ -629,6 +633,9 @@ three design docs that cite it. The record holds the words.
 | 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md) |
 | 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
 | 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md) |
+| 1150 | First person draws only the played body's parts below the eye. | [denizen](2026-11-02_denizen_plan.md) |
+| 1151 | First person and over the shoulder face the player's aim. | [denizen](2026-11-02_denizen_plan.md) |
+| 1152 | Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Stack and engine
 
@@ -893,6 +900,8 @@ three design docs that cite it. The record holds the words.
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
+| 1157 | Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root. | [denizen](2026-11-02_denizen_plan.md) |
+| 1158 | Isocosm's close views face the token's grid facing; V cycles them. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Naming
 
@@ -915,6 +924,7 @@ three design docs that cite it. The record holds the words.
 | 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
 | 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
 | 1091 | The site account of dead matter awaiting decomposers is world:detritus. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1156 | The per-head member comparison is named MembersPer. | none |
 
 ## Licensing and sources
 

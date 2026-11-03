@@ -510,8 +510,21 @@ Further answers are recorded here as `denizen D<n>`, in answer order.
 Eponym 1 already said what they need and is unchanged; Eponym's `CLAUDE.md`
 guardrails were rewritten with case 1144.
 
+2026-11-02, P1: Eponym's r1-proof residency errors over budget where the
+shared residency drops and reports, which capped Eponym's perspective far
+plane at 28 cells (case 1152 retires it). Mesocosm bodies stand about 24
+cells against Eponym's 2, so `PerspectivePolicy::for_body` scales near, far
+and shoulder by body height. `View`, `PerspectivePolicy` and `below_the_eye`
+live in isometer for all three products. Smooth bodies had no perspective
+path; the implicit body shader now divides by w.
+
 ## Progress
 
 - 2026-11-02: plan written from cases 1128 to 1131; nothing landed.
 - 2026-11-02: cases 1133 to 1144 folded in as Decisions; P2 and P6 reshaped for
   1134, 1137 and 1138; Directing 1 refined.
+- 2026-11-02: P1 isometer and Eponym landed (`60362a2a`, `be977786`,
+  `b743cf75`; cases 1150, 1151); Mesocosm's three views on Y (`381cbb0b` to
+  `f51e75c1`). Open in P1: Isocosm's views (cases 1157, 1158), retiring
+  Eponym's proof cameras (1152), and Mesocosm's view key (Mark asked about
+  Q/E for turning, which are bound now).

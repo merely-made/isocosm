@@ -5909,6 +5909,76 @@ area = "Presentation"
 summary = "Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later."
 draws_on = ["1129", "1134", "1139", "bodies.2"]
 
+[cases."1150"]
+title = "First person draws only the played body's parts below the eye"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "First person draws only the played body's parts below the eye."
+draws_on = ["1131", "1143"]
+
+[cases."1151"]
+title = "The close views face the aim"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "First person and over the shoulder face the player's aim."
+draws_on = ["1131"]
+
+[cases."1152"]
+title = "Eponym's app-local cameras retire"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited."
+draws_on = ["1140"]
+
+[cases."1153"]
+title = "Plant stems stand up so grazers can reach them"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "World-time plant stems rise on y, so they are exposed to grazing by position."
+draws_on = ["1110", "1114"]
+
+[cases."1154"]
+title = "Reach holds for every bodied plant"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Reach by position applies to every bodied plant; 24 pinned tests are re-recorded."
+draws_on = ["1106", "1110"]
+
+[cases."1155"]
+title = "Grazer overshoot: stricter per-head ratios, then the seed bank"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day."
+draws_on = ["1145", "1146"]
+
+[cases."1156"]
+title = "The count-comparison query is `MembersPer`"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The per-head member comparison is named MembersPer."
+draws_on = ["1145"]
+
+[cases."1157"]
+title = "Isocosm's first person sees through the selected token, else the seat's own"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root."
+draws_on = ["1131", "1143"]
+
+[cases."1158"]
+title = "Isocosm's close views face the token's facing"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Isocosm's close views face the token's grid facing; V cycles them."
+draws_on = ["1131"]
+
+[cases."1159"]
+title = "The ecology follows the restructuring's order, stems first"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest."
+draws_on = ["1119", "1145", "1146"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
