@@ -12956,6 +12956,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1119, 1146, 1145 · summary Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest.
 
+1160. **Source size lives once, in Mere's stack.7.** Ruled by Mark on
+      2026-11-02: "Retire it and cite stack.7 (Recommended)", over keeping
+      Method 3 as a local restatement or deferring. Method 3 repeats the
+      shared source-size doctrine. The wing retires that statement and
+      cites `mere:stack.7`; the source-size requirement and local hooks
+      continue to apply. Recorded in Mere's house-style plan as D13.
+
+      Links: area Method and documents · draws on mere:house-style D13, mere:stack.7 · replaces method.3 · summary Retire Method 3's duplicate source-size statement and cite Mere stack.7.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

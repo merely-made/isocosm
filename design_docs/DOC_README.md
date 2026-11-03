@@ -12,7 +12,7 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 
 ## Games wing entry points
 
-- [doctrine.md](doctrine.md): the wing's doctrine, what it holds and why, by area, over the cases as evidence (DOC_POLICY, "Decisions and doctrine"). 2026-10-22: every area reviewed; 138 statements.
+- [doctrine.md](doctrine.md): the wing's doctrine, what it holds and why, by area, over the cases as evidence (DOC_POLICY, "Decisions and doctrine"). Every area reviewed 2026-10-22; Method 3's duplicate source-size rule retired for `mere:stack.7` on 2026-11-02 (case 1160).
 - [Mesocosm index](../mesocosm/design_docs/DOC_README.md): Mesocosm's index. The wing's shared documents are here, in this directory (since 2026-10-21).
 - [Eponym index](../eponym/design_docs/DOC_README.md): Eponym's index.
 - [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md): the wing founding record: vessels, pipeline laws, shared vocabulary.

@@ -59,7 +59,7 @@ created with the first landing (DOC_POLICY §8).
   allowed is refused whole, with its reason.
 - **Surfaces derive from knowledge and control** (Directing 1): first person
   shows what the played creature knows, never more.
-- **Source files stay under 600 lines** (Method 3); `bodied.rs` is 475 and
+- **Source files stay under 600 lines** (`mere:stack.7`); `bodied.rs` is 475 and
   `shared/isometer/src/camera.rs` 372, so new work lands in siblings.
 - **Lanes stop at forks.** Each phase's lane carries the answers it executes
   and comes back with any choice that has more than one defensible answer.

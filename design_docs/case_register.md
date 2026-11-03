@@ -970,3 +970,4 @@ three design docs that cite it. The record holds the words.
 | 864 | Collect outstanding questions from independent work and deliver them together in one pass; do not trickle isolated questions. | none |
 | 939 | F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen. | none |
 | 953 | Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only. | none |
+| 1160 | Retire Method 3's duplicate source-size statement and cite Mere stack.7. | [DOC README](DOC_README.md) |

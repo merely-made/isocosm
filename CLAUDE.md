@@ -42,7 +42,7 @@ register current, and checks the 600-line ceiling and pack formats.
 ## Working here
 
 - Rust: standard idioms. No `unsafe` without documented justification.
-- Source files stay under 600 lines (doctrine, Method 3; the hook checks).
+- Source files stay under 600 lines (mere:stack.7; the hook checks).
   A file over grows into a directory module with focused siblings (shared
   imports and fixtures at the roof, children on `use super::*`, visibility no
   wider than `pub(super)`), split along seams the code already has; a test

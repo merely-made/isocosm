@@ -1810,7 +1810,7 @@ location, forms of governance, catalogues and canons; piccolo, rulesets and
 world packs; components, a resolver, a generator or a director; and native
 crates, the first-party cores and the sim.
 
-Links: draws on 76, 1000, mere:stack.5 · stack · summary The wing's rungs: open sets as data, rulesets and world packs in piccolo, resolvers, generators and directors as components, the cores and the sim native.
+Links: draws on 76, 1000, mere:stack.3 · stack · summary The wing's rungs: open sets as data, rulesets and world packs in piccolo, resolvers, generators and directors as components, the cores and the sim native.
 
 *Refined 2026-10-22: the rungs and their rule moved to mere's doctrine as
 Stack 5 ("Split as drafted").*
@@ -2277,6 +2277,10 @@ and CLAUDE.md points here.*
 
 ## Method and documents
 
+Source size is governed by `mere:stack.7` in
+`mere/design_docs/doctrine.md`. Method 3 retired in its favour on
+2026-11-02 (case 1160); its key is not reused.
+
 ### Method 1. Evidence is drawn, not picked
 
 A test instance comes from the generator under a seed nobody chose.
@@ -2295,17 +2299,6 @@ Forks found in independent work are put together in one round while
 authorised work continues; a fork found later joins the next round.
 
 Links: draws on 864 · summary Forks are collected into one round while authorised work continues.
-
-*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
-
-### Method 3. Source size
-
-No source file exceeds 600 lines without a listed technical reason; the
-pre-commit hook checks what each commit stages. Oversize and moved files are
-split along seams the code already has. Docs are outside the ceiling and are
-deduplicated instead.
-
-Links: draws on 193, 592, 593, 594 · summary No source file over 600 lines without a listed reason, hook-checked; splits follow existing seams.
 
 *Reviewed 2026-10-21, new. Mark: "Both as drafted".*
 
