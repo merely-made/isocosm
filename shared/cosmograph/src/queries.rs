@@ -52,6 +52,12 @@ impl Simulation {
         if let Query::Institution {producer}=query {
             return self.institution_producer_ready(actor,target,producer);
         }
+        if let Query::MembersPer { among, per, at_least } = query {
+            let site = self.body_at_start(actor).and_then(Entity::resident_site).filter(|s| *s == place);
+            let (v, heads) = site.map_or((0, 0), |site| (self.members_at(site, among), self.members_at(site, per)));
+            return if v >= at_least.saturating_mul(heads) { Ok(format!("{query:?} = {v} for {heads}")) }
+                else { Err(format!("missing requirement: {query:?} = {v} for {heads}")) };
+        }
         if let Query::Members { among, .. } | Query::MembersBelow { among, .. } = query {
             let site = self.body_at_start(actor).and_then(Entity::resident_site).filter(|s| *s == place);
             let v = site.map_or(0, |site| self.members_at(site, among));

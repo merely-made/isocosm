@@ -18,6 +18,9 @@ use super::Role;
 use crate::{Founding, Result, generate::process, rules::*, schema::{Key, Tick}, simulation::Genesis};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod plants;
+pub use plants::{Plants, reserve};
+
 const DAY: u64 = 1440;
 
 /// The media seeds and spores ride (1092): a lineage draws one.
@@ -78,7 +81,7 @@ pub struct RoleTime {
     /// A walker's crowding (1111): where at least `crowd` of its lineage
     /// live at a site, each adult leaves along each route with this chance
     /// a day, in millionths; and it breeds only where at least `prey` of
-    /// what it eats live.
+    /// what it eats live for each member of its lineage there (1145).
     pub crowd: u64,
     pub leave: u32,
     pub prey: u64,
@@ -92,17 +95,17 @@ pub(crate) fn role_time(role: Role) -> RoleTime {
             breed: 90 * DAY, founders: 40, founding_age_days: 730,
             spreads: true, scatter: (50_000, 150_000), crowd: 0, leave: 0, prey: 0 },
         Role::Grazer => RoleTime { maturity_days: 120, hazard_per_million: 200_000, doubling_years: 2,
-            upkeep: 1_680, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
+            upkeep: 1_680, adult: 12, child: 6, feed: 360, bite: 3, kept: 1, grow: 0, regrow: 0,
             breed: 90 * DAY, founders: 8, founding_age_days: 1_095,
-            spreads: false, scatter: (0, 0), crowd: 12, leave: 20_000, prey: 30 },
+            spreads: false, scatter: (0, 0), crowd: 12, leave: 20_000, prey: 3 },
         Role::Omnivore => RoleTime { maturity_days: 180, hazard_per_million: 150_000, doubling_years: 3,
-            upkeep: 2_400, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
+            upkeep: 2_400, adult: 12, child: 6, feed: 360, bite: 3, kept: 1, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 2, founding_age_days: 1_460,
-            spreads: false, scatter: (0, 0), crowd: 6, leave: 20_000, prey: 30 },
+            spreads: false, scatter: (0, 0), crowd: 6, leave: 20_000, prey: 6 },
         Role::Predator => RoleTime { maturity_days: 365, hazard_per_million: 120_000, doubling_years: 3,
             upkeep: 2_160, adult: 15, child: 8, feed: DAY, bite: 9, kept: 3, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 1, founding_age_days: 1_825,
-            spreads: false, scatter: (0, 0), crowd: 4, leave: 20_000, prey: 10 },
+            spreads: false, scatter: (0, 0), crowd: 4, leave: 20_000, prey: 5 },
         Role::Decomposer => RoleTime { maturity_days: 21, hazard_per_million: 500_000, doubling_years: 1,
             upkeep: 720, adult: 8, child: 3, feed: 240, bite: 3, kept: 1, grow: 0, regrow: 0,
             breed: 45 * DAY, founders: 12, founding_age_days: 180,
@@ -189,10 +192,11 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 provision: BTreeMap::from([(body.clone(), time.child)]), scatter: Some(medium.into()) }] });
         }
         if time.prey > 0 {
-            // Breeding slows where food is scarce (1111).
+            // Breeding slows where food is scarce (1111), read per head (1145).
             let among = (0..founding.lineages).filter(|&j| role.eats(Role::of(founding.web, j)))
                 .map(|j| format!("lineage:{j}")).collect();
-            birth.requires.push(Query::Members { among, at_least: time.prey });
+            birth.requires.push(Query::MembersPer { among, per: BTreeSet::from([format!("lineage:{i}")]),
+                at_least: time.prey });
         }
         g.rules.processes.insert(birth.id.clone(), birth);
         if time.leave > 0 {
@@ -226,6 +230,9 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 regrow.requires.push(Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult });
                 g.rules.processes.insert(regrow.id.clone(), regrow);
             }
+            if founding.bodies.is_some() {
+                plants::bodied(g, i, &time, &minutes);
+            }
             continue;
         }
         let Some(feed) = g.rules.processes.get_mut(&format!("ecology:feed-{i}")) else { continue };
@@ -235,8 +242,14 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // that finds less than it read (two eaters at one carcass in a tick)
         // fails as a whole rather than costing the eater its body.
         let lost = if role == Role::Decomposer { "world:soil" } else { DETRITUS };
+        // An animal's bite takes tissue, never a plant's root store (1114);
+        // a decomposer takes all a carcass holds.
+        let of: Vec<Key> = match role {
+            Role::Decomposer => vec![],
+            _ => (0..founding.lineages).map(|j| format!("matter:{j}-0")).collect(),
+        };
         let eat = |into: &str, amount: u64| Effect::Eat { from: Binding::Target,
-            amount: Amount::Fixed(amount), into: into.into(), of: vec![], whole: false };
+            amount: Amount::Fixed(amount), into: into.into(), of: of.clone(), whole: false };
         feed.effects = vec![eat(&body, time.kept), eat(lost, time.bite - time.kept),
             Effect::Transfer { from: Binding::Actor, to: Binding::Place, account: lost.into(),
                 amount: (time.bite - time.kept).into() }];

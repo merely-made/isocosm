@@ -382,11 +382,32 @@ fn apply(
     Ok(())
 }
 
+/// Whether a bite can reach part `id` (1110): a living plant's parts above
+/// ground, those whose lowest point stands at or above its root's top, its
+/// root and what lies level with it being underground; every part of an
+/// animal or a carcass. Read for now only of a plant whose root stores
+/// (1114); other bodied worlds keep their bites as recorded.
+pub fn exposed(e: &Entity, id: PartId) -> bool {
+    if !e.alive || e.kingdom != "kingdom:flora" {
+        return true;
+    }
+    let Some(b) = &e.body else { return true };
+    if !e.parts.get(&b.root).is_some_and(|p| p.cells.contains_key(STORE)) {
+        return true;
+    }
+    let top = |p: PartId| b.world_offset(p).zip(b.part(p)).map(|(at, part)| at[1] + 2 * part.half_extent[1]);
+    match (b.world_offset(id), top(b.root)) {
+        (Some(at), Some(ground)) => id != b.root && at[1] >= ground,
+        _ => true,
+    }
+}
+
 /// The part a bite lands on (ruling 459): drawn by what each holds of the
 /// accounts the meal names, `draw` choosing among them. `None` where the
 /// body keeps no matter in parts.
 pub fn bitten(e: &Entity, of: &[Key], draw: u64) -> Option<PartId> {
     let weights: Vec<(PartId, u64)> = bodies(e)
+        .filter(|(id, _, _)| exposed(e, *id))
         .map(|(id, _, p)| {
             let edible = of.iter().filter_map(|k| p.matter.get(k)).sum::<u64>();
             (id, edible)

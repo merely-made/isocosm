@@ -206,16 +206,21 @@ const MOUTH: Facing = Facing::Below;
 /// head; a consumer's of 1 to 6, bearing limbs, or an eye on the first,
 /// under a head bearing a mouth, a jaw where it has limbs.
 pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
+    let span = if producer { ([1, 3], [4, 11]) } else { ([1, 4], [1, 6]) };
+    drawn_within(seed, index, producer, b, span)
+}
+
+/// The same within `(stretches, segments)`, each an inclusive range: a
+/// world-time plant's are narrower (1115).
+pub(crate) fn drawn_within(seed: u64, index: u64, producer: bool, b: &Bodies, span: ([u64; 2], [u64; 2])) -> Recipe {
     let r = |domain: &str, k: u64| crate::draw(seed, domain, &[index, k]);
-    let stretches = 1 + r("recipe-stretches", 0) % if producer { 3 } else { 4 };
+    let ([t0, t1], [s0, s1]) = span;
+    let stretches = t0 + r("recipe-stretches", 0) % (t1 - t0 + 1);
     let fixing = r("recipe-fixing", 0) % stretches;
     let mut tagmata = vec![];
     let mut limbed = false;
     for s in 0..stretches {
-        let segments = match producer {
-            true => 4 + r("recipe-segments", s) % 8,
-            false => 1 + r("recipe-segments", s) % 6,
-        } as u8;
+        let segments = (s0 + r("recipe-segments", s) % (s1 - s0 + 1)) as u8;
         let borne = match producer {
             true => (s == fixing || r("recipe-plate", s) % 3 == 0).then_some(("frond", LIT)),
             false => match r("recipe-appendage", s) % 6 {
@@ -325,6 +330,12 @@ pub fn life(seed: u64, index: u64, b: &Bodies) -> (BTreeSet<Key>, u32, bool) {
 /// life histories, and develops their founders, a cohort sharing a soma and
 /// its own matter given to its parts as far as they hold it.
 pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
+    embody_within(g, b, None)
+}
+
+/// A world-time founding bodies its plants alone (1114), each drawn within
+/// `plants` (1115) with a root that stores (`world_time::plants`).
+pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::ecology::world_time::Plants>) -> Result<()> {
     let (mut kinds, authored) = if let Some(name) = &b.founding {
         let sheets = crate::datasheet::sheets();
         let palette = &sheets.founding(name)?.palette;
@@ -357,7 +368,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
         let index = index as u64;
         let producer = match lineage.kingdom.as_str() {
             "kingdom:flora" => true,
-            "kingdom:fauna" => false,
+            "kingdom:fauna" if plants.is_none() => false,
             _ => continue,
         };
         bodied.insert(key.clone());
@@ -372,7 +383,10 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
         let mut recipe = match varied {
             Some(recipe) => recipe,
             None => match b.roster || b.founding.is_some() {
-            false => drawn(g.seed, index, producer, b),
+            false => match &plants {
+                Some(p) => drawn_within(g.seed, index, producer, b, p.span),
+                None => drawn(g.seed, index, producer, b),
+            },
             true => {
                 let turn = if producer {
                     &mut producers
@@ -387,6 +401,9 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             },
         };
         reproducing(&mut kinds, &mut recipe)?;
+        if let Some(p) = &plants {
+            p.storing(&mut kinds, &mut recipe)?;
+        }
         if !producer {
             proportions::limbs(g.seed, index, b.limb_scale, &mut kinds, &mut recipe)?;
         }

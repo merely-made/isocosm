@@ -240,7 +240,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
     Ok(match q {
         Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision | Query::Institution {..} =>
             return Err("project query requires its native simulation".into()),
-        Query::Members { .. } | Query::MembersBelow { .. } =>
+        Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } =>
             return Err("a count of members requires its native simulation".into()),
         Query::Sensed { .. } =>
             return Err("a sense reading requires its native simulation".into()),

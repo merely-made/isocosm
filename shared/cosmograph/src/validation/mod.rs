@@ -58,6 +58,9 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::Members { among, .. } | Query::MembersBelow { among, .. } if among.is_empty() => {
             return Err("a count of members names its lineages".into());
         }
+        Query::MembersPer { among, per, .. } if among.is_empty() || per.is_empty() => {
+            return Err("a count of members names its lineages".into());
+        }
         Query::Sensed { reading, .. } if !crate::senses::READINGS.contains(&reading.as_str()) => {
             return Err(format!("unknown sense reading {reading}"));
         }

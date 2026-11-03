@@ -39,7 +39,9 @@ fn a_world_time_web_holds_a_year() {
     let grid = cosmograph::map::Grid { width: 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
     let genesis = Founding { seed, sites: 4, population: env("WORLD_TIME_POP", 240),
         cohort_size: 1, lineages, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
-        map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() }.generate().unwrap();
+        map: Some(cosmograph::map::Layout::Grid(grid)),
+        bodies: (env("WORLD_TIME_BODIED", 0) == 1).then(|| cosmograph::bodied::Bodies { clutch: [1, 1], ..Default::default() }),
+        ..Default::default() }.generate().unwrap();
     let media: Vec<(i64, i64)> = genesis.sites.values().map(|s| (s.conditions["world:air"], s.conditions["world:water"])).collect();
     eprintln!("seed {seed} air and water by site {media:?}");
     let roles: BTreeMap<String, String> = genesis.lineages.iter().map(|(k, l)| (k.clone(),
@@ -51,7 +53,9 @@ fn a_world_time_web_holds_a_year() {
     let mut months = vec![living(&s)];
     eprintln!("seed {seed} month 0 {:?} roles {roles:?}", months[0]);
     let span = env("WORLD_TIME_DAYS", 0);
-    let (step, steps) = if span > 0 { (span * 1440 / 6, 6) } else { (month, 12) };
+    // Twelve months by default; WORLD_TIME_MONTHS runs longer (1116).
+    let length = env("WORLD_TIME_MONTHS", 12) as usize;
+    let (step, steps) = if span > 0 { (span * 1440 / 6, 6) } else { (month, length) };
     for m in 1..=steps {
         // A day at a time keeps each advance inside the operation budget.
         let mut left = step;
@@ -80,7 +84,7 @@ fn a_world_time_web_holds_a_year() {
         let st = s.sim.state();
         let mean: BTreeMap<String, u64> = now.keys().map(|k| { let i = k.trim_start_matches("lineage:");
             let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
-                .fold((0u64, 0u64), |(a, b), g| (a + g.entity.accounts.get(&format!("matter:{i}-0")).copied().unwrap_or(0) * g.count, b + g.count));
+                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&format!("matter:{i}-0")).copied().unwrap_or(0) * g.count, b + g.count));
             (k.clone(), sum / n.max(1)) }).collect();
         let soil: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:soil").copied().unwrap_or(0)).collect();
         let light: Vec<u64> = st.sites.values().map(|site| site.accounts.get("sim:energy").copied().unwrap_or(0)).collect();
@@ -91,18 +95,24 @@ fn a_world_time_web_holds_a_year() {
             by_site.entry(g.entity.place).or_insert_with(|| vec![0; lineages as usize])[i] += g.count;
         }
         eprintln!("seed {seed} sites {by_site:?}");
+        let store: BTreeMap<String, u64> = now.keys().filter_map(|k| { let i = k.trim_start_matches("lineage:");
+            let key = format!("reserve:{i}");
+            let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
+                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&key).copied().unwrap_or(0) * g.count, b + g.count));
+            (sum > 0).then(|| (k.clone(), sum / n.max(1))) }).collect();
+        eprintln!("seed {seed} store {store:?}");
         eprintln!("seed {seed} body {mean:?} soil {soil:?} detritus {detritus:?} light {light:?}");
         eprintln!("seed {seed} month {m} ({:?}) {now:?} births {} starved {} hazard {}", started.elapsed(),
             events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
         months.push(now);
     }
-    if steps != 12 { return; }
+    if span > 0 { return; }
     let names: Vec<String> = months[0].keys().cloned().collect();
     let mut verdict = Vec::new();
     for name in &names {
         let series: Vec<u64> = months.iter().map(|m| m.get(name).copied().unwrap_or(0)).collect();
-        let alive = series[12] > 0;
-        let window = &series[3..=12];
+        let alive = series[steps] > 0;
+        let window = &series[3..=steps];
         let (lo, hi) = (*window.iter().min().unwrap(), *window.iter().max().unwrap());
         let bounded = lo > 0 && hi <= lo * 4;
         let steady = series.windows(2).skip(2).all(|w| w[1] * 3 >= w[0] * 2);

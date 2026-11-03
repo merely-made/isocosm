@@ -556,7 +556,10 @@ impl Founding {
             crate::ecology::configure(self, &mut genesis)?;
         }
         if let Some(bodies) = &self.bodies {
-            crate::bodied::embody(&mut genesis, bodies)?;
+            match self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime {
+                true => crate::bodied::embody_within(&mut genesis, bodies, Some(crate::ecology::world_time::Plants::default()))?,
+                false => crate::bodied::embody(&mut genesis, bodies)?,
+            }
         }
         if let Some(played) = self.played {
             crate::directing::found::found(self, &mut genesis, played)?;
