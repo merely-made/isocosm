@@ -35,7 +35,7 @@ isometer-render = { path = "crates/isometer-render" }
 isometer-space = { path = "crates/isometer-space" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
@@ -71,9 +71,9 @@ wgpu = { version = "30", default-features = false, features = [
 [patch.crates-io]
 # mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
 # call methods only the patched copy has, so the same copy, from mere at its pin.
-accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
 # Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
+cubecl-runtime = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
@@ -85,26 +85,26 @@ rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
 [patch."https://github.com/merely-made/mere.git"]
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
-workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "d1055540dde6dea2fb96655375278b59ffb755ee" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
+workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "47dce59eef5d38127d30dee0e9400a4dc645375b" }
 
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
 [patch."https://github.com/merely-made/eidetic.git"]
-muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
-mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
+muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
+mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "9fe08ee2c793064fc65a2275c7e3ebe7eb9997c5" }
 
 [patch."https://github.com/merely-made/gemot.git"]
 gemot = { git = "https://www.github.com/merely-made/gemot.git", rev = "998133bc17b8636152e9c4f7605eb475498213c8" }

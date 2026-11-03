@@ -465,6 +465,18 @@ takes a 512-byte one-brick lease at the stated epoch, and the same lease
 at any other expected epoch is refused with the CPU fallback drawing the
 committed picture pixel for pixel.
 
+**Receiving observation, 2026-11-03:** the current `resident_ground` example
+selects Conatus's `burn` feature and Burn 0.22.1 on Mere `47dce59ee`. It passes
+on an RTX 4060 Laptop GPU through Vulkan: the raw and Burn views share their
+allocation, the retained atlas survives the commit, the patch is 4 bytes, the
+lease is 512 bytes, commit-time allocator growth is zero, 184 pixels change,
+and the 112-byte accepted delta replays exactly. The current device-wide
+allocator report is 394,640 bytes and 17 allocations, with a 393,216-byte
+initial atlas. The older absolute totals above retain their earlier source
+basis. Current output and source stamps are at
+`Code/testing/mere/registry-releases-20261103/resident-ground.json` and its
+receiving ledger; this is a headless GPU gate for that adapter and backend.
+
 One instrument finding worth keeping: per-slot `write_texture` costs
 about 0.37 ms per call on this machine, so a 1,290-slot reload took
 485 ms naively. Consecutive slots occupy contiguous atlas boxes, so the

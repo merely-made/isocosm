@@ -95,3 +95,15 @@ Pool supplier intake (2026-10-21): the root workspace adopted Armillary
 workspaces retain their independent pins. Source identities, session-bridge
 qualification and remaining acceptance gates are recorded once in
 `mere/support/family-promotion/pool-cohort-rollout-20261022.json`.
+
+Registry receiving (2026-11-03): the nine Mere/Genet dependency
+workspaces advance to Mere `47dce59ee`, the published storage and custody
+cohort, and the Genet events release. Each workspace keeps its own source and
+feature policy; direct Cargo checks omit the ignored tabletop-local overrides.
+All nine locked all-feature/all-target checks pass. Five formerly ignored
+workspace locks are tracked so the qualified sources survive a fresh checkout.
+Isometer selects Conatus's `burn` feature with Burn 0.22.1; its headless
+resident-ground gate passes on the RTX 4060 / Vulkan, with the current
+allocation totals recorded in Mesocosm's engine ecology review.
+Coordination and compact receipts:
+`mere/design_docs/mere_docs/implementation_strategy/2026-10-28_workspace_hygiene_plan.md`.
