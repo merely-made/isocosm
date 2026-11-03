@@ -107,3 +107,12 @@ resident-ground gate passes on the RTX 4060 / Vulkan, with the current
 allocation totals recorded in Mesocosm's engine ecology review.
 Coordination and compact receipts:
 `mere/design_docs/mere_docs/implementation_strategy/2026-10-28_workspace_hygiene_plan.md`.
+
+Distillery receiving (2026-11-03): Mere's source cut `f673d313`, the renamed
+compute supplier `6610858`, Eidetic `1014cf4` and Knot `a84ae72` are received
+without the ignored tabletop Cargo redirects. All nine independently rooted
+workspaces pass `--locked --all-features --all-targets`, with selected-source
+identity audits and Genet retained at `ad362723`. These are native software
+compile receipts; existing headed/game/device acceptance stays in its owner plans.
+Canonical coordination and receipts:
+`mere/design_docs/mere_docs/implementation_strategy/2026-10-31_distillery_extraction_plan.md`.
