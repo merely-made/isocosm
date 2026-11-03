@@ -18,9 +18,9 @@ fn arg(flag: &str) -> Option<String> {
     args.iter().position(|a| a == flag).and_then(|i| args.get(i + 1)).cloned()
 }
 
-fn identity() -> Result<djinn::door::custody_identity::CustodyIdentity, String> {
+fn identity() -> Result<castellan_client::custody_identity::CustodyIdentity, String> {
     let persona = arg("--persona").map(personae::vault::ProfileId);
-    djinn::door::custody_identity::CustodyIdentity::connect_as(APP, persona)
+    castellan_client::custody_identity::CustodyIdentity::connect_as(APP, persona)
         .map_err(|error| format!("the custody identity is unavailable: {error}"))
 }
 
