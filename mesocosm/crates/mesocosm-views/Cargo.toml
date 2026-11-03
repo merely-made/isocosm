@@ -27,3 +27,6 @@ isomere = { path = "../../../shared/isomere" }
 sceno = { workspace = true }
 scenomise = { workspace = true }
 sprigging = { workspace = true }
+
+[lints]
+workspace = true

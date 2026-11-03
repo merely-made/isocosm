@@ -35,3 +35,6 @@ isometer-core = { path = "../isometer-core", features = ["fixtures"] }
 # The bake lane's appearance recipes round-trip as JSON, and the sprite
 # example writes a JSON receipt.
 serde_json = "1"
+
+[lints]
+workspace = true

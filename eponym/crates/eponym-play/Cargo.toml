@@ -35,3 +35,6 @@ graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev
 [[example]]
 name = "eponym_endpoint"
 required-features = ["endpoint"]
+
+[lints]
+workspace = true

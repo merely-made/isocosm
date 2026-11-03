@@ -68,3 +68,6 @@ web-sys = { version = "0.3", features = ["Document", "Element", "HtmlElement", "
 [[example]]
 name = "resident_ground"
 required-features = ["resident-ground-receipt"]
+
+[lints]
+workspace = true

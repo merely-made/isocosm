@@ -44,3 +44,6 @@ wgpu = { version = "30", default-features = false, features = [
     "webgpu",
 ] }
 pollster = "0.4"
+
+[lints]
+workspace = true

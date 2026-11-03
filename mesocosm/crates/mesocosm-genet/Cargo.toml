@@ -84,3 +84,6 @@ ttf-parser = "0.25.1"
 [[test]]
 name = "implicit_bodies"
 path = "../../../shared/isometer/tests/implicit_bodies.rs"
+
+[lints]
+workspace = true

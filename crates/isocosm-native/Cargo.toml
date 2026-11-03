@@ -64,3 +64,6 @@ required-features = ["endpoint"]
 [[test]]
 name = "multi_body"
 required-features = ["endpoint"]
+
+[lints]
+workspace = true

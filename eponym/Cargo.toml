@@ -123,3 +123,13 @@ commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "9
 [patch."https://github.com/merely-made/armillary.git"]
 armillary = { git = "https://www.github.com/merely-made/armillary.git", rev = "7eebeeb4447c5dfa70b813e64dc5b492a6212d3d" }
 apparatus-core = { git = "https://www.github.com/merely-made/armillary.git", rev = "06340b08327b29c3485ecb0089bb5cafed20fd80" }
+
+[workspace.lints.clippy]
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+missing_safety_doc = "warn"
+undocumented_unsafe_blocks = "warn"
+too_many_lines = "warn"
+
+[lints]
+workspace = true

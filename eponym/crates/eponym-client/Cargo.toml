@@ -109,3 +109,6 @@ required-features = ["d1-proof"]
 name = "v1b_residency"
 path = "src/bin/v1b_residency.rs"
 required-features = ["v1b-proof"]
+
+[lints]
+workspace = true

@@ -15,3 +15,5 @@ cosmograph = { path = "../../../shared/cosmograph" }
 isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 
+[lints]
+workspace = true

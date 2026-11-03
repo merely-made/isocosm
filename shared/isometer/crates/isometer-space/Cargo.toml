@@ -22,3 +22,6 @@ postcard = { version = "1", features = ["alloc"] }
 # The lift's draws: the same domain-separated hash the sim drew them with
 # before the move, so a lift's bytes did not change with its home.
 sha2 = "0.10"
+
+[lints]
+workspace = true

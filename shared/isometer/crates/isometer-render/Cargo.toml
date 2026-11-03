@@ -28,3 +28,6 @@ wgpu = { version = "30", default-features = false, features = [
 bytemuck = { version = "1", features = ["derive"] }
 glam = "0.30"
 pollster = "0.4"
+
+[lints]
+workspace = true

@@ -24,3 +24,6 @@ wing-functions = { path = "../../shared/wing-functions" }
 
 [dev-dependencies]
 postcard = { workspace = true }
+
+[lints]
+workspace = true

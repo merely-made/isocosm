@@ -139,3 +139,6 @@ required-features = ["vtt"]
 [[test]]
 name = "transition_resolution"
 required-features = ["vtt"]
+
+[lints]
+workspace = true

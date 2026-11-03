@@ -66,3 +66,6 @@ optional = true
 name = "pack-author"
 path = "src/bin/pack_author.rs"
 required-features = ["pack-authoring"]
+
+[lints]
+workspace = true

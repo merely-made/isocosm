@@ -56,3 +56,6 @@ isometer-core = { workspace = true, features = ["fixtures"] }
 [[example]]
 name = "mesocosm_endpoint"
 required-features = ["endpoint"]
+
+[lints]
+workspace = true

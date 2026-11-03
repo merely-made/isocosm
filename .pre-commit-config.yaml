@@ -1,3 +1,4 @@
+fail_fast: true
 # Checked at commit by prek (`prek install --allow-missing-config`), and over
 # the whole tree with `prek run --all-files`: the 600-line ceiling (ruling 592,
 # mere:stack.7), no hand-written JSON in a pack (ruling 624), and the decisions
@@ -25,3 +26,9 @@ repos:
         pass_filenames: false
         files: '(design_docs/.*\.md|\.rs)$'
         additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
+      - id: clippy
+        name: clippy
+        entry: cargo clippy --locked --all-targets
+        language: system
+        files: '(^|/)(Cargo\.(toml|lock)|[^/]+\.rs)$'
+        pass_filenames: false
