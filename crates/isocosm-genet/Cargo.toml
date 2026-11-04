@@ -21,7 +21,7 @@ notochord = { workspace = true }
 # Peer admission over the holder's custody identity (stack-lift D4, isocosm
 # case 1060): co-op's invitation, lifted into graphshell-host, and Djinn's
 # custody client that signs it. Same sources isonetry's graphshell-host uses.
-graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "f673d313d09e6c7a043779e8c172a53f76e328a7", default-features = false, features = ["native", "custody-client"] }
+graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "ab37ca96f65c68d5064f37530f4f374ad528bb42", default-features = false, features = ["native", "custody-client"] }
 castellan-client = { git = "https://github.com/merely-made/dramatis.git", branch = "main", default-features = false, features = ["client"] }
 personae = { workspace = true }
 insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
@@ -62,7 +62,7 @@ ab_glyph = "0.2"
 
 [dev-dependencies]
 # Invitation tests sign as an in-memory owner; release builds never do (stack-lift D4).
-graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "f673d313d09e6c7a043779e8c172a53f76e328a7", default-features = false, features = ["test-signer"] }
+graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "ab37ca96f65c68d5064f37530f4f374ad528bb42", default-features = false, features = ["test-signer"] }
 # Host-routing receipts run through `Harness`, the windowless twin of the
 # shipping host: a click, a right-click, a wheel notch and a key press take the
 # same hit test, capture and dispatch path the real window takes. `taproot`

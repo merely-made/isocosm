@@ -2,7 +2,8 @@
 //! stays on its owner thread; accepted records cross by Tokio channel.
 
 use muniment::Backend;
-use murm_replication::{JoinError, JoinedSpace, MunimentStore, lane_id};
+use murm_replication::{JoinError, MunimentStore, lane_id};
+use murm_sync::JoinedSpace;
 use p2panda_core::{
     Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey, operation::validate_operation,
 };
@@ -230,7 +231,7 @@ where
         Ok(operation)
     }
 
-    pub fn sync_status(&self) -> murm_replication::SyncStatus {
+    pub fn sync_status(&self) -> murm_sync::SyncStatus {
         self.joined.sync_status()
     }
 
@@ -238,7 +239,7 @@ where
         self.rejected_records.load(Ordering::Relaxed)
     }
 
-    pub async fn resync(&self) -> murm_replication::SyncRound {
+    pub async fn resync(&self) -> murm_sync::SyncRound {
         self.joined.resync().await
     }
 

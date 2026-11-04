@@ -32,6 +32,7 @@ campaign-p2p = [
     "dep:thiserror",
 ]
 campaign-p2p-net = [
+    "dep:murm-sync",
     "campaign-p2p",
     "dep:transport",
     "dep:p2panda-net",
@@ -41,6 +42,7 @@ campaign-p2p-net = [
 campaign-moot = ["campaign-p2p", "dep:gemot", "dep:tokio"]
 campaign-murm = ["vtt", "dep:murm", "dep:thiserror"]
 family-net = [
+    "dep:murm-sync",
     "dep:muniment",
     "dep:murm-replication",
     "dep:personae",
@@ -60,6 +62,7 @@ family-net = [
 ]
 
 [dependencies]
+murm-sync = { workspace = true, optional = true }
 isocosm-core = { workspace = true, optional = true }
 isocosm-campaign = { workspace = true, optional = true }
 isocosm-native = { workspace = true, optional = true, default-features = false }
@@ -67,7 +70,7 @@ cosmograph = { path = "../../shared/cosmograph", default-features = false }
 cosmograph-host = { path = "../../cosmograph-host" }
 # The admitted native stream APIs, in graphshell-host since mere lifted
 # Graphshell's serving half there (2e896a75, 2026-10-15).
-graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "f673d313d09e6c7a043779e8c172a53f76e328a7", default-features = false, features = ["native"], optional = true }
+graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "ab37ca96f65c68d5064f37530f4f374ad528bb42", default-features = false, features = ["native"], optional = true }
 graphshell-endpoint = { workspace = true, optional = true }
 chirograph = { workspace = true, optional = true }
 sceno = { workspace = true, optional = true }

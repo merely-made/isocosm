@@ -221,7 +221,7 @@ where
 
     /// Reconcile stored host records with connected peers after reconnect or
     /// after a publish error.
-    pub async fn resync(&self) -> murm_replication::SyncRound {
+    pub async fn resync(&self) -> murm_sync::SyncRound {
         self.lane.resync().await
     }
 
@@ -344,7 +344,7 @@ where
         Ok(applied)
     }
 
-    pub async fn resync(&self) -> murm_replication::SyncRound {
+    pub async fn resync(&self) -> murm_sync::SyncRound {
         self.lane.resync().await
     }
 
