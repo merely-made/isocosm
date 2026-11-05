@@ -290,6 +290,18 @@ separate."
 - From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md:3-9`, `:297-301`, `:532-555`.
 
 ### M4.7. Headed findings
+Presentation integration (case 1161) consumes the shared L10 near-live/far-cached
+selector and adaptive image refresh. An examined specimen requests live detail;
+ordinary subjects follow projected size and held detail, with current roots
+and depth independent of cached limb poses. Quality presets and examination
+policy are Mesocosm's; native stepping, decisions and ecology keep their own
+cadence. Runtime wiring is open. Acceptance needs a headed generated scene
+with motion, growth/injury invalidation and zoom reversal, showing the same
+native outcomes across image settings and the measured refresh/switch costs.
+The mechanism, residency gates and probe evidence stay in
+`2026-10-28_orthographic_voxel_presentation_plan.md` L10 and
+`2026-10-28_place_graph_engine_plan.md` PG5.
+
 To look at and tune in a real headed run:
 - flow windows' births and deaths (the `mesocosm-runtime` readings) against the members'
   actual births and deaths;

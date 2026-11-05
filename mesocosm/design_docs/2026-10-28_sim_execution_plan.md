@@ -595,6 +595,13 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - Rulings: 482, 483, 600, D42
 
 ### E10. Rounds: the sixty-step foreground and movement by grain
+Boundary with Presentation 2 (case 1161): L10's near-live/far-cached choice and
+cached-pose refresh are image settings. Current roots/depth still follow the
+foreground's authoritative motion; image refresh does not choose E8 decision
+periods, E10 stepping frequency, physical grain or handback rules. Presentation
+acceptance compares the same input/outcome traces at different image settings;
+its frame costs stay separate from this plan's simulation speed bars.
+
 A round runs world time at 1, 2, 4 or 8 times real time (case 1080). Bodies
 in the foreground step sixty times a real second in the product, and the sim
 records only each minute's handback, checked by its invariants. The sim

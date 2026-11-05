@@ -5987,6 +5987,14 @@ summary = "Retire Method 3's duplicate source-size statement and cite Mere stack
 draws_on = ["mere:house-style D13", "mere:stack.7"]
 replaces = ["method.3"]
 
+[cases."1161"]
+title = "Live creatures near, cached limb poses farther out"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Live bodies nearby and cached local poses farther out, with slower image refresh as projected size falls; current roots and simulation cadence stay separate."
+draws_on = ["212", "423", "424", "426"]
+amends = ["presentation.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6904,8 +6912,8 @@ draws_on = ["18", "382", "387", "1131"]
 title = "The detail ladder"
 source = "design_docs/doctrine.md"
 area = "Presentation"
-summary = "One camera, five rungs; a thing shows the finest rung the sim holds for its size; examining lifts detail; rungs change seamlessly or by dither."
-draws_on = ["423", "424", "426"]
+summary = "One camera, five rungs; projected size and held detail bound choice, examining lifts detail; farther cached poses refresh less often without changing roots or simulation cadence."
+draws_on = ["423", "424", "426", "1161"]
 
 [statements."presentation.3"]
 title = "Second cameras"

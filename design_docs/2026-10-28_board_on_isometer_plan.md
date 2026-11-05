@@ -141,10 +141,21 @@ sprites are kept for "a later far and many-token tier" (a camera-facing image
 batch beside the glyph batch). Reach, path and selection are material tints
 now; range templates, facing arcs and labels wait for isomere so they are not
 built twice. Neither the hybrid tier nor the isomere overlays are built.
-- Done when: not stated; owed
+2026-11-03, case 1161: adopt L10's near-live/far-cached direction with slower
+local-pose image refresh as projected size falls. Ordinary near tokens remain
+live recipe bodies; examined subjects request the finer detail the sim holds.
+Current position, facing and token identity update independently of held limb
+images. The board consumes the shared selector/cache and exposes quality
+settings; refresh work and atlas residency belong to L10/L6 and PG5.
+- Done when: the board switches and re-enters tiers over live campaign tokens
+  under the shared budgets, including zoom reversals and cache invalidation;
+  selection, fog, elevation/depth and known conditions remain correct;
+  the same campaign inputs yield the same edition outcomes at each quality
+  setting; cache bytes, refresh spikes and promotion costs have headed receipts.
+  The generated-creature probe is retained evidence, not board acceptance.
 - Needs: isomere (`sim-host`); `orthographic-voxel-presentation` for the far
   tier
-- Rulings: 6, 14
+- Rulings: 6, 14, 1161
 - From: `archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md:80,119-123,182-191`.
 
 ### BD7. Improvements recorded for isometer's owner

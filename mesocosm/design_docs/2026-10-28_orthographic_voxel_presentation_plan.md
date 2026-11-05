@@ -7,7 +7,14 @@ plans), which are archived in `archive_docs/2026-10-28/`. `shared/isometer`
 tenant path with smooth bodies and the 2:1 dimetric surface view as defaults.
 Open: headed GPU certification, the lane re-proofs on the tenant path, GPU
 bake, HTML interchange, and the whole L10 detail ladder, none of which is in
-code.
+the product path. Bounded renderer probes below exercise only part of R0/R1.
+
+2026-11-03: reviewed against the current foreground and denizen plans. The
+product presentation proposal below is unruled; perspective camera work is
+owned by `isocosm/design_docs/2026-11-02_denizen_plan.md` P1.
+The near-live/far-cached hybrid with adaptive image refresh is accepted on
+2026-11-03 (case 1161). Its production integration is planned below; the
+broader ordinary-view proposals and numerical tuning remain unruled.
 
 **For:** the wing's one presentation lane: the shared-depth scene, bodies as
 scene instances, the detail ladder (L10), HTML interchange, the GPU sprite
@@ -144,6 +151,82 @@ residency helper (291).
 - Rulings: 212, 291, 296, 382, 387, 423, 424, 425, 426, 432, 434, 437, 438, 427, 49, 207, 431, 801
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2365-2491`
 
+#### R0/R1 hybrid and image refresh (accepted direction, case 1161)
+
+Accepted on 2026-11-03: live creatures up close, cached sprites farther out,
+with image refresh slowing as the view zooms out. Case 1161 refines L10's
+existing projected-size choice and examining override with a separate
+image-refresh policy inside R1. Orthographic depth is not projected size.
+Image quality and E8/E10 decision/physical cadence remain independent;
+examination remains bounded by the detail the sim holds.
+
+The bounded `isometer-render` example replays the retained generated creature
+and native foot poses. Settings remain probe configuration, not product
+defaults: enter live at 56 projected pixels and leave at 44; sprite refresh
+every 2, 4 or 12 displayed frames, with bands around the rate boundaries.
+Position and depth follow the current root every frame; only local limb
+pose is held. One examined subject stays live while its neighbours use R1.
+Unproved R0/R1 parity keeps L10's ordered dither, including the temporary
+cost of rendering both pictures. Existing L6 and the full L10 conditions
+remain open.
+
+Probe done-condition (met; archived receipt): captured zoom levels and limb
+poses show the mixed scene; release timings include refresh, held frames and
+a cold-entry/dual-render switch; oscillation within the rung/rate bands is stable, with zero-band
+and removed-holding-bound controls; each switch pixel comes from one input;
+root transforms remain current on held-pose frames; settings and limits are
+retained in the existing receipt. Retained-output cap: 100 MB in a fresh
+hybrid-comparison lane. Residency eviction, invalidation beyond pose and
+camera zoom, budgeted refresh scheduling and product wiring stay open.
+
+Owner split: isometer owns projected-bound selection, explicit previous
+choice/bands, held-detail bounds, representation composition and image-cache
+work. Games own quality presets and when a subject is examined (Presentation
+2, case 1161). Per-product integration: Mesocosm keeps an examined specimen
+live; Eponym can examine its controlled or closely inspected actors; Isocosm's existing BD6
+already reserves sprites for the far/many-token tier. None changes game
+outcome authority. Sprite image cadence is a presentation setting independent
+of both native physical resolution and lineage decision periods.
+
+Before product integration: key cached pictures by anatomy/appearance,
+orientation and lighting revisions; keep current world transforms separate
+from held local poses; bound atlas memory and refresh work under the existing
+residency owner; allow staggered refresh; invalidate/prefetch on promotion;
+measure cache-resolution choices at small projected sizes. A fixed 64-pixel
+bake plus one examined live body leaves a noticeable floor even when the
+neighbours occupy ten pixels. R2 marks remain the next far rung. The prototype
+uses equal-size cloned specimens and an examining override under orthographic
+projection, not a perspective mixed-distance scene or the final per-body
+multi-rung selector.
+
+Production done-conditions, still open:
+
+1. The shared selector chooses per subject from projected bounds, explicit
+   prior choice, examination and held detail, under both orthographic and
+   perspective cameras. In-band oscillation changes neither rung nor refresh
+   class; removed-band and removed-holding-bound controls fail. Promotion
+   requests missing detail through the existing examination path.
+2. The resident cache keys anatomy/appearance, facing and lighting revisions;
+   current root transforms and picking identities remain independent of held
+   limb images. Growth, injury, equipment and changed lighting invalidate the
+   affected pictures. Entry and re-entry validate current source revisions
+   and allowed pose age before reusing an image.
+3. L6 and `place-graph-engine PG5` bound retained bytes and refresh work, with
+   current counters for occupied slots, bytes, hits/misses, refreshes and
+   transition peaks. Eviction, synchronized invalidation and rapid zoom reversals
+   stay within the declared budgets. Compare staggered refresh and smaller
+   cache resolutions before choosing defaults; R2 remains the next far tier.
+4. Product adapters consume that shared mechanism and expose quality settings.
+   Mesocosm verifies changing native anatomy, Eponym verifies close interaction
+   and inspection, and Isocosm BD6 verifies selection, fog, depth and faithful
+   edition outcomes. The same input and authoritative state produce the same
+   outcomes across image settings; E8/E10 retain their own clocks. The full
+   L10 acceptance list, including L6 parity and transition depth, still applies.
+
+The recorded GPU probe informs the direction and budget questions. Production
+acceptance is still open; pixel thresholds, refresh rates, cache resolution
+and transition length remain configurable tuning gates.
+
 ### L10b. Condition 8 for Mesocosm
 Folded in 2026-10-10 from the views founding plan (ruling 801). Condition 8
 also holds when "a region's dominant holder visibly shifts between two captures
@@ -157,6 +240,79 @@ stored; the cambium lane is ordinary chrome for text.
 - Needs: L10; `mesocosm-overlay M4.6` (SP7) and `place-graph-engine SP8`
 - Rulings: 801, 783
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2477-2491`
+
+### Product presentation choices (proposal, 2026-11-03)
+
+Reading, not ruled: the shared scene can serve different ordinary views per
+game. Camera projection (D3), displayed representation (L10), physical
+foreground (`sim-execution` E10) and decision cadence (`sim-execution` E8)
+are separate choices. Voxel source data can produce a mesh or a baked image;
+displaying either does not replace the world's spatial authority.
+
+| Product | Candidate ordinary view | Detail worth paying for |
+| --- | --- | --- |
+| Isocosm | An illustrated board with baked terrain and token images; live miniatures for inspection or editing. | Legal positions, facing, elevation, conditions, equipment and the edition's decisions. |
+| Eponym | Articulated bodies in a bounded resident part of the continuing world, with overview and close cameras. | Reach, contact, stance, injury and nearby motion; distant travel at place grain. |
+| Mesocosm | A living diorama with articulated nearby organisms, selectable sections and ecological readings. | Changing anatomy, feeding, growth and incorporation; distant ecology through the population model. |
+
+These are candidates to compare, not adopted defaults. Isocosm's board plan
+BD6 currently chooses live recipe bodies and reserves sprites for the far,
+many-token tier. A sprite-based ordinary board would amend that choice and
+Presentation 2's finest-available-rung rule. Perspective already belongs to
+denizen P1 (cases 1131 and 1140); it needs no second renderer. A bounded
+resident scene keeps the same world and its consequences; it does not imply
+separate encounter worlds or change who the player controls.
+
+A bounded first comparison is an existing token recipe as a live body
+and as its CPU-baked image in the same board scene. That is not yet a general
+posed-native-body sprite pipeline or the full L10 ladder. Mesocosm's changing
+part trees may favour reusable part meshes over baking every anatomy, pose
+and facing. Replacing voxel spatial authority with layered tiles, heightmaps
+or polygon navigation is a separate architectural proposal; L10's coarse
+picture must preserve the authoritative passages and clearance queries.
+
+Before adopting a candidate, compare the same source identities and revisions
+in each representation: known facts, legal moves and edition outcomes stay
+the same for the same inputs and attention; picks address the same subjects;
+depth, fog and occlusion remain correct. Image-quality settings do not select
+simulation rules. Changes to physical resolution follow E10's admission and
+handoff contract and the existing exact-invariant/distribution checks. Time
+baking, geometry rebuilds/uploads, rendering, movement search and background
+ticks separately; speed numbers belong only to `sim-execution`.
+
+The token comparison is authorized on 2026-11-03 (Mark: "same token recipe
+as a live miniature and a cached sprite. show me how they look and what each
+costs"). Owner: the isometer-render example, using the existing token recipe,
+mesher and live-body renderer. The first controlled cache captures four
+64-pixel colour-and-depth views of the live draw so camera and lighting agree;
+this is an experimental GPU bake, not L6 or a replacement for the CPU baker.
+Done when: retained native-size, enlarged and overlapping-board captures are
+inspected; native-size equality is checked; release measurements separate
+initial bake/cache bytes, CPU preparation/submission and GPU draw timestamps,
+for static and moving tokens; the receipt names its adapter and sampling
+method and limits claims to this probe. Retained-output cap: 100 MB. Receipts
+go in this plan's existing archived receipt file.
+
+An articulated follow-up is authorized on 2026-11-03: a generated Mesocosm
+creature following a native admitted stride, compared as a live miniature and
+a posed colour-and-depth sprite. Include recurring cache refresh, at full and
+reduced cadence, and distinguish a shared pose from per-creature cache slots.
+Native generation exports JSON from Cosmograph; the isometer-render probe
+remains product-neutral. Done when actual limb-motion captures are inspected,
+release CPU/GPU measurements include refresh frames and held frames, and the
+receipt states sampling, cache memory, omissions and the chosen anatomy.
+Fresh retained-output cap: 100 MB in the creature-comparison lane.
+
+Measured: a generated four-legged, 34-part organism follows one admitted
+stride through 24 native foot poses. A full-refresh 64-pixel sprite matches
+all 24 native captures; the aligned 16-body board has identical silhouettes
+and 11 shading-pixel differences. With 64 separate slots, refreshing every
+frame costs 2.67--2.70 ms GPU versus 2.93--2.94 ms live; refreshing every
+fourth frame averages 0.68--0.75 ms, with held limb poses. One shared pose
+costs 0.58 ms including refresh and draw. These are the existing smooth
+articulated renderer's headless costs, not the earlier rigid mesh or an
+application budget. The archived receipt records CPU ranges, refresh spikes,
+cache/workspace bytes, generator selection, controls and remaining limits.
 
 ### PR1. Headed certification of the tenant
 Mesocosm's lit bodies against the traced terrain have not been seen on a GPU.
@@ -260,7 +416,7 @@ should name this plan.
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2518-2546`
 
 ## Deferred and parked
-- **Perspective camera**: `SlabCamera` is orthographic; reserved for a mode that needs first person or over the shoulder. Mark, 2026-09-28, put without objection: "the camera reserves room for a perspective projection now and builds it when a mode needs one" (donor: Eponym `r1-proof`). The old exclusion list also bars perspective cameras in any vessel. Waits on a mode that needs one. Rulings 382, 387. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1168-1179, 2577-2578`.
+- **Perspective camera (moved to active work)**: cases 1131 and 1140 supersede the old deferral under rulings 382 and 387. One shared isometer camera gains orthographic and perspective projections, with product presets and live switching. Owner: `isocosm/design_docs/2026-11-02_denizen_plan.md` P1. That plan still records the shared camera as unbuilt; an app-local proof is not its completion. Earlier deferral: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1168-1179, 2577-2578`.
 
 ## Questions for Mark
 - **Mesocosm section by default (L4)**: whether the tracer keeps Mesocosm's section by default, or the section also moves to tile layers once L4 lands. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2587-2624`.
@@ -270,6 +426,9 @@ should name this plan.
 - **Far-rung function tint**: whether the far rungs of the detail ladder (doctrine Presentation 2) need the function tint, or only the marks. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:302-303`.
 - **L10 readings not ruled**: that outer rings coarsen first; that the glyph rasteriser is netrender's text path (parley, skrifa, vello) run once per glyph, cached and thresholded to opaque pixels. Bench readings still owed with numbers: thresholds, hysteresis bands, each mode's default glyph filter, dither pattern and frame count; and whether the GPU pass lands the bake's pixels and face shading (the silhouette test proves coverage only). Mark's "Per mode" already settles who decides whether examining fires on approach. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2395-2400, 2420-2422, 2469-2476, 2601-2605`.
 ## Findings
+- 2026-11-03: `isometer-render --example hybrid_compare` replays the same generated native creature, holds local limb images at size-dependent cadence and applies current root transforms every displayed frame. Its explicit choice function passes rung/rate hysteresis and held-detail controls; a zero-width band changes tiers 63 times. GPU ordered selection preserves input pixels across 442,368 checks, while an alpha control invents 1,259 pixels. This is a bounded R0/R1 example, not completion of L6 or L10. At 40 projected pixels and 64 visible clones, one examined live body plus 63 sprites averages 1.68--1.69 ms GPU versus 2.47 ms all live; the dual-render switch peaks at 6.30--6.51 ms. The ten-pixel case saves much less GPU time with the fixed-size cache. Full timings, limits and captures are in the archived receipt.
+- 2026-11-03: the authorized rigid-token comparison now runs as `isometer-render --example token_compare`, with the existing `demo::hero` recipe, mesher and cached live-body adapter. A four-facing colour-and-depth sprite cache matches the live draw at native size and on overlapping-token boards; enlargement exposes its fixed image resolution. This is an experimental GPU capture cache, not CPU-bake parity, a production sprite tier or full L10 acceptance. Measurements, adapter, captures and scope limits are in this plan's archived receipt file; no whole-game speed claim follows.
+- 2026-11-03: the per-game presentation proposal fits D3 and L10, but an ordinary sprite board changes BD6's live-body choice. Code already has the appearance recipe and CPU bake (`isometer-mesh/src/bake/recipe.rs`, `bake/body.rs`); the native board still submits `SceneBody` instances (`isocosm-views/src/scene/board/native/source.rs`). E10 now has checked foreground handbacks (`cosmograph/src/spatial/handback.rs`), separate round pacing (`cosmograph-host/src/drive/round.rs`) and place-grain travel outside all participants' foregrounds (`cosmograph/src/spatial/foraging/travel.rs`). These are inspected source facts, not a new runtime or performance qualification.
 - 2026-10-28: `shared/isometer/crates` holds core, lens, mesh, render and space. A grep finds no L10 machinery (no rung or ring set, no rung hysteresis; `isometer-lens` has a tracer palette dither, which is not the rung dither), no `gpu_bake`, and no HTML serializer.
 - 2026-10-28: no `renderling` in any manifest or lock of this repository; Eponym's README says no local fork is needed since L7. L7's first condition holds; the S0 replay hash and the room-composition condition are unchecked.
 - 2026-10-28: the old claim that `LiveBody` serves the VTT board and Eponym's producer no longer matches the code. Outside `shared/isometer`, only Mesocosm's tenant geometry and a scene-cache test name it. PR2 should reread the consumers before retiring.
@@ -281,4 +440,7 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
+- 2026-11-03: Mark accepted the hybrid direction as case 1161; Presentation 2 now includes adaptive R1 image refresh, L10 has explicit production gates, and the board, product overlays, residency and simulation plans carry their ownership seams. Trial numerical presets remain tuning values.
+- 2026-11-03: captured and measured the authorized R0/R1 hybrid probe and reverse-order confirmation; added configurable projected-size/rate bands, current-root composition, ordered switching and a captured zoom/motion comparison. Product defaults, cache residency and runtime integration remain open.
+- 2026-11-03: built and ran the token representation comparison and its capture/cost viewer; the archived receipt records visual checks and release CPU/GPU measurements. Ordinary product representations remain proposals.
 - 2026-10-28: cut from the orthographic voxel presentation plan and the open items of the overlay, environmental surfaces and sim host plans.

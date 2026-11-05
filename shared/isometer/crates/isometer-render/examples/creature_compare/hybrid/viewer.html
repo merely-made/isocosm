@@ -1,0 +1,98 @@
+<div id="hybrid-creature-view">
+  <style>
+    #hybrid-creature-view {display:grid;gap:calc(var(--font-size-base)*1)}
+    #hybrid-creature-view .pictures {display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--font-size-base)*1)}
+    #hybrid-creature-view figure {margin:0;display:grid;justify-items:center;gap:calc(var(--font-size-base)*.5);min-width:0}
+    #hybrid-creature-view img,#hybrid-creature-view canvas {width:256px;max-width:100%;height:auto;image-rendering:pixelated}
+    #hybrid-creature-view .field {display:grid;gap:calc(var(--font-size-base)*.25)}
+    @media(max-width:540px){#hybrid-creature-view .pictures{grid-template-columns:1fr}}
+  </style>
+  <h3>Live nearby, slower sprites as you zoom out</h3>
+  <div class="field">
+    <label class="form-label" for="hybrid-zoom" data-zoom-label>Projected bounds: 64 pixels</label>
+    <input id="hybrid-zoom" class="form-range" data-zoom type="range" min="0" max="5" step="1" value="4">
+    <div class="text-small" data-thresholds></div>
+  </div>
+  <div class="viz-row">
+    <button type="button" class="btn" data-play>Play step slowly</button>
+    <label class="form-label" for="hybrid-pose" data-pose-label>Pose 1 / 24</label>
+    <input id="hybrid-pose" class="form-range" data-pose type="range" min="0" max="23" value="0" aria-label="Native foot pose">
+  </div>
+  <div class="pictures">
+    <figure><figcaption>All live</figcaption><img data-live width="256" height="192" alt="Native GPU capture with all visible generated creatures live"></figure>
+    <figure><figcaption>Hybrid · center creature examined</figcaption><canvas data-hybrid width="256" height="192" role="img" aria-label="Captured hybrid view, with the examined center creature live and neighbours selected by projected size"></canvas></figure>
+  </div>
+  <div class="text-small" data-state aria-live="polite"></div>
+  <div class="text-small">Captured replay · 16 specimens · 256 × 192 pixels</div>
+  <h3>64-creature benchmark</h3>
+  <div class="text-small" data-benchmark></div>
+  <div class="table-responsive">
+    <table class="table table-sm" aria-label="Mean CPU and GPU frame cost including cache refresh, range over two runs">
+      <thead><tr><th>View</th><th class="text-end">CPU ms</th><th class="text-end">GPU ms</th></tr></thead>
+      <tbody data-cost></tbody>
+    </table>
+  </div>
+  <div class="text-small" data-refresh></div>
+  <div class="text-small" data-switch></div>
+  <div class="text-small" data-cache></div>
+  <div class="text-small" data-checks></div>
+  <script>
+  (()=>{
+    const root=document.getElementById('hybrid-creature-view'),q=s=>root.querySelector(s);
+    const data=__HYBRID_COMPARISON_DATA__,a=data.report,b=data.confirmation,c=a.config;
+    const heights=[10,24,40,48,64,96];
+    let state={height:64,phase:0,live:true,period:c.periods[0]},playing=false,tick,tween,serial=0;
+    const context=q('[data-hybrid]').getContext('2d');
+    const bitmap=new Map();
+    async function picture(name){const key=data.names[name];if(!bitmap.has(key)){const img=new Image();img.src=data.blobs[key];bitmap.set(key,img.decode().then(()=>img));}return bitmap.get(key);}
+    function choose(){const p=state.height;state.live=state.live?p>c.live_exit_px:p>=c.live_enter_px;
+      state.period=state.period===c.periods[0]&&p>=c.medium_exit_px?c.periods[0]:state.period===c.periods[2]&&p<=c.far_enter_px?c.periods[2]:p>=c.medium_enter_px?c.periods[0]:p<=c.far_exit_px?c.periods[2]:c.periods[1];}
+    function restore(value){const s=value?.modelContent||value;if(!s)return;
+      if(heights.includes(s.height))state.height=s.height;
+      if(Number.isInteger(s.phase)&&s.phase>=0&&s.phase<24)state.phase=s.phase;
+      if(typeof s.live==='boolean')state.live=s.live;
+      if(c.periods.includes(s.period))state.period=s.period;
+    }
+    restore(window.openai?.widgetState);
+    choose();
+    const ms=n=>(n/1000).toFixed(2);
+    const range=(x,y)=>{const p=ms(Math.min(x,y)),q=ms(Math.max(x,y));return p===q?p:`${p}–${q}`;};
+    const caseFor=(r,mixed)=>r.cases.find(x=>x.height===state.height&&x.mixed===mixed);
+    function save(){window.openai?.setWidgetState({modelContent:{...state},privateContent:null}).catch(()=>{});}
+    function labels(){
+      q('[data-zoom]').value=heights.indexOf(state.height);q('[data-pose]').value=state.phase;
+      q('[data-zoom-label]').textContent=`Projected bounds: ${state.height} pixels`;
+      q('[data-pose-label]').textContent=`Pose ${state.phase+1} / 24`;
+      q('[data-state]').textContent=state.live?'R0 · all visible creatures live':`R1 neighbours · ${60/state.period} limb-pose refreshes/s · current roots every frame`;
+      const x=caseFor(a,!state.live),y=caseFor(b,!state.live),lx=caseFor(a,false),ly=caseFor(b,false);
+      q('[data-benchmark]').textContent=`${x.visible} visible · ${x.live} live · ${x.sprites} sprites · 1024 × 768 · two run means`;
+      q('[data-cost]').innerHTML=`<tr><td>All live</td><td class="text-end tabular-nums">${range(lx.cpu.mean_us,ly.cpu.mean_us)}</td><td class="text-end tabular-nums">${range(lx.gpu.mean_us,ly.gpu.mean_us)}</td></tr><tr><td>Hybrid policy</td><td class="text-end tabular-nums">${range(x.cpu.mean_us,y.cpu.mean_us)}</td><td class="text-end tabular-nums">${range(x.gpu.mean_us,y.gpu.mean_us)}</td></tr>`;
+      q('[data-refresh]').textContent=state.live?'Cache refresh: idle':`GPU refresh + draw: ${ms(x.refresh_gpu.mean_us)} ms · held pose + draw: ${ms(x.held_gpu.mean_us)} ms`;
+    }
+    async function draw(changed=false){const id=++serial;cancelAnimationFrame(tween);labels();
+      const [live,mixed]=await Promise.all([picture(`live-${state.height}-${state.phase}.png`),picture(`mixed-${state.height}-${state.phase}.png`)]);if(id!==serial)return;
+      q('[data-live]').src=live.src;
+      if(!changed||matchMedia('(prefers-reduced-motion: reduce)').matches){context.clearRect(0,0,256,192);context.drawImage(state.live?live:mixed,0,0);return;}
+      const off=document.createElement('canvas');off.width=256;off.height=192;const ctx=off.getContext('2d',{willReadFrequently:true});
+      ctx.drawImage(live,0,0);const l=ctx.getImageData(0,0,256,192);ctx.clearRect(0,0,256,192);ctx.drawImage(mixed,0,0);const r=ctx.getImageData(0,0,256,192),out=context.createImageData(256,192);
+      const pattern=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];let step=0,last=0;
+      const animate=t=>{if(id!==serial)return;if(t-last>=65){last=t;const weight=Math.round(16*(state.live?1-step/c.transition_frames:step/c.transition_frames));
+        for(let i=0;i<256*192;i++){const x=i%256,y=Math.floor(i/256),src=pattern[(y%4)*4+x%4]<weight?r.data:l.data;out.data.set(src.subarray(i*4,i*4+4),i*4);}context.putImageData(out,0,0);step++;}
+        if(step<=c.transition_frames)tween=requestAnimationFrame(animate);};tween=requestAnimationFrame(animate);
+    }
+    function stop(){playing=false;clearTimeout(tick);q('[data-play]').textContent='Play step slowly';}
+    q('[data-zoom]').addEventListener('input',e=>{stop();const previous=state.live;state.height=heights[Number(e.target.value)];choose();draw(previous!==state.live);});
+    q('[data-zoom]').addEventListener('change',save);
+    q('[data-pose]').addEventListener('input',e=>{stop();state.phase=Number(e.target.value);draw();});q('[data-pose]').addEventListener('change',save);
+    q('[data-play]').addEventListener('click',()=>{if(playing){stop();return;}playing=true;state.phase=0;q('[data-play]').textContent='Pause';draw();
+      const next=()=>{if(!playing)return;if(state.phase===23){stop();save();return;}state.phase++;draw();tick=setTimeout(next,100);};tick=setTimeout(next,100);
+    });
+    q('[data-thresholds]').textContent=`Live entry ≥ ${c.live_enter_px}px · exit ≤ ${c.live_exit_px}px · sprites ${c.periods.map(p=>60/p).join(' / ')} Hz at 60 displayed frames/s`;
+    q('[data-switch]').textContent=`R0/R1 switch at 48px: ${range(Math.max(...a.transition.rows.map(x=>x.gpu_us)),Math.max(...b.transition.rows.map(x=>x.gpu_us)))} ms peak GPU · two renders + dither + entry refresh`;
+    q('[data-cache]').textContent=`Retained cache capacity: ${(a.cache_capacity_bytes/1048576).toFixed(1)} MiB · 63 slots used · 64-pixel colour + depth · fixed facing/light`;
+    q('[data-checks]').textContent=`Hysteresis: ${a.checks.rung_band_changes} tier changes in-band · zero-band control: ${a.checks.zero_band_control_changes} · dither: ${a.visual_verification.new_dither_pixels} invented pixels`;
+    window.addEventListener('openai:set_globals',e=>{if(e.detail?.globals?.widgetState){stop();restore(e.detail.globals.widgetState);choose();draw();}});
+    draw();
+  })();
+  </script>
+</div>

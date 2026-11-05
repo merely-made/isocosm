@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-02:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); the design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-03:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -1550,11 +1550,15 @@ projected size warrants among those the sim holds, and finer detail arrives
 only by examining (212); whether approaching examines is each mode's choice.
 Rungs change seamlessly where they share geometry (sprites and live parts,
 terrain grains) and by ordered dither with hysteresis where they do not.
+Cached local-pose images refresh less often as projected size falls; world
+position and depth remain current. This image cadence neither paces physical
+stepping nor decisions; thresholds and rates are configurable quality choices.
 
-Links: draws on 423, 424, 426 · summary One camera, five rungs; a thing shows the finest rung the sim holds for its size; examining lifts detail; rungs change seamlessly or by dither.
+Links: draws on 423, 424, 426, 1161 · summary One camera, five rungs; projected size and held detail bound choice, examining lifts detail; farther cached poses refresh less often without changing roots or simulation cadence.
 
-*Reviewed 2026-10-22, new, split from the draft at Mark's word. 426 left
-open whether examining fires on approach. Mark: "Per mode".*
+*Refined 2026-11-03, case 1161: Mark, "Ok, i’m into it. Slot it in where
+relevant", accepting the near-live/far-cached direction and slower image
+refresh on zoom-out. Product tuning and runtime integration remain open.*
 
 ### Presentation 3. Second cameras
 

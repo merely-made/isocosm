@@ -1,0 +1,110 @@
+<div id="token-comparison-view">
+  <style>
+    #token-comparison-view { display: grid; gap: calc(var(--font-size-base) * 1); }
+    #token-comparison-view .pictures { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--font-size-base) * 1); }
+    #token-comparison-view figure { margin: 0; display: grid; gap: calc(var(--font-size-base) * .5); justify-items: center; min-width: 0; }
+    #token-comparison-view .image-well { display: grid; place-items: center; width: 100%; min-height: 264px; background: var(--muted); }
+    #token-comparison-view img { max-width: 100%; height: auto; image-rendering: pixelated; }
+    #token-comparison-view .image-well.board { min-height: 0; }
+    #token-comparison-view .image-well.board img { width: 100%; }
+    #token-comparison-view .metrics { display: grid; gap: calc(var(--font-size-base) * .5); }
+    #token-comparison-view th, #token-comparison-view td { font-variant-numeric: tabular-nums; }
+    @media(max-width:480px) { #token-comparison-view .pictures { grid-template-columns: 1fr; } }
+  </style>
+  <h3>One token recipe, two representations</h3>
+  <div class="text-small">Existing starter character · one rigid part · fixed pose and lighting</div>
+  <div class="viz-controls">
+    <label class="form-label">View
+      <select class="form-select" data-view>
+        <option value="native">Board scale · 64 pixels</option>
+        <option value="zoom" selected>4× close-up</option>
+        <option value="64">64-token board</option>
+        <option value="256">256-token board</option>
+        <option value="1024">1,024-token board</option>
+      </select>
+    </label>
+    <label class="form-label" data-facing-label>Facing
+      <select class="form-select" data-facing>
+        <option value="0">Front quarter</option><option value="1">Quarter turn</option>
+        <option value="2">Half turn</option><option value="3">Three-quarter turn</option>
+      </select>
+    </label>
+  </div>
+  <div class="pictures">
+    <figure><figcaption>Live miniature</figcaption><div class="image-well"><img data-live alt="Actual GPU capture of the recipe rendered as a live miniature"></div></figure>
+    <figure><figcaption>Cached sprite · colour + depth</figcaption><div class="image-well"><img data-sprite alt="Actual GPU capture of the same recipe rendered from a cached sprite"></div></figure>
+  </div>
+  <div class="text-small" data-image-note></div>
+  <div class="metrics">
+    <div class="viz-controls">
+      <label class="form-label">Measured tokens
+        <select class="form-select" data-count><option>1</option><option>64</option><option selected>256</option><option>1024</option></select>
+      </label>
+      <label class="form-check form-switch"><input type="checkbox" class="form-check-input" data-moving><span class="form-check-label">Moving benchmark</span></label>
+    </div>
+    <div class="text-small">1024 × 768 render target · CPU includes preparation, encoding and submission · GPU timestamps include clear and draw</div>
+    <div class="table-responsive">
+      <table class="table table-sm" aria-label="Measured frame costs in microseconds">
+        <thead><tr><th>Representation</th><th class="text-end">CPU median / p95</th><th class="text-end">GPU median / p95</th><th class="text-end">Last frame upload</th></tr></thead>
+        <tbody data-costs aria-live="polite"></tbody>
+      </table>
+    </div>
+    <div class="text-small" data-setup></div>
+    <div class="text-small" data-method></div>
+  </div>
+  <script type="application/json" data-receipt>__TOKEN_COMPARISON_DATA__</script>
+  <script>
+  (() => {
+    const root = document.getElementById('token-comparison-view');
+    const data = JSON.parse(root.querySelector('[data-receipt]').textContent);
+    const q = s => root.querySelector(s);
+    const us = n => n.toFixed(n < 100 ? 2 : 1) + ' µs';
+    const bytes = n => n >= 1024 ? (n / 1024).toFixed(1) + ' KiB' : n + ' B';
+    const save = () => { if(window.openai?.setWidgetState) window.openai.setWidgetState({modelContent:{
+      view:q('[data-view]').value,facing:Number(q('[data-facing]').value),tokens:Number(q('[data-count]').value),moving:q('[data-moving]').checked
+    }}).catch(()=>{}); };
+    function show() {
+      const view=q('[data-view]').value, facing=q('[data-facing]').value;
+      const board=!['native','zoom'].includes(view);
+      for(const arm of ['live','sprite']) {
+        const name=board?`${arm}-board-${view}.png`:`${arm}-${view}-${facing}.png`;
+        q(`[data-${arm}]`).src=data.images[name];
+        q(`[data-${arm}]`).style.width=board?'100%':(view==='native'?'64px':'256px');
+      }
+      for(const well of root.querySelectorAll('.image-well')) well.classList.toggle('board',board);
+      q('[data-facing-label]').style.display=board?'none':'';
+      q('[data-image-note]').textContent=view==='zoom'?'Live draw at 256 pixels beside the 64-pixel cache enlarged 4×.':board?
+        'Overlapping tokens use the same poses and per-pixel depth.':'All four native-size facings match byte for byte.';
+      const count=Number(q('[data-count]').value), moving=q('[data-moving]').checked;
+      const rows=data.report.timings.filter(r=>r.tokens===count&&r.moving===moving);
+      q('[data-costs]').replaceChildren(...rows.map(row=>{
+        const tr=document.createElement('tr'), a=row.cpu_prepare_encode_submit,b=row.gpu_clear_and_draw;
+        const upload=Object.entries(row.last_frame_uploads).filter(([k])=>k.endsWith('upload_bytes')).reduce((n,[,v])=>n+v,0);
+        for(const [i,value] of [row.arm==='live'?'Live miniature':'Cached sprite',`${us(a.p50_us)} / ${us(a.p95_us)}`,
+          `${us(b.p50_us)} / ${us(b.p95_us)}`,bytes(upload)].entries()) {
+          const td=document.createElement('td');td.textContent=value;if(i)td.className='text-end';tr.appendChild(td);
+        }
+        return tr;
+      }));
+      const meshBytes=data.report.cache_first_uploads.reduce((n,r)=>n+r.mesh_upload_bytes,0);
+      const bakes=[data.report.cache_bake_wall_ms,...(data.confirmation?[data.confirmation.cache_bake_wall_ms]:[])];
+      const bakeRange=`${Math.min(...bakes).toFixed(2)}–${Math.max(...bakes).toFixed(2)} ms (${bakes.length} runs)`;
+      q('[data-setup]').textContent=`One recipe · shared live mesh ${bytes(meshBytes)} (${data.report.recipe.quads} quads) · sprite cache ${bytes(data.report.sprite_cache_bytes.total)} (4 colour + depth views) · initial bake ${bakeRange}`;
+      q('[data-method]').textContent=`${data.report.adapter.name} · ${data.report.adapter.backend} · ${data.report.rounds*data.report.frames_per_round} samples per result · release build · fixed pose, light and camera`;
+    }
+    function restore(state) {
+      const s=state?.modelContent;
+      if(s) {
+        if(['native','zoom','64','256','1024'].includes(s.view))q('[data-view]').value=s.view;
+        if([0,1,2,3].includes(s.facing))q('[data-facing]').value=String(s.facing);
+        if([1,64,256,1024].includes(s.tokens))q('[data-count]').value=String(s.tokens);
+        if(typeof s.moving==='boolean')q('[data-moving]').checked=s.moving;
+      }
+      show();
+    }
+    for(const el of root.querySelectorAll('select,input'))el.addEventListener('change',()=>{show();save();});
+    window.addEventListener('openai:set_globals',e=>restore(e.detail?.globals?.widgetState));
+    restore(window.openai?.widgetState);
+  })();
+  </script>
+</div>

@@ -29,5 +29,8 @@ bytemuck = { version = "1", features = ["derive"] }
 glam = "0.30"
 pollster = "0.4"
 
+[dev-dependencies]
+serde_json = "1"
+
 [lints]
 workspace = true

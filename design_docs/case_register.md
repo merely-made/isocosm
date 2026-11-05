@@ -418,7 +418,7 @@ three design docs that cite it. The record holds the words.
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
-| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md) |
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
 | 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -627,15 +627,16 @@ three design docs that cite it. The record holds the words.
 | 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | none |
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
-| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md) |
+| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1136 | The layered look resolution moves into isometer-mesh for every product. | [denizen](2026-11-02_denizen_plan.md) |
 | 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
-| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md) |
+| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
 | 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md) |
 | 1150 | First person draws only the played body's parts below the eye. | [denizen](2026-11-02_denizen_plan.md) |
 | 1151 | First person and over the shoulder face the player's aim. | [denizen](2026-11-02_denizen_plan.md) |
 | 1152 | Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited. | [denizen](2026-11-02_denizen_plan.md) |
+| 1161 | Live bodies nearby and cached local poses farther out, with slower image refresh as projected size falls; current roots and simulation cadence stay separate. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 
 ## Stack and engine
 
@@ -876,7 +877,7 @@ three design docs that cite it. The record holds the words.
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
-| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
+| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [content packs](2026-10-28_content_packs_plan.md) |
 | 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
@@ -970,4 +971,4 @@ three design docs that cite it. The record holds the words.
 | 864 | Collect outstanding questions from independent work and deliver them together in one pass; do not trickle isolated questions. | none |
 | 939 | F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen. | none |
 | 953 | Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only. | none |
-| 1160 | Retire Method 3's duplicate source-size statement and cite Mere stack.7. | [DOC README](DOC_README.md) |
+| 1160 | Retire Method 3's duplicate source-size statement and cite Mere stack.7. | none |

@@ -140,6 +140,12 @@ product.
   `Code/testing/<product>/denizen/camera-*.png`. Every frame is examined
   whole, not only the body (terrain seams, culled edges, the HUD).
 
+Case 1161's presentation join uses this shared camera's projected bounds and
+view revisions for L10's live/sprite choice and image invalidation. Camera
+depth alone is not an orthographic size signal. P1 retains its camera gates;
+the cache, refresh policy and product acceptance remain L10's work, so P1
+does not wait for the complete detail ladder.
+
 **Needs:** cases 1140, 1143. Nothing from other phases.
 
 ### P2. Denizen body plans in the sim

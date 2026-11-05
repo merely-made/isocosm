@@ -73,9 +73,18 @@ A coarse lift point-samples each coarse cell's origin: `chunk()` in `lift/chunk.
 
 ### PG5. VRAM residency policy
 "The remaining genuinely new system": which chunks live resident, paging, the budget. CubeCL's allocator is the pool; the policy above it is ours. It overlaps L10's ring set and its brick and byte budget.
-- Done when: not stated; owed.
+Case 1161's R0/R1 hybrid consumes this same policy. Account for body colour/depth
+atlases and bake/transition scratch alongside the existing terrain allocation;
+declare body-cache byte and refresh-work budgets separately from the terrain
+brick budget. L10 owns representation choice and dirty image keys; this policy
+owns residency, eviction and admission. Product quality settings remain
+consumer inputs to that shared owner.
+- Done when: terrain and body-cache allocations obey their declared budgets
+  through growth/injury invalidation, camera changes, zoom reversal and
+  eviction/re-entry; retained bytes, refresh work and transition peaks are
+  measured separately. The broader residency conditions remain open.
 - Needs: `orthographic-voxel-presentation L10`
-- Rulings: 291, 296
+- Rulings: 291, 296, 1161
 - From: `archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md` lines 710-714.
 
 ### PG6. Field admission, a standing gate

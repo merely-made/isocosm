@@ -170,6 +170,18 @@ Eponym's only until the sim's record replaces the histories it measures.
 - From: `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:346`.
 
 ### E3.4. Real-time zoom
+Case 1161 adopts the shared L10 live/sprite hybrid: projected size and held
+detail choose the representation, with slower local-pose image refresh farther
+out and current root transforms every frame. Eponym owns quality presets and
+which inspected actors request live detail. Combat/contact resolution and
+native stepping continue to read authoritative bodies, independently of the
+cached image. Integration uses the shared camera and cache; its gates live in
+`mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md` L10.
+Acceptance includes close interaction, inspection, camera changes, cache
+invalidation and rapid zoom reversal, with unchanged native outcomes across
+quality settings and measured promotion/refresh peaks. The current probe
+does not close this product's real-time zoom or resident-ground obligations.
+
 Real-time zoom is not established: uncached footprint selection is too slow per new view at the
 actual 1280x720 camera. The far native footprint requests more bricks than the atlas has slots
 (the resident-surface work is `place-graph-engine`'s), and three feature-only paging, travel and

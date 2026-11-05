@@ -37,7 +37,7 @@ rulings 109 to 111). The native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-10-28_eponym_overlay_plan.md](2026-10-28_eponym_overlay_plan.md) | Eponym's overlay (W5): driving a sophont on Cosmograph (E3), the played loop (E4), and the founding charter's open questions. | 2026-10-28: cut; E0 to E2 done; E3 and headed E4 open. |
+| [2026-10-28_eponym_overlay_plan.md](2026-10-28_eponym_overlay_plan.md) | Eponym's overlay (W5): driving a sophont on Cosmograph (E3), the played loop (E4), and the founding charter's open questions. | 2026-11-03: E3.4 adopts the shared live/sprite direction (1161), with product zoom/contact acceptance open. E0 to E2 done; E3 and headed E4 open. |
 
 ## Archive
 

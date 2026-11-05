@@ -12965,6 +12965,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Method and documents · draws on mere:house-style D13, mere:stack.7 · replaces method.3 · summary Retire Method 3's duplicate source-size statement and cite Mere stack.7.
 
+1161. **Live creatures near, cached limb poses farther out.** Ruled by Mark
+      on 2026-11-03: "Ok, i’m into it. Slot it in where relevant", accepting
+      the preceding proposal: "could we try a hybrid: live creatures up close,
+      cached sprites farther out, with cache refresh slowing as we zoom out?
+      how would that fit into the existing plans?" Refines Presentation 2:
+      choose live bodies or cached pictures by projected size, with the
+      existing examining override and held-detail bound; slow the cached
+      local-pose image refresh as projected size falls, while world position
+      and depth remain current. Image refresh does not pace physical stepping
+      or decisions. The shared presentation lane owns the mechanism; games
+      own presets and when examining applies. The probe's pixel thresholds,
+      refresh periods and transition length remain tuning values, not product
+      defaults. This accepts the hybrid direction, not an ordinary sprite-only
+      VTT board or completion of its runtime integration.
+
+      Links: area Presentation · draws on 212, 423, 424, 426 · amends presentation.2 · summary Live bodies nearby and cached local poses farther out, with slower image refresh as projected size falls; current roots and simulation cadence stay separate.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

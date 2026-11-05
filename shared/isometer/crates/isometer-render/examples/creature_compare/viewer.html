@@ -1,0 +1,113 @@
+<div id="creature-comparison-view">
+  <style>
+    #creature-comparison-view {display:grid;gap:calc(var(--font-size-base)*1)}
+    #creature-comparison-view .pictures {display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--font-size-base)*1)}
+    #creature-comparison-view figure {margin:0;display:grid;justify-items:center;gap:calc(var(--font-size-base)*.5);min-width:0;align-content:start}
+    #creature-comparison-view img {max-width:100%;height:auto;image-rendering:pixelated}
+    #creature-comparison-view .pose {display:grid;gap:calc(var(--font-size-base)*.25)}
+    #creature-comparison-view .costs {display:grid;gap:calc(var(--font-size-base)*.5)}
+    #creature-comparison-view .chosen {font-weight:500}
+    @media(max-width:540px) {#creature-comparison-view .pictures {grid-template-columns:1fr}}
+  </style>
+  <div>
+    <h3>A generated creature, with moving limbs</h3>
+    <p class="text-small" data-anatomy></p>
+  </div>
+  <div class="viz-controls">
+    <label class="form-label">View
+      <select class="form-select" data-view><option value="256">4× close-up</option><option value="64">Native 64 pixels</option></select>
+    </label>
+    <label class="form-label">Sprite refresh
+      <select class="form-select" data-cadence><option value="1">Every frame</option><option value="4">Every fourth frame</option></select>
+    </label>
+    <button class="btn" type="button" data-play>Play one step slowly</button>
+  </div>
+  <div class="pose">
+    <label class="form-label" for="creature-pose" data-pose-label>Pose 1 / 24</label>
+    <input id="creature-pose" class="form-range" type="range" min="0" max="23" value="0" data-pose>
+  </div>
+  <div class="pictures">
+    <figure><figcaption>Live miniature</figcaption><img data-live alt="GPU capture of the generated creature's articulated live surface" width="256" height="256"></figure>
+    <figure><figcaption>Cached colour + depth sprite</figcaption><img data-sprite alt="GPU capture of the same creature drawn from its 64-pixel pose cache" width="256" height="256"></figure>
+  </div>
+  <p class="text-small" data-pose-detail></p>
+  <div class="costs">
+    <h3>Drawing, including cache updates</h3>
+    <p class="text-small">64-pixel creatures on a 1024 × 768 target. Ranges are the means from two runs, with the case order reversed.</p>
+    <div class="viz-controls">
+      <label class="form-label">Creatures
+        <select class="form-select" data-count><option>1</option><option selected>16</option><option>64</option></select>
+      </label>
+      <label class="form-label">Cache policy
+        <select class="form-select" data-private><option value="true" selected>One slot per creature</option><option value="false">Share the same pose</option></select>
+      </label>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm" aria-label="Measured time per displayed frame, including periodic sprite cache refresh">
+        <thead><tr><th>Representation</th><th class="text-end">CPU µs</th><th class="text-end">GPU µs</th></tr></thead>
+        <tbody data-cost-rows></tbody>
+      </table>
+    </div>
+    <p class="text-small" data-spikes></p>
+    <p class="text-small" data-memory></p>
+  </div>
+  <details>
+    <summary>What this measures</summary>
+    <p class="text-small" data-method></p>
+    <p class="text-small" data-native></p>
+    <p class="text-small">The seed is 20261103. Stock anatomy had no articulated leg chains, so this uses Mesocosm's SpacedRoster generator with varying proportions, on a flat diagnostic pad. It is the first generated cohort admitting a step. The anatomy and limb skinning are native; appearance uses plain part envelopes and a fixed tint. This is Mesocosm's smooth articulated representation, rather than the rigid token mesh from the previous test.</p>
+    <p class="text-small">The cost table shows arithmetic means, so the fourth-frame cache update is included. Cadence labels assume 60 displayed frames/second; playback above is slowed for inspection. With separate slots, creatures have staggered phases across the same 24 poses, without pose deduplication. Shared mode gives every copy the same pose. Cache size covers retained RGBA8 and Depth32Float images, one facing, without mipmaps; working buffers and terrain depth are additional. Initial setup follows the captures, with driver pipelines already warm. Physics, decisions, native stride planning, readback and PNG encoding are outside the frame timings. These are headless renderer measurements on this machine.</p>
+  </details>
+  <script>
+  (()=>{
+    const root=document.getElementById('creature-comparison-view');
+    const data=__CREATURE_COMPARISON_DATA__;
+    const report=data.report;
+    const confirmation=data.confirmation;
+    const q=s=>root.querySelector(s);
+    let state={view:256,phase:0,cadence:1,count:16,private:true};
+    let playing=false, timer;
+    function restore(v){if(!v)return;const s=v.modelContent||v;
+      if([64,256].includes(s.view))state.view=s.view;
+      if(Number.isInteger(s.phase)&&s.phase>=0&&s.phase<24)state.phase=s.phase;
+      if([1,4].includes(s.cadence))state.cadence=s.cadence;
+      if([1,16,64].includes(s.count))state.count=s.count;
+      if(typeof s.private==='boolean')state.private=s.private;
+    }
+    restore(window.openai?.widgetState);
+    const fmt=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
+    const range=(a,b)=>{const x=Math.round(Math.min(a,b)),y=Math.round(Math.max(a,b));return x===y?String(x):`${x}–${y}`;};
+    const twin=c=>confirmation?.cases.find(x=>x.count===c.count&&x.private===c.private&&x.cadence===c.cadence)||c;
+    function save(){window.openai?.setWidgetState({modelContent:{...state},privateContent:null}).catch(()=>{});}
+    function render(){
+      const p=state.phase,cached=Math.floor(p/state.cadence)*state.cadence;
+      q('[data-live]').src=data.images[`live-${state.view}-${p}.png`];
+      q('[data-sprite]').src=data.images[`sprite-${state.view}-${cached}.png`];
+      root.querySelectorAll('img').forEach(img=>{img.width=state.view;img.height=state.view;});
+      for(const key of ['view','cadence','count','private'])q(`[data-${key}]`).value=String(state[key]);
+      q('[data-pose]').value=p;q('[data-pose-label]').textContent=`Live pose ${p+1} / 24 · cached pose ${cached+1}`;
+      q('[data-pose-detail]').textContent=state.view===256 ? 'Live: rendered at 256 pixels. Sprite: a 64-pixel cache enlarged 4×. Limb changes become steps between pixels.' : 'Both use the same 64-pixel camera. Fully refreshed native captures match pixel for pixel.';
+      q('[data-private]').disabled=state.count===1;
+      const own=state.count===1?false:state.private;
+      const cases=report.cases.filter(c=>c.count===state.count&&c.private===own);
+      q('[data-cost-rows]').innerHTML=cases.map(c=>`<tr class="${c.cadence===state.cadence?'chosen':''}"><td>${c.cadence===0?'Live':c.cadence===1?'Sprite, 60/s':'Sprite, 15/s'}</td><td class="text-end tabular-nums">${range(c.cpu.mean_us,twin(c).cpu.mean_us)}</td><td class="text-end tabular-nums">${range(c.gpu.mean_us,twin(c).gpu.mean_us)}</td></tr>`).join('');
+      const c=cases.find(c=>c.cadence===state.cadence);
+      const held=cases.find(c=>c.cadence===4);
+      q('[data-spikes]').textContent=`At 15 updates/s: refresh + draw ${fmt(held.refresh_cpu.p50_us)} µs CPU / ${fmt(held.refresh_gpu.p50_us)} µs GPU; held image + draw ${fmt(held.held_cpu.p50_us)} / ${fmt(held.held_gpu.p50_us)} µs (first-run medians).`;
+      q('[data-memory]').textContent=`Retained sprite images: ${fmt(c.cache_bytes/1024)} KiB (${own?state.count:1} pose slot${own?'s':''}). Those images are refreshed at the selected cadence. Initial cache setup and first bake: ${range(c.initial_cache_wall_us,twin(c).initial_cache_wall_us)} µs wall time.`;
+    }
+    q('[data-anatomy]').textContent=`${report.source.legs} legs · ${report.source.document.parts.length} generated parts · ${report.primitives} surface primitives · one admitted step`;
+    q('[data-method]').textContent=`${report.adapter.match(/name: "([^"]+)"/)?.[1]||report.adapter} · Vulkan. Each run has three rounds of 72 measured frames, with 24 warm-up frames each; 1024 × 768 display target. CPU includes anatomy skinning, preparation, uploads, encoding and submission. GPU includes the cache's offscreen render and image writes plus the sprite draw. Fixed camera and lighting. The probe additionally retains about 808 KiB of bake/sprite buffers and 16 KiB of terrain-depth scratch per cache slot, excluding driver overhead and the common display renderer.`;
+    q('[data-native]').textContent=`Native step planning: ${fmt(report.source.planning_us/1000)} ms once; sampling all 24 native foot poses: ${fmt(report.source.sampling_24_us)} µs. The renderer consumes those poses. Full-refresh equality: ${report.equality.filter(e=>e.size===64&&e.different_pixels===0).length}/24 native captures.`;
+    for(const key of ['view','cadence','count','private'])q(`[data-${key}]`).addEventListener('change',e=>{state[key]=key==='private'?e.target.value==='true':Number(e.target.value);render();save();});
+    function stop(){playing=false;clearTimeout(timer);q('[data-play]').textContent='Play one step slowly';}
+    q('[data-pose]').addEventListener('input',e=>{stop();state.phase=Number(e.target.value);render();});
+    q('[data-pose]').addEventListener('change',save);
+    q('[data-play]').addEventListener('click',()=>{if(playing){stop();return;}playing=true;state.phase=0;q('[data-play]').textContent='Pause';render();
+      const tick=()=>{if(!playing)return;if(state.phase===23){stop();save();return;}state.phase++;render();timer=setTimeout(tick,110);};timer=setTimeout(tick,110);
+    });
+    window.addEventListener('openai:set_globals',e=>{if(e.detail?.globals?.widgetState){stop();restore(e.detail.globals.widgetState);render();}});
+    render();
+  })();
+  </script>
+</div>

@@ -48,6 +48,11 @@ pub struct Renderer {
     depth: wgpu::Texture,
 }
 impl Renderer {
+    /// Retained body depth for downstream composition or a posed-image cache.
+    /// Replaced on resize and overwritten by the next `encode`.
+    pub fn depth_texture(&self) -> &wgpu::Texture {
+        &self.depth
+    }
     pub fn new(device: &wgpu::Device, format: wgpu::TextureFormat, size: [u32; 2]) -> Self {
         let layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("implicit bodies"),
@@ -319,7 +324,7 @@ fn depth(device: &wgpu::Device, size: [u32; 2]) -> wgpu::Texture {
         sample_count: 1,
         dimension: wgpu::TextureDimension::D2,
         format: wgpu::TextureFormat::Depth32Float,
-        usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+        usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
         view_formats: &[],
     })
 }
