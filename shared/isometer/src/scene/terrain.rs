@@ -63,16 +63,7 @@ impl super::residency::BrickSource for GroundTerrain<'_> {
     }
 
     fn layers(&self, column: [i16; 2]) -> std::ops::Range<i16> {
-        let mut layers = self
-            .0
-            .keys()
-            .filter(|key| [key[0], key[2]] == column)
-            .map(|key| key[1]);
-        let Some(first) = layers.next() else {
-            return 0..0;
-        };
-        let (low, high) = layers.fold((first, first), |(lo, hi), y| (lo.min(y), hi.max(y)));
-        low..high.saturating_add(1)
+        self.0.column_layers(column)
     }
 
     fn fill(&self, key: [i16; 3], out: &mut [u8]) {

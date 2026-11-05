@@ -14,7 +14,7 @@ three design docs that cite it. The record holds the words.
 | 37 | Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 38 | State is one ledger read more coarsely up the levels, the coarsening provided by the collective; body needs matter less as factions and polities grow. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 41 | World rules and game rulesets are one binding language at founding and play scopes; composition-entailed effects deferred; space scope with Lancer is a later extension. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
-| 42 | Divinity is intrinsic provenance and persists across forks and branches; anything can become divine; constructs are a tier; second tier's word in question. (amended by 45) | none |
+| 42 | Divinity is intrinsic provenance and persists across forks and branches; anything can become divine; constructs are a tier; second tier's word in question. (amended by 45) | [scene composition](../mesocosm/design_docs/2026-11-04_scene_composition_plan.md) |
 | 43 | A divine thing is omnipresent as one instance or cycles through reincarnation or recreation, destroyed only through prophesied conditions tied to its ascent. | none |
 | 45 | Provenance (lineage, maker, intrinsic) and identity (unnamed, named and sapient, factional) are two axes; constructs are made, divine is intrinsic. | none |
 | 50 | A tenet is the relation that a process yields an effect, with an opinion of that and the trust people place in it. | none |

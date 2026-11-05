@@ -6055,6 +6055,35 @@ area = "World generation"
 summary = "2D, 2.5D and 3D views are non-destructive projections of one store, as many per thing as needed, a creature's senses among them."
 draws_on = ["18", "presentation.1"]
 
+[decisions."scene-composition D1"]
+title = "proceed with the experiment, applies the presentation boundary"
+source = "mesocosm/design_docs/2026-11-04_scene_composition_plan.md"
+area = "Presentation"
+summary = "Measure native scene and DOM composition over one committed source."
+draws_on = ["483", "600"]
+plans = ["orthographic-voxel-presentation"]
+
+[decisions."scene-composition D2"]
+title = "ECS libraries are references, applies D42"
+source = "mesocosm/design_docs/2026-11-04_scene_composition_plan.md"
+area = "The sim's schema and saves"
+summary = "Grow the native component-store direction while keeping the scene comparison derived."
+draws_on = ["482", "483", "600", "sim-execution D42"]
+
+[decisions."scene-composition D3"]
+title = "uniform contracts allow different stores"
+source = "mesocosm/design_docs/2026-11-04_scene_composition_plan.md"
+area = "Presentation"
+summary = "Common publication and query contracts do not impose one physical store."
+draws_on = ["scene-composition D1", "scene-composition D2"]
+
+[decisions."scene-composition D4"]
+title = "the intended scripting frontend is conditional"
+source = "mesocosm/design_docs/2026-11-04_scene_composition_plan.md"
+area = "Presentation"
+summary = "Didgeridoo is the intended conditional scripting frontend over native contracts."
+draws_on = ["scene-composition D1", "scene-composition D2"]
+
 [decisions."session-network D1"]
 title = "no rule against CRDTs (2026-10-28), refines Record 1"
 source = "design_docs/2026-10-28_session_network_plan.md"

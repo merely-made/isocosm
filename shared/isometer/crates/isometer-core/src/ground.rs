@@ -474,6 +474,8 @@ impl Brick {
     }
 }
 
+mod columns;
+
 #[cfg(test)]
 mod material_tests;
 
