@@ -70,7 +70,7 @@ cosmograph = { path = "../../shared/cosmograph", default-features = false }
 cosmograph-host = { path = "../../cosmograph-host" }
 # The admitted native stream APIs, in graphshell-host since mere lifted
 # Graphshell's serving half there (2e896a75, 2026-10-15).
-graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "ab37ca96f65c68d5064f37530f4f374ad528bb42", default-features = false, features = ["native"], optional = true }
+graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "8b8caefe3a9e87479f66e136989a9bc37d259907", default-features = false, features = ["native"], optional = true }
 graphshell-endpoint = { workspace = true, optional = true }
 chirograph = { workspace = true, optional = true }
 sceno = { workspace = true, optional = true }
