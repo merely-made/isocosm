@@ -1,7 +1,8 @@
 # Eponym
 
-Name reservation for **Eponym**, the second-person game of the
-wing. Formerly Paredros; renamed 2026-09-22.
+**Eponym** is the second-person game of the wing (formerly Paredros, renamed
+2026-09-22). It lives in the Isocosm umbrella repository, under `eponym/`,
+with its own Cargo workspace.
 
 A second-person action RPG in a persistent generated world. You name one
 creature and ordinarily inhabit that life until it dies. Other named
@@ -9,57 +10,54 @@ creatures live their own lives across settlements, dungeons, ruins, surface
 and underground places. Allies are useful but not required, and never units
 in a party.
 
-Design lives in the umbrella repository:
+Eponym's plans are in its own `design_docs/`; the wing's shared design is in
+the umbrella's root `design_docs/`:
 <https://github.com/merely-made/isocosm>.
 
-## Status (2026-09-13)
+## Status (2026-11-04)
 
-Early implementation. Four proof scenes landed 2026-08-08; nothing here is a
-shipped game yet. The native package is now `eponym-client` (formerly
-`paredros-client`, and before that `paredros-room`): it hosts rendering, input and inspection as well as the
-retained room/crossing probes. Timed multi-limb strikes now resolve against
-another creature's anatomy, updating injury, lost parts and attached equipment
-together. Save/load preserves these consequences. This bounded loop passes
-104 world tests, 3 native handler tests and an automated window smoke check.
+Early implementation; nothing here is a shipped game yet. Eponym now runs
+as an overlay on Cosmograph, the wing's shared simulator.
 
-- S0 room probe (`eponym-client`): one body walking one room carved into
-  grown mesocosm terrain, with save/reload replay to a matching state hash,
-  rendered through the shared renderer stack.
-- S1 refusal scene (`eponym-social`): three companions with different
-  histories answer the same offer three different ways, with their premises
-  attached; one standing agreement is formed, exercised, renegotiated, and
-  ended.
-- S2 negotiated home (same crate): homes offered with daily work; residence
-  and the daily round derive from agreement state, so moving out is the
-  agreement ending.
-- S3 sim half (`eponym-sortie`): negotiated participation, terrain falls
-  as wounds, pact-governed tag-in, and sortie deeds that change later
-  answers. The headed real-time action half is open, as are the playtester
-  judgments for S1-S3.
-- The 2026-08-10 extraction review promoted `eponym-identity` to the
-  wing-wide identity crate (relicensed MIT OR Apache-2.0) and pushed the GPU
-  tenancy seam up into netrender.
-- The headed room now proves both frame-validation policies against its real
-  swapchain calls. Awaited validation suppressed attempt 1 before acquisition
-  and presented attempt 2. Optimistic validation presented attempt 1,
-  suppressed attempt 2 after the result resolved, then presented attempt 3.
-- Shared faults now rebuild the complete GPU client set through the same path
-  as initial boot while preserving the host window and surface. A headed
-  synthetic-fault receipt suppresses generation 1 before acquisition and
-  presents successfully from generation 2.
-- The Renderling room tenant now records its 20-pass frame into a caller-owned
-  encoder and Eponym submits it once. RG3c reports that physical tenant
-  submission separately from Netrender's one graph submission and retains the
-  466-colour byte-match against the legacy composition path.
+- Eponym's side of the overlay contract is built
+  (`shared/cosmograph-overlay/src/eponym/`: act, actuation, agree, ask,
+  checkpoint, handoff). The earlier families moved onto native Cosmograph:
+  `eponym-world`, `eponym-social` and `eponym-identity` no longer exist, and
+  `eponym/crates/` holds `eponym-client`, `-motion`, `-play` and `-sortie`.
+- The S0 to S3 proof scenes (room, refusal, negotiated home, sortie) are kept
+  as foundation receipts. Phases E0 to E2 are done.
+- The client plays in rounds: drawn locally, a minute of motion taken as one
+  intent and run as a worker job, with round speed on keys 1, 2, 4 and 8
+  (2026-11-02).
+- The camera switches live between the overview, over the shoulder and first
+  person; first person draws the body below its eye and faces the aim.
+- A participant can hold several bodies, telling passes what a body knows
+  about a place or event, and injuries sever named parts through the harm
+  path.
+- Open: E3, driving a life on Cosmograph (with the folded loops and memory
+  lanes), including E3.4's product zoom and contact acceptance under the
+  shared live/sprite direction (case 1161); and E4, the headed two-peer
+  played loop end to end.
 
 Current plans live in [design_docs/](design_docs/DOC_README.md); the
-executable plan retains S0-S3 as foundation receipts and orders future work
-through F0-F8: persistent world, one embodied life, other autonomous lives,
-memory and standing, coordination, material life, settlement and culture,
-danger, then death and control continuity. Camera choice remains open until
-those spatial laws can judge it.
+[overlay plan](design_docs/2026-10-28_eponym_overlay_plan.md) orders the
+work and carries the founding charter's open questions.
 
 ## Use
+
+The session host is the current played client (`session` is a working
+name):
+
+```sh
+cargo run -p eponym-client --bin session
+```
+
+WASD moves, arrows aim, Space charges and Space again strikes (or hold the
+left mouse on the scene), E chooses a pickup in Items, R rests, V cycles the
+view, 1/2/4/8 set round speed, Ctrl+S and Ctrl+L save and load, and Esc
+closes. I and J are debug keys: injure a named part, join part 2. New worlds
+are founded in rounds unless `EPONYM_ROUNDS=0`; `PAREDROS_SESSION_SMOKE=1`
+runs the scripted in-window smoke.
 
 The dry damaged-crossing sandbox is interactive:
 
@@ -68,8 +66,8 @@ cargo run -p eponym-client --bin crossing
 ```
 
 WASD moves, arrows or right-drag orbit, wheel zooms, Shift braces, E handles
-the board, Q attaches/releases a tether, Space strikes, R repairs capability,
-and F requests a practice counterstrike. Keys 1/2 restart as crawler/climber.
+the board, Q or T attaches a tether and G releases it, Space strikes, R
+repairs capability, and F requests a practice counterstrike. Keys 1/2 restart as crawler/climber.
 This is authored contact testing, not the generated-world or NPC encounter yet.
 Set `PAREDROS_CROSSING_SMOKE=1` for a deterministic headed capture/replay
 check; each run writes a separate directory beneath `PAREDROS_CROSSING_OUTPUT`
@@ -83,9 +81,10 @@ netrender and genet) comes in by git pin; the wing's own crates are path
 deps inside this repository. No local renderling fork is needed since L7
 (2026-10-09).
 
+The S1 refusal and S2 home binaries left with `eponym-social`; those scenes
+remain as foundation receipts in the overlay plan.
+
 ```sh
-cargo run -p eponym-social --bin refusal   # three companions answer one offer
-cargo run -p eponym-social --bin home      # the negotiated home
 cargo run -p eponym-sortie --bin sortie    # one sortie and return
 ROOM_TRACE=1 cargo run -p eponym-client --bin room   # headed room probe
 PAREDROS_RG3_HEADED_PROBE=awaited cargo run -p eponym-client --bin room
@@ -97,7 +96,7 @@ PAREDROS_RG3_REBUILD_PROBE=1 cargo run -p eponym-client --bin room
 
 Two-part boundary (see [LICENSES.md](LICENSES.md)):
 
-- game code, repository documentation, and `eponym-identity`: MPL-2.0
+- game code and repository documentation: MPL-2.0
 - original game assets: CC BY-SA 4.0
 
 The published `paredros` 0.0.1 name reservation remains MIT OR Apache-2.0;

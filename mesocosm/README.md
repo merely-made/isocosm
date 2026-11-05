@@ -12,43 +12,50 @@ not. Your aim is to increase your kind's share of the world's biomass, which
 no predator manages alone. One verb: **metabolize**. World into self, self
 into world, and the world keeps what your generations did to it.
 
-This repo is also the canonical design authority for the three-game wing
-(Mesocosm, Paredros, Isocosm); the sibling repos cite its wing-level docs
-rather than copy them.
+Wing-level design (doctrine, the design record, the founding record) lives
+in the umbrella's root `design_docs/`. This folder's `design_docs/` holds
+Mesocosm's plans and the plans for Cosmograph, the shared simulator.
 
-## Status (2026-08-12)
+## Status (2026-11-04)
 
-Early implementation. The simulation, body pipeline, and windowed host run;
-the repeated epoch game loop does not run end to end yet.
+Early implementation. Mesocosm now runs as an overlay on Cosmograph, the
+wing's shared simulator (`shared/cosmograph`); the played loop (M4) does
+not run end to end yet.
 
-- Wave 1 complete: the simulation core owns all state, the windowed host
-  runs, and the cross-repo Isocosm projection works, coupled by data.
-- Epoch and ecology lab with three authored worlds, plus the two-game proof
-  pair, complete per the 2026-08-07 audit.
-- General-model ecological slices E0-E4 landed workspace-green 2026-08-07:
-  allometry, anatomy-derived feeding and predation, graph dispersal,
-  far-tier cohort projection, drive-based behavior. Formal acceptance gates
-  still open.
-- Grown place-graph worlds (G0/G1) and the process identity layer (PD1b
-  slice 1) landed 2026-08-08.
-- HUD lane landed 2026-08-02: minimap and world-generated backdrop over the
-  game via netrender on a shared wgpu device.
-- Seven crates: core (deterministic, seeded, integer-only simulation),
-  runtime, mesh, render, lens, views, genet (the windowed host binary).
+- `mesocosm-core` and its own `Intent` are deleted. Four crates
+  (`mesocosm-runtime`, `-views`, `-phenotype`, `-genet`) run a native
+  Cosmograph `Session` and lower `cosmograph_overlay::mesocosm` envelopes.
+- Directing (M3) is built on native Cosmograph and the switch has landed.
+  The epoch boundary, review, revision and speciation live in the sim
+  (`shared/cosmograph/src/lineage/`).
+- In the sim, bodies are certified at site grain; ecology phases S8 to S10
+  and tuning are open.
+- The host shows three views over one shared view policy, one of them a
+  perspective section, switched with Y (2026-11-02).
+- Open: certification of M3 and the interim M4 by draws, the headed
+  three-epoch run, the shared hybrid presentation's product acceptance
+  (case 1161), and the full M4, where chosen in-site acts and contact reach
+  the same accepted world.
 
-Current plans live in [design_docs/](design_docs/DOC_README.md); the
-2026-08-07 dependency ledger is the ordering authority. Next: one native
-played process (PD1b/PD2) and the place-graph chain (G2-G4) toward the
-composed burrow-run slice. The standing caveat outranks all of it: the game
-must make somebody want another run.
+Current plans live in [design_docs/](design_docs/DOC_README.md): the
+[overlay plan](design_docs/2026-10-28_mesocosm_overlay_plan.md) for the
+game and the [sim plan](design_docs/2026-10-28_sim_plan.md) for Cosmograph.
+The standing caveat outranks all of it: the game must make somebody want
+another run.
 
 ## Use
 
 ```sh
-cargo run -p mesocosm-genet    # WASD move, E/Space eat, arrows orbit, Esc quit
-cargo run -p mesocosm-genet -- --bench --seed 7 # native specimen bench and parts examiner
+cargo run -p mesocosm-genet    # play in a window over a native Cosmograph session
+cargo run -p mesocosm-genet -- --bench --seed 7 # the specimen bench over a native session
+cargo run -p mesocosm-genet -- --help   # every flag and key
 cargo test --workspace
 ```
+
+Click or E/Space attends, right click or Q chooses a current hint, S
+speciates, arrows pan, Z/V rotate, C switches surface and section, Y cycles
+the overview, over the shoulder and first person, +/- zoom, and Esc saves
+the trace and quits.
 
 ## License
 
