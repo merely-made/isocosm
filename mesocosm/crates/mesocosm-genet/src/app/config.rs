@@ -14,6 +14,8 @@ use crate::section::{self, CameraMode};
 pub struct HostConfig {
     /// H6's explicit dev world, played through the core and Assembly (897).
     pub bench_world: bool,
+    /// Developer comparison of derived native component stores; no world rules change.
+    pub component_scene: bool,
     pub bench_epoch: u64,
     /// A playable A1 world: the cheap structural check, no full witness, and
     /// an epoch short enough to reach the board in a sitting.
@@ -68,6 +70,8 @@ pub struct HostConfig {
     pub sun: section::SunSource,
     /// Off by default (DT1); recorded in the receipt either way.
     pub dev: bool,
+    /// Dev clock starts held before window/renderer warmup.
+    pub start_paused: bool,
     /// Which body the camera starts on (DT2); presentation only.
     pub follow: Option<u64>,
     /// A recorded save to take up and play on from (786).
@@ -89,8 +93,11 @@ pub struct HostConfig {
 impl HostConfig {
     pub fn ordinary_ecology_rates(&self) -> cosmograph::ecology::Rates {
         self.ecology_rates.unwrap_or_else(|| {
-            if self.ecology_witness.is_some() { cosmograph::ecology::Rates::Stock }
-            else { cosmograph::ecology::Rates::A1 }
+            if self.ecology_witness.is_some() {
+                cosmograph::ecology::Rates::Stock
+            } else {
+                cosmograph::ecology::Rates::A1
+            }
         })
     }
 
@@ -107,6 +114,7 @@ impl Default for HostConfig {
     fn default() -> Self {
         Self {
             bench_world: false,
+            component_scene: false,
             bench_epoch: 60,
             play: false,
             body_roster: false,
@@ -143,6 +151,7 @@ impl Default for HostConfig {
             body_light: 1.0,
             sun: section::SunSource::Sim,
             dev: false,
+            start_paused: false,
             follow: None,
             watch: None,
             spatial: None,
@@ -163,18 +172,37 @@ mod tests {
     fn product_a1_default_preserves_explicit_stock_and_authored_witnesses() {
         let mut config = HostConfig::default();
         assert_eq!(config.ecology_rates, None);
-        assert_eq!(config.ordinary_ecology_rates(), cosmograph::ecology::Rates::A1);
-        assert_eq!(cosmograph::Founding::default().ecology_rates, cosmograph::ecology::Rates::Stock);
+        assert_eq!(
+            config.ordinary_ecology_rates(),
+            cosmograph::ecology::Rates::A1
+        );
+        assert_eq!(
+            cosmograph::Founding::default().ecology_rates,
+            cosmograph::ecology::Rates::Stock
+        );
         config.ecology_witness = Some("authored-875.json".into());
-        assert_eq!(config.ordinary_ecology_rates(), cosmograph::ecology::Rates::Stock);
+        assert_eq!(
+            config.ordinary_ecology_rates(),
+            cosmograph::ecology::Rates::Stock
+        );
         config.ecology_rates = Some(cosmograph::ecology::Rates::A1);
-        assert_eq!(config.ordinary_ecology_rates(), cosmograph::ecology::Rates::A1);
+        assert_eq!(
+            config.ordinary_ecology_rates(),
+            cosmograph::ecology::Rates::A1
+        );
         config.ecology_rates = Some(cosmograph::ecology::Rates::Stock);
-        assert_eq!(config.ordinary_ecology_rates(), cosmograph::ecology::Rates::Stock);
-        assert_eq!(Some(HostConfig::parse_ecology_rates("stock").unwrap()),
-            Some(cosmograph::ecology::Rates::Stock));
-        assert_eq!(Some(HostConfig::parse_ecology_rates("a1").unwrap()),
-            Some(cosmograph::ecology::Rates::A1));
+        assert_eq!(
+            config.ordinary_ecology_rates(),
+            cosmograph::ecology::Rates::Stock
+        );
+        assert_eq!(
+            Some(HostConfig::parse_ecology_rates("stock").unwrap()),
+            Some(cosmograph::ecology::Rates::Stock)
+        );
+        assert_eq!(
+            Some(HostConfig::parse_ecology_rates("a1").unwrap()),
+            Some(cosmograph::ecology::Rates::A1)
+        );
         assert_eq!(HostConfig::parse_ecology_rates("A1"), None);
     }
 }

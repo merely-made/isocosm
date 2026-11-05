@@ -23,8 +23,31 @@ impl mesquite::Product for Probe {
         let some = |id: Option<u64>| id.map_or_else(|| "none".into(), |id| id.to_string());
         let yes_no = |value| if value { "yes" } else { "no" }.to_owned();
         let dev_intents = r.dev_intents();
-        let body_stats = s.producer.borrow_mut().body_stats().unwrap_or_default();
+        let body_stats = s.producer.borrow_mut().body_stats();
+        let body_upload_measurement =
+            body_stats
+                .as_ref()
+                .map_or("unavailable: no current body frame", |stats| {
+                    stats
+                        .body_upload_measurement
+                        .unwrap_or("renderer upload counters")
+                });
+        let body_stats = body_stats.unwrap_or_default();
         let terrain_stats = s.producer.borrow_mut().terrain_stats().unwrap_or_default();
+        let (scene_draws, mesh_bytes, instance_bytes) = s.producer.borrow().cost_totals();
+        let native_sequence = r
+            .world()
+            .native_revision()
+            .ok()
+            .map(|native| native.sequence());
+        let inspection_ready = s.committed.as_ref().is_some_and(|subject| {
+            subject.selection.is_some()
+                && subject.selection == s.host.inspection.selected
+                && subject
+                    .inspection
+                    .as_ref()
+                    .is_some_and(|part| part.reading.is_some())
+        });
         let physical = r.spatial();
         let (walks, children) = physical.driver.as_ref().map_or((0, 0), |driver| {
             (
@@ -59,6 +82,36 @@ impl mesquite::Product for Probe {
             focused: s.host.followed().map(|id| format!("critter {id}")),
             fields: [
                 ("mode", "played".into()),
+                (
+                    "scene-backend",
+                    if s.host.config.component_scene {
+                        "components"
+                    } else {
+                        "retained"
+                    }
+                    .into(),
+                ),
+                ("scene-extractions", s.host.scene_extractions.to_string()),
+                ("native-sequence", some(native_sequence)),
+                (
+                    "committed-native-sequence",
+                    some(
+                        s.committed
+                            .as_ref()
+                            .map(|subject| subject.native.sequence()),
+                    ),
+                ),
+                (
+                    "committed-revision",
+                    some(s.committed.as_ref().map(|subject| subject.revision)),
+                ),
+                ("source-lifetime", s.source_lifetime.to_string()),
+                ("manual-steps", s.host.dev_manual_steps.to_string()),
+                ("inspection-ready", yes_no(inspection_ready)),
+                (
+                    "selected-organism",
+                    some(s.host.inspection.selected.map(|part| part.organism)),
+                ),
                 ("camera", s.host.config.camera.name().into()),
                 ("view", s.host.view.slug().into()),
                 (
@@ -67,6 +120,13 @@ impl mesquite::Product for Probe {
                 ),
                 ("render-scale", s.host.config.render_scale.to_string()),
                 ("frames", s.host.frames.to_string()),
+                ("successful-scene-draws", scene_draws.to_string()),
+                ("known-body-mesh-bytes", mesh_bytes.to_string()),
+                ("known-body-instance-bytes", instance_bytes.to_string()),
+                (
+                    "body-upload-measurement",
+                    body_upload_measurement.to_owned(),
+                ),
                 ("dev", s.host.config.dev.to_string()),
                 ("dev-intents", dev_intents.to_string()),
                 (
@@ -281,6 +341,29 @@ impl mesquite::Product for Probe {
         let s = ctx.runner.state();
         Some(capture_pending || s.host.pump.is_some() || s.host.runtime.queued_len() > 0)
     }
+    fn cost_details(&self, ctx: &Context<'_>) -> Option<serde_json::Value> {
+        Some(serde_json::json!({
+            "schema":1,
+            "scope":"cumulative preparation scalars for the registered main viewport; voxel bodies are scene contents, not separate producers; source retirement retains Costs, a replacement Costs gets a new diagnostic epoch; counters describe attempted preparation, publication has its own counter",
+            "declared_viewport_producer_slots":1,
+            "main_scene":ctx.runner.state().producer.borrow().preparation_costs(),
+            "previews":[],
+        }))
+    }
+    fn cost_observation(&self, ctx: &Context<'_>) -> mesquite::CostObservation {
+        let producer = ctx.runner.state().producer.borrow();
+        let (redraws, mesh_bytes, instance_bytes) = producer.cost_totals();
+        let (valid, populated) = producer.cost_status();
+        mesquite::CostObservation {
+            totals: mesquite::Totals {
+                redraws,
+                mesh_bytes,
+                instance_bytes,
+            },
+            valid,
+            populated,
+        }
+    }
     fn complete(&mut self, ctx: &mut Context<'_>, _: &taproot::Outcome) -> Result<(), String> {
         let s = ctx.runner.state();
         if s.host.scene.is_some() && s.producer.borrow().renders() == 0 {
@@ -299,7 +382,13 @@ impl mesquite::Product for Probe {
                 &serde_json::json!({"frame_work_us":s.frame_us,
                 "frame_intervals_us":s.host.frame_intervals_us,
                 "state_hash":s.host.runtime.state_hash(),"world_revision":s.host.runtime.revision()?,
-                "steps":s.host.steps,"frames":s.host.frames,"bench":s.host.config.bench_world}),
+                "steps":s.host.steps,"frames":s.host.frames,"bench":s.host.config.bench_world,
+                "scene_backend":if s.host.config.component_scene {"components"} else {"retained"},
+                "scene_extractions":s.host.scene_extractions,
+                "component_counts":s.host.scene_components.as_ref().map(|scene|scene.counts()),
+                "committed_native_sequence":s.committed.as_ref().map(|subject|subject.native.sequence()),
+                "committed_world_revision":s.committed.as_ref().map(|subject|subject.revision),
+                "producer_costs":s.producer.borrow().costs()}),
             )?;
         }
         Ok(())

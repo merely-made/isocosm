@@ -35,7 +35,29 @@ A standalone Cosmograph viewer (case 1038): a native Graphshell client of the co
 - From: case 1038; founding, branching and drawing ruled in case 1048.
 
 ### H8. The other products on the core
-Later, no phases yet; each gets phases here when it starts: Eponym's `session` on the core (founding a generated world, asks through the UI, succession in the client); the VTT over the sim (in-app campaign founding from a seeded draw); Eponym's motion adopting the core's `Clock`; the VTT on the explicit step; and H5's import of Eponym's Game13 and the VTT campaign into `WorldSave` with the product section kept as opaque bytes (only the Mesocosm `GameSave` import has a stated condition, and it is met). Pacing stays per product under 927: Eponym paces motion at 60 Hz by `Instant` and drops its backlog after eight catch-up steps, the VTT has no wall clock (consented downtime), Mesocosm uses `Clock` (rational steps, the cap defers). Unifying them is not asked.
+Product-host and import acceptance remain here: Eponym's `session` on the
+core (founding a generated world, asks through the UI, succession in the
+client); the VTT over the sim (in-app campaign founding from a seeded draw)
+and its explicit step; and H5's import of Eponym's Game13 and the VTT campaign
+into `WorldSave` with the product section kept as opaque bytes (only the
+Mesocosm `GameSave` import has a stated condition, and it is met).
+
+**Pacing inventory, 2026-11-04:** the core already supplies rational `Clock`,
+round/simming `Pacer` and ordered worker/in-step `Ticker` in
+`cosmograph-host/src/drive/{clock,round}.rs`. A round authorizes sixty
+foreground steps per real second, scaled world time and a background minute;
+simming uses the tick-rate dial. Eponym's session already consumes `Pacer`
+and `Ticker`: `Instant` measures elapsed host time, rather than providing a
+separate pacing engine. Its product policy still limits local drawn-motion
+work to eight steps times speed per frame and lets excess local steps go;
+due background minutes remain owed and run one at a time
+(`eponym-client/src/round.rs`). Mesocosm uses the core `Clock` through its
+driver, whose cap defers steps. The VTT's consented downtime stays explicit.
+Product pacing policy remains separate from rendering demand under 927;
+retaining a picture neither advances native time nor replaces a minute's
+admitted foreground handbacks. Shared presentation receiving continues in
+[scene composition C6](2026-11-04_scene_composition_plan.md#c6-shared-qualified-output-and-native-frame-receiving).
+
 - Done when: not stated; owed. For the import, the one stated form is H5's: "a save written by the Mesocosm head loads in the core and resumes to the same hash, and an unknown section survives a round trip untouched."
 - Needs: H0 to H5 (built); for the VTT, `vtt-overlay V2`; for Eponym, `eponym-overlay`
 - Rulings: 927, 954 to 957

@@ -89,6 +89,7 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
+| [2026-11-04_scene_composition_plan.md](2026-11-04_scene_composition_plan.md) | Native subject/DOM composition, derived component-store comparison and shared qualified-output receiving. | 2026-11-05: R8 receiving passes 298 native tests, four consumer builds, four C4 runs and replays, and eight scene crop checks. C1–C4 and C6 R2–R7 keep their fixed cuts. Main adoption has a separate publication receipt. |
 | [2026-10-28_sim_plan.md](2026-10-28_sim_plan.md) | The sim (W2): Cosmograph's schema, record, generator, ecology phases S1 to S10, the society layer, owed world rules, certification, and ruling 279's unpark condition. | 2026-10-28: cut; bodies certified at site grain, A1 passes; S8 to S10 and tuning open. |
 | [2026-10-28_sim_execution_plan.md](2026-10-28_sim_execution_plan.md) | The sim's execution: waking, draw keys, parallel evaluation, the near/far crowd tier, and every speed bar (its one owner). Carries decisions D1 to D14. | 2026-11-03: case 1161 keeps image refresh separate from E8 decisions and E10 physical stepping. E1a, E1b and D5 to D11 built and exact; remaining execution work and speed-bar ruling open. |
 | [2026-10-28_sim_host_plan.md](2026-10-28_sim_host_plan.md) | One embeddable sim host under the product hosts, and isomere, the wing's GUI layer and mode host. | 2026-10-28: cut; the core library is built and the Mesocosm head runs on it; mode host acceptance open. H7 is `session-network`. |

@@ -235,6 +235,16 @@ pub trait Product: Sized + 'static {
         let _ = ctx;
     }
 
+    /// Freeze product facts after frame preparation. The returned observer
+    /// owns them until this exact candidate is accepted or discarded.
+    fn prepare_presentation(
+        &mut self,
+        _ctx: &Ctx<'_, Self>,
+        _proposed: cambium_rootstock::PresentedFrame,
+    ) -> Option<cambium_rootstock::PreparedPresentationObserver> {
+        None
+    }
+
     /// Per-presented-frame product work, before the lanes tick.
     fn after_frame(&mut self, ctx: &mut Ctx<'_, Self>) {
         let _ = ctx;
@@ -384,7 +394,8 @@ impl<P: Product> Assembly<P> {
     /// The seven closures, over one shared assembly.
     pub fn hooks(self) -> HostHooks<P::State, P::Logic, P::View> {
         let this = Rc::new(RefCell::new(self));
-        let (frame, dispatch, after, wake, close, key) = (
+        let (frame, dispatch, after, wake, close, key, prepare) = (
+            this.clone(),
             this.clone(),
             this.clone(),
             this.clone(),
@@ -393,6 +404,12 @@ impl<P: Product> Assembly<P> {
             this.clone(),
         );
         HostHooks {
+            prepare_presentation: Box::new(move |ctx, proposed| {
+                prepare
+                    .borrow_mut()
+                    .product
+                    .prepare_presentation(ctx, proposed)
+            }),
             frame: Box::new(move |ctx| {
                 let mut this = frame.borrow_mut();
                 if P::closing(ctx.runner.state()) {

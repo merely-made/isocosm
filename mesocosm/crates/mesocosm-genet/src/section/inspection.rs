@@ -22,7 +22,7 @@ pub struct BodySelection {
 }
 
 impl BodySelection {
-    fn address(self) -> PartAddress {
+    pub(crate) fn address(self) -> PartAddress {
         PartAddress {
             subject: SubjectKey(self.organism),
             part: self.part,
@@ -30,7 +30,7 @@ impl BodySelection {
         }
     }
 
-    fn from_address(address: PartAddress) -> Self {
+    pub(crate) fn from_address(address: PartAddress) -> Self {
         Self {
             organism: address.subject.0,
             part: address.part,
@@ -40,6 +40,10 @@ impl BodySelection {
 }
 
 impl Section {
+    pub(crate) fn extent(&self) -> [u32; 2] { [self.width, self.height] }
+
+    pub(crate) fn query_snapshot(&self) -> Option<isometer::QuerySnapshot> { self.scene.query_snapshot() }
+
     pub fn pick_at_pixel(&self, pixel: [u32; 2]) -> Result<Option<isometer::Pick>, isometer::BodyPickError> {
         self.scene.pick_at_pixel(pixel)
     }

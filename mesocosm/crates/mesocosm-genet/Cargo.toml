@@ -74,7 +74,7 @@ serde_json = "1"
 
 [dev-dependencies]
 tempfile = "=3.27.0"
-genet-presenter = { git = "https://github.com/merely-made/genet.git", branch = "main" }
+genet-presenter = { git = "https://www.github.com/merely-made/genet.git", rev = "ceb5a9795a8f26ffe3c6fba25a55bfce3dd0a15d" }
 # The frame examples that moved here from isometer-lens (family plan step 1)
 # hash their own scene bytes, so they name the wire format directly.
 postcard = { workspace = true }

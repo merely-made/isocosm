@@ -21,6 +21,7 @@ use mesocosm_runtime::Runtime;
 use serde::Serialize;
 
 pub mod layout;
+pub mod components;
 pub mod scene;
 pub use scene::site_scene;
 

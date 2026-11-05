@@ -1,230 +1,335 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use super::SceneHandle;
+use crate::section::{self, BodyMode, Framing, Section, SectionFrame};
 use cambium_rootstock::{ProducedTexture, ProducerContext, TextureProducer};
 use isometer::{FrameRequest, SceneProducer, SceneSignature, SceneSource, SlabCamera};
-use crate::section::{self, BodyMode, Framing, Section, SectionFrame};
-use super::SceneHandle;
+use std::rc::Rc;
 
+mod costs;
+mod encoding;
+mod preparation;
+mod queries;
+mod recording;
+mod staging;
+use staging::{Accepted, Staged, Target};
 #[cfg(test)]
 mod tests;
-mod recording;
+pub(crate) use costs::ProducerCosts;
 
-pub struct SectionProducer { handle: SceneHandle, render_scale: u32, inner: Option<SceneProducer<Source>> }
+/// Camera, part accents and body-only changes do not evict terrain residency.
+/// Paged columns, materials and the actual ground/frame remain dependencies.
+fn same_terrain(a: &Rc<section::SiteScene>, b: &Rc<section::SiteScene>) -> bool {
+    Rc::ptr_eq(a, b)
+        || (a.ground == b.ground
+            && a.window.materials == b.window.materials
+            && a.window.same_cells(&b.window))
+}
+
+pub struct SectionProducer {
+    handle: SceneHandle,
+    render_scale: u32,
+    inner: Option<SceneProducer<Source>>,
+    costs: costs::Costs,
+}
 impl SectionProducer {
-    pub fn new(handle: SceneHandle) -> Self { Self { handle, render_scale: 1, inner: None } }
+    pub fn new(handle: SceneHandle) -> Self {
+        Self {
+            handle,
+            render_scale: 1,
+            inner: None,
+            costs: Default::default(),
+        }
+    }
+    pub(crate) fn preparation_costs(&self) -> preparation::PreparationCosts {
+        self.costs.preparation()
+    }
+    pub(crate) fn costs(&self) -> ProducerCosts {
+        self.costs.snapshot()
+    }
+    pub(crate) fn cost_totals(&self) -> (u64, u64, u64) {
+        self.costs.totals()
+    }
+    pub(crate) fn cost_status(&self) -> (bool, bool) {
+        let current = self.has_current_frame();
+        let valid = self.handle.last_error().is_none()
+            && self
+                .inner
+                .as_ref()
+                .is_none_or(|inner| inner.last_error().is_none())
+            && (self.handle.snapshot().is_none() || current);
+        (
+            valid,
+            self.accepted().is_some_and(|(frame, _)| frame.populated),
+        )
+    }
     pub(crate) fn set_render_scale(&mut self, scale: u32) {
         self.render_scale = scale.clamp(1, 8);
-        if let Some(inner) = &mut self.inner { inner.set_render_scale(self.render_scale); }
-    }
-    pub(crate) fn renders(&self) -> u64 { self.inner.as_ref().map_or(0, |inner|inner.renders()) }
-    pub(crate) fn body_stats(&mut self) -> Option<section::BodyFrameStats> {
-        if !self.has_current_frame() { return None; }
-        self.inner.as_mut()?.source_mut().section.as_ref().map(Section::body_stats)
-    }
-    pub(crate) fn terrain_stats(&mut self) -> Option<isometer::ResidencyStats> {
-        if !self.has_current_frame() { return None; }
-        self.inner.as_mut()?.source_mut().section.as_ref().map(Section::terrain_stats)
-    }
-    /// Walk body parts only when this producer presented the current admitted picture.
-    pub(crate) fn select_part(&mut self, subject: u64, current: Option<section::BodySelection>, backwards: bool)
-        -> Option<section::BodySelection> {
-        if !self.has_current_frame() { return None; }
-        let snapshot = self.handle.snapshot()?;
-        let section = self.inner.as_mut()?.source_mut().section.as_mut()?;
-        let selected = section.select_part(subject, current, backwards)?;
-        section.validate_selection(selected, &snapshot.scene).then_some(selected)
-    }
-    /// Validate against the exact current SceneHandle snapshot shown by this producer.
-    pub(crate) fn validate_selection(&mut self, selected: section::BodySelection) -> bool {
-        let Some(snapshot) = self.handle.snapshot() else { return false; };
-        if !self.has_current_frame() { return false; }
-        let Some(section) = self.inner.as_mut().and_then(|inner| inner.source_mut().section.as_mut()) else { return false; };
-        section.validate_selection(selected, &snapshot.scene)
-    }
-    fn has_current_frame(&mut self) -> bool {
-        let Some(input) = self.handle.snapshot() else { return false; };
-        self.inner.as_mut().is_some_and(|inner| {
-            let source = inner.source_mut();
-            source.presented_input == Some(input.fingerprint) && source.presented.is_some()
-        })
-    }
-    pub(crate) fn pick(&mut self, local: (f64, f64), size: (f64, f64)) -> Result<(Option<isometer::Pick>, u64), String> {
-        let source = self.inner.as_mut().ok_or("viewport has not rendered")?.source_mut();
-        let input = self.handle.snapshot().ok_or("viewport has no current picture")?;
-        if source.presented_input != Some(input.fingerprint) { return Err("the pointed picture changed before presentation".into()); }
-        let revision = input.revision.ok_or("viewport has no world revision")?;
-        if ![local.0,local.1,size.0,size.1].iter().all(|v|v.is_finite())
-            || size.0 <= 0.0 || size.1 <= 0.0 || local.0 < 0.0 || local.1 < 0.0
-            || local.0 >= size.0 || local.1 >= size.1 { return Err("pointer is outside the viewport".into()); }
-        let target = source.target.as_ref().ok_or("viewport has no target")?.3;
-        let pixel = [(local.0 / size.0 * target[0] as f64).floor() as u32,
-            (local.1 / size.1 * target[1] as f64).floor() as u32];
-        let section = source.section.as_mut().ok_or("viewport has no section")?;
-        let pick = section.pick_at_pixel(pixel).map_err(|why|format!("{why:?}"))?;
-        if let Some(isometer::Pick::Body(body)) = pick {
-            if !section.validate_body_pick(body, &input.scene) { return Err("pointed body geometry is stale".into()); }
+        if let Some(inner) = &mut self.inner {
+            inner.set_render_scale(self.render_scale);
         }
-        Ok((pick, revision))
+    }
+    pub(crate) fn renders(&self) -> u64 {
+        self.inner.as_ref().map_or(0, |inner| inner.renders())
     }
 }
-impl TextureProducer for SectionProducer {
-    fn render(&mut self, cx: &ProducerContext<'_>) -> Option<ProducedTexture> {
+
+impl SectionProducer {
+    fn ensure_inner(&mut self, cx: &ProducerContext<'_>) -> Result<bool, String> {
         // None from TextureProducer retains its prior image. Once a source
         // exists it must publish an empty frame to withdraw that image.
-        if self.inner.is_none() && self.handle.snapshot().is_none() { return None; }
+        if self.inner.is_none() && self.handle.snapshot().is_none() {
+            return Ok(false);
+        }
         if self.inner.is_none() {
             let host = section::host_device::from_renderer(cx.core.renderer());
             if &host.device != cx.device || &host.queue != cx.queue {
-                *self.handle.error.borrow_mut() = Some("viewport GPU differs from the present core".into());
-                return None;
+                *self.handle.error.borrow_mut() =
+                    Some("viewport GPU differs from the present core".into());
+                return Err("viewport GPU differs from the present core".into());
             }
-            let mut inner = SceneProducer::new(Source::new(host, self.handle.clone()));
+            let mut inner = SceneProducer::new(Source::with_costs(
+                host,
+                self.handle.clone(),
+                self.costs.clone(),
+            ));
             inner.set_render_scale(self.render_scale);
             self.inner = Some(inner);
         }
+        Ok(true)
+    }
+}
+impl TextureProducer for SectionProducer {
+    fn supports_native_staging(&self) -> bool {
+        true
+    }
+    fn render_staged(
+        &mut self,
+        cx: &ProducerContext<'_>,
+    ) -> Result<Option<ProducedTexture>, cambium_rootstock::RasterizeFailure> {
+        if !self
+            .ensure_inner(cx)
+            .map_err(cambium_rootstock::RasterizeFailure::SourceError)?
+        {
+            return Ok(None);
+        }
+        self.inner.as_mut().unwrap().render_staged(cx)
+    }
+    fn publish_staged(&mut self) {
+        if let Some(inner) = &mut self.inner {
+            inner.publish_staged();
+        }
+    }
+    fn discard_staged(&mut self) {
+        if let Some(inner) = &mut self.inner {
+            inner.discard_staged();
+        }
+    }
+    fn staged_is_live(&self) -> bool {
+        self.inner
+            .as_ref()
+            .is_none_or(TextureProducer::staged_is_live)
+    }
+    fn render(&mut self, cx: &ProducerContext<'_>) -> Option<ProducedTexture> {
+        if !self.ensure_inner(cx).ok()? {
+            return None;
+        }
         self.inner.as_mut().unwrap().render(cx)
     }
-    fn suspend(&mut self) { if let Some(inner) = &mut self.inner { inner.suspend(); } }
+    fn suspend(&mut self) {
+        if let Some(inner) = &mut self.inner {
+            inner.suspend();
+        }
+    }
     fn retire(&mut self) {
-        if let Some(inner) = &mut self.inner { inner.retire(); }
+        if let Some(inner) = &mut self.inner {
+            inner.retire();
+        }
         self.inner = None;
     }
 }
 
 pub(crate) struct Source {
-    host: tenant::HostDevice, handle: SceneHandle, section: Option<Section>,
-    ground: Option<[u64; 4]>, target: Option<(wgpu::Texture, wgpu::TextureView, wgpu::TextureView, [u32; 2])>,
+    host: tenant::HostDevice,
+    handle: SceneHandle,
+    section: Option<Section>,
+    ground: Option<Rc<section::SiteScene>>,
+    target: Option<Target>,
+    accepted: Option<Accepted>,
+    staged: Option<Staged>,
+    transactional: bool,
     presented: Option<SlabCamera>,
-    presented_input: Option<[u64;4]>,
+    presented_input: Option<[u64; 4]>,
     animation_frame: u64,
     recording: recording::Recording,
+    costs: costs::Costs,
 }
 
 impl Source {
+    #[cfg(test)]
     pub(crate) fn new(host: tenant::HostDevice, handle: SceneHandle) -> Self {
-        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None, animation_frame: 0, recording: Default::default() }
+        Self::with_costs(host, handle, Default::default())
+    }
+    fn with_costs(host: tenant::HostDevice, handle: SceneHandle, costs: costs::Costs) -> Self {
+        Self {
+            host,
+            handle,
+            section: None,
+            ground: None,
+            target: None,
+            accepted: None,
+            staged: None,
+            transactional: false,
+            presented: None,
+            presented_input: None,
+            animation_frame: 0,
+            recording: Default::default(),
+            costs,
+        }
     }
     fn target(&mut self, size: [u32; 2]) {
-        if self.target.as_ref().is_some_and(|t| t.3 == size) { return; }
+        if self.target.as_ref().is_some_and(|t| t.3 == size) {
+            return;
+        }
         let texture = self.host.device.create_texture(&wgpu::TextureDescriptor {
-            label: Some("Mesocosm admitted section"), size: wgpu::Extent3d {
-                width: size[0], height: size[1], depth_or_array_layers: 1 }, mip_level_count: 1,
-            sample_count: 1, dimension: wgpu::TextureDimension::D2,
+            label: Some("Mesocosm admitted section"),
+            size: wgpu::Extent3d {
+                width: size[0],
+                height: size[1],
+                depth_or_array_layers: 1,
+            },
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
             format: wgpu::TextureFormat::Rgba8UnormSrgb,
-            usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT
+                | wgpu::TextureUsages::TEXTURE_BINDING
                 | wgpu::TextureUsages::COPY_SRC,
             view_formats: &[wgpu::TextureFormat::Rgba8Unorm],
         });
         let draw = texture.create_view(&Default::default());
         let sample = texture.create_view(&wgpu::TextureViewDescriptor {
-            format: Some(wgpu::TextureFormat::Rgba8Unorm), ..Default::default() });
+            format: Some(wgpu::TextureFormat::Rgba8Unorm),
+            ..Default::default()
+        });
+        self.costs.count("target_textures_created", 1);
+        self.costs.count("target_views_created", 2);
+        self.costs.count(
+            "target_texels_created",
+            u64::from(size[0]) * u64::from(size[1]),
+        );
+        self.costs.target_extent(size);
         self.target = Some((texture, draw, sample, size));
     }
     fn clear(encoder: &mut wgpu::CommandEncoder, view: &wgpu::TextureView) {
         let _pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
             label: Some("Mesocosm section opaque background"),
-            color_attachments: &[Some(wgpu::RenderPassColorAttachment { view, depth_slice: None,
-                resolve_target: None, ops: wgpu::Operations {
-                    load: wgpu::LoadOp::Clear(wgpu::Color::BLACK), store: wgpu::StoreOp::Store } })],
-            depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None,
+            color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                view,
+                depth_slice: None,
+                resolve_target: None,
+                ops: wgpu::Operations {
+                    load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+                    store: wgpu::StoreOp::Store,
+                },
+            })],
+            depth_stencil_attachment: None,
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
         });
     }
     #[cfg(test)]
     pub(crate) fn capture(&self) -> Option<(u32, u32, Vec<u8>)> {
-        self.section.as_ref()?.capture_from(&self.target.as_ref()?.0, |_, _, _| {})
+        self.section
+            .as_ref()?
+            .capture_from(&self.target.as_ref()?.0, |_, _, _| {})
     }
     #[cfg(test)]
     pub(crate) fn stats(&self) -> section::BodyFrameStats {
-        self.section.as_ref().expect("actual Section was encoded").body_stats()
+        self.section
+            .as_ref()
+            .expect("actual Section was encoded")
+            .body_stats()
     }
 }
 
 impl SceneSource for Source {
     fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
         let Some(input) = self.handle.snapshot() else {
-            return Ok(SceneSignature { size:request.size, host:vec![], ..Default::default() });
+            return Ok(SceneSignature {
+                size: request.size,
+                host: vec![],
+                ..Default::default()
+            });
         };
         let mut host = input.fingerprint.to_vec();
         if self.section.as_ref().is_some_and(Section::animating) {
             self.animation_frame = self.animation_frame.wrapping_add(1);
         }
         host.push(self.animation_frame);
-        host.extend([input.site(), input.played().unwrap_or(u64::MAX), u64::from(input.quarter_turn)]);
-        Ok(SceneSignature { size: request.size, camera: Some(input.camera(request.aspect)),
-            terrain_revision: Some(input.fingerprint[0]), host, ..Default::default() })
+        host.extend([
+            input.site(),
+            input.played().unwrap_or(u64::MAX),
+            u64::from(input.quarter_turn),
+        ]);
+        Ok(SceneSignature {
+            size: request.size,
+            camera: Some(input.camera(request.aspect)),
+            terrain_revision: Some(input.scene.ground.revision()),
+            host,
+            ..Default::default()
+        })
     }
     fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
-        if request.device != &self.host.device || request.queue != &self.host.queue {
-            return Err("Mesocosm section cannot migrate onto a foreign GPU".into());
-        }
-        let size = [request.size[0].max(1), request.size[1].max(1)];
-        self.target(size);
-        let Some(input) = self.handle.snapshot() else {
-            self.section = None; self.ground = None; self.presented = None; self.presented_input = None;
-            let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                label: Some("Mesocosm withdrawn close-up clears previous image") });
-            Self::clear(&mut encoder, &self.target.as_ref().unwrap().1);
-            self.host.queue.submit([encoder.finish()]);
-            return Ok(Some(self.target.as_ref().unwrap().2.clone()));
-        };
-        let camera = input.camera(request.aspect);
-        let result = (|| {
-            if self.section.is_none() {
-                self.section = Some(Section::new(&self.host, size[0], size[1], wgpu::TextureFormat::Rgba8UnormSrgb,
-                    &input.scene.ground, Framing::default())?);
-            }
-            let section = self.section.as_mut().unwrap();
-            let was_animating = section.animating();
-            section.resize(size[0], size[1]);
-            if self.ground != Some(input.fingerprint) {
-                section.set_ground(&input.scene.ground)?;
-                self.ground = Some(input.fingerprint);
-            }
-            section.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
-            if let Some(view) = &input.presentation {
-                section.set_mode(view.mode);
-                section.set_view_depth(view.depth)?;
-                section.configure_bodies(view.bodies, view.budget);
-                section.set_half_height(view.half_height);
-                section.set_body_light(view.light);
-                section.set_sky(view.sky);
-                section.configure_terrain(view.terrain, view.centre, view.terrain_y);
-                section.set_body_focus(view.focus, view.selection);
-            }
-            section.set_forward(Some(camera.forward))?;
-            section.set_perspective(camera.frustum().map(|_| camera));
-            let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                label: Some("Mesocosm section on the present device") });
-            let draw = &self.target.as_ref().unwrap().1;
-            Self::clear(&mut encoder, draw);
-            let pose = section::pose_of(&input.scene, 1.0).map(|(pose, _)|pose);
-            let roster = section::roster_of(&input.scene, section.slab_window(camera.centre), 1.0);
-            section.draw(&mut encoder, draw, SectionFrame { scene: &input.scene, dirty: &[],
-                centre: camera.centre, pose: pose.as_ref(), roster: &roster })?;
-            self.host.queue.submit([encoder.finish()]);
-            if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
-                eprintln!("viewport {:?}: animation {was_animating} -> {}", input.revision, section.animating());
-            }
-            self.recording.frame(section, &self.target.as_ref().unwrap().0, &input, was_animating)?;
-            self.presented = Some(camera);
-            self.presented_input = Some(input.fingerprint);
-            self.handle.error.borrow_mut().take();
-            Ok::<(), String>(())
-        })();
-        if let Err(why) = result {
-            // A failed encode cannot keep pixels from an earlier native cut.
-            self.section = None; self.ground = None; self.presented = None; self.presented_input = None;
-            *self.handle.error.borrow_mut() = Some(why);
-            let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                label: Some("Mesocosm refused frame clears previous image") });
-            Self::clear(&mut encoder, &self.target.as_ref().unwrap().1);
-            self.host.queue.submit([encoder.finish()]);
-        }
-        Ok(Some(self.target.as_ref().unwrap().2.clone()))
+        self.discard_staged();
+        self.transactional = false;
+        self.costs.count("legacy_frame_calls", 1);
+        self.encode_frame(request, false)
     }
-    fn presented_camera(&self) -> Option<SlabCamera> { self.presented }
-    fn cached_bodies(&self) -> usize { self.section.as_ref().map_or(0, Section::cached_bodies) }
-    fn suspend(&mut self) { self.target = None; self.presented = None; self.presented_input = None; }
-    fn retire(&mut self) { self.suspend(); self.section = None; self.ground = None; }
+    fn supports_native_staging(&self) -> bool {
+        true
+    }
+    fn stage_frame(
+        &mut self,
+        request: &FrameRequest<'_>,
+    ) -> Result<Option<wgpu::TextureView>, String> {
+        self.stage_candidate(request)
+    }
+    fn stage_retained(&mut self, _request: &FrameRequest<'_>) -> Result<(), String> {
+        self.stage_unchanged()
+    }
+    fn publish_staged(&mut self) {
+        self.publish_candidate();
+    }
+    fn discard_staged(&mut self) {
+        if self.staged.is_some() {
+            self.costs.count("explicit_staged_discards", 1);
+        }
+        self.staged = None;
+    }
+    fn staged_is_live(&self) -> bool {
+        self.staged
+            .as_ref()
+            .is_none_or(|stage| self.handle.is_lifetime(stage.lifetime))
+    }
+    fn presented_camera(&self) -> Option<SlabCamera> {
+        self.presented
+    }
+    fn cached_bodies(&self) -> usize {
+        self.section.as_ref().map_or(0, Section::cached_bodies)
+    }
+    fn suspend(&mut self) {
+        self.staged = None;
+        self.accepted = None;
+        self.target = None;
+        self.presented = None;
+        self.presented_input = None;
+    }
+    fn retire(&mut self) {
+        self.suspend();
+        self.section = None;
+        self.ground = None;
+    }
 }

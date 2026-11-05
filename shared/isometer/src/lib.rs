@@ -38,7 +38,7 @@ pub use producer::{
     BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,
     SceneSource,
 };
-pub use query::{BodyPick, BodyPickError, Pick, TerrainHit};
+pub use query::{BodyPick, BodyPickError, Pick, QuerySnapshot, QuerySnapshotStats, TerrainHit};
 pub use scene::{
     ColumnTerrain,
     BRICK_BYTES, BrickSource, CapsuleFrame, FramedBricks, GroundTerrain, HostTerrain, PagedTerrain,

@@ -68,12 +68,17 @@ impl World {
                 None => { sections.remove(key); }
             }
         }
-        if same_authority(&candidate, &world.session) && sections == world.sections {
+        let native_changed = !same_authority(&candidate, &world.session);
+        if !native_changed && sections == world.sections {
             return Err("empty replica record".into());
         }
+        let native_revision = native_changed.then(|| world.native_revision.next()).transpose()?;
         verify(&candidate, &sections, revision)?;
         world.session = candidate;
-        world.native_cut.set(None);
+        if let Some(native_revision) = native_revision {
+            world.native_cut.set(None);
+            world.native_revision = native_revision;
+        }
         world.sections = sections;
         world.revision = revision;
         Ok(())

@@ -60,6 +60,7 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
     ));
     let close_lane = lane.clone();
     let hooks: HostHooks<Bench, Logic, Child> = HostHooks {
+        prepare_presentation: Box::new(|_, _| None),
         frame: Box::new(|ctx| {
             if ctx.runner.state().sim.playing {
                 ctx.runner.update(|s| s.sim_step());

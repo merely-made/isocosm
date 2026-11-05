@@ -19,6 +19,8 @@ use crate::bodies::Pose;
 use crate::scene::{GroundTerrain, SceneFrame, SceneHost, TerrainSource};
 use crate::volumes::DeclaredExtentVolumes;
 
+mod snapshot;
+
 const SIZE: u32 = 33;
 /// The forward `CameraMode::Side` produces, and Eponym's level default.
 const SIDE: [f32; 3] = [0.0, 0.0, -1.0];

@@ -230,6 +230,15 @@ impl Scene {
         &mut self.bodies
     }
 
+    /// Freeze one complete encode's CPU queries. A staging producer retains
+    /// this separately and publishes it only when its image is accepted.
+    pub fn query_snapshot(&self) -> Option<crate::QuerySnapshot> {
+        Some(crate::QuerySnapshot::new(
+            self.presented?, [self.width, self.height], self.bodies.query_snapshot(),
+            self.map.clone(), self.terrain_cell, self.bodies.stats.fallback_bodies != 0,
+        ))
+    }
+
     /// Distinct part geometries the body layer retains across frames.
     pub fn cached_bodies(&self) -> usize {
         self.bodies.cached_bodies()
@@ -313,13 +322,7 @@ impl Scene {
         direction: [f32; 3],
         far: f32,
     ) -> Result<Option<isometer_lens::BrickRayHit>, isometer_lens::BrickRayError> {
-        match &self.map {
-            Some(map) => map.trace_ray(origin.map(|v| v/self.terrain_cell), direction, far/self.terrain_cell)
-                .map(|hit| hit.map(|mut h| { h.distance*=self.terrain_cell;
-                    h.point=h.point.map(|v| v*self.terrain_cell);
-                    h.voxel=h.voxel.map(|v| v*self.terrain_cell as i32); h })),
-            None => Ok(None),
-        }
+        crate::query::snapshot::terrain_ray(self.map.as_ref(), self.terrain_cell, origin, direction, far)
     }
 
     /// Encodes one frame into the tenant-owned display texture.

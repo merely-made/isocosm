@@ -83,7 +83,7 @@ dependencies = [
 [[package]]
 name = "conatus"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/mere.git?rev=ab37ca96f65c68d5064f37530f4f374ad528bb42#ab37ca96f65c68d5064f37530f4f374ad528bb42"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
  "nisus",
  "rapier3d",
@@ -243,7 +243,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=7a3453a02bc7dea391ef18814c1bfa1a46e67160#7a3453a02bc7dea391ef18814c1bfa1a46e67160"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
 dependencies = [
  "serde",
 ]
@@ -313,7 +313,7 @@ dependencies = [
 [[package]]
 name = "impresa"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=7a3453a02bc7dea391ef18814c1bfa1a46e67160#7a3453a02bc7dea391ef18814c1bfa1a46e67160"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
 dependencies = [
  "serde",
  "serde_json",
@@ -404,7 +404,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mere-framing"
 version = "0.0.2"
-source = "git+https://www.github.com/merely-made/mere.git?rev=ab37ca96f65c68d5064f37530f4f374ad528bb42#ab37ca96f65c68d5064f37530f4f374ad528bb42"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
  "postcard",
  "serde",
@@ -444,7 +444,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/mere.git?rev=ab37ca96f65c68d5064f37530f4f374ad528bb42#ab37ca96f65c68d5064f37530f4f374ad528bb42"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
  "serde",
 ]
@@ -800,7 +800,7 @@ checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
 [[package]]
 name = "state-witness"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/mere.git?rev=ab37ca96f65c68d5064f37530f4f374ad528bb42#ab37ca96f65c68d5064f37530f4f374ad528bb42"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
  "mere-framing",
  "postcard",
@@ -1010,6 +1010,11 @@ source = "git+https://www.github.com/merely-made/eidetic.git?rev=7a3453a02bc7dea
 [[patch.unused]]
 name = "eidetic"
 version = "0.0.3"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=7a3453a02bc7dea391ef18814c1bfa1a46e67160#7a3453a02bc7dea391ef18814c1bfa1a46e67160"
+
+[[patch.unused]]
+name = "hagiograph"
+version = "0.0.1"
 source = "git+https://www.github.com/merely-made/eidetic.git?rev=7a3453a02bc7dea391ef18814c1bfa1a46e67160#7a3453a02bc7dea391ef18814c1bfa1a46e67160"
 
 [[patch.unused]]

@@ -49,6 +49,7 @@ fn main() {
         match arg.as_str() {
             "--bench" => bench = true,
             "--bench-world" => config.bench_world = true,
+            "--component-scene" => config.component_scene = true,
             "--bench-epoch" => { bench_epoch_explicit=true; config.bench_epoch = args.next().and_then(|v|v.parse().ok())
                 .filter(|v|*v>0).unwrap_or_else(||fail("--bench-epoch wants positive ticks")); },
             "--frames" => config.frames = args.next().and_then(|v| v.parse().ok()),
@@ -195,6 +196,7 @@ fn main() {
                 }
             },
             "--dev" => config.dev = true,
+            "--paused" => config.start_paused = true,
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
             "--play" => config.play = true,
             "--body-roster" => config.body_roster = true,
@@ -226,6 +228,10 @@ fn main() {
     }
 
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
+    if config.component_scene && !config.dev {
+        fail("--component-scene is a --dev comparison backend");
+    }
+    if config.start_paused && !config.dev { fail("--paused requires --dev"); }
     if (config.body_roster || config.body_founding.is_some() || config.body_proportions.is_some()) && (!config.play || config.watch.is_some() || config.spread.is_some()
         || config.bench_world || config.ecology_candidate.is_some() || config.ecology_witness.is_some()
         || config.spatial.is_some() || config.graft.is_some() || replay.is_some() || bench) {
@@ -380,8 +386,10 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
   --bench-world   play an explicit dev world through the core and Assembly
+  --component-scene compare native component scene storage; requires --dev
   --bench-epoch N dev-world epoch ticks (default 60); requires --bench-world
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)
+  --paused        start the dev clock paused before window warmup; requires --dev
   --follow ID     start the camera on this body (presentation only)
 
 --capture, --trace and --receipt default to scratch names under

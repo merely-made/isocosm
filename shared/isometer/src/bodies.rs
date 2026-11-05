@@ -27,9 +27,11 @@ use crate::volumes::DeclaredExtentVolumes;
 mod eye;
 pub use eye::{below_the_eye, eye_of};
 pub(crate) mod placement;
+mod snapshot;
 mod surfaces;
 pub use placement::BodyFrameStats;
 pub(crate) use placement::{body_origin, depth_target, distance, intersects};
+pub(crate) use snapshot::BodyQueries;
 
 /// A host's identity for one drawn body.
 ///
@@ -98,6 +100,7 @@ pub enum SceneVolumes<'a> {
 }
 
 /// One projected body held for the next draw and the next query.
+#[derive(Clone)]
 struct PlacedBody {
     subject: SubjectKey,
     revision: BodyDependencyRevision,
@@ -305,25 +308,7 @@ impl BodyLayer {
         Option<(PartAddress, isometer_render::live_body::BodyHit)>,
         isometer_render::live_body::BodyQueryError,
     > {
-        if !self.surfaces.is_empty() {
-            return self.pick_surfaces(origin, direction, far, clip);
-        }
-        let bodies: Vec<_> = self.placed.iter().map(PlacedBody::live).collect();
-        isometer_render::live_body::pick_bodies(&bodies, origin, direction, far, Some(clip)).map(
-            |hit| {
-                hit.map(|hit| {
-                    let body = &self.placed[hit.body_index];
-                    (
-                        PartAddress {
-                            subject: body.subject,
-                            part: hit.part,
-                            revision: body.revision,
-                        },
-                        hit,
-                    )
-                })
-            },
-        )
+        self.query_view().pick(origin, direction, far, clip)
     }
 
     /// Walks the parts of the last successful draw for `subject`.
@@ -333,32 +318,7 @@ impl BodyLayer {
         current: Option<PartAddress>,
         backwards: bool,
     ) -> Option<PartAddress> {
-        let body = self.placed.iter().find(|body| body.subject == subject)?;
-        let parts: Vec<_> = body
-            .mesh
-            .placements
-            .iter()
-            .filter(|part| drawable(&body.mesh, part.part))
-            .collect();
-        if parts.is_empty() {
-            return None;
-        }
-        let current = current.filter(|address| address.subject == subject);
-        let index = current
-            .and_then(|address| parts.iter().position(|part| part.part == address.part))
-            .map(|index| {
-                if backwards {
-                    index.checked_sub(1).unwrap_or(parts.len() - 1)
-                } else {
-                    (index + 1) % parts.len()
-                }
-            })
-            .unwrap_or_else(|| if backwards { parts.len() - 1 } else { 0 });
-        Some(PartAddress {
-            subject,
-            part: parts[index].part,
-            revision: body.revision,
-        })
+        self.query_view().select_part(subject, current, backwards)
     }
 
     /// Confirms a part address is still both drawn and geometrically current.

@@ -27,6 +27,9 @@ use crate::bodies::{PartAddress, SceneBody, SceneVolumes, SubjectKey};
 use crate::camera::SlabCamera;
 use crate::scene::Scene;
 
+pub(crate) mod snapshot;
+pub use snapshot::{QuerySnapshot, QuerySnapshotStats};
+
 /// Receipts also expire across `Scene` replacement, so the counter is global
 /// rather than per-scene.
 static NEXT_QUERY_FRAME: AtomicU64 = AtomicU64::new(1);
@@ -286,23 +289,7 @@ impl Scene {
             .pick(origin, direction, camera.far(), frame.camera.clip())
             .map_err(BodyPickError::Body)?;
         let terrain = self.terrain_under(frame, camera, origin, direction)?;
-        // Terrain draws after bodies with LessEqual depth testing, so a tie
-        // belongs to the ground — exactly as `pick_ndc` scores it.
-        let body = match body {
-            Some((_, hit)) if terrain.is_some_and(|ground| ground.distance <= hit.distance) => None,
-            other => other,
-        };
-        Ok(match (body, terrain) {
-            (Some((address, hit)), _) => Some(Pick::Body(BodyPick {
-                address,
-                frame: frame.generation,
-                distance: hit.distance,
-                point: hit.point,
-                tied: hit.tied,
-            })),
-            (None, Some(ground)) => Some(Pick::Terrain(TerrainHit::of(ground))),
-            (None, None) => None,
-        })
+        Ok(nearest(frame.generation, body, terrain))
     }
 
     /// Queries a completed frame at normalized clip coordinates: x points
@@ -359,6 +346,29 @@ impl Scene {
     ) -> Option<PartAddress> {
         self.presented?;
         self.bodies().select_part(subject, current, backwards)
+    }
+}
+
+fn nearest(
+    generation: u64,
+    body: Option<(PartAddress, isometer_render::live_body::BodyHit)>,
+    terrain: Option<BrickRayHit>,
+) -> Option<Pick> {
+    // Terrain draws after bodies with LessEqual depth testing.
+    let body = match body {
+        Some((_, hit)) if terrain.is_some_and(|ground| ground.distance <= hit.distance) => None,
+        other => other,
+    };
+    match (body, terrain) {
+        (Some((address, hit)), _) => Some(Pick::Body(BodyPick {
+            address,
+            frame: generation,
+            distance: hit.distance,
+            point: hit.point,
+            tied: hit.tied,
+        })),
+        (None, Some(ground)) => Some(Pick::Terrain(TerrainHit::of(ground))),
+        (None, None) => None,
     }
 }
 

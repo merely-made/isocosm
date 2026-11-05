@@ -16,6 +16,8 @@ use crate::camera::Cutaway;
 use crate::scene::{Scene, SceneFrame, SceneHost};
 use crate::volumes::DeclaredExtentVolumes;
 
+mod staging;
+
 const SIZE: [u32; 2] = [33, 33];
 
 struct Host;
@@ -393,6 +395,8 @@ fn the_produced_texture_is_straight_alpha_encoded_srgb() {
         appearance: ResolvedAppearance::default(),
     };
     let cx = ProducerContext {
+        #[cfg(not(target_arch = "wasm32"))]
+        native_submission: None,
         device: &device,
         queue: &queue,
         frame: &frame,

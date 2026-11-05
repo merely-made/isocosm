@@ -89,8 +89,10 @@ impl Host {
         }
     }
 
-    pub(super) fn mark_continuation_presented(&mut self) {
-        self.continuation.presented = self.continuation.reading.clone();
+    pub(super) fn prepared_continuation(&self) -> Option<LoopReading> { self.continuation.reading.clone() }
+
+    pub(super) fn mark_continuation_presented(&mut self, prepared: Option<LoopReading>) {
+        self.continuation.presented = prepared;
     }
 
     fn continuation_label(&self, answer: &LoopAnswer) -> String {
@@ -187,3 +189,6 @@ impl Host {
     }
 
 }
+
+#[cfg(test)]
+mod tests;

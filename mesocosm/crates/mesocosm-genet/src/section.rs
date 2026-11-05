@@ -264,6 +264,9 @@ impl Section {
         self.residency.borrow().stats()
     }
 
+    pub(crate) fn terrain_diagnostics(&self) -> Option<isometer::lens::BrickDiagnostics> { self.scene.terrain_diagnostics() }
+    pub(crate) fn terrain_changes(&self) -> u64 { self.residency.borrow().changes() }
+
     pub fn set_body_light(&mut self, intensity: f32) {
         self.body_tenant.set_light(intensity);
     }

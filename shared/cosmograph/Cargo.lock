@@ -230,7 +230,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mere-framing"
 version = "0.0.2"
-source = "git+https://www.github.com/merely-made/mere.git?rev=8b8caefe3a9e87479f66e136989a9bc37d259907#8b8caefe3a9e87479f66e136989a9bc37d259907"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
  "postcard",
  "serde",
@@ -369,11 +369,11 @@ checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
 [[package]]
 name = "state-witness"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/mere.git?rev=8b8caefe3a9e87479f66e136989a9bc37d259907#8b8caefe3a9e87479f66e136989a9bc37d259907"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
- "mere-framing",
  "postcard",
  "serde",
+ "mere-framing",
 ]
 
 [[package]]
@@ -602,4 +602,4 @@ source = "git+https://www.github.com/merely-made/distillery.git?rev=3e9725721596
 [[patch.unused]]
 name = "accesskit"
 version = "0.25.1"
-source = "git+https://www.github.com/merely-made/mere.git?rev=8b8caefe3a9e87479f66e136989a9bc37d259907#8b8caefe3a9e87479f66e136989a9bc37d259907"
+source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"

@@ -4,6 +4,42 @@
 use super::*;
 use crate::borrowed_section::{Presentation, tests::fixture};
 
+mod staging;
+
+#[test]
+fn terrain_residency_survives_body_only_scene_replacement_but_tracks_cells_and_materials() {
+    let (session, participant, _, window, site) = fixture();
+    let handle = SceneHandle::default();
+    handle
+        .update(
+            &session,
+            participant,
+            window,
+            cosmograph::directing::readings::Mode::Survival,
+            site,
+            0,
+        )
+        .unwrap();
+    let scene = handle.snapshot().unwrap().scene.clone();
+    let mut changed = (*scene).clone();
+    changed.bodies.clear();
+    assert!(
+        same_terrain(&scene, &Rc::new(changed.clone())),
+        "changing body membership does not change terrain cells"
+    );
+    changed.window.min[0] += 1;
+    assert!(
+        !same_terrain(&scene, &Rc::new(changed.clone())),
+        "the realized native window is a terrain dependency"
+    );
+    changed.window.min[0] -= 1;
+    changed.ground.sea_level += 1;
+    assert!(
+        !same_terrain(&scene, &Rc::new(changed)),
+        "equal numeric revisions do not prove equal ground"
+    );
+}
+
 #[test]
 #[ignore = "explicit H6 actual-device picking comparison"]
 fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision() {
@@ -48,10 +84,12 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     let core = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default()).unwrap();
     let host = section::host_device::from_renderer(core.renderer());
     let source = Source::new(host.clone(), handle.clone());
+    let costs = source.costs.clone();
     let mut leaf = SectionProducer {
         render_scale: 1,
         handle: handle.clone(),
         inner: Some(SceneProducer::new(source)),
+        costs,
     };
     let request = FrameRequest {
         device: core.device(),
@@ -64,6 +102,26 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     };
     leaf.inner.as_mut().unwrap().render_scene(&request).unwrap();
     assert!(handle.last_error().is_none(), "{:?}", handle.last_error());
+    assert_eq!(leaf.costs().successful_draws, 1);
+    assert_eq!(leaf.cost_status(), (true, true));
+    let before_retained = leaf.cost_totals();
+    let retained = FrameRequest {
+        needs_frame: false,
+        ..request
+    };
+    assert!(
+        leaf.inner
+            .as_mut()
+            .unwrap()
+            .render_scene(&retained)
+            .unwrap()
+            .is_none()
+    );
+    assert_eq!(
+        leaf.cost_totals(),
+        before_retained,
+        "a retained callback adds no work"
+    );
     let selected = leaf
         .select_part(native.played().unwrap(), None, false)
         .expect("the presented played body has an exact part");
@@ -149,7 +207,21 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         "{counts:?}"
     );
     assert!(leaf.pick((-1.0, 2.0), (96.0, 72.0)).is_err());
-    handle.present(&native.scene, 8, presentation).unwrap();
+    handle
+        .present(&native.scene, 8, presentation.clone())
+        .unwrap();
+    assert!(
+        leaf.validate_selection(selected),
+        "section-only publication keeps the shown geometry"
+    );
+    assert_eq!(
+        leaf.pick((48.0, 36.0), (96.0, 72.0)).unwrap().1,
+        8,
+        "retained image uses current action admission"
+    );
+    let mut changed = presentation;
+    changed.half_height *= 1.1;
+    handle.present(&native.scene, 9, changed).unwrap();
     assert!(
         !leaf.validate_selection(selected),
         "selection expires with the shown snapshot"
@@ -158,6 +230,30 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         leaf.pick((48.0, 36.0), (96.0, 72.0))
             .unwrap_err()
             .contains("before presentation")
+    );
+    assert_eq!(
+        leaf.cost_status(),
+        (false, false),
+        "an unpresented cut is not eligible"
+    );
+    leaf.suspend();
+    assert_eq!(leaf.cost_totals(), before_retained);
+    leaf.retire();
+    assert_eq!(
+        leaf.cost_totals(),
+        before_retained,
+        "retirement preserves accumulated work"
+    );
+    leaf.inner = Some(SceneProducer::new(Source::with_costs(
+        host,
+        handle.clone(),
+        leaf.costs.clone(),
+    )));
+    leaf.inner.as_mut().unwrap().render_scene(&request).unwrap();
+    assert_eq!(
+        leaf.costs().successful_draws,
+        2,
+        "a recreated source adds to the same owner"
     );
     eprintln!(
         "H6_PICK samples={} body={} terrain={} empty={} comparison_us={}",

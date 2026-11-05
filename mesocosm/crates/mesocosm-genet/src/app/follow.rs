@@ -48,21 +48,23 @@ impl Host {
     }
 
     /// Drops a followed body that is no longer alive, and says so.
-    pub(super) fn update_follow(&mut self) {
+    pub(super) fn update_follow(&mut self, sim: &Simulation) {
         let Some(target) = self.follow else { return };
-        let sim = self.runtime.sim();
         let pop = &sim.state().population;
         if pop.get(target).is_some_and(|e| e.alive) {
             return;
         }
-        self.follow_lost = Some(mesocosm_views::lost_of(target, self.runtime.tick()));
+        self.follow_lost = Some(mesocosm_views::lost_of(target, sim.state().tick));
         self.follow = None;
     }
 
-    pub(super) fn follow_reading(&self) -> (Option<mesocosm_views::Follow>, Option<Lost>) {
+    pub(super) fn follow_reading(
+        &self,
+        sim: &Simulation,
+    ) -> (Option<mesocosm_views::Follow>, Option<Lost>) {
         let follow = self
             .followed()
-            .and_then(|id| mesocosm_views::follow_of(&self.runtime.sim(), id));
+            .and_then(|id| mesocosm_views::follow_of(sim, id));
         (follow, self.follow_lost)
     }
 }
