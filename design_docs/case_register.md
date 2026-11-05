@@ -40,7 +40,7 @@ three design docs that cite it. The record holds the words.
 | 171 | Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound. | none |
 | 218 | Each reading's bound and the competition's definition move into the world's rules now. | none |
 | 270 | The flow record (per-tick matter receipts) is buffered outside the state hash. | none |
-| 320 | The sim core keeps its observation hook, Simulation::watch. | none |
+| 320 | The sim core keeps its observation hook, Simulation::watch. | [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 345 | The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359) | none |
 | 359 | Each flow names the process that moved it. | none |
 | 364 | X1's defaults (eight shapes, five functions) are constants a world copies in explicitly, so growing the set later does not silently change old worlds. | none |
@@ -50,7 +50,7 @@ three design docs that cite it. The record holds the words.
 | 417 | Open air divides into walkable patches split by cliffs or water; a patch larger than a cap is cut on the chunk grid. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md) |
 | 418 | Places are derived once at base grain; each passage records its clearance so one graph serves every body by filtering. | none |
 | 419 | A world-rule climb (default one unit of rise per unit of run, 45 degrees) splits walkable patches; each edge records its step. | none |
-| 420 | The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells. | none |
+| 420 | The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells. | [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 421 | A world takes the large preset, 256 base units, by default when its founder picks none. | none |
 | 422 | An entity names its site until its game places it, then its patch or room; places are the finest location the sim holds. | none |
 | 538 | Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
@@ -124,7 +124,7 @@ three design docs that cite it. The record holds the words.
 | 169 | Culture spreads by contact, prestige and imposition, and drifts apart out of touch. | none |
 | 173 | Invention is driven by need, contact, temperament and mastery. | none |
 | 206 | When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217) | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 207 | The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 207 | The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 208 | What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows. | none |
 | 209 | The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507) | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 211 | An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -141,13 +141,13 @@ three design docs that cite it. The record holds the words.
 | 257 | The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 258 | The scheduler indexes processes by the traits they require now, with results identical; per-entity due-event queues are decided before M2's first receipts. | none |
 | 259 | The operation budget counts only the evaluations that run; budgeted sessions take a new baseline. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 261 | The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266) | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 261 | The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266) | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 265 | The thirty shapes are expressed as data with the used mechanics, and the process definition widens with the fields the probe proves. | none |
-| 266 | Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 266 | Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 268 | Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate. | none |
 | 269 | Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can. | none |
 | 271 | Matter a dev places comes from a dev source outside the conserved total, creative mode only, and the run is labelled assisted. | none |
-| 284 | An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 284 | An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 285 | The budget counts the members an evaluation stands for, so a budget means the same in grouped and individual modes. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 286 | Due events are kept per group; a group knows when its next threshold falls due and is scheduled then. | none |
 | 287 | Each consumer lineage has one feeding process, choosing among its prey, rather than one per predator-prey pair. | none |
@@ -169,8 +169,8 @@ three design docs that cite it. The record holds the words.
 | 433 | A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset. | none |
 | 435 | A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 436 | A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 439 | A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 440 | Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 439 | A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
+| 440 | Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 454 | Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 507 | From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check. | none |
 | 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
@@ -269,7 +269,7 @@ three design docs that cite it. The record holds the words.
 | 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 1103 | Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -279,8 +279,8 @@ three design docs that cite it. The record holds the words.
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
+| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 1153 | World-time plant stems rise on y, so they are exposed to grazing by position. | none |
 | 1154 | Reach by position applies to every bodied plant; 24 pinned tests are re-recorded. | none |
 | 1155 | Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day. | none |
@@ -421,7 +421,7 @@ three design docs that cite it. The record holds the words.
 | 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md) |
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
-| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 
 ## Record and history
 
@@ -483,7 +483,7 @@ three design docs that cite it. The record holds the words.
 | 122 | A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament. | none |
 | 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 140 | A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting. | none |
-| 147 | A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs. | none |
+| 147 | A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs. | [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 148 | When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site. | none |
 | 150 | A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds. | none |
 | 272 | mesocosm-core's pressure profiles become founding presets. | none |
@@ -533,7 +533,7 @@ three design docs that cite it. The record holds the words.
 | 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 | 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
-| 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 1090 | Every founded lineage starts with at least six members. | [denizen](2026-11-02_denizen_plan.md) |
 | 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -616,7 +616,7 @@ three design docs that cite it. The record holds the words.
 | 423 | The detail ladder has five rungs in one isometric camera, world map included; far marks show modifiers and aggregate modifiers, not only glyphs. | none |
 | 424 | A thing shows the finest rung its projected size warrants among those the sim holds; finer rungs arrive only through the log. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 425 | Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget. | none |
-| 426 | Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 426 | Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 432 | A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434) | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 437 | Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 438 | Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
