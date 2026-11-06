@@ -718,6 +718,7 @@ three design docs that cite it. The record holds the words.
 | 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
 | 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1084 | The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1162 | Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill. | [DOC README](DOC_README.md), [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md) |
 
 ## Host and network
 

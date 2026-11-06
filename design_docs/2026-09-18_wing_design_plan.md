@@ -12982,6 +12982,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 212, 423, 424, 426 · amends presentation.2 · summary Live bodies nearby and cached local poses farther out, with slower image refresh as projected size falls; current roots and simulation cadence stay separate.
 
+1162. **Uniform bricks in Ground now, owed to nisus.** Ruled by Mark on
+      2026-11-05: "Ground now, owed to SP6 (Recommended)", over building the
+      uniform form in nisus first or growing brick-wise only. Isometer-core's
+      `Ground` keeps a one-material brick as that material and grows a brick
+      at a time (landed 2026-11-05 and 2026-11-06); when the store moves to
+      nisus (the place-graph plan's SP6), nisus's chunks keep that form and
+      brick-wise fill, so the move does not regress memory or growth.
+      Promoted from the uniform-bricks plan's D4
+      (`design_docs/archive_docs/2026-11-06/2026-11-05_uniform_bricks_plan.md`),
+      on which SP6 relies.
+
+      Links: area Stack and engine · draws on stack.5 · summary Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -5995,6 +5995,13 @@ summary = "Live bodies nearby and cached local poses farther out, with slower im
 draws_on = ["212", "423", "424", "426"]
 amends = ["presentation.2"]
 
+[cases."1162"]
+title = "Uniform bricks in Ground now, owed to nisus"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill."
+draws_on = ["stack.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

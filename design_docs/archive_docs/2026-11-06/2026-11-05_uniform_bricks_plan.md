@@ -40,7 +40,7 @@ Answered by Mark on 2026-11-05, in answer order.
 
   Links: area Stack and engine · draws on processes.18 · summary Measure how often Mesocosm clones the ground before choosing to share it.
 
-- **D4, home (2026-11-05), applies Stack 5:** "Ground now, owed to SP6
+- **D4, home (2026-11-05), applies Stack 5, promoted (case 1162):** "Ground now, owed to SP6
   (Recommended)". Build it in isometer-core's `Ground`; SP6 gains the
   obligation that nisus keeps the uniform form and brick-wise fill. Offered
   against building in nisus first and against growth only.
