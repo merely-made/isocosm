@@ -29,7 +29,7 @@ members = [
 tenant = { git = "https://github.com/merely-made/mere.git", branch = "main" }
 # Eidetic's append-only journal, pinned with its source family. Its causal
 # shape landed 2026-08-01 for exactly this use.
-muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
+muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 # Shared voxel value mechanics. Mesocosm keeps `Ground` as the durable
 # authority; its product adapter consumes revisioned chunk and patch machinery
 # as a derived view over accepted ground revisions without acquiring a physics
@@ -39,7 +39,7 @@ nisus = { git = "https://github.com/merely-made/mere.git", branch = "main" }
 # builds on (isoscape family plan, rulings 8-10, step D6). Its separate pin
 # (isoscape family plan §4) folded into the family rev with the whole-mere
 # bump of ruling 292.
-hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 # The shared tactile runtime: bodies, voxel collision, and spatial queries
 # with Rapier private inside it. Mesocosm consumes advice through Conatus ids
 # and arrays only; the T1 adapter in mesocosm-runtime is its product home.
@@ -142,14 +142,14 @@ wgpu = { version = "30", default-features = false, features = [
 # netrender carries its own.
 [patch.crates-io]
 # Canonical promoted families; keep registry and Git consumers type-identical.
-chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
+chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+luggage = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+mere-proofs = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+servitor = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 # No parley or fontique patch row. Genet published its forks as `genet-parley`
 # and `genet-fontique` at 5ae30cad, so genet.git answers to neither name and a
 # row here would match no package and fail resolution. genet-livery reaches the
@@ -183,31 +183,11 @@ rust-version = "1.97.1"
 
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
-distillery = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
-mere-mesh = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
-
-[patch."https://github.com/merely-made/eidetic.git"]
-muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "98f2c6977d7210d2149b80ee8be0b3e0f724d44b" }
-
-[patch."https://github.com/merely-made/gemot.git"]
-gemot = { git = "https://www.github.com/merely-made/gemot.git", rev = "73ae3633400109de7e8fd5a66393a12eb609f0d4" }
-mooting = { git = "https://www.github.com/merely-made/gemot.git", rev = "73ae3633400109de7e8fd5a66393a12eb609f0d4" }
-mien = { git = "https://www.github.com/merely-made/gemot.git", rev = "73ae3633400109de7e8fd5a66393a12eb609f0d4" }
-moothold = { git = "https://www.github.com/merely-made/gemot.git", rev = "73ae3633400109de7e8fd5a66393a12eb609f0d4" }
-commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "73ae3633400109de7e8fd5a66393a12eb609f0d4" }
+distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
+mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
 
 # Keep the actor and apparatus-core on one published Armillary source
 # identity when the Mere graph requests the canonical GitHub URL.
-[patch."https://github.com/merely-made/armillary.git"]
-armillary = { git = "https://www.github.com/merely-made/armillary.git", rev = "7eebeeb4447c5dfa70b813e64dc5b492a6212d3d" }
-apparatus-core = { git = "https://www.github.com/merely-made/armillary.git", rev = "06340b08327b29c3485ecb0089bb5cafed20fd80" }
 
 [workspace.lints.clippy]
 missing_errors_doc = "warn"
@@ -218,10 +198,4 @@ too_many_lines = "warn"
 
 [lints]
 workspace = true
-
-[patch."https://github.com/merely-made/distillery.git"]
-esp = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
-esp-testkit = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
-distillery = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
-mere-mesh = { git = "https://www.github.com/merely-made/distillery.git", rev = "a235cbdbca187aa7507739b3f6cf9a2f7846fcc0" }
 
