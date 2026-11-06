@@ -1,8 +1,9 @@
 # Uniform bricks
 
-**Status:** 2026-11-05: in progress. D1 to D4 answered; UB1 landed (growth
-8 to 10 times faster, output identical); UB4 measured (Mesocosm's scene
-clones copy an empty paged ground, about once a second); UB2 and UB3 open.
+**Status:** 2026-11-05: landed. D1 to D4 answered; UB1 to UB5 done. Growth
+is about 30 times faster than the per-voxel baseline, memory and clones about
+a third to a quarter, encoding a ninth of the time and a third of the bytes.
+Open follow-ons are under Deferred and parked.
 
 **For:** `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`)
 growing a brick at a time, keeping a brick of one material as that material,
@@ -71,7 +72,7 @@ Cavities and stances keep their per-voxel paths.
   time at 1x, 10x and 100x area is measured and recorded in the receipts
   beside 2026-11-05's baseline; isometer-core and isometer tests pass.
 
-### UB2. The uniform form
+### UB2. The uniform form (landed 2026-11-05)
 
 `Brick` becomes private `Uniform(u8)` or `Dense(Box<[u8; 512]>)`. `raw()`
 answers a uniform brick from a static table of 64 filled rows (32 KiB, one per
@@ -86,7 +87,7 @@ uniform brick without a pass.
   equal, brick forms included; memory at 1x, 10x and 100x is measured with a
   counting allocator and the clone time at 1x, both recorded in the receipts.
 
-### UB3. Compact encoding
+### UB3. Compact encoding (landed 2026-11-05, with UB2)
 
 Serde follows the enum: a uniform brick encodes as a tag and one byte. Ground
 hashes change once (D2).
@@ -165,10 +166,34 @@ creative and a survival scene, idle and while the sim runs.
   Not measured: the populated paths (`--watch`, `--spatial`, `--bench`, the
   coarse cache hit, release builds) and the cost of paging bricks in.
 
+- 2026-11-05: the uniform form (`ground/brick.rs`): `Brick` wraps a private
+  `Uniform(u8)` or `Dense(Box<[u8; 512]>)`; `raw()` answers a uniform brick
+  from a static table of 64 filled rows; `set` promotes and, when a write
+  matches the first voxel, checks for demotion, so the form is canonical at
+  every write. Serde writes a uniform brick as variant 0 and its material, a
+  dense one as variant 1 and its bytes; decoding refuses a uniform material
+  past `MAX_MATERIAL` and settles dense bytes that agree. A new accessor,
+  `Brick::uniform()`, says which form a brick takes.
+- 2026-11-05: measured against the baseline (receipts): memory 4.2 to 1.6 MB,
+  41.4 to 15.8 MB, 408.5 to 150.1 MB at 1x, 10x and 100x; growth 15 ms to 6.7
+  ms, 191 to 72 ms, 2.39 to 0.73 s (UB1 to UB2; fewer allocations); at 1x a
+  clone 2.6 to 0.65 ms, encoding 6.9 to 0.75 ms and 3.87 to 1.38 MB, hashing
+  5.2 to 1.3 ms.
+- 2026-11-05: isometer's workspace has failures that predate this plan, each
+  reproduced on the pre-UB2 tree: `isometer-lens`
+  `tracer_tests::roster::a_roster_draws_every_body_in_the_slab_and_an_empty_one_changes_nothing`
+  and `tracer_tests::unlit::an_ambient_lit_soil_or_rock_face_sits_on_the_first_rung`,
+  and `isometer-mesh` test `attachment::eating_changes_mass_balance_collision_and_geometry`.
+  `isometer`'s library tests also stall in about half of parallel runs (2 of 4
+  for both trees, alternated) and pass in 7 to 18 s alone or on one thread.
+  They are isometer's owner's, not this plan's.
+
 ## Progress
 
 - 2026-11-05: plan written; D1 to D4 answered; SP6 carries D4.
 - 2026-11-05: UB1 landed: `Ground::fill_columns` gathers each brick in a
   buffer and stores it once.
+- 2026-11-05: UB2 and UB3 landed together: the enum's encoding is the
+  compact one, so there was no interim byte-identical form to keep.
 - 2026-11-05: UB4 measured by a lane (instrumentation reverted): the
   clones are cheap today; sharing is not needed.

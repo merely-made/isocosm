@@ -60,3 +60,40 @@ A Sonnet lane added per-site `AtomicU64` counters in `mesocosm-genet`
 
 Median frame interval, dev build, busy machine: about 8 ms running, about
 23.6 ms paused (the dev lane's pacing, unexamined).
+
+## 2026-11-05: UB2 and UB3, the uniform form and its encoding
+
+Same terrain, temporary `#[ignore]` test with a counting allocator appended to
+`columns.rs`, release, then reverted. Memory is the live heap after one grow.
+
+```text
+1x extent 160 bricks 7478 uniform 4869 mem 1.6 MB grow best-of-3 6.6703ms
+1x clone 653.95µs encode 753.2µs bytes 1375813 hash 1.2605ms 29a6ac119755a9b2 kept 10
+10x extent 506 bricks 72819 uniform 48115 mem 15.8 MB grow best-of-3 72.0348ms
+100x extent 1600 bricks 715705 uniform 484454 mem 150.1 MB grow best-of-3 730.618ms
+```
+
+Gates: `cargo test -p isometer-core` 54 passed. Eponym
+`cargo test -p eponym-client -p eponym-play -p eponym-sortie`: all passed (112).
+Mesocosm `cargo check --workspace --all-targets` clean; `cargo test -p
+mesocosm-runtime` all passed (91). isometer `cargo test --workspace
+--no-fail-fast -- --test-threads=1`: 378 passed, 3 failed; the 3 fail
+identically with the UB2 edits set aside (lens roster and unlit tracer tests,
+mesh `attachment`).
+
+Parallel stall, `isometer` lib test binary built from each tree and alternated,
+90 s timeout:
+
+```text
+head run 1: ok 9s 80 passed; 0 failed
+ub2 run 1: ok 9s 80 passed; 0 failed
+head run 2: exit 124 100s
+ub2 run 2: exit 124 101s
+head run 3: ok 6s 80 passed; 0 failed
+ub2 run 3: ok 7s 80 passed; 0 failed
+head run 4: exit 124 101s
+ub2 run 4: exit 124 100s
+```
+
+In a stalled run nearly every test, pure ones included (`skin`, `volumes`),
+never reports; the same binary passes 80 in 18 s with `--test-threads=1`.

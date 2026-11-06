@@ -28,7 +28,7 @@ impl Ground {
         let Some(low) = held.next() else {
             return 0..0;
         };
-        let high = held.last().unwrap_or(low);
+        let high = held.next_back().unwrap_or(low);
         low..high + 1
     }
 }

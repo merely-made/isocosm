@@ -9,7 +9,8 @@
 //! A product's terrain model decides every column's surface and describes the
 //! voids under it; what lives here is the container those answers fill. An
 //! interior is a hole in the same ground everything walks on, never a scene.
-//! Dense 8³ bricks in an ordered map: hashable, diffable, and serialized flat.
+//! 8³ bricks in an ordered map, a one-material brick kept as that material:
+//! hashable, diffable, and serialized compactly.
 //! Carves mark their bricks dirty and bump one revision, which is the fact a
 //! renderer's upload discipline consumes.
 //!
@@ -43,36 +44,6 @@ pub const MAX_MATERIAL: u8 = 63;
 /// of a column, rock under them. `depth` is voxels below the column's surface.
 pub fn soil_over_rock(_x: i32, _z: i32, depth: i32) -> u8 {
     if depth < 2 { SOIL } else { ROCK }
-}
-
-/// One dense 8³ brick, y-major then z then x.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Brick {
-    materials: Vec<u8>,
-}
-
-impl Brick {
-    fn empty() -> Self {
-        Self {
-            materials: vec![AIR; (BRICK * BRICK * BRICK) as usize],
-        }
-    }
-
-    fn index(local: [i32; 3]) -> usize {
-        ((local[1] * BRICK + local[2]) * BRICK + local[0]) as usize
-    }
-
-    pub fn get(&self, local: [i32; 3]) -> u8 {
-        self.materials[Self::index(local)]
-    }
-
-    fn set(&mut self, local: [i32; 3], material: u8) {
-        self.materials[Self::index(local)] = material;
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.materials.iter().all(|m| *m == AIR)
-    }
 }
 
 /// The ground: every solid voxel the world owns, plus the lifecycle facts
@@ -455,15 +426,11 @@ impl Ground {
     }
 }
 
-impl Brick {
-    /// The brick as raw material bytes, for building a mesh-crate volume.
-    pub fn raw(&self) -> &[u8] {
-        &self.materials
-    }
-}
-
+mod brick;
 mod columns;
 mod fill;
+
+pub use brick::Brick;
 
 #[cfg(test)]
 mod material_tests;

@@ -42,15 +42,15 @@ impl Ground {
                                 layers.resize(layer + 1, None);
                             }
                             let local = [x - bx * BRICK, y % BRICK, z - bz * BRICK];
-                            layers[layer].get_or_insert_with(|| vec![0; side])[Brick::index(local)] =
-                                chosen.min(MAX_MATERIAL);
+                            layers[layer].get_or_insert_with(|| vec![super::AIR; side])
+                                [Brick::index(local)] = chosen.min(MAX_MATERIAL);
                         }
                     }
                 }
                 for (by, laid) in layers.drain(..).enumerate() {
                     if let Some(materials) = laid {
                         let key = [bx as i16, by as i16, bz as i16];
-                        self.bricks.insert(key, Brick { materials });
+                        self.bricks.insert(key, Brick::from_materials(materials));
                         self.dirty.insert(key);
                     }
                 }
