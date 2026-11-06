@@ -43,3 +43,20 @@ three runs each, release, then reverted. The baseline above was a single run.
 Positive control: removing every brick layer 1 in `fill_columns` made
 `brick_wise_growth_matches_the_per_voxel_path` fail (panic at `fill.rs:126`);
 restored. `cargo test -p isometer-core`: 51 passed.
+
+## 2026-11-05: UB4, Mesocosm's ground clones
+
+A Sonnet lane added per-site `AtomicU64` counters in `mesocosm-genet`
+(`MESOCOSM_CLONE_COUNT=1`), ran from `mesocosm/`, then reverted them:
+`mesocosm-genet.exe --play --seed 1793177320550931600 --mode {creative|survival} [--dev --paused] --frames 900 --no-trace`.
+`--seed 1` and clock seeds fail A1 candidate selection.
+
+| Scene | State | Ground clones | `refresh_scene` calls | `brick_count()` at clone |
+|---|---|---|---|---|
+| creative | running | 15 in about 15 s | 894 | 0 |
+| survival | running | 15 in about 15 s | 805 | 0 |
+| creative | paused | 1 (startup) in about 24 s | about 900 | 0 |
+| survival | paused | 1 extraction in about 27 s | about 870 | 0 |
+
+Median frame interval, dev build, busy machine: about 8 ms running, about
+23.6 ms paused (the dev lane's pacing, unexamined).

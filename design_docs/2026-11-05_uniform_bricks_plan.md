@@ -1,7 +1,8 @@
 # Uniform bricks
 
 **Status:** 2026-11-05: in progress. D1 to D4 answered; UB1 landed (growth
-8 to 10 times faster, output identical); UB2 to UB4 open.
+8 to 10 times faster, output identical); UB4 measured (Mesocosm's scene
+clones copy an empty paged ground, about once a second); UB2 and UB3 open.
 
 **For:** `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`)
 growing a brick at a time, keeping a brick of one material as that material,
@@ -96,7 +97,7 @@ hashes change once (D2).
   no persisted ground hash (`ground_hash`, "ground hash") in live docs,
   `testing/` or fixtures.
 
-### UB4. Mesocosm's ground clones, measured
+### UB4. Mesocosm's ground clones, measured (landed 2026-11-05)
 
 Count `SiteScene` builds per second in the running Mesocosm app
 (`borrowed_section.rs:211,342`, `app.rs:307` each clone the ground), in a
@@ -153,8 +154,21 @@ creative and a survival scene, idle and while the sim runs.
   reference and compares five reliefs (one with cavities) at four extents,
   equality and encoded bytes; it fails when one brick layer is dropped.
 
+- 2026-11-05: Mesocosm's scene clones copy an empty ground. In self-driven
+  `--play` runs (dev build, creative and survival), the clones that fire are
+  `played/scene.rs:41`, `:73` and `:200`, once per scene extraction: about
+  once a second while the sim runs, only at startup while paused; the ground
+  then has `brick_count() == 0`, being the paged projection
+  (`Ground::empty`; asserted at `section/smooth/motion/tests.rs:397`).
+  `borrowed_section.rs:211` and `:342` have no callers outside tests;
+  `app.rs:307` (the coarse cache hit) did not fire. No `Rc` question arises.
+  Not measured: the populated paths (`--watch`, `--spatial`, `--bench`, the
+  coarse cache hit, release builds) and the cost of paging bricks in.
+
 ## Progress
 
 - 2026-11-05: plan written; D1 to D4 answered; SP6 carries D4.
 - 2026-11-05: UB1 landed: `Ground::fill_columns` gathers each brick in a
   buffer and stores it once.
+- 2026-11-05: UB4 measured by a lane (instrumentation reverted): the
+  clones are cheap today; sharing is not needed.
