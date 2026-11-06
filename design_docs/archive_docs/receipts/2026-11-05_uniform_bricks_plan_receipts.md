@@ -56,7 +56,7 @@ A Sonnet lane added per-site `AtomicU64` counters in `mesocosm-genet`
 | creative | running | 15 in about 15 s | 894 | 0 |
 | survival | running | 15 in about 15 s | 805 | 0 |
 | creative | paused | 1 (startup) in about 24 s | about 900 | 0 |
-| survival | paused | 1 extraction in about 27 s | about 870 | 0 |
+| survival | paused | 1 (startup) in about 24 s | about 899 | 0 |
 
 Median frame interval, dev build, busy machine: about 8 ms running, about
 23.6 ms paused (the dev lane's pacing, unexamined).
