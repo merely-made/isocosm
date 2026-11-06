@@ -126,7 +126,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 dependencies = [
  "serde",
 ]
@@ -163,7 +163,7 @@ dependencies = [
 [[package]]
 name = "impresa"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 dependencies = [
  "serde",
  "serde_json",
@@ -371,9 +371,9 @@ name = "state-witness"
 version = "0.0.1"
 source = "git+https://www.github.com/merely-made/mere.git?rev=ad6aaf60ef7fcf869eac6eb313f40064029fded9#ad6aaf60ef7fcf869eac6eb313f40064029fded9"
 dependencies = [
+ "mere-framing",
  "postcard",
  "serde",
- "mere-framing",
 ]
 
 [[package]]
@@ -502,102 +502,102 @@ checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 [[patch.unused]]
 name = "commons-spine"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/gemot.git?rev=c9e5ebfd11167e051133bd27166f3290fc2f5331#c9e5ebfd11167e051133bd27166f3290fc2f5331"
+source = "git+https://www.github.com/merely-made/gemot.git?rev=120bac79877be97ac9a7b1c79e7eb1b78238003a#120bac79877be97ac9a7b1c79e7eb1b78238003a"
 
 [[patch.unused]]
 name = "gemot"
 version = "0.1.1"
-source = "git+https://www.github.com/merely-made/gemot.git?rev=c9e5ebfd11167e051133bd27166f3290fc2f5331#c9e5ebfd11167e051133bd27166f3290fc2f5331"
+source = "git+https://www.github.com/merely-made/gemot.git?rev=120bac79877be97ac9a7b1c79e7eb1b78238003a#120bac79877be97ac9a7b1c79e7eb1b78238003a"
 
 [[patch.unused]]
 name = "mien"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/gemot.git?rev=c9e5ebfd11167e051133bd27166f3290fc2f5331#c9e5ebfd11167e051133bd27166f3290fc2f5331"
+source = "git+https://www.github.com/merely-made/gemot.git?rev=120bac79877be97ac9a7b1c79e7eb1b78238003a#120bac79877be97ac9a7b1c79e7eb1b78238003a"
 
 [[patch.unused]]
 name = "moothold"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/gemot.git?rev=c9e5ebfd11167e051133bd27166f3290fc2f5331#c9e5ebfd11167e051133bd27166f3290fc2f5331"
+source = "git+https://www.github.com/merely-made/gemot.git?rev=120bac79877be97ac9a7b1c79e7eb1b78238003a#120bac79877be97ac9a7b1c79e7eb1b78238003a"
 
 [[patch.unused]]
 name = "mooting"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/gemot.git?rev=c9e5ebfd11167e051133bd27166f3290fc2f5331#c9e5ebfd11167e051133bd27166f3290fc2f5331"
+source = "git+https://www.github.com/merely-made/gemot.git?rev=120bac79877be97ac9a7b1c79e7eb1b78238003a#120bac79877be97ac9a7b1c79e7eb1b78238003a"
 
 [[patch.unused]]
 name = "distillery"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "mere-mesh"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "chartulary"
 version = "0.3.0"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "eidetic"
 version = "0.0.3"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "luggage"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "mere-proofs"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "muniment"
 version = "0.2.1"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "servitor"
 version = "0.0.3"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "stickleback"
 version = "0.2.0"
-source = "git+https://www.github.com/merely-made/eidetic.git?rev=1fcdb359e72ac6309a96823c3ab5558eaaa3ec31#1fcdb359e72ac6309a96823c3ab5558eaaa3ec31"
+source = "git+https://www.github.com/merely-made/eidetic.git?rev=5182e4e244c85b1008182a1be6b822f65a8efe50#5182e4e244c85b1008182a1be6b822f65a8efe50"
 
 [[patch.unused]]
 name = "distillery"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "mere-mesh"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "distillery"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "esp"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "esp-testkit"
 version = "0.1.0"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "mere-mesh"
 version = "0.0.1"
-source = "git+https://www.github.com/merely-made/distillery.git?rev=3e97257215969fb856de9c57a3158c6609ed4e6f#3e97257215969fb856de9c57a3158c6609ed4e6f"
+source = "git+https://www.github.com/merely-made/distillery.git?rev=27fd59188c5036627aec0f85feaa59907c7ba53f#27fd59188c5036627aec0f85feaa59907c7ba53f"
 
 [[patch.unused]]
 name = "accesskit"
