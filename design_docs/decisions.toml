@@ -6473,6 +6473,34 @@ area = "Method and documents"
 summary = "physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed."
 draws_on = ["1057", "sim-execution D18", "sim-execution D43"]
 
+[decisions."uniform-bricks D1"]
+title = "target (2026-11-05), applies Processes 18"
+source = "design_docs/2026-11-05_uniform_bricks_plan.md"
+area = "Stack and engine"
+summary = "Grow the ground brick-wise and keep uniform bricks as one material; the memory case was tested at 10x, 100x and 1000x area."
+draws_on = ["processes.18", "stack.5"]
+
+[decisions."uniform-bricks D2"]
+title = "encoding (2026-11-05), applies Schema 9"
+source = "design_docs/2026-11-05_uniform_bricks_plan.md"
+area = "Stack and engine"
+summary = "Uniform bricks encode compactly; ground hashes change, and no persisted save or record depends on them."
+draws_on = ["schema.9"]
+
+[decisions."uniform-bricks D3"]
+title = "Mesocosm's clones (2026-11-05), applies Processes 18"
+source = "design_docs/2026-11-05_uniform_bricks_plan.md"
+area = "Stack and engine"
+summary = "Measure how often Mesocosm clones the ground before choosing to share it."
+draws_on = ["processes.18"]
+
+[decisions."uniform-bricks D4"]
+title = "home (2026-11-05), applies Stack 5"
+source = "design_docs/2026-11-05_uniform_bricks_plan.md"
+area = "Stack and engine"
+summary = "Build uniform bricks in Ground now; the move to nisus must keep them."
+draws_on = ["stack.5"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
