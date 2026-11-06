@@ -108,11 +108,8 @@ fn clear(
 
 #[test]
 fn glyph_stroke_edges_share_voxel_depth_and_camera() {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
-        .expect("glyph depth receipt requires a GPU adapter");
-    let (device, queue) = pollster::block_on(adapter.request_device(&Default::default()))
-        .expect("glyph depth receipt requires a GPU device");
+    let (device, queue) =
+        crate::test_gpu::device().expect("glyph depth receipt requires a GPU device");
     let texture = |format, usage, label| {
         device.create_texture(&wgpu::TextureDescriptor {
             label: Some(label),
@@ -324,11 +321,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
 
 #[test]
 fn world_plane_is_camera_independent_and_invalid_lists_do_not_replace_it() {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
-        .expect("glyph validation GPU");
-    let (device, _) = pollster::block_on(adapter.request_device(&Default::default()))
-        .expect("glyph validation device");
+    let (device, _) = crate::test_gpu::device().expect("glyph validation device");
     let valid = SpatialGlyph {
         centre: [1.0, 2.0, 3.0],
         size: 2.0,

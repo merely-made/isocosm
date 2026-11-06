@@ -64,7 +64,10 @@ fn eating_changes_mass_balance_collision_and_geometry() {
     let collision_before = body.aabb();
     let drawn_before = mesh_body(&body, &source).unwrap();
 
-    eat(&mut body, 40, [9, 0, 0], Yaw::Zero);
+    // Far enough out that the 27-voxel meal moves the 249-voxel body's
+    // centre of mass a whole voxel (12 * 27 / 249), which is what the
+    // integer centre can show.
+    eat(&mut body, 40, [12, 0, 0], Yaw::Zero);
     let drawn_after = mesh_body(&body, &source).unwrap();
 
     assert!(mass(&body) > mass_before, "the body got heavier");

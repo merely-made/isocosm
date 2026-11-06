@@ -39,9 +39,7 @@ impl Terrain for Flat {
 }
 
 fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
-    pollster::block_on(adapter.request_device(&Default::default())).ok()
+    crate::test_gpu::device()
 }
 
 /// One terrain-only frame under the board's own camera preset, with the grade

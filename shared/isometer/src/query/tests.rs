@@ -35,9 +35,7 @@ struct Host;
 impl SceneHost for Host {}
 
 fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
-    pollster::block_on(adapter.request_device(&Default::default())).ok()
+    crate::test_gpu::device()
 }
 
 fn document(tag: u8) -> BodyDocument {

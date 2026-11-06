@@ -6003,6 +6003,33 @@ summary = "Start a broad effect catalogue with explicit edition correspondences 
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
 
+[decisions."isometer-tests D1"]
+title = "the mass test (2026-11-06)"
+source = "design_docs/2026-11-06_isometer_tests_plan.md"
+area = "Stack and engine"
+summary = "The eating test lands its meal farther out; centre of mass keeps its integer rounding."
+draws_on = ["stack.5"]
+
+[decisions."isometer-tests D2"]
+title = "the tracer tests (2026-11-06)"
+source = "design_docs/2026-11-06_isometer_tests_plan.md"
+area = "Stack and engine"
+summary = "Diagnose the roster and unlit tracer tests against today's tracer, not by bisect."
+draws_on = ["stack.3"]
+
+[decisions."isometer-tests D3"]
+title = "the stall (2026-11-06)"
+source = "design_docs/2026-11-06_isometer_tests_plan.md"
+area = "Stack and engine"
+summary = "GPU tests share one device per test binary; a debugger is allowed if the stall persists."
+draws_on = ["stack.3"]
+
+[decisions."isometer-tests D4"]
+title = "the home (2026-11-06)"
+source = "design_docs/2026-11-06_isometer_tests_plan.md"
+area = "Method and documents"
+summary = "Isometer's failing tests and stall get their own plan."
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

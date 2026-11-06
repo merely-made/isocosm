@@ -24,6 +24,8 @@ mod producer;
 mod query;
 mod scene;
 mod skin;
+#[cfg(test)]
+mod test_gpu;
 mod tokens;
 mod volumes;
 

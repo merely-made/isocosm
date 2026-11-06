@@ -41,6 +41,13 @@ fn a_roster_draws_every_body_in_the_slab_and_an_empty_one_changes_nothing() {
     let revision = BrickRevision(ground.revision());
     let frame = || BrickFrameInput::for_camera(&map, revision, camera, &grade);
     let body = |x: f32, tint: [f32; 3]| {
+        // Stand each body clear of the highest ground between it and the
+        // camera, so neither hides behind the relief.
+        let top = (4..13)
+            .map(|z| ground.surface(x as i32, z).unwrap_or(0))
+            .max()
+            .unwrap() as f32
+            + 1.0;
         CritterPose::from_capsules(
             vec![Capsule {
                 a: [x, top + 5.0, 4.5],
