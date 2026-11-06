@@ -1,6 +1,7 @@
 # Isometer's failing tests
 
-**Status:** 2026-11-06: in progress. D1 to D4 answered; IT1 and IT2 done; IT3's roster half fixed, its unlit half awaiting a ruling.
+**Status:** 2026-11-06: landed. D1 to D5 answered; IT1 to IT3 done. The
+isometer workspace passes whole and in parallel (381 tests, none failing).
 
 **For:** isometer's three failing tests and its parallel library-test stall,
 found while gating `2026-11-05_uniform_bricks_plan.md`. The failing three were
@@ -39,6 +40,13 @@ Answered by Mark on 2026-11-06, in answer order.
 
   Links: area Method and documents · summary Isometer's failing tests and stall get their own plan.
 
+- **D5, the unlit test's rock (2026-11-06):** "Its own cliff ground
+  (Recommended)". The first-rung receipt renders a terraced ground whose
+  risers expose rock away from the sun; the shared fixture stays as is.
+  Offered against keeping soil only and adding cliffs to the fixture.
+
+  Links: area Stack and engine · draws on stack.3 · summary The first-rung receipt gets its own terraced ground so rock faces exist; the shared fixture is unchanged.
+
 ## Phases
 
 ### IT1. The eating test lands its meal farther out (done 2026-11-06)
@@ -59,7 +67,7 @@ device and queue, replacing the seven per-test `request_adapter` and
   still skip when no adapter exists. If the stall survives, a debugger finds
   the hang (D3), named to Mark before it is downloaded.
 
-### IT3. The roster and unlit tracer tests, diagnosed
+### IT3. The roster and unlit tracer tests, diagnosed (done 2026-11-06)
 
 - Done when: for each, what the frame shows against what the test expects,
   with the mechanism in today's tracer (file:line), and either a fix that
@@ -107,9 +115,17 @@ device and queue, replacing the seven per-test `request_adapter` and
   3,500), whose +y normal is lit. The old ground's cliffs exposed rock. The
   test's own notes (`unlit.rs:380-399`) assume those faces exist.
 
+- 2026-11-06: the first-rung receipt over `Terraces` (`unlit.rs`, surface
+  `8 + 4 * ((x / 6 + z / 6) mod 3)`) finds 1,104 unfogged ambient-lit soil
+  faces on `[64, 0, 0]` and 1,132 rock faces on `[64, 64, 64]`; the other
+  two unlit receipts keep the shared ground. `cargo test --workspace
+  --no-fail-fast` at the default thread count: 381 passed, 0 failed.
+
 ## Progress
 
 - 2026-11-06: plan written; D1 to D4 answered.
 - 2026-11-06: IT1 done (the meal at x 12; `attachment` 4 of 4). IT2 done
   (`test_gpu`; 10 of 10 parallel runs). IT3: roster fixed test-locally;
   unlit's rock half is a question.
+- 2026-11-06: IT3 done: the first-rung receipt has its own terraced ground
+  (D5). The plan's work is complete.

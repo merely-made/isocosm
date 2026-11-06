@@ -67,9 +67,28 @@ struct Probe {
     tracer: BrickTracer,
 }
 
+/// Terraces stepping up four voxels toward `+x` and `+z`, then dropping
+/// back. Each riser faces away from the sun and runs two voxels into rock
+/// (soil is the top two), so ambient-lit rock faces exist; the shared
+/// fixture's gentle relief never exposes rock.
+struct Terraces;
+
+impl isometer_core::Terrain for Terraces {
+    fn sea_level(&self, _extent: i32) -> i32 {
+        0
+    }
+
+    fn surface(&self, _extent: i32, x: i32, z: i32) -> i32 {
+        8 + 4 * (x.div_euclid(6) + z.div_euclid(6)).rem_euclid(3)
+    }
+}
+
 impl Probe {
     fn new(reason: &str) -> Option<Self> {
-        let ground = ground();
+        Self::over(ground(), reason)
+    }
+
+    fn over(ground: isometer_core::ground::Ground, reason: &str) -> Option<Self> {
         let map = BrickMap::from_ground(&ground).expect("atlas capacity");
         let Some(tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
             eprintln!("no adapter; skipping {reason}");
@@ -390,12 +409,15 @@ fn no_ground_pixel_grades_to_black_under_either_forward() {
 /// rung together. A material reads as itself here only when its channels are
 /// further apart than one rung.
 ///
+/// The ground is [`Terraces`], whose risers expose rock away from the sun.
+///
 /// The two forwards are pooled rather than asserted one at a time: the whole
 /// point of the shipped oblique is that it leans away from these faces, so it
 /// contributes few of them and sometimes none of a given material.
 #[test]
 fn an_ambient_lit_soil_or_rock_face_sits_on_the_first_rung() {
-    let Some(mut probe) = Probe::new("the first-rung receipt") else {
+    let terraces = isometer_core::ground::Ground::grow(&Terraces, 64);
+    let Some(mut probe) = Probe::over(terraces, "the first-rung receipt") else {
         return;
     };
     let grade = steady();

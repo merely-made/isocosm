@@ -6030,6 +6030,13 @@ source = "design_docs/2026-11-06_isometer_tests_plan.md"
 area = "Method and documents"
 summary = "Isometer's failing tests and stall get their own plan."
 
+[decisions."isometer-tests D5"]
+title = "the unlit test's rock (2026-11-06)"
+source = "design_docs/2026-11-06_isometer_tests_plan.md"
+area = "Stack and engine"
+summary = "The first-rung receipt gets its own terraced ground so rock faces exist; the shared fixture is unchanged."
+draws_on = ["stack.3"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
