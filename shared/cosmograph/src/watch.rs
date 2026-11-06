@@ -11,6 +11,8 @@ use crate::{anatomy::books, meaning::mass, schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+pub mod diagnostic;
+
 /// One accepted scheduled act of a watched process.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Watched {
@@ -31,6 +33,7 @@ pub(crate) struct Watch {
     /// The acts kept when the advance under way began.
     kept: usize,
     ecology: Option<crate::ecology::JointCapture>,
+    diagnostic: Option<diagnostic::Sink>,
 }
 
 impl Simulation {
@@ -79,11 +82,13 @@ impl Simulation {
 
     /// Marks where an advance begins, to put its acts back if it is refused.
     pub(crate) fn watch_from(&mut self) {
+        self.diagnostic_checkpoint();
         self.watch.kept = self.watch.acts.len();
         if let Some(capture) = &mut self.watch.ecology { capture.kept = capture.acts.len(); }
     }
 
     pub(crate) fn unwatch(&mut self) {
+        self.diagnostic_rollback();
         self.watch.acts.truncate(self.watch.kept);
         if let Some(capture) = &mut self.watch.ecology { capture.acts.truncate(capture.kept); }
     }

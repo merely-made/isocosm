@@ -32,9 +32,22 @@ impl Simulation {
             .0
     }
 
-    pub(crate) fn scheduled_apply(&mut self,actor:Id,target:Option<Id>,process:&str,count:u64) -> Receipt {
-        let act=self.state.next_action;
-        self.run((actor,target),process,None,(count,act),Run::Scheduled(None)).0
+    pub(crate) fn scheduled_apply(
+        &mut self,
+        actor: Id,
+        target: Option<Id>,
+        process: &str,
+        count: u64,
+    ) -> Receipt {
+        let act = self.state.next_action;
+        self.run(
+            (actor, target),
+            process,
+            None,
+            (count, act),
+            Run::Scheduled(None),
+        )
+        .0
     }
 
     /// A planned act, with the target, number and shares its pass gave it.
@@ -66,23 +79,36 @@ impl Simulation {
         sequence: (u64, u64),
         run: Run,
     ) -> (Receipt, Option<Demands>) {
-        let definition=self.genesis.rules.processes.get(process).cloned();
-        let producer=definition.as_ref().is_some_and(|p|p.requires.iter().any(|q|matches!(q,Query::Institution {..})))
-            && self.pass.is_some();
-        let mut cause=cause;
-        let prior=if producer {
-            let p=definition.as_ref().expect("producer definition is present");
-            if let Ok(declared)=self.institution_process_cause(at.0,at.1,p) {cause=declared;}
-            let scope=self.institution_process_scope(at.0,at.1,p).ok().flatten();
-            Some((std::mem::replace(&mut self.institution_decision,scope),self.institution_decision_stamp.take()))
-        } else {None};
+        let definition = self.genesis.rules.processes.get(process).cloned();
+        let producer = definition.as_ref().is_some_and(|p| {
+            p.requires
+                .iter()
+                .any(|q| matches!(q, Query::Institution { .. }))
+        }) && self.pass.is_some();
+        let mut cause = cause;
+        let prior = if producer {
+            let p = definition.as_ref().expect("producer definition is present");
+            if let Ok(declared) = self.institution_process_cause(at.0, at.1, p) {
+                cause = declared;
+            }
+            let scope = self.institution_process_scope(at.0, at.1, p).ok().flatten();
+            Some((
+                std::mem::replace(&mut self.institution_decision, scope),
+                self.institution_decision_stamp.take(),
+            ))
+        } else {
+            None
+        };
+        let phase = match &run { Run::Plan => "plan", Run::Scheduled(_) => "scheduled", Run::Act => "direct" };
+        let observed = self.diagnostic_begin(at.0, at.1, definition.as_ref(), sequence.0, phase);
         // Capture lives for this disposable stage and is cleared on every exit.
-        let _ = self.begin_process_debits(at.0,at.1,process,sequence.1);
-        let result = self.run_inner(at,process,cause,sequence,run);
+        let _ = self.begin_process_debits(at.0, at.1, process, sequence.1);
+        let result = self.run_inner(at, process, cause, sequence, run);
+        self.diagnostic_finish(observed, &result.0);
         self.finish_process_debits(&result.0);
-        if let Some((decision,stamp))=prior {
-            self.institution_decision=decision;
-            self.institution_decision_stamp=stamp;
+        if let Some((decision, stamp)) = prior {
+            self.institution_decision = decision;
+            self.institution_decision_stamp = stamp;
         }
         result
     }
@@ -151,14 +177,20 @@ impl Simulation {
         let place = entity.place;
         let event_place = entity.event_place();
         if !self.route_ready(actor, definition) {
-            return refused(receipt, Outcome::Blocked("route actor is not resident or route is absent".into()));
+            return refused(
+                receipt,
+                Outcome::Blocked("route actor is not resident or route is absent".into()),
+            );
         }
         if definition.target.is_some() && !self.target_matches(actor, target, definition) {
             let why = "no target satisfies the declared scope".into();
             return refused(receipt, Outcome::Blocked(why));
         }
         if !self.foraging_walk_matches(actor, target, definition) {
-            return refused(receipt, Outcome::Blocked("walking has no eligible food serving a current need".into()));
+            return refused(
+                receipt,
+                Outcome::Blocked("walking has no eligible food serving a current need".into()),
+            );
         }
         if cause
             .as_ref()
@@ -174,8 +206,11 @@ impl Simulation {
             Err(why) => return refused(receipt, Outcome::Blocked(why)),
         };
         if let Some(part) = intake {
-            receipt.facts_read.push(format!("declared intake organ: {part:?}"));
+            receipt
+                .facts_read
+                .push(format!("declared intake organ: {part:?}"));
         }
+        self.diagnostic_stage("requirements");
         for query in &definition.requires {
             match self.process_query(actor, target, place, part, definition, query) {
                 Ok(fact) => receipt.facts_read.push(fact),
@@ -192,9 +227,10 @@ impl Simulation {
                 .filter(|p| p.id != process && p.causation == Causation::Choice)
                 .filter(|p| {
                     let part = self.bind_part(actor, p);
-                    self.route_ready(actor, p) && self.target_matches(actor, target, p)
+                    self.route_ready(actor, p)
+                        && self.target_matches(actor, target, p)
                         && self.foraging_walk_matches(actor, target, p)
-                        && self.owned_process_ready(actor,target,p)
+                        && self.owned_process_ready(actor, target, p)
                         && p.requires
                             .iter()
                             .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
@@ -202,24 +238,37 @@ impl Simulation {
                 .map(|p| p.id.clone())
                 .collect();
         }
+        self.diagnostic_stage("risk");
         let risky = definition.risk.as_ref().is_some_and(|r| match &r.aging {
             // A rising hazard draws per tick at the actor's age (1077).
             Some(aging) => {
-                let age = self.state.population.get(actor)
+                let age = self
+                    .state
+                    .population
+                    .get(actor)
                     .map_or(0, |e| self.state.tick.saturating_sub(e.born));
-                aging.per_tick(age).is_some_and(|chance|
-                    crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000_000_000 < chance)
+                aging.per_tick(age).is_some_and(|chance| {
+                    crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000_000_000
+                        < chance
+                })
             },
-            None => crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
-                < u64::from(r.per_million),
+            None => {
+                crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
+                    < u64::from(r.per_million)
+            },
         });
         // A risk that does not fall, on a process that otherwise does
         // nothing, is no act: nothing is staged, numbered or written (E7b).
-        if !risky && definition.risk.is_some() && definition.effects.is_empty() && definition.commitments.is_empty() {
+        if !risky
+            && definition.risk.is_some()
+            && definition.effects.is_empty()
+            && definition.commitments.is_empty()
+        {
             return refused(receipt, Outcome::Blocked("the risk did not fall".into()));
         }
         // Writes go to a stage of what the act binds, never to the world,
         // until every check below has passed.
+        self.diagnostic_stage("staging");
         let mut stage = match self.stage((actor, target), place, part, count, act) {
             Ok(stage) => stage,
             Err(why) => return refused(receipt, Outcome::Blocked(why)),
@@ -246,7 +295,17 @@ impl Simulation {
             sim: self,
             stage: &mut stage,
         };
-        for effect in &effects {
+        for (index, effect) in effects.iter().enumerate() {
+            if staged.sim.diagnostic_active() { staged.sim.diagnostic_stage(&format!("effect:{:?}", effect.kind())); }
+            if planning || staged.stage.shares.is_some() {
+                let commitments = definition.commitments.len();
+                staged.stage.effect_at.clear();
+                staged.stage.effect_at.extend(if index < commitments {
+                    [0, index]
+                } else {
+                    [1 + usize::from(risky), index - commitments]
+                });
+            }
             match staged.effect(effect, &id) {
                 Ok(feat) => legend |= feat,
                 Err(why) => {
@@ -259,8 +318,11 @@ impl Simulation {
                 },
             }
         }
-        if stage.direction.is_none() && let Err(why) = self.complete_process_debits() {
-            return refused(receipt,Outcome::Blocked(why));
+        self.diagnostic_stage("commit_checks");
+        if stage.direction.is_none()
+            && let Err(why) = self.complete_process_debits()
+        {
+            return refused(receipt, Outcome::Blocked(why));
         }
         // A geometry answer was consumed even if a later conservation,
         // shared-ground or event check refuses the whole staged act.
@@ -269,6 +331,12 @@ impl Simulation {
         self.capture_step(&step);
         let terrain = stage.terrain.clone();
         self.capture_geometry(&terrain);
+        if stage.shares.as_ref().is_some_and(|s| !s.meals.is_empty()) {
+            return refused(
+                receipt,
+                Outcome::Blocked("scheduled meal path left an unused quota".into()),
+            );
+        }
         // Only what the act bound can have changed, so weighing it alone
         // decides whether the world's matter would change.
         if self.moves_matter(&stage) {
@@ -308,14 +376,14 @@ impl Simulation {
                 return refused(receipt, Outcome::Refused(why));
             }
         }
-        if let Err(why) = self.stage_goal_directives(&mut stage,definition,next) {
-            return refused(receipt,Outcome::Blocked(why));
+        if let Err(why) = self.stage_goal_directives(&mut stage, definition, next) {
+            return refused(receipt, Outcome::Blocked(why));
         }
         if let Err(why) = self.stage_graft_receipt(&mut stage) {
-            return refused(receipt,Outcome::Blocked(why));
+            return refused(receipt, Outcome::Blocked(why));
         }
-        if let Err(why) = self.finish_staged_institution(&mut stage,risky) {
-            return refused(receipt,Outcome::Blocked(why));
+        if let Err(why) = self.finish_staged_institution(&mut stage, risky) {
+            return refused(receipt, Outcome::Blocked(why));
         }
         receipt.effects = effects.into_iter().cloned().collect();
         if risky {
@@ -326,8 +394,13 @@ impl Simulation {
             if stage.direction.is_some() {
                 let mut preview = self.clone();
                 let result = preview.commit_resolved(stage, next, process);
-                self.state.projects.debit_capture.set(preview.state.projects.debit_capture.take());
-                if let Err(why) = result { return refused(receipt, Outcome::Blocked(why)); }
+                self.state
+                    .projects
+                    .debit_capture
+                    .set(preview.state.projects.debit_capture.take());
+                if let Err(why) = result {
+                    return refused(receipt, Outcome::Blocked(why));
+                }
             }
             return (receipt, demands);
         }

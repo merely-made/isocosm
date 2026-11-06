@@ -579,6 +579,13 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:236-244`, `:394-396`, `:408-428`; `archive_docs/2026-10-28/2026-09-22_sim_plan.md:1658-1659`, `:1712-1717`.
 
 ### E9. Stores per component
+**Boundary, 2026-11-04:** the [scene composition experiment](2026-11-04_scene_composition_plan.md)
+adds native-identity `ReadStore`, `SparseStore` and ordered joins in
+Cosmograph, used by an optional derived scene projection. It does not move
+authoritative `Entity` fields, bands, admission or saves into component
+stores. E9 remains open; the measured capture/materialization adapter is
+not the hot-record or packed-store comparison described here.
+
 D42's layout, built with the bands (E4), which already want columns. A
 store trait (get, set, remove, members in identity order) and four stores:
 interval, paged column, ordered map, single. Splitting a cohort splits its

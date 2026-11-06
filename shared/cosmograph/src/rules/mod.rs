@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod amount;
+mod query;
+pub use query::Query;
 mod body;
 mod competition;
 mod directing;
@@ -24,13 +26,14 @@ mod telling;
 
 pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
-pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
+pub use body::{BodyRules, Function, RootStore, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance, MovementTies, PolicyVariation};
 pub use telling::{DEFAULT_HOPS, PLACE_NOTE, Telling};
 pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect, EffectKind};
-pub use feeding::{FeedingSources, PortFeeding};
+pub use feeding::{FeedingSources, FoodOffering, MealPartition, PortFeeding};
+pub(crate) use feeding::{gcd, retained_tissue};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{
     DeepTimeSpan, EpochRule, MINUTE_MICROSECONDS, YEAR_MICROSECONDS, deep_time_ceiling, minutes_ticks,
@@ -77,114 +80,6 @@ pub enum Binding {
     /// The actor's part the process's `Expresses` requirement binds
     /// (ruling 338). A part has traits and life but keeps no ledger.
     Part,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Query {
-    Alive(Binding),
-    Trait {
-        who: Binding,
-        key: Key,
-    },
-    Account {
-        who: Binding,
-        key: Key,
-        at_least: u64,
-    },
-    Below {
-        who: Binding,
-        key: Key,
-        amount: u64,
-    },
-    Age {
-        at_least: Tick,
-    },
-    Condition {
-        key: Key,
-        at_least: i64,
-    },
-    Part {
-        who: Binding,
-        revision: u64,
-        part: Id,
-    },
-    Related {
-        kind: Key,
-    },
-    /// The actor's mood, read from the world's needs (ruling 227), is at
-    /// least `at_least`.
-    Mood {
-        at_least: i64,
-    },
-    /// The actor's mood is below `amount`.
-    MoodBelow {
-        amount: i64,
-    },
-    /// A body holds at least `at_least` matter, over every matter account it
-    /// keeps (ruling 287).
-    Holds {
-        who: Binding,
-        at_least: u64,
-    },
-    /// A body's wound share, out of a hundred, is at least `at_least`
-    /// (`harm::wound_share`; the 2026-10-18 note to ruling 227).
-    Wounded {
-        who: Binding,
-        at_least: u64,
-    },
-    /// At least `at_least` live members of the lineages `among`, the actor
-    /// among them, reside at the actor's site as the pass began (S10). A
-    /// traveller resides nowhere and counts none.
-    Members {
-        among: BTreeSet<Key>,
-        at_least: u64,
-    },
-    /// Fewer than `amount` such members reside there.
-    MembersBelow {
-        among: BTreeSet<Key>,
-        amount: u64,
-    },
-    /// At least `at_least` live members of `among` reside at the actor's
-    /// site for each of `per` there (1145): a count read per head, such as
-    /// prey per member of a lineage.
-    MembersPer {
-        among: BTreeSet<Key>,
-        per: BTreeSet<Key>,
-        at_least: u64,
-    },
-    /// The actor has a live part expressing `function` (ruling 338). A
-    /// process requires at most one, and binds the lowest-numbered such part
-    /// as `Binding::Part`; its receipt reads that part's address.
-    Expresses {
-        function: Key,
-    },
-    /// An expression over what the act reads comes to something (X3): a
-    /// mouthful of at least a milligram. It neither draws nor reads a kept
-    /// value, being read before the act does either.
-    Computed(Expr),
-    /// A body's systems route `function` in `role` (rulings 569 and 575):
-    /// one it carries names it there, a living part expresses it, and the
-    /// systems naming it are realized as one.
-    Routes {
-        who: Binding,
-        function: Key,
-        role: Role,
-    },
-    /// Native reservation or incomplete selected work must be eligible
-    /// before a material process can claim the actor's choice (837/838).
-    Project {
-        definition: Key,
-        phase: crate::projects::Phase,
-        process: Key,
-    },
-    /// A real polity decision is evaluated only inside native consent admission.
-    ProjectDecision,
-    InstitutionDecision,
-    Institution { producer: Key },
-    /// The actor's sense reads at least `at_least` of `reading` (1071,
-    /// Bodies 15), one of `senses::READINGS`, as the pass began. A world
-    /// that does not sense reads nothing, so the requirement fails.
-    Sensed { reading: Key, at_least: u64 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -425,6 +320,10 @@ pub struct Rules {
     /// before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub senses: Option<crate::senses::Senses>,
+    /// Rooted tissue's allocation and local ground (1114); absent in older
+    /// worlds, whose native allocation and bite draw retain their meaning.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub root_stores: BTreeMap<Key, RootStore>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

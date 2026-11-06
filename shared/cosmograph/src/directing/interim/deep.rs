@@ -8,6 +8,9 @@
 use crate::{Result, Session, rules::DeepTimeSpan, schema::Tick};
 pub use hagiograph::Handover;
 
+mod adaptation;
+pub use adaptation::{run_deep_time_adapting, run_deep_time_adapting_using};
+
 /// A session as hagiograph advances it: one call runs to the next epoch
 /// boundary, in steps the operation budget allows.
 struct Unheld<'a> {

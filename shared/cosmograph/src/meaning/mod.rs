@@ -240,10 +240,18 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
     Ok(match q {
         Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision | Query::Institution {..} =>
             return Err("project query requires its native simulation".into()),
-        Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } =>
+        Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } | Query::MembersPerHead { .. } | Query::FoodPerHead { .. } =>
             return Err("a count of members requires its native simulation".into()),
         Query::Sensed { .. } =>
             return Err("a sense reading requires its native simulation".into()),
+        Query::EmptyBody => {
+            let body = s.body(Binding::Actor)?;
+            let empty = |ledger: &Ledger| ledger.iter().all(|(key, n)| *n == 0 || !matter(s.rules, key));
+            let bodied = body.living().any(|(id, _)| body.bodied(id));
+            let empty = if bodied { body.parts.values().all(|p| empty(&p.matter)) }
+                else { empty(&body.accounts) };
+            (empty, empty.to_string())
+        },
         Query::Alive(Binding::Part) => {
             let v = s.part_lives()?;
             (v, v.to_string())

@@ -21,6 +21,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 mod feeding;
 mod proportions;
+mod rooted;
 
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
@@ -65,13 +66,12 @@ pub struct Bodies {
     /// Saved inclusive geometry bounds. Omission keeps historical chain sizes.
     #[serde(default, skip_serializing_if = "unset")]
     pub limb_scale: [u8; 2],
-    /// Whether a drawn consumer's mouth always admits the ecology's
-    /// producers: its limbs stay, its head bears the grazing mouth (ruling
-    /// 905, the default). Without it, a limbed consumer draws a jaw, which
-    /// admits only fauna (832), and in a one-fauna ecology that is its own
-    /// lineage. A saved founding that does not name it was founded without,
-    /// so it reads as `false`, is not rewritten with it, and keeps its
-    /// recorded meaning and digest.
+    /// Whether a drawn consumer keeps the historical producer-admitting
+    /// grazing mouth (ruling 905, the default) rather than a limbed jaw
+    /// admitting fauna (832). New bodied WorldTime Diets founding instead
+    /// seeds the mouth's admission from its initial diet; the actual port
+    /// remains authoritative thereafter. A saved founding that omits this
+    /// field keeps `false`, its recorded meaning and its digest.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub grazing: bool,
     /// The agentless hazard of ruling 704, drawn per world (the 2026-10-18
@@ -333,9 +333,22 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     embody_within(g, b, None)
 }
 
-/// A world-time founding bodies its plants alone (1114), each drawn within
-/// `plants` (1115) with a root that stores (`world_time::plants`).
-pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::ecology::world_time::Plants>) -> Result<()> {
+/// A world-time founding may supply the bounds for its producer-only bodies.
+pub(crate) fn embody_within(
+    g: &mut Genesis,
+    b: &Bodies,
+    plants: Option<crate::ecology::world_time::Plants>,
+) -> Result<()> {
+    let root_stores = !g.rules.root_stores.is_empty();
+    let aligned_food = root_stores && g.founding.as_ref().is_some_and(|f| f.web == crate::ecology::Web::Diets);
+    let bounded;
+    let b = if root_stores { bounded = rooted::bounds(b); &bounded } else { b };
+    // The accepted rooted founding turns sensing on. Recheck the effective
+    // bounds so an older, nonsensing input with unset smell fails cleanly.
+    b.check()?;
+    if root_stores && let Some(founding) = &mut g.founding {
+        founding.bodies = Some(b.clone());
+    }
     let (mut kinds, authored) = if let Some(name) = &b.founding {
         let sheets = crate::datasheet::sheets();
         let palette = &sheets.founding(name)?.palette;
@@ -377,7 +390,7 @@ pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::e
             let [s0, s1] = b.smell;
             senses.smell.insert(key.clone(), s0 + crate::draw(g.seed, "smell", &[index]) % (s1 - s0 + 1));
         }
-        let (traits, clutch, anamorphic) = life(g.seed, index, b);
+        let (traits, mut clutch, mut anamorphic) = life(g.seed, index, b);
         let varied = b.proportions.then(||
             proportions::drawn(g.seed, index, producer, &traits, &authored)).flatten();
         let mut recipe = match varied {
@@ -400,6 +413,11 @@ pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::e
             },
             },
         };
+        if root_stores && producer {
+            recipe = rooted::recipe(g.seed, index, &mut kinds)?;
+            anamorphic = false;
+            clutch = 1;
+        }
         reproducing(&mut kinds, &mut recipe)?;
         if let Some(p) = &plants {
             p.storing(&mut kinds, &mut recipe)?;
@@ -408,11 +426,23 @@ pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::e
             proportions::limbs(g.seed, index, b.limb_scale, &mut kinds, &mut recipe)?;
         }
         if !producer {
-            let intake = feeding::declare(&mut kinds, &mut recipe, key)?;
+            let seed = if aligned_food {
+                let i = key.trim_start_matches("lineage:").parse::<u32>().map_err(|_| "drawn food lineage has no index")?;
+                Some(feeding::seed(crate::ecology::Role::of(crate::ecology::Web::Diets, i)))
+            } else { None };
+            let intake = feeding::declare(&mut kinds, &mut recipe, key, seed)?;
             let feed = format!("ecology:feed-{}", key.trim_start_matches("lineage:"));
             if let Some(mut p) = g.rules.processes.get(&feed).cloned() {
-                feeding::configure(&mut p, intake, &g.rules, &source_lineages)?;
+                feeding::configure(&mut p, intake, &g.rules, &source_lineages, aligned_food)?;
                 g.rules.processes.insert(feed, p);
+                if aligned_food && let Some(birth) = g.rules.processes.get_mut(&format!("ecology:birth-{}", key.trim_start_matches("lineage:"))) {
+                    for q in &mut birth.requires {
+                        if let Query::MembersPerHead { at_least, per_members, .. } = q {
+                            *q = Query::FoodPerHead { feed: format!("ecology:feed-{}", key.trim_start_matches("lineage:")),
+                                at_least: *at_least, per_members: *per_members };
+                        }
+                    }
+                }
             }
         }
         lineage.traits.extend(traits.iter().cloned());
@@ -484,7 +514,11 @@ pub(crate) fn embody_within(g: &mut Genesis, b: &Bodies, plants: Option<crate::e
             let held = e.accounts.remove(&k).unwrap_or(0);
             let give = held.min(anatomy::room(e, &rules, &k));
             if give > 0 {
-                anatomy::give(e, &rules, &k, give).ok_or("no parts to hold matter")??;
+                if anatomy::root_store::allocation(e, &rules, &k).is_some() {
+                    anatomy::root_store::initialize(e, &rules, &k, give).ok_or("no rooted allocation")??;
+                } else {
+                    anatomy::give(e, &rules, &k, give).ok_or("no parts to hold matter")??;
+                }
             }
         }
     }

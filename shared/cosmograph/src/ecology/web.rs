@@ -55,7 +55,8 @@ pub(crate) enum Role {
     Grazer,
     /// Eats the dead of every other lineage.
     Decomposer,
-    /// Eats living grazers and omnivores.
+    /// Legacy selectors eat living grazers and omnivores. Ported world-time
+    /// founding admits Consumer tissue, including other predators.
     Predator,
     /// Eats living producers and grazers.
     Omnivore,
@@ -96,7 +97,8 @@ impl Role {
         }
     }
 
-    /// Whether it feeds on a lineage of role `other`.
+    /// The legacy founding selector. An actual ported meal and its food
+    /// counts use admitted provenance, not this role lookup.
     pub(crate) fn eats(self, other: Role) -> bool {
         use Role::*;
         match self {

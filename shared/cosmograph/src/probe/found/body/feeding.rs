@@ -229,6 +229,7 @@ pub(super) fn graze(i: u32, prey: u32, r: Rates) -> Process {
     .concat();
     let mut p = due(&format!("body:graze-{i}"), Causation::Choice, effects, 2);
     p.port_feeding = Some(PortFeeding {
+        meal: None,
         function: INTAKE.into(),
         sources: FeedingSources::Only(BTreeSet::from([format!("lineage:{prey}")])),
     });

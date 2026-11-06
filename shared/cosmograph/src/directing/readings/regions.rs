@@ -36,10 +36,21 @@ pub fn site_biomass(sim: &Simulation) -> BTreeMap<Id, BTreeMap<Key, u128>> {
         .collect();
     for g in sim.state().population.groups.values() {
         let e = &g.entity;
-        let Some(site) = e.resident_site().and_then(|site| by.get_mut(&site)).filter(|_| e.alive) else {
+        let Some(site) = e
+            .resident_site()
+            .and_then(|site| by.get_mut(&site))
+            .filter(|_| e.alive)
+        else {
             continue;
         };
-        let mass = crate::meaning::mass(&crate::anatomy::books(e), rules) * u128::from(g.count);
+        let pool: i128 = g
+            .pool
+            .iter()
+            .filter(|(key, _)| crate::meaning::matter(rules, key))
+            .map(|(_, amount)| *amount)
+            .sum();
+        let mass = (crate::meaning::mass(&crate::anatomy::books(e), rules) * u128::from(g.count))
+            .saturating_add_signed(pool);
         for (level, held) in site.iter_mut() {
             if e.traits.contains(level) {
                 *held += mass;
@@ -59,7 +70,10 @@ pub fn held(sim: &Simulation) -> BTreeMap<Id, BTreeSet<Key>> {
         let e = &g.entity;
         let levels = slots.keys().filter(|l| e.traits.contains(*l));
         for level in levels {
-            let places = e.resident_site().into_iter().chain(e.visits.iter().map(|v| v.place));
+            let places = e
+                .resident_site()
+                .into_iter()
+                .chain(e.visits.iter().map(|v| v.place));
             for place in places {
                 by.entry(place).or_default().insert(level.clone());
             }
@@ -124,4 +138,52 @@ pub(crate) fn grow(sim: &Simulation, biomass: &BTreeMap<Id, BTreeMap<Key, u128>>
 /// The region holding `site`.
 pub fn region_of(regions: &[Region], site: Id) -> Option<&Region> {
     regions.iter().find(|r| r.sites.contains(&site))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Execution, Founding, Session, directing::Played};
+
+    #[test]
+    fn site_biomass_includes_signed_matter_in_a_band_pool() {
+        for gap in [-3i128, 5] {
+            let g = Founding {
+                seed: 3,
+                sites: 2,
+                population: 30,
+                cohort_size: 2,
+                lineages: 3,
+                ecology: true,
+                played: Some(Played {
+                    lineage: 1,
+                    region_sites: 2,
+                }),
+                ..Default::default()
+            }
+            .generate()
+            .unwrap();
+            let mut s = Session::new(g, Execution::Individuals).unwrap();
+            let (&first, group) = s
+                .sim
+                .state
+                .population
+                .groups
+                .iter()
+                .find(|(_, group)| {
+                    group.entity.alive && group.entity.traits.contains("life:producer")
+                })
+                .unwrap();
+            let site = group.entity.place;
+            let before = site_biomass(&s.sim)[&site]["life:producer"];
+            let pool = &mut s.sim.state.population.groups.get_mut(&first).unwrap().pool;
+            pool.insert("matter:0-0".into(), gap);
+            // A non-matter account cannot alter the trophic reading.
+            pool.insert("sim:strain".into(), 700);
+            assert_eq!(
+                site_biomass(&s.sim)[&site]["life:producer"],
+                before.saturating_add_signed(gap)
+            );
+        }
+    }
 }

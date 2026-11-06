@@ -237,16 +237,6 @@ impl Staged<'_> {
                 }
                 Ok(e)
             },
-            Effect::Eat {
-                from, amount, of, ..
-            } if shared(from) => {
-                let (holder, asked) = (holder(from)?, self.asked(amount)?);
-                if let Some(d) = &mut self.stage.demands {
-                    d.meal = Some((holder, asked, of.clone()));
-                    d.meal_part = None;
-                }
-                Ok(e)
-            },
             _ => Ok(e),
         }
     }
@@ -268,11 +258,16 @@ impl Staged<'_> {
             self.stage.kept.insert(name.clone(), value);
             return Ok(false);
         }
-        if matches!(e, Effect::When { .. }) {
-            let branch = self.compute(|read, draw, parts| e.branch(read, draw, parts))?;
+        if let Effect::When { guard, then, otherwise } = e {
+            let yes = self.compute(|read, draw, parts| guard.eval_in(read, draw, parts))? != 0;
+            let branch = if yes { then } else { otherwise };
+            let base = self.stage.effect_at.len();
             let mut feat = false;
-            for inner in branch.expect("a guard chooses a branch") {
-                feat |= self.effect(inner, cause)?;
+            for (index, inner) in branch.iter().enumerate() {
+                self.stage.effect_at.extend([usize::from(!yes), index]);
+                let applied = self.effect(inner, cause);
+                self.stage.effect_at.truncate(base);
+                feat |= applied?;
             }
             return Ok(feat);
         }

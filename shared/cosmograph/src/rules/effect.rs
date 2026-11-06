@@ -233,17 +233,36 @@ pub enum Effect {
         lots: Vec<Key>,
     },
     WorkProject,
-    Step { profile: Key },
+    Step {
+        profile: Key,
+    },
     ProjectDecision,
     /// A named authored pace pays its exact stocks before native departure.
-    MovePaced { destination: Id, profile: Key,
+    MovePaced {
+        destination: Id,
+        profile: Key,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        via: Option<u8> },
+        via: Option<u8>,
+    },
     InstitutionDecision,
-    Graft { reserve: Key, soil: Key },
-    Institution { producer: Key },
+    Graft {
+        reserve: Key,
+        soil: Key,
+    },
+    Institution {
+        producer: Key,
+    },
     /// A territory's native choice; destination IDs are authored, never body movement.
-    DirectOverflow { from: Id, destinations: std::collections::BTreeSet<Id> },
+    DirectOverflow {
+        from: Id,
+        destinations: std::collections::BTreeSet<Id>,
+    },
+    /// Conservatively move stored tissue into depleted exposed shares of
+    /// a rooted body (1114), up to the amount the store and deficit afford.
+    Regrow {
+        account: Key,
+        amount: Amount,
+    },
 }
 
 impl Effect {
@@ -258,8 +277,10 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => vec![amount],
-            Self::Allocate { cells, .. } | Self::Wound { cells, .. }
-                | Self::Terrain { cells, .. } => vec![cells],
+            Self::Regrow { amount, .. } => vec![amount],
+            Self::Allocate { cells, .. }
+            | Self::Wound { cells, .. }
+            | Self::Terrain { cells, .. } => vec![cells],
             Self::Carry { ask, .. } => vec![ask],
             Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
             _ => vec![],
@@ -333,10 +354,10 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
-            Self::Allocate { cells, .. } | Self::Wound { cells, .. }
-                | Self::Terrain { cells, .. } => {
-                *cells = cells.resolve(read, draw, parts)?
-            },
+            Self::Regrow { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
+            Self::Allocate { cells, .. }
+            | Self::Wound { cells, .. }
+            | Self::Terrain { cells, .. } => *cells = cells.resolve(read, draw, parts)?,
             Self::Carry { ask, .. } => *ask = ask.resolve(read, draw, parts)?,
             Self::When { .. } => return Err("a guarded effect is applied by its branch".into()),
             _ => {},

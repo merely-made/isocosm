@@ -4,7 +4,8 @@
 agreed with all seven of its ideas, the seventh most of all (§1); three
 of its open questions were answered as cases 1146 to 1148 (§7). It is not a
 plan: it changes no code, and the work it implies belongs to the plans named
-in §6. Mark's words are quoted with their date.
+in §6. The implementation reading below was refreshed on 2026-11-04; the
+sim plan owns progress and qualification. Mark's words are quoted with their date.
 
 **For:** how Cosmograph's ecology could stop being assigned (roles founded by
 fiat, rates tuned per role until a web holds) and instead fall out of bodies,
@@ -24,6 +25,18 @@ phase (cases 1083, 1094; overlay plan EB7). Code paths are under
   time?"
 - 2026-11-02, on this brief's seven ideas: "agreed... i absolutely agree with
   1-7, 7 most of all"
+- 2026-11-04, on catalogue and role variety: "our latest progress aside,
+  that's our bread and butter. we should start considering how to expand the
+  generated catalog of a given world, trait, line, and change proportion of
+  founding ecological roles. it would be cool if people could define an
+  ecological role by combining known traits into a formula/query and add
+  that to the mix too (like found that line?), but finer grained roles might
+  be of interest generally."
+- 2026-11-04, on scope and initial conditions: "heh, you said it first.
+  reframed ecological failures as perhaps a failure of current scope; such
+  failures on a regional level might be no big deal, even. still good to be
+  able to find a relatively safe band of initial conditions for critters to
+  live in."
 
 ## 2. Where the web stands
 
@@ -34,16 +47,19 @@ phase (cases 1083, 1094; overlay plan EB7). Code paths are under
   kept the boom, because intake was sized to a fixed breeding pace.
 - **Case 1078** ruled the structural fixes: feed while hungry, meals mostly
   to soil (`world:detritus`, 1091), producers many bites large, breeding by
-  surplus, a biomass pyramid. Grazing works on bodied producers (1105), a
-  part is exposed by its cells' position (1110), and a plant keeps a root
-  store no bite reaches (1114).
-- **The year bar passes** on a laid map on all five seeds (1109, 1116), but
+  surplus, a biomass pyramid. Cases 1105, 1110 and 1114 call for grazing
+  exposed body parts and a root store no bite reaches. The 2026-11-03 source
+  control found the store incomplete (zero stored, 60 exposed); sim S10.1
+  now release-verifies that native contract and records the completed two-year trajectories.
+- **The earlier year bar passed** on a laid map on all five reported seeds
+  (1109, 1116), but
   producers peak in months eight to nine and fall about 40 per cent by month
-  twelve while grazers rise sixfold; a two-year run comes before people.
+  twelve while grazers rise sixfold. The subsequent two-year run collapsed
+  in months 17 to 19 (1145). The new bodied measurements complete all five fixed seeds for two years under both preserved and corrected native meal evaluators. The baseline passes none; the correction passes seed 11 and fails 5/9/17/31. No configured regional level is lost, but founder losses persist; sim S10.1 owns the results and the gate remains open.
   Bodies breed on their own clocks (1104); crowding sends animals on and
   scarcity slows breeding (1111); air and water are read from terrain (1103).
 - **The rates are still a table**, per role and per stage, in world time
-  (`ecology/rates.rs`, 1077), tuned until the bar holds.
+  (`ecology/world_time.rs`, 1077), tuned until the bar holds.
 - **Selection is ruled but coarse in name only.** Every lineage adapts at
   the boundary by growing a copy (Ecology 1, 684); the player picks among what
   prospered and a coarse copy over years tests each (1094). Today's coarse
@@ -53,7 +69,9 @@ phase (cases 1083, 1094; overlay plan EB7). Code paths are under
 - **Deep time** is the same sim run epoch by epoch with no hand
   (`directing/interim/deep.rs`, Record 7), and a player starts at
   habitability (Mesocosm 3). Variation is drawn and selection decides; rates
-  are never tuned to earlier medians (Bodies 11).
+  are never tuned to earlier medians (Bodies 11). The explicit opt-in
+  adaptive runner is locally verified under sim S5.1; advance-only callers
+  retain their existing behavior. It does not yet evolve ecological rate constants.
 
 ## 3. Seven ideas
 
@@ -87,7 +105,11 @@ a long herbivore gut costs upkeep.
 - **What exists:** tissue lives in parts with functions (Bodies 3, 5);
   systems such as `system:digestive` are realized by functions (Bodies 10);
   defensive tissue sets a bite threshold (Bodies 14); diet is read from what
-  a lineage eats (case 1055).
+  a lineage eats (case 1055). The 2026-11-04 native alignment under sim
+  S10.3 adds actual-part food admission and uniform conserved extraction:
+  each complete three units yields one tissue and two waste, with smaller
+  undigested residue carried on the real intake part. Differentiated food
+  quality and timed digestion remain proposed.
 - **What it would take:** a tissue's yield per function eaten, an extraction
   efficiency per digestive system, and toxins against detox functions.
 - **Why:** specialist against generalist becomes a trade-off, plant defence
@@ -111,6 +133,14 @@ metapopulations, 1969). S10 asked eight sites never to crash.
   asynchrony.
 - **Why:** a local collapse becomes an event in play (flee, recolonize), not
   a failed run.
+
+Implementation reading, 2026-11-04: functional variety is core generation work. Mark asks to expand each world's generated catalogue, known traits and lines, make founding role proportions configurable, and support finer ecological roles. The completed ten-lineage diagnostic draws two lineages per role and varies anatomy/senses; it does not generate independent tree, bush and grass growth strategies. New diversity should change resource access, exposed tissue and storage, regrowth, body/food size, mobility or dispersal. Predators may consume other predators when their native ports and actual offerings admit it; a role table must not impose a second diet. The implemented food contract remains [sim S10.3](2026-10-28_sim_plan.md#s103-one-admitted-food-contract-and-measured-recovery); [S10.4](2026-10-28_sim_plan.md#s104-ecological-roles-and-founding-conditions) owns the next composition and measurement work.
+
+A user-defined role may be a formula/query combining known traits and their native readings. Classification and construction are distinct: a query can describe a role that no realized line currently fills, without creating organisms or granting traits. The possible "found that line" action would need a compatible, realizable recipe, declared matter/costs and explicit native admission. Its syntax and constructive contract are still open. Role definitions may overlap, so founding proportions must state how their allocation avoids counting or funding the same founder twice. A world's catalogue of possibilities and its actual populations remain separate readings.
+
+Local losses and later arrivals are compatible with regional persistence when real source populations survive and dispersal reaches suitable habitat. The [metacommunity framework](https://www.des.ucdavis.edu/faculty/holyoak/MHPubs/Leibold_et_al_2004.pdf) distinguishes local dynamics, source/sink effects and regional exchange. The simulation must conserve the moving population and distinguish recovery from an injected replacement. S10.3 retains the old bar as a historical comparison and separately measures admitted feeding, regional populations and connected-versus-disconnected recovery. Three configured trophic labels alone cannot certify those functions.
+
+Mark's scope annotation also allows a region's failure to be turnover within a surviving wider ecology. Measure patch, fixed region and whole world separately: a returning line needs actual surviving donors and an available native route or dispersal path, not an assumed outside reservoir. Global loss, temporary regional absence and continuing function through different lines are different outcomes. A relatively safe band of initial conditions is conditional on the declared catalogue, founding proportions and stocks, resource access, landscape/connectivity, scope, horizon and tested seeds. State those bounds and predicates before measuring, retain failed and incomplete draws, and check further declared seeds before generalizing. The earlier five-seed two-year outcomes and the completed three-month result keep their original identities; changing scope does not relabel them.
 
 ### 3.4 Dormancy and seasons
 
@@ -217,6 +247,9 @@ dung lawns (3.6) are the first symbioses no one authors.
 - 3.1, 3.2, 3.4: the sim plan's S10 and TU, with the food-web lane (1077,
   1078); bodies in the bodies plan.
 - 3.3: the sim plan's S10 measures and Ecology 2's regions.
+- The 2026-11-04 catalogue/role and initial-condition annotations: the sim
+  plan's S10.4, first through existing-trait queries, explicit founding
+  allocation and native scope/source readings; new biology remains separate.
 - 3.5: the bodies plan (incorporation) and S10.
 - 3.6: the bodies plan and the presentation plan's terrain.
 - 3.7: the sim plan's S5 (deep time) and the overlay plan's EB7; the coarse

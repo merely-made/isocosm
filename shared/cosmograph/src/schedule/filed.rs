@@ -28,6 +28,8 @@ pub(crate) struct Gates {
     /// Matter held over every matter account, and the accounts that count.
     holds: u64,
     matter: BTreeSet<Key>,
+    /// Every actual body part must be empty of matter (1114).
+    empty_body: bool,
     /// Functions a live part must express (ruling 338).
     expresses: BTreeSet<Key>,
     age: Tick,
@@ -156,13 +158,14 @@ impl Gates {
                     who: Binding::Actor,
                     at_least,
                 } => g.holds = g.holds.max(*at_least),
+                Query::EmptyBody => g.empty_body = true,
                 Query::Expresses { function } => {
                     g.expresses.insert(function.clone());
                 },
                 _ => {},
             }
         }
-        if g.holds > 0 {
+        if g.holds > 0 || g.empty_body {
             let matter = rules.accounts.iter().filter_map(|(k, kind)| match kind {
                 AccountKind::Matter { .. } => Some(k.clone()),
                 _ => None,
@@ -226,6 +229,7 @@ impl Gates {
             && self.at_least.iter().all(|(k, v)| r.held(k) >= *v)
             && self.below.iter().all(|(k, v)| r.held(k) < *v)
             && (self.holds == 0 || held(r.books(), &self.matter) >= u128::from(self.holds))
+            && (!self.empty_body || r.holds(&Query::EmptyBody))
             && self.expresses.iter().all(|f| expressing(e, f).is_some())
             && (chooses || !self.healable || healable(e))
             && (chooses || self.reads.iter().all(|q| r.holds(q)))
@@ -236,7 +240,7 @@ impl Gates {
         c.whole
             || (c.residence && (self.resides.is_some() || !self.reads.is_empty()))
             || self.at_least.iter().chain(&self.below).any(|(k, _)| c.keys.contains(k))
-            || (self.holds > 0 && c.keys.iter().any(|k| self.matter.contains(k)))
+            || ((self.holds > 0 || self.empty_body) && c.keys.iter().any(|k| self.matter.contains(k)))
     }
 
     /// Whether `e` passes every gate at the world's tick, as the

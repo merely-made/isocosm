@@ -61,8 +61,20 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::MembersPer { among, per, .. } if among.is_empty() || per.is_empty() => {
             return Err("a count of members names its lineages".into());
         }
+        Query::MembersPerHead { among, per, per_members, .. }
+            if among.is_empty() || per.as_ref().is_some_and(|set| set.is_empty()) || *per_members == 0 => {
+            return Err("a count per head names both lineage sets and a positive denominator".into());
+        }
         Query::Sensed { reading, .. } if !crate::senses::READINGS.contains(&reading.as_str()) => {
             return Err(format!("unknown sense reading {reading}"));
+        }
+        Query::FoodPerHead { feed, per_members, .. } => {
+            if *per_members == 0 || rules.processes.get(feed).is_none_or(|p| p.port_feeding.as_ref().is_none_or(|f| f.meal.is_none())) {
+                return Err("food per head names a partitioned feed and a positive denominator".into());
+            }
+            if rules.processes.get(feed).is_some_and(|p| p.target.is_none()) {
+                return Err("food per head requires its feed to declare a target selector".into());
+            }
         }
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
@@ -400,6 +412,12 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             }
             if *from != Binding::Target || *amount == Amount::Fixed(0) {
                 return Err(format!("{id} eats what cannot be eaten"));
+            }
+        }
+        Effect::Regrow { account, amount } => {
+            matter(rules, account)?;
+            if !rules.root_stores.contains_key(account) || *amount == Amount::Fixed(0) {
+                return Err(format!("{id} regrows without rooted tissue or a positive amount"));
             }
         }
         Effect::When { guard, .. } => {

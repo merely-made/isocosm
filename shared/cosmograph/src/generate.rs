@@ -51,6 +51,9 @@ pub struct Founding {
     /// unless named, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "crate::ecology::Web::is_levels")]
     pub web: crate::ecology::Web,
+    /// Selects the protected-root and feeding-port experiment for a world-time ecology.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub experimental_food_contract: bool,
 }
 
 impl Default for Founding {
@@ -73,6 +76,7 @@ impl Default for Founding {
             affinity: None,
             ecology_rates: Default::default(),
             web: Default::default(),
+            experimental_food_contract: false,
         }
     }
 }
@@ -307,6 +311,7 @@ impl Founding {
         weather.priority = -1;
         processes.insert(weather.id.clone(), weather);
         let mut rules = Rules {
+            root_stores: BTreeMap::new(),
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),
@@ -556,7 +561,7 @@ impl Founding {
             crate::ecology::configure(self, &mut genesis)?;
         }
         if let Some(bodies) = &self.bodies {
-            match self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime {
+            match self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime && !self.experimental_food_contract {
                 true => crate::bodied::embody_within(&mut genesis, bodies, Some(crate::ecology::world_time::Plants::default()))?,
                 false => crate::bodied::embody(&mut genesis, bodies)?,
             }

@@ -199,10 +199,12 @@ impl Simulation {
             .map(|id| {
                 (
                     id,
-                    crate::meaning::mass(
+                    if p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some()) {
+                        p.food_weight(self.body_at_start(actor).expect("placed forager"), self.body_at_start(id).expect("placed prey"), &self.genesis.rules, &self.state.lineages)
+                    } else { crate::meaning::mass(
                         &self.books_at_start(id).expect("placed prey"),
                         &self.genesis.rules,
-                    ),
+                    ) },
                 )
             })
             .filter(|(_, held)| *held > 0)

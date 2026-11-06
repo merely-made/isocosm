@@ -106,6 +106,15 @@ Cambium controls connected to the logged window-attention command, using the cur
 - **H6's measurement**: H6's done-condition says "frame pacing and pointer picking in the viewport leaf are measured against today's loop." "Today's loop" was the hand-rolled loop the head has since left, and no measurement is on record; the old plan gave no alternative. Is the measurement still wanted, and against what? From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md` H6, lines 236-247.
 
 ## Findings
+- 2026-11-04 (H8): current Eponym imports the shared `Pacer` and `Ticker`
+  (`eponym/crates/eponym-client/src/round.rs:10,69-74`); its local motion cap
+  and owed background minutes are distinct (`:134-153`). The former
+  `Instant`-versus-`Clock` inventory hid that shared mechanism. Native
+  attention remains an admitted window contribution
+  (`shared/cosmograph/src/attention/admission.rs`); `spatial/tier.rs`
+  derives the participant's capped foreground, and `spatial/handback.rs`
+  validates minute handbacks without moving matter. This source audit does
+  not close H8's remaining product-host or import acceptance.
 - 2026-10-28: `cosmograph-host/Cargo.toml` has `default = []` with features `fixtures`, `endpoint` and `society`; there is no `ui/` and no desktop shell. The old plan's finding that `cosmograph-host` depends on the products is history. `host/src` holds `world`, `save`, `binding`, `founding`, `drive/{clock,input}`, `endpoint`, `window`, `native_attention`, `access`.
 - 2026-10-28: the Mesocosm head runs on the core and `Assembly` (`mesocosm-genet/src/lib.rs` says so). `chrome.rs` survives as a "compatibility raster adapter for the retained panel/GPU reference tests", and `review`, `vitals`, `dev`, `succession` and `hud` still import it; `played.rs` still carries the `frame_graph` receipt block; the dev tile is still a hand-walk of a `TileTree` in `dev.rs`. This corrects the old isomere status, which said the main binary had not moved.
 - 2026-10-28: the executable-location ruling (442) is met: `cosmograph-host/` is a workspace of its own.
@@ -129,3 +138,7 @@ Cambium controls connected to the logged window-attention command, using the cur
 - 2026-10-31: H9's endpoint half on branch `world-graph-viewer`: the core endpoint offers a second projection, the world graph (`cosmograph-host/src/endpoint/{graph,graph_world,timeline}.rs`), with regions, sites, routes, resident groups, kin, locations and polities; closed clusters as sceno folds; domain filters; advance, scrub, branch, line switch, and a death or birth inside a branch.
 - 2026-10-31: H9's viewer: `world-graph-viewer`, a binary behind `cosmograph-host`'s `viewer` feature, a Graphshell client of the core endpoint over the in-process carrier, drawn by `graphshell_host::board` on Pictograph's board in a Cambium window, with a scenario lane; the H9 scenario passes on two seeds nobody chose, one capture per step (receipts in `archive_docs/receipts/2026-10-28_sim_host_plan_receipts.md`).
 - 2026-10-31: H9's layout: the viewer draws node-sized cards (132 by 30) under a camera (wheel zoom, drag pan, fitted or actual size) with the force law chosen in the panel, Springs by default; the H9 scenario adds the clustering, law and camera steps and passes (receipts).
+- 2026-11-04: corrected H8's timing inventory against current `Clock`,
+  `Pacer`, `Ticker` and Eponym receiving source; separated local motion caps,
+  due native minutes and shared rendering continuation. No pacing or native
+  authority change is implied by this documentation correction.

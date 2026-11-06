@@ -1,142 +1,155 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The world-time ecology's year (cases 1077, 1078): a founding run a year
-//! at the minute, sampled monthly per lineage, against Mark's bar: every
-//! role alive at month 12, each lineage's largest and smallest monthly
-//! counts over months 3 to 12 within four times, and no month after the
-//! second losing more than a third of a lineage. Ignored by default: a year
-//! takes minutes. `WORLD_TIME_SEED`, `WORLD_TIME_SITES`, `WORLD_TIME_POP`
-//! and `WORLD_TIME_LINEAGES` choose the founding.
+//! The world-time ecology's trajectory (1077, 1116, 1145): 24 exact world
+//! months over native bodies, retaining the original first-year bar. This
+//! instrument admits the actual rooted founder structure separately from the
+//! trajectory; behavioral root regressions belong to the frozen build evidence.
+//! The full run is ignored because the minute clock remains expensive.
+//! `WORLD_TIME_DAYS` selects a diagnostic span; a short span is inconclusive.
+//! `WORLD_TIME_REPORT` may name an absolute JSON receipt path.
 
-use cosmograph::{Execution, Founding, Session, ecology::{Rates, Web}};
-use std::collections::BTreeMap;
+use cosmograph::{
+    Execution, Founding, Session,
+    bodied::Bodies,
+    ecology::{Rates, Web},
+};
+use support::{Outcome, Report};
+
+#[path = "world_time_year/admission.rs"]
+mod admission;
+#[path = "world_time_year/controls.rs"]
+mod controls;
+#[path = "world_time_year/receipt.rs"]
+mod receipt;
+#[path = "world_time_year/support.rs"]
+mod support;
+#[path = "world_time_year/tissue.rs"]
+mod tissue;
 
 fn env(key: &str, default: u64) -> u64 {
-    std::env::var(key).ok().and_then(|v| v.parse().ok()).unwrap_or(default)
-}
-
-fn living(s: &Session) -> BTreeMap<String, u64> {
-    let mut by = BTreeMap::new();
-    for g in s.sim.state().population.groups.values() {
-        if g.entity.alive && g.entity.lineage.starts_with("lineage:") {
-            *by.entry(g.entity.lineage.clone()).or_default() += g.count;
-        }
+    match std::env::var(key) {
+        Ok(value) => value
+            .parse()
+            .unwrap_or_else(|_| panic!("{key} must be an unsigned integer")),
+        Err(std::env::VarError::NotPresent) => default,
+        Err(why) => panic!("cannot read {key}: {why}"),
     }
-    by
-}
-
-fn events(s: &Session, prefix: &str) -> usize {
-    s.sim.state().events.values().filter(|e| e.process.starts_with(prefix)).count()
 }
 
 #[test]
-#[ignore]
-fn a_world_time_web_holds_a_year() {
+#[ignore = "two native years at the minute; requires admitted protected-root founders"]
+fn a_bodied_world_time_web_holds_two_years() {
     let seed = env("WORLD_TIME_SEED", 9);
-    let lineages = env("WORLD_TIME_LINEAGES", 10) as u32;
-    // On a laid 2 by 2 map (1109), so scatter reads its terrain.
-    let grid = cosmograph::map::Grid { width: 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
-    let genesis = Founding { seed, sites: 4, population: env("WORLD_TIME_POP", 240),
-        cohort_size: 1, lineages, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
+    let lineages = u32::try_from(env("WORLD_TIME_LINEAGES", 10)).unwrap();
+    let grid = cosmograph::map::Grid {
+        width: 2,
+        height: 2,
+        ..cosmograph::map::Grid::drawn(seed)
+    };
+    let genesis = Founding {
+        seed,
+        sites: 4,
+        population: env("WORLD_TIME_POP", 240),
+        cohort_size: 1,
+        lineages,
+        ecology: true,
+        web: Web::Diets,
+        ecology_rates: Rates::WorldTime,
+        experimental_food_contract: true,
+        bodies: Some(Bodies {
+            clutch: [1, 1],
+            sensing: true,
+            grazing: true,
+            hazard: [0, 0],
+            wound: [0, 0],
+            ..Bodies::default()
+        }),
         map: Some(cosmograph::map::Layout::Grid(grid)),
-        bodies: (env("WORLD_TIME_BODIED", 0) == 1).then(|| cosmograph::bodied::Bodies { clutch: [1, 1], ..Default::default() }),
-        ..Default::default() }.generate().unwrap();
-    let media: Vec<(i64, i64)> = genesis.sites.values().map(|s| (s.conditions["world:air"], s.conditions["world:water"])).collect();
-    eprintln!("seed {seed} air and water by site {media:?}");
-    let roles: BTreeMap<String, String> = genesis.lineages.iter().map(|(k, l)| (k.clone(),
-        l.traits.iter().find(|t| t.starts_with("role:") || t.contains("producer") || t.contains("consumer")
-            || t.contains("decomposer")).cloned().unwrap_or_default())).collect();
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
     let mut s = Session::new(genesis, Execution::Grouped).unwrap();
-    let month = cosmograph::rules::year_ticks(s.sim.genesis().rules.tick_microseconds()) / 12;
-    let started = std::time::Instant::now();
-    let mut months = vec![living(&s)];
-    eprintln!("seed {seed} month 0 {:?} roles {roles:?}", months[0]);
-    let span = env("WORLD_TIME_DAYS", 0);
-    // Twelve months by default; WORLD_TIME_MONTHS runs longer (1116).
-    let length = env("WORLD_TIME_MONTHS", 12) as usize;
-    let (step, steps) = if span > 0 { (span * 1440 / 6, 6) } else { (month, length) };
-    for m in 1..=steps {
-        // A day at a time keeps each advance inside the operation budget.
-        let mut left = step;
-        let trace = env("WORLD_TIME_TRACE", u64::MAX);
-        while left > 0 {
-            let day = left.min(60); s.advance(day).unwrap(); left -= day;
-            let fine = env("WORLD_TIME_FINE", u64::MAX);
-            let t = s.sim.state().tick;
-            if trace != u64::MAX && (t % 1440 == 0 || (t / 1440 >= fine && t / 1440 < fine + 2)) {
-                let st = s.sim.state();
-                let bodies: Vec<(String, u64, u64)> = st.population.groups.values()
-                    .filter(|g| g.entity.alive && g.entity.place == trace && roles.get(&g.entity.lineage).is_some_and(|r| r.contains("decomposer")))
-                    .map(|g| { let i = g.entity.lineage.trim_start_matches("lineage:");
-                        (i.to_string(), g.entity.accounts.get(&format!("matter:{i}-0")).copied().unwrap_or(0), (st.tick - g.entity.born) / 1440) }).collect();
-                let site = &st.sites[&trace];
-                let mut what: BTreeMap<String, usize> = BTreeMap::new();
-                for e in st.events.values().filter(|e| e.tick + 60 > st.tick && !e.process.starts_with("ecology:detritus")) {
-                    *what.entry(e.process.clone()).or_default() += 1;
-                }
-                eprintln!("trace events {what:?}");
-                eprintln!("trace day {} min {} detritus {:?} soil {:?} decomposers {bodies:?}", st.tick / 1440, st.tick % 1440,
-                    site.accounts.get("world:detritus"), site.accounts.get("world:soil"));
-            }
-        }
-        let now = living(&s);
-        let st = s.sim.state();
-        let mean: BTreeMap<String, u64> = now.keys().map(|k| { let i = k.trim_start_matches("lineage:");
-            let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
-                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&format!("matter:{i}-0")).copied().unwrap_or(0) * g.count, b + g.count));
-            (k.clone(), sum / n.max(1)) }).collect();
-        let soil: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:soil").copied().unwrap_or(0)).collect();
-        let light: Vec<u64> = st.sites.values().map(|site| site.accounts.get("sim:energy").copied().unwrap_or(0)).collect();
-        let detritus: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:detritus").copied().unwrap_or(0)).collect();
-        let mut by_site: BTreeMap<u64, Vec<u64>> = BTreeMap::new();
-        for g in st.population.groups.values().filter(|g| g.entity.alive) {
-            let Some(i) = g.entity.lineage.strip_prefix("lineage:").and_then(|i| i.parse::<usize>().ok()) else { continue };
-            by_site.entry(g.entity.place).or_insert_with(|| vec![0; lineages as usize])[i] += g.count;
-        }
-        eprintln!("seed {seed} sites {by_site:?}");
-        let store: BTreeMap<String, u64> = now.keys().filter_map(|k| { let i = k.trim_start_matches("lineage:");
-            let key = format!("reserve:{i}");
-            let (sum, n) = st.population.groups.values().filter(|g| g.entity.alive && &g.entity.lineage == k)
-                .fold((0u64, 0u64), |(a, b), g| (a + cosmograph::anatomy::books(&g.entity).get(&key).copied().unwrap_or(0) * g.count, b + g.count));
-            (sum > 0).then(|| (k.clone(), sum / n.max(1))) }).collect();
-        eprintln!("seed {seed} store {store:?}");
-        eprintln!("seed {seed} body {mean:?} soil {soil:?} detritus {detritus:?} light {light:?}");
-        eprintln!("seed {seed} month {m} ({:?}) {now:?} births {} starved {} hazard {}", started.elapsed(),
-            events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
-        months.push(now);
+    let mut report = Report::new(&s);
+    let months = env("WORLD_TIME_MONTHS", 24);
+    let days = env("WORLD_TIME_DAYS", 0);
+    let horizon = if days > 0 {
+        cosmograph::rules::minutes_ticks(
+            days.checked_mul(1440).expect("diagnostic span overflow"),
+            s.sim.genesis().rules.tick_microseconds(),
+        )
+    } else {
+        report
+            .month_ticks
+            .checked_mul(months)
+            .expect("monthly horizon overflow")
+    };
+    assert!(horizon > 0, "supply a positive world-time horizon");
+    let path = std::env::var_os("WORLD_TIME_REPORT").map(std::path::PathBuf::from);
+    if !report.root_store_qualified {
+        receipt::admission_failure(&s, &report, horizon, path.as_deref());
+        panic!(
+            "native rooted founder admission failed: {:?}",
+            report.root_store_admission.failures
+        );
     }
-    if span > 0 { return; }
-    let names: Vec<String> = months[0].keys().cloned().collect();
-    let mut verdict = Vec::new();
-    for name in &names {
-        let series: Vec<u64> = months.iter().map(|m| m.get(name).copied().unwrap_or(0)).collect();
-        let alive = series[steps] > 0;
-        let window = &series[3..=steps];
-        let (lo, hi) = (*window.iter().min().unwrap(), *window.iter().max().unwrap());
-        let bounded = lo > 0 && hi <= lo * 4;
-        let steady = series.windows(2).skip(2).all(|w| w[1] * 3 >= w[0] * 2);
-        verdict.push((name.clone(), alive, bounded, steady, series));
+    receipt::advance(&mut s, &mut report, horizon, path.as_deref());
+    eprintln!(
+        "seed {seed}, trajectory {:?}, first year {:?}, year-two extinctions {:?}; root-store qualified {}",
+        report.outcome,
+        report.first_year,
+        report.second_year_extinctions,
+        report.root_store_qualified
+    );
+    if horizon < 24 * report.month_ticks {
+        assert_eq!(
+            report.outcome,
+            Outcome::Inconclusive,
+            "a short diagnostic cannot establish two-year persistence"
+        );
+    } else {
+        assert_eq!(
+            report.outcome,
+            Outcome::Passed,
+            "the first-year bar or second-year persistence failed; inspect the monthly receipt"
+        );
     }
-    for v in &verdict { eprintln!("seed {seed} {} alive {} within4x {} no-third-loss {} {:?}", v.0, v.1, v.2, v.3, v.4); }
-    let pass = verdict.iter().all(|v| v.1 && v.2 && v.3);
-    eprintln!("seed {seed} PASS {pass}");
 }
 
-/// A laid world reads each site's air and water from its terrain (1103),
-/// and a strength the site already holds is kept.
+/// A laid world reads scatter strengths from terrain without needing bodies.
 #[test]
 fn laid_terrain_gives_scatter_strengths() {
     for seed in [5u64, 9, 11] {
-        // Small maps: a walker's moves are one per route (1111).
-        let grid = cosmograph::map::Grid { width: 2 + seed as u32 % 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
-        let founding = Founding { seed, sites: grid.width * grid.height, population: 240, cohort_size: 1,
-            lineages: 10, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
-            map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() };
+        let grid = cosmograph::map::Grid {
+            width: 2 + seed as u32 % 2,
+            height: 2,
+            ..cosmograph::map::Grid::drawn(seed)
+        };
+        let founding = Founding {
+            seed,
+            sites: grid.width * grid.height,
+            population: 240,
+            cohort_size: 1,
+            lineages: 10,
+            ecology: true,
+            web: Web::Diets,
+            ecology_rates: Rates::WorldTime,
+            experimental_food_contract: true,
+            map: Some(cosmograph::map::Layout::Grid(grid)),
+            ..Default::default()
+        };
         let g = founding.generate().unwrap();
-        let read = |key: &str| -> Vec<i64> { g.sites.values().map(|s| s.conditions[key]).collect() };
+        let read =
+            |key: &str| -> Vec<i64> { g.sites.values().map(|s| s.conditions[key]).collect() };
         let (air, water) = (read("world:air"), read("world:water"));
-        assert!(air.iter().chain(&water).all(|v| (0..=100).contains(v)), "{air:?} {water:?}");
-        assert!(water.contains(&100) && air.iter().any(|&a| a > 0), "seed {seed}: {air:?} {water:?}");
+        assert!(
+            air.iter().chain(&water).all(|v| (0..=100).contains(v)),
+            "{air:?} {water:?}"
+        );
+        assert!(
+            water.contains(&100) && air.iter().any(|&a| a > 0),
+            "seed {seed}: {air:?} {water:?}"
+        );
     }
 }

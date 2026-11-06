@@ -65,6 +65,15 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
   not inherit its representative's position for individual meals.
   New physical foraging reads living sensory sources and current terrain before
   selecting remote food. Cached geometry carries no biological or awareness result.
+- Food availability and breeding reads use the native admitted offering;
+  role names and whole-body mass are not substitutes for accessible food.
+  Keep lineage retention, local loss/return and regional function separate.
+  Recovery evidence names surviving source populations and native dispersal;
+  a revised acceptance criterion never relabels the previous experiment.
+  Classify consumed matter by its account provenance, keeping selected host
+  identity separate. With stored undigested food, report retained/waste
+  outputs by the processing animal and carry as physical stock; mixed prior
+  intake cannot be assigned wholly to the latest source edge.
 - A reachable-food result needs a complete supported and swept route. Its cache
   matches actual body, soles, food geometry and current occupancy as well as
   terrain; cached terrain alone cannot grant a walk.
@@ -90,7 +99,7 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 | Doc | For | Status |
 | --- | --- | --- |
 | [2026-11-04_scene_composition_plan.md](2026-11-04_scene_composition_plan.md) | Native subject/DOM composition, derived component-store comparison and shared qualified-output receiving. | 2026-11-05: R8 receiving passes 298 native tests, four consumer builds, four C4 runs and replays, and eight scene crop checks. C1–C4 and C6 R2–R7 keep their fixed cuts. Main adoption has a separate publication receipt. |
-| [2026-10-28_sim_plan.md](2026-10-28_sim_plan.md) | The sim (W2): Cosmograph's schema, record, generator, ecology phases S1 to S10, the society layer, owed world rules, certification, and ruling 279's unpark condition. | 2026-10-28: cut; bodies certified at site grain, A1 passes; S8 to S10 and tuning open. |
+| [2026-10-28_sim_plan.md](2026-10-28_sim_plan.md) | The sim (W2): Cosmograph's schema, record, generator, ecology phases S1 to S10, the society layer, owed world rules, certification, and ruling 279's unpark condition. | 2026-11-04: S10.3 complete locally: unchanged seed-9 diagnostic neutral, native food alignment release-validated, aligned three-month run retains all ten lines and measures real animal feeding; controlled recovery passes. S10.4 records catalog/trait/line diversity, founding role proportions, known-trait role queries, distinct constructive line recipes and conditional regional founding bands. Longer regional persistence remains unqualified; original founder bar retained as a comparator. Previous two-year matrix passes only seed 11; seed bank and scaling remain follow-on. |
 | [2026-10-28_sim_execution_plan.md](2026-10-28_sim_execution_plan.md) | The sim's execution: waking, draw keys, parallel evaluation, the near/far crowd tier, and every speed bar (its one owner). Carries decisions D1 to D14. | 2026-11-03: case 1161 keeps image refresh separate from E8 decisions and E10 physical stepping. E1a, E1b and D5 to D11 built and exact; remaining execution work and speed-bar ruling open. |
 | [2026-10-28_sim_host_plan.md](2026-10-28_sim_host_plan.md) | One embeddable sim host under the product hosts, and isomere, the wing's GUI layer and mode host. | 2026-10-28: cut; the core library is built and the Mesocosm head runs on it; mode host acceptance open. H7 is `session-network`. |
 | [2026-10-28_place_graph_engine_plan.md](2026-10-28_place_graph_engine_plan.md) | The place graph and its world store: lifts, edits and places, field admission, residency, passages at coarse levels. | 2026-11-03: PG5 includes hybrid body-atlas residency and refresh budgets (1161). SP1 to SP5 built; re-certification, SP6, SP8 and residency open. |
@@ -106,7 +115,7 @@ the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_aggregation_research.md](2026-09-22_aggregation_research.md) | The reduction literature checked, and the executable boundary of the sim's first implementation. | Research, applied 2026-09-22. |
 | [2026-10-31_creature_minds_brief.md](2026-10-31_creature_minds_brief.md) | Creature minds in Cosmograph: heritable drives, a lineage policy with individual deltas, three learning timescales, trust by kind of direction, measured roles and sapience; what the records and the sibling repos already hold. | Brief, 2026-10-31; its questions answered as cases 1051 to 1056 and 1058. |
-| [2026-11-02_ecology_from_bodies_brief.md](2026-11-02_ecology_from_bodies_brief.md) | Ecology derived from bodies and finished by selection: rates from body size, food quality, regional persistence, dormancy, disease, terrain change, heritable rates selected over deep time. | Brief, 2026-11-02; agreed as case 1119, its §7 open. |
+| [2026-11-02_ecology_from_bodies_brief.md](2026-11-02_ecology_from_bodies_brief.md) | Ecology derived from bodies and finished by selection: rates from body size, food quality, regional persistence, dormancy, disease, terrain change, heritable rates selected over deep time. | Brief, 2026-11-02; case 1119; order, evolution in play and mass/leg readings answered as 1146 to 1148. Implementation readings refreshed 2026-11-04: sim S5.1 and S10.1/S10.3 measured locally; S10.4 now defines the functional-diversity and regional founding direction. Seed banks and that direction remain unimplemented. |
 | [2026-11-05_coarse_step_brief.md](2026-11-05_coarse_step_brief.md) | The coarse step: what lets the sim run unwatched years cheaply for the adaptation phase, deep time and worldgen; where grouping, bands and rate models stand; four families of step; the coarse tier as measured normal, how it is fitted, handed over and checked; travel between areas over it. | Brief, 2026-11-05; its six questions (§9) open. |
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
 | [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md) | Balaur read against the wing's rulings. | 2026-10-06: read; its forks ruled as 604 to 607. |

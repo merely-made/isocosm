@@ -11,6 +11,13 @@ use super::key;
 use crate::{Result, rules::*, schema::*};
 
 pub(super) fn catalogue(rules: &Rules) -> Result<()> {
+    for (account, root) in &rules.root_stores {
+        if !matches!(rules.accounts.get(account), Some(AccountKind::Matter { reserve: false, provision: false, .. }))
+            || !rules.traits.contains(&root.identity) || root.exposed == 0 || root.stored == 0 || root.seed == 0
+            || root.stored.checked_add(root.exposed).and_then(|adult| adult.checked_add(root.seed)).is_none() {
+            return Err(format!("invalid rooted tissue allocation for {account}"));
+        }
+    }
     for shape in &rules.shapes {
         key(shape)?;
     }

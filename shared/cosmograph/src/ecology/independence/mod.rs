@@ -20,6 +20,9 @@ use std::collections::BTreeSet;
 
 impl IndependenceSpec {
     pub fn validate(&self, rules: &Rules) -> Result<()> {
+        if rules.processes.values().any(|p| p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some())) {
+            return Err("partitioned intake is outside finite independence support; use native evidence".into());
+        }
         if self.version != 1 { return Err("unsupported native ecological independence declaration".into()); }
         let mut nouns = BTreeSet::new();
         for extra in &self.extras {

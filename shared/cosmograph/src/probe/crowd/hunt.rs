@@ -242,7 +242,7 @@ impl Crowd<'_> {
                     }
                     // A prey with no parts to hold matter draws nothing.
                     let bitten = match bodied(was) {
-                        true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
+                        true => anatomy::bitten_with_rules(was, rules, m.of, s.below(u64::MAX)),
                         false => None,
                     };
                     (portion, bitten)

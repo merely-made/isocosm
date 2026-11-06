@@ -86,6 +86,19 @@ pub struct BodyRules {
     pub reference_segment_voxels: u64,
 }
 
+/// A rooted body's tissue allocation (1110, 1114). The key in
+/// `Rules::root_stores` is its tissue's provenance, retained by a fork.
+/// `ground_y` is the resident ground in the body's local geometry.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RootStore {
+    /// The body's adopted identity, inherited unchanged by a speciation.
+    pub identity: Key,
+    pub exposed: u64,
+    pub stored: u64,
+    pub seed: u64,
+    pub ground_y: i32,
+}
+
 impl Default for BodyRules {
     fn default() -> Self {
         Self {
