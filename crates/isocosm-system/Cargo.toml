@@ -45,7 +45,7 @@ optional = true
 # Rowan 0.17, batched DOM construction, parse_with_cache, TOML 1.1 parsing and layout.
 [dependencies.taplo]
 git = "https://github.com/merely-made/taplo.git"
-branch = "main"
+branch = "merely/rowan-0.17"
 version = "=0.14.0"
 optional = true
 

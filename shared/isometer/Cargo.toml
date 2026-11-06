@@ -70,7 +70,6 @@ wgpu = { version = "30", default-features = false, features = [
 # product's own identical patch table is the one that applies.
 [patch.crates-io]
 # Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://github.com/merely-made/mere.git", branch = "main" }
 netrender-vello = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
 netrender-vello-encoding = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
 netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
@@ -83,12 +82,8 @@ netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", rev = "dfb
 rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
-[patch."https://github.com/merely-made/mere.git"]
-
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
-distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
 
 [workspace.lints.clippy]
 missing_errors_doc = "warn"
