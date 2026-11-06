@@ -33,7 +33,7 @@ The lift's bytes moved with drawn cliffs (744) after the merge, so SP4 (edits) a
 ### SP6. The store moves to nisus
 After mere's T2 (363), baseline chunks land in nisus's world store and edits pass through its revision log (330, 331); `Ground` thins or retires as 330 allows. T2's lane (335) was not written when last read, and production Burn is still a pre-release. Mark, 2026-10-22: "Owe nisus in a plan." This phase is that obligation; the Resident-views plan's "SP6's nisus join" is the same item.
 - Done when: "T2's own done-conditions hold and SP2 to SP5's draws pass again on nisus, with saves keeping their hashes or converting by a recorded event, and each navigation result carries the world revision it read (333; doctrine, Stack 5 and 6)."
-- Also owed (`uniform-bricks` D4, 2026-11-05): nisus's chunks keep `Ground`'s uniform-brick form and brick-wise fill, so the move does not regress the memory and growth measured in `design_docs/2026-11-05_uniform_bricks_plan.md` (root).
+- Also owed (`uniform-bricks` D4, 2026-11-05): nisus's chunks keep `Ground`'s uniform-brick form and brick-wise fill, so the move does not regress the memory and growth measured in `design_docs/archive_docs/2026-11-06/2026-11-05_uniform_bricks_plan.md` (root).
 - Needs: mere's T2 (ruling 363, migration pre.4); SP4/SP5
 - Rulings: 330, 331, 333, 335, 363, 697, 700
 - From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` §A.5 SP6, lines 279-285 and 152-153; `archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md` lines 7 and 16.

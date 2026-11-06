@@ -6003,40 +6003,6 @@ summary = "Start a broad effect catalogue with explicit edition correspondences 
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
 
-[decisions."isometer-tests D1"]
-title = "the mass test (2026-11-06)"
-source = "design_docs/2026-11-06_isometer_tests_plan.md"
-area = "Stack and engine"
-summary = "The eating test lands its meal farther out; centre of mass keeps its integer rounding."
-draws_on = ["stack.5"]
-
-[decisions."isometer-tests D2"]
-title = "the tracer tests (2026-11-06)"
-source = "design_docs/2026-11-06_isometer_tests_plan.md"
-area = "Stack and engine"
-summary = "Diagnose the roster and unlit tracer tests against today's tracer, not by bisect."
-draws_on = ["stack.3"]
-
-[decisions."isometer-tests D3"]
-title = "the stall (2026-11-06)"
-source = "design_docs/2026-11-06_isometer_tests_plan.md"
-area = "Stack and engine"
-summary = "GPU tests share one device per test binary; a debugger is allowed if the stall persists."
-draws_on = ["stack.3"]
-
-[decisions."isometer-tests D4"]
-title = "the home (2026-11-06)"
-source = "design_docs/2026-11-06_isometer_tests_plan.md"
-area = "Method and documents"
-summary = "Isometer's failing tests and stall get their own plan."
-
-[decisions."isometer-tests D5"]
-title = "the unlit test's rock (2026-11-06)"
-source = "design_docs/2026-11-06_isometer_tests_plan.md"
-area = "Stack and engine"
-summary = "The first-rung receipt gets its own terraced ground so rock faces exist; the shared fixture is unchanged."
-draws_on = ["stack.3"]
-
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
@@ -6506,34 +6472,6 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Method and documents"
 summary = "physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed."
 draws_on = ["1057", "sim-execution D18", "sim-execution D43"]
-
-[decisions."uniform-bricks D1"]
-title = "target (2026-11-05), applies Processes 18"
-source = "design_docs/2026-11-05_uniform_bricks_plan.md"
-area = "Stack and engine"
-summary = "Grow the ground brick-wise and keep uniform bricks as one material; the memory case was tested at 10x, 100x and 1000x area."
-draws_on = ["processes.18", "stack.5"]
-
-[decisions."uniform-bricks D2"]
-title = "encoding (2026-11-05), applies Schema 9"
-source = "design_docs/2026-11-05_uniform_bricks_plan.md"
-area = "Stack and engine"
-summary = "Uniform bricks encode compactly; ground hashes change, and no persisted save or record depends on them."
-draws_on = ["schema.9"]
-
-[decisions."uniform-bricks D3"]
-title = "Mesocosm's clones (2026-11-05), applies Processes 18"
-source = "design_docs/2026-11-05_uniform_bricks_plan.md"
-area = "Stack and engine"
-summary = "Measure how often Mesocosm clones the ground before choosing to share it."
-draws_on = ["processes.18"]
-
-[decisions."uniform-bricks D4"]
-title = "home (2026-11-05), applies Stack 5"
-source = "design_docs/2026-11-05_uniform_bricks_plan.md"
-area = "Stack and engine"
-summary = "Build uniform bricks in Ground now; the move to nisus must keep them."
-draws_on = ["stack.5"]
 
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"

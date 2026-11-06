@@ -171,6 +171,13 @@ Mesocosm seams and `always_visible` is named for Mesocosm's critter; the
 heightfield march and chain critter sit unconsumed in isometer-lens; the bake's
 four facings against continuous yaw (the `Clip` vocabulary is reserved but
 empty). Several are overtaken by the paging work (see Findings).
+Carried from the uniform-bricks plan (archived 2026-11-06, `archive_docs/2026-11-06/2026-11-05_uniform_bricks_plan.md`,
+Deferred), which landed uniform bricks, brick-wise growth and their compact
+encoding: removing all-air bricks (it changes `keys()`, `column_layers` and the
+dirty queue's meaning, so it is its own question); enclosed-brick culling (the
+uniform form makes "solid and buried" a cheap check; Mesocosm and the board
+frame whole columns, unmeasured); dense-brick compression (palettes, run
+lengths); paging past 100x area (at 1000x the collapsed ground is about 4 GB).
 - Done when: not stated; owed
 - Needs: isometer's owner (`shared/isometer`)
 - Rulings: -

@@ -7,9 +7,10 @@
 //! One GPU device for every test in this binary.
 //!
 //! Sixteen tests each making their own instance and device at once stalled
-//! about half of parallel runs, the GPU idle and the CPU spinning
-//! (`design_docs/2026-11-06_isometer_tests_plan.md`, IT2). The first caller
-//! makes the device; the rest share it. `None` when no adapter exists.
+//! about half of parallel runs, the GPU idle and the CPU spinning (IT2 of
+//! `design_docs/archive_docs/2026-11-06/2026-11-06_isometer_tests_plan.md`).
+//! The first caller makes the device; the rest share it. `None` when no
+//! adapter exists.
 
 use std::sync::OnceLock;
 

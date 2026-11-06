@@ -1,7 +1,7 @@
 # Isometer's failing tests
 
 **Status:** 2026-11-06: landed. D1 to D5 answered; IT1 to IT3 done. The
-isometer workspace passes whole and in parallel (381 tests, none failing).
+isometer workspace passes whole and in parallel (381 tests, none failing). 2026-11-06: archived whole to `archive_docs/2026-11-06/`; nothing was left open.
 
 **For:** isometer's three failing tests and its parallel library-test stall,
 found while gating `2026-11-05_uniform_bricks_plan.md`. The failing three were

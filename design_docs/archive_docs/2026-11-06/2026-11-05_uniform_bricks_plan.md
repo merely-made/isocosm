@@ -3,7 +3,7 @@
 **Status:** 2026-11-05: landed. D1 to D4 answered; UB1 to UB5 done. Growth
 is about 30 times faster than the per-voxel baseline, memory and clones about
 a third to a quarter, encoding a ninth of the time and a third of the bytes.
-Open follow-ons are under Deferred and parked.
+Open follow-ons are under Deferred and parked. 2026-11-06: archived whole to `archive_docs/2026-11-06/`; its Deferred items are carried to the board plan's BD7 (`design_docs/2026-10-28_board_on_isometer_plan.md`) and its nisus obligation stands in the place-graph plan's SP6.
 
 **For:** `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`)
 growing a brick at a time, keeping a brick of one material as that material,
