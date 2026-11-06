@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Runtime outcomes consumed by the shared mesquite scenario lane.
+//! Runtime outcomes consumed by the shared mandrake scenario lane.
 
 use super::Host;
 

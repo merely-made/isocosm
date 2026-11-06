@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! P3b: the session host's scenario acceptance, as a thin adapter over
-//! `mesquite`.
+//! `mandrake`.
 //!
 //! The lane lifecycle — scenario ticking per presented frame, the frame limit,
 //! the deferred close, capture arming, PNG writing, the receipt JSON, pixel
@@ -20,7 +20,7 @@
 use std::{cell::Cell, path::PathBuf, rc::Rc};
 
 use cambium_genet_winit_host::AppCtx;
-use mesquite::{CostObservation, Totals, Viewport};
+use mandrake::{CostObservation, Totals, Viewport};
 use taproot::{ProbeSnapshot, Scenario};
 
 use super::SessionApp;
@@ -42,7 +42,7 @@ pub(super) struct SessionProduct {
     drained: usize,
 }
 
-impl mesquite::Product for SessionProduct {
+impl mandrake::Product for SessionProduct {
     type State = SessionApp;
     type Logic = Logic;
     type View = Child;
@@ -116,7 +116,7 @@ pub(super) fn default_out_dir() -> PathBuf {
 ///
 /// M4 removed the newtype that used to stand here. It existed only to hide
 /// `SessionProduct` behind two forwarding methods, and
-/// `isomere::host::ScenarioLane` is implemented for every `mesquite::Lane`
+/// `isomere::host::ScenarioLane` is implemented for every `mandrake::Lane`
 /// whose product matches the host's — deferring the native close until the
 /// last frame and the receipt are saved included. So the lane is handed to the
 /// assembly as itself.
@@ -126,8 +126,8 @@ pub(super) fn lane(
     final_capture: Option<PathBuf>,
     exit_code: Rc<Cell<i32>>,
     frames: Option<u32>,
-) -> mesquite::Lane<SessionProduct> {
-    mesquite::Lane::new(
+) -> mandrake::Lane<SessionProduct> {
+    mandrake::Lane::new(
         SessionProduct { drained: 0 },
         scenario,
         receipt,

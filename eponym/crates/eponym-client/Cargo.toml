@@ -45,10 +45,10 @@ cambium = { workspace = true }
 cambium-rootstock = { workspace = true }
 cambium-desktop = { workspace = true }
 taproot = { workspace = true }
-# P3b: the promoted scenario lane, now mere's `mesquite` (2026-09-14) rather
+# P3b: the promoted scenario lane, now mere's `mandrake` (2026-09-14) rather
 # than this repository's `shared/wing-scenario`, through the workspace pin as
 # mesocosm-genet takes it.
-mesquite = { workspace = true }
+mandrake = { workspace = true }
 # The wing's shared orthographic slab scene, extracted from Mesocosm's section.
 # A sibling path crate under the repository's `shared/`; its cambium-rootstock
 # pin is this workspace's own.

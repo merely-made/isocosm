@@ -16,7 +16,7 @@ type Ctx<'a> = AppCtx<'a, Viewer, Logic, Child>;
 
 pub struct Lane;
 
-impl mesquite::Product for Lane {
+impl mandrake::Product for Lane {
     type State = Viewer;
     type Logic = Logic;
     type View = Child;

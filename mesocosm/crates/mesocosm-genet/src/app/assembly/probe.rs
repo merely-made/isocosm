@@ -7,7 +7,7 @@ use taproot::ProbeSnapshot;
 
 type Context<'a> = AppCtx<'a, State, view::Logic, view::Child>;
 pub(super) struct Probe;
-impl mesquite::Product for Probe {
+impl mandrake::Product for Probe {
     type State = State;
     type Logic = view::Logic;
     type View = view::Child;
@@ -350,12 +350,12 @@ impl mesquite::Product for Probe {
             "previews":[],
         }))
     }
-    fn cost_observation(&self, ctx: &Context<'_>) -> mesquite::CostObservation {
+    fn cost_observation(&self, ctx: &Context<'_>) -> mandrake::CostObservation {
         let producer = ctx.runner.state().producer.borrow();
         let (redraws, mesh_bytes, instance_bytes) = producer.cost_totals();
         let (valid, populated) = producer.cost_status();
-        mesquite::CostObservation {
-            totals: mesquite::Totals {
+        mandrake::CostObservation {
+            totals: mandrake::Totals {
                 redraws,
                 mesh_bytes,
                 instance_bytes,

@@ -20,7 +20,7 @@
 //! came from.
 //!
 //! **What does not live here.** The scene (isometer), the scenario lane
-//! (mesquite), any product's rules or vocabulary, and anything a second
+//! (mandrake), any product's rules or vocabulary, and anything a second
 //! non-game consumer could want: that is Cambium's, and goes upstream to
 //! mere.
 //!
@@ -89,7 +89,7 @@
 //!
 //! [`host`] is the seven `HostHooks` closures with the five things all three
 //! products filled by hand already filled: producer registration for viewport
-//! leaves, the mesquite scenario lane in `after_frame` and `close_request`,
+//! leaves, the mandrake scenario lane in `after_frame` and `close_request`,
 //! capture arming, the error line published from producer errors, and the
 //! frame profile line. What is left is [`host::Product`] — the product's
 //! state, its root view, its own frame work, its keymap dispatch and its

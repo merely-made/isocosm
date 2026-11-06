@@ -25,7 +25,7 @@ behavior and the remaining sim-plan work.
 ### Resource-complete panel text capture
 
 `sim-paint.scenario` opens the actual simulation panel, inspects an individual,
-and stays paused at tick 0. Set `MESQUITE_CAPTURE_PAINT=1` to save a full
+and stays paused at tick 0. Set `MANDRAKE_CAPTURE_PAINT=1` to save a full
 postcard `PaintEnvelope` beside each scenario PNG. The JSON capture record's
 `paint_path` identifies the matching packet. Its fonts retain their bytes and
 collection indices; glyphs retain their caller-shaped IDs and positions.
@@ -36,9 +36,9 @@ From this `mesocosm` workspace (replace `OUTPUT` with a capture directory):
 
 ```powershell
 $env:CARGO_TARGET_DIR = 'C:\t\cargo-targets\isometry'
-$env:MESQUITE_CAPTURE_PAINT = '1'
+$env:MANDRAKE_CAPTURE_PAINT = '1'
 cargo run --locked -p mesocosm-genet -- --bench --seed 1 --frames 1800 --scenario testing/bench/sim-paint.scenario --receipt OUTPUT/sim.json --capture OUTPUT/sim.png
-Remove-Item Env:MESQUITE_CAPTURE_PAINT
+Remove-Item Env:MANDRAKE_CAPTURE_PAINT
 cargo run --locked -p mesocosm-genet --example paint_replay -- OUTPUT/sim-sim-founded.paintlist OUTPUT/sim-sim-founded.png OUTPUT/replay.png
 ```
 

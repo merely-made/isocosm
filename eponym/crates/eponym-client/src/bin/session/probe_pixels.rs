@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Which element is the session's viewport. The mask arithmetic and the
-//! decoded-PNG comparison are `mesquite::pixels`; what is here is the
+//! decoded-PNG comparison are `mandrake::pixels`; what is here is the
 //! authored fixture those generic checks run over.
 //!
 //! `view.rs` gives the custom leaf `role="img"` and `aria-label="Scene"`, which
@@ -11,7 +11,7 @@
 //! 8px padding belong to its `.scene-card` parent — so the only inset is the
 //! antialiased rim.
 
-use mesquite::Viewport;
+use mandrake::Viewport;
 use taproot::Selector;
 
 use super::Context;

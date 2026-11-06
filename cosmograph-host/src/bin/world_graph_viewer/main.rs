@@ -59,8 +59,8 @@ fn main() -> Result<(), String> {
     let board = Rc::new(RefCell::new(Board::default()));
     board.borrow_mut().sync(&client);
 
-    let lane = mesquite::LaneConfig::from_env("WORLD_GRAPH_VIEWER").map(|config| {
-        mesquite::Lane::from_config(config, lane::Lane, cambium_genet_winit_host::read_file)
+    let lane = mandrake::LaneConfig::from_env("WORLD_GRAPH_VIEWER").map(|config| {
+        mandrake::Lane::from_config(config, lane::Lane, cambium_genet_winit_host::read_file)
             .unwrap_or_else(|why| panic!("{why}"))
     });
     let lane = Rc::new(RefCell::new(lane));

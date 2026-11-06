@@ -20,7 +20,7 @@
 //! vitals, checkpoint, trait board and dev controls; the existing painted
 //! minimap is registered directly as a leaf. These views change no world state.
 
-//! Mesquite drives taproot scenarios through that same document and viewport;
+//! Mandrake drives taproot scenarios through that same document and viewport;
 //! keys and semantic actions share [`app::actions`].
 
 pub mod app;

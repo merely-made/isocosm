@@ -504,7 +504,7 @@ pub(super) fn run(config: HostConfig) -> i32 {
     state.refresh();
     let scenario = state.host.scenario.take();
     let exit = Rc::new(Cell::new(0));
-    let lane = mesquite::Lane::new(probe::Probe, scenario, receipt, capture, exit.clone())
+    let lane = mandrake::Lane::new(probe::Probe, scenario, receipt, capture, exit.clone())
         .with_frame_limit(frames);
     if let Err(why) =
         Assembly::new(WindowProduct)

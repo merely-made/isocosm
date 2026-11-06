@@ -11,7 +11,7 @@
 //! 1. **Producer registration for viewport leaves** — `if !contains(key) {
 //!    register(key, producer, &["color"]) }`, written once per leaf in the
 //!    bench and once in the session.
-//! 2. **The mesquite scenario lane**, ticked in `after_frame` and told about a
+//! 2. **The mandrake scenario lane**, ticked in `after_frame` and told about a
 //!    close in `close_request`, with a redraw so the deferred close can present
 //!    its last frame.
 //! 3. **Capture arming** — Isocosm's bounded `ISOCOSM_CAPTURE_DIR` policy,
@@ -24,7 +24,7 @@
 //!
 //! [`Assembly`] is those five filled once. What is left is [`Product`]: the
 //! product's state, its root view, its own frame work, its keymap dispatch and
-//! its actions. The plan's §6 finding sets the expectation — mesquite left each
+//! its actions. The plan's §6 finding sets the expectation — mandrake left each
 //! product about 400 lines of "what is about this host", and so does this.
 //!
 //! # What Cambium already offered, and what it did not
@@ -32,10 +32,10 @@
 //! Read at 876320fd and **not** adopted, because each solves a different
 //! problem: `cambium_genet_winit_host::Harness` is the *windowless* host for
 //! unit tests, and `inert_hooks` is a `HostHooks` with every closure empty —
-//! a starting point for a test, not an assembly. `mesquite::Lane` is the
+//! a starting point for a test, not an assembly. `mandrake::Lane` is the
 //! scenario lifecycle and is adopted wholesale here rather than reimplemented;
 //! what this module adds is the *wiring* of it into two of the seven hooks,
-//! which mesquite deliberately leaves to the consumer and which all three
+//! which mandrake deliberately leaves to the consumer and which all three
 //! products therefore wrote by hand. `IdlePolicy` and the frame-pacing
 //! machinery are the host's and are not touched.
 //!
@@ -69,7 +69,7 @@ pub use cambium_genet_winit_host::{
 };
 
 /// The host context a [`Product`]'s hooks are handed, spelled once. The same
-/// shape and the same reason as [`mesquite::Ctx`].
+/// shape and the same reason as [`mandrake::Ctx`].
 pub type Ctx<'a, P> =
     AppCtx<'a, <P as Product>::State, <P as Product>::Logic, <P as Product>::View>;
 
@@ -95,7 +95,7 @@ impl TextureProducer for NoProducer {
 
 /// A scenario lane the assembly drives.
 ///
-/// The two calls all three products already make on `mesquite::Lane`, named as
+/// The two calls all three products already make on `mandrake::Lane`, named as
 /// a trait so the assembly never has to name the lane's own product type. A
 /// host with two lanes — Eponym's scripted smoke and its driven acceptance —
 /// hands over two, and a host with none hands over none.
@@ -114,17 +114,17 @@ pub trait ScenarioLane<P: Product> {
     }
 }
 
-impl<P, Q> ScenarioLane<P> for mesquite::Lane<Q>
+impl<P, Q> ScenarioLane<P> for mandrake::Lane<Q>
 where
     P: Product,
-    Q: mesquite::Product<State = P::State, Logic = P::Logic, View = P::View>,
+    Q: mandrake::Product<State = P::State, Logic = P::Logic, View = P::View>,
 {
     fn after_frame(&mut self, ctx: &mut Ctx<'_, P>) {
-        mesquite::Lane::after_frame(self, ctx);
+        mandrake::Lane::after_frame(self, ctx);
     }
 
     fn request_close(&mut self) {
-        mesquite::Lane::request_close(self);
+        mandrake::Lane::request_close(self);
     }
 }
 

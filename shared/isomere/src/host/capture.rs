@@ -10,18 +10,18 @@
 //! Isocosm is the two environment variable names, the file name and the log
 //! prefix, so those are [`CaptureNames`] and the rest is here.
 //!
-//! **Not mesquite's capture.** `mesquite::Lane` captures on a scenario's say-so,
+//! **Not mandrake's capture.** `mandrake::Lane` captures on a scenario's say-so,
 //! at names the scenario chooses, with pixel comparison and a receipt behind
 //! it. This is the other lane: an unscripted headed run that wants one PNG
-//! when the host has stopped moving. A product with a scenario wants mesquite;
+//! when the host has stopped moving. A product with a scenario wants mandrake;
 //! a product with an environment variable wants this; Isocosm has both.
 //!
 //! The write is to a `.tmp` beside the target and then a rename, so a reader
-//! watching the directory never sees half a PNG. `mesquite::write_png` does
+//! watching the directory never sees half a PNG. `mandrake::write_png` does
 //! the encoding — there is no second PNG encoder in the wing.
 //!
 //! The host queues the readback and hands back a job to poll; it lands a few
-//! frames later. Until it does, or until five seconds pass (mesquite's bound),
+//! frames later. Until it does, or until five seconds pass (mandrake's bound),
 //! [`Capture::arm`] reports it in flight so the host keeps presenting.
 
 use std::cell::RefCell;
@@ -61,7 +61,7 @@ pub struct Capture {
     pending: Rc<RefCell<Option<(CaptureFrame, Instant)>>>,
 }
 
-/// How long a queued readback may take before it is given up (mesquite's).
+/// How long a queued readback may take before it is given up (mandrake's).
 const READBACK_LIMIT: Duration = Duration::from_secs(5);
 
 impl Capture {
@@ -136,7 +136,7 @@ impl Capture {
         let directory = self.directory.as_ref().expect("armed only with a directory");
         let path = directory.join(self.names.file);
         let pending = directory.join(format!("{}.tmp", self.names.file));
-        let result = mesquite::write_png(&pending, &frame)
+        let result = mandrake::write_png(&pending, &frame)
             .and_then(|()| std::fs::rename(&pending, &path).map_err(|why| why.to_string()));
         match result {
             Ok(()) => self.saved.store(true, Ordering::Release),

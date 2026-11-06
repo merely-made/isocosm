@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The bench's scenario lane: mesquite's ticking, capture and receipt
+//! The bench's scenario lane: mandrake's ticking, capture and receipt
 //! machinery, with the bench's own snapshot.
 
 use std::{cell::Cell, path::PathBuf, rc::Rc};
@@ -15,7 +15,7 @@ pub(super) type Context<'a> = AppCtx<'a, Bench, Logic, Child>;
 
 struct BenchProduct;
 
-impl mesquite::Product for BenchProduct {
+impl mandrake::Product for BenchProduct {
     type State = Bench;
     type Logic = Logic;
     type View = Child;
@@ -70,7 +70,7 @@ impl mesquite::Product for BenchProduct {
     }
 }
 
-pub(super) struct Lane(mesquite::Lane<BenchProduct>);
+pub(super) struct Lane(mandrake::Lane<BenchProduct>);
 
 impl Lane {
     pub fn new(
@@ -79,7 +79,7 @@ impl Lane {
         final_capture: Option<PathBuf>,
         exit_code: Rc<Cell<i32>>,
     ) -> Self {
-        Self(mesquite::Lane::new(
+        Self(mandrake::Lane::new(
             BenchProduct,
             scenario,
             receipt,

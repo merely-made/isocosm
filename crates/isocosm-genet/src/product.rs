@@ -14,7 +14,7 @@
 //! unchanged — one final frame once the armed self-tests finish, or every
 //! frame under `ISOCOSM_CAPTURE_EVERY_FRAME=1`, written to a `.tmp` and
 //! renamed — so `ISOCOSM_CAPTURE_DIR` still means exactly what it meant, and
-//! `png` left this crate's manifest because `mesquite::write_png` does the
+//! `png` left this crate's manifest because `mandrake::write_png` does the
 //! encoding now.
 //!
 //! **The scene board is the one producer.** B2 registered it inside
@@ -34,7 +34,7 @@
 //! later milestone.
 //!
 //! **No scenario lane.** Isocosm drives itself through the `ISOCOSM_*_SELFTEST`
-//! drivers rather than a `mesquite::Scenario`, so it hands the assembly no
+//! drivers rather than a `mandrake::Scenario`, so it hands the assembly no
 //! lane; `after_frame` is the drivers, exactly as before.
 
 use std::cell::RefCell;
