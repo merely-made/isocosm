@@ -27,6 +27,7 @@ use crate::query::PresentedFrame;
 
 #[cfg(test)]
 mod palette_tests;
+mod query_terrain;
 mod residency;
 mod terrain;
 mod columns;
@@ -131,6 +132,7 @@ pub struct Scene {
     pub(crate) queue: wgpu::Queue,
     tracer: BrickTracer,
     map: Option<BrickMap>,
+    query_terrain: query_terrain::TerrainQueryCache,
     /// The material-to-colour table every traced frame reads its terrain
     /// through. Host state rather than frame state, like the map itself: a
     /// tileset or a biome names it once and the frames after it inherit it.
@@ -183,6 +185,7 @@ impl Scene {
             queue,
             tracer,
             map: None,
+            query_terrain: Default::default(),
             terrain_palette: None,
             light: TraceLight::default(),
             terrain_upload_pending: true,
@@ -228,15 +231,6 @@ impl Scene {
 
     pub fn bodies_mut(&mut self) -> &mut BodyLayer {
         &mut self.bodies
-    }
-
-    /// Freeze one complete encode's CPU queries. A staging producer retains
-    /// this separately and publishes it only when its image is accepted.
-    pub fn query_snapshot(&self) -> Option<crate::QuerySnapshot> {
-        Some(crate::QuerySnapshot::new(
-            self.presented?, [self.width, self.height], self.bodies.query_snapshot(),
-            self.map.clone(), self.terrain_cell, self.bodies.stats.fallback_bodies != 0,
-        ))
     }
 
     /// Distinct part geometries the body layer retains across frames.
@@ -310,6 +304,7 @@ impl Scene {
 
     /// Binds a map the host built itself, pending a full upload.
     pub fn set_terrain_map(&mut self, map: BrickMap) {
+        self.invalidate_query();
         self.map = Some(map);
         self.terrain_upload_pending = true;
     }

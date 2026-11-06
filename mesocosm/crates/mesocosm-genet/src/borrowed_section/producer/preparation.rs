@@ -29,7 +29,7 @@ impl Default for PreparationCosts {
             cost_epoch: NEXT_COST_EPOCH
                 .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
                 .ok(),
-            scope: "cumulative attempted producer preparation; draw_work includes CPU framing/body/terrain preparation, internal resources and GPU command encoding; explicit resource_setup excludes resources created inside draw; queue_submit includes command encoder finish and the host queue call, without waiting for completion; fresh accepted_query_capture copies immutable query inputs before host acceptance, retained_query_clone shares them; stages are direct scopes, without a complete CPU decomposition or GPU-duration claim",
+            scope: "cumulative attempted producer preparation; draw_work includes CPU framing/body/terrain preparation, internal resources and GPU command encoding; explicit resource_setup excludes resources created inside draw; queue_submit includes command encoder finish and the host queue call, without waiting for completion; fresh accepted_query_capture freezes picture-specific query inputs and shares cached terrain until its payload changes; terrain copy counters count dense payload copied at capture; retained_query_clone shares the whole query snapshot; stages are direct scopes, without a complete CPU decomposition or GPU-duration claim",
             stages: BTreeMap::new(),
             counters: BTreeMap::new(),
             counter_overflowed: false,

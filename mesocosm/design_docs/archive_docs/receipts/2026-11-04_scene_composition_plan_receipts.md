@@ -344,3 +344,103 @@ receiving result, including the VTT, Eponym, Wing and Parry build receipts.
 The final locked Parry check is recorded at
 `isocosm-current-qualification-01/gates/parry-live-check-02/result.json`.
 The R8 publication receipt tracks the remote commit separately.
+
+## 2026-11-06 — R9 source intake
+
+The isolated query-sharing worktree starts at Isocosm
+`26306b028c7c41f736c56dfc12c68d28e8a01b68`, matching the fetched
+`origin/main`. R8 receiving is in its ancestry at `da56ce39`. The C4
+scenario and borrowed Section producer match R8. The scenario SHA-256 is
+`fbc18d99507d154a91b40d0131a78e045d5540eb801f7e7bce92790188f82a05`.
+
+The base Mesocosm lock SHA-256 is
+`2be642c47fcc768a6b5a2326e7ca2bc0e8f5070425aaa4b6724e7316bbd08812`.
+The Isometer lock SHA-256 is
+`5457fdfd14d21b72b7646e8b0eb95f293055ae9dd55065b56d21c19f2886edb0`.
+Both lock Mere `e9ac10dc`, Genet `7095acc5`, Netrender `f8811186` and
+Vello `dfb9b53b`. The current Mere revision contains Mandrake's product
+work transport and Modulus's dense vector and key-map clone.
+
+The checked terrain adapters are `GroundTerrain`, `HostTerrain` and
+`PagedTerrain`, plus the palette tests' scaled wrapper. Mesocosm uses
+paged projection. The VTT uses paged projection and a native ground path.
+Eponym uses host map replacement and native ground. This source intake
+sets the receiving check scope. Fresh executable and runtime results
+belong to the subsequent R9 qualification cut.
+
+## 2026-11-06 — R9 query-sharing qualification
+
+The locked release builds use the same `26306b02` base and 492 matched
+compiler package identities. The runner verifies the source manifests
+before and after the four arms. A's executable SHA-256 is
+`58b8032ddd53015d92307eec1a2ca5a172271139c822a3d4406be328f22ba065`, and B's is
+`2abca973de2074f46eb4c13280544ce1cab9933a9b84d749e3515645e71c470e`. Their source manifest SHA-256
+values are `4b0bedde20bb4532b8fb95cf587d4203563738c0fbe48bfae83fbcf130f9d68e` for A and
+`cb5efd74e529b252b61a0925f3712868b67fa9e038314f70c77f0f7b0912baf1` for B.
+
+The candidate records **238 passing tests**. Isometer passes 88, the
+Mesocosm default library passes 87, and the staged, picking, implicit-body
+and WorldSave controls each pass one. Standalone Lens records 59 passes,
+two failures and two ignored tests. The full clean-baseline Lens control
+reproduces both failures and their diagnostics with identical compiler
+feature contexts. The failures are the level-section channel ladder and
+the unlit floor's dither assertion. The explicit GPU refresh control
+writes a dirty brick, refuses that prepare and verifies a full upload on
+retry with the same texture allocation. The held pick keeps its old
+material. Locked release checks pass for all targets of `isocosm-genet`
+and `isocosm-native`, and for all features and targets of `eponym-client`.
+The VTT audit matches 689 package source identities and finds identical
+package trees for five Dramatis entries with differing commit labels.
+Eponym matches all 483 package source identities.
+
+Each arm runs the same paused C4 fixture, with one viewport producer,
+ten voxel bodies and zero physical bodies. All four headed runs and
+four native replays pass. The four 104,498-byte saves match at tick 3
+and state hash `3395030683271508303`, SHA-256
+`f4648a3d62957a820ceae6cef1a48478b96b7a3d6b2deb01347270e00ce1207a`. Eight decoded RGBA crops match,
+SHA-256 `cc64b84ceda2fddfe65233b8db7c5a86dd6938a59b8b9d7cfb26fcc63a56eb32`.
+The crop uses declared bounds `[24,120,2004,1500)` from the prior layout
+probe. The current images are 2560×1600 and producer extent is 1980×1380.
+The matching pixels cover those coordinates. Both retained full images
+match their counterparts. In the components pair, both full captures
+differ by one level in one RGB channel at `(273,40)`, outside the crop.
+
+Each backend makes 13 fresh timed terrain captures and 253 retained
+snapshot clones. B copies four maps in the camera phase and shares six
+maps in inspector interaction and three in native steps. Timed copied
+bytes fall from 109,085,184 to 33,564,672 per backend. Across all 18
+lifetime captures, including untimed work, the count changes from 18
+copies to five copies and 13 shares, and copied bytes fall from
+151,041,024 to 41,955,840. Both arms reference the same dense payload
+totals. Counts cover pointer and atlas bytes. The source review locates
+the only new snapshot materialization at capture. Refresh writes or
+replaces the render-owned map and updates its witness.
+
+| Timed phase measure | Retained A → B | Components A → B |
+| --- | --- | --- |
+| Mean capture CPU, ms across 13 calls | 3.950 → 1.546 | 2.931 → 1.017 |
+| Mean draw CPU, ms across 13 calls | 6.584 → 6.555 | 6.496 → 6.547 |
+| Draw plus capture CPU sum, ms | 136.937 → 105.308 | 122.557 → 98.331 |
+| Paired UI median / p95 / p99, ms | 16.166 / 17.145 / 26.458 → 16.160 / 16.674 / 21.129 | 16.168 / 16.529 / 25.232 → 16.166 / 16.564 / 21.779 |
+| Paired pictures over 16.7 ms | 14 → 13 | 12 → 12 |
+
+Each paired UI summary covers 266 pictures and 532 profiled attempts.
+Before and after process samples show no compiler or build guard. The
+desktop stayed live, with one serial observation per source/backend.
+The direct CPU sums cover the named scopes. Paired callback portions
+and native latency have separate meanings, and physical refresh requires
+separate evidence. Each run's 267 observed batch reports record
+`device_unsupported` for GPU timing, leaving GPU duration unavailable.
+
+The retained evidence lives under
+`Code/output/mesocosm-scene-composition/2026-11-04/query-sharing-r9/`.
+`matrix/r9-c4-01/comparison.json` has SHA-256
+`85184186c1c78ecbacb8c807e12d7f47060d7187d730f503a90f22a5ff8626ed` and binds the plan,
+source checks, four replays, copy accounting, native saves and crops.
+`runtime/baseline-lens-tests-02-full-control/result.json` records the
+matched failures. `qualification.json` binds the
+candidate tests and the VTT/Eponym checks. The earlier Mesocosm test
+generation differs from B by the Lens `cfg(test)` ray-fixture constructor
+repair, recorded in `isometer-test-fixture-repair-01.json`. The later Lens
+suite executes that fixture. Remote main adoption has its
+own publication receipt.

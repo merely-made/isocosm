@@ -1,12 +1,9 @@
 # Scene composition over native records
 
-**Status:** 2026-11-05. C1–C4 and shared C6 R2–R7 retain their fixed-cut
-qualification. R8 receiving validation is complete on the published owner
-chain, including native tests, four consumer builds and the four-run C4
-matrix. The separate R8 publication receipt tracks main adoption.
-Fresh-query sharing, target pooling, physical 60 Hz, GPU duration and
-broader platform evidence remain open. R4 staging and conditional C5
-Didgeridoo retain their separate scope.
+**Status:** 2026-11-06. R9 passes its same-base C4 comparison and receiving
+checks. Main adoption has its own receipt. C1–C4 and C6 R2–R7 retain their
+fixed-cut qualification, and R8 receiving is published. Physical 60 Hz, GPU duration, target pooling,
+broader platform evidence, R4 staging and conditional C5 remain open.
 
 C1/C2/C3 are locally verified under the isolated fixed SDK described in the
 receipt. C4's matched release host and representation comparison are
@@ -340,6 +337,45 @@ authority.
   and record tail/missed-budget results. Physical 60 Hz and wider platform
   qualification remain with the presentation plan.
 
+#### R9. Share terrain queries across fresh pictures
+
+R7 measured about 3 ms of CPU for a fresh query capture, with 109 MB of
+dense terrain payload across thirteen phase captures. Retained query clones
+already share their data. Isometer keeps the mutable render map and caches
+one immutable terrain payload for queries. Matching map witnesses reuse the
+cached payload. A different witness triggers exact comparison of the ray
+coordinate metadata, pointer volume and atlas. An equal payload reuses the
+cache. The first capture and captures of changed payloads copy the map.
+Each snapshot keeps its own generation, camera, extent, terrain cell size
+and body-query facts.
+
+Refresh owns in-place retarget and rewrite and can replace the map outright.
+These paths renew the witness on possible payload changes and introduce no
+dense query copy. Camera framing can change paged residency with an empty
+dirty list and the same native ground revision. Exercise that case as well
+as unchanged residency, an edited resident brick, replacement and full
+upload retry after failure. Held snapshots preserve their terrain and picks
+while a candidate draws, is cancelled or publishes.
+
+Use two regular release executables from Isocosm base `26306b02`, with
+the same locked supplier inputs. A is that base and B includes R9.
+Run the existing C4 scenario serially in the order A retained, B retained,
+B components, A components. Keep the window and fixture inputs matched,
+and compare each representation within its A/B pair. Establish the save,
+replay and decoded scene crop oracle on this cohort.
+
+- Done when: Isometer query and refresh controls, Mesocosm staging and
+  save/replay tests, and the VTT and Eponym consumer builds pass. The four
+  headed runs and replays agree on native saves, accepted query semantics
+  and the declared scene crops. For each pair, record referenced payload
+  bytes, actual capture copy bytes and the capture and draw CPU spans.
+  Controls verify reuse on unchanged maps and source review verifies that
+  refresh adds no dense query copy. Retain phase counts, paired UI tails,
+  budget misses, environmental load and availability with each run.
+- Main adoption requires qualification of the exact receiving source and
+  lock tree, a fresh ancestry check, a scoped commit and remote main
+  verification. Keep those receipts separate from the local experiment.
+
 ## Findings
 
 - 2026-11-04: the initial `app.rs::refresh_scene` used the whole runtime revision.
@@ -425,6 +461,18 @@ authority.
   with ten voxel bodies, not ten producers or physical native animals.
   Ground rebind 0 does not establish immutable map data; any sharing change
   must admit actual revision changes and preserve per-frame publication.
+- 2026-11-06: at `26306b02`, `Scene::query_snapshot` still clones the
+  dense map. `PagedTerrain` can update it when the framed keys change
+  independently of the native revision. The C4 scenario and borrowed
+  producer match R8, and the current Mandrake probe still transports
+  product work counters. See `shared/isometer/src/scene.rs`,
+  `shared/isometer/src/scene/residency/paging.rs` and
+  `mesocosm/crates/mesocosm-genet/src/app/assembly/probe.rs`.
+
+- 2026-11-06: R9 shares the cached terrain in nine of thirteen fresh timed
+  captures in each backend. Draw CPU is similar, while capture CPU falls
+  in both pairs. This measures capture work on the declared C4 fixture.
+  See the archived R9 receipt for the bytes, times and exact input cut.
 
 ## Progress
 
@@ -525,6 +573,16 @@ authority.
   Later consumer checks retain their own resolver receipts. Main
   adoption is tracked in the separate R8 publication receipt.
 
+- 2026-11-06: opened R9 on `26306b02` and verified the scenario,
+  query ownership and receiving adapter inventory. The comparison uses
+  a fresh baseline on the same locked cohort as the change.
+
+- 2026-11-06: R9's same-base C4 runs pass with exact saves, replays and
+  declared scene crops. Candidate tests pass the new terrain-sharing and
+  failed-refresh controls. Two standalone Lens pixel assertions reproduce
+  on the clean baseline with the same diagnostics. The VTT and Eponym
+  compatibility checks pass. Main publication has its own receipt.
+
 ## Receipts
 
 Run evidence belongs in
@@ -532,5 +590,5 @@ Run evidence belongs in
 
 C6's shared R2/R3/R5/R6/R7 source and qualification evidence is retained once, in
 `mere/design_docs/cambium_docs/testing/receipts/2026-11-04_qualified_raster_retention.md`.
-The local archived receipt preserves C1–C4 experimental cuts and the
-separate R8 current-cohort native receiving record.
+The local archived receipt preserves the C1–C4 experimental cuts, R8 native
+receiving and R9 query-sharing evidence.

@@ -8,18 +8,20 @@ use std::sync::Arc;
 
 /// Immutable queries for an exact encoded image, independent of a Scene's
 /// next resize, camera, geometry, palette or terrain preparation. Capturing
-/// copies CPU query data once; cloning a snapshot shares that owned data.
+/// owns the body queries and shares the current immutable terrain payload.
 /// Encoding alone is not presentation: a host promotes this on acceptance.
 #[derive(Clone)]
 pub struct QuerySnapshot(Arc<Data>);
 
-/// O(1) structural sizes of the copied query inputs. Dense terrain payload
+/// O(1) structural sizes of the captured query inputs. Dense terrain payload
 /// excludes key-slot trees, allocator capacity, Arc headers and body storage.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct QuerySnapshotStats {
     pub placed_bodies: usize,
     pub surfaces: usize,
     pub terrain_present: bool,
+    /// This capture copied a new immutable map for its terrain payload.
+    pub terrain_payload_copied: bool,
     pub terrain_pointer_words: usize,
     pub terrain_atlas_bytes: usize,
 }
@@ -28,7 +30,8 @@ struct Data {
     frame: PresentedFrame,
     extent: [u32; 2],
     bodies: BodyQueries,
-    map: Option<BrickMap>,
+    map: Option<Arc<BrickMap>>,
+    terrain_payload_copied: bool,
     terrain_cell: f32,
     fallback: bool,
 }
@@ -38,7 +41,8 @@ impl QuerySnapshot {
         frame: PresentedFrame,
         extent: [u32; 2],
         bodies: BodyQueries,
-        map: Option<BrickMap>,
+        map: Option<Arc<BrickMap>>,
+        terrain_payload_copied: bool,
         terrain_cell: f32,
         fallback: bool,
     ) -> Self {
@@ -47,6 +51,7 @@ impl QuerySnapshot {
             extent,
             bodies,
             map,
+            terrain_payload_copied,
             terrain_cell,
             fallback,
         }))
@@ -62,6 +67,7 @@ impl QuerySnapshot {
             placed_bodies,
             surfaces,
             terrain_present: self.0.map.is_some(),
+            terrain_payload_copied: self.0.terrain_payload_copied,
             terrain_pointer_words,
             terrain_atlas_bytes,
         }
@@ -123,7 +129,7 @@ impl QuerySnapshot {
             .map_err(BodyPickError::Body)?;
         let terrain = if self.0.frame.terrain {
             terrain_ray(
-                self.0.map.as_ref(),
+                self.0.map.as_deref(),
                 self.0.terrain_cell,
                 origin,
                 direction,

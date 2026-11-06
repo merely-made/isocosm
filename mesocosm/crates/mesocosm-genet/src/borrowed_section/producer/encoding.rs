@@ -155,25 +155,33 @@ impl Source {
                 costs.count("fresh_query_snapshots", 1);
                 costs.count("query_placed_records_copied", stats.placed_bodies as u64);
                 costs.count("query_surface_records_copied", stats.surfaces as u64);
-                costs.count(
-                    "query_terrain_pointer_words_copied",
-                    stats.terrain_pointer_words as u64,
-                );
-                costs.count(
-                    "query_terrain_atlas_bytes_copied",
-                    stats.terrain_atlas_bytes as u64,
-                );
-                costs.count(
-                    "query_terrain_dense_payload_bytes_copied",
-                    (stats.terrain_pointer_words as u64) * std::mem::size_of::<u32>() as u64,
-                );
+                let (pointer_words, atlas_bytes) = if stats.terrain_payload_copied {
+                    (
+                        stats.terrain_pointer_words as u64,
+                        stats.terrain_atlas_bytes as u64,
+                    )
+                } else {
+                    (0, 0)
+                };
+                costs.count("query_terrain_pointer_words_copied", pointer_words);
+                costs.count("query_terrain_atlas_bytes_copied", atlas_bytes);
                 costs.count(
                     "query_terrain_dense_payload_bytes_copied",
-                    stats.terrain_atlas_bytes as u64,
+                    pointer_words * std::mem::size_of::<u32>() as u64,
+                );
+                costs.count("query_terrain_dense_payload_bytes_copied", atlas_bytes);
+                costs.count(
+                    "query_terrain_dense_payload_bytes_referenced",
+                    (stats.terrain_pointer_words as u64) * std::mem::size_of::<u32>() as u64
+                        + stats.terrain_atlas_bytes as u64,
                 );
                 costs.count(
                     "query_terrain_maps_copied",
-                    u64::from(stats.terrain_present),
+                    u64::from(stats.terrain_payload_copied),
+                );
+                costs.count(
+                    "query_terrain_maps_reused",
+                    u64::from(stats.terrain_present && !stats.terrain_payload_copied),
                 );
             }
             self.accepted = Some(accepted);

@@ -14,6 +14,7 @@
 
 use std::collections::BTreeMap;
 use std::ops::Deref;
+use std::sync::Arc;
 
 use isometer_core::ground::{BRICK, Ground};
 use modulus::BrickMap as SharedBrickMap;
@@ -25,7 +26,27 @@ pub use ray::{BrickRayError, BrickRayHit};
 
 /// A Ground-backed adapter over the product-neutral brick map.
 #[derive(Clone, Debug)]
-pub struct BrickMap(SharedBrickMap);
+pub struct BrickMap(SharedBrickMap, BrickQueryVersion);
+
+/// Identity of the map payload since construction or the last possible write.
+/// Equal identities prove equal payloads, including across ordinary map clones.
+/// A different identity can still carry identical query data.
+#[derive(Clone, Debug)]
+pub struct BrickQueryVersion(Arc<()>);
+
+impl PartialEq for BrickQueryVersion {
+    fn eq(&self, other: &Self) -> bool {
+        Arc::ptr_eq(&self.0, &other.0)
+    }
+}
+
+impl Eq for BrickQueryVersion {}
+
+impl BrickQueryVersion {
+    fn new() -> Self {
+        Self(Arc::new(()))
+    }
+}
 
 impl BrickMap {
     pub fn from_ground(ground: &Ground) -> Result<Self, BrickMapError> {
@@ -42,7 +63,7 @@ impl BrickMap {
         SharedBrickMap::from_keys(projection_revision, keys, |key| {
             ground.brick_materials(key).map(|(brick, _)| brick.raw())
         })
-        .map(Self)
+        .map(Self::from)
     }
 
     /// Builds a presentation-only cropped map without changing Ground.
@@ -78,7 +99,7 @@ impl BrickMap {
         SharedBrickMap::from_keys(projection_revision, retained.keys().copied(), |key| {
             retained.get(&key).map(Vec::as_slice)
         })
-        .map(Self)
+        .map(Self::from)
     }
 
     /// Copies changed Ground bricks into their stable shared-ABI slots.
@@ -100,7 +121,11 @@ impl BrickMap {
         changed: impl IntoIterator<Item = [i16; 3]>,
         brick: impl FnMut([i16; 3]) -> Option<&'a [u8]>,
     ) -> Result<Vec<u32>, BrickMapError> {
-        self.0.refresh(changed, brick)
+        let slots = self.0.refresh(changed, brick)?;
+        if !slots.is_empty() {
+            self.1 = BrickQueryVersion::new();
+        }
+        Ok(slots)
     }
 
     /// An empty capacity-fixed map whose extents never change; see
@@ -110,7 +135,8 @@ impl BrickMap {
         capacity_rows: u32,
         pointer_extent: [u32; 3],
     ) -> Result<Self, BrickMapError> {
-        SharedBrickMap::with_capacity(projection_revision, capacity_rows, pointer_extent).map(Self)
+        SharedBrickMap::with_capacity(projection_revision, capacity_rows, pointer_extent)
+            .map(Self::from)
     }
 
     /// An empty capacity-fixed map sized to the host's card, holding at least
@@ -121,7 +147,8 @@ impl BrickMap {
         pointer_extent: [u32; 3],
         limits: AtlasLimits,
     ) -> Result<Self, BrickMapError> {
-        SharedBrickMap::with_limits(projection_revision, bricks, pointer_extent, limits).map(Self)
+        SharedBrickMap::with_limits(projection_revision, bricks, pointer_extent, limits)
+            .map(Self::from)
     }
 
     /// Replaces the selection from Ground while retained bricks keep their
@@ -146,7 +173,26 @@ impl BrickMap {
         keys: impl IntoIterator<Item = [i16; 3]>,
         brick: impl FnMut([i16; 3]) -> Option<&'a [u8]>,
     ) -> Result<RetargetDelta, BrickMapError> {
-        self.0.retarget(projection_revision, keys, brick)
+        let delta = self.0.retarget(projection_revision, keys, brick)?;
+        if !delta.loaded_slots.is_empty() || delta.evicted != 0 {
+            self.1 = BrickQueryVersion::new();
+        }
+        Ok(delta)
+    }
+
+    pub fn query_version(&self) -> &BrickQueryVersion {
+        &self.1
+    }
+
+    /// Compares the payload and coordinate metadata consumed by CPU tracing.
+    /// The projection revision belongs to GPU upload bookkeeping.
+    pub fn same_query_payload(&self, other: &Self) -> bool {
+        self.1 == other.1
+            || (self.origin() == other.origin()
+                && self.pointer_extent() == other.pointer_extent()
+                && self.slots() == other.slots()
+                && self.pointers() == other.pointers()
+                && self.atlas() == other.atlas())
     }
 
     pub fn shared(&self) -> &SharedBrickMap {
@@ -155,7 +201,9 @@ impl BrickMap {
 }
 
 impl From<SharedBrickMap> for BrickMap {
-    fn from(map: SharedBrickMap) -> Self { Self(map) }
+    fn from(map: SharedBrickMap) -> Self {
+        Self(map, BrickQueryVersion::new())
+    }
 }
 
 impl Deref for BrickMap {

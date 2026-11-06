@@ -15,7 +15,7 @@ fn map(cells: &[([i32; 3], u8)]) -> BrickMap {
         let raw = bricks.entry(key).or_insert([0; 512]);
         raw[(local[1] * 8 + local[2]) * 8 + local[0]] = material;
     }
-    BrickMap(
+    BrickMap::from(
         SharedBrickMap::from_keys(BrickProjectionRevision(0), bricks.keys().copied(), |k| {
             bricks.get(&k).map(|raw| raw.as_slice())
         })

@@ -133,6 +133,9 @@ fn pending_scene_keeps_accepted_queries_and_promotes_only_its_frozen_input() {
         .as_ref()
         .unwrap()
         .capture_stats();
+    assert!(copied.terrain_payload_copied);
+    assert_eq!(prepared_a.counters["query_terrain_maps_copied"], 1);
+    assert_eq!(prepared_a.counters["query_terrain_maps_reused"], 0);
     assert_eq!(
         prepared_a.counters["query_placed_records_copied"],
         copied.placed_bodies as u64
@@ -281,7 +284,7 @@ fn pending_scene_keeps_accepted_queries_and_promotes_only_its_frozen_input() {
     );
 
     let mut view_c = view_b.clone();
-    view_c.centre[0] += 2.0;
+    view_c.light *= 0.5;
     handle.present(&scene_b, 11, view_c).unwrap();
     assert!(
         leaf.inner
@@ -290,6 +293,19 @@ fn pending_scene_keeps_accepted_queries_and_promotes_only_its_frozen_input() {
             .render_scene_staged(&retained)
             .unwrap()
             .is_some()
+    );
+    let fresh_same_terrain = leaf.preparation_costs();
+    assert_eq!(
+        fresh_same_terrain.counters["fresh_query_snapshots"],
+        retained_work.counters["fresh_query_snapshots"] + 1
+    );
+    assert_eq!(
+        fresh_same_terrain.counters["query_terrain_maps_reused"],
+        retained_work.counters["query_terrain_maps_reused"] + 1
+    );
+    assert_eq!(
+        fresh_same_terrain.counters["query_terrain_dense_payload_bytes_copied"],
+        retained_work.counters["query_terrain_dense_payload_bytes_copied"]
     );
     leaf.discard_staged();
     assert_eq!(leaf.renders(), 2);
