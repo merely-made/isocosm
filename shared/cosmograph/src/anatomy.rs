@@ -17,6 +17,8 @@ use crate::{
     schema::*,
 };
 
+pub mod root_store;
+
 /// What each part of a body may still take in an act whose carriage bound
 /// it (ruling 581): a part not named takes nothing.
 pub type Caps = std::collections::BTreeMap<PartId, u64>;
@@ -172,10 +174,11 @@ fn provision(rules: &Rules, key: &str) -> bool {
 /// Whether `key` is the body's own lineage's matter and the body has parts
 /// to hold it, so it lives in them.
 pub fn anatomical(e: &Entity, rules: &Rules, key: &str) -> bool {
+    if root_store::contract(e, rules, key).is_some() { return true; }
     let own = matches!(
         rules.accounts.get(key),
         Some(AccountKind::Matter { lineage, .. }) if *lineage == e.lineage
-    );
+    ) || crate::rules::retained_tissue(e, rules, key);
     own && e.living().any(|(id, _)| e.bodied(id))
 }
 
@@ -223,6 +226,7 @@ pub fn room(e: &Entity, rules: &Rules, key: &str) -> u64 {
 
 /// The same within `caps`, where a carriage bound the act.
 pub fn room_within(e: &Entity, rules: &Rules, key: &str, caps: Option<&Caps>) -> u64 {
+    if let Some(room) = root_store::room(e, rules, key, caps) { return room; }
     bodies(e)
         .map(|(id, h, p)| capped(space(h, p, rules, key), id, caps))
         .fold(0, u64::saturating_add)
@@ -299,6 +303,9 @@ pub fn take_within(
     amount: u64,
     caps: Option<&mut Caps>,
 ) -> Option<Result<Vec<(PartId, u64)>>> {
+    if root_store::contract(e, rules, key).is_some() {
+        return root_store::take(e, rules, key, amount, caps);
+    }
     if !anatomical(e, rules, key) {
         return None;
     }
@@ -339,6 +346,9 @@ pub fn give_within(
     amount: u64,
     mut caps: Option<&mut Caps>,
 ) -> Option<Result<Vec<(PartId, u64)>>> {
+    if root_store::contract(e, rules, key).is_some() {
+        return root_store::give(e, rules, key, amount, caps);
+    }
     if !anatomical(e, rules, key) {
         return None;
     }
@@ -376,7 +386,19 @@ fn apply(
 /// accounts the meal names, `draw` choosing among them. `None` where the
 /// body keeps no matter in parts.
 pub fn bitten(e: &Entity, of: &[Key], draw: u64) -> Option<PartId> {
+    bite(e, of, draw, |_| true)
+}
+
+/// The native draw with saved geometric exposure (1110). Unopted bodies
+/// take exactly the historical draw above.
+pub(crate) fn bitten_with_rules(e: &Entity, rules: &Rules, of: &[Key], draw: u64) -> Option<PartId> {
+    let ground = root_store::ground(e, rules);
+    bite(e, of, draw, |id| ground.is_none_or(|y| root_store::above(e, id, y)))
+}
+
+fn bite(e: &Entity, of: &[Key], draw: u64, exposed: impl Fn(PartId) -> bool) -> Option<PartId> {
     let weights: Vec<(PartId, u64)> = bodies(e)
+        .filter(|(id, _, _)| exposed(*id))
         .map(|(id, _, p)| {
             let edible = of.iter().filter_map(|k| p.matter.get(k)).sum::<u64>();
             (id, edible)

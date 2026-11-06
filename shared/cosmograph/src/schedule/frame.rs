@@ -15,7 +15,13 @@ use crate::{
     rules::Rules,
     schema::*,
 };
-use std::{collections::BTreeMap, sync::{Arc, Mutex}};
+use std::{
+    collections::BTreeMap,
+    sync::{Arc, Mutex},
+};
+
+mod meals;
+pub(crate) use meals::{MealShare, MealSpec};
 
 /// Derivative pass-local view of a body's holdings. It is deliberately reset
 /// when a frame is cloned, since a clone may become a candidate world.
@@ -23,12 +29,20 @@ use std::{collections::BTreeMap, sync::{Arc, Mutex}};
 struct BooksCache(Mutex<BTreeMap<Id, Arc<Ledger>>>);
 
 impl Clone for BooksCache {
-    fn clone(&self) -> Self { Self::default() }
+    fn clone(&self) -> Self {
+        Self::default()
+    }
 }
 
 impl BooksCache {
     fn get_or_insert(&self, id: Id, make: impl FnOnce() -> Ledger) -> Arc<Ledger> {
-        if let Some(ledger) = self.0.lock().unwrap_or_else(|p| p.into_inner()).get(&id).cloned() {
+        if let Some(ledger) = self
+            .0
+            .lock()
+            .unwrap_or_else(|p| p.into_inner())
+            .get(&id)
+            .cloned()
+        {
             return ledger;
         }
         // Build outside the lock; callers never read a ledger while holding it.
@@ -74,8 +88,8 @@ pub(crate) struct Planned {
 pub(crate) struct Shares {
     /// Up to this much of each account a site or a target holds.
     pub(crate) accounts: BTreeMap<(Holder, Key), u64>,
-    /// The matter a meal takes of its prey.
-    pub(crate) meal: Option<Ledger>,
+    /// Ordered quotas, including empty grants, for exact Eat declarations.
+    pub(crate) meals: std::collections::VecDeque<MealShare>,
 }
 
 /// What one act would take of shared ground, as planned.
@@ -84,11 +98,8 @@ pub(crate) struct Demands {
     pub(crate) accounts: Vec<(Holder, Key, u64)>,
     /// Only explicit carrying joins generic part takes with bitten meals.
     pub(crate) graft_parts: std::collections::BTreeSet<Holder>,
-    /// A meal: of whom, how much, and of which accounts, none naming every
-    /// matter account.
-    pub(crate) meal: Option<(Holder, u64, Vec<Key>)>,
-    /// The already-drawn bitten part, limiting the whole-prey quota (454, 459).
-    pub(crate) meal_part: Option<Holder>,
+    /// Every executed Eat, with its structural address and selected part.
+    pub(crate) meals: Vec<MealSpec>,
 }
 
 /// One act the plan found, in pass order.
@@ -123,36 +134,70 @@ impl Frame {
     pub(crate) fn books(&self, id: Id, body: &Entity) -> Arc<Ledger> {
         self.books.get_or_insert(id, || crate::anatomy::books(body))
     }
-    pub(crate) fn institutions(&self) -> Option<&crate::institutions::Records> {self.institutions.as_ref()}
-    pub(crate) fn keep_institutions(&mut self,was:&crate::institutions::Records) {
-        if self.institutions.is_none() {self.institutions=Some(was.clone());}
+    pub(crate) fn institutions(&self) -> Option<&crate::institutions::Records> {
+        self.institutions.as_ref()
     }
-    pub(crate) fn polity(&self,id:Id) -> Option<&Option<Polity>> {self.polities.get(&id)}
-    pub(crate) fn keep_polity(&mut self,id:Id,was:Option<&Polity>) {
-        self.polities.entry(id).or_insert_with(||was.cloned());
+    pub(crate) fn keep_institutions(&mut self, was: &crate::institutions::Records) {
+        if self.institutions.is_none() {
+            self.institutions = Some(was.clone());
+        }
     }
-    pub(crate) fn starting(notes_bound: usize) -> Self { Self { notes_bound:Some(notes_bound), ..Self::default() } }
-    pub(crate) fn notes_bound(&self) -> Option<usize> { self.notes_bound }
-    pub(crate) fn produced_claims(&self) -> &BTreeMap<Key,Option<crate::projects::ProducedClaim>> { &self.produced }
-    pub(crate) fn keep_produced(&mut self, key: &str, was: Option<&crate::projects::ProducedClaim>) {
-        self.produced.entry(key.into()).or_insert_with(|| was.cloned());
+    pub(crate) fn polity(&self, id: Id) -> Option<&Option<Polity>> {
+        self.polities.get(&id)
+    }
+    pub(crate) fn keep_polity(&mut self, id: Id, was: Option<&Polity>) {
+        self.polities.entry(id).or_insert_with(|| was.cloned());
+    }
+    pub(crate) fn starting(notes_bound: usize) -> Self {
+        Self {
+            notes_bound: Some(notes_bound),
+            ..Self::default()
+        }
+    }
+    pub(crate) fn notes_bound(&self) -> Option<usize> {
+        self.notes_bound
+    }
+    pub(crate) fn produced_claims(&self) -> &BTreeMap<Key, Option<crate::projects::ProducedClaim>> {
+        &self.produced
+    }
+    pub(crate) fn keep_produced(
+        &mut self,
+        key: &str,
+        was: Option<&crate::projects::ProducedClaim>,
+    ) {
+        self.produced
+            .entry(key.into())
+            .or_insert_with(|| was.cloned());
     }
     pub(crate) fn stock_lot(&self, key: &str) -> Option<&Option<crate::projects::OwnedLot>> {
         self.ownership.get(key)
     }
     pub(crate) fn keep_stock_lot(&mut self, key: &str, was: Option<&crate::projects::OwnedLot>) {
-        self.ownership.entry(key.into()).or_insert_with(|| was.cloned());
+        self.ownership
+            .entry(key.into())
+            .or_insert_with(|| was.cloned());
     }
-    pub(crate) fn project(&self, id: crate::projects::ProjectId) -> Option<&Option<crate::projects::Project>> {
+    pub(crate) fn project(
+        &self,
+        id: crate::projects::ProjectId,
+    ) -> Option<&Option<crate::projects::Project>> {
         self.projects.get(&id)
     }
     pub(crate) fn project_binding(&self, actor: Id) -> Option<Option<crate::projects::ProjectId>> {
         self.project_bindings.get(&actor).copied()
     }
-    pub(crate) fn keep_project(&mut self, id: crate::projects::ProjectId, was: Option<&crate::projects::Project>) {
+    pub(crate) fn keep_project(
+        &mut self,
+        id: crate::projects::ProjectId,
+        was: Option<&crate::projects::Project>,
+    ) {
         self.projects.entry(id).or_insert_with(|| was.cloned());
     }
-    pub(crate) fn keep_project_binding(&mut self, actor: Id, was: Option<crate::projects::ProjectId>) {
+    pub(crate) fn keep_project_binding(
+        &mut self,
+        actor: Id,
+        was: Option<crate::projects::ProjectId>,
+    ) {
         self.project_bindings.entry(actor).or_insert(was);
     }
     pub(crate) fn site(&self, id: Id) -> Option<&Site> {
@@ -187,7 +232,9 @@ impl Frame {
             Holder::Site(id) => self.sites.contains_key(&id),
             Holder::Entity(id) | Holder::Part(id, _) => self.body(id).is_some(),
             Holder::Dev => false,
-            Holder::ProjectReservation(id) | Holder::ProjectConstruction(id) => self.projects.contains_key(&id),
+            Holder::ProjectReservation(id) | Holder::ProjectConstruction(id) => {
+                self.projects.contains_key(&id)
+            },
         }
     }
 
@@ -200,7 +247,6 @@ impl Frame {
         rules: &Rules,
     ) {
         let mut wanted: BTreeMap<(Holder, Key), u128> = BTreeMap::new();
-        let mut eaten: BTreeMap<Holder, (u128, Vec<Key>)> = BTreeMap::new();
         // Each taker's take of an account, all its demands of it together.
         let takes: Vec<BTreeMap<(Holder, Key), u64>> = plans
             .iter()
@@ -213,84 +259,17 @@ impl Frame {
                 takes
             })
             .collect();
-        for (p, takes) in plans.iter().zip(&takes) {
+        for takes in &takes {
             for (k, amount) in takes {
                 *wanted.entry(k.clone()).or_default() += u128::from(*amount);
             }
-            if let Some((holder, amount, of)) = &p.demands.meal {
-                let e = eaten.entry(*holder).or_insert((0, of.clone()));
-                e.0 += u128::from(*amount);
-            }
         }
         let held = |(holder, key): &(Holder, Key)| ground(*holder).map_or(0, |l| value(&l, key));
-        // A prey's meals take one share of what it may give, split in pass
-        // order between its eaters.
-        let mut meals: BTreeMap<Holder, (u64, u128, Ledger)> = BTreeMap::new();
-        for (holder, (asked, of)) in &eaten {
-            let mut offered = ground(*holder).map_or_else(Ledger::new, |l| edible(&l, of));
-            offered.retain(|k, _| meaning::matter(rules, k));
-            let total: u128 = offered.values().map(|v| u128::from(*v)).sum();
-            let total = u64::try_from(total).unwrap_or(u64::MAX);
-            meals.insert(*holder, (total, *asked, offered));
-        }
-        let mut granted: BTreeMap<Holder, Vec<u64>> = BTreeMap::new();
-        for p in &plans {
-            if let Some((holder, amount, _)) = &p.demands.meal {
-                let (total, asked, _) = &meals[holder];
-                let g = fraction(*amount, *total, *asked);
-                granted.entry(*holder).or_default().push(g);
-            }
-        }
-        let mut portions: BTreeMap<Holder, std::vec::IntoIter<Ledger>> = BTreeMap::new();
-        for (holder, grants) in granted {
-            let (_, _, offered) = &meals[&holder];
-            let mut left = share(offered, rules, grants.iter().sum());
-            let split: Vec<Ledger> = grants
-                .into_iter()
-                .map(|g| {
-                    let part = share(&left, rules, g);
-                    for (k, v) in &part {
-                        *left.get_mut(k).expect("a portion of what is left") -= v;
-                    }
-                    part
-                })
-                .collect();
-            portions.insert(holder, split.into_iter());
-        }
-        let mut meals: Vec<Option<Ledger>> = plans
-            .iter()
-            .map(|p| {
-                p.demands.meal.as_ref().map(|(holder, ..)| {
-                    portions
-                        .get_mut(holder)
-                        .and_then(Iterator::next)
-                        .expect("a portion for every meal")
-                })
-            })
-            .collect();
-        // Preserve whole-prey quotas. Where several bites land on one part,
-        // share that part's shortfall before any act writes it (454, 459).
-        let mut bitten: BTreeMap<(Holder, Key), u128> = BTreeMap::new();
-        let graft_parts: std::collections::BTreeSet<_> = plans.iter()
-            .flat_map(|p| p.demands.graft_parts.iter().copied()).collect();
-        for (p, meal) in plans.iter().zip(&meals) {
-            if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
-                for (key, amount) in meal {
-                    *bitten.entry((part, key.clone())).or_default() += u128::from(*amount);
-                }
-            }
-        }
-        for (p, meal) in plans.iter().zip(&mut meals) {
-            if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
-                for (key, amount) in meal.iter_mut() {
-                    let at = (part, key.clone());
-                    let carrying = if graft_parts.contains(&part) { wanted.get(&at).copied().unwrap_or(0) } else { 0 };
-                    let shared = bitten[&at] + carrying;
-                    *amount = fraction(*amount, held(&at), shared);
-                }
-                meal.retain(|_, amount| *amount > 0);
-            }
-        }
+        let meals::Allocated {
+            meals,
+            bitten,
+            graft_parts,
+        } = meals::allocate(&plans, &wanted, &ground, rules);
         let mut planned = BTreeMap::new();
         for ((p, takes), meal) in plans.into_iter().zip(takes).zip(meals) {
             let accounts = takes
@@ -298,13 +277,20 @@ impl Frame {
                 .map(|(k, take)| {
                     // Explicit carrying asks exact part stocks. Bites and
                     // grafts share that one pass-start part/account budget.
-                    let meals = if graft_parts.contains(&k.0) { bitten.get(&k).copied().unwrap_or(0) } else { 0 };
+                    let meals = if graft_parts.contains(&k.0) {
+                        bitten.get(&k).copied().unwrap_or(0)
+                    } else {
+                        0
+                    };
                     let shared = wanted[&k] + meals;
                     let g = fraction(take, held(&k), shared);
                     (k, g)
                 })
                 .collect();
-            let shares = Shares { accounts, meal };
+            let shares = Shares {
+                accounts,
+                meals: meal,
+            };
             planned.insert(
                 p.actor,
                 Planned {

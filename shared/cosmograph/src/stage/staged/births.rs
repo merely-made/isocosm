@@ -75,7 +75,10 @@ impl Staged<'_> {
         child.authored = None;
         for (key, value) in provision {
             self.take(Binding::Actor, key, *value)?;
-            if let Some(given) = crate::anatomy::give(&mut child, rules, key, *value) {
+            let given = if crate::anatomy::root_store::allocation(&child, rules, key).is_some() {
+                crate::anatomy::root_store::initialize(&mut child, rules, key, *value)
+            } else { crate::anatomy::give(&mut child, rules, key, *value) };
+            if let Some(given) = given {
                 for (part, amount) in given? {
                     if self.sim.flowing() {
                         self.stage.legs.push(Leg {

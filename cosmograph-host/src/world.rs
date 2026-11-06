@@ -13,17 +13,52 @@ mod replication;
 pub use replication::ReplicationSnapshot;
 mod commit_gate;
 pub use commit_gate::CommitGate;
+#[cfg(test)]
+mod authority_tests;
+#[cfg(test)]
+mod revision_tests;
 
 #[derive(Clone)]
 struct OpenWorld {
     session: Session,
     sections: BTreeMap<String, Vec<u8>>,
     revision: u64,
+    native_revision: NativeRevision,
     commit_gate: Option<Rc<dyn CommitGate>>,
     native_cut: Cell<Option<Cut>>,
 }
 
 pub struct World(Rc<RefCell<OpenWorld>>);
+
+/// Identity of one accepted native authority in this live world. A fresh
+/// World has a fresh owner even when its saved bytes and sequence agree.
+#[derive(Clone, Debug)]
+pub struct NativeRevision {
+    owner: Rc<()>,
+    sequence: u64,
+}
+
+impl NativeRevision {
+    /// Native publications since this live owner opened, for diagnostics.
+    /// Compare complete tokens to identify the accepted authority.
+    pub fn sequence(&self) -> u64 { self.sequence }
+
+    /// Whether both tokens belong to the same live World, independently of
+    /// which accepted native generation they identify.
+    pub fn same_source(&self, other: &Self) -> bool { Rc::ptr_eq(&self.owner, &other.owner) }
+
+    fn next(&self) -> Result<Self, String> {
+        Ok(Self { owner: self.owner.clone(),
+            sequence: self.sequence.checked_add(1).ok_or("native revision overflow")? })
+    }
+}
+
+impl PartialEq for NativeRevision {
+    fn eq(&self, other: &Self) -> bool {
+        self.sequence == other.sequence && self.same_source(other)
+    }
+}
+impl Eq for NativeRevision {}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Cut { pub tick: u64, pub entries: usize, pub state_hash: u64 }
@@ -46,6 +81,7 @@ impl OpenWorld {
 fn same_authority(a: &Session, b: &Session) -> bool {
     a.sim.state() == b.sim.state()
         && a.branch == b.branch && a.entries == b.entries && a.checkpoints == b.checkpoints
+        && a.life_history == b.life_history
         && (std::ptr::eq(a.sim.genesis(), b.sim.genesis()) || a.sim.genesis() == b.sim.genesis())
 }
 
@@ -60,6 +96,7 @@ impl World {
             session,
             sections,
             revision: 0,
+            native_revision: NativeRevision { owner: Rc::new(()), sequence: 0 },
             commit_gate: None,
             native_cut: Cell::new(None),
         })))
@@ -162,6 +199,11 @@ impl World {
     pub fn revision(&self) -> Result<u64, String> {
         Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.revision)
     }
+    /// Opaque, in-memory native authority identity. Section-only publication
+    /// preserves it; reads do not compute a native cut or allocate native IDs.
+    pub fn native_revision(&self) -> Result<NativeRevision, String> {
+        Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.native_revision.clone())
+    }
 
     fn transaction<T>(&self, expected: Option<Cut>, admit: impl FnOnce(&mut Session) -> Result<T, String>)
         -> Result<T, String> {
@@ -173,6 +215,7 @@ impl World {
         let accepted = admit(&mut candidate)?;
         if !same_authority(&candidate, &world.session) {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            let native_revision = world.native_revision.next()?;
             if let Some(gate) = world.commit_gate.clone() {
                 gate.before_publish(
                     &world.session,
@@ -185,6 +228,7 @@ impl World {
             }
             world.session = candidate;
             world.native_cut.set(None);
+            world.native_revision = native_revision;
             world.revision = revision;
         }
         Ok(accepted)
@@ -215,8 +259,10 @@ impl World {
         if world.cut() != before { return Err("prepared binding is stale".into()); }
         let mut candidate = world.session.clone();
         let (value, sections) = admit(&mut candidate, &world.sections)?;
-        if !same_authority(&candidate, &world.session) || sections != world.sections {
+        let native_changed = !same_authority(&candidate, &world.session);
+        if native_changed || sections != world.sections {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            let native_revision = native_changed.then(|| world.native_revision.next()).transpose()?;
             if let Some(gate) = world.commit_gate.clone() {
                 gate.before_publish(
                     &world.session,
@@ -228,7 +274,10 @@ impl World {
                 )?;
             }
             world.session = candidate;
-            world.native_cut.set(None);
+            if let Some(native_revision) = native_revision {
+                world.native_cut.set(None);
+                world.native_revision = native_revision;
+            }
             world.sections = sections;
             world.revision = revision;
         }

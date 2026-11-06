@@ -16,9 +16,9 @@ use std::{
 use winit::keyboard::{Key, NamedKey};
 
 mod probe;
-mod view;
 #[cfg(test)]
 mod tests;
+mod view;
 
 const LEAF: u64 = 0x4d45_534f;
 const MAP: u64 = 0x4d45_4d50;
@@ -35,9 +35,13 @@ pub(super) struct State {
     question: mesocosm_views::Succession,
     dev: mesocosm_views::Dev,
     question_open: bool,
+    tick_reading: u64,
+    review_open: bool,
+    committed: Option<super::reading::CommittedSubject>,
+    source_lifetime: u64,
     frame_us: Vec<u64>,
     commands: Option<isomere::host::WindowCommands>,
-    map_key: Option<(u64, Option<u64>)>,
+    map_key: Option<(cosmograph_host::world::NativeRevision, Option<u64>)>,
     minimap: Option<mesocosm_views::MinimapLeaf>,
     refreshed_revision: Option<u64>,
     refresh_required: bool,
@@ -61,6 +65,10 @@ impl State {
             question: empty_question(),
             dev: Default::default(),
             question_open: false,
+            tick_reading: 0,
+            review_open: false,
+            committed: None,
+            source_lifetime: 0,
             frame_us: Vec::new(),
             commands: None,
             map_key: None,
@@ -73,17 +81,65 @@ impl State {
     fn refresh(&mut self) {
         let start = std::time::Instant::now();
         let host = &mut self.host;
-        host.refresh_scene();
-        let scene_us = start.elapsed().as_micros();
-        host.update_follow();
+        if let Err(why) = host.runtime.synchronize_view() {
+            self.picture.clear();
+            self.error = Some(why);
+            self.refresh_required = true;
+            return;
+        }
+        let current_native = host
+            .runtime
+            .world()
+            .native_revision()
+            .expect("synchronized world retains native authority");
+        if self
+            .committed
+            .as_ref()
+            .is_some_and(|old| !old.native.same_source(&current_native))
+        {
+            self.source_lifetime = self
+                .source_lifetime
+                .checked_add(1)
+                .expect("source lifetime overflow");
+            host.inspection.selected = None;
+            host.inspection.notice = "Selection expired: world source changed. J/L selects again.";
+            host.continuation = super::continuation::Pane::default();
+            host.pointer = super::pointer::Pointer::default();
+            host.board_row = 0;
+            host.follow = None;
+            host.follow_lost = None;
+            self.last_point = None;
+        }
         host.refresh_continuation();
         let continuation_us = start.elapsed().as_micros();
         host.refresh_directing();
         let directing_us = start.elapsed().as_micros();
+        // Finish possible control publications before opening one coherent
+        // read. The guard excludes accepted native or section publication
+        // until DOM facts and the scene input have both been captured.
+        let owner = host.runtime.world().share();
+        let session = match owner.session() {
+            Ok(session) => session,
+            Err(why) => {
+                self.error = Some(why);
+                return;
+            },
+        };
+        let native = owner
+            .native_revision()
+            .expect("read guard retains native authority");
+        let revision = owner.revision().expect("read guard retains world revision");
+        host.refresh_scene();
+        host.update_follow(&session.sim);
+        let scene_us = start.elapsed().as_micros();
         let r = &host.runtime;
-        let sim = r.sim();
-        let map_key = (r.revision().unwrap_or(0), r.critter());
-        if self.map_key != Some(map_key) {
+        let sim = &session.sim;
+        let committed =
+            super::reading::CommittedSubject::capture(host, sim, native.clone(), revision);
+        self.tick_reading = sim.state().tick;
+        self.review_open = r.review().is_some();
+        let map_key = (native, r.critter());
+        if self.map_key.as_ref() != Some(&map_key) {
             self.minimap = Some(mesocosm_views::minimap_leaf(&sim, r.critter()));
             self.map_key = Some(map_key);
         }
@@ -103,12 +159,14 @@ impl State {
             .continuation_reading()
             .or_else(|| host.directing_reading())
             .or_else(|| {
-                r.checkpoint().filter(|_| r.review().is_none()).and_then(|_| r.loop_reading().ok())
+                r.checkpoint()
+                    .filter(|_| r.review().is_none())
+                    .and_then(|_| r.loop_reading().ok())
                     .and_then(|reading| crate::succession::ordinary_of(&sim, &reading))
             });
         self.question_open = question.is_some();
         self.question = question.unwrap_or_else(empty_question);
-        if let Some(dev) = host.dev_reading() {
+        if let Some(dev) = host.dev_reading(sim, committed.inspection.clone()) {
             self.dev = dev;
         }
         let readings_us = start.elapsed().as_micros();
@@ -117,7 +175,11 @@ impl State {
         self.error = None;
         if let Some(scene) = &host.scene {
             if host.runtime.spatial().driver.is_some()
-                && host.runtime.critter().is_some_and(|id| !scene.bodies.iter().any(|b| b.id == id)) {
+                && host
+                    .runtime
+                    .critter()
+                    .is_some_and(|id| !scene.bodies.iter().any(|b| b.id == id))
+            {
                 self.error = Some(host.runtime.played().as_ref().and_then(|e| e.journey.as_ref()).map_or_else(
                     || "This body has no supported standing place here. The terrain remains visible.".into(),
                     |j| format!("Traveling from site {} to site {}, arriving at tick {}.", j.from, j.to, j.arrives)));
@@ -131,30 +193,40 @@ impl State {
                 bodies: host.config.body_mode,
                 budget: host.config.body_budget,
                 light: host.config.body_light,
-                sky: host.config.sun.block(&sim.genesis().rules, r.tick()),
+                sky: host
+                    .config
+                    .sun
+                    .block(&sim.genesis().rules, self.tick_reading),
                 terrain: host.config.terrain_style,
                 terrain_y: at[1] as f32,
                 focus: host.config.dev.then(|| host.followed()).flatten(),
-                selection: host.inspection.selected,
+                selection: committed.selection,
             };
-            if let Err(why) =
-                self.picture
-                    .present(scene, r.revision().unwrap_or(0), presentation)
+            if let Err(why) = self
+                .picture
+                .present(scene, committed.revision, presentation)
             {
                 self.error = Some(why);
             }
         } else {
             self.picture.clear();
             if host.runtime.spatial().driver.is_some() {
-                self.error = Some("This body has no current physical placement in the view.".into());
+                self.error =
+                    Some("This body has no current physical placement in the view.".into());
             }
         }
-        self.refreshed_revision = r.revision().ok();
+        self.refreshed_revision = Some(committed.revision);
+        self.committed = Some(committed);
         self.refresh_required = false;
         if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|value| value == "1") {
-            eprintln!("[mesocosm-view] scene={}us continuation={}us directing={}us readings={}us picture={}us",
-                scene_us, continuation_us - scene_us, directing_us - continuation_us,
-                readings_us - directing_us, start.elapsed().as_micros() - readings_us);
+            eprintln!(
+                "[mesocosm-view] scene={}us continuation={}us directing={}us readings={}us picture={}us",
+                scene_us - directing_us,
+                continuation_us,
+                directing_us - continuation_us,
+                readings_us - scene_us,
+                start.elapsed().as_micros() - readings_us
+            );
         }
     }
 
@@ -166,11 +238,22 @@ impl State {
         self.host.advance();
         self.host.note_outcomes();
         let revision = self.host.runtime.revision().ok();
-        let held = self.host.runtime.checkpoint().is_some()
-            || self.host.runtime.review().is_some();
-        let refresh = self.refresh_required || !held || pumping || self.host.pump.is_some()
-            || revision.is_none() || revision != self.refreshed_revision;
-        if refresh { self.refresh(); }
+        let native = self.host.runtime.world().native_revision().ok();
+        let same_native = native
+            .as_ref()
+            .zip(self.committed.as_ref())
+            .is_some_and(|(native, committed)| *native == committed.native);
+        let held = self.host.runtime.checkpoint().is_some() || self.host.runtime.review().is_some();
+        let refresh = self.refresh_required
+            || !held
+            || pumping
+            || self.host.pump.is_some()
+            || revision.is_none()
+            || revision != self.refreshed_revision
+            || !same_native;
+        if refresh {
+            self.refresh();
+        }
         if self.frame_us.len() < 10000 {
             self.frame_us.push(before.elapsed().as_micros() as u64);
         }
@@ -226,8 +309,9 @@ impl State {
             self.refresh();
             return;
         }
-        let pan_step=crate::section::PAN_STEP*crate::section::half_height_or_default(
-            self.host.config.slab_half_height)/crate::section::SLAB_HALF_HEIGHT;
+        let pan_step = crate::section::PAN_STEP
+            * crate::section::half_height_or_default(self.host.config.slab_half_height)
+            / crate::section::SLAB_HALF_HEIGHT;
         match key {
             Key::Named(NamedKey::ArrowLeft) => self.host.pan.x -= pan_step,
             Key::Named(NamedKey::ArrowRight) => self.host.pan.x += pan_step,
@@ -280,12 +364,12 @@ impl State {
                 .current(&pointed)
                 .map_err(|why| format!("{why:?}"))?;
             let target = match pick {
-                Pick::Thing(id) => {
-                    cosmograph_overlay::mesocosm::NudgeTarget::Thing(cosmograph_overlay::EntityHandle(id))
-                },
-                Pick::Place(id) => {
-                    cosmograph_overlay::mesocosm::NudgeTarget::Place(cosmograph_overlay::PlaceHandle(id))
-                },
+                Pick::Thing(id) => cosmograph_overlay::mesocosm::NudgeTarget::Thing(
+                    cosmograph_overlay::EntityHandle(id),
+                ),
+                Pick::Place(id) => cosmograph_overlay::mesocosm::NudgeTarget::Place(
+                    cosmograph_overlay::PlaceHandle(id),
+                ),
                 Pick::Nothing => return Ok(()),
             };
             if button == Button::Secondary {
@@ -343,7 +427,9 @@ impl Product for WindowProduct {
     }
     fn frame(&mut self, ctx: &mut Ctx<'_, Self>) -> bool {
         let refresh = ctx.runner.update_deferred(State::frame_step);
-        if refresh { ctx.runner.update(|_| {}); }
+        if refresh {
+            ctx.runner.update(|_| {});
+        }
         let minimap = ctx.runner.update_deferred(|s| s.minimap.take());
         if let Some(minimap) = minimap {
             ctx.leaves.insert(MAP, Box::new(minimap));

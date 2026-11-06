@@ -307,6 +307,7 @@ impl Founding {
         weather.priority = -1;
         processes.insert(weather.id.clone(), weather);
         let mut rules = Rules {
+            root_stores: BTreeMap::new(),
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

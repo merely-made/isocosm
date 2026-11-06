@@ -288,6 +288,7 @@ impl BodyFounding {
             }
         }
         let rules = Rules {
+            root_stores: BTreeMap::new(),
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),

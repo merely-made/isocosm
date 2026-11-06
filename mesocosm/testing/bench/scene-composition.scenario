@@ -1,0 +1,118 @@
+# Real Assembly mixed DOM/scene fixture; do not use the DOM-only --bench.
+# Both runs: --bench-world --dev --paused --seed 9 --population 256 --bodies voxels
+# --bench-epoch 1000; compare retained with the optional --component-scene.
+# Start paused before warmup. Holds below mean a retained paused picture,
+# not a native checkpoint. Timings are host CPU work, not GPU/display latency.
+settle 8
+assert snap mode == played
+assert snap dev == true
+assert snap bodies == voxels
+assert snap paused == yes
+assert snap manual-steps == 0
+assert snap steps == 0
+assert snap tick == 0
+assert snap controlled >= 0
+assert snap voxel-bodies >= 1
+assert snap scene-extractions >= 1
+assert snap native-sequence >= 0
+assert snap committed-native-sequence >= 0
+assert snap committed-revision >= 0
+assert snap projection-failures == 0
+remember paused
+
+cost-begin paused_picture
+settle 60
+cost-end
+same paused hash steps manual-steps native-sequence committed-native-sequence committed-revision source-lifetime scene-extractions
+same paused successful-scene-draws known-body-mesh-bytes known-body-instance-bytes
+
+# Selection is obtained from an actual presented part, never a fixture ID.
+act i
+settle 3
+act l
+settle 3
+assert snap inspecting == yes
+assert snap selected-organism >= 0
+assert snap selected-part >= 0
+assert snap inspection-ready == yes
+assert text part inspection (dev truth)
+same paused hash steps manual-steps native-sequence source-lifetime scene-extractions
+remember inspected
+
+cost-begin inspected_picture
+settle 60
+cost-end
+same inspected hash steps manual-steps native-sequence committed-native-sequence committed-revision source-lifetime scene-extractions
+same inspected successful-scene-draws known-body-mesh-bytes known-body-instance-bytes
+
+cost-begin camera
+act v
+settle 3
+act z
+settle 3
+act right
+settle 3
+act left
+settle 3
+cost-end
+same inspected hash steps manual-steps native-sequence committed-native-sequence committed-revision source-lifetime scene-extractions
+more inspected successful-scene-draws
+
+# Walking/clearing real parts and opening/closing the inspector also reorders
+# its keyed DOM panel relative to map/vitals. Speed controls are host-only.
+cost-begin inspector_interaction
+act l
+settle 3
+act j
+settle 3
+act u
+settle 3
+act l
+settle 3
+act i
+settle 3
+act i
+settle 3
+act [
+act ]
+settle 6
+cost-end
+assert snap inspecting == yes
+assert snap selected-part >= 0
+assert snap inspection-ready == yes
+same inspected hash steps manual-steps native-sequence committed-native-sequence committed-revision source-lifetime scene-extractions
+remember before_steps
+
+# Native stepping changes the committed input; it is separate from UI-only work.
+cost-begin native_steps
+act .
+settle 4
+act .
+settle 4
+act .
+settle 4
+cost-end
+assert snap paused == yes
+assert snap manual-steps == 3
+more before_steps steps native-sequence committed-native-sequence committed-revision scene-extractions
+differs before_steps hash
+same before_steps source-lifetime
+assert snap projection-failures == 0
+act l
+settle 4
+assert snap inspecting == yes
+assert snap selected-organism >= 0
+assert snap selected-part >= 0
+assert snap inspection-ready == yes
+remember final_picture
+
+cost-begin post_step_picture
+settle 60
+cost-end
+same final_picture hash steps manual-steps native-sequence committed-native-sequence committed-revision source-lifetime scene-extractions
+same final_picture successful-scene-draws known-body-mesh-bytes known-body-instance-bytes
+assert snap projection-failures == 0
+assert snap inspection-ready == yes
+
+# Screenshot readback and PNG encoding are outside every timed phase.
+capture mixed-inspection

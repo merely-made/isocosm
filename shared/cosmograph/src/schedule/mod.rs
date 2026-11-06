@@ -20,7 +20,7 @@ mod frame;
 mod pass;
 
 pub(crate) use filed::{Changed, Filed, Gates, World};
-pub(crate) use frame::{Demands, Frame, Planned, Shares, edible, fits, merge, merge_site};
+pub(crate) use frame::{Demands, Frame, MealSpec, Planned, Shares, edible, fits, merge, merge_site};
 pub(crate) use pass::Pass;
 
 use crate::{
@@ -90,7 +90,8 @@ fn framed(p: &Process) -> bool {
     // A count of members reads the bodies its pass may bear, move or kill.
     // So does a sense reading (1071): its crowding, gradient or activity.
     let counts = p.requires.iter()
-        .any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. } | Query::Sensed { .. }));
+        .any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. }
+            | Query::MembersPerHead { .. } | Query::FoodPerHead { .. } | Query::Sensed { .. }));
     p.target.is_some()
         || counts
         || p.risk.is_some()
@@ -211,6 +212,7 @@ impl Simulation {
             // another writes (ruling 454).
             self.frame = framed(process).then(|| Frame::starting(self.state.notes.len()));
             self.chosen.begin_pass();
+            self.diagnostic_birth_opportunities(process, |born| self.due_for(process, born));
             #[cfg(test)]
             self.record_food_pass(&id);
             if process.takes_shared() {

@@ -185,7 +185,9 @@ Each member carries a small learned delta on its lineage's policy and a recurren
 learned within its life from how its acts served it (the served-ness `answered` already
 measures), faster in youth (EB2) and fading as memory does (Record 3). Culture's mechanisms
 (1053, 1058) follow it.
-- Done when: not stated; set when M3.5 lands
+- Implementation reading, 2026-11-03: give the chooser sensed target features and a persistent intention before increasing network size. Keep inherited weights, individual memory/recurrent state, learned preferences and cultural transmission distinct. Shared weights do not make different remembered histories foldable. Body-derived food value and costs come from the sim's S10; significance is a separate judgment over the same observed outcomes. The completed sim S10.1 measurements additionally find actual producer-only feeding ports beside role-derived prey counts and part-sized meal constraints; chooser features must describe native admitted food. These refinements remain proposed until their concrete learning rule and observation contract are settled.
+- Continuation, 2026-11-04: sim S10.3 now implements shared exposed-food admission for native targeting, breeding and meals, with explicit producer-eating, animal-eating and mixed founding ports and conserved undigested intake. Its unchanged-rule diagnostic is exactly neutral; the aligned three-month trajectory has its own identity. M3.6 must consume the resulting native affordances and observed outcomes. Recurrent state, per-member deltas and a learning rule remain separate unimplemented work; a short ecology diagnostic does not qualify them.
+- Done when: a stated delayed-reward task and a player-demonstration task distinguish lifetime learning from the fixed utility and inherited-policy controls; learned state survives save/replay, never bypasses feasibility, and changes autonomous behavior after the direction ends. Broader memory, culture and sapience gates remain their owners'.
 - Needs: M3.5
 - Rulings: 1051, 1053, D1
 - From: the creature minds brief §3.2, §3.6.
@@ -406,6 +408,7 @@ review (`lineage/review.rs`) is what the player picks from.
 - Needs: a coarse step that pays (E6's rate models, or case 1075's coarser rung); a web that
   lives a year (case 1077's retune).
 - Rulings: 684, 1075, 1077, 1083, 1094, ecology.1
+- Implementation reading, 2026-11-03: the sim's S5.1 makes unattended boundary adoption explicit. An evaluation reports extinction at its horizon separately from whether it can rank candidates; identical terminal zero scores are not evidence that the approximation selected well. Ecological persistence, lineage reproductive success and hagiograph significance share observations, not one reward. Candidate diversity, exact goal witnesses and the learning-rule choice remain follow-on design; this pass does not replace the current ranking or offer repertoire.
 - 2026-11-02: grouped execution plus E4's bands, the coarse copy today's machinery makes
   (`lineage/boundary/coarse_tests.rs`, `coarse_readout`), is slower than the exact copy, not
   faster: the played line's policy candidates at 20, 180 and 600 ticks took 6.8, 36 and 107 s

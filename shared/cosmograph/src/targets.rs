@@ -42,6 +42,9 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Age { .. } | Query::Condition { .. } | Query::Mood { .. } | Query::MoodBelow { .. }
         | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. }
+        | Query::MembersPerHead { .. }
+        | Query::FoodPerHead { .. }
+        | Query::EmptyBody
         | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         Query::Related { .. }
@@ -120,6 +123,29 @@ impl Targets {
 }
 
 impl Simulation {
+    /// Resident food holders admitted by the named physical food contract.
+    /// Does not read appetite, due clocks, or role-labelled prey sets.
+    pub fn available_food(&self, actor: Id, feed: &str) -> crate::Result<u64> {
+        let body = self.body_at_start(actor).ok_or("food actor is missing")?;
+        let Some(site) = body.resident_site().filter(|_| body.alive) else { return Ok(0) };
+        let p = self.genesis.rules.processes.get(feed).ok_or("food contract is missing")?;
+        if p.port_feeding.as_ref().is_none_or(|f| f.meal.is_none()) { return Err("food count requires an actual-part meal contract".into()); }
+        if p.requires.iter().any(|q| matches!(q, Query::Trait { who: Binding::Actor, key } if !body.traits.contains(key))) {
+            return Err("food actor does not carry the feed's inherited identity".into());
+        }
+        let mut selector = p.target.clone().ok_or("food contract has no target selector")?;
+        selector.same_place = true;
+        let mut total = 0u64;
+        for first in self.searched(&selector, site) {
+            let Some((first, count)) = self.target_span(first) else { continue };
+            let Some(prey) = self.body_at_start(first).filter(|e| e.resident_site() == Some(site)) else { continue };
+            if p.food_weight(body, prey, &self.genesis.rules, &self.state.lineages) > 0 {
+                let own = u64::from(first <= actor && actor < first + count);
+                total = total.saturating_add(count - own);
+            }
+        }
+        Ok(total)
+    }
     fn target_span(&self, id: Id) -> Option<(Id, u64)> {
         let population = &self.state.population;
         match &self.pass {
@@ -195,7 +221,7 @@ impl Simulation {
             return 0;
         };
         let accepted = self.searched(selector, place).into_iter().filter(|first| offered(*first).is_some());
-        self.weighed(actor, accepted).1
+        self.weighed(actor, p, accepted).1
     }
 
     /// Where `actor`'s search for `p` looks from, and the member each group
@@ -255,7 +281,7 @@ impl Simulation {
     /// The accepting groups `firsts` weighed for a draw, in identity order:
     /// each member but the actor by the matter it holds, so the same member
     /// is drawn however its equals are grouped; and their total.
-    fn weighed(&self, actor: Id, firsts: impl Iterator<Item = Id>) -> (Vec<(Id, bool, u128, u128)>, u128) {
+    fn weighed(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> (Vec<(Id, bool, u128, u128)>, u128) {
         let rules = &self.genesis.rules;
         let mut eligible = Vec::new();
         let mut total = 0u128;
@@ -265,7 +291,9 @@ impl Simulation {
             let members = u128::from(count - u64::from(within));
             // A group's members began the pass alike: an act lifts out the
             // member it changes, or writes a cohort whole.
-            let held = mass(&self.books_at_start(first).expect("filed groups exist"), rules);
+            let held = if p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some()) {
+                p.food_weight(self.body_at_start(actor).expect("actor exists"), self.body_at_start(first).expect("prey exists"), rules, &self.state.lineages)
+            } else { mass(&self.books_at_start(first).expect("filed groups exist"), rules) };
             if members > 0 && held > 0 {
                 total += members * held;
                 eligible.push((first, within, members, held));
@@ -277,7 +305,7 @@ impl Simulation {
     /// The member drawn among the accepting groups `firsts`, each member
     /// weighted by the matter it holds.
     fn drawn(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> Option<Id> {
-        let (eligible, total) = self.weighed(actor, firsts);
+        let (eligible, total) = self.weighed(actor, p, firsts);
         if total == 0 {
             return None;
         }

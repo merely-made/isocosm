@@ -35,7 +35,29 @@ A standalone Cosmograph viewer (case 1038): a native Graphshell client of the co
 - From: case 1038; founding, branching and drawing ruled in case 1048.
 
 ### H8. The other products on the core
-Later, no phases yet; each gets phases here when it starts: Eponym's `session` on the core (founding a generated world, asks through the UI, succession in the client); the VTT over the sim (in-app campaign founding from a seeded draw); Eponym's motion adopting the core's `Clock`; the VTT on the explicit step; and H5's import of Eponym's Game13 and the VTT campaign into `WorldSave` with the product section kept as opaque bytes (only the Mesocosm `GameSave` import has a stated condition, and it is met). Pacing stays per product under 927: Eponym paces motion at 60 Hz by `Instant` and drops its backlog after eight catch-up steps, the VTT has no wall clock (consented downtime), Mesocosm uses `Clock` (rational steps, the cap defers). Unifying them is not asked.
+Product-host and import acceptance remain here: Eponym's `session` on the
+core (founding a generated world, asks through the UI, succession in the
+client); the VTT over the sim (in-app campaign founding from a seeded draw)
+and its explicit step; and H5's import of Eponym's Game13 and the VTT campaign
+into `WorldSave` with the product section kept as opaque bytes (only the
+Mesocosm `GameSave` import has a stated condition, and it is met).
+
+**Pacing inventory, 2026-11-04:** the core already supplies rational `Clock`,
+round/simming `Pacer` and ordered worker/in-step `Ticker` in
+`cosmograph-host/src/drive/{clock,round}.rs`. A round authorizes sixty
+foreground steps per real second, scaled world time and a background minute;
+simming uses the tick-rate dial. Eponym's session already consumes `Pacer`
+and `Ticker`: `Instant` measures elapsed host time, rather than providing a
+separate pacing engine. Its product policy still limits local drawn-motion
+work to eight steps times speed per frame and lets excess local steps go;
+due background minutes remain owed and run one at a time
+(`eponym-client/src/round.rs`). Mesocosm uses the core `Clock` through its
+driver, whose cap defers steps. The VTT's consented downtime stays explicit.
+Product pacing policy remains separate from rendering demand under 927;
+retaining a picture neither advances native time nor replaces a minute's
+admitted foreground handbacks. Shared presentation receiving continues in
+[scene composition C6](2026-11-04_scene_composition_plan.md#c6-shared-qualified-output-and-native-frame-receiving).
+
 - Done when: not stated; owed. For the import, the one stated form is H5's: "a save written by the Mesocosm head loads in the core and resumes to the same hash, and an unknown section survives a round trip untouched."
 - Needs: H0 to H5 (built); for the VTT, `vtt-overlay V2`; for Eponym, `eponym-overlay`
 - Rulings: 927, 954 to 957
@@ -84,6 +106,15 @@ Cambium controls connected to the logged window-attention command, using the cur
 - **H6's measurement**: H6's done-condition says "frame pacing and pointer picking in the viewport leaf are measured against today's loop." "Today's loop" was the hand-rolled loop the head has since left, and no measurement is on record; the old plan gave no alternative. Is the measurement still wanted, and against what? From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md` H6, lines 236-247.
 
 ## Findings
+- 2026-11-04 (H8): current Eponym imports the shared `Pacer` and `Ticker`
+  (`eponym/crates/eponym-client/src/round.rs:10,69-74`); its local motion cap
+  and owed background minutes are distinct (`:134-153`). The former
+  `Instant`-versus-`Clock` inventory hid that shared mechanism. Native
+  attention remains an admitted window contribution
+  (`shared/cosmograph/src/attention/admission.rs`); `spatial/tier.rs`
+  derives the participant's capped foreground, and `spatial/handback.rs`
+  validates minute handbacks without moving matter. This source audit does
+  not close H8's remaining product-host or import acceptance.
 - 2026-10-28: `cosmograph-host/Cargo.toml` has `default = []` with features `fixtures`, `endpoint` and `society`; there is no `ui/` and no desktop shell. The old plan's finding that `cosmograph-host` depends on the products is history. `host/src` holds `world`, `save`, `binding`, `founding`, `drive/{clock,input}`, `endpoint`, `window`, `native_attention`, `access`.
 - 2026-10-28: the Mesocosm head runs on the core and `Assembly` (`mesocosm-genet/src/lib.rs` says so). `chrome.rs` survives as a "compatibility raster adapter for the retained panel/GPU reference tests", and `review`, `vitals`, `dev`, `succession` and `hud` still import it; `played.rs` still carries the `frame_graph` receipt block; the dev tile is still a hand-walk of a `TileTree` in `dev.rs`. This corrects the old isomere status, which said the main binary had not moved.
 - 2026-10-28: the executable-location ruling (442) is met: `cosmograph-host/` is a workspace of its own.
@@ -107,3 +138,7 @@ Cambium controls connected to the logged window-attention command, using the cur
 - 2026-10-31: H9's endpoint half on branch `world-graph-viewer`: the core endpoint offers a second projection, the world graph (`cosmograph-host/src/endpoint/{graph,graph_world,timeline}.rs`), with regions, sites, routes, resident groups, kin, locations and polities; closed clusters as sceno folds; domain filters; advance, scrub, branch, line switch, and a death or birth inside a branch.
 - 2026-10-31: H9's viewer: `world-graph-viewer`, a binary behind `cosmograph-host`'s `viewer` feature, a Graphshell client of the core endpoint over the in-process carrier, drawn by `graphshell_host::board` on Pictograph's board in a Cambium window, with a scenario lane; the H9 scenario passes on two seeds nobody chose, one capture per step (receipts in `archive_docs/receipts/2026-10-28_sim_host_plan_receipts.md`).
 - 2026-10-31: H9's layout: the viewer draws node-sized cards (132 by 30) under a camera (wheel zoom, drag pan, fitted or actual size) with the force law chosen in the panel, Springs by default; the H9 scenario adds the clustering, law and camera steps and passes (receipts).
+- 2026-11-04: corrected H8's timing inventory against current `Clock`,
+  `Pacer`, `Ticker` and Eponym receiving source; separated local motion caps,
+  due native minutes and shared rendering continuation. No pacing or native
+  authority change is implied by this documentation correction.

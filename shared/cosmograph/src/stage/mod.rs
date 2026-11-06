@@ -33,6 +33,9 @@ pub(crate) use staged::Staged;
 
 pub(crate) struct Stage {
     pub(crate) process: Key,
+    /// Structural declaration path: phase/index, then branch side/index.
+    /// Transient only, used to match each Eat to its planned quota.
+    pub(crate) effect_at: Vec<usize>,
     pub(crate) action: Key,
     pub(crate) scheduled: bool,
     ecology_credits: Vec<crate::ecology::Credit>,
@@ -121,6 +124,7 @@ impl Simulation {
         }
         Ok(Stage {
             process: String::new(),
+            effect_at: Vec::new(),
             action: String::new(),
             scheduled: false,
             ecology_credits: Vec::new(),

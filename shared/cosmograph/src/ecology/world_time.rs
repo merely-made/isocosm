@@ -37,6 +37,8 @@ const LIGHT_PER_GROWTH: u64 = 3_000;
 
 /// What bodies shed and bites lose, until decomposers turn it to soil.
 pub const DETRITUS: &str = "world:detritus";
+/// Foreign, conserved food on a real intake part; never retained tissue.
+pub const INGESTA: &str = "world:ingesta";
 
 /// One role's life in world time. Minutes unless named otherwise; matter in
 /// the body's own account.
@@ -120,6 +122,9 @@ fn shed(body: &str, account: &str, amount: u64) -> Vec<Effect> {
 /// The processes and bodies of a world-time ecology; the stock world's
 /// sunlight, soil and kingdoms are already laid by `super::configure`.
 pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
+    if founding.bodies.is_some() && founding.web == crate::ecology::Web::Diets {
+        g.rules.accounts.insert(INGESTA.into(), AccountKind::Matter { lineage: "world:ground".into(), reserve: false, provision: false });
+    }
     let unit = g.rules.tick_microseconds();
     let minutes = |m: u64| minutes_ticks(m, unit);
     let year = year_ticks(unit);
@@ -148,8 +153,24 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     for i in 0..founding.lineages {
         let role = Role::of(founding.web, i);
-        let time = role_time(role);
+        let mut time = role_time(role);
+        let rooted = founding.bodies.is_some();
+        if rooted && role == Role::Grazer {
+            // 1114 adopts a bite of three; retain the meal's one-third
+            // extraction (1078, 1091), with the rest shed as dung.
+            time.bite = 3;
+            time.kept = 1;
+        }
         let body = format!("matter:{i}-0");
+        if rooted && role == Role::Producer {
+            g.rules.root_stores.insert(body.clone(), RootStore {
+                identity: format!("ability:cycle-{i}"), exposed: 40, stored: 20, seed: time.child, ground_y: 2,
+            });
+            if let Some(death) = g.rules.processes.get_mut(&format!("ecology:death-{i}")) {
+                death.requires.retain(|q| !matches!(q, Query::Below { .. }));
+                death.requires.push(Query::EmptyBody);
+            }
+        }
         let own = format!("ability:cycle-{i}");
         let trait_of = || Query::Trait { who: Binding::Actor, key: own.clone() };
         // No ceiling: lifespan is the tail of the rising hazard (1077).
@@ -189,10 +210,13 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 provision: BTreeMap::from([(body.clone(), time.child)]), scatter: Some(medium.into()) }] });
         }
         if time.prey > 0 {
-            // Breeding slows where food is scarce (1111).
+            // Food per head (1145): provisionally express the former prey
+            // gate at its reference crowd, pending the two-year measurement.
             let among = (0..founding.lineages).filter(|&j| role.eats(Role::of(founding.web, j)))
                 .map(|j| format!("lineage:{j}")).collect();
-            birth.requires.push(Query::Members { among, at_least: time.prey });
+            birth.requires.push(Query::MembersPerHead { among,
+                per: None,
+                at_least: time.prey, per_members: time.crowd });
         }
         g.rules.processes.insert(birth.id.clone(), birth);
         if time.leave > 0 {
@@ -217,13 +241,28 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                         *at_least = LIGHT_PER_GROWTH;
                     }
                 }
+                if rooted {
+                    for (reading, at_least) in [("sense:light-share", LIGHT_PER_GROWTH), ("sense:soil-share", 2)] {
+                        if !grow.requires.iter().any(|q| matches!(q, Query::Sensed { reading: r, .. } if r == reading)) {
+                            grow.requires.push(Query::Sensed { reading: reading.into(), at_least });
+                        }
+                    }
+                }
                 // A producer grows to what a seeding needs, then holds; a
                 // wounded one, below adult size, grows again besides.
                 let mut regrow = grow.clone();
                 grow.requires.push(Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult + time.child });
                 regrow.id = format!("ecology:regrow-{i}");
                 regrow.period = Some(minutes(time.regrow));
-                regrow.requires.push(Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult });
+                if rooted {
+                    // Regrowth redistributes the store, independently of
+                    // light and soil. The native effect reads the actual
+                    // exposed deficit, even while surplus fills the root.
+                    regrow.effects = vec![Effect::Regrow { account: body.clone(), amount: 2.into() }];
+                    regrow.requires = vec![Query::Alive(Binding::Actor), trait_of()];
+                } else {
+                    regrow.requires.push(Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult });
+                }
                 g.rules.processes.insert(regrow.id.clone(), regrow);
             }
             continue;

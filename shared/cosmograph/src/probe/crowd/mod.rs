@@ -106,6 +106,9 @@ impl<'w> Crowd<'w> {
     fn assemble(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Result<Self> {
         world.genesis.validate()?;
         world.movement_supported()?;
+        if world.genesis.rules.processes.values().any(|p| p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some())) {
+            return Err("partitioned intake is outside independent crowd support; use the native runner".into());
+        }
         let mut bins = BTreeMap::new();
         for group in world.genesis.population.groups.values() {
             *bins.entry(normalize(group.entity.as_ref().clone())).or_default() += group.count;

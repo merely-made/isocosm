@@ -51,6 +51,20 @@ impl GameSave {
 }
 
 impl Runtime {
+    /// Adopt the accepted product section before capturing a presentation.
+    /// This does not advance or publish the world. A missing, malformed or
+    /// invalid product section cannot be retagged as a current picture.
+    pub fn synchronize_view(&mut self) -> Result<(), String> {
+        self.refresh();
+        if self.seen != Some(self.world().revision()?) {
+            return Err(self
+                .fault()
+                .unwrap_or("current Mesocosm section could not be adopted")
+                .into());
+        }
+        Ok(())
+    }
+
     /// The core envelope, including sections owned by absent products.
     pub fn save_world(&self) -> Result<WorldSave, String> {
         let mut saved = self.world().save()?;

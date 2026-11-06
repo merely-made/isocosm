@@ -24,6 +24,8 @@ mod follow;
 mod graft;
 mod inspection;
 mod pointer;
+mod reading;
+mod scene_source;
 mod startup;
 
 pub use config::HostConfig;
@@ -34,29 +36,20 @@ pub const DEV_STEP_N: u64 = 10;
 /// Matter the dev `G` key places, in mg: a dev tool's dose, not a rule.
 pub const DEV_PLACE_MG: u64 = mesocosm_runtime::runtime::keymap::DEV_PLACE_MG;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum SceneBranch {
-    Physical,
-    Coarse,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-struct SceneSourceKey {
-    revision: u64,
-    played: Option<Id>,
-    site: Id,
-    branch: SceneBranch,
-}
+use scene_source::{SceneBranch, SceneSourceKey};
 
 pub struct Host {
     config: HostConfig,
     runtime: Runtime,
     /// The played site, lifted, with its placed bodies. Presentation only.
-    scene: Option<SiteScene>,
+    scene: Option<std::rc::Rc<SiteScene>>,
     /// Current native source of the site's derived picture.
     scene_key: Option<(Id, String)>,
     /// Exact successful world cut from which the current scene was built.
     scene_source_key: Option<SceneSourceKey>,
+    scene_observed_revision: Option<u64>,
+    scene_components: Option<crate::played::components::ComponentScene>,
+    scene_extractions: u64,
     /// Where the section sits relative to the body it follows. Presentation.
     pan: Pan,
     last: Option<Instant>,
@@ -93,8 +86,7 @@ impl Host {
             eprintln!("pack admission: {why:?}");
             std::process::exit(1);
         });
-        let mut runtime = startup::configured(&config, &authored)
-        .unwrap_or_else(|why| {
+        let mut runtime = startup::configured(&config, &authored).unwrap_or_else(|why| {
             eprintln!("world: {why}");
             std::process::exit(1);
         });
@@ -143,6 +135,7 @@ impl Host {
             },
             None => None,
         };
+        let dev_paused = config.dev && config.start_paused;
         Self {
             follow: config.follow,
             config,
@@ -150,13 +143,16 @@ impl Host {
             scene: None,
             scene_key: None,
             scene_source_key: None,
+            scene_observed_revision: None,
+            scene_components: None,
+            scene_extractions: 0,
             pan: Pan::default(),
             last: None,
             frame_intervals_us: Vec::new(),
             frames: 0,
             steps: 0,
             board_row: 0,
-            dev_paused: false,
+            dev_paused,
             dev_speed_idx: devtime::DEV_SPEED_DEFAULT_IDX,
             dev_manual_steps: 0,
             follow_lost: None,
@@ -178,42 +174,87 @@ impl Host {
     /// Re-lifts the played site when its successful source cut changes.
     /// Camera and pan are presentation inputs. Returns whether the ground was rebound.
     fn refresh_scene(&mut self) -> bool {
+        if let Err(why) = self.runtime.synchronize_view() {
+            eprintln!("scene source: {why}");
+            self.scene_key = None;
+            self.scene_source_key = None;
+            self.scene_components = None;
+            return self.scene.take().is_some();
+        }
         let sim = self.runtime.sim();
         let played = self.runtime.critter();
         let Some(site) = crate::played::scene::site_of(&sim, played) else {
             self.scene_key = None;
             self.scene_source_key = None;
+            self.scene_components = None;
             return self.scene.take().is_some();
         };
         // A marked physical world never fills a missing native pose with a
         // presentation grid spot, including after birth or a refused arrival.
-        let physical = self.config.spatial.is_some() || self.runtime.spatial().driver.is_some()
+        let physical = self.config.spatial.is_some()
+            || self.runtime.spatial().driver.is_some()
             || played.is_some_and(|id| self.runtime.spatial().members.contains_key(&id));
         let branch = if physical {
             SceneBranch::Physical
         } else {
             SceneBranch::Coarse
         };
-        let source_key = self.runtime.revision().ok().map(|revision| SceneSourceKey {
-            revision,
-            played,
-            site,
-            branch,
+        let revision = self.runtime.revision().ok();
+        let native = self.runtime.world().native_revision().ok();
+        if revision.is_some()
+            && self.scene_observed_revision == revision
+            && native.as_ref().is_some_and(|native| {
+                self.scene_source_key.as_ref().is_some_and(|key| {
+                    key.context_matches(
+                        &self.runtime,
+                        native,
+                        played,
+                        site,
+                        branch,
+                        self.config.component_scene,
+                    )
+                })
+            })
+            && self.scene.is_some()
+        {
+            return false;
+        }
+        let source_key = native.map(|native| {
+            SceneSourceKey::new(
+                &self.runtime,
+                native,
+                played,
+                site,
+                branch,
+                self.config.component_scene,
+            )
         });
+        self.scene_observed_revision = revision;
         if source_key.is_some() && self.scene_source_key == source_key && self.scene.is_some() {
             return false;
         }
 
+        self.scene_extractions += 1;
         let visible = self.runtime.view();
         if physical {
-            let result = self.runtime.physical_view().and_then(|visible| {
-                crate::played::scene::site_scene_physical(
-                    &sim,
-                    played,
-                    &visible,
-                    self.runtime.spatial(),
-                )
-            });
+            let result = self
+                .runtime
+                .physical_view()
+                .and_then(|visible| {
+                    crate::played::scene::site_scene_physical(
+                        &sim,
+                        played,
+                        &visible,
+                        self.runtime.spatial(),
+                    )
+                })
+                .and_then(|scene| {
+                    scene_source::store(
+                        scene,
+                        self.config.component_scene,
+                        &mut self.scene_components,
+                    )
+                });
             return match result {
                 Ok(scene) => {
                     let window = (
@@ -236,30 +277,62 @@ impl Host {
                     eprintln!("physical site: {why}");
                     self.scene_key = None;
                     self.scene_source_key = None;
+                    self.scene_components = None;
                     self.scene.take().is_some()
                 },
             };
         }
         let key = (site, mesocosm_runtime::runtime::placing::terrain_key(&sim));
         if self.scene_key.as_ref() == Some(&key)
-            && let Some(scene) = &mut self.scene
+            && let Some(scene) = &self.scene
         {
-            scene.bodies =
+            let mut bodies =
                 crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
-            scene.volumes = match crate::section::body_volumes(&mut scene.bodies) {
+            let volumes = match crate::section::body_volumes(&mut bodies) {
                 Ok(volumes) => volumes,
                 Err(why) => {
                     eprintln!("site appearance: {why}");
                     self.scene_key = None;
                     self.scene_source_key = None;
+                    self.scene_components = None;
                     return self.scene.take().is_some();
                 },
             };
-            scene.played = played;
+            let scene = SiteScene {
+                site,
+                ground: scene.ground.clone(),
+                window: scene.window.clone(),
+                bodies,
+                played,
+                volumes,
+                walking: scene.walking.clone(),
+            };
+            self.scene = match scene_source::store(
+                scene,
+                self.config.component_scene,
+                &mut self.scene_components,
+            ) {
+                Ok(scene) => Some(scene),
+                Err(why) => {
+                    eprintln!("scene components: {why}");
+                    self.scene_key = None;
+                    self.scene_source_key = None;
+                    self.scene_components = None;
+                    return self.scene.take().is_some();
+                },
+            };
             self.scene_source_key = source_key;
             return false;
         }
-        match crate::played::scene::site_scene_visible(&sim, played, &visible) {
+        let result =
+            crate::played::scene::site_scene_visible(&sim, played, &visible).and_then(|scene| {
+                scene_source::store(
+                    scene,
+                    self.config.component_scene,
+                    &mut self.scene_components,
+                )
+            });
+        match result {
             Ok(scene) => {
                 let changed = self.scene_key.as_ref() != Some(&key);
                 self.scene = Some(scene);
@@ -271,6 +344,7 @@ impl Host {
                 eprintln!("site: {why}");
                 self.scene_key = None;
                 self.scene_source_key = None;
+                self.scene_components = None;
                 self.scene.take().is_some()
             },
         }

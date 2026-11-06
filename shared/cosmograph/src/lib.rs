@@ -82,6 +82,7 @@ pub mod social;
 mod location_authoring;
 mod stage;
 mod strain;
+pub mod store;
 pub mod systems;
 mod targets;
 pub mod terrain;

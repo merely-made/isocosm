@@ -62,6 +62,27 @@ impl Simulation {
             };
             return if yes { Ok(format!("{query:?} = {v}")) } else { Err(format!("missing requirement: {query:?} = {v}")) };
         }
+        if let Query::MembersPerHead { among, per, at_least, per_members } = query {
+            let body = self.body_at_start(actor).filter(|e| e.resident_site() == Some(place));
+            let (members, heads) = body.map_or((0, 0), |e| {
+                let own = std::collections::BTreeSet::from([e.lineage.clone()]);
+                (self.members_at(place, among), self.members_at(place, per.as_ref().unwrap_or(&own)))
+            });
+            let yes = heads > 0 && *per_members > 0
+                && u128::from(members) * u128::from(*per_members)
+                    >= u128::from(heads) * u128::from(*at_least);
+            let reading = format!("{query:?} = {members}/{heads}");
+            return if yes { Ok(reading) } else { Err(format!("missing requirement: {reading}")) };
+        }
+        if let Query::FoodPerHead { feed, at_least, per_members } = query {
+            let body = self.body_at_start(actor).filter(|e| e.resident_site() == Some(place));
+            let food = self.available_food(actor, feed)?;
+            let heads = body.map_or(0, |e| self.members_at(place, &std::collections::BTreeSet::from([e.lineage.clone()])));
+            let yes = heads > 0 && *per_members > 0 && u128::from(food) * u128::from(*per_members)
+                >= u128::from(heads) * u128::from(*at_least);
+            let reading = format!("{query:?} = {food}/{heads}");
+            return if yes { Ok(reading) } else { Err(format!("missing requirement: {reading}")) };
+        }
         if let Query::Sensed { reading, at_least } = query {
             let v = self.sensed(actor, reading);
             return match v {

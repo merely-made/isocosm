@@ -28,7 +28,10 @@ impl Doing<'_> {
         child.authored = None;
         for (key, value) in provision {
             if self.take(Binding::Actor, key, *value).is_err() { return Ok(false); }
-            match crate::anatomy::give(&mut child, self.rules, key, *value) {
+            let given = if crate::anatomy::root_store::allocation(&child, self.rules, key).is_some() {
+                crate::anatomy::root_store::initialize(&mut child, self.rules, key, *value)
+            } else { crate::anatomy::give(&mut child, self.rules, key, *value) };
+            match given {
                 Some(Ok(_)) => {},
                 Some(Err(_)) => return Ok(false),
                 None => credit(&mut child.accounts, key, *value)?,

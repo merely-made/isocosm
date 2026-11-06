@@ -145,6 +145,8 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
         || p.requires.iter().any(|q| {
             let reads = match q {
                 Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. }
+                | Query::MembersPerHead { .. }
+                | Query::FoodPerHead { .. }
                 | Query::Sensed { .. } => return true,
                 Query::Project { .. } | Query::ProjectDecision
                 | Query::InstitutionDecision | Query::Institution { .. } => return true,
@@ -161,6 +163,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Mood { .. }
                 | Query::MoodBelow { .. }
                 | Query::Expresses { .. } => false,
+                Query::EmptyBody => false,
                 Query::Computed(x) => x.reads().iter().any(|u| target(&u.body())),
             };
             reads && !meal
@@ -292,6 +295,9 @@ pub(super) fn act(
     mut run: Run,
     a: Act,
 ) -> Result<Option<Acted>> {
+    if p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some()) {
+        return Err("partitioned intake requires the native individual/grouped runner".into());
+    }
     if identity_bound(p, a.meal.is_some()) {
         return Err(format!(
             "{} depends on identity; it runs individually",

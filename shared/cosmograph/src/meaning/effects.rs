@@ -83,6 +83,16 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
         } => ask
             .resolved()
             .and_then(|ask| carriage::carry(p, rules, *who, (function, *role), (ask, lands))),
+        Effect::Regrow { account, amount } => amount.resolved().and_then(|amount| {
+            let moved = crate::anatomy::root_store::regrowth(
+                p.body(Binding::Actor)?,
+                rules,
+                account,
+                amount,
+            )?;
+            p.take(Binding::Actor, account, moved)?;
+            p.give(Binding::Actor, account, moved)
+        }),
         _ => return None,
     })
 }

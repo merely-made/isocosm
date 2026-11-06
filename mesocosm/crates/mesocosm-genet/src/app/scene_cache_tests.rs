@@ -15,19 +15,29 @@ fn bench_host() -> Host {
 #[test]
 fn drawn_and_authored_native_anatomies_project_without_capsule_fallback() {
     for roster in [false, true] {
-        let mut founded = mesocosm_runtime::Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
+        let mut founded =
+            mesocosm_runtime::Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
         let mut domain = founded.genesis.founding.clone().unwrap();
         domain.bodies.as_mut().unwrap().roster = roster;
         domain.ecology_rates = cosmograph::ecology::Rates::A1;
         founded.genesis = domain.generate().unwrap();
         let runtime = mesocosm_runtime::Runtime::bench_placed(founded, 2).unwrap();
         let sim = runtime.sim();
-        let documents: Vec<_> = sim.state().population.groups.values()
-            .filter_map(|group| group.entity.body.as_ref()).collect();
+        let documents: Vec<_> = sim
+            .state()
+            .population
+            .groups
+            .values()
+            .filter_map(|group| group.entity.body.as_ref())
+            .collect();
         assert!(!documents.is_empty());
-        let volumes = isometer::DeclaredExtentVolumes::generated_from_documents(documents.iter().copied()).unwrap();
+        let volumes =
+            isometer::DeclaredExtentVolumes::generated_from_documents(documents.iter().copied())
+                .unwrap();
         let mut projector = isometer::mesh::LiveBodyProjector::new();
-        for document in documents { projector.project_body(document, &volumes).unwrap(); }
+        for document in documents {
+            projector.project_body(document, &volumes).unwrap();
+        }
     }
 }
 
@@ -38,22 +48,41 @@ fn a_marked_physical_world_does_not_replace_a_missing_pose_with_a_grid_spot() {
     assert!(host.scene.is_some());
     let mut water = mesocosm_runtime::Founded::generated(2_814_468_213_915_169_548, 60).unwrap();
     for site in water.genesis.sites.values_mut() {
-        for (key, value) in [("terrain:elevation", 0), ("terrain:relief", 0), ("terrain:water", 8)] {
+        for (key, value) in [
+            ("terrain:elevation", 0),
+            ("terrain:relief", 0),
+            ("terrain:water", 8),
+        ] {
             site.conditions.insert(key.into(), value);
         }
     }
     host.runtime = mesocosm_runtime::Runtime::bench_placed(water, 2).unwrap();
     host.scene_source_key = None;
     assert!(host.runtime.spatial().driver.is_some());
-    assert!(!host.runtime.spatial().members.contains_key(&host.runtime.critter().unwrap()));
+    assert!(
+        !host
+            .runtime
+            .spatial()
+            .members
+            .contains_key(&host.runtime.critter().unwrap())
+    );
     host.refresh_scene();
-    let scene = host.scene.as_ref().expect("declared native terrain remains visible");
-    assert!(scene.bodies.is_empty(), "an unavailable pose must never acquire a grid body");
-    assert_eq!(Some(scene.site), host.runtime.played().unwrap().resident_site());
+    let scene = host
+        .scene
+        .as_ref()
+        .expect("declared native terrain remains visible");
+    assert!(
+        scene.bodies.is_empty(),
+        "an unavailable pose must never acquire a grid body"
+    );
+    assert_eq!(
+        Some(scene.site),
+        host.runtime.played().unwrap().resident_site()
+    );
 }
 
 #[test]
-fn successful_scene_is_reused_only_for_the_same_world_cut() {
+fn successful_scene_is_reused_for_unchanged_native_and_picture_sources() {
     let mut host = bench_host();
     assert!(host.refresh_scene());
     let scene = host
@@ -67,6 +96,7 @@ fn successful_scene_is_reused_only_for_the_same_world_cut() {
     let body_storage = scene.bodies.as_ptr();
     let initial_output = format!("{:?}", scene.bodies);
     let initial_revision = host.runtime.revision().unwrap();
+    let extractions = host.scene_extractions;
 
     assert!(!host.refresh_scene());
     assert_eq!(host.scene.as_ref().unwrap().bodies.as_ptr(), body_storage);
@@ -77,11 +107,11 @@ fn successful_scene_is_reused_only_for_the_same_world_cut() {
         .unwrap();
     let section_revision = host.runtime.revision().unwrap();
     assert!(section_revision > initial_revision);
-    // The first section publication invalidates the source. It does not alter
-    // the scene's ground or the rendered body data.
+    // Opaque sections advance action admission without changing native bodies.
     assert!(!host.refresh_scene());
     let after_section = host.scene.as_ref().unwrap();
-    assert_ne!(after_section.bodies.as_ptr(), body_storage);
+    assert_eq!(after_section.bodies.as_ptr(), body_storage);
+    assert_eq!(host.scene_extractions, extractions);
     assert_eq!(format!("{:?}", after_section.bodies), initial_output);
     let section_body_storage = after_section.bodies.as_ptr();
 
@@ -103,10 +133,11 @@ fn successful_scene_is_reused_only_for_the_same_world_cut() {
     let changed_section_revision = host.runtime.revision().unwrap();
     assert!(changed_section_revision > section_revision);
     assert!(!host.refresh_scene());
-    assert_ne!(
+    assert_eq!(
         host.scene.as_ref().unwrap().bodies.as_ptr(),
         section_body_storage
     );
+    assert_eq!(host.scene_extractions, extractions);
     assert_eq!(
         format!("{:?}", host.scene.as_ref().unwrap().bodies),
         initial_output
@@ -117,8 +148,32 @@ fn successful_scene_is_reused_only_for_the_same_world_cut() {
     assert_eq!(host.runtime.step(1), 1, "bench advances one native round");
     assert!(host.runtime.revision().unwrap() > before_native_revision);
     host.refresh_scene();
+    assert_eq!(host.scene_extractions, extractions + 1);
     assert_ne!(
         host.scene.as_ref().unwrap().bodies.as_ptr(),
         before_native_step
+    );
+}
+
+#[test]
+fn opaque_section_publication_keeps_scene_body_storage() {
+    let mut host = bench_host();
+    assert!(host.refresh_scene());
+    let scene = host.scene.as_ref().unwrap();
+    assert!(!scene.bodies.is_empty());
+    let bodies = scene.bodies.as_ptr();
+    let data = format!("{:?}", scene.bodies);
+    let revision = host.runtime.revision().unwrap();
+    host.runtime
+        .world()
+        .put_section("unrelated-projection-control", vec![7, 11])
+        .unwrap();
+    assert!(host.runtime.revision().unwrap() > revision);
+    assert!(!host.refresh_scene());
+    assert_eq!(format!("{:?}", host.scene.as_ref().unwrap().bodies), data);
+    assert_eq!(
+        host.scene.as_ref().unwrap().bodies.as_ptr(),
+        bodies,
+        "an opaque section publication must not re-extract unchanged native bodies"
     );
 }
