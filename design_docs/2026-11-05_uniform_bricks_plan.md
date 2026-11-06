@@ -1,6 +1,7 @@
 # Uniform bricks
 
-**Status:** 2026-11-05: plan. Nothing built. D1 to D4 answered.
+**Status:** 2026-11-05: in progress. D1 to D4 answered; UB1 landed (growth
+8 to 10 times faster, output identical); UB2 to UB4 open.
 
 **For:** `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`)
 growing a brick at a time, keeping a brick of one material as that material,
@@ -58,7 +59,7 @@ Answered by Mark on 2026-11-05, in answer order.
 
 ## Phases
 
-### UB1. Brick-wise growth
+### UB1. Brick-wise growth (landed 2026-11-05)
 
 `grow_with` builds each brick's 512 materials in a local buffer and inserts
 the brick once, instead of one map lookup per voxel through `place()`.
@@ -145,6 +146,15 @@ creative and a survival scene, idle and while the sim runs.
 - 2026-11-05: nisus's `VoxelChunk<T>` is a dense `Vec<T>` with no uniform form
   (`mere/crates/conatus/nisus/src/lib.rs:143`).
 
+- 2026-11-05: brick-wise growth (`ground/fill.rs`, `Ground::fill_columns`)
+  grows the 1x, 10x and 100x test grounds in 15 ms, 191 ms and 2.39 s, against
+  119-215 ms, 1.95 s and 23.0 s per voxel. The test
+  `brick_wise_growth_matches_the_per_voxel_path` keeps the old loop as its
+  reference and compares five reliefs (one with cavities) at four extents,
+  equality and encoded bytes; it fails when one brick layer is dropped.
+
 ## Progress
 
 - 2026-11-05: plan written; D1 to D4 answered; SP6 carries D4.
+- 2026-11-05: UB1 landed: `Ground::fill_columns` gathers each brick in a
+  buffer and stores it once.

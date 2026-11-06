@@ -186,19 +186,7 @@ impl Ground {
             dirty: BTreeSet::new(),
         };
 
-        for z in -extent..=extent {
-            for x in -extent..=extent {
-                let surface = terrain.surface(extent, x, z);
-                for y in 0..=surface {
-                    let chosen = material(x, z, surface - y);
-                    debug_assert!(
-                        chosen <= MAX_MATERIAL,
-                        "material {chosen} at [{x}, {y}, {z}] is past the palette bound {MAX_MATERIAL}"
-                    );
-                    ground.place([x, y, z], chosen.min(MAX_MATERIAL));
-                }
-            }
-        }
+        ground.fill_columns(terrain, &material);
 
         // Rooms first, then the way in. The entry descends one voxel per
         // horizontal step, because a vertical hollow is a picture of a burrow
@@ -475,6 +463,7 @@ impl Brick {
 }
 
 mod columns;
+mod fill;
 
 #[cfg(test)]
 mod material_tests;
