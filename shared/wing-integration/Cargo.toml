@@ -49,6 +49,8 @@ rust-version = "1.97.1"
 # workspace; patches in the repository's other Cargo workspaces do not cross
 # this workspace boundary.
 [patch.crates-io]
+# Lua: the family fork of piccolo, matching genet's script-engine-piccolo.
+piccolo = { git = "https://github.com/merely-made/didgeridoo", branch = "main" }
 # Promoted sources shared with immutable older Mere suppliers.
 # Canonical promoted families; keep registry and Git consumers type-identical.
 chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }

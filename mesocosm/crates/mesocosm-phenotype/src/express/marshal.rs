@@ -124,8 +124,8 @@ pub(super) fn proposal_of<'gc>(
 
     // New scripts return `tracts`; a script still written against the old
     // vocabulary returns `sites`, and is read exactly the same way.
-    let (key, tracts) = match table.get(ctx, "tracts") {
-        Value::Nil => match table.get(ctx, "sites") {
+    let (key, tracts) = match table.get_value(ctx, "tracts") {
+        Value::Nil => match table.get_value(ctx, "sites") {
             Value::Nil => return Ok(Proposal::default()),
             found => ("proposal.sites", as_table(found, "proposal.sites")?),
         },
@@ -141,7 +141,7 @@ pub(super) fn proposal_of<'gc>(
 
     let mut out = Vec::new();
     for index in 1..=entries {
-        let tract = as_table(tracts.get(ctx, index), &format!("{key}[]"))?;
+        let tract = as_table(tracts.get_value(ctx, index), &format!("{key}[]"))?;
         out.push(Expression {
             part: u32::try_from(integer(ctx, tract, "part")?).map_err(|_| Refused::Malformed {
                 why: "part is not a part address".to_owned(),
@@ -195,7 +195,7 @@ fn as_table<'gc>(value: Value<'gc>, what: &str) -> Result<Table<'gc>, Refused> {
 
 fn integer<'gc>(ctx: Context<'gc>, table: Table<'gc>, key: &'static str) -> Result<i64, Refused> {
     table
-        .get(ctx, key)
+        .get_value(ctx, key)
         .to_integer()
         .ok_or_else(|| Refused::Malformed {
             why: format!("{key} is not an integer"),
@@ -203,7 +203,7 @@ fn integer<'gc>(ctx: Context<'gc>, table: Table<'gc>, key: &'static str) -> Resu
 }
 
 fn text<'gc>(ctx: Context<'gc>, table: Table<'gc>, key: &'static str) -> Result<String, Refused> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::String(found) => {
             String::from_utf8(found.as_bytes().to_vec()).map_err(|_| Refused::Malformed {
                 why: format!("{key} is not UTF-8"),

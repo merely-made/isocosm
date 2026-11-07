@@ -196,6 +196,8 @@ taproot = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # takes the revision the deps above take, for the same one-source-one-reference
 # reason.
 [patch.crates-io]
+# Lua: the family fork of piccolo, matching genet's script-engine-piccolo.
+piccolo = { git = "https://github.com/merely-made/didgeridoo", branch = "main" }
 # Promoted sources shared with immutable older Mere suppliers.
 # Canonical promoted families; keep registry and Git consumers type-identical.
 armillary = { git = "https://github.com/merely-made/armillary.git", branch = "main" }

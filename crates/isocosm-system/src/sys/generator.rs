@@ -332,7 +332,7 @@ impl GeneratorRuntime {
             .try_enter(move |ctx| {
                 let request_table = generator_request_table(ctx, &request);
                 let name = piccolo::String::from_slice(&ctx, b"call_gen");
-                let Value::Function(function) = ctx.globals().get(ctx, name) else {
+                let Value::Function(function) = ctx.globals().get_value(ctx, name) else {
                     return Err("generator script does not define call_gen"
                         .into_value(ctx)
                         .into());

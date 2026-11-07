@@ -47,7 +47,7 @@ impl Runner {
         }
         let mut lua = Lua::core();
         lua.enter(|ctx| {
-            if let Value::Table(math) = ctx.get_global("math") {
+            if let Value::Table(math) = ctx.globals().get_value(ctx, "math") {
                 for name in ["random", "randomseed"] {
                     math.set(ctx, name, Value::Nil)
                         .expect("a static name is a valid table key");
@@ -100,7 +100,7 @@ impl Runner {
             .lua
             .try_enter(|ctx| {
                 let name = string(ctx, ENTRYPOINT);
-                let Value::Function(function) = ctx.globals().get(ctx, name) else {
+                let Value::Function(function) = ctx.globals().get_value(ctx, name) else {
                     return Err("no entrypoint".into_value(ctx).into());
                 };
                 let arguments = (
@@ -147,7 +147,10 @@ impl Runner {
 fn run(lua: &mut Lua, executor: &StashedExecutor, fuel: i32) -> Result<(), Refused> {
     let mut budget = Fuel::with(fuel);
     loop {
-        if lua.enter(|ctx| ctx.fetch(executor).step(ctx, &mut budget)) {
+        let complete = lua
+            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut budget))
+            .map_err(|e| Refused::Script { why: e.to_string() })?;
+        if complete {
             return Ok(());
         }
         if !budget.should_continue() {

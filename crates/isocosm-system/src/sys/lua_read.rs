@@ -19,7 +19,9 @@ pub(crate) fn execute_bounded_gen_value(
 ) -> Result<GenValue, String> {
     let mut fuel = Fuel::with(total_fuel);
     loop {
-        let complete = lua.enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel));
+        let complete = lua
+            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel))
+            .map_err(|e| format!("run generator: {e}"))?;
         if complete {
             break;
         }
@@ -179,7 +181,7 @@ pub(crate) fn lua_table_string<'gc>(
     table: Table<'gc>,
     key: &'static str,
 ) -> Result<String, String> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::String(value) => String::from_utf8(value.as_bytes().to_vec())
             .map_err(|_| format!("generated field {key} is not UTF-8")),
         value => Err(format!(
@@ -194,7 +196,7 @@ pub(crate) fn lua_table_table<'gc>(
     table: Table<'gc>,
     key: &'static str,
 ) -> Result<Table<'gc>, String> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::Table(value) => Ok(value),
         value => Err(format!(
             "generated field {key} must be a table, found {}",
@@ -208,7 +210,7 @@ pub(crate) fn lua_table_u32<'gc>(
     table: Table<'gc>,
     key: &'static str,
 ) -> Result<u32, String> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::Integer(value) => {
             u32::try_from(value).map_err(|_| format!("generated field {key} must fit u32"))
         }
@@ -224,7 +226,7 @@ pub(crate) fn lua_optional_string<'gc>(
     table: Table<'gc>,
     key: &'static str,
 ) -> Result<Option<String>, String> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::Nil => Ok(None),
         Value::String(value) => String::from_utf8(value.as_bytes().to_vec())
             .map(Some)
@@ -241,7 +243,7 @@ pub(crate) fn lua_optional_u8<'gc>(
     table: Table<'gc>,
     key: &'static str,
 ) -> Result<Option<u8>, String> {
-    match table.get(ctx, key) {
+    match table.get_value(ctx, key) {
         Value::Nil => Ok(None),
         Value::Integer(value) => u8::try_from(value)
             .map(Some)
@@ -267,7 +269,7 @@ pub(crate) fn lua_map_points<'gc>(
     let length = usize::try_from(table.length())
         .map_err(|_| "generated point-list length is invalid".to_owned())?;
     (1..=length)
-        .map(|index| match table.get(ctx, index as i64) {
+        .map(|index| match table.get_value(ctx, index as i64) {
             Value::Table(point) => lua_map_point(ctx, point),
             value => Err(format!(
                 "generated point must be a table, found {}",
@@ -285,7 +287,7 @@ pub(crate) fn lua_map_cells<'gc>(
         .map_err(|_| "generated cell-list length is invalid".to_owned())?;
     (1..=length)
         .map(|index| {
-            let Value::Table(cell) = table.get(ctx, index as i64) else {
+            let Value::Table(cell) = table.get_value(ctx, index as i64) else {
                 return Err("generated map cell must be a table".to_owned());
             };
             Ok(MapCellProposal {
@@ -307,7 +309,7 @@ pub(crate) fn lua_spawn_zones<'gc>(
         .map_err(|_| "generated spawn-zone list length is invalid".to_owned())?;
     (1..=length)
         .map(|index| {
-            let Value::Table(zone) = table.get(ctx, index as i64) else {
+            let Value::Table(zone) = table.get_value(ctx, index as i64) else {
                 return Err("generated spawn zone must be a table".to_owned());
             };
             Ok(SpawnZone {
@@ -326,7 +328,7 @@ pub(crate) fn lua_transitions<'gc>(
         .map_err(|_| "generated transition list length is invalid".to_owned())?;
     (1..=length)
         .map(|index| {
-            let Value::Table(transition) = table.get(ctx, index as i64) else {
+            let Value::Table(transition) = table.get_value(ctx, index as i64) else {
                 return Err("generated transition must be a table".to_owned());
             };
             Ok(MapTransition {
@@ -347,7 +349,7 @@ pub(crate) fn lua_encounter_anchors<'gc>(
         .map_err(|_| "generated encounter-anchor list length is invalid".to_owned())?;
     (1..=length)
         .map(|index| {
-            let Value::Table(anchor) = table.get(ctx, index as i64) else {
+            let Value::Table(anchor) = table.get_value(ctx, index as i64) else {
                 return Err("generated encounter anchor must be a table".to_owned());
             };
             Ok(EncounterAnchor {
@@ -368,7 +370,7 @@ pub(crate) fn lua_gen_list<'gc>(
     let length = usize::try_from(table.length())
         .map_err(|_| "generated list length is invalid".to_owned())?;
     (1..=length)
-        .map(|index| lua_value_to_gen(ctx, table.get(ctx, index as i64), depth, max_depth))
+        .map(|index| lua_value_to_gen(ctx, table.get_value(ctx, index as i64), depth, max_depth))
         .collect()
 }
 
@@ -379,7 +381,7 @@ pub(crate) fn lua_string_list<'gc>(
     let length = usize::try_from(table.length())
         .map_err(|_| "generated string-list length is invalid".to_owned())?;
     (1..=length)
-        .map(|index| match table.get(ctx, index as i64) {
+        .map(|index| match table.get_value(ctx, index as i64) {
             Value::String(value) => String::from_utf8(value.as_bytes().to_vec())
                 .map_err(|_| "generated list entry is not UTF-8".to_owned()),
             value => Err(format!(

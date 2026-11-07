@@ -341,7 +341,7 @@ impl System {
                     None => Value::Nil,
                 };
                 let fname = piccolo::String::from_slice(&ctx, func.as_bytes());
-                let f = ctx.globals().get(ctx, fname);
+                let f = ctx.globals().get_value(ctx, fname);
                 let Value::Function(f) = f else {
                     return Err("not a function".into_value(ctx).into());
                 };

@@ -1060,7 +1060,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c54e03a951783e8b327515db3f2a2fd0e3bed362a96b066f341ce66ed49b4ead"
 dependencies = [
  "data-encoding",
- "syn 3.0.5",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1552,8 +1552,7 @@ dependencies = [
 [[package]]
 name = "gc-arena"
 version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cd70cf88a32937834aae9614ff2569b5d9467fa0c42c5d7762fd94a8de88266"
+source = "git+https://github.com/kyren/gc-arena?rev=5a7534b883b703f23cfb8c3cfdf033460aa77ea9#5a7534b883b703f23cfb8c3cfdf033460aa77ea9"
 dependencies = [
  "allocator-api2",
  "gc-arena-derive",
@@ -1564,8 +1563,7 @@ dependencies = [
 [[package]]
 name = "gc-arena-derive"
 version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c612a69f5557a11046b77a7408d2836fe77077f842171cd211c5ef504bd3cddd"
+source = "git+https://github.com/kyren/gc-arena?rev=5a7534b883b703f23cfb8c3cfdf033460aa77ea9#5a7534b883b703f23cfb8c3cfdf033460aa77ea9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4400,8 +4398,7 @@ dependencies = [
 [[package]]
 name = "piccolo"
 version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "003bf52de285e1ff1adcbc6572588db3849988ea660a2d55af3a2ffbc81f597f"
+source = "git+https://github.com/merely-made/didgeridoo?branch=main#dcdd02397925d02a2d73ef678e420c994e3e81aa"
 dependencies = [
  "ahash",
  "allocator-api2",

@@ -269,7 +269,9 @@ pub(crate) fn execute_bounded<R: for<'gc> piccolo::FromMultiValue<'gc>>(
 ) -> Result<R, String> {
     let mut fuel = Fuel::with(total_fuel);
     loop {
-        let complete = lua.enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel));
+        let complete = lua
+            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel))
+            .map_err(|e| format!("run generator: {e}"))?;
         if complete {
             break;
         }
