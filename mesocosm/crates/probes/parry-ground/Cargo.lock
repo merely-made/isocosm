@@ -83,7 +83,7 @@ dependencies = [
 [[package]]
 name = "conatus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?branch=main#0c5811eb67ff79035089c900a3baf3b3b5b3a55b"
+source = "git+https://github.com/merely-made/mere.git?branch=main#86942e5303d8479783cd2faa1af92016baa38f39"
 dependencies = [
  "nisus",
  "rapier3d",
@@ -243,7 +243,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#5e85e6ec0c395b9c2971d571841d446403ebbe12"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#2df00e08ee5a6b94abc8ea9ef5bb2f67e40f154c"
 dependencies = [
  "serde",
 ]
@@ -313,7 +313,7 @@ dependencies = [
 [[package]]
 name = "impresa"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#5e85e6ec0c395b9c2971d571841d446403ebbe12"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#2df00e08ee5a6b94abc8ea9ef5bb2f67e40f154c"
 dependencies = [
  "serde",
  "serde_json",
@@ -404,7 +404,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mere-framing"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/mere.git?branch=main#0c5811eb67ff79035089c900a3baf3b3b5b3a55b"
+source = "git+https://github.com/merely-made/mere.git?branch=main#86942e5303d8479783cd2faa1af92016baa38f39"
 dependencies = [
  "postcard",
  "serde",
@@ -444,7 +444,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?branch=main#0c5811eb67ff79035089c900a3baf3b3b5b3a55b"
+source = "git+https://github.com/merely-made/mere.git?branch=main#86942e5303d8479783cd2faa1af92016baa38f39"
 dependencies = [
  "serde",
 ]
@@ -800,7 +800,7 @@ checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
 [[package]]
 name = "state-witness"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?branch=main#0c5811eb67ff79035089c900a3baf3b3b5b3a55b"
+source = "git+https://github.com/merely-made/mere.git?branch=main#86942e5303d8479783cd2faa1af92016baa38f39"
 dependencies = [
  "mere-framing",
  "postcard",
