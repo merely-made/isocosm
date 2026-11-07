@@ -90,7 +90,7 @@ impl Probe {
 
     fn over(ground: isometer_core::ground::Ground, reason: &str) -> Option<Self> {
         let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-        let Some(tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
+        let Some(tracer) = crate::test_gpu::tracer(WIDTH, HEIGHT) else {
             eprintln!("no adapter; skipping {reason}");
             return None;
         };

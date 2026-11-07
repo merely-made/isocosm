@@ -44,7 +44,7 @@ const TILT: f32 = 20.0;
 fn section(forward: [f32; 3]) -> Option<Vec<[u8; 3]>> {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let mut tracer = BrickTracer::headless(192, 128)?;
+    let mut tracer = crate::test_gpu::tracer(192, 128)?;
     let top = ground.surface(0, 0).unwrap_or(0) as f32;
     let camera = TraceCamera::orthographic_slab(
         [0.0, top, 0.0],

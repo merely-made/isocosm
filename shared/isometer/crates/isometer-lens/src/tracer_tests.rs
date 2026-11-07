@@ -36,7 +36,7 @@ fn flight(ground: &Ground) -> Flight {
 fn a_carved_ground_updates_only_its_brick_slots_in_the_live_tracer() {
     let mut ground = ground();
     let mut map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(96, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(96, 64) else {
         eprintln!("no adapter; skipping brick tracer receipt");
         return;
     };
@@ -82,7 +82,7 @@ fn a_carved_ground_updates_only_its_brick_slots_in_the_live_tracer() {
 fn a_steady_brick_frame_has_no_upload_churn() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping brick tracer receipt");
         return;
     };
@@ -114,7 +114,7 @@ fn an_equal_extent_projection_republishes_without_recreating_textures() {
     assert_eq!(first_map.atlas_extent(), second_map.atlas_extent());
     assert_ne!(first_map.origin(), second_map.origin());
 
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping projection replacement receipt");
         return;
     };
@@ -136,7 +136,7 @@ fn an_equal_extent_projection_republishes_without_recreating_textures() {
         replaced.diagnostics.brick_upload_bytes,
         size_of_val(second_map.pointers()) as u64 + second_map.atlas().len() as u64
     );
-    let mut control = BrickTracer::headless(64, 64).expect("control tracer");
+    let mut control = crate::test_gpu::tracer(64, 64).expect("control tracer");
     let control_frame = control
         .capture(BrickFrameInput::new(&second_map, revision, &camera, &grade))
         .expect("fresh second projection");
@@ -156,7 +156,7 @@ fn an_equal_extent_projection_republishes_without_recreating_textures() {
 fn an_unknown_changed_slot_is_refused_before_the_cache_stamp_advances() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping invalid-slot receipt");
         return;
     };
@@ -189,7 +189,7 @@ fn an_unknown_changed_slot_is_refused_before_the_cache_stamp_advances() {
 fn a_nearer_sdf_body_composes_in_front_of_ground() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(96, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(96, 64) else {
         eprintln!("no adapter; skipping brick/body composition receipt");
         return;
     };
@@ -235,15 +235,7 @@ fn a_nearer_sdf_body_composes_in_front_of_ground() {
 /// nearer than the traced surface's own clip depth.
 #[test]
 fn the_depth_join_settles_pixels_between_tracer_and_raster_depth() {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let Ok(adapter) =
-        pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-    else {
-        eprintln!("no adapter; skipping depth join receipt");
-        return;
-    };
-    let Ok((device, queue)) = pollster::block_on(adapter.request_device(&Default::default()))
-    else {
+    let Some(crate::test_gpu::Gpu { device, queue, .. }) = crate::test_gpu::gpu() else {
         eprintln!("no device; skipping depth join receipt");
         return;
     };

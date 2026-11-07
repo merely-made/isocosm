@@ -37,16 +37,14 @@ fn ground() -> Ground {
 
 #[test]
 fn ground_trace_enters_the_same_netrender_frame() {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let Ok(adapter) =
-        pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
+    let Some(crate::test_gpu::Gpu {
+        instance,
+        adapter,
+        device,
+        queue,
+    }) = crate::test_gpu::gpu()
     else {
-        eprintln!("no adapter; skipping netrender composition receipt");
-        return;
-    };
-    let Ok((device, queue)) = pollster::block_on(adapter.request_device(&Default::default()))
-    else {
-        eprintln!("adapter declined a device; skipping netrender composition receipt");
+        eprintln!("no device; skipping netrender composition receipt");
         return;
     };
     let net = create_netrender_instance(

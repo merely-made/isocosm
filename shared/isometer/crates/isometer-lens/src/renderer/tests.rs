@@ -19,7 +19,7 @@ fn flight() -> Flight {
 
 #[test]
 fn a_steady_frame_has_no_resource_or_upload_churn() {
-    let Some(mut lens) = Lens::headless(96, 64) else {
+    let Some(mut lens) = crate::test_gpu::lens(96, 64) else {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
@@ -46,7 +46,7 @@ fn a_steady_frame_has_no_resource_or_upload_churn() {
 
 #[test]
 fn camera_and_dirty_region_updates_stay_narrow() {
-    let Some(mut lens) = Lens::headless(96, 64) else {
+    let Some(mut lens) = crate::test_gpu::lens(96, 64) else {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
@@ -116,7 +116,7 @@ fn camera_and_dirty_region_updates_stay_narrow() {
 
 #[test]
 fn resize_rebuilds_only_size_dependent_resources() {
-    let Some(mut lens) = Lens::headless(64, 64) else {
+    let Some(mut lens) = crate::test_gpu::lens(64, 64) else {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
@@ -139,7 +139,7 @@ fn resize_rebuilds_only_size_dependent_resources() {
 
 #[test]
 fn oversized_bodies_are_refused_instead_of_truncated() {
-    let Some(mut lens) = Lens::headless(64, 64) else {
+    let Some(mut lens) = crate::test_gpu::lens(64, 64) else {
         eprintln!("no adapter; skipping capsule admission receipt");
         return;
     };

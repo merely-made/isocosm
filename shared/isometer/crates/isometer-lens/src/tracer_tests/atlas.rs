@@ -23,7 +23,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
 
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping leased atlas receipt");
         return;
     };
@@ -98,7 +98,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
 
     // A lease stamped at another revision is refused, and the frame
     // falls back to the CPU upload rather than showing stale voxels.
-    let mut fresh = BrickTracer::headless(64, 64).expect("second tracer");
+    let mut fresh = crate::test_gpu::tracer(64, 64).expect("second tracer");
     fresh
         .capture(BrickFrameInput::new(&map, source_revision, &camera, &grade))
         .expect("stale-case baseline");
@@ -141,7 +141,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
         projected_map.pointer_extent()
     );
     assert_eq!(previous_map.atlas_extent(), projected_map.atlas_extent());
-    let mut projected = BrickTracer::headless(64, 64).expect("projected tracer");
+    let mut projected = crate::test_gpu::tracer(64, 64).expect("projected tracer");
     projected
         .capture(BrickFrameInput::new(
             &previous_map,
@@ -176,7 +176,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
         "a projection-mismatch lease must fall back to a full CPU publication"
     );
     let mut projection_control =
-        BrickTracer::headless(64, 64).expect("projection CPU control tracer");
+        crate::test_gpu::tracer(64, 64).expect("projection CPU control tracer");
     let projection_control_frame = projection_control
         .capture(BrickFrameInput::new(
             &projected_map,
@@ -193,7 +193,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
     // A lease whose extent overruns its range is refused too. The
     // producer pools planes into one buffer, so copying this would paint
     // a neighbouring allocation into the world rather than fault.
-    let mut third = BrickTracer::headless(64, 64).expect("third tracer");
+    let mut third = crate::test_gpu::tracer(64, 64).expect("third tracer");
     third
         .capture(BrickFrameInput::new(&map, source_revision, &camera, &grade))
         .expect("misfit-case baseline");
@@ -222,7 +222,7 @@ fn a_leased_atlas_fills_the_tracer_without_a_cpu_upload() {
     );
 
     // A valid partial lease cannot stand in for a declared full refresh.
-    let mut fourth = BrickTracer::headless(64, 64).expect("fourth tracer");
+    let mut fourth = crate::test_gpu::tracer(64, 64).expect("fourth tracer");
     let incomplete_frame = fourth
         .capture(BrickFrameInput::new(&map, revision, &camera, &grade).with_leased_atlas(leased))
         .expect("incomplete lease frame");
@@ -264,7 +264,7 @@ fn a_retargeted_projection_uploads_pointers_and_only_loaded_slots() {
         .expect("capacity map");
     map.retarget(&ground, BrickProjectionRevision(1), a.iter().copied())
         .expect("first selection");
-    let Some(mut tracer) = BrickTracer::headless(96, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(96, 64) else {
         eprintln!("no adapter; skipping retarget receipt");
         return;
     };
@@ -301,7 +301,7 @@ fn a_retargeted_projection_uploads_pointers_and_only_loaded_slots() {
     // over a from-scratch map of the same selection draws the same frame.
     let rebuilt = BrickMap::from_ground_keys(&ground, BrickProjectionRevision(2), b)
         .expect("rebuilt selection");
-    let mut fresh = BrickTracer::headless(96, 64).expect("fresh tracer");
+    let mut fresh = crate::test_gpu::tracer(96, 64).expect("fresh tracer");
     let reference = fresh
         .capture(BrickFrameInput::new(&rebuilt, revision, &camera, &grade))
         .expect("rebuilt frame");
@@ -316,7 +316,7 @@ fn a_lease_at_the_wrong_epoch_is_refused() {
 
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping epoch receipt");
         return;
     };
@@ -384,7 +384,7 @@ fn a_lease_at_the_wrong_epoch_is_refused() {
 
     // The matching case runs on its own tracer: the refused frame above
     // already advanced the first tracer's revision through the CPU path.
-    let mut fresh = BrickTracer::headless(64, 64).expect("second tracer");
+    let mut fresh = crate::test_gpu::tracer(64, 64).expect("second tracer");
     fresh
         .capture(BrickFrameInput::new(&map, source_revision, &camera, &grade))
         .expect("matching-case baseline");

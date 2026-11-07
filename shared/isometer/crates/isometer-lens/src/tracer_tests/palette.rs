@@ -126,7 +126,7 @@ fn expect_colour(pixels: &[u8], at: usize, colour: [f32; 3], what: &str) {
 fn a_bound_palette_draws_every_material_at_its_table_colour() {
     let ground = banded_ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(WIDTH, HEIGHT) else {
         eprintln!("no adapter; skipping terrain palette receipt");
         return;
     };
@@ -175,7 +175,7 @@ fn a_bound_palette_draws_every_material_at_its_table_colour() {
 fn an_unbound_palette_keeps_the_classic_and_habitat_colours_exact() {
     let ground = Ground::grow(&Bands, EXTENT);
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(WIDTH, HEIGHT) else {
         eprintln!("no adapter; skipping unbound palette receipt");
         return;
     };
@@ -242,7 +242,7 @@ fn an_unbound_palette_keeps_the_classic_and_habitat_colours_exact() {
 fn the_light_slot_replaces_the_literal_sun() {
     let ground = Ground::grow(&Bands, EXTENT);
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(WIDTH, HEIGHT) else {
         eprintln!("no adapter; skipping light slot receipt");
         return;
     };

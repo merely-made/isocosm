@@ -9,7 +9,7 @@ fn cold_retained_and_carved_terrain_have_distinct_upload_receipts() {
     let mut ground = fixtures::ground(4_242, 64);
     let mut map = BrickMap::from_ground(&ground).expect("bounded map");
     let mut tracer =
-        BrickTracer::headless(64, 64).expect("GPU adapter required for counter receipt");
+        crate::test_gpu::tracer(64, 64).expect("GPU adapter required for counter receipt");
     let top = ground.surface(4, 4).expect("ground column");
     let camera = Flight {
         eye: [4.5, top as f32 + 14., 4.5],

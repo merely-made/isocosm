@@ -23,7 +23,7 @@ use super::{flight, ground};
 fn a_roster_draws_every_body_in_the_slab_and_an_empty_one_changes_nothing() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(96, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(96, 64) else {
         eprintln!("no adapter; skipping brick roster receipt");
         return;
     };
@@ -113,7 +113,7 @@ fn a_roster_draws_every_body_in_the_slab_and_an_empty_one_changes_nothing() {
 fn a_roster_past_the_cap_is_truncated_and_counted() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping brick roster cap receipt");
         return;
     };
@@ -153,7 +153,7 @@ fn a_roster_past_the_cap_is_truncated_and_counted() {
 fn a_member_over_its_capsule_budget_keeps_its_widest_capsules() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping roster truncation receipt");
         return;
     };

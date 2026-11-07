@@ -57,7 +57,7 @@ fn map(tracer: &BrickTracer, selections: &[&[[i16; 3]]]) -> (BrickMap, u32) {
 }
 
 fn picture(map: &BrickMap) -> Option<Vec<u8>> {
-    let mut tracer = BrickTracer::headless(32, 32)?;
+    let mut tracer = crate::test_gpu::tracer(32, 32)?;
     // Straight down onto the target brick's top face.
     let camera = Flight {
         eye: [364.0, 20.0, 364.0],
@@ -77,7 +77,7 @@ fn picture(map: &BrickMap) -> Option<Vec<u8>> {
 /// old cap is drawn rather than read as air.
 #[test]
 fn a_card_sized_atlas_draws_a_brick_past_the_old_cap() {
-    let Some(tracer) = BrickTracer::headless(32, 32) else {
+    let Some(tracer) = crate::test_gpu::tracer(32, 32) else {
         eprintln!("no adapter; skipping the card-sized atlas receipt");
         return;
     };

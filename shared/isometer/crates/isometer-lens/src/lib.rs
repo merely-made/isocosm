@@ -32,6 +32,8 @@ mod netrender_tests;
 #[path = "tracer_tests/terrain.rs"]
 mod terrain_tests;
 #[cfg(test)]
+mod test_gpu;
+#[cfg(test)]
 mod tracer_tests;
 
 pub use body::{BodyLensProjection, BodyPlacement, BodyProjectionError, BodyRevision, LensPart};

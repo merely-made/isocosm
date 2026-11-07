@@ -15,7 +15,7 @@ fn ground() -> Ground {
 fn habitat_appearance_uses_material_and_plane_classified_background_colours() {
     let ground = ground();
     let map = BrickMap::from_ground(&ground).expect("atlas capacity");
-    let Some(mut tracer) = BrickTracer::headless(64, 64) else {
+    let Some(mut tracer) = crate::test_gpu::tracer(64, 64) else {
         eprintln!("no adapter; skipping habitat appearance receipt");
         return;
     };
