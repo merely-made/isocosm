@@ -143,13 +143,8 @@ wgpu = { version = "30", default-features = false, features = [
 [patch.crates-io]
 # Canonical promoted families; keep registry and Git consumers type-identical.
 chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-luggage = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-mere-proofs = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-servitor = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 # No parley or fontique patch row. Genet published its forks as `genet-parley`
 # and `genet-fontique` at 5ae30cad, so genet.git answers to neither name and a
 # row here would match no package and fail resolution. genet-livery reaches the
@@ -179,13 +174,8 @@ opt-level = 1
 rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
-[patch."https://github.com/merely-made/mere.git"]
-
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
-distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-
 # Keep the actor and apparatus-core on one published Armillary source
 # identity when the Mere graph requests the canonical GitHub URL.
 

@@ -49,9 +49,6 @@ hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "mai
 [patch."https://github.com/merely-made/mere.git"]
 hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 
-distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-
 [workspace.lints.clippy]
 missing_errors_doc = "warn"
 missing_panics_doc = "warn"

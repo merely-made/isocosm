@@ -77,9 +77,6 @@ stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "ma
 # Compatibility source keys for immutable suppliers published before the
 # repository rename. Targets and current direct dependencies use Murm.
 
-distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-
 [patch."https://github.com/merely-made/retinue.git"]
 mere-transport = { git = "https://github.com/merely-made/murm.git", branch = "main" }
 murm-webrtc = { git = "https://github.com/merely-made/murm.git", branch = "main" }

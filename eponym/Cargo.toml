@@ -84,13 +84,8 @@ paint_list_render = { git = "https://github.com/merely-made/netrender.git", bran
 rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
-[patch."https://github.com/merely-made/mere.git"]
-
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
-distillery = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-mere-mesh = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
-
 # Keep the actor and apparatus-core on one published Armillary source
 # identity when the Mere graph requests the canonical GitHub URL.
 
