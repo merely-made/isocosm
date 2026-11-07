@@ -126,17 +126,17 @@ thiserror = "1"
 # Product-free projection score and analytic solvers. Isocosm owns the
 # campaign-to-score adapter in `isocosm-views`; the shared crates carry only
 # opaque source refs, measured footprints, and scenes.
-sceno = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+sceno = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 scenomise = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-scenotime = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+scenotime = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The endpoint and its carriers: mere folded `graphshell-stdio`, `-local` and
 # `-network` into `graphshell_endpoint::{stdio, local, network}` (mere
 # 0c65a9d6), each behind a feature of the same name that its user turns on.
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The projection contract. Was `graphshell-protocol`; mere renamed it to
 # `chirograph` on 2026-08-14 because the contract is the family's, not the
 # portal's. Same types, same re-exports.
-chirograph = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 
 # UI: the shared Cambium desktop host. Git deps on the owned repos so any
 # machine resolves; local checkouts override via the gitignored

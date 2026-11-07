@@ -26,9 +26,9 @@ viewer = ["endpoint", "society", "dep:graphshell-client", "dep:graphshell-host",
     "dep:cambium", "dep:cambium-desktop", "dep:mandrake", "dep:cambium-rootstock", "dep:taproot", "dep:netrender"]
 
 [dependencies]
-chirograph = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true, features = ["stdio", "local"] }
-sceno = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
+chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
+graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true, features = ["stdio", "local"] }
+sceno = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 scenomise = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
 cosmograph = { path = "../shared/cosmograph", default-features = false }
 cosmograph-overlay = { path = "../shared/cosmograph-overlay" }
@@ -36,7 +36,7 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tempfile = "=3.27.0"
 # The viewer's client, board and window (feature `viewer`).
-graphshell-client = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
+graphshell-client = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 graphshell-host = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["board"], optional = true }
 pictograph = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["canvas"], optional = true }
 cambium = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }

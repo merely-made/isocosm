@@ -20,8 +20,8 @@ serde = { version = "1", default-features = false, features = ["derive", "alloc"
 serde_json = "1"
 # The next-life Graphshell endpoint over the sim-host core (rulings 900, 903).
 cosmograph-host = { path = "../../../cosmograph-host", optional = true, features = ["endpoint"] }
-chirograph = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
+chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
+graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 
 [features]
 endpoint = ["dep:cosmograph-host", "dep:chirograph", "dep:graphshell-endpoint"]
@@ -29,7 +29,7 @@ endpoint = ["dep:cosmograph-host", "dep:chirograph", "dep:graphshell-endpoint"]
 [dev-dependencies]
 isonetry = { path = "../../../crates/isonetry", default-features = false }
 cosmograph-host = { path = "../../../cosmograph-host", features = ["endpoint", "fixtures"] }
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", branch = "main", features = ["local", "stdio"] }
+graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main", features = ["local", "stdio"] }
 
 # A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
 [[example]]

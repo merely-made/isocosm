@@ -22,10 +22,10 @@ isonetry = { path = "../../crates/isonetry", default-features = false, features 
 mesocosm-runtime = { path = "../../mesocosm/crates/mesocosm-runtime", features = ["endpoint"] }
 eponym-play = { path = "../../eponym/crates/eponym-play", features = ["endpoint"] }
 isocosm-native = { path = "../../crates/isocosm-native", features = ["endpoint"] }
-chirograph = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", branch = "main", features = ["network"] }
+chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
+graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main", features = ["network"] }
 graphshell-native = { package = "graphshell-host", git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["native"] }
-sceno = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+sceno = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 murm-replication = { package = "stickleback", git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 transport = { package = "mere-transport", git = "https://github.com/merely-made/murm.git", branch = "main" }
