@@ -224,7 +224,7 @@ three design docs that cite it. The record holds the words.
 | 1165 | The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1174 | The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1180 | The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits. | none |
-| 1181 | E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1181 | E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Ecology
 
