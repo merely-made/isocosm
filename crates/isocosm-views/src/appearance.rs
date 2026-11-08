@@ -16,6 +16,7 @@ use std::hash::{Hash, Hasher};
 use isometer_mesh::bake::Palette;
 use isometer_mesh::voxel::{Rgb, Voxels};
 use isocosm_core::TokenAppearance;
+use isometer_core::{Style, StyleTable};
 use serde::Deserialize;
 
 mod creator;
@@ -125,6 +126,9 @@ struct ClassEntry {
     palette: String,
     #[serde(default)]
     layers: BTreeMap<String, String>,
+    /// The class's presentation style tag (case 1190); none is the baseline.
+    #[serde(default)]
+    style: Option<String>,
 }
 
 #[derive(Debug, Default, Deserialize)]
@@ -166,6 +170,9 @@ struct FileFormat {
     conditions: BTreeMap<String, items::ConditionEntry>,
     #[serde(default)]
     layers: BTreeMap<String, LayerEntry>,
+    /// Presentation looks by tag, in the shape every product shares (1190).
+    #[serde(default)]
+    styles: StyleTable,
 }
 
 /// Every class, layer and palette the loaded packs declare.
@@ -181,6 +188,8 @@ pub struct Library {
     /// Matter keys to colours, for the creature skin (case 1049).
     matter: BTreeMap<String, Rgb>,
     layers: BTreeMap<String, LayerSource>,
+    /// Every declared style tag, over the packs in load order (1190).
+    styles: StyleTable,
     /// Moves with every overlay, so a resolved key never outlives the
     /// bindings it was resolved under.
     fingerprint: u64,
@@ -204,6 +213,7 @@ impl Library {
             items: ItemTables::default(),
             matter: BTreeMap::new(),
             layers: BTreeMap::new(),
+            styles: StyleTable::default(),
             fingerprint: 0,
         }
     }
@@ -233,6 +243,18 @@ impl Library {
         read: &dyn Fn(&str) -> Result<Vec<u8>, String>,
     ) -> Result<(), String> {
         let file: FileFormat = toml::from_str(text).map_err(|error| error.to_string())?;
+        // A class may name a tag this pack or an earlier one declares; checked
+        // before anything is laid over, so a refused pack changes nothing.
+        let mut styles = self.styles.clone();
+        styles.overlay(file.styles.clone());
+        styles.validate()?;
+        for (name, class) in &file.classes {
+            if let Some(tag) = &class.style {
+                styles
+                    .resolve(tag)
+                    .map_err(|_| format!("class {name} names undeclared style {tag:?}"))?;
+            }
+        }
         let mut layers = BTreeMap::new();
         for (name, entry) in file.layers {
             let loaded = match &entry.file {
@@ -271,6 +293,7 @@ impl Library {
             conditions: file.conditions,
         });
         self.layers.extend(layers);
+        self.styles = styles;
         for swatch in file.swatches {
             self.swatches.retain(|held| held.index != swatch.index);
             self.swatches.push(swatch);
@@ -301,6 +324,16 @@ impl Library {
     /// Every class the loaded packs bind, in name order.
     pub fn classes(&self) -> impl Iterator<Item = &str> {
         self.classes.keys().map(String::as_str)
+    }
+
+    /// A class's presentation style: its declared tag's look, else the
+    /// baseline (1190). Tags were checked when their pack was laid over.
+    pub fn style(&self, sprite: &str) -> Style {
+        self.classes
+            .get(sprite)
+            .and_then(|class| class.style.as_deref())
+            .and_then(|tag| self.styles.resolve(tag).ok())
+            .unwrap_or_default()
     }
 
     pub fn has_class(&self, sprite: &str) -> bool {

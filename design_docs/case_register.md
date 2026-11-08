@@ -932,7 +932,7 @@ three design docs that cite it. The record holds the words.
 | 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
 | 1157 | Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root. | [denizen](2026-11-02_denizen_plan.md) |
 | 1158 | Isocosm's close views face the token's grid facing; V cycles them. | [denizen](2026-11-02_denizen_plan.md) |
-| 1190 | The VTT adopts isometer-core's style table now, a baseline tag on every class. | none |
+| 1190 | The VTT adopts isometer-core's style table now, a baseline tag on every class. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 
 ## Naming
 

@@ -46,36 +46,49 @@ set = { 0 = "#e2dfd3", 1 = "#c6c2b4" }
 from = "default"
 set = { 0 = "#96969e", 1 = "#5c5c64" }
 
+# Presentation styles (case 1190), in the table shape all three products
+# share. Display only. Every class names a tag; "baseline" is exact sRGB.
+[styles.baseline]
+display = "srgb"
+
 [classes.hero]
 palette = "default"
+style = "baseline"
 layers = { body = "body:base", hair = "hair:short" }
 
 [classes.knight]
 palette = "default"
+style = "baseline"
 layers = { body = "body:mail", hair = "hair:crop" }
 
 [classes.scavenger]
 palette = "scavenger"
+style = "baseline"
 layers = { body = "body:base", hair = "hair:long" }
 
 [classes.traveler]
 palette = "traveler"
+style = "baseline"
 layers = { body = "body:robe", hair = "hair:short" }
 
 [classes.goblin]
 palette = "goblin"
+style = "baseline"
 layers = { body = "body:base", hair = "" }
 
 [classes.orc]
 palette = "orc"
+style = "baseline"
 layers = { body = "body:mail", hair = "hair:crop" }
 
 [classes.skeleton]
 palette = "skeleton"
+style = "baseline"
 layers = { body = "body:base", hair = "" }
 
 [classes.wolf]
 palette = "wolf"
+style = "baseline"
 layers = { body = "body:base", hair = "hair:long" }
 
 # What the creator offers in each slot; "" is nothing.

@@ -124,13 +124,19 @@ impl BoardSource {
     }
 
     fn native_host(&self, picture: &Picture) -> BoardHost {
-        let selected = self.view.borrow().selected_token.and_then(|selected| {
+        let view = self.view.borrow();
+        let selected = view.selected_token.and_then(|selected| {
             // Only a mapping in the admitted picture can promote a native body.
             picture.tokens.iter().find_map(|(&entity, &token)| {
                 (token == selected).then_some(SubjectKey(entity))
             })
         });
-        BoardHost::new(self.body_quality, selected)
+        // A native body takes its mapped token's class style (1190).
+        let classes = picture.tokens.iter().filter_map(|(&entity, &token)| {
+            let token = view.map.tokens.iter().find(|held| held.id == token)?;
+            Some((SubjectKey(entity), token.sprite.as_str()))
+        });
+        BoardHost::new(self.body_quality, selected).styled(&view.library, classes)
     }
 }
 

@@ -294,6 +294,13 @@ roadmap's distribution residue goes to `content-packs`.
   editor's headed pairs were taken with PrintWindow from outside the process.
 
 ## Progress
+- 2026-11-08: case 1190 built. `appearance.toml` carries a `[styles]` table
+  and a `style` tag on each class, resolved through isometer-core's shared
+  `StyleTable`. Every core class names `baseline`, and a class with no tag
+  takes the baseline. An undeclared tag refuses its pack before anything is
+  laid over. The board's tokens, and native bodies mapped to tokens, get their
+  class style through `SceneHost::body_display`. Baseline tokens add nothing
+  to the board's signature, so looks are unchanged.
 - 2026-10-28: cut from the board-on-isometer plan, the VTT overlay plan's board
   and appearance items, and the extracted-receipts ledger.
 - 2026-10-30: the look editor (creation panel and the token menu's
