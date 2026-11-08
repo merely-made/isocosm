@@ -16,8 +16,6 @@ use eponym_play::identity::SubjectId;
 use eponym_play::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 #[cfg(not(feature = "r1-proof"))]
 use isometer::GroundTerrain;
-#[cfg(feature = "r1-proof")]
-use isometer::HostTerrain;
 use isometer::core::{BodyDocument, PartId};
 use isometer::lens::Grade;
 use isometer::{
@@ -28,7 +26,7 @@ use isometer::{
 
 use super::handle::{SceneHandle, SceneModel};
 #[cfg(feature = "r1-proof")]
-use crate::residency::{StableResidency, camera_visible_range, selection_revision};
+use crate::residency::StableResidency;
 
 /// Palette depth of the retro grade the terrain is shaded with.
 pub(crate) const PALETTE: u32 = 3;
@@ -250,21 +248,11 @@ impl SceneModel {
                 always_visible: subject == self.played(),
             })
             .collect();
-        #[cfg(feature = "r1-proof")]
-        let terrain_revision = if self.terrain {
-            let ground = game.world().ground();
-            let focus = resident_focus(camera.window().centre);
-            let range = camera_visible_range(camera);
-            Some(
-                selection_revision(ground, focus, range)
-                    .map_err(|error| format!("terrain residency: {error}"))?,
-            )
-        } else {
-            None
-        };
-        #[cfg(not(feature = "r1-proof"))]
+        // The camera is already part of the signature. A zoom or pan asks for
+        // another frame even when the native ground revision stayed put.
         let terrain_revision = self.terrain.then(|| game.world().ground().revision());
         let mut host = vec![self.played().0, u64::from(self.appearance.material)];
+        host.push(self.terrain_generation);
         self.body_presentation.sign(&mut host);
         Ok(SceneSignature {
             size: request.size,
@@ -306,10 +294,6 @@ impl SceneModel {
         let game = held.session().game();
         let ground = game.world().ground();
         #[cfg(feature = "r1-proof")]
-        let focus = resident_focus(camera.window().centre);
-        #[cfg(feature = "r1-proof")]
-        let range = camera_visible_range(camera);
-        #[cfg(feature = "r1-proof")]
         let terrain = if terrain_on {
             if terrain_residency.is_none() {
                 *terrain_residency = Some(
@@ -318,14 +302,8 @@ impl SceneModel {
                 );
             }
             let residency = terrain_residency.as_mut().expect("cache initialized");
-            let changed = residency
-                .prepare_at(ground, focus, range)
-                .map_err(|error| format!("terrain residency: {error}"))?
-                .is_some();
-            let revision = selection_revision(ground, focus, range)
-                .map_err(|error| format!("terrain residency: {error}"))?;
-            let rebuilt = changed.then(|| isometer::lens::BrickMap::from(residency.map().clone()));
-            Some(HostTerrain::new(revision, rebuilt))
+            Some(residency.prepare_framed(ground, camera)
+                .map_err(|error| format!("terrain residency: {error}"))?)
         } else {
             None
         };
@@ -373,6 +351,22 @@ impl SceneModel {
             },
             &mut body_presentation,
         )?;
+        #[cfg(feature = "r1-proof")]
+        if std::env::var_os("EPONYM_PROFILE").is_some()
+            && let Some(terrain) = &terrain
+            && let Some(gpu) = scene.terrain_diagnostics()
+        {
+            let cache = terrain.residency;
+            let metrics = terrain.changed.as_ref().map(|change| change.metrics);
+            eprintln!(
+                "[terrain] half={} size={}x{} revision={} resident={} capacity={} loaded={} evicted={} slots={} bytes={} atlas_writes={} pointer_writes={} full={} recreated={}",
+                camera.half_height, request.size[0], request.size[1],
+                cache.projection_revision().0, cache.resident_count(), cache.capacity(),
+                metrics.map_or(0, |m| m.loaded_bricks), metrics.map_or(0, |m| m.evicted_bricks),
+                gpu.changed_slots_declared, gpu.brick_upload_bytes, gpu.atlas_write_calls,
+                gpu.pointer_write_calls, gpu.full_map_upload, gpu.map_recreated,
+            );
+        }
         request.queue.submit(Some(encoder.finish()));
         // The encoded twin, not the sRGB-tagged one: the leaf declares
         // `SCENE_ENCODING`, so the compositor samples these bytes directly.
@@ -401,11 +395,4 @@ impl SceneModel {
         self.scene_size = size;
         Ok(())
     }
-}
-
-#[cfg(feature = "r1-proof")]
-/// The middle of what the camera shows: the slab's centre, or the middle of
-/// a perspective's view rather than its eye.
-fn resident_focus(centre: [f32; 3]) -> [i32; 3] {
-    centre.map(|coordinate| coordinate.floor() as i32)
 }

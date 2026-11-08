@@ -133,18 +133,11 @@ impl StableResidency {
                     .ok_or(ResidencyError::ProjectionRevisionOverflow)?,
             )
         };
-        let mut delta = crate::brick::retarget_from_ground(
-            &mut self.map,
-            ground,
-            target_projection,
-            keys.iter().copied(),
-        )?;
+        let mut delta = self.map.retarget(ground, target_projection, keys.iter().copied())?;
         let projection_revision = self.map.projection_revision();
         let loaded_bricks = delta.loaded_slots.len();
         if self.ground_revision.is_some() && ground_changed && !keys.is_empty() {
-            let refreshed = self.map.refresh(keys.iter().copied(), |key| {
-                ground.brick_materials(key).map(|(brick, _)| brick.raw())
-            })?;
+            let refreshed = self.map.refresh(ground, keys.iter().copied())?;
             delta.loaded_slots.extend(refreshed);
             delta.loaded_slots.sort_unstable();
             delta.loaded_slots.dedup();

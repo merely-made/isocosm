@@ -93,9 +93,11 @@ pub struct SceneModel {
     /// What [`Self::scene`] was last sized for. `Scene` keeps its own width and
     /// height privately, so the resize decision is made here.
     pub(super) scene_size: [u32; 2],
-    /// Eponym's capacity-fixed V1b brick cache for the resident terrain page.
+    /// Eponym's capacity-fixed V1b brick cache for the framed terrain.
     #[cfg(feature = "r1-proof")]
     pub(super) terrain_residency: Option<crate::residency::StableResidency>,
+    /// A loaded world can have different terrain at the same ground revision.
+    pub(super) terrain_generation: u64,
     /// The client's round, when the world plays in them (case 1096).
     pub(crate) round: Option<crate::round::Round>,
 }
@@ -126,6 +128,7 @@ impl SceneModel {
             scene_size: [0; 2],
             #[cfg(feature = "r1-proof")]
             terrain_residency: None,
+            terrain_generation: 0,
             round: None,
         }
     }
@@ -211,7 +214,7 @@ impl SceneModel {
         if self.minute_pending() {
             let _ = self.drain_round();
         }
-        self.held = Held::Plain(session);
+        self.replace_held(Held::Plain(session));
         self.set_examined_subject(None);
         self.forget_drawn();
     }
@@ -221,9 +224,21 @@ impl SceneModel {
         if self.minute_pending() {
             let _ = self.drain_round();
         }
-        self.held = Held::Timed(Box::new(action));
+        self.replace_held(Held::Timed(Box::new(action)));
         self.set_examined_subject(None);
         self.forget_drawn();
+    }
+
+    fn replace_held(&mut self, held: Held) {
+        if self.game().world().ground() != held.session().game().world().ground() {
+            self.terrain_generation += 1;
+            self.scene = None;
+            #[cfg(feature = "r1-proof")]
+            {
+                self.terrain_residency = None;
+            }
+        }
+        self.held = held;
     }
 
     /// Where the frame is centred: the played subject's exact pose, or its

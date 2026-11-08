@@ -1,87 +1,117 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use isometer::{TerrainRefresh, TerrainSource};
+
 use super::*;
 
 #[test]
-fn producer_window_stamp_tracks_the_exact_camera_page() {
-    let scene = ResidencyScene::grow();
-    let close = selection_revision(&scene.ground, scene.focus, PAGE_RANGES[0]).unwrap();
-    assert_eq!(
-        close,
-        selection_revision(&scene.ground, scene.focus, PAGE_RANGES[0]).unwrap()
-    );
+fn producer_framing_keeps_every_first_hit_through_zoom_and_perspective() {
+    use crate::producer::{SceneModel, View};
 
-    let mut moved = ResidencyScene {
-        ground: scene.ground.clone(),
-        focus: scene.focus,
-    };
-    assert!(moved.move_focus_x(BRICK));
-    assert_ne!(
-        close,
-        selection_revision(&moved.ground, moved.focus, PAGE_RANGES[0]).unwrap()
-    );
+    let fixture = eponym_play::fixtures::session::timed_action_world_solving(eponym_motion::SOLVER);
+    let mut model = SceneModel::timed(fixture.action, fixture.keeper);
+    let mut exact = CameraFootprints::default();
+    let ground = model.game().world().ground();
+    let mut residency = StableResidency::with_ground_limits(ground, AtlasLimits::DEFAULT).unwrap();
+    let mut scene_map = None;
+    let mut near = None;
+    let size = [1440, 880];
+    let aspect = size[0] as f32 / size[1] as f32;
+    for (view, half_height) in [
+        (View::Overview, 10.0),
+        (View::Overview, 12.0),
+        (View::Overview, 16.0),
+        (View::Overview, 20.0),
+        (View::Overview, 24.0),
+        (View::Overview, 10.0),
+        (View::FirstPerson, 10.0),
+        (View::OverTheShoulder, 10.0),
+    ] {
+        model.view = view;
+        model.camera.half_height = half_height;
+        let ground = model.game().world().ground();
+        let camera = model.view_camera(aspect).unwrap();
+        let focus = camera.window().centre.map(|n| n.floor() as i32);
+        let first_hits = exact
+            .keys(ground, focus, camera.trace().unwrap(), size)
+            .unwrap();
+        assert!(!first_hits.is_empty(), "{view:?} at {half_height}");
+        if half_height == 24.0 {
+            let range = page_range(camera_visible_range(camera)).unwrap();
+            assert!(
+                selected_keys(ground, focus, range).len() > residency.capacity(),
+                "the former rectangular page must overflow on this fixture"
+            );
+        }
+
+        let terrain = residency.prepare_framed(ground, camera).unwrap();
+        if let Some(map) = &mut scene_map {
+            assert!(
+                matches!(terrain.refresh(map, &[]).unwrap(), TerrainRefresh::Slots(_)),
+                "camera moves keep the existing allocation"
+            );
+        } else {
+            scene_map = Some(terrain.brick_map().unwrap());
+        }
+        assert!(
+            first_hits.is_subset(&residency.current_keys),
+            "{view:?} at {half_height} missed {:?}",
+            first_hits
+                .difference(&residency.current_keys)
+                .collect::<Vec<_>>()
+        );
+        assert!(residency.resident_bytes() <= RESIDENT_BUDGET_BYTES);
+        if view == View::Overview && half_height == 10.0 {
+            match &near {
+                None => near = Some(residency.current_keys.clone()),
+                Some(expected) => assert_eq!(&residency.current_keys, expected),
+            }
+        }
+        assert!(
+            residency
+                .prepare_framed(ground, camera)
+                .unwrap()
+                .changed
+                .is_none(),
+            "an unchanged view should produce no retarget"
+        );
+    }
 }
 
 #[test]
-fn producer_cache_refreshes_changed_ground_inside_the_same_resident_page() {
+fn producer_refreshes_a_ground_edit_and_can_recover_a_skipped_publication() {
     let mut scene = ResidencyScene::grow();
-    let focus = scene.focus;
-    let mut stable = StableResidency::new(&scene).expect("fixed cache under the V1 budget");
-    let initial_revision = selection_revision(&scene.ground, focus, PAGE_RANGES[0]).unwrap();
-    let first = stable
-        .prepare_at(&scene.ground, focus, PAGE_RANGES[0])
+    let mut stable = StableResidency::new(&scene).unwrap();
+    let camera =
+        isometer::SlabCamera::dimetric_2_1(scene.focus.map(|v| v as f32), 10.0, 1.6, 48.0).unwrap();
+    let mut map = stable
+        .prepare_framed(&scene.ground, camera)
         .unwrap()
-        .expect("the first resident page");
-    assert!(stable.resident_bytes() <= RESIDENT_BUDGET_BYTES);
+        .brick_map()
+        .unwrap();
 
-    let floor = [focus[0], focus[1] - 1, focus[2]];
-    let original = scene.ground.material(floor).expect("resident floor");
+    let floor = [scene.focus[0], scene.focus[1] - 1, scene.focus[2]];
+    let original = scene.ground.material(floor).unwrap();
     let replacement = if original == 1 { 2 } else { 1 };
+    assert_eq!(map.material_at(floor), original);
     assert_eq!(scene.ground.write([(floor, replacement)]).unwrap(), 1);
-    let source_revision = selection_revision(&scene.ground, focus, PAGE_RANGES[0]).unwrap();
-    assert_ne!(source_revision, initial_revision);
 
-    let refreshed = stable
-        .prepare_at(&scene.ground, focus, PAGE_RANGES[0])
-        .unwrap()
-        .expect("a ground edit refreshes retained resident slots");
-    assert_eq!(
-        refreshed.metrics.resident_range,
-        first.metrics.resident_range
-    );
-    assert_eq!(
-        refreshed.metrics.resident_bricks,
-        first.metrics.resident_bricks
-    );
-    assert_eq!(stable.map().material_at(floor), replacement);
+    let mut skipped = map.clone();
+    let terrain = stable.prepare_framed(&scene.ground, camera).unwrap();
     assert!(
-        stable.resident_bytes() <= RESIDENT_BUDGET_BYTES,
-        "the producer cache stays within the fixed V1 allocation"
+        matches!(terrain.refresh(&mut map, &[]).unwrap(), TerrainRefresh::Slots(ref slots) if !slots.is_empty())
     );
-    assert_eq!(
-        source_revision,
-        selection_revision(&scene.ground, focus, PAGE_RANGES[0]).unwrap()
-    );
-}
+    assert_eq!(map.material_at(floor), replacement);
 
-#[test]
-fn producer_uses_the_camera_window_instead_of_the_full_depth_as_radius() {
-    let camera = isometer::SlabCamera::new([0.0; 3], [0.70, -0.28, 0.70], 10.0, 16.0 / 9.0, 48.0)
-        .expect("the producer's default camera");
-    let window = camera.window();
-    let exact = [0, 2]
-        .into_iter()
-        .map(|world_axis| {
-            (0..3)
-                .map(|axis| window.axes[axis][world_axis].abs() * window.half[axis])
-                .sum::<f32>()
-        })
-        .fold(0.0_f32, f32::max)
-        .ceil() as i32;
-    assert_eq!(camera_visible_range(camera), exact);
-    assert!(
-        (exact as f32) < 10.0_f32 * (16.0 / 9.0) + 48.0,
-        "the viewport's horizontal footprint is smaller than the slab depth"
+    let retry = stable.prepare_framed(&scene.ground, camera).unwrap();
+    assert_eq!(
+        retry.refresh(&mut skipped, &[]).unwrap(),
+        TerrainRefresh::Full
+    );
+    assert_eq!(skipped.material_at(floor), replacement);
+    assert_eq!(
+        retry.refresh(&mut skipped, &[]).unwrap(),
+        TerrainRefresh::Current
     );
 }

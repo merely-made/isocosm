@@ -1,0 +1,22 @@
+wait
+assert snap ready == yes
+remember start
+act overview-zoom 10
+settle 2
+assert snap viewport-error == none
+act overview-zoom 12
+settle 2
+assert snap viewport-error == none
+act overview-zoom 16
+settle 2
+assert snap viewport-error == none
+act overview-zoom 20
+settle 2
+assert snap viewport-error == none
+act overview-zoom 24
+settle 2
+assert snap viewport-error == none
+act overview-zoom 10
+settle 3
+assert snap viewport-error == none
+same start hash

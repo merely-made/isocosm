@@ -345,7 +345,10 @@ impl SessionApp {
 /// where its scene error comes from, the two animations a frame owes, and the
 /// keymap dispatch. The lane adapter in `probe.rs` is the same division one
 /// tier down.
-struct Session;
+struct Session {
+    profiling: bool,
+    last_presented: Option<Instant>,
+}
 
 impl Product for Session {
     type State = SessionApp;
@@ -409,11 +412,28 @@ impl Product for Session {
     }
 
     fn after_frame(&mut self, ctx: &mut Ctx<'_, Self>) {
+        if self.profiling
+            && ctx.presentation.is_some()
+            && let Some(profile) = ctx.frame_profile
+        {
+            let now = Instant::now();
+            let interval = self
+                .last_presented
+                .replace(now)
+                .map_or(0, |last| now.duration_since(last).as_micros());
+            let renders = ctx.runner.state().scene.borrow().renders();
+            eprintln!("[pacing] interval_us={interval} host_us={} renders={renders}", profile.total_us);
+        }
+
         if ctx.runner.state().model.borrow().hybrid_needs_frame()
             && let Some(window) = ctx.window
         {
             window.request_redraw();
         }
+    }
+
+    fn profiling(&self) -> bool {
+        self.profiling
     }
 
     fn key(
@@ -488,7 +508,10 @@ pub fn run() -> i32 {
     );
     // The smoke lane first and the driven lane second, the order the two
     // `after_frame` calls were written in. They are mutually exclusive anyway.
-    let host = Assembly::new(Session)
+    let host = Assembly::new(Session {
+        profiling: std::env::var_os("EPONYM_PROFILE").is_some(),
+        last_presented: None,
+    })
         .with_optional_lane(lanes.0)
         .with_optional_lane(lanes.1);
     let options = HostOptions {

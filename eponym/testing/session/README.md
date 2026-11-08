@@ -64,6 +64,14 @@ acceptance artifact.
 (`ready == impossible`). The run must exit 1 with `"ok": false` in the receipt
 and still write a fresh capture.
 
+`terrain-zoom.scenario` sweeps the overview from half-height 10 to 24 and
+back, checking that the viewport stays available and the world hash stays
+the same. Run with `EPONYM_ROUNDS=0 EPONYM_PROFILE=1` and keep stderr with the
+receipt. The terrain lines report resident bricks, slot changes and texture
+uploads. The pacing lines report elapsed time between successful host
+presentations. Keep display, viewport size and render scale fixed when
+comparing runs.
+
 ## Artifact layout
 
 - `receipts/<date>/` — the compact receipt JSONs kept as evidence. PNGs are not
