@@ -6002,6 +6002,53 @@ area = "Stack and engine"
 summary = "Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill."
 draws_on = ["stack.5"]
 
+[cases."1163"]
+title = "One sim, pared back by context, with a cohort form after the field's models"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The coarse tier is the one sim's cohort form, demography by the mass law, encounters mass-derived after the field's models; fits only where checks fail; a prototype measured against the unwatched fine sim."
+draws_on = ["207", "261", "266", "1075", "1094", "1147", "1148", "sim-execution D24"]
+amends = ["440", "processes.6"]
+plans = ["sim-execution"]
+
+[cases."1164"]
+title = "The coarse step's speed bar is measured before it is set"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "No speed bar for the coarse step until its first steps are built and measured."
+draws_on = ["1094", "1163"]
+
+[cases."1165"]
+title = "What certifies the coarse tier"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim."
+draws_on = ["113", "317", "1094", "1163"]
+plans = ["mesocosm-overlay"]
+
+[cases."1166"]
+title = "The coarse step waits for the mass law and the two-year bar"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The coarse step starts after rates follow mass and the web passes its two-year bar."
+draws_on = ["1146", "1159", "1163"]
+
+[cases."1167"]
+title = "Travel is map by map first"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Travel crosses site borders map by map first, the lift hidden in the crossing; seamless later as a world setting."
+draws_on = ["124", "147", "420", "1057"]
+plans = ["place-graph-engine"]
+
+[cases."1168"]
+title = "The near tier's size is a measurement"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture."
+draws_on = ["1161", "sim-execution D25"]
+amends = ["directing.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6632,8 +6679,8 @@ draws_on = ["683", "685", "686", "688", "690", "813", "861", "862", "1051", "sim
 title = "Attention"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Attention is play, pins, examining and the game's care; near is the rendered area plus the roots; a band of ticks holds a member's tier; streams carry what is attended."
-draws_on = ["210", "212", "213", "691", "742", "876", "sim-execution D3", "sim-execution D23", "sim-execution D25", "sim-execution D26"]
+summary = "Attention is play, pins, examining and the game's care; near is the rendered area plus the roots, its size measured inside 16.7 ms; a band of ticks holds a member's tier; travel map by map."
+draws_on = ["210", "212", "213", "691", "742", "876", "1167", "1168", "sim-execution D3", "sim-execution D23", "sim-execution D25", "sim-execution D26"]
 
 [statements."directing.6"]
 title = "Death and new lives"
@@ -7025,8 +7072,8 @@ draws_on = ["2", "10", "14", "28", "32", "93", "265"]
 title = "Similitude and the crowd"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage, its bands running their lineage's policy."
-draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "1052", "sim-execution D2", "sim-execution D24"]
+summary = "The noted run as individuals; the fungible agree in distribution; outside the rendered area the one sim's cohort form, mass-law demography and mass-derived encounters, fitted only where checks fail."
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "1052", "1163", "1164", "1165", "1166", "sim-execution D2", "sim-execution D24"]
 
 [statements."processes.7"]
 title = "Time"

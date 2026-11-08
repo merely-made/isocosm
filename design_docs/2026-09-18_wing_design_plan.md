@@ -12995,6 +12995,89 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Stack and engine · draws on stack.5 · summary Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill.
 
+1163. **One sim, pared back by context, with a cohort form after the field's
+      models.** Ruled by Mark on 2026-11-08, over the coarse-step brief's
+      question 1 (`mesocosm/design_docs/2026-11-05_coarse_step_brief.md`
+      §9). He first chose "C, with B as control", then on certification
+      added: "I can’t help but suspect we’re, like, developing a second
+      model alongside the fine sim when really we ought to be able to pare
+      back the sim depending on context to achieve a coarsening and
+      cheapening still useful in the periphery". Offered paring back with
+      nothing fitted against C as written, he answered: "1 but why wouldn’t
+      we want the one sim to take on the additional capabilities from C to
+      hew closer to the prior art? I mean, maybe that’s valid, i don’t
+      know, but elaborate". Told that Madingley (Harfoot et al., 2014) is
+      one model, cohorts on a monthly step with mass-scaled feeding set
+      once and not fitted per ecosystem, he ruled "Yes, one sim with C's
+      form (Recommended)", and added: "a useful prototype. we will be able
+      to determine if this is a good model, or if we should check out
+      others! designing one, welp, i'm not an ecologist, but starting from
+      the work of the field sounds smarter to me than winging it". The
+      reading: the one sim gains a cohort form (counts by stage and
+      condition, the heritable trait spread, pooled matter) as the far form
+      its processes run in; context picks the form per site and lineage.
+      Demography reads ecology brief 3.1's mass law; encounters use
+      mass-scaled functional responses derived from the processes'
+      parameters, after the field's published models; nothing is fitted
+      unless the checks (1165) fail, and then only the failing term, per web
+      shape. Case 1075's plain coarser rung is the control arm. It is a
+      prototype: measured against the unwatched fine sim, and other models
+      from the field stay open if it fails.
+
+      Links: area Processes and rules · draws on 207, 261, 266, 1075, 1094, 1147, 1148, sim-execution D24 · amends 440, processes.6 · plans sim-execution · summary The coarse tier is the one sim's cohort form, demography by the mass law, encounters mass-derived after the field's models; fits only where checks fail; a prototype measured against the unwatched fine sim.
+
+1164. **The coarse step's speed bar is measured before it is set.** Ruled
+      by Mark on 2026-11-08: "Measure first", over a quarter second, one
+      second or a twentieth of a second per copy-year (coarse-step brief,
+      question 2). No budget for the adaptation boundary or worldgen
+      selection is ruled until the cohort form's first steps are built and
+      measured; the brief's quarter second stays a working figure.
+
+      Links: area Processes and rules · draws on 1094, 1163 · summary No speed bar for the coarse step until its first steps are built and measured.
+
+1165. **What certifies the coarse tier.** Ruled by Mark on 2026-11-08: "1"
+      (coarse-step brief, question 3), the brief's §6 checks: the same start
+      run both ways, fine and coarse replicates, over seeded worlds and
+      planted odd states (predators removed, grazers doubled, a site
+      emptied, soil flooded), their spreads compared with the probe's Holm
+      corrected tests and the 1% refusal bound; the seam (fold, run coarse,
+      lift, run fine) against fine throughout; and the adaptation copy's
+      pick scoring within a tolerance of the exact copy's best rather than
+      naming the same candidate. The reference is always the fine sim with
+      nobody watching, never play. Relaxes the overlay plan's EB7
+      done-condition.
+
+      Links: area Processes and rules · draws on 113, 317, 1094, 1163 · plans mesocosm-overlay · summary The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim.
+
+1166. **The coarse step waits for the mass law and the two-year bar.** Ruled
+      by Mark on 2026-11-08: "Wait for 3.1 and the bar", over starting the
+      recorder and demography steps now (coarse-step brief, question 4).
+      Nothing of the coarse step is built until rates follow mass (ecology
+      brief 3.1) and the web passes its two-year bar (1 of 5 seeds on
+      2026-11-03), so the food web's S10 work is the coarse step's critical
+      path too.
+
+      Links: area Ecology · draws on 1146, 1159, 1163 · summary The coarse step starts after rates follow mass and the web passes its two-year bar.
+
+1167. **Travel is map by map first.** Ruled by Mark on 2026-11-08: "Map by
+      map first (Recommended)" (coarse-step brief, question 5), over
+      seamless first or both at once. A walker crosses a site's edge by its
+      border (1057) into the next site, lifted from the coarse tier with the
+      lift hidden in the crossing; seamless streaming (place graph SP8, PG4,
+      PG5) follows as a world setting once the window measurement (1168) and
+      lift times allow it.
+
+      Links: area Directing and play · draws on 124, 147, 420, 1057 · plans place-graph-engine · summary Travel crosses site borders map by map first, the lift hidden in the crossing; seamless later as a world setting.
+
+1168. **The near tier's size is a measurement.** Ruled by Mark on
+      2026-11-08: "Measure it, make it the bound (Recommended)" (coarse-step
+      brief, question 6), over ruling a size or deferring. The largest
+      window that renders and simulates inside 16.7 ms on the 60 Hz work's
+      matched fixture bounds the rendered area, and so the near tier,
+      re-measured as costs fall.
+
+      Links: area Directing and play · draws on 1161, sim-execution D25 · amends directing.5 · summary The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

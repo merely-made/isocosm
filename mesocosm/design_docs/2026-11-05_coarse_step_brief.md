@@ -4,7 +4,8 @@
 after a reading of what the played loop stands on, revised the same day
 after his correction on what the coarse tier is compared against (§2). It is
 not a plan: it changes no code, and the work it implies belongs to the plans
-named in §10. Its questions (§9) are open. Mark's words are quoted with their
+named in §10. Its questions (§9) were answered on 2026-11-08 as cases 1163
+to 1168; the answers are under §9. Mark's words are quoted with their
 date.
 
 **For:** what step lets Cosmograph run years of world time that nobody is
@@ -366,6 +367,23 @@ once the window measurement and lift times allow it (question 5).
 6. **The render window as a measurement.** Recommended: measure the
    largest window that renders and simulates inside 16.7 ms on the matched
    fixture the 60 Hz work uses, and make it the bound for the near tier.
+
+**Answered 2026-11-08** (cases in the design record):
+
+- **1163:** one sim, pared back by context, with a cohort form after the
+  field's models. Not C as written: the cohort form is the far form the one
+  sim's processes run in, demography from 3.1's law, encounters from
+  mass-scaled functional responses derived from the processes' parameters
+  (Madingley's way, set once, not fitted per web); a term is fitted per web
+  shape only if the checks fail. B is the control arm. Mark: "a useful
+  prototype. we will be able to determine if this is a good model, or if we
+  should check out others!"
+- **1164:** "Measure first". §4's quarter second stays a working figure.
+- **1165:** §6's checks, as recommended; EB7's done-condition relaxed.
+- **1166:** "Wait for 3.1 and the bar". §6's steps 1 and 2 do not start
+  now; the food web's S10 work is the critical path.
+- **1167:** map by map first, as recommended.
+- **1168:** the window is measured and bounds the near tier, as recommended.
 
 ## 10. Where the work would land
 

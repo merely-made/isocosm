@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-03:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-03:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -330,28 +330,30 @@ Background and foreground agree; the background is cheaper by aggregation.
 Anything of note runs as an individual; the fungible agree in distribution
 over every threshold later processes read, within a bound in the world's rules
 (0.2 per reading at first), certified beside a positive and a negative
-control, an arm failing past 1% refused draws. What was watched is logged;
-exact agreement is a world setting, statistical the default. The aggregate
-runs a population model per site and lineage (counts by age band and
-condition, its matter, births, deaths, meals, upkeep and moves as rates),
-calling the individual runner's own meanings; an attended group runs its
-noted members exactly; a parent with its unweaned young, and a member with a
-live learned delta, run as individuals. The crowd's own chooser covers
-un-nudged territories only, running a band's lineage policy once for all its
-members; a rate distilled from that policy serves a lineage no player has met
-only where measured to save. Lifting samples individuals from an aggregate by
-seed, conditioned on every asserted fact; restriction conserves the accounts
-back. A process is declarative enough for its aggregate to derive from its
-one definition, so scripted hooks run only in the foreground.
+control, an arm failing past 1% refused draws, over planted odd states and
+the fold-lift seam, against the fine sim with nobody watching. What was
+watched is logged; exact agreement is a world setting, statistical the
+default. The aggregate is the one sim's cohort form per site and lineage
+(counts by stage and condition, the heritable trait spread, its matter):
+births, deaths and upkeep from the mass law, encounters from mass-scaled
+functional responses after the field's models, a term fitted per web shape
+only where the checks fail. An attended group runs its noted members
+exactly; a parent with its unweaned young, and a member with a live learned
+delta, run as individuals. The crowd's own chooser covers un-nudged
+territories only, running a band's lineage policy once for all its members.
+Lifting samples by seed, conditioned on every asserted fact; restriction
+conserves the accounts back. A process's coarse form derives from its one
+definition, so scripted hooks run only in the foreground.
 
-*Not yet built:* the population model and its bands' policies (the execution
-plan's E4).
+*Not yet built:* the cohort form (the execution plan's E4 and E6), waiting on
+the mass law and the two-year bar (1166); its speed bar is measured first
+(1164).
 
-Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, 1052, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage, its bands running their lineage's policy.
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, 1052, 1163, 1164, 1165, 1166, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area the one sim's cohort form, mass-law demography and mass-derived encounters, fitted only where checks fail.
 
-*Refined 2026-10-31 from case 1052 (Mark: "1 seems reasonable, just looking
-for resource savings. Maybe it wouldn't save much"), drafted without a card
-round at his word: "For the doctrine statements, you can rewrite".*
+*Refined 2026-11-08 from case 1163 (Mark: "Yes, one sim with C's form";
+"starting from the work of the field sounds smarter to me than winging
+it").*
 
 ### Processes 7. Time
 
@@ -1487,15 +1489,20 @@ observation or telling, its members and extent disclosed separately. The tier
 line is directing's: near is the rendered area plus the attention roots and
 those they care for, run as individuals; far within the rendered area is
 presentation; the aggregate outside it never depends on the view (Processes
-6). A member keeps its tier until it has been out of that tier's area for a
-band of ticks, a world rule, so the view's sweeps and the edge do not churn.
+6). The rendered area's size is measured: the largest window that renders
+and simulates inside 16.7 ms on the matched fixture. A member keeps its tier
+until it has been out of that tier's area for a band of ticks, a world rule,
+so the view's sweeps and the edge do not churn. Travel crosses site borders
+map by map, the lift hidden in the crossing; seamless is a later world
+setting.
 
-*Not yet built:* the tier line (the execution plan's E5).
+*Not yet built:* the tier line (the execution plan's E5); the window is
+unmeasured.
 
-Links: draws on 210, 212, 213, 691, 742, 876, sim-execution D3, sim-execution D23, sim-execution D25, sim-execution D26 · summary Attention is play, pins, examining and the game's care; near is the rendered area plus the roots; a band of ticks holds a member's tier; streams carry what is attended.
+Links: draws on 210, 212, 213, 691, 742, 876, 1167, 1168, sim-execution D3, sim-execution D23, sim-execution D25, sim-execution D26 · summary Attention is play, pins, examining and the game's care; near is the rendered area plus the roots, its size measured inside 16.7 ms; a band of ticks holds a member's tier; travel map by map.
 
-*Refined 2026-10-28 from the execution plan's D25 and D26 ("Rendered area
-plus roots (Recommended)", "A band in ticks (Recommended)").*
+*Refined 2026-11-08 from cases 1167 and 1168 ("Map by map first
+(Recommended)", "Measure it, make it the bound (Recommended)").*
 
 ### Directing 6. Death and new lives
 

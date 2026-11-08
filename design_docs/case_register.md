@@ -219,6 +219,9 @@ three design docs that cite it. The record holds the words.
 | 1086 | The foreground cap defaults to 16 bodies, re-measured once the foreground places feet. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1104 | A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1123 | A handback is refused beyond a tick's walk across the ground plus a cell; no version gate. | none |
+| 1163 | The coarse tier is the one sim's cohort form, demography by the mass law, encounters mass-derived after the field's models; fits only where checks fail; a prototype measured against the unwatched fine sim. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
+| 1164 | No speed bar for the coarse step until its first steps are built and measured. | none |
+| 1165 | The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 
 ## Ecology
 
@@ -264,7 +267,7 @@ three design docs that cite it. The record holds the words.
 | 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
-| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -285,6 +288,7 @@ three design docs that cite it. The record holds the words.
 | 1154 | Reach by position applies to every bodied plant; 24 pinned tests are re-recorded. | none |
 | 1155 | Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day. | none |
 | 1159 | Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest. | none |
+| 1166 | The coarse step starts after rates follow mass and the web passes its two-year bar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Bodies and anatomy
 
@@ -598,6 +602,8 @@ three design docs that cite it. The record holds the words.
 | 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | [denizen](2026-11-02_denizen_plan.md) |
 | 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | [denizen](2026-11-02_denizen_plan.md) |
+| 1167 | Travel crosses site borders map by map first, the lift hidden in the crossing; seamless later as a world setting. | none |
+| 1168 | The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture. | none |
 
 ## Presentation
 

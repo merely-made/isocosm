@@ -523,7 +523,8 @@ Evaluate a pass's members concurrently against pass-start state (454) and commit
 Outside the rendered area each site and lineage runs as a population (D24), in bands of age and felt needs (D29), each a representative body with a count and a matter pool (D28), run by the scheduler with multiplicity (D27): counts by age band and condition (fed, hungry, wounded), its matter, and births, deaths, meals, upkeep and moves as rates read from the same process definitions (219), matter conserved every tick. The probe's exact-state crowd (`probe/crowd/`) is not the form: played worlds hold about 1.2 members per exact body state. Identity-bound processes and noted members stay individual (113, D2).
 - Done when: a far site and lineage advances as a population, conserving matter, in a unit test (D18).
 - Needs: D23, D24
-- Rulings: 75, 113, 207, 219, 261, 266, 440, D2, D23, D24
+- 2026-11-08, case 1163: the population model is the one sim's cohort form (counts by stage and condition, the heritable trait spread, pooled matter), advanced over a span by the mass law and mass-derived encounter terms, per the [coarse-step brief](2026-11-05_coarse_step_brief.md) §6; it waits on the mass law and the two-year bar (1166).
+- Rulings: 75, 113, 207, 219, 261, 266, 440, 1163, 1166, D2, D23, D24
 
 ### E5. Crossings and the tier line
 Wire the tier line into directing (742): near is the rendered area plus the attention roots and those they care for (D25); a member keeps its tier until out of its area for a band of ticks, a world rule (D26). Lifting draws a member's body from the lineage's recipe and recorded variation, its condition from the population's counts (435); folding back adds it to the counts, conserving matter; noted members never fold. Keyed on site, lineage and tick, never on a view event (D23). `TierLine` (`directing/tier.rs`) is hop-based and unwired today.
@@ -534,9 +535,10 @@ Wire the tier line into directing (742): near is the rendered area plus the atte
 
 ### E6. Rate models
 Calibration per rules digest (440), for shared resources where the crowd stops paying (261, 266); uncalibrated worlds stay on the exact crowd. The hybrid background (exact crowd where grouping pays, a certified rate model below the members-per-state bound, every switch receipted) has no rate model today: with bodies the crowd groups only slightly more than one member per state, so its evaluation savings are small. A century at a minute-tick is far past the default advance limit; evaluation, not ticks, is the budget (284).
-- Done when: "A rate model is fitted once per rules digest on the bench, certified against the exact runner as 207's crowd was" (§5.3, 440); worlds under rules without a certified model stay exact.
+- 2026-11-08, case 1163 amends 440: nothing is fitted per rules digest. Interaction terms are derived from the processes' parameters after the field's models; a term is fitted per web shape, on the bench, only where 1165's checks fail. Certification is 1165's.
+- Done when: the cohort form passes 1165's checks against the unwatched fine sim; a term that fails is fitted per web shape and passes them; worlds whose form is uncertified stay exact.
 - Needs: E4; the bench (W4); `sim` S5 for the region run it serves
-- Rulings: 207, 261, 266, 284, 439, 440, 441
+- Rulings: 207, 261, 266, 284, 439, 440, 441, 1163, 1165
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:142-143`; `archive_docs/2026-10-28/2026-09-22_sim_plan.md:727-745`, `:1713-1717`, `:1908-1912`.
 
 ### E7. Rates worked out when read

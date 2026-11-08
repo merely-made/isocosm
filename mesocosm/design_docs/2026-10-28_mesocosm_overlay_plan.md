@@ -415,11 +415,12 @@ At the adaptation phase each candidate is weighed by a copy run coarse over year
 time, and the player picks among what prospered. The copy's horizon is stated in world time
 (`rules::Span`), Mesocosm's `scoring` pace becoming a span, older saves reading ticks. The
 review (`lineage/review.rs`) is what the player picks from.
-- Done when: a candidate's copy runs a world year quickly enough for the phase, picking the
-  candidates the exact copy picks on horizons where both run, measured on seeds 9, 3 and 7.
-- Needs: a coarse step that pays (E6's rate models, or case 1075's coarser rung); a web that
-  lives a year (case 1077's retune).
-- Rulings: 684, 1075, 1077, 1083, 1094, ecology.1
+- Done when: a candidate's copy runs a world year quickly enough for the phase (the bar
+  measured before it is set, 1164), its pick scoring within a tolerance of the exact copy's
+  best on horizons where both run (1165), measured on seeds 9, 3 and 7.
+- Needs: a coarse step that pays (the one sim's cohort form, 1163, with case 1075's coarser
+  rung as control), which waits on the mass law and the two-year bar (1166).
+- Rulings: 684, 1075, 1077, 1083, 1094, 1163, 1164, 1165, 1166, ecology.1
 - Implementation reading, 2026-11-03: the sim's S5.1 makes unattended boundary adoption explicit. An evaluation reports extinction at its horizon separately from whether it can rank candidates; identical terminal zero scores are not evidence that the approximation selected well. Ecological persistence, lineage reproductive success and hagiograph significance share observations, not one reward. Candidate diversity, exact goal witnesses and the learning-rule choice remain follow-on design; this pass does not replace the current ranking or offer repertoire.
 - 2026-11-02: grouped execution plus E4's bands, the coarse copy today's machinery makes
   (`lineage/boundary/coarse_tests.rs`, `coarse_readout`), is slower than the exact copy, not
