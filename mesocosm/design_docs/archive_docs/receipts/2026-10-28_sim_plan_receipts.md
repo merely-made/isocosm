@@ -819,3 +819,34 @@ It binds `independent-aligned-build-audit.json`,
 `independent-aligned-raw-audit.json` and
 `independent-aligned-export-audit.json`. Earlier checker drafts are retained
 and their wire-schema normalizations are explained in that index.
+
+## The bar rerun after E7b, 2026-11-08 (cases 1173, 1181)
+
+Branch `lane/bar-rerun`, source `7f87d95e`, release
+`world_time_year-2cae1ffaeb67b593.exe`, `WORLD_TIME_MONTHS=24`, one seed at
+a time, grouped; receipts and logs `Code/testing/isocosm/bar/2026-11-08/seed-<n>.{json,log}`.
+Every run completed 1,051,920 ticks and 25 samples, wrote both verdicts and
+then failed its assertion on the bar (exit 101). History digest
+`4f53cda18c2baa0c...` (no entries) for all.
+
+| Seed | Genesis digest | Rules digest | Final state hash | Peak living (month) | Wall |
+| --- | --- | --- | --- | --- | ---: |
+| 5 | `8638cef5271d893e...` | `3b14965d45aa1da6...` | 7186549771894933760 | 935 (19) | 1,341 s |
+| 9 | `1bf002d69da8fdd0...` | `84f6ada57bdaa7dc...` | 10045388551275423687 | 888 (19) | 1,123 s |
+| 11 | `8a5f7797e30dd430...` | `efe5fce447e5ff83...` | 8081449221894456226 | 583 (11) | 945 s |
+| 17 | `5cd0da282113d5ef...` | `a110dca4fa251bc5...` | 7758574018933200066 | 869 (16) | 1,138 s |
+| 31 | `8d0e7da30625829b...` | `ea13e2d7acf2e8d6...` | 7726174206338370392 | 542 (10) | 776 s |
+
+| Seed | Comparator (first year, year two) | Bar (1173) | Diets lost and returned | Lineage losses | Living at month 24 | Wall |
+| --- | --- | --- | --- | --- | ---: | ---: |
+| 5 | Fail: first year passed, all ten lineages gone in year two | Fail: every diet gone by month 21 | the whole web starved between months 19 and 21 (935 living at month 19, 4 at month 20); the predators at site 3 were lost at month 5 and held elsewhere until the collapse | all ten, months 20 to 21 | 0 | 1,341 s |
+| 9 | Fail: first year failed (lineage 7), all ten gone in year two | Fail: every diet gone at month 21 | the same collapse: 888 living at month 19, 688 at month 20, none at month 21 | all ten, month 21 | 0 | 1,123 s |
+| 11 | Fail: first year failed (lineages 3 and 8) | Fail: predators gone everywhere from month 4 | predators lost at sites 0 and 2 at month 2 and at sites 1 and 3 at month 4; grazers at site 1 lost at month 20, back at month 22 by walking in from sites 0 and 3; producers at site 1 lost at month 12, held elsewhere; grazers at site 1 lost again at month 23, still open | 3 and 8, month 4 | 536 | 945 s |
+| 17 | Fail: first year failed (lineages 3, 6 and 8) | Fail: predators gone everywhere at months 23 and 24 | predators lost at site 0 at month 3, site 2 at month 4, site 1 at month 19, site 3 at month 23; seven returns within one to three months: grazers walking in from sites 0 and 3, omnivores from site 3, decomposers and producers by scattered birth; four patches still open at month 24 | 8 at month 19, 3 at month 23 | 262 | 1,138 s |
+| 31 | Fail: first year failed (lineages 3 and 8) | Fail: predators gone everywhere from month 2 | predators lost at every site at month 2; grazers at site 1 back in a month (walking in from site 3), decomposers by scattered birth, omnivores walking in from sites 0 and 3; producers at site 1 lost at month 11, held elsewhere | 3 and 8, month 2 | 500 | 776 s |
+
+Seed 9's trajectory beside the per-tick draw at `286a23ec` (same food code,
+the EX4 timing run), living / cumulative hazard deaths / cumulative
+starvation deaths: month 12, 612/99/497 then and 615/102/502 now; month 18,
+626/190/1132 and 874/200/948; month 20, 534/214/1347 and 688/226/1359;
+month 21, 504/224/1429 and 0/231/2056.

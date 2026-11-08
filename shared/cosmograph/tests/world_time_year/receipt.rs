@@ -13,6 +13,8 @@ use std::{
 
 #[derive(Serialize)]
 pub struct Run {
+    /// The source identity the run was built from (`WORLD_TIME_SOURCE`).
+    pub source: Option<String>,
     pub requested_ticks: u64,
     pub advanced_ticks: u64,
     pub wall_millis: u128,
@@ -27,6 +29,10 @@ struct Receipt<'a> {
     #[serde(flatten)]
     report: &'a Report,
     run: &'a Run,
+}
+
+fn source() -> Option<String> {
+    std::env::var("WORLD_TIME_SOURCE").ok()
 }
 
 fn write(path: Option<&Path>, report: &Report, run: &Run) -> std::io::Result<()> {
@@ -56,6 +62,7 @@ fn write(path: Option<&Path>, report: &Report, run: &Run) -> std::io::Result<()>
 
 pub fn admission_failure(s: &Session, report: &Report, horizon: u64, path: Option<&Path>) {
     let run = Run {
+        source: source(),
         requested_ticks: horizon,
         advanced_ticks: 0,
         wall_millis: 0,
@@ -75,6 +82,7 @@ pub fn advance(s: &mut Session, report: &mut Report, horizon: u64, path: Option<
         .expect("world-time horizon overflow");
     let timer = Instant::now();
     let mut run = Run {
+        source: source(),
         requested_ticks: horizon,
         advanced_ticks: 0,
         wall_millis: 0,
