@@ -6199,6 +6199,28 @@ area = "Presentation"
 summary = "An optional [presentation] table in pack data sets scene defaults; player flags override."
 draws_on = ["1183"]
 
+[cases."1189"]
+title = "Seed banks next, after the rerun's two failures"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "After the rerun failed every seed, seed banks (S10.2) come next, opening with a measured assessment."
+draws_on = ["1146", "1159", "1173", "1181"]
+plans = ["sim"]
+
+[cases."1190"]
+title = "The VTT adopts the shared style table now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The VTT adopts isometer-core's style table now, a baseline tag on every class."
+draws_on = ["1182", "1183"]
+
+[cases."1191"]
+title = "A patch loss overtaken by a global loss reads held elsewhere, then global"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A patch loss held elsewhere until a global loss reads held elsewhere, then global."
+draws_on = ["1173"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

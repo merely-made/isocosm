@@ -13314,6 +13314,37 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 1183 · summary An optional [presentation] table in pack data sets scene defaults; player flags override.
 
+1189. **Seed banks next, after the rerun's two failures.** Ruled by Mark on
+      2026-11-08: "Seed banks next (S10.2)", over diagnosing both failures
+      first or running more seeds. The rerun on E7b failed every seed both
+      ways: total starvation after the producers' root stores drained
+      (seeds 5 and 9, months 19 to 21; seed 9's lineage 0 roots 3,565 at
+      month 13, 0 at month 20) or predators lost everywhere early (seeds
+      11 and 31 by month 4, 17 by month 23). The sim plan's S10.2 follows,
+      in 1146's order: dormant propagules with conserved matter, reduced
+      upkeep and a sensed wake condition, opening with SC3's measured
+      assessment brought to Mark before code.
+
+      Links: area Ecology · draws on 1146, 1159, 1173, 1181 · plans sim · summary After the rerun failed every seed, seed banks (S10.2) come next, opening with a measured assessment.
+
+1190. **The VTT adopts the shared style table now.** Ruled by Mark on
+      2026-11-08: "Adopt now", over adopting when it first wants a style
+      (recommended) or keeping its looks separate (per-type styles brief,
+      question 4). The VTT carries a `[styles]` table and a `style` field on
+      its class entries with a baseline tag for every class, resolved
+      through isometer-core's `StyleTable` beside `appearance.toml`, so all
+      three products share one table shape from today.
+
+      Links: area The VTT · draws on 1182, 1183 · summary The VTT adopts isometer-core's style table now, a baseline tag on every class.
+
+1191. **A patch loss overtaken by a global loss reads held elsewhere, then
+      global.** Ruled by Mark on 2026-11-08: "Held elsewhere, then global
+      (Recommended)", over reading it unresolved. In 1173's receipt such a
+      loss reads held elsewhere until the global loss, which is reported on
+      its own. No verdict changes.
+
+      Links: area Ecology · draws on 1173 · summary A patch loss held elsewhere until a global loss reads held elsewhere, then global.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

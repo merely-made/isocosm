@@ -294,6 +294,8 @@ three design docs that cite it. The record holds the words.
 | 1159 | Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest. | none |
 | 1166 | The coarse step starts after rates follow mass and the web passes its two-year bar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1173 | The recovery run passes when every diet keeps a resident in the 2x2 footprint, patch losses returning natively within six months; patch is a site; the imposed Kill is declared. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1189 | After the rerun failed every seed, seed banks (S10.2) come next, opening with a measured assessment. | none |
+| 1191 | A patch loss held elsewhere until a global loss reads held elsewhere, then global. | none |
 
 ## Bodies and anatomy
 
@@ -930,6 +932,7 @@ three design docs that cite it. The record holds the words.
 | 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
 | 1157 | Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root. | [denizen](2026-11-02_denizen_plan.md) |
 | 1158 | Isocosm's close views face the token's grid facing; V cycles them. | [denizen](2026-11-02_denizen_plan.md) |
+| 1190 | The VTT adopts isometer-core's style table now, a baseline tag on every class. | none |
 
 ## Naming
 
