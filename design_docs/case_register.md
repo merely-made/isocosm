@@ -223,6 +223,7 @@ three design docs that cite it. The record holds the words.
 | 1164 | No speed bar for the coarse step until its first steps are built and measured. | none |
 | 1165 | The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1174 | The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1180 | The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits. | none |
 
 ## Ecology
 
@@ -650,6 +651,7 @@ three design docs that cite it. The record holds the words.
 | 1171 | Held detail comes from the host: Mesocosm's stand-ins hold Sprite, posed bodies Live. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1176 | The hybrid and voxel body paths are traced and made to agree in colour. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1177 | The quantized sun stamp's default step is 1/32. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1178 | Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed. | none |
 
 ## Stack and engine
 
@@ -732,6 +734,7 @@ three design docs that cite it. The record holds the words.
 | 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1084 | The sim chooses at place grain; in view a game's foreground walks and hands back the arrival; out of view a body arrives after its route's travel time. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1162 | Ground keeps uniform bricks now; the move to nisus must keep the form and brick-wise fill. | [DOC README](DOC_README.md), [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md) |
+| 1179 | Voxel mode's bodies move onto the shared body pass now, retiring the tenant for them; smooth mode keeps its path. | none |
 
 ## Host and network
 

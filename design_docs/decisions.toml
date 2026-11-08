@@ -6119,6 +6119,28 @@ area = "Presentation"
 summary = "The quantized sun stamp's default step is 1/32."
 draws_on = ["1170"]
 
+[cases."1178"]
+title = "Bodies are encoded like terrain, exact sRGB; looks become per-class configuration"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed."
+draws_on = ["426", "1176"]
+
+[cases."1179"]
+title = "One body renderer now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "Voxel mode's bodies move onto the shared body pass now, retiring the tenant for them; smooth mode keeps its path."
+draws_on = ["1176", "1178"]
+
+[cases."1180"]
+title = "The bar runs on today's draws; E7b waits"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits."
+draws_on = ["1173", "1174"]
+plans = ["sim-execution"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

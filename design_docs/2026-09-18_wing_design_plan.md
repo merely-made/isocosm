@@ -13191,6 +13191,48 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 1170 · summary The quantized sun stamp's default step is 1/32.
 
+1178. **Bodies are encoded like terrain, exact sRGB; looks become per-class
+      configuration.** Ruled by Mark on 2026-11-08 on the colour audit
+      (1176), which found voxel mode's renderer applying a tonemap and a 2.2
+      gamma Mesocosm never chose (with both copied, hybrid matched it to 196
+      px, mean 0.4 codes): "i kinda like the differential, it's kinda
+      interesting. but hey, the bodies are made of the same thing as the
+      soil... but it would be cool if we could differentially render each
+      sort of entity just as a matter of technical configuration... could
+      make for interesting visual styles for mods that change the
+      presentation of the game in other ways too (e.g. 2D, 2.5D, 3D, etc.
+      different perspectives, generated from the data which defines the
+      assets/entities). 1 but look for ways we could do stuff like that:
+      distinguish between sorts of things on a type/class basis?" Option 1
+      was exact sRGB with no tonemap. The baseline encodes bodies and
+      terrain alike; the tonemapped look survives as a selectable style; a
+      look is presentation configuration chosen per class of thing, never a
+      renderer of its own. What a class keys on, and per-type styles beyond
+      bodies (perspectives and dimensions derived from entity data), are a
+      design round still to come.
+
+      Links: area Presentation · draws on 426, 1176 · summary Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed.
+
+1179. **One body renderer now.** Ruled by Mark on 2026-11-08: "oh, if
+      we're maintaining an unnecessary path to do this, then maybe we should
+      just unify as a baseline. 2", over unifying after the look settled or
+      not planning it. Voxel mode draws its bodies through the shared body
+      pass in the same change as 1178's look, retiring the kiss3d tenant
+      for voxel bodies; smooth mode keeps its own path.
+
+      Links: area Stack and engine · draws on 1176, 1178 · summary Voxel mode's bodies move onto the shared body pass now, retiring the tenant for them; smooth mode keeps its path.
+
+1180. **The bar runs on today's draws; E7b waits.** Ruled by Mark on
+      2026-11-08: "Keep them, run the bar now (Recommended)", over drawing
+      the death tick once at maturity first, or after. The fine-sim lane's
+      five exact changes cut the bar's two-month fixture from 230 s to 28.5
+      s with the state hash unchanged, and a bodied two-year run to 953 s on
+      seed 9. The remaining hazard draws (36% of the rest) go only by
+      changing every hash, so 1173's bar runs first, comparable with every
+      earlier verdict.
+
+      Links: area Processes and rules · draws on 1173, 1174 · plans sim-execution · summary The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
