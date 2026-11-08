@@ -70,7 +70,14 @@ fn a_bodied_world_time_web_holds_two_years() {
     }
     .generate()
     .unwrap();
-    let mut s = Session::new(genesis, Execution::Grouped).unwrap();
+    // `WORLD_TIME_EXECUTION=individuals` runs the same founding member by
+    // member, for checking an execution change in both modes.
+    let mode = match std::env::var("WORLD_TIME_EXECUTION").as_deref() {
+        Ok("individuals") => Execution::Individuals,
+        Ok("grouped") | Err(std::env::VarError::NotPresent) => Execution::Grouped,
+        other => panic!("WORLD_TIME_EXECUTION must be grouped or individuals: {other:?}"),
+    };
+    let mut s = Session::new(genesis, mode).unwrap();
     let mut report = Report::new(&s);
     let months = env("WORLD_TIME_MONTHS", 24);
     let days = env("WORLD_TIME_DAYS", 0);
@@ -95,6 +102,10 @@ fn a_bodied_world_time_web_holds_two_years() {
         );
     }
     receipt::advance(&mut s, &mut report, horizon, path.as_deref());
+    // Summed spans (`COSMOGRAPH_PROFILE_ACTIVE=sum`): label, ms, spans, count.
+    for (label, [nanos, spans, count]) in cosmograph::profile_totals() {
+        eprintln!("[cosmograph-sum] {:.1} ms {spans} {count} {label}", nanos as f64 / 1e6);
+    }
     eprintln!(
         "seed {seed}, trajectory {:?}, first year {:?}, year-two extinctions {:?}; root-store qualified {}",
         report.outcome,

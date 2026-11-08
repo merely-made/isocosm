@@ -79,15 +79,17 @@ impl Simulation {
         sequence: (u64, u64),
         run: Run,
     ) -> (Receipt, Option<Demands>) {
-        let definition = self.genesis.rules.processes.get(process).cloned();
-        let producer = definition.as_ref().is_some_and(|p| {
+        // Read from the shared genesis, never copied per act (EX4).
+        let genesis = std::sync::Arc::clone(&self.genesis);
+        let definition = genesis.rules.processes.get(process);
+        let producer = definition.is_some_and(|p| {
             p.requires
                 .iter()
                 .any(|q| matches!(q, Query::Institution { .. }))
         }) && self.pass.is_some();
         let mut cause = cause;
         let prior = if producer {
-            let p = definition.as_ref().expect("producer definition is present");
+            let p = definition.expect("producer definition is present");
             if let Ok(declared) = self.institution_process_cause(at.0, at.1, p) {
                 cause = declared;
             }
@@ -100,7 +102,7 @@ impl Simulation {
             None
         };
         let phase = match &run { Run::Plan => "plan", Run::Scheduled(_) => "scheduled", Run::Act => "direct" };
-        let observed = self.diagnostic_begin(at.0, at.1, definition.as_ref(), sequence.0, phase);
+        let observed = self.diagnostic_begin(at.0, at.1, definition, sequence.0, phase);
         // Capture lives for this disposable stage and is cleared on every exit.
         let _ = self.begin_process_debits(at.0, at.1, process, sequence.1);
         let result = self.run_inner(at, process, cause, sequence, run);
@@ -156,6 +158,19 @@ impl Simulation {
                 Outcome::Refused(format!("unknown process {process}")),
             );
         };
+        // A risk that does not fall on a process that otherwise does nothing
+        // makes no act whatever the checks before it find (E7b), and its draw
+        // is keyed, not sequenced (D1); so an unobserved scheduled or planned
+        // act draws first and stops there (EX4). A direct act's receipt is
+        // read, so it takes every check.
+        if !matches!(run, Run::Act)
+            && !self.diagnostic_attached()
+            && definition.effects.is_empty()
+            && definition.commitments.is_empty()
+            && definition.risk.as_ref().is_some_and(|r| !self.risk_falls(r, actor, &id))
+        {
+            return refused(receipt, Outcome::Blocked("the risk did not fall".into()));
+        }
         if count == 0 || (count > 1 && !definition.bulk_safe()) {
             let why = "process cannot execute as a cohort".into();
             return refused(receipt, Outcome::Refused(why));
@@ -239,24 +254,7 @@ impl Simulation {
                 .collect();
         }
         self.diagnostic_stage("risk");
-        let risky = definition.risk.as_ref().is_some_and(|r| match &r.aging {
-            // A rising hazard draws per tick at the actor's age (1077).
-            Some(aging) => {
-                let age = self
-                    .state
-                    .population
-                    .get(actor)
-                    .map_or(0, |e| self.state.tick.saturating_sub(e.born));
-                aging.per_tick(age).is_some_and(|chance| {
-                    crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000_000_000
-                        < chance
-                })
-            },
-            None => {
-                crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
-                    < u64::from(r.per_million)
-            },
-        });
+        let risky = definition.risk.as_ref().is_some_and(|r| self.risk_falls(r, actor, &id));
         // A risk that does not fall, on a process that otherwise does
         // nothing, is no act: nothing is staged, numbered or written (E7b).
         if !risky
@@ -414,5 +412,42 @@ impl Simulation {
             "an accepted act changed the world's matter"
         );
         (receipt, None)
+    }
+
+    /// Whether a scheduled act of `p` by `actor`, numbered as the next act,
+    /// is sure to make no act: `p` does nothing but a risk, its risk does not
+    /// fall, and nothing observes or decides through the act (E7b, EX4). A
+    /// blocked act leaves nothing a later act reads, so the pass need not
+    /// stage it.
+    pub(crate) fn risk_misses(&self, actor: Id, p: &Process) -> bool {
+        p.effects.is_empty()
+            && p.commitments.is_empty()
+            && p.causation != Causation::Choice
+            && !p.requires.iter().any(|q| matches!(q, Query::Institution { .. }))
+            && !self.diagnostic_attached()
+            && p.risk.as_ref().is_some_and(|r| {
+                let id = self.owned_action(actor, &p.id, self.state.next_action);
+                !self.risk_falls(r, actor, &id)
+            })
+    }
+
+    /// Whether `risk` falls on `actor` for the act named `id`: a keyed draw
+    /// against its odds, or for a rising hazard its per-tick odds at the
+    /// actor's age (1077).
+    fn risk_falls(&self, risk: &Risk, actor: Id, id: &str) -> bool {
+        let seed = self.genesis.dynamics_seed();
+        match &risk.aging {
+            Some(aging) => {
+                let age = self
+                    .state
+                    .population
+                    .get(actor)
+                    .map_or(0, |e| self.state.tick.saturating_sub(e.born));
+                aging.per_tick(age).is_some_and(|chance| {
+                    crate::draw(seed, id, &[actor]) % 1_000_000_000_000 < chance
+                })
+            },
+            None => crate::draw(seed, id, &[actor]) % 1_000_000 < u64::from(risk.per_million),
+        }
     }
 }

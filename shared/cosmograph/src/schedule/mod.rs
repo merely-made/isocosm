@@ -122,6 +122,7 @@ impl Simulation {
         let _span = crate::profile::Span::new("schedule.total");
         self.refresh_attention();
         self.protect_attention();
+        let prepare = crate::profile::Span::new("schedule.prepare");
         let mut queue = BTreeSet::new();
         for p in self.genesis.rules.processes.values() {
             if let Some(due) = self.next_due(p, self.state.tick)
@@ -150,7 +151,9 @@ impl Simulation {
             .then(|| crate::journey::Journeys::new(&self.state.population));
         let mut work = Work::default();
         self.chosen.clear();
+        drop(prepare);
         let done = self.scheduled(queue, end, &mut work);
+        let settle = crate::profile::Span::new("schedule.settle");
         self.targets = None;
         self.far_food = None;
         self.journeys = None;
@@ -174,6 +177,7 @@ impl Simulation {
                 None => population.restrict(&roots),
             }
         }
+        drop(settle);
         // Outside the near tier, members leave the physical path (E5) and
         // fold into bands (E4); posed members whose matter moved them off
         // balance re-settle (D38).
@@ -194,13 +198,19 @@ impl Simulation {
     ) -> Result<()> {
         loop {
             let next = queue.first().map_or(end, |(tick, _, _)| *tick);
-            self.arrive_all_until(next, work)?;
+            {
+                let _s = crate::profile::Span::new("pass.arrivals");
+                self.arrive_all_until(next, work)?;
+            }
             let Some((due, priority, id)) = queue.pop_first() else { break; };
             self.state.tick = due;
+            let ripen = crate::profile::Span::new("pass.ripen");
             self.refresh_attention();
             if let Some(filed) = &mut self.filed {
                 filed.ripen(&self.state.population, &World::of(&self.state, &self.genesis.rules));
             }
+            drop(ripen);
+            let tallied = crate::profile::summing().then_some((work.evaluations, work.accepted));
             let genesis = std::sync::Arc::clone(&self.genesis);
             let process = &genesis.rules.processes[&id];
             let _process_span = crate::profile::Span::new(&process.id);
@@ -216,21 +226,27 @@ impl Simulation {
             #[cfg(test)]
             self.record_food_pass(&id);
             if process.takes_shared() {
+                let label = crate::profile::summing().then(|| format!("{id} [plan]"));
+                let _s = label.as_deref().map(crate::profile::Span::new);
                 self.plan(process, &id, gates.as_ref(), bound);
                 self.geometry_ready()?;
             }
             let mut from = 0;
             while let Some(found) = self
-                .next_group(&id, gates.is_some(), from)
+                .next_group(process, gates.is_some(), from)
                 .filter(|f| *f < bound)
             {
                 let pass = self.pass.as_ref().expect("a pass under way");
                 let (first, count) = pass.origin(&self.state.population, found);
-                self.passed_by(gates.as_ref(), from, first);
+                self.passed_by(process, gates.as_ref(), from, first);
                 from = first + count;
                 self.visit(process, &id, gates.as_ref(), (first, count), work)?;
             }
-            self.passed_by(gates.as_ref(), from, bound);
+            self.passed_by(process, gates.as_ref(), from, bound);
+            if let Some((evaluations, accepted)) = tallied {
+                crate::profile::tally(&format!("{id} #evaluated"), work.evaluations - evaluations);
+                crate::profile::tally(&format!("{id} #accepted"), work.accepted - accepted);
+            }
             self.pass = None;
             self.frame = None;
             if let Some(next) = self.next_due(process, due).filter(|next| *next <= end) {
@@ -247,7 +263,7 @@ impl Simulation {
         let mut act = self.state.next_action;
         let mut from = 0;
         while let Some(first) = self
-            .next_group(id, gates.is_some(), from)
+            .next_group(process, gates.is_some(), from)
             .filter(|f| *f < bound)
         {
             let count = self.state.population.groups[&first].count;
@@ -376,29 +392,36 @@ impl Simulation {
     }
 
     /// The least stored group from `from` on that could match: any group,
-    /// for a process without gates, or else one filed as ready for it.
-    fn next_group(&self, process: &str, gated: bool, from: Id) -> Option<Id> {
+    /// for a process without gates, or else one filed as ready for it. An
+    /// agentless process acts only for world bodies (`calls`), whose kingdom
+    /// no act changes, so it goes past every other group (EX4).
+    fn next_group(&self, process: &Process, gated: bool, from: Id) -> Option<Id> {
         if gated {
             let filed = self.filed.as_ref().expect("groups filed for the advance");
-            return filed.next(process, from);
+            return filed.next(&process.id, from);
         }
-        let population = &self.state.population;
-        population.groups.range(from..).next().map(|(&f, _)| f)
+        let mut groups = self.state.population.groups.range(from..);
+        if process.causation == Causation::Agentless {
+            return groups.find(|(_, g)| g.entity.kingdom == "kingdom:world").map(|(&f, _)| f);
+        }
+        groups.next().map(|(&f, _)| f)
     }
 
     /// Debug builds check the filing against a scan: none of the groups a
-    /// pass went past, from `from` up to `until`, was open for it.
-    fn passed_by(&self, gates: Option<&Gates>, from: Id, until: Id) {
+    /// pass went past, from `from` up to `until`, was open for it, nor for
+    /// an agentless pass a world body.
+    fn passed_by(&self, process: &Process, gates: Option<&Gates>, from: Id, until: Id) {
         #[cfg(debug_assertions)]
         for (first, g) in self.state.population.groups.range(from..until.max(from)) {
             let world = World::of(&self.state, &self.genesis.rules);
-            debug_assert!(
-                gates.is_some_and(|gates| !gates.open(&g.entity, &world)),
-                "the filed pass went past group {first}"
-            );
+            let closed = match gates {
+                Some(gates) => !gates.open(&g.entity, &world),
+                None => process.causation == Causation::Agentless && g.entity.kingdom != "kingdom:world",
+            };
+            debug_assert!(closed, "the filed pass went past group {first}");
         }
         #[cfg(not(debug_assertions))]
-        let _ = (gates, from, until);
+        let _ = (process, gates, from, until);
     }
 
     /// One group of the pass, as a scan visits it: its gates read at its
@@ -446,6 +469,7 @@ impl Simulation {
             let before = answering.map(|_| self.wellbeing(actor));
             let planned = self.frame.as_ref().and_then(|f| f.planned.as_ref());
             let (target, accepted) = match planned.map(|p| p.get(&actor).cloned()) {
+                None if self.risk_misses(actor, process) => (None, false),
                 None => {
                     let chosen = deliberated.target();
                     let target = chosen.or_else(|| self.choose_target(actor, process));

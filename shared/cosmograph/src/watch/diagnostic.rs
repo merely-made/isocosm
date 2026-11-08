@@ -430,6 +430,10 @@ impl Simulation {
             m.given = given.clone();
         }
     }
+    /// Whether a diagnostic observer is attached at all.
+    pub(crate) fn diagnostic_attached(&self) -> bool {
+        self.watch.diagnostic.is_some()
+    }
     pub(crate) fn diagnostic_active(&self) -> bool {
         self.watch
             .diagnostic

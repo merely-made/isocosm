@@ -402,6 +402,15 @@ impl Filed {
         filed
     }
 
+    /// Whether a site's conditions moved from `was` to `now` on a key some
+    /// gate reads; a gate reads a site only through its conditions (`reads`),
+    /// so no other shift can move a filing.
+    pub(crate) fn reads_shift(&self, was: &BTreeMap<Key, i64>, now: &BTreeMap<Key, i64>) -> bool {
+        self.gates.iter().flat_map(|g| &g.reads).any(|q| {
+            matches!(q, Query::Condition { key, .. } if was.get(key) != now.get(key))
+        })
+    }
+
     /// Files again every group residing at `site`, after its conditions
     /// changed, each read afresh.
     pub(crate) fn touch_site(&mut self, population: &Population, site: Id, world: &World) {

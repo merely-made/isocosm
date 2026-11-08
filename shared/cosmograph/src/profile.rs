@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Bounded opt-in wall timings. Nested spans overlap; never saved authority.
+//! `COSMOGRAPH_PROFILE_ACTIVE=1` logs each span; `=sum` totals them by label
+//! in memory instead, read back by [`totals`].
 use std::{
+    collections::BTreeMap,
     sync::{
-        OnceLock,
+        Mutex, OnceLock, PoisonError,
         atomic::{AtomicUsize, Ordering},
     },
     time::Instant,
@@ -37,11 +40,45 @@ pub(crate) fn counts(label: &str, values: &[(&str, usize)]) {
     }
 }
 static COUNT: AtomicUsize = AtomicUsize::new(0);
-fn enabled() -> bool {
-    static ENABLED: OnceLock<bool> = OnceLock::new();
-    *ENABLED.get_or_init(|| {
-        std::env::var_os("COSMOGRAPH_PROFILE_ACTIVE").is_some_and(|value| value == "1")
+/// Per label: nanoseconds spent, spans closed, and counts added by [`tally`].
+static TOTALS: Mutex<BTreeMap<String, [u128; 3]>> = Mutex::new(BTreeMap::new());
+fn mode() -> u8 {
+    static MODE: OnceLock<u8> = OnceLock::new();
+    *MODE.get_or_init(|| match std::env::var("COSMOGRAPH_PROFILE_ACTIVE").as_deref() {
+        Ok("1") => 1,
+        Ok("sum") => 2,
+        _ => 0,
     })
+}
+fn enabled() -> bool {
+    mode() != 0
+}
+fn add(label: &str, slot: usize, value: u128) {
+    let mut totals = TOTALS.lock().unwrap_or_else(PoisonError::into_inner);
+    if let Some(t) = totals.get_mut(label) {
+        t[slot] += value;
+    } else {
+        let mut t = [0; 3];
+        t[slot] = value;
+        totals.insert(label.to_owned(), t);
+    }
+}
+/// Whether spans are summed, so a caller builds a label only then.
+pub(crate) fn summing() -> bool {
+    mode() == 2
+}
+/// Adds `n` to a label's count where spans are summed.
+pub(crate) fn tally(label: &str, n: u64) {
+    if mode() == 2 {
+        add(label, 2, u128::from(n));
+    }
+}
+/// The summed spans so far, by label: nanoseconds, spans closed and the
+/// count tallied; empty unless `COSMOGRAPH_PROFILE_ACTIVE=sum`.
+#[must_use]
+pub fn totals() -> Vec<(String, [u128; 3])> {
+    let totals = TOTALS.lock().unwrap_or_else(PoisonError::into_inner);
+    totals.iter().map(|(k, v)| (k.clone(), *v)).collect()
 }
 impl<'a> Span<'a> {
     pub(crate) fn new(label: &'a str) -> Self {
@@ -54,7 +91,10 @@ impl<'a> Span<'a> {
 impl Drop for Span<'_> {
     fn drop(&mut self) {
         if let Some(started) = self.started {
-            if COUNT.fetch_add(1, Ordering::Relaxed) < limit() {
+            if mode() == 2 {
+                add(self.label, 0, started.elapsed().as_nanos());
+                add(self.label, 1, 1);
+            } else if COUNT.fetch_add(1, Ordering::Relaxed) < limit() {
                 eprintln!(
                     "[cosmograph-active] {} {}us",
                     self.label,

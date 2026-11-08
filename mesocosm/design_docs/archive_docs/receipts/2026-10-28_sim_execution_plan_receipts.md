@@ -176,3 +176,49 @@ A nudge toward site 1 after the food step at the default sway (1000, a
 fresh bond of 250, so 250): still resident at tick 8. At sway 5000: departs
 at tick 2 by site 1's border (`side: 1`), the old pose withdrawn; 54 s.
 With D47 built, `physical_swing`'s three tests pass in 65 s.
+
+## EX4 on the bar's founding, 2026-11-08 (case 1174)
+
+Fixture: `shared/cosmograph/tests/world_time_year.rs`,
+`a_bodied_world_time_web_holds_two_years`, release, debug info off, run as
+`WORLD_TIME_MONTHS=2 WORLD_TIME_REPORT=<abs path> <test exe> --ignored --exact
+a_bodied_world_time_web_holds_two_years`, with `WORLD_TIME_EXECUTION=individuals`
+for the other mode. Seed 9, 240 bodied founders, ten lineages, a laid 2x2 map,
+world-time rates, experimental food contract; 87,660 minute ticks; living 240,
+273, 311 at the three samples. Every run below ends at state hash
+`1988914608126411875` with the same history digest and monthly samples.
+Wall-clock on the shared Windows laptop while another lane worked.
+
+| Build | Grouped (s) | Individuals (s) |
+| --- | --- | --- |
+| base `11bbea8c` (plus spans only) | 230.4 | 275.7 |
+| A: re-file only on a condition a gate reads | 74.9, 105.4 | 76.3 |
+| B: no per-act copy of the definition | 68.7, 70.9, 60.7 | 76.9 |
+| C: a missed risk-only draw stops at the draw | 36.2, 36.4, 37.1 | 36.4 |
+| E: agentless passes visit only world bodies | 35.1, 34.3 | 33.9 |
+| D: a missed scheduled draw is not staged | 28.6, 28.7 | 28.1 |
+| final (debug check fixed, spans trimmed) | 28.6 | 28.1 |
+
+Base profile (`COSMOGRAPH_PROFILE_ACTIVE=sum`, 268 s with spans): act commits
+68 s over 438k accepted acts, 63 s of it in `world:weather`'s 116,880 commits
+(four world bodies every three ticks, each re-filing its site's residents);
+21.2M act evaluations, 21.0M of them hazard misses (`ecology:hazard-5` 5.8M,
+`-0` 5.6M, `-7` 2.6M), at about 1.3 us head, 2.3 us requirements and 0.6 us
+draw each; feeding passes 13 s, half of it their plans. After D (33 s with
+spans): hazard passes 11.7 s, shared-ground passes with their plans 10 s,
+`ecology:sunlight` 2.7 s, `world:weather` 0.8 s.
+
+Debug suite at the final tree: `cargo test --tests --no-fail-fast` in
+`shared/cosmograph`, 77 binaries, 888 passed, 37 ignored, none failed. The
+first lib run failed 34 tests on `passed_by`'s debug check, which read an
+agentless pass going past non-world groups as a filing fault; the check now
+allows it.
+
+Two years at the final tree, Grouped, seed 9 (`WORLD_TIME_MONTHS=24`): 953 s,
+hash `8216130930403601927`. Seconds per month and living at its end: 13.5
+(273), 15.0 (311), 16.6 (341), 19.2 (393), 21.7 (426), 24.6 (425), 25.5 (441),
+29.0 (500), 31.3 (518), 34.3 (545), 39.5 (598), 44.3 (612), 45.9 (657), 49.3
+(731), 54.6 (727), 58.8 (787), 69.1 (765), 61.7 (626), 54.7 (575), 52.8 (534),
+46.9 (504), 47.0 (540), 50.5 (497), 47.6 (492). The receipt's trajectory
+reads Passed. This was a timing run, not the bar's measured run, whose horizon
+and seeds case 1174 leaves to be asked.
