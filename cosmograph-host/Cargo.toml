@@ -38,7 +38,7 @@ tempfile = "=3.27.0"
 # The viewer's client, board and window (feature `viewer`).
 graphshell-client = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 graphshell-host = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["board"], optional = true }
-pictograph = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["canvas"], optional = true }
+pictograph = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["canvas", "physics-engine"], optional = true }
 cambium = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
 cambium-desktop = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
 mandrake = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
