@@ -13250,6 +13250,25 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1173, 1174 · amends 1180 · plans sim-execution · summary E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws.
 
+1182. **A thing's look keys on a declared style tag.** Ruled by Mark on
+      2026-11-08: "A declared style tag (Recommended)", over kingdom, role
+      or lineage. A pack declares style tags in its data and a table maps
+      them to looks, as the VTT's `appearance.toml` maps classes; the table
+      may match on kingdom, lineage or role. Each product resolves a
+      subject's tag when it projects, and the scene keeps only the resolved
+      style (1178).
+
+      Links: area Presentation · draws on 1178 · summary Looks key on a style tag declared in pack data, mapped by a table that may match kingdom, lineage or role.
+
+1183. **Per-class looks reach bodies now; the rest is briefed first.** Ruled
+      by Mark on 2026-11-08: "Bodies now, brief the rest (Recommended)",
+      over bodies only or terrain and marks too. Bodies take the style tag
+      now. A design brief on per-type styles across terrain, marks and
+      projections (2D, 2.5D, 3D derived from entity data) brings its
+      questions back before anything more is built.
+
+      Links: area Presentation · draws on 1178, 1182 · summary Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -6150,6 +6150,20 @@ draws_on = ["1173", "1174"]
 amends = ["1180"]
 plans = ["sim-execution"]
 
+[cases."1182"]
+title = "A thing's look keys on a declared style tag"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Looks key on a style tag declared in pack data, mapped by a table that may match kingdom, lineage or role."
+draws_on = ["1178"]
+
+[cases."1183"]
+title = "Per-class looks reach bodies now; the rest is briefed first"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief."
+draws_on = ["1178", "1182"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

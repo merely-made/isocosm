@@ -653,6 +653,8 @@ three design docs that cite it. The record holds the words.
 | 1176 | The hybrid and voxel body paths are traced and made to agree in colour. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1177 | The quantized sun stamp's default step is 1/32. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1178 | Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1182 | Looks key on a style tag declared in pack data, mapped by a table that may match kingdom, lineage or role. | none |
+| 1183 | Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief. | none |
 
 ## Stack and engine
 
