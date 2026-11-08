@@ -148,8 +148,9 @@ impl Default for HostConfig {
             camera: CameraMode::default(),
             view_depth: None,
             terrain_style: section::TerrainStyle::Auto,
-            // Live up close, cached images farther out (case 1172).
-            body_mode: section::BodyMode::Hybrid,
+            // Hybrid stays opt-in until the zoom dither stops re-rendering the
+            // whole scene and the contact gait's loss is settled (case 1175).
+            body_mode: section::BodyMode::default(),
             body_budget: section::DEFAULT_BODY_BUDGET,
             body_light: 1.0,
             light_step: section::DEFAULT_LIGHT_STEP,

@@ -52,7 +52,7 @@ impl BodyMode {
         }
     }
 
-    /// Mesocosm's default quality (case 1172, 9e31bce4's values).
+    /// Mesocosm's hybrid quality (9e31bce4's values), opt-in (case 1175).
     pub(super) fn hybrid_settings(self) -> Option<HybridSettings> {
         if self != Self::Hybrid {
             return None;
@@ -68,9 +68,8 @@ impl BodyMode {
 
 pub const DEFAULT_BODY_BUDGET: usize = MAX_ROSTER + 1;
 
-/// The quantum the hybrid rung's sun is rounded to (case 1170): a tuning
-/// value, measured in the M4.7 receipt, not a ruled default.
-pub const DEFAULT_LIGHT_STEP: f32 = 1.0 / 64.0;
+/// The quantum the hybrid rung's sun is rounded to (cases 1170, 1177).
+pub const DEFAULT_LIGHT_STEP: f32 = 1.0 / 32.0;
 
 pub(super) struct HostBodies {
     /// Body scale, applied to every drawn anatomy.

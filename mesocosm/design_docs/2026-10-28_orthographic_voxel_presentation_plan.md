@@ -239,8 +239,10 @@ rounded to `HybridSettings::light_step`. Without a sun the pass keeps its fixed
 face shade, so other products are unchanged.
 
 Mesocosm's part of condition 4 has a wound receipt on the device and a headed
-generated run (M4.7 in the overlay plan). Hybrid is now Mesocosm's default
-(case 1172). The residency bound is a byte budget in `HybridSettings`
+generated run (M4.7 in the overlay plan). Hybrid stays opt-in in Mesocosm
+until the zoom dither no longer re-renders the whole scene (34–59 ms p95 per
+frame in run 4) and the loss of the smooth mode's contact gait is settled
+(case 1175, reopening 1172). The light step defaults to 1/32 (1177). The residency bound is a byte budget in `HybridSettings`
 (`scene/residency/body_images.rs`), and condition 3's L6/PG5 budgets would
 attach there. Condition 3 itself stays open.
 
@@ -468,7 +470,7 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
-- 2026-11-08: cases 1170 to 1172 built: a sun-lit shared body pass and bake with a quantized lighting stamp, `SceneHost::hybrid_held`, and hybrid as Mesocosm's default with 9e31bce4's values. The M4.7 run4 receipt measures rebakes at four light quanta.
+- 2026-11-08: cases 1170 and 1171 built: a sun-lit shared body pass and bake with a quantized lighting stamp, and `SceneHost::hybrid_held`. The M4.7 run4 receipt measures rebakes at four light quanta. Hybrid went back to opt-in (1175, reopening 1172); the light step defaults to 1/32 (1177); a colour-path audit against the tenant is next (1176).
 - 2026-11-08: Mesocosm consumes the 1161 mechanism. Examination is played, followed or dev focus (Mark), and a zero-band control was added for the slow refresh boundary. A headed generated run shows identical native hashes across voxels, hybrid and half-scale hybrid, with switch and refresh costs measured (receipt). Held detail, lighting and default presets wait on Mark.
 - 2026-11-03: Mark accepted the hybrid direction as case 1161; Presentation 2 now includes adaptive R1 image refresh, L10 has explicit production gates, and the board, product overlays, residency and simulation plans carry their ownership seams. Trial numerical presets remain tuning values.
 - 2026-11-03: captured and measured the authorized R0/R1 hybrid probe and reverse-order confirmation; added configurable projected-size/rate bands, current-root composition, ordered switching and a captured zoom/motion comparison. Product defaults, cache residency and runtime integration remain open.

@@ -304,18 +304,20 @@ Acceptance needs a headed generated scene
 with motion, growth/injury invalidation and zoom reversal, showing the same
 native outcomes across image settings and the measured refresh/switch costs.
 
-Status, 2026-11-08: wired, run headed, and now the default (Findings; the
-receipt is in the presentation plan's receipt file).
+Status, 2026-11-08: wired and run headed, and opt-in (Findings; the receipt
+is in the presentation plan's receipt file).
 - Examination: `hybrid_examined` keeps the played critter, the followed body
   and the dev inspection focus live (1169).
 - Held detail: natively posed bodies hold live detail and cohort stand-ins
   hold only a sprite (1171). Until M4.8, the played body in a stand-in view
   stays a sprite even when examined.
 - Light: bodies and their images take the tenant's sun scaled by
-  `--body-light`, quantized by `--light-step` (1170). The 1/64 default is a
-  tuning value.
-- Default: `--bodies hybrid` is Mesocosm's default with 9e31bce4's values
-  (1172), so the default view no longer shows the smooth mode's contact gait.
+  `--body-light`, quantized by `--light-step`, default 1/32 (1170, 1177).
+- Default: `--bodies hybrid` stays opt-in with 9e31bce4's values. It waits
+  until the zoom dither no longer re-renders the whole scene (34–59 ms p95 per
+  frame in run 4) and the loss of the smooth mode's contact gait is settled
+  (1175, reopening 1172). A colour-path audit against the tenant comes next
+  (1176).
 
 Met:
 - motion;
@@ -325,7 +327,8 @@ Met:
 - measured switch and refresh costs;
 - rebake counts with the sun moving.
 
-Still open: attributing a single sprite rebake to a headed injury. The wound
+Still open: making hybrid the default (1175), the colour-path audit (1176),
+and attributing a single sprite rebake to a headed injury. The wound
 receipt on the device covers injury; the headed run only counts anatomy
 changes beside refreshes.
 The mechanism, residency gates and probe evidence stay in
