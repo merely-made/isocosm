@@ -297,7 +297,10 @@ selector and adaptive image refresh. An examined specimen requests live detail;
 ordinary subjects follow projected size and held detail, with current roots
 and depth independent of cached limb poses. Quality presets and examination
 policy are Mesocosm's; native stepping, decisions and ecology keep their own
-cadence. Runtime wiring is open. Acceptance needs a headed generated scene
+cadence. Examining is the played critter, the followed body and the dev focus,
+the sim's examined region joining after M4.8 (1169). Opt-in wiring landed in
+9e31bce4; the examination hook, lighting and held-detail inputs and headed
+acceptance are open. Acceptance needs a headed generated scene
 with motion, growth/injury invalidation and zoom reversal, showing the same
 native outcomes across image settings and the measured refresh/switch costs.
 The mechanism, residency gates and probe evidence stay in

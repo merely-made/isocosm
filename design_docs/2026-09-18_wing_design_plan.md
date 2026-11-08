@@ -13078,6 +13078,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Directing and play · draws on 1161, sim-execution D25 · amends directing.5 · summary The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture.
 
+1169. **In Mesocosm, examining is the played critter, the followed body and
+      the dev focus.** Ruled by Mark on 2026-11-08: "Played + followed + dev
+      focus (Recommended)", over the played critter alone or the sim's
+      examined region. Mesocosm's hybrid examination hook keeps a subject
+      live when it is the played critter (`always_visible`), the followed
+      camera target, or the dev inspection focus; Cosmograph's
+      `WindowAttention.examined` region joins once the overlay plan's M4.8
+      host side is built. Eponym and the VTT already supply their own hooks
+      (9e31bce4). Mesocosm's choice under Presentation 2, which leaves when
+      examining applies to each mode.
+
+      Links: area Presentation · draws on 212, 1161 · plans mesocosm-overlay · summary Mesocosm keeps live the played critter, the followed body and the dev focus; the sim's examined region joins after M4.8.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

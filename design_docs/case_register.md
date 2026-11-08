@@ -643,6 +643,7 @@ three design docs that cite it. The record holds the words.
 | 1151 | First person and over the shoulder face the player's aim. | [denizen](2026-11-02_denizen_plan.md) |
 | 1152 | Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited. | [denizen](2026-11-02_denizen_plan.md) |
 | 1161 | Live bodies nearby and cached local poses farther out, with slower image refresh as projected size falls; current roots and simulation cadence stay separate. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1169 | Mesocosm keeps live the played critter, the followed body and the dev focus; the sim's examined region joins after M4.8. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 
 ## Stack and engine
 
