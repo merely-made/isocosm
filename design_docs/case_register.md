@@ -225,6 +225,7 @@ three design docs that cite it. The record holds the words.
 | 1174 | The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1180 | The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits. | none |
 | 1181 | E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1184 | Death is drawn once where its odds can't change; any hazard that could need a redraw keeps the per-tick draw. | none |
 
 ## Ecology
 

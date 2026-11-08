@@ -13269,6 +13269,17 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 1178, 1182 · summary Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief.
 
+1184. **A hazard that could need a redraw keeps the per-tick draw.** Ruled
+      by Mark on 2026-11-08: "Keep the guard (Recommended)", over storing
+      each member's tick of coming under a hazard. In today's rules a
+      member's death odds depend only on age and fixed constants, so one
+      draw at maturity is exact (1181). A hazard whose gates could open and
+      close again (an account, a site, a trait some process sets), or a
+      world that folds far members into bands, keeps the per-tick draw; no
+      save-format change until a rule needs a redraw.
+
+      Links: area Processes and rules · draws on 1181 · summary Death is drawn once where its odds can't change; any hazard that could need a redraw keeps the per-tick draw.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -6164,6 +6164,13 @@ area = "Presentation"
 summary = "Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief."
 draws_on = ["1178", "1182"]
 
+[cases."1184"]
+title = "A hazard that could need a redraw keeps the per-tick draw"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Death is drawn once where its odds can't change; any hazard that could need a redraw keeps the per-tick draw."
+draws_on = ["1181"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
