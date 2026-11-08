@@ -55,6 +55,21 @@ fn a_diet_gone_everywhere_fails() {
 }
 
 #[test]
+fn a_patch_loss_a_global_loss_overtakes_reads_held_elsewhere_then_global() {
+    // Site 1 loses its predators at month 5; site 0 holds them until month 20.
+    let mut months = whole(24);
+    set(&mut months, 5..25, 1, "predator", 0);
+    set(&mut months, 20..25, 0, "predator", 0);
+    let (patch, global) = judge(&months);
+    let site = |s: u64| patch.iter().find(|l| l.site == s).expect("a loss at the site");
+    assert_eq!((site(1).lost_month, site(1).resolution, site(1).overtaken_month), (5, Resolution::HeldElsewhere, Some(20)));
+    assert_eq!((site(0).lost_month, site(0).resolution, site(0).overtaken_month), (20, Resolution::Global, None));
+    assert_eq!(global.first().map(|g| (g.diet, g.month)), Some(("predator", 20)));
+    assert_eq!(global.len(), 5, "months 20 to 24, reported on their own");
+    assert_eq!(outcome(&patch, &global, 24), Outcome::Failed);
+}
+
+#[test]
 fn a_lineage_loss_is_reported_only() {
     // Two lineages share each diet in a web of ten; one of a pair dying out
     // leaves the diet held, so residents by diet never fall to nothing.
