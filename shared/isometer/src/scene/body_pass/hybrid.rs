@@ -95,6 +95,7 @@ impl HybridFrame {
         size: [u32; 2],
         host: &dyn SceneHost,
         settings: HybridSettings,
+        light: Option<isometer_render::live_body::BodyLight>,
     ) -> BTreeMap<SubjectKey, u32> {
         self.frame += 1;
         self.stats = HybridStats::default();
@@ -111,6 +112,8 @@ impl HybridFrame {
         let mut facing = DefaultHasher::new();
         axes.map(|axis| axis.map(f32::to_bits)).hash(&mut facing);
         let facing = facing.finish();
+        let lighting = light.map_or(0, |light| light.stamp());
+        self.stats.light_stamp = lighting;
         let previous = std::mem::take(&mut self.previous);
         let last_coverage = std::mem::take(&mut self.coverage);
         let step = 16_u32.div_ceil(settings.transition_frames.clamp(1, 16));
@@ -121,15 +124,15 @@ impl HybridFrame {
             };
             let prior = previous.get(&body.subject).copied();
             let examined = body.examined || host.hybrid_examined(body.subject);
-            let choice = settings
-                .policy
-                .select(pixels, prior, examined, BodyDetail::Live)
-                .choice;
+            let held = host.hybrid_held(body.subject);
+            let choice = settings.policy.select(pixels, prior, examined, held).choice;
             self.previous.insert(body.subject, choice);
             let old = last_coverage.get(&body.subject).copied().unwrap_or(0);
+            // The chosen rung decides, so a held bound keeps an examined
+            // subject a sprite; examination promotes held live detail at once.
             let coverage = match (choice.detail, examined, prior.is_some()) {
-                (BodyDetail::Sprite, false, false) => 16,
-                (BodyDetail::Sprite, false, true) => (old + step).min(16),
+                (BodyDetail::Sprite, _, false) => 16,
+                (BodyDetail::Sprite, _, true) => (old + step).min(16),
                 (BodyDetail::Live, false, _) => old.saturating_sub(step),
                 _ => 0,
             };
@@ -141,7 +144,7 @@ impl HybridFrame {
                 continue;
             }
             requests.push(Request {
-                revisions: body.revisions(facing, 0),
+                revisions: body.revisions(facing, lighting),
                 period: settings.policy.refresh_period(choice.refresh),
                 coverage,
                 body,
@@ -175,6 +178,7 @@ impl HybridFrame {
                 !requests.is_empty() && self.retiring.is_some() && capacity.is_some();
             return BTreeMap::new();
         };
+        resident.atlas.set_light(light);
         self.stats.retained_bytes = resident.atlas.retained_bytes();
         self.stats.sprite_instance_buffer_bytes = resident.atlas.instance_buffer_bytes();
         self.stats.capacity = resident.capacity;

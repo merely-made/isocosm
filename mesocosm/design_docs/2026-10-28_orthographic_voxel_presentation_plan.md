@@ -227,19 +227,22 @@ The recorded GPU probe informs the direction and budget questions. Production
 acceptance is still open; pixel thresholds, refresh rates, cache resolution
 and transition length remain configurable tuning gates.
 
-Status, 2026-11-08 (Findings): conditions 1 and 2 hold in shared code, with
-two open items. Selection, the cache and the production bake, composite and
-pick path are `5f95cd40` and `9e31bce4`. All three refresh boundaries now have
-zero-band controls. Open: held detail is passed as `Live` for every voxel body,
-and the lighting stamp is a constant. Both wait on Mark. The shared voxel body
-pass reads no scene light, so a constant stamp is honest. It also means hybrid
-mode draws bodies unlit where Mesocosm's voxel mode lights them through its
-tenant. Mesocosm's part of condition 4 has a wound receipt on the device and a
-headed generated run (M4.7 in the overlay plan): the same native hashes under
-three image settings, with switch and refresh costs measured. The residency
-bound is a byte budget in `HybridSettings` (`scene/residency/body_images.rs`),
-and that is where condition 3's L6/PG5 budgets would attach. Condition 3 itself
-stays open.
+Status, 2026-11-08 (Findings): conditions 1 and 2 hold in shared code.
+Selection, the cache and the production bake, composite and pick path are
+`5f95cd40` and `9e31bce4`. All three refresh boundaries have zero-band controls.
+A product reports held detail through `SceneHost::hybrid_held` (case 1171). A
+held sprite bound now keeps even an examined subject a sprite.
+
+The shared body pass and the sprite bake light by the host's sun
+(`SceneHost::body_light`, case 1170). Images are keyed by a stamp of that sun,
+rounded to `HybridSettings::light_step`. Without a sun the pass keeps its fixed
+face shade, so other products are unchanged.
+
+Mesocosm's part of condition 4 has a wound receipt on the device and a headed
+generated run (M4.7 in the overlay plan). Hybrid is now Mesocosm's default
+(case 1172). The residency bound is a byte budget in `HybridSettings`
+(`scene/residency/body_images.rs`), and condition 3's L6/PG5 budgets would
+attach there. Condition 3 itself stays open.
 
 ### L10b. Condition 8 for Mesocosm
 Folded in 2026-10-10 from the views founding plan (ruling 801). Condition 8
@@ -440,6 +443,10 @@ should name this plan.
 - **Far-rung function tint**: whether the far rungs of the detail ladder (doctrine Presentation 2) need the function tint, or only the marks. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:302-303`.
 - **L10 readings not ruled**: that outer rings coarsen first; that the glyph rasteriser is netrender's text path (parley, skrifa, vello) run once per glyph, cached and thresholded to opaque pixels. Bench readings still owed with numbers: thresholds, hysteresis bands, each mode's default glyph filter, dither pattern and frame count; and whether the GPU pass lands the bake's pixels and face shading (the silhouette test proves coverage only). Mark's "Per mode" already settles who decides whether examining fires on approach. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2395-2400, 2420-2422, 2469-2476, 2601-2605`.
 ## Findings
+- 2026-11-08: cases 1170 and 1171 are built.
+  - `live_body.wgsl` decodes each face's axis from its fixed shade, rotates it by the instance model, and applies `ambient + sun * max(n·toward, 0)` in place of the shade, but only when a `BodyLight` is set. `isometer-render`'s 54 tests pass unchanged.
+  - A sun moved by less than the quantum keeps the image: 0 refreshes and 1 hit at a step of 1/16. Moved past the quantum, the sprite rebakes, and an exact sun rebakes on any move (`scene/body_pass/tests/light.rs`). A held sprite bound keeps an examined subject a sprite, and with live detail held the subject promotes.
+  - In the M4.7 near view, hybrid against voxels: pixels differing by more than 24 codes fell from 13,448 to 805, and the mean difference fell from 8.2 to 4.9 codes. A small offset remains between the shared pass and the tenant's raster and colour path.
 - 2026-11-08: conditions 1 and 2, checked against `5f95cd40` and `9e31bce4`. The selector chooses per body under both cameras. Its zero-band controls now fail at all three boundaries: Medium/Slow was added in `hybrid/tests.rs`. The held-detail control fails as it should. Two gaps remain:
   - The scene passes `BodyDetail::Live` for every body (`scene/body_pass/hybrid.rs`), so the held bound is never exercised in a product.
   - The lighting stamp is `0`. `live_body.wgsl` and the sprite bake read no light uniform: face shade is fixed per axis.
@@ -461,6 +468,7 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
+- 2026-11-08: cases 1170 to 1172 built: a sun-lit shared body pass and bake with a quantized lighting stamp, `SceneHost::hybrid_held`, and hybrid as Mesocosm's default with 9e31bce4's values. The M4.7 run4 receipt measures rebakes at four light quanta.
 - 2026-11-08: Mesocosm consumes the 1161 mechanism. Examination is played, followed or dev focus (Mark), and a zero-band control was added for the slow refresh boundary. A headed generated run shows identical native hashes across voxels, hybrid and half-scale hybrid, with switch and refresh costs measured (receipt). Held detail, lighting and default presets wait on Mark.
 - 2026-11-03: Mark accepted the hybrid direction as case 1161; Presentation 2 now includes adaptive R1 image refresh, L10 has explicit production gates, and the board, product overlays, residency and simulation plans carry their ownership seams. Trial numerical presets remain tuning values.
 - 2026-11-03: captured and measured the authorized R0/R1 hybrid probe and reverse-order confirmation; added configurable projected-size/rate bands, current-root composition, ordered switching and a captured zoom/motion comparison. Product defaults, cache residency and runtime integration remain open.

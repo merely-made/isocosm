@@ -15,6 +15,10 @@ pub struct HybridSettings {
     /// Maximum duration of the ordered dither, clamped to 1–16 frames.
     /// Quantizing the weight to sixteenths can complete it sooner.
     pub transition_frames: u32,
+    /// Quantum for the sun the bodies and their images are lit by, so images
+    /// rebake only when the light moves by a step (case 1170). Zero keeps it
+    /// exact. A tuning value, not a product default.
+    pub light_step: f32,
 }
 
 impl HybridSettings {
@@ -30,11 +34,17 @@ impl HybridSettings {
             max_resident_bytes,
             max_refreshes,
             transition_frames: 8,
+            light_step: 0.0,
         }
     }
 
     pub const fn with_transition_frames(mut self, frames: u32) -> Self {
         self.transition_frames = frames;
+        self
+    }
+
+    pub const fn with_light_step(mut self, step: f32) -> Self {
+        self.light_step = step;
         self
     }
 }
@@ -66,4 +76,6 @@ pub struct HybridStats {
     /// Previous atlas awaiting a queue fence after a quality change. No new
     /// atlas is allocated until the older submissions finish.
     pub retiring_bytes: u64,
+    /// The lighting revision images were keyed by this frame; 0 when unlit.
+    pub light_stamp: u64,
 }

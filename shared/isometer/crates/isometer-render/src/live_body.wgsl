@@ -4,6 +4,9 @@ struct Frame {
     slab_max_enabled: vec4<f32>,
     bounds_min: vec4<f32>,
     bounds_max: vec4<f32>,
+    // Toward the sun and ambient; sun weight and 1 when lit (case 1170).
+    light_toward_ambient: vec4<f32>,
+    light_sun_enabled: vec4<f32>,
 };
 
 @group(0) @binding(0)
@@ -42,7 +45,19 @@ struct VertexOut {
     @location(4) expression_tail: vec4<f32>,
     @location(5) inspection_accent: f32,
     @location(6) @interpolate(flat) sprite_coverage: u32,
+    // World face normal, then the face shade baked into `color`.
+    @location(7) @interpolate(flat) normal_shade: vec4<f32>,
 };
+
+// Each face shade names one axis direction (`geometry::face_shade`).
+fn face_normal(shade: f32) -> vec3<f32> {
+    if (shade > 0.93) { return vec3<f32>(0.0, 1.0, 0.0); }
+    if (shade > 0.82) { return vec3<f32>(0.0, 0.0, 1.0); }
+    if (shade > 0.72) { return vec3<f32>(1.0, 0.0, 0.0); }
+    if (shade > 0.62) { return vec3<f32>(-1.0, 0.0, 0.0); }
+    if (shade > 0.515) { return vec3<f32>(0.0, 0.0, -1.0); }
+    return vec3<f32>(0.0, -1.0, 0.0);
+}
 
 @vertex
 fn vs_main(input: VertexIn) -> VertexOut {
@@ -65,6 +80,10 @@ fn vs_main(input: VertexIn) -> VertexOut {
         input.expression_tail,
         input.tint.w,
         u32(input.expression_tail.y),
+        vec4<f32>(
+            normalize((model * vec4<f32>(face_normal(input.material_shade.y), 0.0)).xyz),
+            input.material_shade.y,
+        ),
     );
 }
 
@@ -130,6 +149,12 @@ fn fs_main(input: VertexOut) -> @location(0) vec4<f32> {
         let shade = max(max(input.color.x, input.color.y), input.color.z);
         // Retain the caller's body tint, including its deadened carrion tone.
         colour = mix(input.color, mark * shade, 0.72);
+    }
+    if (frame.light_sun_enabled.w > 0.5) {
+        // Replace the fixed face shade with the scene sun's Lambert term.
+        let lambert = frame.light_toward_ambient.w + frame.light_sun_enabled.xyz
+            * max(dot(input.normal_shade.xyz, frame.light_toward_ambient.xyz), 0.0);
+        colour = colour / max(input.normal_shade.w, 0.001) * lambert;
     }
     // Selection remains an accent. Replacing the material colour with amber
     // would conceal the tissue reading the inspection asked for.

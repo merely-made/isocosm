@@ -80,6 +80,7 @@ impl Source {
                     section.configure_terrain(view.terrain, view.centre, view.terrain_y);
                     section.set_body_focus(view.focus, view.selection);
                     section.set_examined(view.followed, view.focus, view.selection);
+                    section.set_light_step(view.light_step);
                 }
                 section.set_forward(Some(camera.forward))?;
                 section.set_perspective(camera.frustum().map(|_| camera));
@@ -150,8 +151,15 @@ impl Source {
                 ),
                 ("hybrid_live_fallbacks", u64::from(hybrid.live_fallbacks)),
                 ("hybrid_bake_upload_bytes", hybrid.bake_upload_bytes),
+                (
+                    "hybrid_light_changes",
+                    u64::from(hybrid.light_stamp != 0 && hybrid.light_stamp != self.light_stamp),
+                ),
             ] {
                 costs.count(name, value);
+            }
+            if hybrid.light_stamp != 0 {
+                self.light_stamp = hybrid.light_stamp;
             }
             if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
                 eprintln!(

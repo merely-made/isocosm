@@ -230,6 +230,7 @@ impl mandrake::Product for Probe {
                     counter("hybrid_transition_bodies"),
                 ),
                 ("hybrid-live-fallbacks", counter("hybrid_live_fallbacks")),
+                ("hybrid-light-changes", counter("hybrid_light_changes")),
                 (
                     "hybrid-bake-upload-bytes",
                     counter("hybrid_bake_upload_bytes"),

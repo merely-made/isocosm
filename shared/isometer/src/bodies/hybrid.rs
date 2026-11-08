@@ -38,6 +38,11 @@ impl HybridBody<'_> {
 }
 
 impl BodyLayer {
+    /// The sun later live draws take; `None` keeps the fixed face shade.
+    pub(crate) fn set_light(&mut self, light: Option<BodyLight>) {
+        self.renderer.set_light(light);
+    }
+
     pub(crate) fn hybrid_bodies(&self) -> impl Iterator<Item = HybridBody<'_>> {
         self.placed.iter().map(|body| HybridBody {
             subject: body.subject,

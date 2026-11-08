@@ -164,6 +164,8 @@ pub(crate) struct Source {
     animation_frame: u64,
     recording: recording::Recording,
     costs: costs::Costs,
+    /// The hybrid lighting revision of the last encoded frame, to count changes.
+    light_stamp: u64,
 }
 
 impl Source {
@@ -186,6 +188,7 @@ impl Source {
             animation_frame: 0,
             recording: Default::default(),
             costs,
+            light_stamp: 0,
         }
     }
     fn target(&mut self, size: [u32; 2]) {

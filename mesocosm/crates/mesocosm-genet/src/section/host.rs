@@ -38,7 +38,24 @@ impl isometer::SceneHost for SectionHost<'_> {
     }
 
     fn hybrid_settings(&self) -> Option<isometer::hybrid::HybridSettings> {
-        self.mode.hybrid_settings()
+        self.mode
+            .hybrid_settings()
+            .map(|settings| settings.with_light_step(self.bodies.light_step))
+    }
+
+    /// Natively posed bodies hold live detail; cohort stand-ins and other
+    /// bodies without a native pose hold only a sprite (case 1171). Until
+    /// M4.8, the played body in a stand-in view therefore stays a sprite.
+    fn hybrid_held(&self, subject: isometer::SubjectKey) -> isometer::hybrid::BodyDetail {
+        match self.scene.body(subject.0) {
+            Some(body) if body.physical.is_none() => isometer::hybrid::BodyDetail::Sprite,
+            _ => isometer::hybrid::BodyDetail::Live,
+        }
+    }
+
+    /// The tenant's sun, for the shared pass hybrid draws with (case 1170).
+    fn body_light(&self) -> Option<isometer::BodyLight> {
+        Some(self.tenant.block().body(self.tenant.light()))
     }
 
     fn hybrid_examined(&self, subject: isometer::SubjectKey) -> bool {

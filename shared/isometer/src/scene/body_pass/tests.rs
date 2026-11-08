@@ -10,9 +10,14 @@ use std::num::NonZeroU64;
 const VIEW: u32 = 65;
 const SLOT_BYTES: u64 = 32 * 32 * 8;
 
+mod light;
+
 struct Host {
     settings: HybridSettings,
     examined: Option<SubjectKey>,
+    /// A subject whose world holds only a sprite.
+    held_sprite: Option<SubjectKey>,
+    light: Option<crate::BodyLight>,
 }
 
 impl SceneHost for Host {
@@ -21,6 +26,16 @@ impl SceneHost for Host {
     }
     fn hybrid_examined(&self, subject: SubjectKey) -> bool {
         self.examined == Some(subject)
+    }
+    fn hybrid_held(&self, subject: SubjectKey) -> crate::hybrid::BodyDetail {
+        if self.held_sprite == Some(subject) {
+            crate::hybrid::BodyDetail::Sprite
+        } else {
+            crate::hybrid::BodyDetail::Live
+        }
+    }
+    fn body_light(&self) -> Option<crate::BodyLight> {
+        self.light
     }
 }
 
@@ -33,6 +48,8 @@ fn host() -> Host {
     Host {
         settings: HybridSettings::new(policy, 32, 2 * SLOT_BYTES, 1).with_transition_frames(4),
         examined: None,
+        held_sprite: None,
+        light: None,
     }
 }
 

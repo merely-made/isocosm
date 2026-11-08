@@ -65,6 +65,7 @@ fn pending_scene_keeps_accepted_queries_and_promotes_only_its_frozen_input() {
         looking: section::perspective::Looking::overview(),
         focus: None,
         followed: None,
+        light_step: section::DEFAULT_LIGHT_STEP,
         selection: None,
     };
     handle.present(&native.scene, 7, view_a.clone()).unwrap();

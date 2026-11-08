@@ -494,3 +494,46 @@ Pixel checks:
 
 Limits: one run each, wall time on a shared machine, no GPU duration. The
 refreshes are not attributed between revision changes, pose age and facing.
+
+## Mesocosm hybrid headed run 4: lit bodies, held detail, default (M4.7), 2026-11-08
+
+Cases 1170 to 1172 on the lane branch, rebased onto `0f9ae56b`, in a release
+build. Same scenario and seed as run 3. The default body mode is now hybrid,
+and `--sun sim` moves the sun every tick, 0.25° of hour angle. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run4/`.
+
+All six settings matched at every checkpoint: hybrid at the 1/64 default,
+`--bodies voxels`, `--render-scale 2`, and `--light-step` of 0, 0.03125 and
+0.0625. Hashes: d8eea18fe502aac1 at tick 0, 5be7c2e2da6c4207 at tick 2,
+f43cdc42cb1b918d at tick 12, c763a19d3af1d832 at tick 17. The final state
+hash is 14367504932912879666.
+
+Rebakes with the light moving. "Stamp changes" counts frames whose lighting
+stamp differs from the previous frame's, the first frame included.
+
+| Light step | Stamp changes | Refreshes, total | Refreshes, ten ticks at 768 | Bake upload |
+| --- | --- | --- | --- | --- |
+| exact | 18 | 66 | 30 | 375,440 B |
+| 1/64 | 9 | 56 | 24 | 311,312 B |
+| 1/32 | 5 | 53 | 21 | 307,392 B |
+| 1/16 | 2 | 49 | 18 | 264,176 B |
+
+Run 3, unlit, had 18 refreshes in the ten ticks at 768. At 1/16, light-caused
+rebakes vanish over this 17-tick run.
+
+Near view, hybrid against voxels, in the body crop (412,474)–(808,698):
+
+| | Pixels differing by >8 codes | Pixels differing by >24 codes | Mean difference |
+| --- | --- | --- | --- |
+| run 3, unlit | 35,264 | 13,448 | 8.2 codes |
+| run 4, lit | 39,546 | 805 | 4.9 codes |
+
+The large differences collapsed. A small, widespread offset remains between
+the shared pass and the tenant (`compare-near-moved.png`). Sprite views differ
+in 583–1,288 px, inside the body cluster.
+
+Cost phases, native worker p95: hybrid zoom_in measured 33.9–59.4 ms across
+the four lit hybrid runs, against voxels at 0.09 ms; that is the 8-frame
+reverse dither re-rendering the scene. far_motion measured 7.7–8.5 ms against
+12.0 ms for voxels. These are single wall-time runs on a shared machine, with
+no GPU duration.

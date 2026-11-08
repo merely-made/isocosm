@@ -304,27 +304,30 @@ Acceptance needs a headed generated scene
 with motion, growth/injury invalidation and zoom reversal, showing the same
 native outcomes across image settings and the measured refresh/switch costs.
 
-Status, 2026-11-08: wired and run headed (Findings; the receipt is in the
-presentation plan's receipt file). `--bodies hybrid` drives the shared pass.
-Mesocosm's `hybrid_examined` keeps the played critter, the followed body and
-the dev inspection focus live (Mark, 2026-11-08). Cosmograph's examined region
-joins when M4.8's host side exists.
+Status, 2026-11-08: wired, run headed, and now the default (Findings; the
+receipt is in the presentation plan's receipt file).
+- Examination: `hybrid_examined` keeps the played critter, the followed body
+  and the dev inspection focus live (1169).
+- Held detail: natively posed bodies hold live detail and cohort stand-ins
+  hold only a sprite (1171). Until M4.8, the played body in a stand-in view
+  stays a sprite even when examined.
+- Light: bodies and their images take the tenant's sun scaled by
+  `--body-light`, quantized by `--light-step` (1170). The 1/64 default is a
+  tuning value.
+- Default: `--bodies hybrid` is Mesocosm's default with 9e31bce4's values
+  (1172), so the default view no longer shows the smooth mode's contact gait.
 
 Met:
 - motion;
 - zoom out and reversal;
 - anatomy changes during the sprite phase;
-- the same native hash at every checkpoint across voxels, hybrid and
-  half-scale hybrid;
-- measured switch and refresh costs.
+- the same native hash at every checkpoint across six image settings;
+- measured switch and refresh costs;
+- rebake counts with the sun moving.
 
-Still open:
-- the default preset (the one in `section/bodies.rs` is a tuning value);
-- held detail and the lighting stamp, both with Mark;
-- unlit hybrid bodies against the lit voxel mode;
-- attributing a single sprite rebake to a headed injury. The wound receipt on
-  the device covers injury; the headed run only counts anatomy changes beside
-  refreshes.
+Still open: attributing a single sprite rebake to a headed injury. The wound
+receipt on the device covers injury; the headed run only counts anatomy
+changes beside refreshes.
 The mechanism, residency gates and probe evidence stay in
 `2026-10-28_orthographic_voxel_presentation_plan.md` L10 and
 `2026-10-28_place_graph_engine_plan.md` PG5.
@@ -536,6 +539,16 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-11-08 (run4): six settings gave the same native hash at all six checkpoints: hybrid default, voxels, half-scale hybrid, and light steps 0, 1/32 and 1/16. The final hash is 14367504932912879666. With `--sun sim`, these are the light-stamp changes and the refreshes during the ten ticks at zoom 768:
+
+  | Light step | Stamp changes over 17 ticks | Refreshes at 768 |
+  | --- | --- | --- |
+  | exact | 18 | 30 |
+  | 1/64 | 9 | 24 |
+  | 1/32 | 5 | 21 |
+  | 1/16 | 2 | 18 |
+
+  Unlit (run3) had 18 refreshes at 768.
 - 2026-11-08: M4.7's hybrid run used seed 1793177320550931600 in creative dev mode, paused, with 17 single-tick steps through zooms 96, 768, 96 and 512 (`mesocosm/testing/hybrid/m4-7.scenario`; captures in `Code/testing/isocosm/m4-7-hybrid/2026-11-08/run3/`).
   - Native hashes matched at all six checkpoints under `--bodies voxels`, `hybrid` and `hybrid --render-scale 2`; the final hash is 14367504932912879666.
   - At zoom 768, three of four bodies drew as sprites and the played body stayed live. Through ten ticks with nine anatomy changes, there were 18 refreshes and 101 KB of bake uploads.

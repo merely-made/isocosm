@@ -76,6 +76,12 @@ impl Scene {
             ..
         } = &mut *self;
         let settings = host.hybrid_settings();
+        // One light for the live draw and every bake this frame; quantized
+        // under hybrid so images rebake only on a visible change (1170).
+        let light = host
+            .body_light()
+            .map(|light| settings.map_or(light, |s| light.quantized(s.light_step)));
+        bodies.set_light(light);
         let result = if let Some(settings) = settings {
             let coverage = hybrid.draw(
                 device,
@@ -87,6 +93,7 @@ impl Scene {
                 [*width, *height],
                 host,
                 settings,
+                light,
             );
             bodies.draw_hybrid(device, queue, encoder, traced_view, camera, &coverage)
         } else {

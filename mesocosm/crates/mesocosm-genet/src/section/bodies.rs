@@ -52,6 +52,7 @@ impl BodyMode {
         }
     }
 
+    /// Mesocosm's default quality (case 1172, 9e31bce4's values).
     pub(super) fn hybrid_settings(self) -> Option<HybridSettings> {
         if self != Self::Hybrid {
             return None;
@@ -67,6 +68,10 @@ impl BodyMode {
 
 pub const DEFAULT_BODY_BUDGET: usize = MAX_ROSTER + 1;
 
+/// The quantum the hybrid rung's sun is rounded to (case 1170): a tuning
+/// value, measured in the M4.7 receipt, not a ruled default.
+pub const DEFAULT_LIGHT_STEP: f32 = 1.0 / 64.0;
+
 pub(super) struct HostBodies {
     /// Body scale, applied to every drawn anatomy.
     pub scale: f32,
@@ -76,6 +81,8 @@ pub(super) struct HostBodies {
     /// Subjects examination keeps live besides the played one; see
     /// [`super::host::examined_subjects`].
     pub examined: Vec<u64>,
+    /// See [`DEFAULT_LIGHT_STEP`].
+    pub light_step: f32,
 }
 
 impl HostBodies {
@@ -85,6 +92,7 @@ impl HostBodies {
             fallback: Vec::new(),
             played_fallback: None,
             examined: Vec::new(),
+            light_step: DEFAULT_LIGHT_STEP,
         }
     }
 
@@ -149,6 +157,11 @@ impl HostBodies {
 }
 
 impl super::Section {
+    /// The hybrid sun's quantum; zero keeps the light exact.
+    pub fn set_light_step(&mut self, step: f32) {
+        self.host_bodies.light_step = step;
+    }
+
     /// One frame's bodies in scene order; the scene culls and orders them.
     /// Each body's skin colour table, registered against its subject.
     pub(super) fn register_palettes(&mut self, scene: &SiteScene) {

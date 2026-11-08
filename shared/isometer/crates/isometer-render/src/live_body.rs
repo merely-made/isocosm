@@ -21,6 +21,7 @@ use isometer_core::{PartId, VolumeRef};
 use isometer_mesh::BodyMesh;
 use wgpu::util::DeviceExt;
 
+mod frame;
 mod materials;
 mod palette;
 mod pose;
@@ -28,6 +29,8 @@ mod query;
 mod resident;
 mod vertex;
 
+pub use frame::BodyLight;
+use frame::FrameUniform;
 pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_average, tissue_colour};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
 pub use query::{BodyHit, BodyQueryError, body_bounds, part_transform, pick_bodies, posed_quad};
@@ -216,16 +219,6 @@ impl Instance {
     };
 }
 
-#[repr(C)]
-#[derive(Clone, Copy, Pod, Zeroable)]
-struct FrameUniform {
-    clip_from_world: [[f32; 4]; 4],
-    slab_normal_min: [f32; 4],
-    slab_max_enabled: [f32; 4],
-    bounds_min: [f32; 4],
-    bounds_max: [f32; 4],
-}
-
 /// Draws cached volume meshes into a pass that the caller owns.
 pub struct LiveBodyRenderer {
     pipeline: wgpu::RenderPipeline,
@@ -240,6 +233,7 @@ pub struct LiveBodyRenderer {
     clock: u64,
     last_frame: Option<FrameUniform>,
     last_stats: BodyDrawStats,
+    light: Option<BodyLight>,
 }
 
 impl LiveBodyRenderer {
@@ -338,7 +332,14 @@ impl LiveBodyRenderer {
             clock: 0,
             last_frame: None,
             last_stats: BodyDrawStats::default(),
+            light: None,
         }
+    }
+
+    /// Light later draws and bakes by the scene's sun, or restore the fixed
+    /// face shade with `None`.
+    pub fn set_light(&mut self, light: Option<BodyLight>) {
+        self.light = light;
     }
 
     pub fn last_stats(&self) -> BodyDrawStats {
@@ -495,23 +496,7 @@ impl LiveBodyRenderer {
                 self.cache_mesh(device, placement.volume.0, part_mesh, &mut stats);
             }
         }
-        let slab = clip_slab.unwrap_or(ClipSlab::new([0.0; 3], 0.0, 0.0));
-        let frame = FrameUniform {
-            clip_from_world,
-            bounds_min: slab
-                .bounds
-                .map_or([0.0; 4], |(min, _)| [min[0], min[1], min[2], 1.0]),
-            bounds_max: slab
-                .bounds
-                .map_or([0.0; 4], |(_, max)| [max[0], max[1], max[2], 0.0]),
-            slab_normal_min: [slab.normal[0], slab.normal[1], slab.normal[2], slab.min],
-            slab_max_enabled: [
-                slab.max,
-                0.0,
-                0.0,
-                if clip_slab.is_some() { 1.0 } else { 0.0 },
-            ],
-        };
+        let frame = FrameUniform::new(clip_from_world, clip_slab, self.light);
         let mut write = |buffer: &wgpu::Buffer, offset, bytes: &[u8]| match queue {
             Some(queue) => queue.write_buffer(buffer, offset, bytes),
             None => upload_in_order(device, encoder, buffer, offset, bytes),

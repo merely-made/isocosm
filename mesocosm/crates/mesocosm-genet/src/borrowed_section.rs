@@ -57,6 +57,8 @@ pub(crate) struct Presentation {
     /// The camera's body, dev or not: one of the subjects examination keeps
     /// live in the hybrid rung.
     pub followed: Option<Id>,
+    /// The hybrid rung's sun quantum (1170).
+    pub light_step: f32,
     pub selection: Option<section::BodySelection>,
     pub looking: section::perspective::Looking,
 }
