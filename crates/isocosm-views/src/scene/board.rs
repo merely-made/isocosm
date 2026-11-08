@@ -415,7 +415,9 @@ impl SceneSource for BoardSource {
             })
             .collect();
         let mut host = vec![u64::from(self.residency.headroom), self.atlas_budget];
-        BoardHost::new(self.body_quality, token_subject(view.selected_token)).append_inputs(&mut host);
+        BoardHost::new(self.body_quality, token_subject(view.selected_token))
+            .styled(&view.library, view.map.tokens.iter().map(token_class))
+            .append_inputs(&mut host);
         Ok(SceneSignature {
             size: request.size,
             render_scale: request.render_scale,
@@ -467,7 +469,8 @@ impl SceneSource for BoardSource {
         // comes out of the source for the encode and goes straight back.
         let mut scene = self.scene.take().ok_or("the scene was not built")?;
         let held = self.view.borrow();
-        let mut host = BoardHost::new(self.body_quality, token_subject(held.selected_token));
+        let mut host = BoardHost::new(self.body_quality, token_subject(held.selected_token))
+            .styled(&held.library, drawn.iter().map(token_class));
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
@@ -567,6 +570,11 @@ impl SceneSource for BoardSource {
 
 fn token_subject(token: Option<TokenId>) -> Option<SubjectKey> {
     token.map(|id| SubjectKey(u64::from(id.0)))
+}
+
+/// A token's subject and the class its style resolves from (1190).
+fn token_class(token: &Token) -> (SubjectKey, &str) {
+    (SubjectKey(u64::from(token.id.0)), token.sprite.as_str())
 }
 
 impl BoardSource {

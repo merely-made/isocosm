@@ -143,3 +143,39 @@ fn a_weapon_in_the_off_hand_is_mirrored_and_armour_wears_over_the_body() {
     let armoured = library.resolve("hero", None, &[item("pf2e:chain-mail", "body")]).unwrap();
     assert!(armoured.voxels.filled() > bare.voxels.filled());
 }
+
+#[test]
+fn every_core_class_carries_the_baseline_style() {
+    // Case 1190: a tag per class, resolving through the shared table.
+    let library = Library::core();
+    assert!(library.classes().count() > 0);
+    for class in library.classes() {
+        assert_eq!(library.style(class), Style::default(), "{class}");
+    }
+}
+
+#[test]
+fn a_class_tag_resolves_and_an_unknown_tag_is_refused() {
+    let film = isometer_core::BodyDisplay::NeutralGamma22;
+    let mut library = Library::core();
+    library
+        .overlay(
+            "[styles.film]\ndisplay = \"neutral\"\n\
+             [classes.wolf]\npalette = \"wolf\"\nstyle = \"film\"\n\
+             [classes.moth]\npalette = \"default\"\n",
+            &no_files,
+        )
+        .unwrap();
+    assert_eq!(library.style("wolf").display, film);
+    // A class with no tag, and a name no pack binds, take the baseline.
+    assert_eq!(library.style("moth"), Style::default());
+    assert_eq!(library.style("griffin"), Style::default());
+
+    let before = library.fingerprint();
+    let unknown = library.overlay("[classes.orc]\npalette = \"default\"\nstyle = \"fog\"\n", &no_files);
+    assert!(unknown.unwrap_err().contains("undeclared style \"fog\""));
+    // Refused before anything is laid over.
+    assert_eq!(library.fingerprint(), before);
+    assert_eq!(library.style("orc"), Style::default());
+    assert!(library.overlay("[styles.sepia]\ndisplay = \"sepia\"\n", &no_files).is_err());
+}

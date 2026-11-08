@@ -59,6 +59,12 @@ impl StyleTable {
             .ok_or_else(|| UnknownStyle(tag.to_owned()))
     }
 
+    /// Lay a later pack's tags over these: a tag it declares replaces the
+    /// same tag, and every other tag stays.
+    pub fn overlay(&mut self, later: StyleTable) {
+        self.0.extend(later.0);
+    }
+
     /// Tags are non-empty words with no surrounding space.
     pub fn validate(&self) -> Result<(), String> {
         match self
