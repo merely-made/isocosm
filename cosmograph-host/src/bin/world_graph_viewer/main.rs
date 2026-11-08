@@ -77,6 +77,8 @@ fn main() -> Result<(), String> {
         after_frame: Box::new(move |ctx: &mut AppCtx<'_, Viewer, Logic, Child>| {
             if let Some(lane) = after.borrow_mut().as_mut() { lane.after_frame(ctx); }
         }),
+        // Required since Mere ad6aaf60e; this viewer publishes no prepared frames.
+        prepare_presentation: Box::new(|_, _| None),
         after_wake: Box::new(|_| {}),
         close_request: Box::new(|_, _| CloseDisposition::Exit),
         focused_text: Box::new(|_: &Runner<Viewer, Logic, Child>| None),
