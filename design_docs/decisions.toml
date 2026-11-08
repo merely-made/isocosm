@@ -6141,6 +6141,15 @@ summary = "The two-year bar runs on today's hazard draws after the exact speed-u
 draws_on = ["1173", "1174"]
 plans = ["sim-execution"]
 
+[cases."1181"]
+title = "Death is drawn once, then the comparator and the bar are rerun"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws."
+draws_on = ["1173", "1174"]
+amends = ["1180"]
+plans = ["sim-execution"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

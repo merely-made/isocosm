@@ -13233,6 +13233,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1173, 1174 · plans sim-execution · summary The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits.
 
+1181. **Death is drawn once, then the comparator and the bar are rerun.**
+      Ruled by Mark on 2026-11-08, reopening 1180 the same hour: "Ehhh… how
+      incomparable would the measurements be?"; "If you just mean slightly
+      different, then I don't know, it might not be worth wasting the extra
+      time when we could essentially rerun some of those receipts anyway."
+      Told that drawing the death tick once moves each seed's trajectory
+      but not the distribution if built right, he chose "E7b first, rerun
+      comparator (Recommended)" over the bar on today's draws. E7b as first
+      planned: one keyed draw of the death tick at maturity at the same
+      odds, redrawn whenever what sets a member's odds changes, with death
+      ages checked in distribution against the per-tick draw over many
+      replicates beside a broken-draw control. The old five-seed comparator
+      and the bar then run on the new draws; earlier verdicts stay as
+      history. A rule change E7b would need returns as a question.
+
+      Links: area Processes and rules · draws on 1173, 1174 · amends 1180 · plans sim-execution · summary E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
