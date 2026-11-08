@@ -114,6 +114,8 @@ pub struct Report {
     pub first_year: Option<Vec<LineageVerdict>>,
     pub second_year_extinctions: BTreeSet<Key>,
     pub outcome: Outcome,
+    /// Case 1173's criterion, read from the same samples (`recovery`).
+    pub recovery: super::recovery::Recovery,
     #[serde(skip)]
     footprints: Vec<BTreeSet<Id>>,
     #[serde(skip)]
@@ -170,6 +172,7 @@ impl Report {
             first_year: None,
             second_year_extinctions: BTreeSet::new(),
             outcome: Outcome::Inconclusive,
+            recovery: Default::default(),
             footprints: footprints(s),
             // The original year bar compares the lineages living at founding.
             expected: s
@@ -240,7 +243,9 @@ impl Report {
                     .filter(|(_, t)| t.members > 0)
                     .map(move |(lineage, _)| (site, lineage.clone()))
             }));
+        let month = sample.elapsed_ticks / self.month_ticks;
         self.samples.push(sample);
+        self.recovery.observe(s, &self.expected, month);
         self.evaluate();
     }
 

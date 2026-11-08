@@ -7,7 +7,11 @@
 //! trajectory; behavioral root regressions belong to the frozen build evidence.
 //! The full run is ignored because the minute clock remains expensive.
 //! `WORLD_TIME_DAYS` selects a diagnostic span; a short span is inconclusive.
-//! `WORLD_TIME_REPORT` may name an absolute JSON receipt path.
+//! `WORLD_TIME_REPORT` may name an absolute JSON receipt path, and
+//! `WORLD_TIME_SOURCE` the source identity (a commit) it records. Each run
+//! reports two verdicts from the same samples: case 1173's recovery
+//! criterion, which is the bar, and the original first-year bar with
+//! year-two extinctions, kept as its comparator.
 
 use cosmograph::{
     Execution, Founding, Session,
@@ -22,6 +26,10 @@ mod admission;
 mod controls;
 #[path = "world_time_year/receipt.rs"]
 mod receipt;
+#[path = "world_time_year/recovery.rs"]
+mod recovery;
+#[path = "world_time_year/recovery_tests.rs"]
+mod recovery_tests;
 #[path = "world_time_year/support.rs"]
 mod support;
 #[path = "world_time_year/tissue.rs"]
@@ -106,25 +114,25 @@ fn a_bodied_world_time_web_holds_two_years() {
     for (label, [nanos, spans, count]) in cosmograph::profile_totals() {
         eprintln!("[cosmograph-sum] {:.1} ms {spans} {count} {label}", nanos as f64 / 1e6);
     }
-    eprintln!(
-        "seed {seed}, trajectory {:?}, first year {:?}, year-two extinctions {:?}; root-store qualified {}",
+    let bar = report.recovery.outcome.unwrap_or(Outcome::Inconclusive);
+    let verdicts = format!(
+        "seed {seed}: bar (1173) {bar:?}, global losses {:?}, patch losses {:?}, lineage losses {:?}; \
+         comparator {:?}, first year {:?}, year-two extinctions {:?}; root-store qualified {}",
+        report.recovery.global_losses,
+        report.recovery.patch_losses,
+        report.recovery.lineage_losses,
         report.outcome,
         report.first_year,
         report.second_year_extinctions,
         report.root_store_qualified
     );
+    eprintln!("{verdicts}");
+    // Both verdicts are recorded before either is asserted.
     if horizon < 24 * report.month_ticks {
-        assert_eq!(
-            report.outcome,
-            Outcome::Inconclusive,
-            "a short diagnostic cannot establish two-year persistence"
-        );
+        assert_eq!(report.outcome, Outcome::Inconclusive, "a short diagnostic cannot establish two-year persistence: {verdicts}");
+        assert_ne!(bar, Outcome::Passed, "a short diagnostic cannot pass the bar: {verdicts}");
     } else {
-        assert_eq!(
-            report.outcome,
-            Outcome::Passed,
-            "the first-year bar or second-year persistence failed; inspect the monthly receipt"
-        );
+        assert_eq!(bar, Outcome::Passed, "the bar (1173) failed; inspect the receipt: {verdicts}");
     }
 }
 
