@@ -159,6 +159,9 @@ Case 1182's consolidation check:
 
 ## 8. Questions for Mark
 
+*Answered 2026-11-08: question 1 as case 1185, 2 as 1186, 3 as 1187, 5 as
+1188, each as recommended. Question 4 is open.*
+
 1. **What the next body style knob is.** Today a style changes only
    `display`. Evidence: the rung, image size and palette are already per-body
    inputs or one step from it (§3).

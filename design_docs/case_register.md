@@ -656,6 +656,10 @@ three design docs that cite it. The record holds the words.
 | 1178 | Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
 | 1182 | Looks key on a style tag declared in pack data, mapped by a table that may match kingdom, lineage or role. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
 | 1183 | Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1185 | A style tag may pin a type to the live or sprite rung. | [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
+| 1186 | Per-material terrain styles wait on a measured tracer cost. | none |
+| 1187 | 2D comes first from sprite-pinned types under the orthographic camera, no new renderer. | none |
+| 1188 | An optional [presentation] table in pack data sets scene defaults; player flags override. | none |
 
 ## Stack and engine
 

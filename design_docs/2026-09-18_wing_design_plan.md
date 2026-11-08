@@ -13280,6 +13280,40 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1181 · summary Death is drawn once where its odds can't change; any hazard that could need a redraw keeps the per-tick draw.
 
+1185. **A style can pin a type's rung.** Ruled by Mark on 2026-11-08: "A
+      pinned rung (Recommended)", over a palette remap per tag or outline
+      and flat shading (per-type styles brief, question 1). A style may set
+      `rung = "live" | "sprite"`, drawing a whole type as cached sprites
+      (2.5D) while others stay live, through the held-detail bound.
+
+      Links: area Presentation · draws on 1182, 1183 · summary A style tag may pin a type to the live or sprite rung.
+
+1186. **Terrain styles per material are measured before they are built.**
+      Ruled by Mark on 2026-11-08: "Measure first (Recommended)", over a
+      palette override only or one style per scene (brief, question 2). A
+      tracer timing of per-material grading on the M4.7 scene comes before
+      any terrain style table.
+
+      Links: area Presentation · draws on 1183 · summary Per-material terrain styles wait on a measured tracer cost.
+
+1187. **2D is reached first by pinned sprites under an orthographic camera.**
+      Ruled by Mark on 2026-11-08: "Pinned sprites, ortho camera
+      (Recommended)", over a Mesocosm board projection or deferring (brief,
+      question 3). Types pinned to the sprite rung under the orthographic
+      camera give a per-type 2.5D look with no new renderer; a true 2D board
+      projection waits.
+
+      Links: area Presentation · draws on 1185 · summary 2D comes first from sprite-pinned types under the orthographic camera, no new renderer.
+
+1188. **Scene defaults become pack data.** Ruled by Mark on 2026-11-08:
+      "Yes, a [presentation] table (Recommended)", over keeping them player
+      settings (brief, question 5). A pack may carry an optional
+      `[presentation]` table beside `terms` (colour grade, camera mode,
+      default body style) that a pack overlay can set; the player's flags
+      still override.
+
+      Links: area Presentation · draws on 1183 · summary An optional [presentation] table in pack data sets scene defaults; player flags override.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
