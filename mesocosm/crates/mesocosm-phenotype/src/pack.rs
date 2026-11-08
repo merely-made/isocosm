@@ -61,6 +61,12 @@ pub struct Manifest {
     /// Display-only forms, separate from native definitions and their digest.
     #[serde(default, skip_serializing_if = "crate::TermTable::is_empty")]
     pub terms: crate::TermTable,
+    /// Presentation looks by tag (1182). Display only, like `terms`.
+    #[serde(default, skip_serializing_if = "isometer_core::StyleTable::is_empty")]
+    pub styles: isometer_core::StyleTable,
+    /// Rules giving a body a tag by kingdom, lineage or role; first match wins.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub style_rules: Vec<crate::StyleRule>,
     /// Explicit native world law for NEW founding. A restored world keeps
     /// its saved law; a pack cannot replace that law after the session exists.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -109,5 +115,15 @@ pub fn seeding_of(word: &str) -> Option<Seeding> {
         "geometry" => Some(Seeding::Grown),
         "acquired" => Some(Seeding::Acquired),
         _ => None,
+    }
+}
+
+impl Manifest {
+    /// The pack's styles and the rules that hand them out (1182).
+    pub fn style_sheet(&self) -> crate::StyleSheet {
+        crate::StyleSheet {
+            styles: self.styles.clone(),
+            rules: self.style_rules.clone(),
+        }
     }
 }

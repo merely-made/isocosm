@@ -68,6 +68,7 @@ fn fixture() -> (PlacedBody, SiteScene) {
         materials: vec![],
         palette: vec![],
         alive: true,
+        display: None,
     };
     let mut bodies = vec![body.clone()];
     let scene = SiteScene {
@@ -154,6 +155,7 @@ fn jointed_motion(pivot: bool) -> (PlacedBody, SiteScene, Pose, isometer::core::
                 materials: vec![],
                 palette: vec![],
                 alive: true,
+                display: None,
             };
             let mut bodies = vec![body.clone()];
             let scene = SiteScene {

@@ -35,6 +35,9 @@ pub struct Authored {
     policy: Policy,
     terms: mesocosm_phenotype::TermTable,
     affinity: Option<cosmograph::rules::Affinity>,
+    /// Presentation only; a save keeps none, so a resumed world takes the
+    /// styles of the pack loaded at startup.
+    styles: mesocosm_phenotype::StyleSheet,
 }
 
 /// What one script made of one offer: the cells it would change on the
@@ -80,6 +83,7 @@ impl Authored {
         Ok(Self {
             scripts,
             policy: Policy::default(),
+            styles: manifest.style_sheet(),
             terms: manifest.terms,
             affinity: manifest.affinity,
         })
@@ -106,10 +110,14 @@ impl Authored {
         }
         source.terms.validate()?;
         Ok(Self { scripts: source.scripts.clone(), policy,
-            terms: source.terms.clone(), affinity: source.affinity.clone() })
+            terms: source.terms.clone(), affinity: source.affinity.clone(),
+            styles: Default::default() })
     }
 
     pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
+
+    /// The pack's presentation styles (1182).
+    pub fn styles(&self) -> &mesocosm_phenotype::StyleSheet { &self.styles }
 
     /// The pack's explicit law, supplied before a NEW native founding.
     pub fn affinity(&self) -> Option<&cosmograph::rules::Affinity> { self.affinity.as_ref() }

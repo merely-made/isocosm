@@ -396,7 +396,7 @@ impl LiveBodyRenderer {
                 appearance.expression_tail[1] =
                     sprite_coverage.get(index).copied().unwrap_or(0) as f32;
                 appearance.expression_tail[2] =
-                    styles.get(index).copied().unwrap_or(self.display).lane();
+                    frame::lane(styles.get(index).copied().unwrap_or(self.display));
                 instances.entry(key).or_default().push(Instance {
                     model: model.to_cols_array_2d(),
                     tint: appearance.tint,

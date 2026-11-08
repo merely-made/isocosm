@@ -142,6 +142,7 @@ impl ComponentScene {
                 materials: appearance.materials.clone(),
                 palette: appearance.palette.clone(),
                 alive: appearance.alive,
+                display: None,
             });
         }
         if bodies.len() != self.supplied || appearances.next().is_some() {

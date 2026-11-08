@@ -88,7 +88,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         };
         bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical, walks: vec![],
             parts: crate::section::skin_parts(e), materials: vec![], palette: vec![],
-            tint:tint_of(kingdom::of(e)), alive:e.alive });
+            tint:tint_of(kingdom::of(e)), alive:e.alive, display: None });
     }
     let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
@@ -126,8 +126,7 @@ pub fn placed(
                 .unwrap_or_else(|| super::layout::spot(ground, index)),
             tint: tint_of(kingdom::of(entity)),
             parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
-            alive: entity.alive,
-        })
+            alive: entity.alive, display: None })
         .collect()
 }
 
@@ -170,7 +169,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         bodies.push(PlacedBody { id, document, at:cell, physical:Some(at.pose.clone()),
             walks: walks.get(&id).cloned().unwrap_or_default(),
             parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
-            tint:tint_of(kingdom::of(entity)), alive:entity.alive });
+            tint:tint_of(kingdom::of(entity)), alive:entity.alive, display: None });
     }
     Ok(bodies)
 }
@@ -228,4 +227,36 @@ fn native_walks(game: &mesocosm_runtime::spatial::Game)
         }
     }
     for steps in out.values_mut() { steps.reverse(); } out
+}
+
+/// Each body's pack style (1182), resolved at projection; the scene keeps
+/// only the resolved look. Role is the closed set the pack's rules name.
+pub fn style(
+    bodies: &mut [PlacedBody],
+    sim: &Simulation,
+    played: Option<Id>,
+    styles: &mesocosm_runtime::StyleSheet,
+) {
+    use mesocosm_runtime::{StyleRole, StyleSubject};
+    for body in bodies {
+        let role = if !body.alive {
+            StyleRole::Carcass
+        } else if Some(body.id) == played {
+            StyleRole::Played
+        } else {
+            StyleRole::Member
+        };
+        body.display = sim
+            .state()
+            .population
+            .get(body.id)
+            .and_then(|entity| {
+                styles.resolve(StyleSubject {
+                    kingdom: &entity.kingdom,
+                    lineage: &entity.lineage,
+                    role,
+                })
+            })
+            .map(|style| style.display);
+    }
 }

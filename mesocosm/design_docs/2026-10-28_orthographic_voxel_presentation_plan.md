@@ -483,6 +483,7 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
+- 2026-11-08: case 1182 built for bodies. `isometer-core` holds the shared tag-to-look table (`StyleTable`, `Style`, `BodyDisplay`). Mesocosm's pack declares `[styles]` and `[[style_rules]]`, matched on kingdom, lineage or role and resolved at projection. The shipped pack declares the baseline and neutral tags with no active rule, so nothing changes look. The rest is the [per-type styles brief](2026-11-08_per_type_styles_brief.md) (1183).
 - 2026-11-08: case 1176 audit. The shared pass gains an opt-in display encoding (`BodyDisplay`), and Mesocosm exposes it as `--body-display srgb|tenant`. The default stays `srgb`, so no product changes look. With `tenant`, hybrid matches voxel mode to 196 px >8 in the near view (run 5).
 - 2026-11-08: cases 1178 and 1179.
   - The baseline is exact sRGB with no tonemap.

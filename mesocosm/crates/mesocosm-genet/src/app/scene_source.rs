@@ -87,6 +87,7 @@ pub(super) fn store(
     mut scene: SiteScene,
     components: bool,
     retained: &mut Option<ComponentScene>,
+    style: impl FnOnce(&mut SiteScene),
 ) -> Result<Rc<SiteScene>, String> {
     if components {
         let columns = ComponentScene::capture(&scene);
@@ -95,5 +96,6 @@ pub(super) fn store(
     } else {
         *retained = None;
     }
+    style(&mut scene);
     Ok(Rc::new(scene))
 }

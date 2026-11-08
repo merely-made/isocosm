@@ -484,3 +484,30 @@ fn a_definition_the_engine_has_no_binding_for_still_lowers() {
         "no shape gates (492)"
     );
 }
+
+#[test]
+fn styles_admit_outside_the_digest_and_an_undeclared_tag_is_refused() {
+    // Case 1182: style tags are display data, like terms.
+    let styled = |name: &str, tag: &str| {
+        let scratch = Scratch::new(name);
+        scratch.write("processes/secrete.json", GLAND);
+        let plain = manifest(&["processes/secrete.json"]);
+        let with_styles = plain.trim_end().trim_end_matches('}').to_owned()
+            + &format!(
+                r#", "styles": {{ "film": {{ "display": "neutral" }} }},
+  "style_rules": [{{ "style": "{tag}", "kingdom": "kingdom:myco" }}] }}"#
+            );
+        scratch.write(MANIFEST_JSON, &with_styles);
+        admit_dir(scratch.path())
+    };
+    let plain = Scratch::new("styles_plain");
+    plain.write("processes/secrete.json", GLAND);
+    plain.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
+    let plain = admit_dir(plain.path()).expect("admits");
+    let declared = styled("styles_declared", "film").expect("a declared tag admits");
+    assert_eq!(declared.digest(), plain.digest());
+    assert!(matches!(
+        styled("styles_unknown", "fog"),
+        Err(Admission::MalformedSchema { .. })
+    ));
+}

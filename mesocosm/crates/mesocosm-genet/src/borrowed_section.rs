@@ -316,6 +316,7 @@ impl SceneHandle {
                     palette: vec![],
                     tint: scene::tint_of(cosmograph::kingdom::of(member)),
                     alive: member.alive,
+                    display: None,
                 });
             }
             let digest = cosmograph::digest(&(
@@ -495,6 +496,7 @@ fn lower(
             palette: vec![],
             tint: scene::tint_of(cosmograph::kingdom::of(entity)),
             alive: entity.alive,
+            display: None,
         });
     }
     let volumes = section::body_volumes(&mut bodies)?;
