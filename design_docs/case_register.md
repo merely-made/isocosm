@@ -265,7 +265,7 @@ three design docs that cite it. The record holds the words.
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
 | 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -274,13 +274,13 @@ three design docs that cite it. The record holds the words.
 | 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1110 | A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
-| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
+| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1153 | World-time plant stems rise on y, so they are exposed to grazing by position. | none |
 | 1154 | Reach by position applies to every bodied plant; 24 pinned tests are re-recorded. | none |
 | 1155 | Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day. | none |
@@ -421,7 +421,7 @@ three design docs that cite it. The record holds the words.
 | 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md) |
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
-| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
+| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Record and history
 
@@ -536,7 +536,7 @@ three design docs that cite it. The record holds the words.
 | 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 1090 | Every founded lineage starts with at least six members. | [denizen](2026-11-02_denizen_plan.md) |
 | 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1138 | Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Organs: glyphs, impresa, hagiograph

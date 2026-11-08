@@ -26,7 +26,7 @@ members = [
 ]
 
 [workspace.dependencies]
-tenant = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+tenant = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 # Eidetic's append-only journal, pinned with its source family. Its causal
 # shape landed 2026-08-01 for exactly this use.
 muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
@@ -34,7 +34,7 @@ muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main"
 # authority; its product adapter consumes revisioned chunk and patch machinery
 # as a derived view over accepted ground revisions without acquiring a physics
 # backend.
-nisus = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+nisus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 # The history organ: the generic mark record `mesocosm-core::record` now
 # builds on (isoscape family plan, rulings 8-10, step D6). Its separate pin
 # (isoscape family plan §4) folded into the family rev with the whole-mere
@@ -43,7 +43,7 @@ hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "mai
 # The shared tactile runtime: bodies, voxel collision, and spatial queries
 # with Rapier private inside it. Mesocosm consumes advice through Conatus ids
 # and arrays only; the T1 adapter in mesocosm-runtime is its product home.
-conatus = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+conatus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 # Product-neutral sparse brick carriage and ray-in WGSL traversal. Product
 # lenses keep source binding, camera, material, and composition policy.
 # The scenograph projection contract and its solvers: the adapter-first UI

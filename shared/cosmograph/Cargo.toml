@@ -27,8 +27,8 @@ hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "mai
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 # In-site space: the lift, edits and places (wing rulings 696, 698 and 701).
 isometer-space = { path = "../isometer/crates/isometer-space" }
-# The labelled witness, built once in mere (wing rulings 609, 647, 650).
-state-witness = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+# The labelled witness, built once in eidetic (wing rulings 609, 647, 650).
+state-witness = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }

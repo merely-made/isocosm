@@ -51,10 +51,10 @@ opt-level = 1
 # Renderer source is selected once for this product; use the same immutable
 # family revision as the other games and their Mere/Genet host dependencies.
 [workspace.dependencies]
-conatus = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-modulus = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+conatus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
+modulus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 # The lit body tenant (mere's crates/conatus/tenant, wing rulings 745 to 748).
-tenant = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+tenant = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 netrender = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
 netrender_text = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
 

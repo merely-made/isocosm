@@ -117,3 +117,18 @@ identity audits and Genet retained at `ad362723`. These are native software
 compile receipts; existing headed/game/device acceptance stays in its owner plans.
 Canonical coordination and receipts:
 `mere/design_docs/mere_docs/implementation_strategy/2026-10-31_distillery_extraction_plan.md`.
+
+Engine split receiving (2026-11-07): the crates Mere's engine split moved out
+of `mere.git` are taken from their new homes. The spatial runtime (`conatus`,
+`modulus`, `nisus`, `tenant`, `numen`, `seiche`, `seiche-model`) comes from
+Seiche `a6b8641` (Mere's engine-split D5, D6), `state-witness` and
+`mere-framing` from Eidetic `71188bb` (D12), and `tinct` from Graphshell
+`d80316db` (D19). Twelve manifest rows in seven manifests repoint, in the
+`branch = "main"` form. Nine locks are relocked: each moves the moved crates,
+its whole Eidetic and Graphshell source to those revisions, and `mere.git` to
+Mere main `fb4de6d0`, since the old Mere pins still named the moved crates
+through `mere.git`; every moved entry keeps its version, and the only
+additions are `sceno-backdrops` (Graphshell) and, in `cosmograph-host`,
+`seiche-model`. The ignored tabletop-local overlay still redirects `numen` and
+`seiche` to Mere's deleted paths and was left alone. Canonical coordination:
+`mere/design_docs/mere_docs/implementation_strategy/2026-11-07_engine_split_plan.md`.

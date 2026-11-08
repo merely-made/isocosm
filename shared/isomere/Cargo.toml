@@ -30,7 +30,7 @@ host = ["dep:cambium-desktop", "dep:cambium-rootstock", "dep:mandrake"]
 cambium = { git = "https://github.com/merely-made/mere.git", branch = "main" }
 # Perceptual seed-to-palette derivation. The sheet's colours are `Seeds` a
 # product hand-picked plus the states tinct fills.
-tinct = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+tinct = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 
 # M4: the host assembly's substrate. The seven hooks, the producer registry and
 # the frame readback are the winit host's; `RootView` and the context types are
