@@ -90,6 +90,7 @@ mod validation;
 pub mod watch;
 
 pub use generate::Founding;
+pub use profile::totals as profile_totals;
 pub use history::{Command, Session};
 pub use simulation::{Execution, Simulation};
 

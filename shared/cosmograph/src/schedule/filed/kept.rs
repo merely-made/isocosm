@@ -7,7 +7,7 @@
 //! world back, files that group again. What gates read beyond bodies is
 //! noted: the rules and movement mode the index was built for and each
 //! site's routes, any change rebuilding it, and each site's conditions,
-//! whose residents are filed again when they change.
+//! whose residents are filed again when a condition some gate reads moves.
 
 use super::*;
 use crate::simulation::Genesis;
@@ -88,7 +88,7 @@ impl Filed {
         let moved: Vec<Id> = state
             .sites
             .iter()
-            .filter(|(id, s)| self.basis.conditions.get(id) != Some(&s.conditions))
+            .filter(|(id, s)| self.basis.conditions.get(id).is_none_or(|was| self.reads_shift(was, &s.conditions)))
             .map(|(id, _)| *id)
             .collect();
         for site in moved {

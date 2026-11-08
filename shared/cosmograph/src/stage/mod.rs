@@ -308,11 +308,11 @@ impl Simulation {
         let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
         let count = stage.count;
         // A site whose conditions the act shifts has its residents filed
-        // again, their gates reading those conditions.
+        // again where a gate reads a condition it shifted (EX4).
         let place = stage.place;
-        let shifted = self.filed.is_some() && stage.site.as_ref().is_some_and(|site| {
-            self.site_at_start(place).is_none_or(|was| was.conditions != site.conditions)
-        });
+        let shifted = self.filed.as_ref().is_some_and(|f| stage.site.as_ref().is_some_and(|site| {
+            self.site_at_start(place).is_none_or(|was| f.reads_shift(&was.conditions, &site.conditions))
+        }));
         // What the act changed of each body it wrote, so filing reads again
         // only the gates the change can move.
         let changes: BTreeMap<Id, crate::schedule::Changed> = match &self.filed {
