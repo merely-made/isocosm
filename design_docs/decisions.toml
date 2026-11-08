@@ -6057,6 +6057,29 @@ summary = "Mesocosm keeps live the played critter, the followed body and the dev
 draws_on = ["212", "1161"]
 plans = ["mesocosm-overlay"]
 
+[cases."1170"]
+title = "Hybrid bodies are lit, their images stamped by a quantized sun"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Hybrid bodies light from the scene's sun; cached images rebake on a quantized sun stamp."
+draws_on = ["1161"]
+
+[cases."1171"]
+title = "What the sim holds decides the held detail: stand-ins Sprite, posed bodies Live"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Held detail comes from the host: Mesocosm's stand-ins hold Sprite, posed bodies Live."
+draws_on = ["1161", "1169"]
+plans = ["mesocosm-overlay"]
+
+[cases."1172"]
+title = "Hybrid becomes Mesocosm's default once lit"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Hybrid is Mesocosm's default with 9e31bce4's values once bodies are lit; opt-in until then."
+draws_on = ["1161", "1170"]
+plans = ["mesocosm-overlay"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -7004,7 +7027,7 @@ title = "The detail ladder"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "One camera, five rungs; projected size and held detail bound choice, examining lifts detail; farther cached poses refresh less often without changing roots or simulation cadence."
-draws_on = ["423", "424", "426", "1161", "1169"]
+draws_on = ["423", "424", "426", "1161", "1169", "1170", "1171"]
 
 [statements."presentation.3"]
 title = "Second cameras"

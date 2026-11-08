@@ -1561,11 +1561,11 @@ Cached local-pose images refresh less often as projected size falls; world
 position and depth remain current. This image cadence neither paces physical
 stepping nor decisions; thresholds and rates are configurable quality choices.
 
-Links: draws on 423, 424, 426, 1161, 1169 · summary One camera, five rungs; projected size and held detail bound choice, examining lifts detail; farther cached poses refresh less often without changing roots or simulation cadence.
+Links: draws on 423, 424, 426, 1161, 1169, 1170, 1171 · summary One camera, five rungs; projected size and held detail bound choice, examining lifts detail; farther cached poses refresh less often without changing roots or simulation cadence.
 
-*Applied 2026-11-08, case 1169: Mesocosm's examining is "Played + followed +
-dev focus (Recommended)". The shared sprite path and opt-in product modes
-landed in 9e31bce4; product tuning and headed acceptance remain open.*
+*Applied 2026-11-08, cases 1169 to 1171: "Played + followed + dev focus",
+"Light the pass, quantized stamp", "Stand-ins Sprite, posed Live" (each
+"(Recommended)"). The shared sprite path landed in 9e31bce4.*
 
 ### Presentation 3. Second cameras
 

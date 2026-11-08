@@ -13091,6 +13091,41 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on 212, 1161 · plans mesocosm-overlay · summary Mesocosm keeps live the played critter, the followed body and the dev focus; the sim's examined region joins after M4.8.
 
+1170. **Hybrid bodies are lit, their images stamped by a quantized sun.**
+      Ruled by Mark on 2026-11-08: "Light the pass, quantized stamp
+      (Recommended)", over staying unlit with the invariance pinned, or
+      stamping the sun without lighting. The headed M4.7 run found hybrid
+      bodies unlit: the shared body pass and the sprite bake read no light,
+      so the near view differed from voxels by about 35,000 px with the
+      same native hashes. The shared pass and bake light from the scene's
+      sun; cached images carry a quantized sun stamp, so a sun moving every
+      tick rebakes only when the light visibly changes. The step is a
+      tuning value.
+
+      Links: area Presentation · draws on 1161 · summary Hybrid bodies light from the scene's sun; cached images rebake on a quantized sun stamp.
+
+1171. **What the sim holds decides the held detail: stand-ins Sprite, posed
+      bodies Live.** Ruled by Mark on 2026-11-08: "Stand-ins Sprite, posed
+      Live (Recommended)", over every native body holding Live. Isometer
+      asks the host what each body holds; Mesocosm answers Sprite for a
+      cohort stand-in at a layout spot and Live for a natively posed body.
+      Until the overlay plan's M4.8 supplies its pose, the played body in
+      the stand-in view stays a sprite.
+
+      Links: area Presentation · draws on 1161, 1169 · plans mesocosm-overlay · summary Held detail comes from the host: Mesocosm's stand-ins hold Sprite, posed bodies Live.
+
+1172. **Hybrid becomes Mesocosm's default once lit.** Ruled by Mark on
+      2026-11-08: "Opt-in until A, then default (Recommended)", over the
+      probe's values or three presets with off as default. Hybrid stays
+      opt-in until 1170 lands, then 9e31bce4's values are Mesocosm's
+      default: live 42/30 px, fast 22/18, medium 14/10; refresh every 2, 4
+      or 12 frames; 24 px images; 8 MiB; 8 refreshes per frame. Measured on
+      one headed run: native worker p95 8.2 ms hybrid against 11.3 ms voxels
+      at zoom 768, and 37 ms p95 per dither frame over a zoom reversal's 8
+      frames.
+
+      Links: area Mesocosm · draws on 1161, 1170 · plans mesocosm-overlay · summary Hybrid is Mesocosm's default with 9e31bce4's values once bodies are lit; opt-in until then.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
