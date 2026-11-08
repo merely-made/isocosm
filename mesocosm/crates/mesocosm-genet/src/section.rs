@@ -84,6 +84,9 @@ pub struct PlacedBody {
     pub materials: Vec<isometer::render::PartMaterial>,
     pub palette: Vec<isometer::PaletteColour>,
     pub alive: bool,
+    /// The pack's style for this body, resolved at projection (1182); `None`
+    /// takes the host's default.
+    pub display: Option<isometer::BodyDisplay>,
 }
 
 /// The section's native input: a lifted site, its bodies, and who is played.

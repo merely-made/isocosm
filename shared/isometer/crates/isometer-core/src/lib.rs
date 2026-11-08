@@ -38,12 +38,14 @@ pub mod legs;
 pub mod plan;
 pub mod skin;
 pub mod snapshot;
+pub mod style;
 pub mod wire;
 
 pub use body::{Aabb, AttachError, Attachment, BodyDocument, Part, PartId, VolumeRef, Yaw};
 pub use ground::{AIR, BRICK, Brick, Cavity, Ground, ROCK, SOIL, SURFACE_BAND, Terrain};
 pub use plan::{BodyPlan, Facing, Role, Symmetry, classify};
 pub use skin::PartSkin;
+pub use style::{BodyDisplay, Style, StyleTable, UnknownStyle};
 pub use wire::{WireError, frame, unframe};
 
 /// The flat wire form of a part's origin, shared with every other v0

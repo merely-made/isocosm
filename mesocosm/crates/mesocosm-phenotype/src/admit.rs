@@ -134,6 +134,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
         });
     }
     check_terms(&manifest)?;
+    check_styles(&manifest)?;
     check_affinity(&manifest)?;
     Ok(manifest)
 }
@@ -151,6 +152,7 @@ pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
 /// Admits a manifest already discovered at `root`.
 pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
     check_terms(manifest)?;
+    check_styles(manifest)?;
     check_affinity(manifest)?;
     if manifest.processes.is_empty() {
         return Err(Admission::EmptyPack {
@@ -184,6 +186,12 @@ pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
 fn check_terms(manifest: &Manifest) -> Result<(), Admission> {
     manifest.terms.validate().map_err(|why| Admission::MalformedSchema {
         path: format!("{} display terms", manifest.pack), why,
+    })
+}
+
+fn check_styles(manifest: &Manifest) -> Result<(), Admission> {
+    manifest.style_sheet().validate().map_err(|why| Admission::MalformedSchema {
+        path: format!("{} styles", manifest.pack), why,
     })
 }
 

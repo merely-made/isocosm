@@ -48,3 +48,19 @@ verb = "hunts"
 verb = "eats what it finds"
 [terms."feeding:scavenger"]
 verb = "scavenges"
+
+# Presentation styles (cases 1178, 1182). Display only, like the terms above:
+# never native rules, a save or the world digest. A tag names what it changes
+# from the baseline; `display` is "srgb" (the baseline) or "neutral".
+[styles.baseline]
+display = "srgb"
+[styles.film]
+display = "neutral"
+
+# Rules give a body a tag by kingdom, lineage or role (played, carcass or
+# member); the first match wins, an omitted key matches any body, and a body
+# no rule matches takes the host's --body-display default. None are active,
+# so the shipped look is unchanged. For example:
+# [[style_rules]]
+# style = "film"
+# kingdom = "kingdom:myco"

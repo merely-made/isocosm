@@ -19,26 +19,14 @@ pub struct BodyLight {
     pub sun: [f32; 3],
 }
 
-/// A body's presentation style: how its lit colour reaches the
-/// display-encoded target. Chosen per body, so a host can style each class
-/// of thing differently (cases 1176, 1178).
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub enum BodyDisplay {
-    /// Exact sRGB with no tonemap: the baseline, like the terrain (1178).
-    #[default]
-    Srgb,
-    /// Khronos PBR Neutral, then a 2.2 power curve: the look kiss3d's
-    /// resolve gave Mesocosm's retired voxel tenant, kept as a style.
-    NeutralGamma22,
-}
+/// A body's presentation style, from the shared style vocabulary (1178).
+pub use isometer_core::BodyDisplay;
 
-impl BodyDisplay {
-    /// The instance lane value the shader reads.
-    pub(super) fn lane(self) -> f32 {
-        match self {
-            Self::Srgb => 0.0,
-            Self::NeutralGamma22 => 1.0,
-        }
+/// The instance lane value the shader reads for a style.
+pub(super) fn lane(display: BodyDisplay) -> f32 {
+    match display {
+        BodyDisplay::Srgb => 0.0,
+        BodyDisplay::NeutralGamma22 => 1.0,
     }
 }
 

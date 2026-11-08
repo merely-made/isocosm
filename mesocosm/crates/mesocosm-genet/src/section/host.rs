@@ -60,10 +60,13 @@ impl isometer::SceneHost for SectionHost<'_> {
         Some(self.tenant.block().body(self.tenant.light()))
     }
 
-    /// Every body takes Mesocosm's default style until the class key it
-    /// varies by is ruled (case 1178).
-    fn body_display(&self, _subject: isometer::SubjectKey) -> isometer::BodyDisplay {
-        self.bodies.display
+    /// The pack's style for the body's declared tag, resolved at projection
+    /// (1182), else the host's `--body-display` default.
+    fn body_display(&self, subject: isometer::SubjectKey) -> isometer::BodyDisplay {
+        self.scene
+            .body(subject.0)
+            .and_then(|body| body.display)
+            .unwrap_or(self.bodies.display)
     }
 
     fn hybrid_examined(&self, subject: isometer::SubjectKey) -> bool {

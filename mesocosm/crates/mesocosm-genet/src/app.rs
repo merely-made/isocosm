@@ -42,6 +42,8 @@ use scene_source::{SceneBranch, SceneSourceKey};
 pub struct Host {
     config: HostConfig,
     runtime: Runtime,
+    /// The startup pack's presentation styles (1182); never saved.
+    styles: mesocosm_runtime::StyleSheet,
     /// The played site, lifted, with its placed bodies. Presentation only.
     scene: Option<std::rc::Rc<SiteScene>>,
     /// Current native source of the site's derived picture.
@@ -125,6 +127,7 @@ impl Host {
                 std::process::exit(1);
             }
         }
+        let styles = authored.styles().clone();
         let runtime = runtime.with_authored(authored).unwrap_or_else(|why| {
             eprintln!("pack/native founding conflict: {why}");
             std::process::exit(1);
@@ -143,6 +146,7 @@ impl Host {
             follow: config.follow,
             config,
             runtime,
+            styles,
             scene: None,
             scene_key: None,
             scene_source_key: None,
@@ -186,6 +190,7 @@ impl Host {
             return self.scene.take().is_some();
         }
         let sim = self.runtime.sim();
+        let styles = &self.styles;
         let played = self.runtime.critter();
         let Some(site) = crate::played::scene::site_of(&sim, played) else {
             self.scene_key = None;
@@ -257,6 +262,7 @@ impl Host {
                         scene,
                         self.config.component_scene,
                         &mut self.scene_components,
+                        |scene| styled(scene, &sim, styles),
                     )
                 });
             return match result {
@@ -315,6 +321,7 @@ impl Host {
                 scene,
                 self.config.component_scene,
                 &mut self.scene_components,
+                |scene| styled(scene, &sim, styles),
             ) {
                 Ok(scene) => Some(scene),
                 Err(why) => {
@@ -334,6 +341,7 @@ impl Host {
                     scene,
                     self.config.component_scene,
                     &mut self.scene_components,
+                    |scene| styled(scene, &sim, styles),
                 )
             });
         match result {
@@ -390,4 +398,14 @@ fn pack_root() -> std::path::PathBuf {
         .nth(2)
         .map(|repo| repo.join("packs").join("mesocosm"))
         .unwrap_or_else(|| std::path::PathBuf::from("packs/mesocosm"))
+}
+
+/// The pack's styles on a freshly projected scene (1182).
+fn styled(
+    scene: &mut SiteScene,
+    sim: &cosmograph::simulation::Simulation,
+    styles: &mesocosm_runtime::StyleSheet,
+) {
+    let played = scene.played;
+    crate::played::scene::style(&mut scene.bodies, sim, played, styles);
 }
