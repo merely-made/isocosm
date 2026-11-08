@@ -502,6 +502,10 @@ build. Same scenario and seed as run 3. The default body mode is now hybrid,
 and `--sun sim` moves the sun every tick, 0.25° of hour angle. Outputs are in
 `Code/testing/isocosm/m4-7-hybrid/2026-11-08/run4/`.
 
+*Superseded the same day: after this run hybrid went back to opt-in (case
+1175) and the default light step became 1/32 (case 1177). The run records
+the build it measured.*
+
 All six settings matched at every checkpoint: hybrid at the 1/64 default,
 `--bodies voxels`, `--render-scale 2`, and `--light-step` of 0, 0.03125 and
 0.0625. Hashes: d8eea18fe502aac1 at tick 0, 5be7c2e2da6c4207 at tick 2,
