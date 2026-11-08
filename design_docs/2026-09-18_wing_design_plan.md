@@ -13160,6 +13160,37 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 1165, 1166, 1173 · plans sim-execution · summary The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs.
 
+1175. **Hybrid stays opt-in until its zoom dither is cheap and the gait is
+      settled.** Ruled by Mark on 2026-11-08: "Merge, hybrid opt-in for now
+      (Recommended)", over merging with hybrid as the default or holding the
+      merge, when 1172 was reopened. The lit headed run (run4) found two
+      new costs. Zooming in, the 8-frame ordered dither re-rendered the
+      whole scene each frame, 34 to 59 ms worker p95 against 0.09 ms for
+      voxels. And a hybrid default drops the smooth mode's contact gait from
+      the default view. The lit pass, held detail and examination hook
+      land; hybrid becomes the default only once the dither stays inside
+      the frame and the gait question is settled.
+
+      Links: area Mesocosm · draws on 1170, 1171 · amends 1172 · plans mesocosm-overlay · summary Hybrid stays opt-in until the zoom dither fits the frame and the smooth mode's contact gait is settled.
+
+1176. **Live bodies look the same in either mode: audit the colour path.**
+      Ruled by Mark on 2026-11-08: "Audit the colour path (Recommended)",
+      over accepting the offset. Lit, the hybrid near view still differs
+      from voxel mode: pixels more than 24 codes off fell from 13,448 to
+      805, but pixels more than 8 off rose from 35,264 to 39,546, a mean of
+      4.9 codes, and the hybrid side reads lighter. The two body paths are
+      traced and made to agree, since a switch the player can see is a
+      seam.
+
+      Links: area Presentation · draws on 426, 1170 · summary The hybrid and voxel body paths are traced and made to agree in colour.
+
+1177. **The sun stamp's step is 1/32.** Ruled by Mark on 2026-11-08: "1/32
+      (Recommended)", over 1/16 or 1/64. Over 17 ticks with the sun moving,
+      the stamp changed 18 times exact, 9 at 1/64, 5 at 1/32 and 2 at 1/16.
+      It stays a configurable tuning value.
+
+      Links: area Presentation · draws on 1170 · summary The quantized sun stamp's default step is 1/32.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

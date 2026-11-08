@@ -6096,6 +6096,29 @@ summary = "The fine sim is profiled and sped up, outcomes unchanged, before the 
 draws_on = ["1165", "1166", "1173"]
 plans = ["sim-execution"]
 
+[cases."1175"]
+title = "Hybrid stays opt-in until its zoom dither is cheap and the gait is settled"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Hybrid stays opt-in until the zoom dither fits the frame and the smooth mode's contact gait is settled."
+draws_on = ["1170", "1171"]
+amends = ["1172"]
+plans = ["mesocosm-overlay"]
+
+[cases."1176"]
+title = "Live bodies look the same in either mode: audit the colour path"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "The hybrid and voxel body paths are traced and made to agree in colour."
+draws_on = ["426", "1170"]
+
+[cases."1177"]
+title = "The sun stamp's step is 1/32"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "The quantized sun stamp's default step is 1/32."
+draws_on = ["1170"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

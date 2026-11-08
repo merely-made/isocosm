@@ -648,6 +648,8 @@ three design docs that cite it. The record holds the words.
 | 1169 | Mesocosm keeps live the played critter, the followed body and the dev focus; the sim's examined region joins after M4.8. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1170 | Hybrid bodies light from the scene's sun; cached images rebake on a quantized sun stamp. | none |
 | 1171 | Held detail comes from the host: Mesocosm's stand-ins hold Sprite, posed bodies Live. | none |
+| 1176 | The hybrid and voxel body paths are traced and made to agree in colour. | none |
+| 1177 | The quantized sun stamp's default step is 1/32. | none |
 
 ## Stack and engine
 
@@ -796,6 +798,7 @@ three design docs that cite it. The record holds the words.
 | 961 | Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1172 | Hybrid is Mesocosm's default with 9e31bce4's values once bodies are lit; opt-in until then. | none |
+| 1175 | Hybrid stays opt-in until the zoom dither fits the frame and the smooth mode's contact gait is settled. | none |
 
 ## Eponym
 
