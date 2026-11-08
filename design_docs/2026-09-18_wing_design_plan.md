@@ -13126,6 +13126,40 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Mesocosm · draws on 1161, 1170 · plans mesocosm-overlay · summary Hybrid is Mesocosm's default with 9e31bce4's values once bodies are lit; opt-in until then.
 
+1173. **The recovery criterion: every role held, patch against global.**
+      Ruled by Mark on 2026-11-08 on the sim plan's S10.3 step 3, each
+      answer "(Recommended)": "Keep 2x2, patch vs global"; "Every role
+      held"; "Accept the stated Kill"; "Journey mechanics only"; "One site".
+      The measured run keeps the comparator's 2x2 laid map, where the four
+      sites are the whole world, so it reports patch loss and global loss
+      only. It passes when each of the five diets has a living resident in
+      the footprint at every monthly sample; a patch loss is allowed if a
+      native return arrives within six months or the role is held
+      elsewhere; a founder lineage's loss is reported, not failed. A patch
+      is one site (147). The scattering arm's producer loss is an imposed,
+      declared Kill, nothing in this ecology killing a producer within
+      days; the walking arm's loss is native starvation. 9e31bce4's
+      test-authored return qualifies journey mechanics only; native
+      recovery is `tests/native_recovery.rs`'s claim. Prior verdicts keep
+      their outcomes.
+
+      Links: area Ecology · draws on 147, 1111, 1089, 1093, 1145, 1159 · plans sim · summary The recovery run passes when every diet keeps a resident in the 2x2 footprint, patch losses returning natively within six months; patch is a site; the imposed Kill is declared.
+
+1174. **Speed the fine sim before the long measured runs.** Ruled by Mark
+      on 2026-11-08. Offered 24 months on five seeds against a 12-month
+      diagnostic, with the exact year at 2,419 s on seed 9, he answered
+      "Feels like we should change that first", then, asked what to
+      change, "Speed the fine sim first (Recommended)", over a smaller
+      measured world or reopening 1166. The two-year bar is measured on the
+      fine sim (1165), so the coarse step cannot shorten it. The execution
+      plan's EX4 is profiled and attacked first (shared-ground passes that
+      evaluate every member before acting, strain acts); any change to what
+      a member chooses returns as a question, and the state hash must not
+      move. The bar run follows on the faster sim with the same founding;
+      its horizon and seeds are asked then.
+
+      Links: area Processes and rules · draws on 1165, 1166, 1173 · plans sim-execution · summary The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

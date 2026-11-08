@@ -222,6 +222,7 @@ three design docs that cite it. The record holds the words.
 | 1163 | The coarse tier is the one sim's cohort form, demography by the mass law, encounters mass-derived after the field's models; fits only where checks fail; a prototype measured against the unwatched fine sim. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [coarse step](../mesocosm/design_docs/2026-11-05_coarse_step_brief.md) |
 | 1164 | No speed bar for the coarse step until its first steps are built and measured. | none |
 | 1165 | The coarse tier is certified by same-start spreads over planted odd states, the fold-lift seam and EB7's pick within tolerance, against the unwatched fine sim. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 1174 | The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Ecology
 
@@ -289,6 +290,7 @@ three design docs that cite it. The record holds the words.
 | 1155 | Stricter per-head ratios, then the seed bank, answer the grazer overshoot; reordered later the same day. | none |
 | 1159 | Ecology order: stems and reach, a persistence test over bodies, body-derived maintenance, heritable traits with deep time, learning, then dormancy and the rest. | none |
 | 1166 | The coarse step starts after rates follow mass and the web passes its two-year bar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 1173 | The recovery run passes when every diet keeps a resident in the 2x2 footprint, patch losses returning natively within six months; patch is a site; the imposed Kill is declared. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Bodies and anatomy
 

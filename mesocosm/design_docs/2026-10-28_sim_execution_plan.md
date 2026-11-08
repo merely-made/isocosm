@@ -575,9 +575,10 @@ A matrix of world size against population with tick cost, hash cost, memory and 
 
 ### EX4. Scheduler waste and remaining scheduling cost
 After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evaluate each member before acting it, deliberation for members who then chose another process, and accepted acts (`mind:strain` the largest part) remain the cost with no phase; D12 leaves shared-ground acts both evaluations. Where a world holds owned projects, `begin_process_debits` digests the whole state for every act (A1 holds none). Of the older findings only one is live: the generator's competitions are stored by id with only one allowed (the probe refuses worlds with more than one; how several share a round is undesigned).
+- 2026-11-08, case 1174: profiled and attacked first, before the two-year bar's long runs; the state hash must not move.
 - Done when: not stated; owed
 - Needs: D8 to D12; anything changing a choice or shared ground returns as a question (constraint)
-- Rulings: 206, 220, 306, 454, 683, 813
+- Rulings: 206, 220, 306, 454, 683, 813, 1174
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:236-244`, `:394-396`, `:408-428`; `archive_docs/2026-10-28/2026-09-22_sim_plan.md:1658-1659`, `:1712-1717`.
 
 ### E9. Stores per component

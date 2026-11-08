@@ -6080,6 +6080,22 @@ summary = "Hybrid is Mesocosm's default with 9e31bce4's values once bodies are l
 draws_on = ["1161", "1170"]
 plans = ["mesocosm-overlay"]
 
+[cases."1173"]
+title = "The recovery criterion: every role held, patch against global"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The recovery run passes when every diet keeps a resident in the 2x2 footprint, patch losses returning natively within six months; patch is a site; the imposed Kill is declared."
+draws_on = ["147", "1089", "1093", "1111", "1145", "1159"]
+plans = ["sim"]
+
+[cases."1174"]
+title = "Speed the fine sim before the long measured runs"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The fine sim is profiled and sped up, outcomes unchanged, before the two-year bar's long runs."
+draws_on = ["1165", "1166", "1173"]
+plans = ["sim-execution"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
