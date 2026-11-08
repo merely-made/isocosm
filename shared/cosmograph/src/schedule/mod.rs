@@ -408,14 +408,14 @@ impl Simulation {
     }
 
     /// Debug builds check the filing against a scan: none of the groups a
-    /// pass went past, from `from` up to `until`, was open for it, nor for
+    /// pass went past, from `from` up to `until`, was due for it, nor for
     /// an agentless pass a world body.
     fn passed_by(&self, process: &Process, gates: Option<&Gates>, from: Id, until: Id) {
         #[cfg(debug_assertions)]
         for (first, g) in self.state.population.groups.range(from..until.max(from)) {
             let world = World::of(&self.state, &self.genesis.rules);
             let closed = match gates {
-                Some(gates) => !gates.open(&g.entity, &world),
+                Some(gates) => !gates.due(*first, g.count, &g.entity, &world),
                 None => process.causation == Causation::Agentless && g.entity.kingdom != "kingdom:world",
             };
             debug_assert!(closed, "the filed pass went past group {first}");

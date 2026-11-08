@@ -21,6 +21,7 @@ pub mod attention;
 pub mod band;
 pub mod bench;
 pub mod bodied;
+mod death;
 pub mod datasheet;
 mod dev;
 pub mod development;

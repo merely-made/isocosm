@@ -46,6 +46,9 @@ pub(crate) struct Gates {
     /// made at the first choice pass that visits it (683, 813), so passing it
     /// by would move that choice.
     chosen: bool,
+    /// A hazard drawn once (E7b): a group is filed for it only from the
+    /// first tick one of its members' draws names.
+    death: Option<crate::death::Drawn>,
 }
 
 /// What gates read beyond a body: the tick, the rules, the sites bodies
@@ -213,6 +216,22 @@ impl Gates {
         self
     }
 
+    /// Notes the hazard `p` draws once, if it does (E7b).
+    pub(crate) fn drawing(mut self, p: &Process, genesis: &crate::simulation::Genesis) -> Self {
+        self.death = crate::death::Drawn::of(p, genesis);
+        self
+    }
+
+    /// The tick a group passing every other gate is filed from: its age's,
+    /// or for a hazard drawn once its first member's drawn tick; none if
+    /// never.
+    pub(crate) fn ripe(&self, first: Id, count: u64, e: &Entity) -> Option<Tick> {
+        match &self.death {
+            Some(d) => d.first_of(first, count, e.born),
+            None => Some(e.born.saturating_add(self.age)),
+        }
+    }
+
     /// Whether the process requires nothing of its actor's own state.
     pub(crate) fn none(&self) -> bool {
         *self == Self::default()
@@ -247,6 +266,12 @@ impl Gates {
     /// requirements read it.
     pub(crate) fn open(&self, e: &Entity, world: &World) -> bool {
         self.met(&mut Reading::new(e, world)) && world.tick.saturating_sub(e.born) >= self.age
+    }
+
+    /// Whether the group from `first` is filed for the process now: open,
+    /// and for a hazard drawn once, a member's drawn tick come.
+    pub(crate) fn due(&self, first: Id, count: u64, e: &Entity, world: &World) -> bool {
+        self.open(e, world) && self.ripe(first, count, e).is_some_and(|ripe| ripe <= world.tick)
     }
 }
 
@@ -506,11 +531,12 @@ impl Filed {
             debug_assert_eq!(passed, passing(gates, &candidates, &mut Reading::new(e, world)), "group {first}'s filing differs from a whole reading");
             let mut due = Bits::with(n);
             for i in passed.iter() {
-                let ripe = e.born.saturating_add(gates[i].age);
-                if ripe <= tick {
-                    due.insert(i);
-                } else {
-                    self.timers.insert((ripe, i, first));
+                match gates[i].ripe(first, group.count, e) {
+                    Some(ripe) if ripe <= tick => due.insert(i),
+                    Some(ripe) => {
+                        self.timers.insert((ripe, i, first));
+                    },
+                    None => {},
                 }
             }
             if due != filed {
@@ -539,7 +565,7 @@ impl Filed {
             let Some(group) = population.groups.get(&first) else {
                 continue;
             };
-            if self.gates[i].open(&group.entity, world) {
+            if self.gates[i].due(first, group.count, &group.entity, world) {
                 self.ready[i].insert(first);
                 self.at.entry(first).or_insert_with(|| Bits::with(n)).insert(i);
             }

@@ -43,7 +43,7 @@ impl Filed {
             .processes
             .values()
             .filter(|p| p.period.is_some())
-            .map(|p| (p.id.clone(), Gates::of(p, rules).residing(p, &state.sites, immediate).reading(p, rules)))
+            .map(|p| (p.id.clone(), Gates::of(p, rules).residing(p, &state.sites, immediate).reading(p, rules).drawing(p, genesis)))
             .filter(|(_, g)| !g.none())
             .collect();
         if gated.is_empty() {

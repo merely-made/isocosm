@@ -167,7 +167,8 @@ impl Simulation {
             && !self.diagnostic_attached()
             && definition.effects.is_empty()
             && definition.commitments.is_empty()
-            && definition.risk.as_ref().is_some_and(|r| !self.risk_falls(r, actor, &id))
+            && definition.risk.is_some()
+            && !self.risk_falls(definition, actor, &id)
         {
             return refused(receipt, Outcome::Blocked("the risk did not fall".into()));
         }
@@ -254,7 +255,7 @@ impl Simulation {
                 .collect();
         }
         self.diagnostic_stage("risk");
-        let risky = definition.risk.as_ref().is_some_and(|r| self.risk_falls(r, actor, &id));
+        let risky = self.risk_falls(definition, actor, &id);
         // A risk that does not fall, on a process that otherwise does
         // nothing, is no act: nothing is staged, numbered or written (E7b).
         if !risky
@@ -425,24 +426,24 @@ impl Simulation {
             && p.causation != Causation::Choice
             && !p.requires.iter().any(|q| matches!(q, Query::Institution { .. }))
             && !self.diagnostic_attached()
-            && p.risk.as_ref().is_some_and(|r| {
-                let id = self.owned_action(actor, &p.id, self.state.next_action);
-                !self.risk_falls(r, actor, &id)
-            })
+            && p.risk.is_some()
+            && !self.risk_falls(p, actor, &self.owned_action(actor, &p.id, self.state.next_action))
     }
 
-    /// Whether `risk` falls on `actor` for the act named `id`: a keyed draw
-    /// against its odds, or for a rising hazard its per-tick odds at the
-    /// actor's age (1077).
-    fn risk_falls(&self, risk: &Risk, actor: Id, id: &str) -> bool {
+    /// Whether `p`'s risk falls on `actor` for the act named `id`: a keyed
+    /// draw against its odds; for a rising hazard its per-tick odds at the
+    /// actor's age (1077), or where that hazard is drawn once, whether the
+    /// tick it names has come (E7b).
+    fn risk_falls(&self, p: &Process, actor: Id, id: &str) -> bool {
+        let Some(risk) = &p.risk else { return false };
         let seed = self.genesis.dynamics_seed();
+        let born = self.state.population.get(actor).map(|e| e.born);
         match &risk.aging {
+            Some(_) if let Some(drawn) = crate::death::Drawn::of(p, &self.genesis) => {
+                born.and_then(|b| drawn.tick(actor, b)).is_some_and(|due| self.state.tick >= due)
+            },
             Some(aging) => {
-                let age = self
-                    .state
-                    .population
-                    .get(actor)
-                    .map_or(0, |e| self.state.tick.saturating_sub(e.born));
+                let age = born.map_or(0, |b| self.state.tick.saturating_sub(b));
                 aging.per_tick(age).is_some_and(|chance| {
                     crate::draw(seed, id, &[actor]) % 1_000_000_000_000 < chance
                 })
