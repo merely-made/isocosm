@@ -19,7 +19,7 @@ use isometer_render::live_body::{LiveBody, LiveBodyRenderer};
 
 /// The renderer's colour table and its entries, reached through the facade so
 /// a host names one crate.
-pub use isometer_render::live_body::{BodyLight, MaterialPalette, PaletteColour};
+pub use isometer_render::live_body::{BodyDisplay, BodyLight, MaterialPalette, PaletteColour};
 
 use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;

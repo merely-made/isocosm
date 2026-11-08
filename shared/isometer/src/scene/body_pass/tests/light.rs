@@ -8,6 +8,7 @@ const NOON: BodyLight = BodyLight {
     toward_sun: [0.4, 0.8, 0.3],
     ambient: 0.38,
     sun: [0.62; 3],
+    display: crate::BodyDisplay::Srgb,
 };
 
 fn moved(by: f32) -> BodyLight {
@@ -65,4 +66,16 @@ fn a_held_sprite_bound_keeps_an_examined_subject_a_sprite() {
     host.held_sprite = None;
     let live = render(&mut scene, camera(1.5), &[near], &volumes, &mut host);
     assert_eq!(live.sprite_bodies, 0);
+}
+
+#[test]
+fn the_display_encoding_is_part_of_the_lighting_revision() {
+    let tenant = BodyLight {
+        display: crate::BodyDisplay::NeutralGamma22,
+        ..NOON
+    };
+    assert_ne!(tenant.stamp(), NOON.stamp());
+    assert_eq!(tenant.quantized(1.0 / 32.0).display, tenant.display);
+    // Control: the same light and encoding share a stamp.
+    assert_eq!(NOON.stamp(), BodyLight { ..NOON }.stamp());
 }

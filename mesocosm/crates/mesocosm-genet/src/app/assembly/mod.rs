@@ -206,6 +206,7 @@ impl State {
                 focus: host.config.dev.then(|| host.followed()).flatten(),
                 followed: host.followed(),
                 light_step: host.config.light_step,
+                body_display: host.config.body_display,
                 selection: committed.selection,
                 looking: host.looking(),
             };

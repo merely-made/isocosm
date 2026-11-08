@@ -29,7 +29,7 @@ mod query;
 mod resident;
 mod vertex;
 
-pub use frame::BodyLight;
+pub use frame::{BodyDisplay, BodyLight};
 use frame::FrameUniform;
 pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_average, tissue_colour};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};

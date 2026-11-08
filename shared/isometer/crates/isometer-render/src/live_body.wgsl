@@ -7,6 +7,8 @@ struct Frame {
     // Toward the sun and ambient; sun weight and 1 when lit (case 1170).
     light_toward_ambient: vec4<f32>,
     light_sun_enabled: vec4<f32>,
+    // x: 1 for the body tenant's Neutral-then-2.2 resolve (case 1176).
+    display: vec4<f32>,
 };
 
 @group(0) @binding(0)
@@ -119,6 +121,21 @@ fn tissue_mark(local_position: vec3<f32>, expression: vec4<f32>, tail: f32) -> v
     return vec3<f32>(-1.0);
 }
 
+// Khronos PBR Neutral, as kiss3d's resolve applies it.
+fn pbr_neutral(colour_in: vec3<f32>) -> vec3<f32> {
+    let start = 0.8 - 0.04;
+    let x = min(colour_in.r, min(colour_in.g, colour_in.b));
+    let colour = colour_in - vec3<f32>(select(0.04, x - 6.25 * x * x, x < 0.08));
+    let peak = max(colour.r, max(colour.g, colour.b));
+    if (peak < start) {
+        return colour;
+    }
+    let d = 1.0 - start;
+    let new_peak = 1.0 - d * d / (peak + d - start);
+    let g = 1.0 - 1.0 / (0.15 * (peak - new_peak) + 1.0);
+    return mix(colour * (new_peak / peak), vec3<f32>(new_peak), g);
+}
+
 fn srgb(linear: vec3<f32>) -> vec3<f32> {
     let low = linear * 12.92;
     let high = 1.055 * pow(max(linear, vec3<f32>(0.0)), vec3<f32>(1.0 / 2.4)) - 0.055;
@@ -160,5 +177,8 @@ fn fs_main(input: VertexOut) -> @location(0) vec4<f32> {
     // would conceal the tissue reading the inspection asked for.
     colour = mix(colour, vec3<f32>(1.0, 0.55, 0.10), input.inspection_accent * 0.28);
     // Lens FRAME_FORMAT is Rgba8Unorm: it stores display values directly.
+    if (frame.display.x > 0.5) {
+        return vec4<f32>(pow(max(pbr_neutral(colour), vec3<f32>(0.0)), vec3<f32>(1.0 / 2.2)), 1.0);
+    }
     return vec4<f32>(srgb(colour), 1.0);
 }

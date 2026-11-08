@@ -327,8 +327,10 @@ Met:
 - measured switch and refresh costs;
 - rebake counts with the sun moving.
 
-Still open: making hybrid the default (1175), the colour-path audit (1176),
-and attributing a single sprite rebake to a headed injury. The wound
+Still open: making hybrid the default (1175); which body look the shared
+pass adopts (1176 audit done; the choice is Mark's, and `--body-display
+tenant` reproduces voxel mode); and attributing a single sprite rebake to a
+headed injury. The wound
 receipt on the device covers injury; the headed run only counts anatomy
 changes beside refreshes.
 The mechanism, residency gates and probe evidence stay in

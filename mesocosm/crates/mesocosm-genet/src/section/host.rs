@@ -55,7 +55,11 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     /// The tenant's sun, for the shared pass hybrid draws with (case 1170).
     fn body_light(&self) -> Option<isometer::BodyLight> {
-        Some(self.tenant.block().body(self.tenant.light()))
+        Some(
+            self.tenant
+                .block()
+                .body(self.tenant.light(), self.bodies.display),
+        )
     }
 
     fn hybrid_examined(&self, subject: isometer::SubjectKey) -> bool {

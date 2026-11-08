@@ -541,3 +541,47 @@ the four lit hybrid runs, against voxels at 0.09 ms; that is the 8-frame
 reverse dither re-rendering the scene. far_motion measured 7.7–8.5 ms against
 12.0 ms for voxels. These are single wall-time runs on a shared machine, with
 no GPU duration.
+
+## Colour-path audit, run 5 (case 1176), 2026-11-08
+
+`lane/colour-audit` from `aece7ed6`, release. Same M4.7 scenario and seed as
+runs 3 and 4, at the 1/32 light step. Runs: `--bodies hybrid`,
+`--bodies hybrid --body-display tenant` and `--bodies voxels`. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run5/`. `compare-near-moved.png`
+shows srgb hybrid, tenant-display hybrid, voxels, and a heat map of the
+remaining difference.
+
+Native hashes: identical across the three runs at all six checkpoints. The
+final state hash is 14367504932912879666.
+
+Near view (`near-moved`, crop (412,474)–(808,698)), against voxels:
+
+| Run | Pixels differing by >8 codes | Pixels differing by >24 codes | Mean difference |
+| --- | --- | --- | --- |
+| hybrid, srgb | 39,546 | 961 | 4.99 |
+| hybrid, tenant display | 196 | 183 | 0.40 |
+
+Whole frames against voxels, pixels differing by more than 8 codes (srgb →
+tenant display):
+
+| Frame | srgb | tenant display |
+| --- | --- | --- |
+| near | 50,959 | 259 |
+| reversed | 38,823 | 145 |
+| far | 592 | 134 |
+| mid (sprites) | 1,288 | 51 |
+
+Contribution model, applied post hoc to the run 4 hybrid capture's differing
+pixels:
+
+| Model | Pixels differing by >8 | Pixels differing by >24 | Mean difference |
+| --- | --- | --- | --- |
+| as captured | 39,546 | 805 | 4.94 |
+| gamma 2.2 encoding only | 39,546 | 14,777 | 6.56 |
+| Neutral tonemap only | 24,215 | 151 | 2.31 |
+| Neutral then gamma 2.2 | 196 | 154 | 0.43 |
+| Neutral then gamma 2.2, with diffuse × 0.96 (kD) | 196 | 151 | 0.53 |
+
+The residual is 52 silhouette-edge pixels and one face patch. That is
+consistent with the tenant's GGX specular term and raster differences. None
+of it was chased further.

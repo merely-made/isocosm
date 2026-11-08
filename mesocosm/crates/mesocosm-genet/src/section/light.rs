@@ -44,11 +44,12 @@ impl Block {
 
     /// For the shared body pass and its images (case 1170): the terrain's
     /// Lambert term with both terms scaled by `--body-light`, as the tenant's.
-    pub fn body(self, scale: f32) -> isometer::BodyLight {
+    pub fn body(self, scale: f32, display: isometer::BodyDisplay) -> isometer::BodyLight {
         isometer::BodyLight {
             toward_sun: self.toward,
             ambient: self.ambient * scale,
             sun: self.sun.map(|c| c * scale),
+            display,
         }
     }
 

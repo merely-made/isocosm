@@ -81,6 +81,7 @@ impl Source {
                     section.set_body_focus(view.focus, view.selection);
                     section.set_examined(view.followed, view.focus, view.selection);
                     section.set_light_step(view.light_step);
+                    section.set_body_display(view.body_display);
                 }
                 section.set_forward(Some(camera.forward))?;
                 section.set_perspective(camera.frustum().map(|_| camera));

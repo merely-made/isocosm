@@ -27,6 +27,7 @@ fn presented() -> (SceneHandle, Rc<SiteScene>, Presentation) {
         focus: None,
         followed: None,
         light_step: section::DEFAULT_LIGHT_STEP,
+        body_display: isometer::BodyDisplay::Srgb,
         selection: None,
     };
     (handle, native.scene.clone(), view)

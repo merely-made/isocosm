@@ -82,6 +82,8 @@ pub(super) struct HostBodies {
     pub examined: Vec<u64>,
     /// See [`DEFAULT_LIGHT_STEP`].
     pub light_step: f32,
+    /// How the shared pass encodes lit bodies (case 1176).
+    pub display: isometer::BodyDisplay,
 }
 
 impl HostBodies {
@@ -92,6 +94,7 @@ impl HostBodies {
             played_fallback: None,
             examined: Vec::new(),
             light_step: DEFAULT_LIGHT_STEP,
+            display: isometer::BodyDisplay::Srgb,
         }
     }
 
@@ -159,6 +162,11 @@ impl super::Section {
     /// The hybrid sun's quantum; zero keeps the light exact.
     pub fn set_light_step(&mut self, step: f32) {
         self.host_bodies.light_step = step;
+    }
+
+    /// The shared pass's display encoding for lit bodies (case 1176).
+    pub fn set_body_display(&mut self, display: isometer::BodyDisplay) {
+        self.host_bodies.display = display;
     }
 
     /// One frame's bodies in scene order; the scene culls and orders them.
