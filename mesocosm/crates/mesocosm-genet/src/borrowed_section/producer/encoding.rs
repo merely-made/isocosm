@@ -65,6 +65,9 @@ impl Source {
                     costs.count("ground_rebind_calls", 1);
                     section.set_ground(&input.scene.ground)?;
                 }
+                if let Some(old) = &self.ground {
+                    costs.count("anatomy_changes", anatomy_changes(old, &input.scene));
+                }
                 self.ground = Some(input.scene.clone());
                 section.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
                 if let Some(view) = &input.presentation {
@@ -76,6 +79,8 @@ impl Source {
                     section.set_sky(view.sky);
                     section.configure_terrain(view.terrain, view.centre, view.terrain_y);
                     section.set_body_focus(view.focus, view.selection);
+                    section.set_examined(view.followed, view.focus, view.selection);
+                    section.set_light_step(view.light_step);
                 }
                 section.set_forward(Some(camera.forward))?;
                 section.set_perspective(camera.frustum().map(|_| camera));
@@ -132,6 +137,30 @@ impl Source {
                 section.terrain_stats(),
                 populated,
             );
+            let hybrid = section.hybrid_stats();
+            for (name, value) in [
+                ("hybrid_frames", u64::from(hybrid.capacity > 0)),
+                ("hybrid_refreshes", u64::from(hybrid.refreshes)),
+                ("hybrid_hits", u64::from(hybrid.hits)),
+                ("hybrid_misses", u64::from(hybrid.misses)),
+                ("hybrid_evictions", u64::from(hybrid.evictions)),
+                ("hybrid_sprite_bodies", u64::from(hybrid.sprite_bodies)),
+                (
+                    "hybrid_transition_bodies",
+                    u64::from(hybrid.transition_bodies),
+                ),
+                ("hybrid_live_fallbacks", u64::from(hybrid.live_fallbacks)),
+                ("hybrid_bake_upload_bytes", hybrid.bake_upload_bytes),
+                (
+                    "hybrid_light_changes",
+                    u64::from(hybrid.light_stamp != 0 && hybrid.light_stamp != self.light_stamp),
+                ),
+            ] {
+                costs.count(name, value);
+            }
+            if hybrid.light_stamp != 0 {
+                self.light_stamp = hybrid.light_stamp;
+            }
             if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
                 eprintln!(
                     "viewport {:?}: animation {was_animating} -> {}",
@@ -216,4 +245,16 @@ impl Source {
         }
         Ok(Some(self.target.as_ref().unwrap().2.clone()))
     }
+}
+
+/// Bodies in both scenes whose native anatomy changed, the played one included:
+/// growth, incorporation or injury between two presented scenes.
+fn anatomy_changes(old: &section::SiteScene, new: &section::SiteScene) -> u64 {
+    new.bodies
+        .iter()
+        .filter(|body| {
+            old.body(body.id)
+                .is_some_and(|was| was.document != body.document)
+        })
+        .count() as u64
 }

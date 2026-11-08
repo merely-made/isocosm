@@ -32,7 +32,7 @@ mod volumes;
 
 pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
 pub use bodies::{
-    BodyFrameStats, BodyLayer, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody, below_the_eye, eye_of,
+    BodyFrameStats, BodyLayer, BodyLight, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody, below_the_eye, eye_of,
     SceneVolumes, SubjectKey,
 };
 pub use camera::{Cutaway, Frustum, PerspectivePolicy, Projection, REFERENCE_BODY_HEIGHT, SlabCamera, SlabWindow, View};

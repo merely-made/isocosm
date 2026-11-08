@@ -33,7 +33,7 @@ mod inspection;
 pub mod perspective;
 mod view;
 
-pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
+pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET, DEFAULT_LIGHT_STEP};
 pub use inspection::BodySelection;
 /// The frame receipt is `isometer`'s; re-exported for the receipts.
 pub use isometer::BodyFrameStats;

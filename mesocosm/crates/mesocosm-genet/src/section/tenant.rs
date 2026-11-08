@@ -63,6 +63,10 @@ impl BodyTenant {
         self.light
     }
 
+    pub fn block(&self) -> Block {
+        self.block
+    }
+
     pub fn set_block(&mut self, block: Block) {
         self.block = block;
     }

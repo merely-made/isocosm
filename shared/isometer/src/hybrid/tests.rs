@@ -144,6 +144,12 @@ fn zero_refresh_band_control_fails() {
     assert_in_band_stability(policy([BANDS[0], [28.0; 2], BANDS[2]]));
 }
 
+#[test]
+#[should_panic(expected = "in-band oscillation changed the choice")]
+fn zero_slow_refresh_band_control_fails() {
+    assert_in_band_stability(policy([[14.0; 2], BANDS[1], BANDS[2]]));
+}
+
 fn assert_held_bound(select: impl Fn(f32, bool, BodyDetail) -> BodySelection) {
     for held in [Unavailable, Sprite, Live] {
         for pixels in [8.0, 28.0, 50.0, 80.0] {

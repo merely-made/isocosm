@@ -227,6 +227,25 @@ The recorded GPU probe informs the direction and budget questions. Production
 acceptance is still open; pixel thresholds, refresh rates, cache resolution
 and transition length remain configurable tuning gates.
 
+Status, 2026-11-08 (Findings): conditions 1 and 2 hold in shared code.
+Selection, the cache and the production bake, composite and pick path are
+`5f95cd40` and `9e31bce4`. All three refresh boundaries have zero-band controls.
+A product reports held detail through `SceneHost::hybrid_held` (case 1171). A
+held sprite bound now keeps even an examined subject a sprite.
+
+The shared body pass and the sprite bake light by the host's sun
+(`SceneHost::body_light`, case 1170). Images are keyed by a stamp of that sun,
+rounded to `HybridSettings::light_step`. Without a sun the pass keeps its fixed
+face shade, so other products are unchanged.
+
+Mesocosm's part of condition 4 has a wound receipt on the device and a headed
+generated run (M4.7 in the overlay plan). Hybrid stays opt-in in Mesocosm
+until the zoom dither no longer re-renders the whole scene (34–59 ms p95 per
+frame in run 4) and the loss of the smooth mode's contact gait is settled
+(case 1175, reopening 1172). The light step defaults to 1/32 (1177). The residency bound is a byte budget in `HybridSettings`
+(`scene/residency/body_images.rs`), and condition 3's L6/PG5 budgets would
+attach there. Condition 3 itself stays open.
+
 ### L10b. Condition 8 for Mesocosm
 Folded in 2026-10-10 from the views founding plan (ruling 801). Condition 8
 also holds when "a region's dominant holder visibly shifts between two captures
@@ -426,6 +445,17 @@ should name this plan.
 - **Far-rung function tint**: whether the far rungs of the detail ladder (doctrine Presentation 2) need the function tint, or only the marks. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:302-303`.
 - **L10 readings not ruled**: that outer rings coarsen first; that the glyph rasteriser is netrender's text path (parley, skrifa, vello) run once per glyph, cached and thresholded to opaque pixels. Bench readings still owed with numbers: thresholds, hysteresis bands, each mode's default glyph filter, dither pattern and frame count; and whether the GPU pass lands the bake's pixels and face shading (the silhouette test proves coverage only). Mark's "Per mode" already settles who decides whether examining fires on approach. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2395-2400, 2420-2422, 2469-2476, 2601-2605`.
 ## Findings
+- 2026-11-08: cases 1170 and 1171 are built.
+  - `live_body.wgsl` decodes each face's axis from its fixed shade, rotates it by the instance model, and applies `ambient + sun * max(n·toward, 0)` in place of the shade, but only when a `BodyLight` is set. `isometer-render`'s 54 tests pass unchanged.
+  - A sun moved by less than the quantum keeps the image: 0 refreshes and 1 hit at a step of 1/16. Moved past the quantum, the sprite rebakes, and an exact sun rebakes on any move (`scene/body_pass/tests/light.rs`). A held sprite bound keeps an examined subject a sprite, and with live detail held the subject promotes.
+  - In the M4.7 near view, hybrid against voxels: pixels differing by more than 24 codes fell from 13,448 to 805, and the mean difference fell from 8.2 to 4.9 codes. A small offset remains between the shared pass and the tenant's raster and colour path.
+- 2026-11-08: conditions 1 and 2, checked against `5f95cd40` and `9e31bce4`. The selector chooses per body under both cameras. Its zero-band controls now fail at all three boundaries: Medium/Slow was added in `hybrid/tests.rs`. The held-detail control fails as it should. Two gaps remain:
+  - The scene passes `BodyDetail::Live` for every body (`scene/body_pass/hybrid.rs`), so the held bound is never exercised in a product.
+  - The lighting stamp is `0`. `live_body.wgsl` and the sprite bake read no light uniform: face shade is fixed per axis.
+
+  Stamps: appearance hashes tint, materials and palette; facing hashes camera axes and yaw; anatomy is `BodyDependencyRevision`. That revision covers surviving parts, volumes, pivots and attachment tags. An on-device test shows a native `Wound` rebaking one sprite while the sim's hash matches a control.
+
+  In headed Mesocosm, the hybrid mode's live bodies come from this unlit shared pass. Voxel mode draws them through the sun-lit tenant. The two differ by about 35,000 pixels at the same near view (`m4-7-hybrid/2026-11-08/run3/compare-near-moved.png` under `Code/testing/isocosm`).
 - 2026-11-03: `isometer-render --example hybrid_compare` replays the same generated native creature, holds local limb images at size-dependent cadence and applies current root transforms every displayed frame. Its explicit choice function passes rung/rate hysteresis and held-detail controls; a zero-width band changes tiers 63 times. GPU ordered selection preserves input pixels across 442,368 checks, while an alpha control invents 1,259 pixels. This is a bounded R0/R1 example, not completion of L6 or L10. At 40 projected pixels and 64 visible clones, one examined live body plus 63 sprites averages 1.68--1.69 ms GPU versus 2.47 ms all live; the dual-render switch peaks at 6.30--6.51 ms. The ten-pixel case saves much less GPU time with the fixed-size cache. Full timings, limits and captures are in the archived receipt.
 - 2026-11-03: the authorized rigid-token comparison now runs as `isometer-render --example token_compare`, with the existing `demo::hero` recipe, mesher and cached live-body adapter. A four-facing colour-and-depth sprite cache matches the live draw at native size and on overlapping-token boards; enlargement exposes its fixed image resolution. This is an experimental GPU capture cache, not CPU-bake parity, a production sprite tier or full L10 acceptance. Measurements, adapter, captures and scope limits are in this plan's archived receipt file; no whole-game speed claim follows.
 - 2026-11-03: the per-game presentation proposal fits D3 and L10, but an ordinary sprite board changes BD6's live-body choice. Code already has the appearance recipe and CPU bake (`isometer-mesh/src/bake/recipe.rs`, `bake/body.rs`); the native board still submits `SceneBody` instances (`isocosm-views/src/scene/board/native/source.rs`). E10 now has checked foreground handbacks (`cosmograph/src/spatial/handback.rs`), separate round pacing (`cosmograph-host/src/drive/round.rs`) and place-grain travel outside all participants' foregrounds (`cosmograph/src/spatial/foraging/travel.rs`). These are inspected source facts, not a new runtime or performance qualification.
@@ -440,6 +470,8 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
+- 2026-11-08: cases 1170 and 1171 built: a sun-lit shared body pass and bake with a quantized lighting stamp, and `SceneHost::hybrid_held`. The M4.7 run4 receipt measures rebakes at four light quanta. Hybrid went back to opt-in (1175, reopening 1172); the light step defaults to 1/32 (1177); a colour-path audit against the tenant is next (1176).
+- 2026-11-08: Mesocosm consumes the 1161 mechanism. Examination is played, followed or dev focus (Mark), and a zero-band control was added for the slow refresh boundary. A headed generated run shows identical native hashes across voxels, hybrid and half-scale hybrid, with switch and refresh costs measured (receipt). Held detail, lighting and default presets wait on Mark.
 - 2026-11-03: Mark accepted the hybrid direction as case 1161; Presentation 2 now includes adaptive R1 image refresh, L10 has explicit production gates, and the board, product overlays, residency and simulation plans carry their ownership seams. Trial numerical presets remain tuning values.
 - 2026-11-03: captured and measured the authorized R0/R1 hybrid probe and reverse-order confirmation; added configurable projected-size/rate bands, current-root composition, ordered switching and a captured zoom/motion comparison. Product defaults, cache residency and runtime integration remain open.
 - 2026-11-03: built and ran the token representation comparison and its capture/cost viewer; the archived receipt records visual checks and release CPU/GPU measurements. Ordinary product representations remain proposals.

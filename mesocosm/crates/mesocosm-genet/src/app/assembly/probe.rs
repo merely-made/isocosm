@@ -35,6 +35,10 @@ impl mandrake::Product for Probe {
         let body_stats = body_stats.unwrap_or_default();
         let hybrid_stats = s.producer.borrow_mut().hybrid_stats().unwrap_or_default();
         let terrain_stats = s.producer.borrow_mut().terrain_stats().unwrap_or_default();
+        // Cumulative, so `remember`/`more` read a phase's work as a delta.
+        let preparation = s.producer.borrow().preparation_costs();
+        let counter = |name: &str| preparation.counters.get(name).copied().unwrap_or(0).to_string();
+        let draw_work_us = preparation.stages.get("draw_work").map_or(0, |s| s.wall_ns / 1_000);
         let (scene_draws, mesh_bytes, instance_bytes) = s.producer.borrow().cost_totals();
         let native_sequence = r
             .world()
@@ -213,6 +217,24 @@ impl mandrake::Product for Probe {
                 ("sprite-hits", hybrid_stats.hits.to_string()),
                 ("sprite-misses", hybrid_stats.misses.to_string()),
                 ("sprite-transition-bodies", hybrid_stats.transition_bodies.to_string()),
+                ("draw-work-us", draw_work_us.to_string()),
+                ("anatomy-changes", counter("anatomy_changes")),
+                ("hybrid-frames", counter("hybrid_frames")),
+                ("hybrid-refreshes", counter("hybrid_refreshes")),
+                ("hybrid-hits", counter("hybrid_hits")),
+                ("hybrid-misses", counter("hybrid_misses")),
+                ("hybrid-evictions", counter("hybrid_evictions")),
+                ("hybrid-sprite-draws", counter("hybrid_sprite_bodies")),
+                (
+                    "hybrid-transition-draws",
+                    counter("hybrid_transition_bodies"),
+                ),
+                ("hybrid-live-fallbacks", counter("hybrid_live_fallbacks")),
+                ("hybrid-light-changes", counter("hybrid_light_changes")),
+                (
+                    "hybrid-bake-upload-bytes",
+                    counter("hybrid_bake_upload_bytes"),
+                ),
                 ("terrain-bricks", terrain_stats.resident.to_string()),
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
                 (

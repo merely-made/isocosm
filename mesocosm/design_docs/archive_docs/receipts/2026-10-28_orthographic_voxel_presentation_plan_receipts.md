@@ -436,3 +436,104 @@ release build, two GPU executions and their positive/negative controls,
 `rustfmt --check`, Python syntax parsing, scoped `git diff --check`,
 `responsa check` and the browser checks above. No new Cargo home, worktree or
 isolated target was created; the existing repository target is reused.
+
+## Mesocosm hybrid headed run (M4.7), 2026-11-08
+
+Run from the lane branch at `e09e8490` plus the M4.7 changes, built in release
+with debug info off. Command:
+`mesocosm-genet --play --seed 1793177320550931600 --mode creative --dev --paused --bodies {voxels|hybrid} [--render-scale 2] --frames 6000 --scenario testing/hybrid/m4-7.scenario`.
+Outputs, including PNG captures, receipts, `.timing.json` and the
+`compare-*.png` crops, are under
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run3/`. Earlier tries, kept
+beside it, used the wrong zoom: at zoom 384 the bodies of roughly 100 voxels
+stayed above the live threshold, and ten-tick steps carried the played body
+off-site.
+
+Native outcomes:
+
+| Checkpoint | Tick | Hash (all three runs) |
+| --- | --- | --- |
+| near | 0 | d8eea18fe502aac1 |
+| zoom-out / far | 2 | 5be7c2e2da6c4207 |
+| zoom-in / mid | 12 | f43cdc42cb1b918d |
+| end | 17 | c763a19d3af1d832 |
+
+Hybrid counters, as deltas between snapshots, at a 24-pixel image and the
+`section/bodies.rs` bands:
+
+| Phase | Renders | Refreshes | Transition draws | Bake upload |
+| --- | --- | --- | --- | --- |
+| zoom out to 768 | 8 | 12 | 21 | 97,936 B |
+| ten ticks at 768 | 10 | 18 | 0 | 101,360 B |
+| reverse to 96 | 8 | 9 | 21 | 37,312 B |
+| five ticks at 512 | 12 | 10 | 7 | 35,856 B |
+
+- Anatomy changes: 9 during the ticks at zoom 768, 12 in total.
+- Resident atlas: 1,179,648 B. Capacity was 256 slots, capped by this
+  device's texture-array layers below the 8 MiB budget.
+- Evictions and live fallbacks: zero.
+
+Cost phases (native worker / native latency, p95, µs):
+
+| Phase | Hybrid | Voxels | Hybrid, half scale |
+| --- | --- | --- | --- |
+| zoom_out | 4,504 / 9,959 | 60 / 5,826 | 4,518 / 7,992 |
+| far_motion | 8,198 / 17,479 | 11,345 / 34,624 | 7,490 / 13,234 |
+| zoom_in | 36,954 / 45,610 | 75 / 6,046 | 14,804 / 19,387 |
+| mid_motion | 17,306 / 25,639 | 32,840 / 65,311 | 14,834 / 21,562 |
+
+The zoom_in cost is the reverse dither. It re-renders the whole scene for each
+of its 8 frames, while voxels presents once.
+
+Pixel checks:
+- Against voxels, hybrid differs only inside the body cluster's box: 553 px at
+  768 and 1,269 px at 512.
+- At the near views, which are all live, it differs by about 35,000 px. The
+  hybrid live rung is the shared, unlit body pass; voxel mode uses the lit
+  tenant.
+
+Limits: one run each, wall time on a shared machine, no GPU duration. The
+refreshes are not attributed between revision changes, pose age and facing.
+
+## Mesocosm hybrid headed run 4: lit bodies, held detail, default (M4.7), 2026-11-08
+
+Cases 1170 to 1172 on the lane branch, rebased onto `0f9ae56b`, in a release
+build. Same scenario and seed as run 3. The default body mode is now hybrid,
+and `--sun sim` moves the sun every tick, 0.25° of hour angle. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run4/`.
+
+All six settings matched at every checkpoint: hybrid at the 1/64 default,
+`--bodies voxels`, `--render-scale 2`, and `--light-step` of 0, 0.03125 and
+0.0625. Hashes: d8eea18fe502aac1 at tick 0, 5be7c2e2da6c4207 at tick 2,
+f43cdc42cb1b918d at tick 12, c763a19d3af1d832 at tick 17. The final state
+hash is 14367504932912879666.
+
+Rebakes with the light moving. "Stamp changes" counts frames whose lighting
+stamp differs from the previous frame's, the first frame included.
+
+| Light step | Stamp changes | Refreshes, total | Refreshes, ten ticks at 768 | Bake upload |
+| --- | --- | --- | --- | --- |
+| exact | 18 | 66 | 30 | 375,440 B |
+| 1/64 | 9 | 56 | 24 | 311,312 B |
+| 1/32 | 5 | 53 | 21 | 307,392 B |
+| 1/16 | 2 | 49 | 18 | 264,176 B |
+
+Run 3, unlit, had 18 refreshes in the ten ticks at 768. At 1/16, light-caused
+rebakes vanish over this 17-tick run.
+
+Near view, hybrid against voxels, in the body crop (412,474)–(808,698):
+
+| | Pixels differing by >8 codes | Pixels differing by >24 codes | Mean difference |
+| --- | --- | --- | --- |
+| run 3, unlit | 35,264 | 13,448 | 8.2 codes |
+| run 4, lit | 39,546 | 805 | 4.9 codes |
+
+The large differences collapsed. A small, widespread offset remains between
+the shared pass and the tenant (`compare-near-moved.png`). Sprite views differ
+in 583–1,288 px, inside the body cluster.
+
+Cost phases, native worker p95: hybrid zoom_in measured 33.9–59.4 ms across
+the four lit hybrid runs, against voxels at 0.09 ms; that is the 8-frame
+reverse dither re-rendering the scene. far_motion measured 7.7–8.5 ms against
+12.0 ms for voxels. These are single wall-time runs on a shared machine, with
+no GPU duration.

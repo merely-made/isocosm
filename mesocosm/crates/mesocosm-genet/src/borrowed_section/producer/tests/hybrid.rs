@@ -28,14 +28,24 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
                 .flatten()
         })
         .expect("generated fixture has an admitted peer with a limb");
-    let isolate = |native: &crate::borrowed_section::Snapshot| {
+    // This truth view places bodies without native poses: cohort stand-ins
+    // that hold only a sprite (1171). Posing them lets examination promote.
+    let isolate = |native: &crate::borrowed_section::Snapshot, posed: bool| {
         let mut scene = (*native.scene).clone();
         scene
             .bodies
             .retain(|body| body.id == target || body.id == played);
+        for body in scene.bodies.iter_mut().filter(|_| posed) {
+            body.physical
+                .get_or_insert_with(|| cosmograph::spatial::Pose {
+                    at: body.at.map(i64::from),
+                    ..Default::default()
+                });
+        }
         Rc::new(scene)
     };
-    let original = isolate(&native);
+    let stand_ins = isolate(&native, false);
+    let original = isolate(&native, true);
     let core = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default())
         .expect("a GPU is required for the hybrid receipt");
     let host = section::host_device::from_renderer(core.renderer());
@@ -43,7 +53,7 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
     let mut producer = SceneProducer::new(source);
     let size = [192, 144];
     let camera = native.camera(size[0] as f32 / size[1] as f32);
-    let target_body = original.body(target).unwrap();
+    let target_body = stand_ins.body(target).unwrap();
     let bounds = target_body.document.aabb();
     let longest = bounds.extent().into_iter().max().unwrap() as f32;
     let centre = std::array::from_fn(|axis| {
@@ -64,6 +74,8 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
         terrain_y: camera.centre[1],
         looking: section::perspective::Looking::overview(),
         focus: None,
+        followed: None,
+        light_step: section::DEFAULT_LIGHT_STEP,
         selection: None,
     };
     let request = FrameRequest {
@@ -76,6 +88,13 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
         render_scale: 1,
     };
     let before = session.save();
+    // Stand-ins: the played body and a followed one stay sprites until M4.8.
+    view.followed = Some(target);
+    handle.present(&stand_ins, 0, view.clone()).unwrap();
+    assert!(producer.render_scene(&request).unwrap().is_some());
+    let held = producer.source().section.as_ref().unwrap().hybrid_stats();
+    assert_eq!((held.sprite_bodies, held.refreshes), (2, 2));
+    view.followed = None;
     handle.present(&original, 0, view.clone()).unwrap();
     assert!(producer.render_scene(&request).unwrap().is_some());
     let section = producer.source().section.as_ref().unwrap();
@@ -85,8 +104,9 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
         section.body_stats(),
         producer.presented_camera()
     );
+    // Posed: the played body is examined and live; the actor's image holds.
     assert_eq!(section.hybrid_stats().sprite_bodies, 1);
-    assert_eq!(section.hybrid_stats().refreshes, 1);
+    assert_eq!(section.hybrid_stats().refreshes, 0);
     let (_, _, pixels) = producer.source().capture().unwrap();
     assert!(pixels.chunks_exact(4).any(|pixel| pixel[..3] != [0, 0, 0]));
     let selection = section
@@ -108,6 +128,23 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
     view.selection = None;
     handle.present(&original, 0, view.clone()).unwrap();
     assert!(producer.render_scene(&request).unwrap().is_some());
+    // Following the actor, without dev focus, examines it: Mesocosm's hook.
+    view.followed = Some(target);
+    handle.present(&original, 0, view.clone()).unwrap();
+    assert!(producer.render_scene(&request).unwrap().is_some());
+    let followed = producer.source().section.as_ref().unwrap().hybrid_stats();
+    assert_eq!(followed.sprite_bodies, 0, "the followed body stays live");
+    view.followed = None;
+    handle.present(&original, 0, view.clone()).unwrap();
+    let animate = FrameRequest {
+        needs_frame: true,
+        ..request
+    };
+    for _ in 0..16 {
+        producer.render_scene(&animate).unwrap();
+    }
+    let released = producer.source().section.as_ref().unwrap().hybrid_stats();
+    assert_eq!((released.sprite_bodies, released.transition_bodies), (1, 0));
     assert_eq!(session.save(), before);
 
     let mut control = Session::load(before, Execution::Individuals).unwrap();
@@ -124,7 +161,7 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
     handle
         .update(&session, participant, window, Mode::Creative, site, 0)
         .unwrap();
-    let changed = isolate(&handle.snapshot().unwrap());
+    let changed = isolate(&handle.snapshot().unwrap(), true);
     handle.present(&changed, 1, view).unwrap();
     assert!(producer.render_scene(&request).unwrap().is_some());
     let section = producer.source().section.as_ref().unwrap();

@@ -86,6 +86,13 @@ fn main() {
                     .filter(|v| v.is_finite() && *v >= 0.0)
                     .unwrap_or_else(|| fail("--body-light wants a finite nonnegative intensity"));
             },
+            "--light-step" => {
+                config.light_step = args
+                    .next()
+                    .and_then(|v| v.parse::<f32>().ok())
+                    .filter(|v| v.is_finite() && *v >= 0.0)
+                    .unwrap_or_else(|| fail("--light-step wants a finite nonnegative quantum"));
+            },
             "--sun" => {
                 sun_explicit = true;
                 config.sun = args.next().as_deref().and_then(mesocosm_genet::section::SunSource::parse)
@@ -364,9 +371,10 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
-  --bodies MODE   smooth (default, contact gait), voxels, hybrid, boxes or capsules
+  --bodies MODE   smooth (default, contact gait), voxels, hybrid (live near, images far), boxes or capsules
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
+  --light-step Q  hybrid sun quantum, 0 for exact (default 1/32)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
   --terrain-style MODE  auto (classic), classic or habitat
   --camera MODE   dimetric (default), dimetric-south/west/north, isometric, isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north

@@ -299,10 +299,38 @@ and depth independent of cached limb poses. Quality presets and examination
 policy are Mesocosm's; native stepping, decisions and ecology keep their own
 cadence. Examining is the played critter, the followed body and the dev focus,
 the sim's examined region joining after M4.8 (1169). Opt-in wiring landed in
-9e31bce4; the examination hook, lighting and held-detail inputs and headed
-acceptance are open. Acceptance needs a headed generated scene
+9e31bce4; the status below records what is built and what stays open.
+Acceptance needs a headed generated scene
 with motion, growth/injury invalidation and zoom reversal, showing the same
 native outcomes across image settings and the measured refresh/switch costs.
+
+Status, 2026-11-08: wired and run headed, and opt-in (Findings; the receipt
+is in the presentation plan's receipt file).
+- Examination: `hybrid_examined` keeps the played critter, the followed body
+  and the dev inspection focus live (1169).
+- Held detail: natively posed bodies hold live detail and cohort stand-ins
+  hold only a sprite (1171). Until M4.8, the played body in a stand-in view
+  stays a sprite even when examined.
+- Light: bodies and their images take the tenant's sun scaled by
+  `--body-light`, quantized by `--light-step`, default 1/32 (1170, 1177).
+- Default: `--bodies hybrid` stays opt-in with 9e31bce4's values. It waits
+  until the zoom dither no longer re-renders the whole scene (34–59 ms p95 per
+  frame in run 4) and the loss of the smooth mode's contact gait is settled
+  (1175, reopening 1172). A colour-path audit against the tenant comes next
+  (1176).
+
+Met:
+- motion;
+- zoom out and reversal;
+- anatomy changes during the sprite phase;
+- the same native hash at every checkpoint across six image settings;
+- measured switch and refresh costs;
+- rebake counts with the sun moving.
+
+Still open: making hybrid the default (1175), the colour-path audit (1176),
+and attributing a single sprite rebake to a headed injury. The wound
+receipt on the device covers injury; the headed run only counts anatomy
+changes beside refreshes.
 The mechanism, residency gates and probe evidence stay in
 `2026-10-28_orthographic_voxel_presentation_plan.md` L10 and
 `2026-10-28_place_graph_engine_plan.md` PG5.
@@ -514,6 +542,22 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-11-08 (run4): six settings gave the same native hash at all six checkpoints: hybrid default, voxels, half-scale hybrid, and light steps 0, 1/32 and 1/16. The final hash is 14367504932912879666. With `--sun sim`, these are the light-stamp changes and the refreshes during the ten ticks at zoom 768:
+
+  | Light step | Stamp changes over 17 ticks | Refreshes at 768 |
+  | --- | --- | --- |
+  | exact | 18 | 30 |
+  | 1/64 | 9 | 24 |
+  | 1/32 | 5 | 21 |
+  | 1/16 | 2 | 18 |
+
+  Unlit (run3) had 18 refreshes at 768.
+- 2026-11-08: M4.7's hybrid run used seed 1793177320550931600 in creative dev mode, paused, with 17 single-tick steps through zooms 96, 768, 96 and 512 (`mesocosm/testing/hybrid/m4-7.scenario`; captures in `Code/testing/isocosm/m4-7-hybrid/2026-11-08/run3/`).
+  - Native hashes matched at all six checkpoints under `--bodies voxels`, `hybrid` and `hybrid --render-scale 2`; the final hash is 14367504932912879666.
+  - At zoom 768, three of four bodies drew as sprites and the played body stayed live. Through ten ticks with nine anatomy changes, there were 18 refreshes and 101 KB of bake uploads.
+  - Native worker p95 was 8.2 ms for hybrid against 11.3 ms for voxels.
+  - The zoom-in reversal re-renders the whole scene for every dither frame: worker p95 37.0 ms over 8 renders, where voxels renders once.
+  - These are single runs of wall time on a shared machine. No GPU duration was measured.
 - 2026-10-31 (M3.5, the lineage policy): in A1 worlds (seeds 9 and 3, 160 founders, 30-tick
   epochs, variation 16, three candidates) the boundary committed a member's variant at most
   of the first four boundaries, the policy chose otherwise than the hand-written score in
@@ -579,6 +623,7 @@ Epoch boundary (record: open, the record does not decide).
   namespaces that reuse these labels; this plan's M labels are the overlay plan's only.
 
 ## Progress
+- 2026-11-08: M4.7 wired and measured: Mesocosm examination hook, cumulative hybrid and anatomy counters on the probe, and a headed hybrid scenario. The default preset, held detail and lighting are still open.
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.
 - 2026-10-31: D1 to D3 recorded; M3.5 and M3.6 added, the lineage policy of case 1051.

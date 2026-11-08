@@ -66,6 +66,8 @@ pub struct HostConfig {
     pub body_budget: usize,
     /// Presentation-only scale of the body tenant's sun and ambient (1 matches the terrain).
     pub body_light: f32,
+    /// The hybrid rung's sun quantum (`section::DEFAULT_LIGHT_STEP`).
+    pub light_step: f32,
     /// Where the sky's light comes from; a bench reads the fixed sun unless told otherwise.
     pub sun: section::SunSource,
     /// Off by default (DT1); recorded in the receipt either way.
@@ -146,9 +148,12 @@ impl Default for HostConfig {
             camera: CameraMode::default(),
             view_depth: None,
             terrain_style: section::TerrainStyle::Auto,
+            // Hybrid stays opt-in until the zoom dither stops re-rendering the
+            // whole scene and the contact gait's loss is settled (case 1175).
             body_mode: section::BodyMode::default(),
             body_budget: section::DEFAULT_BODY_BUDGET,
             body_light: 1.0,
+            light_step: section::DEFAULT_LIGHT_STEP,
             sun: section::SunSource::Sim,
             dev: false,
             start_paused: false,

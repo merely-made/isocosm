@@ -233,9 +233,15 @@ impl SpriteAtlas {
         ))
     }
 
-    /// Record a posed voxel body into one atlas layer. Yaw and appearance are
-    /// baked. Origin and uniform scale are applied later at display time.
-    /// Refreshes and sprite draws can be recorded in one submitted encoder.
+    /// Light later bakes by the scene's sun; images baked under another
+    /// light must be invalidated by the caller's lighting revision.
+    pub fn set_light(&mut self, light: Option<crate::live_body::BodyLight>) {
+        self.baker.set_light(light);
+    }
+
+    /// Record a posed voxel body into one atlas layer. Yaw, appearance and
+    /// light are baked. Origin and uniform scale are applied later at display
+    /// time. Refreshes and sprite draws can be recorded in one submitted encoder.
     pub fn bake_voxel(
         &mut self,
         device: &wgpu::Device,

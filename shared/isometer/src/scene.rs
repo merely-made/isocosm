@@ -119,6 +119,17 @@ pub trait SceneHost {
         false
     }
 
+    /// The finest rung the product's world holds for a subject (case 1171).
+    fn hybrid_held(&self, _subject: crate::SubjectKey) -> crate::hybrid::BodyDetail {
+        crate::hybrid::BodyDetail::Live
+    }
+
+    /// The scene's sun for the shared body pass and its images (case 1170).
+    /// The default keeps the fixed face shade.
+    fn body_light(&self) -> Option<crate::BodyLight> {
+        None
+    }
+
     /// Before the frame's bodies are projected.
     fn begin(&mut self) {}
 
