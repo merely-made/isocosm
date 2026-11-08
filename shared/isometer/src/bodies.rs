@@ -19,7 +19,7 @@ use isometer_render::live_body::{LiveBody, LiveBodyRenderer};
 
 /// The renderer's colour table and its entries, reached through the facade so
 /// a host names one crate.
-pub use isometer_render::live_body::{BodyLight, MaterialPalette, PaletteColour};
+pub use isometer_render::live_body::{BodyDisplay, BodyLight, MaterialPalette, PaletteColour};
 
 use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
@@ -153,6 +153,8 @@ pub struct BodyLayer {
     selected: Option<PartAddress>,
     depth: wgpu::Texture,
     pub depth_view: wgpu::TextureView,
+    /// Each drawn subject's presentation style, from the host (1178).
+    styles: BTreeMap<SubjectKey, BodyDisplay>,
 }
 
 impl BodyLayer {
@@ -188,6 +190,7 @@ impl BodyLayer {
             selected: None,
             depth,
             depth_view,
+            styles: BTreeMap::new(),
         }
     }
 
@@ -500,6 +503,7 @@ impl BodyLayer {
         let matrix = camera.clip_from_world();
         let hybrid = !coverage.is_empty();
         let mut sprite_coverage = Vec::new();
+        let mut styles = Vec::new();
         let bodies: Vec<_> = self
             .placed
             .iter()
@@ -511,6 +515,7 @@ impl BodyLayer {
                 if hybrid {
                     sprite_coverage.push(weight);
                 }
+                styles.push(self.style(body.subject));
                 let mut live = body.live();
                 live.focused = self.focus_subject == Some(body.subject);
                 live.selected_part = self.selected.and_then(|address| {
@@ -520,8 +525,9 @@ impl BodyLayer {
                 Some(live)
             })
             .collect();
-        let stats = if !hybrid {
-            self.renderer.draw(
+        let stats = self
+            .renderer
+            .draw_styled(
                 device,
                 queue,
                 encoder,
@@ -530,11 +536,10 @@ impl BodyLayer {
                 matrix,
                 Some(camera.clip()),
                 &bodies,
+                &styles,
+                &sprite_coverage,
             )
-        } else {
-            self.renderer.draw_hybrid(device, queue, encoder, colour, &self.depth_view,
-                matrix, Some(camera.clip()), &bodies, &sprite_coverage)
-        }.map_err(|error| format!("voxel bodies: {error:?}"))?;
+            .map_err(|error| format!("voxel bodies: {error:?}"))?;
         self.stats.mesh_builds = stats.mesh_builds;
         self.stats.mesh_upload_bytes = stats.mesh_upload_bytes as u64;
         self.stats.instance_upload_bytes = stats.instance_upload_bytes as u64;

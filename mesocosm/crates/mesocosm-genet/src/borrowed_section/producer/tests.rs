@@ -78,6 +78,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         focus: None,
         followed: None,
         light_step: section::DEFAULT_LIGHT_STEP,
+        body_display: isometer::BodyDisplay::Srgb,
         selection: None,
         looking: section::perspective::Looking::overview(),
     };

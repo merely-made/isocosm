@@ -82,6 +82,11 @@ impl Scene {
             .body_light()
             .map(|light| settings.map_or(light, |s| light.quantized(s.light_step)));
         bodies.set_light(light);
+        let styles = bodies
+            .drawn()
+            .map(|subject| (subject, host.body_display(subject)))
+            .collect();
+        bodies.set_styles(styles);
         let result = if let Some(settings) = settings {
             let coverage = hybrid.draw(
                 device,

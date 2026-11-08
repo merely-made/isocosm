@@ -66,3 +66,23 @@ fn a_held_sprite_bound_keeps_an_examined_subject_a_sprite() {
     let live = render(&mut scene, camera(1.5), &[near], &volumes, &mut host);
     assert_eq!(live.sprite_bodies, 0);
 }
+
+#[test]
+fn a_style_change_rebakes_only_when_the_style_moves() {
+    let (device, queue) =
+        crate::test_gpu::device().expect("GPU is required for the sprite receipt");
+    let doc = BodyDocument::new(VolumeRef::from_tag(81), [2; 3]);
+    let volumes = DeclaredExtentVolumes::from_documents([&doc], 1);
+    let bodies = [body(1, 0.0, &doc)];
+    let mut scene = Scene::new(device, queue, VIEW, VIEW).unwrap();
+    let mut host = host();
+    host.light = Some(NOON);
+    let mut refreshes =
+        |host: &mut Host| render(&mut scene, camera(6.0), &bodies, &volumes, host).refreshes;
+    assert_eq!(refreshes(&mut host), 1);
+    // Control: an unchanged style keeps the image.
+    assert_eq!(refreshes(&mut host), 0);
+    host.display = crate::BodyDisplay::NeutralGamma22;
+    assert_eq!(refreshes(&mut host), 1);
+    assert_eq!(refreshes(&mut host), 0);
+}

@@ -287,8 +287,7 @@ impl Section {
 
     /// Transparent lit bodies, layered over the terrain by Netrender.
     pub fn body_view(&self) -> Option<wgpu::TextureView> {
-        (!matches!(self.body_mode, BodyMode::Capsules | BodyMode::Hybrid))
-            .then(|| self.body_tenant.view())
+        (self.body_mode == BodyMode::Smooth).then(|| self.body_tenant.view())
     }
 
     /// How much world the section frames, in voxels of half-height.

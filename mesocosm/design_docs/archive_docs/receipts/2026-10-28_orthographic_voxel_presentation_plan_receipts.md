@@ -541,3 +541,76 @@ the four lit hybrid runs, against voxels at 0.09 ms; that is the 8-frame
 reverse dither re-rendering the scene. far_motion measured 7.7–8.5 ms against
 12.0 ms for voxels. These are single wall-time runs on a shared machine, with
 no GPU duration.
+
+## Colour-path audit, run 5 (case 1176), 2026-11-08
+
+`lane/colour-audit` from `aece7ed6`, release. Same M4.7 scenario and seed as
+runs 3 and 4, at the 1/32 light step. Runs: `--bodies hybrid`,
+`--bodies hybrid --body-display tenant` and `--bodies voxels`. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run5/`. `compare-near-moved.png`
+shows srgb hybrid, tenant-display hybrid, voxels, and a heat map of the
+remaining difference.
+
+Native hashes: identical across the three runs at all six checkpoints. The
+final state hash is 14367504932912879666.
+
+Near view (`near-moved`, crop (412,474)–(808,698)), against voxels:
+
+| Run | Pixels differing by >8 codes | Pixels differing by >24 codes | Mean difference |
+| --- | --- | --- | --- |
+| hybrid, srgb | 39,546 | 961 | 4.99 |
+| hybrid, tenant display | 196 | 183 | 0.40 |
+
+Whole frames against voxels, pixels differing by more than 8 codes (srgb →
+tenant display):
+
+| Frame | srgb | tenant display |
+| --- | --- | --- |
+| near | 50,959 | 259 |
+| reversed | 38,823 | 145 |
+| far | 592 | 134 |
+| mid (sprites) | 1,288 | 51 |
+
+Contribution model, applied post hoc to the run 4 hybrid capture's differing
+pixels:
+
+| Model | Pixels differing by >8 | Pixels differing by >24 | Mean difference |
+| --- | --- | --- | --- |
+| as captured | 39,546 | 805 | 4.94 |
+| gamma 2.2 encoding only | 39,546 | 14,777 | 6.56 |
+| Neutral tonemap only | 24,215 | 151 | 2.31 |
+| Neutral then gamma 2.2 | 196 | 154 | 0.43 |
+| Neutral then gamma 2.2, with diffuse × 0.96 (kD) | 196 | 151 | 0.53 |
+
+The residual is 52 silhouette-edge pixels and one face patch. That is
+consistent with the tenant's GGX specular term and raster differences. None
+of it was chased further.
+
+## One renderer, exact-sRGB baseline, run 6 (cases 1178, 1179), 2026-11-08
+
+This is `lane/colour-audit` after `34ab6c14`, in a release build. Voxel mode
+now draws through the shared body pass, and the kiss3d voxel tenant is
+retired. Each body carries a style (`BodyDisplay`) in an instance lane.
+Mesocosm passes every body its `--body-display` default. The scenario and
+seed are the same as in runs 3–5. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run6/`. The
+`whole-*-tenant-voxels-hybrid.png` strips put three whole frames side by side:
+run 5 voxels (the old tenant), run 6 voxels and run 6 hybrid.
+
+Native hashes are the same at all six checkpoints across run 5 voxels and
+four run 6 runs: voxels, hybrid, voxels with the neutral style, and smooth.
+The final hash is 14367504932912879666.
+
+The crop is (412,474)–(808,698). Each cell gives pixels differing by >8 codes,
+pixels differing by >24 codes, and the mean difference.
+
+| Comparison | Crop | Whole near | Whole mid (sprites) |
+| --- | --- | --- | --- |
+| run 6 voxels vs old tenant | 39,546 / 720 / 4.83 | 50,959 / 781 | 1,286 / 12 |
+| run 6 voxels, neutral style, vs old tenant | 196 / 151 / 0.38 | 259 / 163 | 2 / 1 |
+| run 6 hybrid vs run 6 voxels | 0 / 0 / 0.17 | 0 / 0 | 50 / 26 |
+| run 6 hybrid vs run 5 hybrid | 0 / 0 / 0.00 | 0 / 0 | 0 / 0 |
+
+Live bodies now look the same in hybrid and voxel mode. The only remaining
+difference between the two modes is the sprite rung's 24-pixel image against
+live geometry. Smooth mode renders as before.

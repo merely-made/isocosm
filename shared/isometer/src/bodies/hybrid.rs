@@ -12,6 +12,7 @@ pub(crate) struct HybridBody<'a> {
     pub live: LiveBody<'a>,
     pub bounds: ([f32; 3], [f32; 3]),
     pub examined: bool,
+    pub display: BodyDisplay,
     body: &'a PlacedBody,
 }
 
@@ -25,6 +26,7 @@ impl HybridBody<'_> {
             material.fraction.to_bits().hash(&mut appearance);
         }
         self.body.palette.hash(&mut appearance);
+        self.display.hash(&mut appearance);
         let mut facing = DefaultHasher::new();
         camera_facing.hash(&mut facing);
         self.live.yaw_radians.to_bits().hash(&mut facing);
@@ -43,11 +45,21 @@ impl BodyLayer {
         self.renderer.set_light(light);
     }
 
+    /// Each subject's presentation style for the next draw (case 1178).
+    pub(crate) fn set_styles(&mut self, styles: BTreeMap<SubjectKey, BodyDisplay>) {
+        self.styles = styles;
+    }
+
+    pub(crate) fn style(&self, subject: SubjectKey) -> BodyDisplay {
+        self.styles.get(&subject).copied().unwrap_or_default()
+    }
+
     pub(crate) fn hybrid_bodies(&self) -> impl Iterator<Item = HybridBody<'_>> {
         self.placed.iter().map(|body| HybridBody {
             subject: body.subject,
             live: body.live(),
             bounds: body.bounds,
+            display: self.style(body.subject),
             examined: body.always_visible
                 || self.focus_subject == Some(body.subject)
                 || self

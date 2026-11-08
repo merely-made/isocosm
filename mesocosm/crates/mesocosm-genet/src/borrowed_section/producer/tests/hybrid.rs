@@ -76,6 +76,7 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
         focus: None,
         followed: None,
         light_step: section::DEFAULT_LIGHT_STEP,
+        body_display: isometer::BodyDisplay::Srgb,
         selection: None,
     };
     let request = FrameRequest {

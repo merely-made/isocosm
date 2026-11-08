@@ -227,6 +227,7 @@ impl HybridFrame {
                 continue;
             };
             let subject = request.body.subject;
+            resident.atlas.set_display(request.body.display);
             let Some((slot, displaced)) = resident.slots.admit(subject, self.frame) else {
                 break;
             };

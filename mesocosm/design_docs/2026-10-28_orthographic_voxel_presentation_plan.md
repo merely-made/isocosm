@@ -445,6 +445,19 @@ should name this plan.
 - **Far-rung function tint**: whether the far rungs of the detail ladder (doctrine Presentation 2) need the function tint, or only the marks. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:302-303`.
 - **L10 readings not ruled**: that outer rings coarsen first; that the glyph rasteriser is netrender's text path (parley, skrifa, vello) run once per glyph, cached and thresholded to opaque pixels. Bench readings still owed with numbers: thresholds, hysteresis bands, each mode's default glyph filter, dither pattern and frame count; and whether the GPU pass lands the bake's pixels and face shading (the silhouette test proves coverage only). Mark's "Per mode" already settles who decides whether examining fires on approach. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2395-2400, 2420-2422, 2469-2476, 2601-2605`.
 ## Findings
+- 2026-11-08 (case 1176): the voxel-mode and hybrid colour paths share palette lookup, tint, the focus brightening (1.08) and tissue marks (`tissue_colour`, the same formula as `live_body.wgsl`). They differ in four places:
+  1. The tenant renders through kiss3d's HDR film and its default Khronos PBR Neutral tonemap, which Mesocosm never sets. The shared pass has no tonemap.
+  2. kiss3d writes `pow(c, 1/2.2)` into the linear view of an sRGB target, and the composite reads that back as sRGB. The shared pass encodes exact sRGB.
+  3. The tenant shades with GGX (roughness 0.5, F0 0.04, diffuse times `1 - F`). The shared pass uses plain Lambert.
+  4. The tenant mixes the selection accent before lighting; the shared pass mixes it after.
+
+  Tonemap and encoding together account for nearly all of the near-view difference. A post-hoc model of the run 4 capture drops it from 39,546 px >8 / 805 px >24 / mean 4.9 to 196 / 154 / 0.43. A GPU render with the shared pass's opt-in `BodyDisplay::NeutralGamma22` gives 196 / 183 / 0.40 (run 5).
+  - Each one alone makes it worse or does too little: the 2.2 encoding alone gives 14,777 px >24, and the tonemap alone gives 24,215 px >8.
+  - The residual sits on silhouette edges (52 px) and one small face patch, consistent with the GGX term and raster differences.
+  - Which look the single definition carries is with Mark.
+- 2026-11-08 (1178, 1179): Mark chose the exact-sRGB baseline and one renderer. Terrain lights its display-space palette and is never encoded; bodies light linear colour and encode exact sRGB; neither tonemaps.
+  - Mesocosm's smooth bodies keep their implicit renderer, which writes linear colour into an sRGB target: exact sRGB, no tonemap. Smooth mode has nothing to change.
+  - `section::light::Block::tenant` remains as a light projection that only its own tests use.
 - 2026-11-08: cases 1170 and 1171 are built.
   - `live_body.wgsl` decodes each face's axis from its fixed shade, rotates it by the instance model, and applies `ambient + sun * max(n·toward, 0)` in place of the shade, but only when a `BodyLight` is set. `isometer-render`'s 54 tests pass unchanged.
   - A sun moved by less than the quantum keeps the image: 0 refreshes and 1 hit at a step of 1/16. Moved past the quantum, the sprite rebakes, and an exact sun rebakes on any move (`scene/body_pass/tests/light.rs`). A held sprite bound keeps an examined subject a sprite, and with live detail held the subject promotes.
@@ -470,6 +483,13 @@ should name this plan.
 - 2026-10-28: the passage-survival gap at coarse levels is real (`isometer-space` `lift/chunk.rs` samples each coarse column at its cell origin; `edit/replay.rs` keeps only multiples of the step), and no L10 condition checks it; it is `place-graph-engine`'s item, and L10 conditions 2 and 4 wait on it.
 
 ## Progress
+- 2026-11-08: case 1176 audit. The shared pass gains an opt-in display encoding (`BodyDisplay`), and Mesocosm exposes it as `--body-display srgb|tenant`. The default stays `srgb`, so no product changes look. With `tenant`, hybrid matches voxel mode to 196 px >8 in the near view (run 5).
+- 2026-11-08: cases 1178 and 1179.
+  - The baseline is exact sRGB with no tonemap.
+  - Voxel and box bodies draw through the shared body pass, and the kiss3d voxel tenant and its geometry adapter are removed.
+  - `BodyDisplay` is now a per-body style: an instance lane, chosen through `SceneHost::body_display` and part of each image's appearance revision.
+  - Mesocosm gives every body its `--body-display srgb|neutral` default until the class key is ruled.
+  - Run 6 confirms the seam is gone.
 - 2026-11-08: cases 1170 and 1171 built: a sun-lit shared body pass and bake with a quantized lighting stamp, and `SceneHost::hybrid_held`. The M4.7 run4 receipt measures rebakes at four light quanta. Hybrid went back to opt-in (1175, reopening 1172); the light step defaults to 1/32 (1177); a colour-path audit against the tenant is next (1176).
 - 2026-11-08: Mesocosm consumes the 1161 mechanism. Examination is played, followed or dev focus (Mark), and a zero-band control was added for the slow refresh boundary. A headed generated run shows identical native hashes across voxels, hybrid and half-scale hybrid, with switch and refresh costs measured (receipt). Held detail, lighting and default presets wait on Mark.
 - 2026-11-03: Mark accepted the hybrid direction as case 1161; Presentation 2 now includes adaptive R1 image refresh, L10 has explicit production gates, and the board, product overlays, residency and simulation plans carry their ownership seams. Trial numerical presets remain tuning values.

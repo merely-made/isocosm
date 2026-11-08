@@ -68,6 +68,8 @@ pub struct HostConfig {
     pub body_light: f32,
     /// The hybrid rung's sun quantum (`section::DEFAULT_LIGHT_STEP`).
     pub light_step: f32,
+    /// The shared body pass's display encoding (case 1176).
+    pub body_display: isometer::BodyDisplay,
     /// Where the sky's light comes from; a bench reads the fixed sun unless told otherwise.
     pub sun: section::SunSource,
     /// Off by default (DT1); recorded in the receipt either way.
@@ -154,6 +156,7 @@ impl Default for HostConfig {
             body_budget: section::DEFAULT_BODY_BUDGET,
             body_light: 1.0,
             light_step: section::DEFAULT_LIGHT_STEP,
+            body_display: isometer::BodyDisplay::Srgb,
             sun: section::SunSource::Sim,
             dev: false,
             start_paused: false,

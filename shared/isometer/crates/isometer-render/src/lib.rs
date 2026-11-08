@@ -39,7 +39,7 @@ pub use geometry::{
     material_colour, warning_colour,
 };
 pub use live_body::{
-    BodyDrawStats, BodyLight, ClipSlab, LiveBody, LiveBodyError, LiveBodyRenderer, MaterialPalette,
+    BodyDisplay, BodyDrawStats, BodyLight, ClipSlab, LiveBody, LiveBodyError, LiveBodyRenderer, MaterialPalette,
     PALETTE_ENTRIES, PaletteColour, PartMaterial, TISSUE_CHANNELS, linear_from_display,
     tissue_average, tissue_colour,
 };

@@ -59,6 +59,7 @@ pub(crate) struct Presentation {
     pub followed: Option<Id>,
     /// The hybrid rung's sun quantum (1170).
     pub light_step: f32,
+    pub body_display: isometer::BodyDisplay,
     pub selection: Option<section::BodySelection>,
     pub looking: section::perspective::Looking,
 }

@@ -21,6 +21,7 @@ use isometer_core::{PartId, VolumeRef};
 use isometer_mesh::BodyMesh;
 use wgpu::util::DeviceExt;
 
+mod draws;
 mod frame;
 mod materials;
 mod palette;
@@ -29,7 +30,7 @@ mod query;
 mod resident;
 mod vertex;
 
-pub use frame::BodyLight;
+pub use frame::{BodyDisplay, BodyLight};
 use frame::FrameUniform;
 pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_average, tissue_colour};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
@@ -234,6 +235,8 @@ pub struct LiveBodyRenderer {
     last_frame: Option<FrameUniform>,
     last_stats: BodyDrawStats,
     light: Option<BodyLight>,
+    /// The style of bodies drawn without one of their own, and of bakes.
+    display: BodyDisplay,
 }
 
 impl LiveBodyRenderer {
@@ -333,6 +336,7 @@ impl LiveBodyRenderer {
             last_frame: None,
             last_stats: BodyDrawStats::default(),
             light: None,
+            display: BodyDisplay::Srgb,
         }
     }
 
@@ -342,94 +346,16 @@ impl LiveBodyRenderer {
         self.light = light;
     }
 
+    /// The style for later bakes and for bodies drawn without a style.
+    pub fn set_display(&mut self, display: BodyDisplay) {
+        self.display = display;
+    }
+
     pub fn last_stats(&self) -> BodyDrawStats {
         self.last_stats
     }
 
-    /// Records a `Load`/`Load` pass into caller-owned display-encoded colour
-    /// and `Depth32Float` attachments. The supplied matrix must be the same
-    /// world-to-clip convention used by the terrain tracer.
-    pub fn draw(
-        &mut self,
-        device: &wgpu::Device,
-        queue: &wgpu::Queue,
-        encoder: &mut wgpu::CommandEncoder,
-        colour: &wgpu::TextureView,
-        depth: &wgpu::TextureView,
-        clip_from_world: [[f32; 4]; 4],
-        clip_slab: Option<ClipSlab>,
-        bodies: &[LiveBody<'_>],
-    ) -> Result<BodyDrawStats, LiveBodyError> {
-        self.draw_inner(
-            device,
-            Some(queue),
-            encoder,
-            colour,
-            depth,
-            clip_from_world,
-            clip_slab,
-            bodies,
-            &[],
-        )
-    }
-
-    /// Draw the live side of a hybrid transition. Supply one sprite weight
-    /// in 0..=16 per body, with 0 keeping the body entirely live.
-    pub fn draw_hybrid(
-        &mut self,
-        device: &wgpu::Device,
-        queue: &wgpu::Queue,
-        encoder: &mut wgpu::CommandEncoder,
-        colour: &wgpu::TextureView,
-        depth: &wgpu::TextureView,
-        clip_from_world: [[f32; 4]; 4],
-        clip_slab: Option<ClipSlab>,
-        bodies: &[LiveBody<'_>],
-        sprite_coverage: &[u32],
-    ) -> Result<BodyDrawStats, LiveBodyError> {
-        if sprite_coverage.len() != bodies.len()
-            || sprite_coverage.iter().any(|&weight| weight > 16)
-        {
-            return Err(LiveBodyError::InvalidSpriteCoverage);
-        }
-        self.draw_inner(
-            device,
-            Some(queue),
-            encoder,
-            colour,
-            depth,
-            clip_from_world,
-            clip_slab,
-            bodies,
-            sprite_coverage,
-        )
-    }
-
-    /// In an atlas refresh each layer clears and uses the same upload buffers
-    /// in encoder order. A queue write would be visible to all earlier passes.
-    pub(crate) fn bake(
-        &mut self,
-        device: &wgpu::Device,
-        encoder: &mut wgpu::CommandEncoder,
-        colour: &wgpu::TextureView,
-        depth: &wgpu::TextureView,
-        clip_from_world: [[f32; 4]; 4],
-        body: LiveBody<'_>,
-    ) -> Result<BodyDrawStats, LiveBodyError> {
-        self.draw_inner(
-            device,
-            None,
-            encoder,
-            colour,
-            depth,
-            clip_from_world,
-            None,
-            &[body],
-            &[],
-        )
-    }
-
-    fn draw_inner(
+    pub(super) fn draw_inner(
         &mut self,
         device: &wgpu::Device,
         queue: Option<&wgpu::Queue>,
@@ -439,6 +365,7 @@ impl LiveBodyRenderer {
         clip_from_world: [[f32; 4]; 4],
         clip_slab: Option<ClipSlab>,
         bodies: &[LiveBody<'_>],
+        styles: &[BodyDisplay],
         sprite_coverage: &[u32],
     ) -> Result<BodyDrawStats, LiveBodyError> {
         if !clip_from_world
@@ -468,6 +395,8 @@ impl LiveBodyRenderer {
                 // the per-body ordered transition weight.
                 appearance.expression_tail[1] =
                     sprite_coverage.get(index).copied().unwrap_or(0) as f32;
+                appearance.expression_tail[2] =
+                    styles.get(index).copied().unwrap_or(self.display).lane();
                 instances.entry(key).or_default().push(Instance {
                     model: model.to_cols_array_2d(),
                     tint: appearance.tint,

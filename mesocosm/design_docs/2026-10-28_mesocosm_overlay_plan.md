@@ -327,8 +327,10 @@ Met:
 - measured switch and refresh costs;
 - rebake counts with the sun moving.
 
-Still open: making hybrid the default (1175), the colour-path audit (1176),
-and attributing a single sprite rebake to a headed injury. The wound
+Still open: making hybrid the default (1175); which body look the shared
+Still open: making hybrid the default (1175); the class key per-class body
+styles vary by (1178, with Mark); and attributing a single sprite rebake to a
+headed injury. The wound
 receipt on the device covers injury; the headed run only counts anatomy
 changes beside refreshes.
 The mechanism, residency gates and probe evidence stay in
@@ -542,6 +544,11 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-11-08 (cases 1178, 1179, run 6): voxel mode now draws through Isometer's shared body pass, and the kiss3d voxel tenant is retired. The baseline is exact sRGB with no tonemap, for bodies and terrain alike. In the near view, hybrid and voxels differ in 0 px by more than 8 codes, against 39,546 in run 5, so the switch seam is gone.
+  - Voxel mode itself differs from its old tenant picture by 39,546 px >8 / 720 >24 / mean 4.8 codes, as ruled.
+  - The old look survives as a per-body style, `--body-display neutral`, which comes within 196 px of the old picture.
+  - Native hashes match across five runs.
+  - Smooth mode keeps its implicit renderer, which encodes exact sRGB through its target format and was never tonemapped.
 - 2026-11-08 (run4): six settings gave the same native hash at all six checkpoints: hybrid default, voxels, half-scale hybrid, and light steps 0, 1/32 and 1/16. The final hash is 14367504932912879666. With `--sun sim`, these are the light-stamp changes and the refreshes during the ten ticks at zoom 768:
 
   | Light step | Stamp changes over 17 ticks | Refreshes at 768 |
