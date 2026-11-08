@@ -96,8 +96,8 @@ fn main() {
             "--body-display" => {
                 config.body_display = match args.next().as_deref() {
                     Some("srgb") => isometer::BodyDisplay::Srgb,
-                    Some("tenant") => isometer::BodyDisplay::NeutralGamma22,
-                    _ => fail("--body-display wants srgb or tenant"),
+                    Some("neutral") => isometer::BodyDisplay::NeutralGamma22,
+                    _ => fail("--body-display wants srgb or neutral"),
                 };
             },
             "--sun" => {
@@ -382,7 +382,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --light-step Q  hybrid sun quantum, 0 for exact (default 1/32)
-  --body-display E  shared-pass encoding of lit bodies: srgb (default) or tenant
+  --body-display E  default body style: srgb (baseline) or neutral (Neutral tonemap, 2.2 curve)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
   --terrain-style MODE  auto (classic), classic or habitat
   --camera MODE   dimetric (default), dimetric-south/west/north, isometric, isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north

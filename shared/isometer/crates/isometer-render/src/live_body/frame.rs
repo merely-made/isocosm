@@ -17,18 +17,29 @@ pub struct BodyLight {
     pub toward_sun: [f32; 3],
     pub ambient: f32,
     pub sun: [f32; 3],
-    pub display: BodyDisplay,
 }
 
-/// How lit colour is written to the display-encoded target (case 1176).
+/// A body's presentation style: how its lit colour reaches the
+/// display-encoded target. Chosen per body, so a host can style each class
+/// of thing differently (cases 1176, 1178).
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum BodyDisplay {
-    /// The exact sRGB encoding the unlit pass has always used.
+    /// Exact sRGB with no tonemap: the baseline, like the terrain (1178).
     #[default]
     Srgb,
-    /// Khronos PBR Neutral, then a 2.2 power curve: the resolve kiss3d gives
-    /// Mesocosm's body tenant, which its composite then reads as sRGB.
+    /// Khronos PBR Neutral, then a 2.2 power curve: the look kiss3d's
+    /// resolve gave Mesocosm's retired voxel tenant, kept as a style.
     NeutralGamma22,
+}
+
+impl BodyDisplay {
+    /// The instance lane value the shader reads.
+    pub(super) fn lane(self) -> f32 {
+        match self {
+            Self::Srgb => 0.0,
+            Self::NeutralGamma22 => 1.0,
+        }
+    }
 }
 
 impl BodyLight {
@@ -50,7 +61,6 @@ impl BodyLight {
             },
             ambient: round(self.ambient),
             sun: self.sun.map(round),
-            display: self.display,
         }
     }
 
@@ -60,7 +70,6 @@ impl BodyLight {
         self.toward_sun.map(f32::to_bits).hash(&mut hasher);
         self.ambient.to_bits().hash(&mut hasher);
         self.sun.map(f32::to_bits).hash(&mut hasher);
-        self.display.hash(&mut hasher);
         // Zero stays "unlit".
         hasher.finish().max(1)
     }
@@ -78,8 +87,6 @@ pub(super) struct FrameUniform {
     light_toward_ambient: [f32; 4],
     /// Sun weight per channel, then 1 when lit.
     light_sun_enabled: [f32; 4],
-    /// 1 in x for [`BodyDisplay::NeutralGamma22`].
-    display: [f32; 4],
 }
 
 impl FrameUniform {
@@ -109,14 +116,6 @@ impl FrameUniform {
             ],
             light_toward_ambient: [toward[0], toward[1], toward[2], ambient],
             light_sun_enabled: [sun[0], sun[1], sun[2], lit],
-            display: [
-                f32::from(u8::from(
-                    light.is_some_and(|l| l.display == BodyDisplay::NeutralGamma22),
-                )),
-                0.0,
-                0.0,
-                0.0,
-            ],
         }
     }
 }

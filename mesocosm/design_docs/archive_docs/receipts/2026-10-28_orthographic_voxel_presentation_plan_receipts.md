@@ -585,3 +585,32 @@ pixels:
 The residual is 52 silhouette-edge pixels and one face patch. That is
 consistent with the tenant's GGX specular term and raster differences. None
 of it was chased further.
+
+## One renderer, exact-sRGB baseline, run 6 (cases 1178, 1179), 2026-11-08
+
+This is `lane/colour-audit` after `34ab6c14`, in a release build. Voxel mode
+now draws through the shared body pass, and the kiss3d voxel tenant is
+retired. Each body carries a style (`BodyDisplay`) in an instance lane.
+Mesocosm passes every body its `--body-display` default. The scenario and
+seed are the same as in runs 3–5. Outputs are in
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run6/`. The
+`whole-*-tenant-voxels-hybrid.png` strips put three whole frames side by side:
+run 5 voxels (the old tenant), run 6 voxels and run 6 hybrid.
+
+Native hashes are the same at all six checkpoints across run 5 voxels and
+four run 6 runs: voxels, hybrid, voxels with the neutral style, and smooth.
+The final hash is 14367504932912879666.
+
+The crop is (412,474)–(808,698). Each cell gives pixels differing by >8 codes,
+pixels differing by >24 codes, and the mean difference.
+
+| Comparison | Crop | Whole near | Whole mid (sprites) |
+| --- | --- | --- | --- |
+| run 6 voxels vs old tenant | 39,546 / 720 / 4.83 | 50,959 / 781 | 1,286 / 12 |
+| run 6 voxels, neutral style, vs old tenant | 196 / 151 / 0.38 | 259 / 163 | 2 / 1 |
+| run 6 hybrid vs run 6 voxels | 0 / 0 / 0.17 | 0 / 0 | 50 / 26 |
+| run 6 hybrid vs run 5 hybrid | 0 / 0 / 0.00 | 0 / 0 | 0 / 0 |
+
+Live bodies now look the same in hybrid and voxel mode. The only remaining
+difference between the two modes is the sprite rung's 24-pixel image against
+live geometry. Smooth mode renders as before.

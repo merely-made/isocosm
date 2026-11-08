@@ -33,8 +33,10 @@ pub(super) struct SectionHost<'a> {
 }
 
 impl isometer::SceneHost for SectionHost<'_> {
+    /// Only smooth bodies keep their own pass; voxels, boxes and hybrid draw
+    /// through the shared body pass (case 1179).
     fn uses_body_tenant(&self) -> bool {
-        self.mode != BodyMode::Hybrid
+        self.mode == BodyMode::Smooth
     }
 
     fn hybrid_settings(&self) -> Option<isometer::hybrid::HybridSettings> {
@@ -55,11 +57,13 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     /// The tenant's sun, for the shared pass hybrid draws with (case 1170).
     fn body_light(&self) -> Option<isometer::BodyLight> {
-        Some(
-            self.tenant
-                .block()
-                .body(self.tenant.light(), self.bodies.display),
-        )
+        Some(self.tenant.block().body(self.tenant.light()))
+    }
+
+    /// Every body takes Mesocosm's default style until the class key it
+    /// varies by is ruled (case 1178).
+    fn body_display(&self, _subject: isometer::SubjectKey) -> isometer::BodyDisplay {
+        self.bodies.display
     }
 
     fn hybrid_examined(&self, subject: isometer::SubjectKey) -> bool {
@@ -73,12 +77,7 @@ impl isometer::SceneHost for SectionHost<'_> {
         camera: isometer::SlabCamera,
     ) -> Result<(), String> {
         if self.uses_body_tenant() {
-            self.tenant.encode(
-                encoder,
-                bodies,
-                camera,
-                (self.mode == BodyMode::Smooth).then_some(self.scene),
-            )?;
+            self.tenant.encode(encoder, bodies, camera, self.scene)?;
         }
         Ok(())
     }

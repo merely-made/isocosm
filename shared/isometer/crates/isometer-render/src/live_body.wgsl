@@ -7,8 +7,6 @@ struct Frame {
     // Toward the sun and ambient; sun weight and 1 when lit (case 1170).
     light_toward_ambient: vec4<f32>,
     light_sun_enabled: vec4<f32>,
-    // x: 1 for the body tenant's Neutral-then-2.2 resolve (case 1176).
-    display: vec4<f32>,
 };
 
 @group(0) @binding(0)
@@ -177,7 +175,8 @@ fn fs_main(input: VertexOut) -> @location(0) vec4<f32> {
     // would conceal the tissue reading the inspection asked for.
     colour = mix(colour, vec3<f32>(1.0, 0.55, 0.10), input.inspection_accent * 0.28);
     // Lens FRAME_FORMAT is Rgba8Unorm: it stores display values directly.
-    if (frame.display.x > 0.5) {
+    // The body's style, an instance lane (`BodyDisplay`, case 1178).
+    if (input.expression_tail.z > 0.5) {
         return vec4<f32>(pow(max(pbr_neutral(colour), vec3<f32>(0.0)), vec3<f32>(1.0 / 2.2)), 1.0);
     }
     return vec4<f32>(srgb(colour), 1.0);

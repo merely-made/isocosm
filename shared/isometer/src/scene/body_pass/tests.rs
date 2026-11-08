@@ -18,6 +18,7 @@ struct Host {
     /// A subject whose world holds only a sprite.
     held_sprite: Option<SubjectKey>,
     light: Option<crate::BodyLight>,
+    display: crate::BodyDisplay,
 }
 
 impl SceneHost for Host {
@@ -37,6 +38,9 @@ impl SceneHost for Host {
     fn body_light(&self) -> Option<crate::BodyLight> {
         self.light
     }
+    fn body_display(&self, _subject: SubjectKey) -> crate::BodyDisplay {
+        self.display
+    }
 }
 
 fn host() -> Host {
@@ -50,6 +54,7 @@ fn host() -> Host {
         examined: None,
         held_sprite: None,
         light: None,
+        display: crate::BodyDisplay::Srgb,
     }
 }
 

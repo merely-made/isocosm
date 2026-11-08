@@ -130,6 +130,12 @@ pub trait SceneHost {
         None
     }
 
+    /// A subject's presentation style; the host keys it on whatever class of
+    /// thing it chooses (case 1178). The default is the exact-sRGB baseline.
+    fn body_display(&self, _subject: crate::SubjectKey) -> crate::BodyDisplay {
+        crate::BodyDisplay::Srgb
+    }
+
     /// Before the frame's bodies are projected.
     fn begin(&mut self) {}
 

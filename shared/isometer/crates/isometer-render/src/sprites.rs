@@ -239,6 +239,11 @@ impl SpriteAtlas {
         self.baker.set_light(light);
     }
 
+    /// The presentation style later bakes use; the caller keys images by it.
+    pub fn set_display(&mut self, display: crate::live_body::BodyDisplay) {
+        self.baker.set_display(display);
+    }
+
     /// Record a posed voxel body into one atlas layer. Yaw, appearance and
     /// light are baked. Origin and uniform scale are applied later at display
     /// time. Refreshes and sprite draws can be recorded in one submitted encoder.
