@@ -20,6 +20,8 @@ use isometer_lens::{SlabWall, TraceCamera};
 use isometer_render::ClipSlab;
 
 mod projection;
+mod projected_size;
+pub use projected_size::projected_size;
 pub use projection::{Frustum, Projection};
 mod views;
 pub use views::{PerspectivePolicy, REFERENCE_BODY_HEIGHT, View};
@@ -294,12 +296,7 @@ impl SlabCamera {
         // Columns are indexed by world axis, rows by clip axis. The slab's w
         // is 1; a perspective's is the depth ahead of the eye, and a point
         // not ahead of the near plane has no place on screen.
-        let [x, y, w] = [0, 1, 3].map(|row| {
-            (0..3)
-                .map(|axis| matrix[axis][row] * point[axis])
-                .sum::<f32>()
-                + matrix[3][row]
-        });
+        let [x, y, w] = clip_xyw(matrix, point);
         if self.frustum().is_some_and(|f| w < f.near) {
             return None;
         }
@@ -340,6 +337,15 @@ impl SlabCamera {
             + up[1].abs() * self.half_height
             + forward[1].abs() * self.reach()
     }
+}
+
+fn clip_xyw(matrix: [[f32; 4]; 4], point: [f32; 3]) -> [f32; 3] {
+    [0, 1, 3].map(|row| {
+        (0..3)
+            .map(|axis| matrix[axis][row] * point[axis])
+            .sum::<f32>()
+            + matrix[3][row]
+    })
 }
 
 /// The oriented box the camera shows, in voxels around its centre.

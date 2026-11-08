@@ -25,6 +25,7 @@
 pub mod camera;
 pub mod composite;
 pub mod geometry;
+pub mod hybrid;
 pub mod implicit;
 pub mod live_body;
 

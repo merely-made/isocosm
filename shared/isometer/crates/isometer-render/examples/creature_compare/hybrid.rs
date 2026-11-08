@@ -7,7 +7,7 @@ mod composite;
 #[path = "hybrid/policy.rs"]
 mod policy;
 use composite::Composite;
-use policy::{Choice, Config, choose};
+use policy::Config;
 const HEIGHTS: [u32; 6] = [10, 24, 40, 48, 64, 96];
 const WARM: usize = 24;
 
@@ -255,17 +255,7 @@ fn benchmark(
     mixed: bool,
 ) -> Value {
     let visible = world.visible(p.live.target.width, p.live.target.height, pixels);
-    let period = choose(
-        Choice {
-            live: false,
-            period: 0,
-        },
-        pixels as f32,
-        true,
-        false,
-        c,
-    )
-    .period;
+    let period = c.period(pixels);
     let (mut cpu, mut times, mut refresh_gpu, mut held_gpu, mut uploads) =
         (Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     for _ in 0..3 {
@@ -324,17 +314,7 @@ fn save(g: &Gpu, t: &Target, out: &std::path::Path, name: &str) {
 fn captures(g: &Gpu, p: &mut Probe, r: &Recipe, world: &World, c: Config, out: &std::path::Path) {
     for height in HEIGHTS {
         let visible = world.visible(p.live.target.width, p.live.target.height, height);
-        let period = choose(
-            Choice {
-                live: false,
-                period: 0,
-            },
-            height as f32,
-            true,
-            false,
-            c,
-        )
-        .period;
+        let period = c.period(height);
         for f in 0..24 {
             let mut e = g.encoder();
             p.live(g, &mut e, r, world, &visible, f, height);

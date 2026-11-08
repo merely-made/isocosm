@@ -20,6 +20,7 @@ mod bodies;
 mod camera;
 mod capture;
 mod glyphs;
+pub mod hybrid;
 mod producer;
 mod query;
 mod scene;
