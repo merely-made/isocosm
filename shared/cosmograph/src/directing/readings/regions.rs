@@ -26,13 +26,21 @@ pub struct Region {
 
 /// Each site's living matter by slotted level.
 pub fn site_biomass(sim: &Simulation) -> BTreeMap<Id, BTreeMap<Key, u128>> {
+    let slots = sim.genesis().rules.directing().slots;
+    site_mass(sim, slots.keys())
+}
+
+/// Each site's living matter by each of `levels`, a member's trait.
+pub(crate) fn site_mass<'a>(
+    sim: &Simulation,
+    levels: impl Iterator<Item = &'a Key> + Clone,
+) -> BTreeMap<Id, BTreeMap<Key, u128>> {
     let rules = &sim.genesis().rules;
-    let slots = rules.directing().slots;
     let mut by: BTreeMap<Id, BTreeMap<Key, u128>> = sim
         .state()
         .sites
         .keys()
-        .map(|&s| (s, slots.keys().map(|k| (k.clone(), 0)).collect()))
+        .map(|&s| (s, levels.clone().map(|k| (k.clone(), 0)).collect()))
         .collect();
     for g in sim.state().population.groups.values() {
         let e = &g.entity;

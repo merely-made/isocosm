@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Directing's readings (D3), each a pure function of the world and its
-//! log: suggestions (685), standing orders (690), regions (687, 689) and
-//! the survival filter (691). None is kept.
+//! log: suggestions (685), standing orders (690), regions (687, 689),
+//! per-scope populations and sources (S10.3, S10.4) and the survival
+//! filter (691). None is kept.
 
 use crate::{schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
@@ -11,11 +12,13 @@ use serde::{Deserialize, Serialize};
 pub mod habitable;
 pub mod orders;
 pub mod regions;
+pub mod scopes;
 pub mod survival;
 
 pub use habitable::habitable;
 pub use orders::{Orders, orders};
 pub use regions::{Region, region_of, regions};
+pub use scopes::{Absence, Means, Scope, ScopeReading, Source, absence, reading, sources};
 pub use survival::{Mode, View, view};
 
 /// An act the critter considered and could take beside its choice.
