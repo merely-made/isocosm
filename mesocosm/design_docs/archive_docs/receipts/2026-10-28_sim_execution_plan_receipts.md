@@ -222,3 +222,33 @@ hash `8216130930403601927`. Seconds per month and living at its end: 13.5
 46.9 (504), 47.0 (540), 50.5 (497), 47.6 (492). The receipt's trajectory
 reads Passed. This was a timing run, not the bar's measured run, whose horizon
 and seeds case 1174 leaves to be asked.
+
+## E7b, death drawn once, 2026-11-08 (case 1181)
+
+Branch `lane/e7b` from `636c72d2`. Distribution:
+`cargo test --release --test death_drawn -- --ignored --exact
+a_death_drawn_once_matches_the_per_tick_draw_in_distribution`, 20,000
+replicates per world-time role at a year of 365 ticks, 1,999 permutations,
+seed 1181, bound 50 per mille, alpha 0.05, Holm across the five readings; 29 s.
+
+| Comparison | Distances | Mean death ages (per tick / other arm) | Pass |
+| --- | --- | --- | --- |
+| per tick against drawn once | 0.0066, 0.0060, 0.0080, 0.0066, 0.0066 | 1677.8/1680.4, 1096.6/1092.3, 1490.9/1483.6, 1853.3/1853.3, 524.3/527.1 | yes |
+| per tick against per tick (positive control) | 0.0055, 0.0070, 0.0093, 0.0066, 0.0055 | 1677.8/1672.0, 1096.6/1093.7, 1490.9/1481.8, 1853.3/1850.7, 524.3/527.2 | yes |
+| per tick against doubled odds (broken draw) | 0.2450, 0.2493, 0.2544, 0.2454, 0.2500 | 1677.8/1122.2, 1096.6/745.2, 1490.9/1009.4, 1853.3/1333.9, 524.3/318.2 | no |
+
+Roles in order: producer, grazer, omnivore, predator, decomposer. Drawn once:
+every Holm-adjusted equivalence p at or below 1.01e-7, every difference p 1.0.
+Broken: every difference p 0.0025, every equivalence p 1.0.
+
+Fixture (`WORLD_TIME_MONTHS=2`, seed 9, release): Grouped 16.7 and 16.8 s,
+Individuals 16.8 s, hash `5242331604158281548`, history digest and samples
+alike across the three runs; living 240, 267, 298. Per-tick draw at
+`636c72d2`: 28.6 s Grouped, 28.1 s Individuals. Summed profile, 19.6 s with
+spans: hazard passes 0.66 s (11.7 s of 32.7 s before), `ecology:sunlight`
+2.2 s, `ecology:feed-1` with its plan 2.8 s.
+
+World test (`tests/death_drawn.rs`, debug): the bar's founding at 120
+founders with every hazard's year set to a day; 96 hazard deaths in two days,
+each on its drawn tick; matter constant; Individuals and Grouped alike; a
+save loaded in either mode replays and goes on alike.
