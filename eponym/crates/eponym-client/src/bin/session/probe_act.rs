@@ -30,6 +30,14 @@ const CHARGE_TICKS: usize = 4;
 /// Run one named command. `false` when no such command exists, so the driver
 /// fails loudly on a typo rather than passing a step that did nothing.
 pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
+    if let Some(value) = label.strip_prefix("overview-zoom ") {
+        let Ok(half_height) = value.parse::<f32>() else { return false; };
+        if !(2.0..=30.0).contains(&half_height) {
+            return false;
+        }
+        state.model.borrow_mut().camera.half_height = half_height;
+        return true;
+    }
     let toward = match label {
         "move-forward" => Some([0, 0, 1]),
         "move-back" => Some([0, 0, -1]),
@@ -75,6 +83,7 @@ pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
         // A round's minute now: a fixture control, so a scenario need not
         // wait out a real minute (case 1096).
         "minute" => state.minute_now(),
+        "body-quality" => state.cycle_body_quality(),
         "view-overview" | "view-over-the-shoulder" | "view-first-person" => {
             let want = label.trim_start_matches("view-").replace('-', " ");
             while state.model.borrow().view.name() != want {

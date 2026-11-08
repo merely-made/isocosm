@@ -4,7 +4,7 @@
 use super::*;
 use cambium_rootstock::{ProducedTexture,ProducerContext,TextureProducer};
 use isometer::{BodySignature,DeclaredExtentVolumes,FrameRequest,GroundTerrain,Scene,SceneBody,
-    SceneFrame,SceneHost,SceneProducer,SceneSignature,SceneSource,SceneVolumes,SubjectKey,TerrainSource};
+    SceneFrame,SceneProducer,SceneSignature,SceneSource,SceneVolumes,SubjectKey,TerrainSource};
 use isometer::lens::{BrickMap,Grade};
 use crate::producer::{BODY_BUDGET,PALETTE};
 
@@ -27,9 +27,6 @@ impl TextureProducer for Producer {
     fn suspend(&mut self) {self.inner.suspend();}
     fn retire(&mut self) {self.inner.retire();}
 }
-
-struct PlainHost;
-impl SceneHost for PlainHost {}
 
 struct Source {
     handle:SceneHandle,scene:Option<Scene>,size:[u32;2],
@@ -95,8 +92,12 @@ impl SceneSource for Source {
             always_visible:Some(body.entity)==input.picture.played,
         }).collect();
         let mut host=input.picture.fingerprint.to_vec();host.push(u64::from(input.turn));
+        self.handle.bodies.get().sign(&mut host);
         Ok(SceneSignature {size:r.size,render_scale:r.render_scale,camera:Some(input.camera(r.aspect)?),
             terrain_revision:Some(input.picture.fingerprint[0]),bodies,host})
+    }
+    fn needs_animation_frame(&self) -> bool {
+        self.handle.available() && self.scene.as_ref().is_some_and(Scene::hybrid_needs_frame)
     }
     fn frame(&mut self,r:&FrameRequest<'_>) -> Result<Option<wgpu::TextureView>,String> {
         self.ensure(r)?;
@@ -119,9 +120,10 @@ impl SceneSource for Source {
             }).collect();
             let ground=GroundTerrain(picture.volume.ground());
             let mut encoder=r.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {label:Some("borrowed Eponym scene")});
+            let mut body_presentation = self.handle.bodies.get();
             scene.render(&mut encoder,SceneFrame {camera,bodies:&bodies,volumes:SceneVolumes::DeclaredSolid(&volumes),
                 terrain:Some(&ground as &dyn TerrainSource),dirty:&[],grade:Grade::retro(PALETTE),
-                terrain_appearance:None,body_budget:BODY_BUDGET,capsules:None},&mut PlainHost)?;
+                terrain_appearance:None,body_budget:BODY_BUDGET,capsules:None},&mut body_presentation)?;
             r.queue.submit(Some(encoder.finish()));
             self.presented=Some(camera);
             Ok::<_,String>(scene.encoded_view().clone())

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use crate::scene::board::{BoardSource,BoardPick,PlainHost,BODY_BUDGET,board_grade};
+use crate::scene::board::{BoardSource,BoardPick,BoardHost,BODY_BUDGET,board_grade};
 use isometer::{BodySignature,Cutaway,FrameRequest,GroundTerrain,Pick,SceneBody,
     SceneFrame,SceneSignature,SceneVolumes,SubjectKey,TerrainSource};
 
@@ -22,9 +22,11 @@ impl BoardSource {
                     scale:p.scale,grounded:false,tint:if body.played {p.played_tint}else{p.other_tint},
                     always_visible:body.played,
                 }).collect();
+                let mut host = fingerprint(&picture.fingerprint)?;
+                self.native_host(picture).append_inputs(&mut host);
                 Ok(SceneSignature {size:r.size,render_scale:r.render_scale,camera:Some(camera(picture,r.aspect)?),
                     terrain_revision:Some(u64::from_str_radix(&picture.fingerprint[..16],16).map_err(|e|e.to_string())?),
-                    bodies,host:fingerprint(&picture.fingerprint)?})
+                    bodies,host})
             },
         }
     }
@@ -41,6 +43,7 @@ impl BoardSource {
 
     fn draw_native(&mut self,r:&FrameRequest<'_>,picture:&Picture)->Result<wgpu::TextureView,String> {
         self.ensure_scene(r)?;
+        let mut host = self.native_host(picture);
         let scene=self.scene.as_mut().ok_or("native scene is absent")?;
         if self.native.terrain.as_ref()!=Some(&picture.fingerprint) {
             let map=isometer::lens::BrickMap::from_ground(picture.volume.ground()).map_err(|e|e.to_string())?;
@@ -70,7 +73,7 @@ impl BoardSource {
         let mut encoder=r.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {label:Some("native VTT physical scene")});
         scene.render(&mut encoder,SceneFrame {camera:camera(picture,r.aspect)?,bodies:&bodies,
             volumes:SceneVolumes::DeclaredSolid(volumes),terrain:Some(&ground as &dyn TerrainSource),dirty:&[],
-            grade:board_grade(),terrain_appearance:None,body_budget:BODY_BUDGET,capsules:None},&mut PlainHost)?;
+            grade:board_grade(),terrain_appearance:None,body_budget:BODY_BUDGET,capsules:None},&mut host)?;
         r.queue.submit(Some(encoder.finish()));
         Ok(scene.encoded_view().clone())
     }
@@ -118,6 +121,16 @@ impl BoardSource {
     pub(in crate::scene) fn native_camera(&self)->Option<isometer::SlabCamera> {
         self.native.presented.as_ref()?;
         self.scene.as_ref()?.presented_camera()
+    }
+
+    fn native_host(&self, picture: &Picture) -> BoardHost {
+        let selected = self.view.borrow().selected_token.and_then(|selected| {
+            // Only a mapping in the admitted picture can promote a native body.
+            picture.tokens.iter().find_map(|(&entity, &token)| {
+                (token == selected).then_some(SubjectKey(entity))
+            })
+        });
+        BoardHost::new(self.body_quality, selected)
     }
 }
 

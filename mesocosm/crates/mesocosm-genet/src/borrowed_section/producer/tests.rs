@@ -5,6 +5,7 @@ use super::*;
 use crate::borrowed_section::{Presentation, tests::fixture};
 
 mod staging;
+mod hybrid;
 
 #[test]
 fn terrain_residency_survives_body_only_scene_replacement_but_tracks_cells_and_materials() {

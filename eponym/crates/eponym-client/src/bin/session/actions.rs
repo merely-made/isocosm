@@ -365,6 +365,7 @@ impl SessionApp {
         self.project_target = None;
         self.project_lots.clear();
         self.selected = Some((subject, part));
+        self.model.borrow_mut().set_examined_subject(Some(subject));
     }
 
     /// A pointer press on the viewport leaf. `local`/`size` are the leaf's own
@@ -377,15 +378,15 @@ impl SessionApp {
             (local.0 / size.0) * 2.0 - 1.0,
             1.0 - (local.1 / size.1) * 2.0,
         ];
-        match self.scene.borrow().pick_body(ndc) {
+        let picked = self.scene.borrow().pick_body(ndc);
+        match picked {
             Some((subject, part)) => {
-                self.selected = Some((subject, part));
-                self.project_target = None;
-                self.project_lots.clear();
+                self.select(subject, part);
                 self.status = vec![format!("Picked subject {} part {}", subject.0, part.0)];
             },
             None => {
                 self.selected = None;
+                self.model.borrow_mut().set_examined_subject(None);
                 self.project_target = None;
                 self.project_lots.clear();
                 self.status = vec!["No body under the pointer".into()];

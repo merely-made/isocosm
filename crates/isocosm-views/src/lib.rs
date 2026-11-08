@@ -61,7 +61,8 @@ pub use projection::{
     tile_board_score,
 };
 pub use scene::{
-    BOARD_SCENE_LEAF_KEY, BoardBricks, BoardGround, BoardHandle, BoardPalette, BoardPick,
+    BOARD_SCENE_LEAF_KEY, BoardBodyQuality, BoardBricks, BoardGround, BoardHandle,
+    BoardHybridStats, BoardPalette, BoardPick,
     BoardProducer, BoardSource, BoardView, BoardWorld, ColumnChange, ELEVATION_PX, GroundCost,
     MapTerrain, Overlays, RESIDENCY_MARGIN, ResidencySettings, SEA_LEVEL, ScenePick, TileColumns,
     Tint, TokenBodies, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, WORLD_PX, elevation_px,

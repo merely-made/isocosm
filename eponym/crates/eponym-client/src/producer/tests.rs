@@ -230,6 +230,7 @@ fn the_nearer_body_owns_every_pixel_the_two_bodies_share() {
 
 mod terrain;
 mod severance;
+mod hybrid;
 
 #[test]
 fn a_fractional_motion_step_moves_the_drawn_body_by_the_projected_fraction() {

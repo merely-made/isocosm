@@ -144,6 +144,7 @@ pub(super) struct Options {
     pub capture: Option<PathBuf>,
     pub frames: Option<u32>,
     pub size: (f64, f64),
+    pub render_scale: u32,
     /// Whether any of the flags above asked for a driven run at all.
     pub driven: bool,
 }
@@ -156,6 +157,7 @@ eponym-client session — one played Eponym session as a Cambium document.
   --capture PATH   write the final frame as a PNG, and name generated captures
   --frames N       bound scenario work to N presented frames
   --size WxH       initial window size in logical pixels (default 1240x820)
+  --render-scale N draw at 1/N viewport resolution and upscale nearest (1 to 8, default 1)
   --help           this text
 
 Without any of these the window is interactive; PAREDROS_SESSION_SMOKE=1 still
@@ -167,6 +169,7 @@ eponym/testing/session/receipts/<date>/.";
 pub(super) fn options() -> Option<Options> {
     let (mut scenario, mut receipt, mut capture, mut frames) = (None, None, None, None);
     let mut size = (1240.0, 820.0);
+    let mut render_scale = 1;
     let mut args = std::env::args().skip(1);
     let fail = |why: &str| -> ! {
         eprintln!("session: {why}");
@@ -213,6 +216,11 @@ pub(super) fn options() -> Option<Options> {
                     .filter(|(width, height)| *width >= 1.0 && *height >= 1.0)
                     .unwrap_or_else(|| fail("--size wants positive WIDTHxHEIGHT"));
             },
+            "--render-scale" => {
+                render_scale = args.next().and_then(|value| value.parse().ok())
+                    .filter(|scale| (1..=8).contains(scale))
+                    .unwrap_or_else(|| fail("--render-scale wants 1 to 8"));
+            },
             "--help" | "-h" => {
                 println!("{HELP}");
                 return None;
@@ -229,6 +237,7 @@ pub(super) fn options() -> Option<Options> {
         capture: capture.or_else(|| driven.then(|| default_out_dir().join("scratch_session.png"))),
         frames,
         size,
+        render_scale,
         driven,
     })
 }

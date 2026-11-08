@@ -121,6 +121,8 @@ pub struct UiState {
     /// leaf instead of one element per tile and token (B2). Host-set once at
     /// boot; off is the shipped DOM board, unchanged.
     pub scene_board: bool,
+    /// Local scene token detail for the current session.
+    pub scene_body_quality: crate::scene::BoardBodyQuality,
     pub terrain_settings: TerrainSettings,
     /// The drawn frame the board's gestures resolve through (B3). The host
     /// sets it beside [`Self::scene_board`] and only then, so the DOM board

@@ -44,6 +44,7 @@ use crate::camera::{SlabCamera, SlabWindow};
 
 mod framing;
 mod paging;
+pub(super) mod body_images;
 #[cfg(test)]
 mod tests;
 

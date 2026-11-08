@@ -1,15 +1,15 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Controlled regional recovery through native movement, with an otherwise
-//! identical disconnected control. This qualifies dispersal and the observer,
-//! not an unattended ecosystem's long-term stability or physical terrain.
+//! Controlled regional recovery through native movement, with disconnected
+//! and absent-source controls. The fixture uses two sites and an authored
+//! movement process. Its scope is dispersal, residence and replay.
 
 use cosmograph::{
     Command, Execution, Founding, Session, anatomy,
     population::Population,
     rules::{AccountKind, Binding, Causation, Effect, Query},
-    schema::{Id, Movement},
+    schema::{Id, Journey, Movement},
     simulation::Genesis,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -209,6 +209,141 @@ fn local_loss_recovers_only_through_a_live_connected_source() {
             }
             let restored = Session::load(s.save(), mode).unwrap();
             assert_eq!(restored.sim.state_hash(), s.sim.state_hash());
+        }
+    }
+}
+
+fn residents(session: &Session, site: Id) -> BTreeSet<Id> {
+    session
+        .sim
+        .state()
+        .population
+        .groups
+        .iter()
+        .filter(|(_, group)| group.entity.alive && group.entity.resident_site() == Some(site))
+        .flat_map(|(&first, group)| first..first + group.count)
+        .collect()
+}
+
+#[test]
+fn routed_recovery_counts_only_actual_arrivals_and_replays_in_transit() {
+    const TRAVEL: u64 = 3;
+
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        for (connected, has_source) in [(true, true), (false, true), (true, false)] {
+            let (mut genesis, locals) = world(connected);
+            let border = if connected {
+                let route = genesis
+                    .sites
+                    .get_mut(&1)
+                    .unwrap()
+                    .routes
+                    .iter_mut()
+                    .find(|route| route.to == 0)
+                    .unwrap();
+                route.travel = TRAVEL;
+                route.border
+            } else {
+                None
+            };
+            let departure = genesis.started + 1;
+            let mut session = Session::new(genesis, mode).unwrap();
+            assert_eq!(session.sim.state().movement, Movement::Routed);
+            let initial_matter = matter(&session);
+            let first_unused_id = session.sim.state().population.next_id;
+
+            for id in locals {
+                session.command(Command::Kill { entity: id }).unwrap();
+            }
+            if !has_source {
+                for id in residents(&session, 1) {
+                    session.command(Command::Kill { entity: id }).unwrap();
+                }
+            }
+            assert!(
+                residents(&session, 0).is_empty(),
+                "the local population died out"
+            );
+            let source = residents(&session, 1);
+            assert_eq!(source.len(), if has_source { 6 } else { 0 });
+            let donors: BTreeSet<_> = source
+                .iter()
+                .copied()
+                .filter(|&id| {
+                    session
+                        .sim
+                        .state()
+                        .population
+                        .get(id)
+                        .unwrap()
+                        .traits
+                        .contains(MIGRANT)
+                })
+                .collect();
+            assert_eq!(donors.len(), if has_source { 3 } else { 0 });
+            let expected = if connected { donors } else { BTreeSet::new() };
+            let remaining: BTreeSet<_> = source.difference(&expected).copied().collect();
+
+            session.sim.watch(RETURN);
+            assert_eq!(session.advance(1).unwrap().arrivals, 0);
+            let acts = session.sim.take_watched();
+            assert_eq!(
+                acts.len(),
+                expected.len(),
+                "one accepted departure per donor"
+            );
+            let departed: BTreeSet<_> = acts
+                .iter()
+                .map(|act| {
+                    assert_eq!(
+                        (act.process.as_str(), act.tick, act.count),
+                        (RETURN, departure, 1)
+                    );
+                    act.actor
+                })
+                .collect();
+            assert_eq!(departed, expected);
+            for &id in &expected {
+                let entity = session.sim.state().population.get(id).unwrap();
+                assert_eq!(entity.resident_site(), None);
+                assert_eq!(
+                    entity.journey,
+                    Some(Journey {
+                        from: 1,
+                        to: 0,
+                        departed: departure,
+                        arrives: departure + TRAVEL,
+                        border
+                    }),
+                );
+            }
+            assert!(residents(&session, 0).is_empty());
+            assert_eq!(residents(&session, 1), remaining);
+            assert_eq!(matter(&session), initial_matter);
+
+            let mut replayed = Session::load(session.save(), mode).unwrap();
+            assert_eq!(replayed.sim.state_hash(), session.sim.state_hash());
+            assert_eq!(replayed.advance(TRAVEL - 1).unwrap().arrivals, 0);
+            assert!(
+                residents(&replayed, 0).is_empty(),
+                "transit is not recovery"
+            );
+            assert_eq!(residents(&replayed, 1), remaining);
+            assert_eq!(matter(&replayed), initial_matter);
+
+            let arrivals = replayed.advance(1).unwrap().arrivals;
+            assert_eq!(arrivals, expected.len() as u64);
+            assert_eq!(residents(&replayed, 0), expected);
+            assert_eq!(residents(&replayed, 1), remaining);
+            assert_eq!(matter(&replayed), initial_matter);
+            assert_eq!(replayed.sim.state().population.next_id, first_unused_id);
+            session.advance(TRAVEL).unwrap();
+            assert_eq!(replayed.sim.state_hash(), session.sim.state_hash());
+            eprintln!(
+                "{mode:?} connected={connected} source={has_source}: source members={source:?}, \
+                 departures={departed:?}, arrivals={arrivals} on route 1→0 by tick {}, matter={initial_matter}",
+                replayed.sim.state().tick,
+            );
         }
     }
 }

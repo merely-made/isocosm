@@ -27,6 +27,7 @@ use crate::query::PresentedFrame;
 
 #[cfg(test)]
 mod palette_tests;
+mod body_pass;
 mod query_terrain;
 mod residency;
 mod terrain;
@@ -106,6 +107,18 @@ pub trait SceneHost {
         Ok(())
     }
 
+    /// Product quality for the shared voxel body pass. The default keeps all
+    /// bodies live, as do host-owned body tenants.
+    fn hybrid_settings(&self) -> Option<crate::hybrid::HybridSettings> {
+        None
+    }
+
+    /// Product examination policy, in addition to the body layer's focus,
+    /// selected part and controlled specimen.
+    fn hybrid_examined(&self, _subject: crate::SubjectKey) -> bool {
+        false
+    }
+
     /// Before the frame's bodies are projected.
     fn begin(&mut self) {}
 
@@ -147,6 +160,7 @@ pub struct Scene {
     terrain_diagnostics: Option<BrickDiagnostics>,
     terrain_cell: f32,
     bodies: BodyLayer,
+    hybrid: body_pass::HybridFrame,
     /// The scene's own chrome, on the scene's own depth. Built on first use,
     /// because a frame that never sets a glyph pays for no pipeline.
     pub(crate) glyphs: Option<GlyphLayer>,
@@ -192,6 +206,7 @@ impl Scene {
             terrain_diagnostics: None,
             terrain_cell: 1.0,
             bodies,
+            hybrid: Default::default(),
             glyphs: None,
             width,
             height,
@@ -329,7 +344,31 @@ impl Scene {
     /// `terrain_drawn` false so a pick does not consult the brick map.
     /// A host opting into its own tenant skips the body raster here and
     /// encodes after the tracer, consuming the terrain-only depth pre-pass.
+    /// Submit the encoder in order before rendering again. If the host
+    /// drops a successful encoding, call [`Self::abandon_frame`] first.
     pub fn render(
+        &mut self,
+        encoder: &mut wgpu::CommandEncoder,
+        frame: SceneFrame<'_>,
+        host: &mut dyn SceneHost,
+    ) -> Result<SceneStats, String> {
+        let result = self.render_frame(encoder, frame, host);
+        if result.is_err() {
+            self.abandon_frame();
+        }
+        result
+    }
+
+    /// Withdraw a frame whose encoder will be discarded. Encoded atlas
+    /// refreshes and terrain uploads may never have reached the device.
+    pub fn abandon_frame(&mut self) {
+        self.invalidate_query();
+        self.terrain_diagnostics = None;
+        self.terrain_upload_pending = true;
+        self.hybrid.inactive(&self.queue);
+    }
+
+    fn render_frame(
         &mut self,
         encoder: &mut wgpu::CommandEncoder,
         frame: SceneFrame<'_>,
@@ -371,7 +410,7 @@ impl Scene {
         let trace_camera = scaled.trace().ok_or("invalid scene camera")?;
 
         if frame.capsules.is_none() {
-            let mut matrix = self.draw_bodies(encoder, &frame, host);
+            let mut matrix = self.draw_bodies(encoder, &frame, host)?;
             for column in matrix.iter_mut().take(3) { for v in column { *v *= cell; } }
             if frame.terrain.is_none()
                 || (self.bodies.isolated && self.bodies.stats.fallback_bodies == 0)
@@ -415,6 +454,7 @@ impl Scene {
                     .map_err(|error| error.to_string())?,
             );
         } else {
+            self.hybrid.inactive(&self.queue);
             let capsules = frame.capsules.expect("capsule frame");
             let roster:Vec<_> = capsules.roster.iter().map(|p| coordinates::pose(p,cell)).collect();
             let played = capsules.played.map(|p| coordinates::pose(p,cell));
@@ -479,72 +519,6 @@ impl Scene {
                 camera,
             );
         }
-    }
-
-    /// Projects, culls and rasters the frame's bodies, clearing the shared
-    /// attachments first. Returns the `clip_from_world` the terrain join
-    /// reuses, which is the camera's whether the draw succeeded or not.
-    fn draw_bodies(
-        &mut self,
-        encoder: &mut wgpu::CommandEncoder,
-        frame: &SceneFrame<'_>,
-        host: &mut dyn SceneHost,
-    ) -> [[f32; 4]; 4] {
-        let camera = frame.camera;
-        let window = camera.window();
-        host.begin();
-        let Self { bodies, .. } = &mut *self;
-        bodies.budget = frame.body_budget.max(1);
-        bodies.prepare(frame.bodies, frame.volumes, window, |body, stats| {
-            host.fallback(body, stats)
-        });
-        host.prepared(&mut self.bodies);
-        {
-            let _clear = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-                label: Some("clear shared scene attachments"),
-                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view: &self.traced_view,
-                    depth_slice: None,
-                    resolve_target: None,
-                    ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
-                        store: wgpu::StoreOp::Store,
-                    },
-                })],
-                depth_stencil_attachment: Some(wgpu::RenderPassDepthStencilAttachment {
-                    view: &self.bodies.depth_view,
-                    depth_ops: Some(wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(1.0),
-                        store: wgpu::StoreOp::Store,
-                    }),
-                    stencil_ops: None,
-                }),
-                timestamp_writes: None,
-                occlusion_query_set: None,
-                multiview_mask: None,
-            });
-        }
-        let matrix = camera.clip_from_world();
-        if host.uses_body_tenant() {
-            return matrix;
-        }
-        let Self {
-            device,
-            queue,
-            bodies,
-            traced_view,
-            ..
-        } = &mut *self;
-        if let Err(error) = bodies.draw(device, queue, encoder, traced_view, camera) {
-            eprintln!("{error}; using capsule fallback");
-            bodies.stats.last_error = Some(error);
-            for subject in bodies.take_drawn() {
-                if let Some(body) = frame.bodies.iter().find(|body| body.subject == subject) {
-                    host.fallback(body, &mut bodies.stats);
-                }
-            }
-        }
-        matrix
     }
 
     fn copy_to_display(&self, encoder: &mut wgpu::CommandEncoder) {

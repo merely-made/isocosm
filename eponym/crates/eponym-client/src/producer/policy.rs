@@ -13,7 +13,10 @@
 //! deep it cuts, where it is panned — and how a subject is coloured and
 //! scaled. None of it reaches an intent.
 
-use isometer::SlabCamera;
+use std::num::NonZeroU64;
+
+use isometer::hybrid::{HybridPolicy, HybridSettings};
+use isometer::{SceneHost, SlabCamera, SubjectKey};
 
 /// The material every part is drawn in. 245 is the core's flat white tone, so
 /// the colour a pixel carries is the body's tint times a face shade and
@@ -24,6 +27,66 @@ pub const BODY_MATERIAL: u8 = 245;
 /// the fixture's root is four units tall inside a two-voxel motion envelope, so
 /// a quarter puts a body at roughly the height the solver collides at.
 pub const BODY_SCALE: f32 = 0.25;
+
+/// Image settings for the session viewport. Contact and inspection continue
+/// to use the current anatomy in either mode. Projected sizes count scene
+/// render pixels before nearest-neighbour upscaling.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum BodyQuality {
+    #[default]
+    Live,
+    Hybrid,
+}
+
+impl BodyQuality {
+    pub fn toggled(self) -> Self {
+        match self {
+            Self::Live => Self::Hybrid,
+            Self::Hybrid => Self::Live,
+        }
+    }
+
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Live => "live",
+            Self::Hybrid => "hybrid",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+pub(crate) struct BodyPresentation {
+    pub quality: BodyQuality,
+    pub examined: Option<SubjectKey>,
+}
+
+impl BodyPresentation {
+    pub fn sign(self, inputs: &mut Vec<u64>) {
+        let hybrid = self.quality == BodyQuality::Hybrid;
+        inputs.push(u64::from(hybrid));
+        if hybrid {
+            inputs.extend(self.examined.map(|subject| subject.0));
+        }
+    }
+}
+
+impl SceneHost for BodyPresentation {
+    fn hybrid_settings(&self) -> Option<HybridSettings> {
+        if self.quality != BodyQuality::Hybrid {
+            return None;
+        }
+        let policy = HybridPolicy::new(
+            [[12.0, 16.0], [22.0, 28.0], [36.0, 48.0]],
+            [12, 4, 2].map(|frames| NonZeroU64::new(frames).unwrap()),
+        )
+        .expect("Eponym hybrid bands and periods are ordered");
+        Some(HybridSettings::new(policy, 32, 8 * 1024 * 1024, 8))
+    }
+
+    fn hybrid_examined(&self, subject: SubjectKey) -> bool {
+        self.examined == Some(subject)
+    }
+}
 
 /// Presentation policy the host owns. None of it reaches an intent.
 #[derive(Clone, Copy, Debug, PartialEq)]

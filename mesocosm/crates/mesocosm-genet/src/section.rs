@@ -19,7 +19,9 @@
 pub(crate) mod bodies;
 mod camera;
 mod capsules;
+mod host;
 pub mod host_device;
+use host::SectionHost;
 mod light;
 mod smooth;
 mod tenant;
@@ -165,7 +167,8 @@ pub struct Section {
 
 impl Section {
     pub fn animating(&self) -> bool {
-        self.body_mode == BodyMode::Smooth && self.body_tenant.animating()
+        (self.body_mode == BodyMode::Smooth && self.body_tenant.animating())
+            || (self.body_mode == BodyMode::Hybrid && self.scene.hybrid_needs_frame())
     }
     /// Binds a lifted site's Ground and builds the scene on the host's own
     /// device. `format` is the surface's, for the composite that lands
@@ -260,6 +263,10 @@ impl Section {
         self.scene.bodies().stats.clone()
     }
 
+    pub fn hybrid_stats(&self) -> isometer::hybrid::HybridStats {
+        self.scene.hybrid_stats()
+    }
+
     pub fn terrain_stats(&self) -> isometer::ResidencyStats {
         self.residency.borrow().stats()
     }
@@ -280,7 +287,8 @@ impl Section {
 
     /// Transparent lit bodies, layered over the terrain by Netrender.
     pub fn body_view(&self) -> Option<wgpu::TextureView> {
-        (self.body_mode != BodyMode::Capsules).then(|| self.body_tenant.view())
+        (!matches!(self.body_mode, BodyMode::Capsules | BodyMode::Hybrid))
+            .then(|| self.body_tenant.view())
     }
 
     /// How much world the section frames, in voxels of half-height.
@@ -373,7 +381,7 @@ impl Section {
             bodies: host_bodies,
             scene: frame.scene,
             tenant: body_tenant,
-            smooth: self.body_mode == BodyMode::Smooth,
+            mode: self.body_mode,
         };
         let boxes;
         let volumes = if self.body_mode == BodyMode::Boxes {
@@ -518,57 +526,6 @@ impl Section {
             );
         }
         Ok(())
-    }
-}
-
-/// The host policy one frame calls back into: Mesocosm's capsule stand-in for
-/// a body that would not project, and the counters only the scene can supply.
-struct SectionHost<'a> {
-    bodies: &'a mut bodies::HostBodies,
-    scene: &'a SiteScene,
-    tenant: &'a mut tenant::BodyTenant,
-    smooth: bool,
-}
-
-impl isometer::SceneHost for SectionHost<'_> {
-    fn uses_body_tenant(&self) -> bool {
-        true
-    }
-
-    fn encode_body_tenant(
-        &mut self,
-        encoder: &mut wgpu::CommandEncoder,
-        bodies: &mut isometer::BodyLayer,
-        camera: isometer::SlabCamera,
-    ) -> Result<(), String> {
-        self.tenant
-            .encode(encoder, bodies, camera, self.smooth.then_some(self.scene))
-    }
-
-    fn begin(&mut self) {
-        self.bodies.fallback.clear();
-        self.bodies.played_fallback = None;
-    }
-
-    fn fallback(&mut self, body: &isometer::SceneBody<'_>, stats: &mut BodyFrameStats) {
-        self.bodies.add_fallback(body, stats);
-    }
-
-    fn prepared(&mut self, layer: &mut isometer::BodyLayer) {
-        layer.stats.body_scale = self.bodies.scale;
-        let scene = self.scene;
-        layer.stats.carcasses = layer
-            .drawn()
-            .filter(|subject| scene.body(subject.0).is_some_and(|b| !b.alive))
-            .count();
-    }
-
-    fn roster(&self) -> &[CritterPose] {
-        &self.bodies.fallback
-    }
-
-    fn played(&self) -> Option<&CritterPose> {
-        self.bodies.played_fallback.as_ref()
     }
 }
 

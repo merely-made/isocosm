@@ -64,6 +64,25 @@ impl<Image> Default for SpriteCache<Image> {
 }
 
 impl<Image> SpriteCache<Image> {
+    pub(crate) fn reusable(
+        &self,
+        subject: SubjectKey,
+        revisions: SpriteRevisions,
+        frame: u64,
+        period: NonZeroU64,
+    ) -> Option<&Image> {
+        self.images
+            .get(&subject)
+            .filter(|entry| {
+                entry.source.revisions == revisions && fresh(entry.source.pose_frame, frame, period)
+            })
+            .map(|entry| &entry.image)
+    }
+
+    pub(crate) fn take(&mut self, subject: SubjectKey) -> Option<Image> {
+        self.images.remove(&subject).map(|entry| entry.image)
+    }
+
     /// Resolve an image on entry, re-entry or a held frame. A revision change
     /// invalidates it immediately. A pose is usable while its age is strictly
     /// less than `period`, including when the selected period has shortened.
@@ -78,18 +97,13 @@ impl<Image> SpriteCache<Image> {
         period: NonZeroU64,
         bake: impl FnOnce() -> Result<Image, E>,
     ) -> Result<Option<SpriteInstance<'_, Image>>, E> {
-        let fresh = |pose_frame| {
-            frame
-                .checked_sub(pose_frame)
-                .is_some_and(|age| age < period.get())
-        };
         let subject = placement.subject;
-        let hit = self.images.get(&subject).is_some_and(|entry| {
-            entry.source.revisions == source.revisions && fresh(entry.source.pose_frame)
-        });
+        let hit = self
+            .reusable(subject, source.revisions, frame, period)
+            .is_some();
         if !hit {
             self.images.remove(&subject);
-            if !fresh(source.pose_frame) {
+            if !fresh(source.pose_frame, frame, period) {
                 return Ok(None);
             }
             self.images.insert(
@@ -115,4 +129,10 @@ impl<Image> SpriteCache<Image> {
     pub fn clear(&mut self) {
         self.images.clear();
     }
+}
+
+fn fresh(pose_frame: u64, frame: u64, period: NonZeroU64) -> bool {
+    frame
+        .checked_sub(pose_frame)
+        .is_some_and(|age| age < period.get())
 }

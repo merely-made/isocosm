@@ -38,7 +38,8 @@ mod source;
 mod view;
 
 pub use handle::{Held, SceneHandle, SceneModel};
-pub use policy::{Appearance, BODY_MATERIAL, BODY_SCALE, CameraPolicy, PerspectivePolicy, View};
+pub use policy::{Appearance, BODY_MATERIAL, BODY_SCALE, BodyQuality, CameraPolicy, PerspectivePolicy, View};
+pub(crate) use policy::BodyPresentation;
 pub use source::SceneModelSource;
 pub(crate) use source::{scene_pose, BODY_BUDGET, PALETTE};
 

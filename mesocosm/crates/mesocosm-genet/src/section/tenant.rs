@@ -59,6 +59,10 @@ impl BodyTenant {
         self.light = intensity;
     }
 
+    pub fn light(&self) -> f32 {
+        self.light
+    }
+
     pub fn set_block(&mut self, block: Block) {
         self.block = block;
     }

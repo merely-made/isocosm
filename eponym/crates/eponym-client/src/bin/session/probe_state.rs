@@ -16,6 +16,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     let scene = app.scene.borrow();
     let model = app.model.borrow();
     let game = model.game();
+    let hybrid = scene.hybrid_stats();
     let played = model.played();
     let yes = |value: bool| if value { "yes" } else { "no" };
     let body = game.bodies().get(played);
@@ -90,6 +91,14 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("charging", yes(app.charging))
         .with_field("position", position)
         .with_field("view", model.view.name().replace(' ', "-"))
+        .with_field("body-quality", model.body_quality().name())
+        .with_field("render-scale", scene.render_scale().to_string())
+        .with_field("sprite-bodies", hybrid.sprite_bodies.to_string())
+        .with_field("sprite-resident-slots", hybrid.resident_slots.to_string())
+        .with_field("sprite-retained-bytes", hybrid.retained_bytes.to_string())
+        .with_field("sprite-refreshes", hybrid.refreshes.to_string())
+        .with_field("sprite-bake-upload-bytes", hybrid.bake_upload_bytes.to_string())
+        .with_field("sprite-transition-bodies", hybrid.transition_bodies.to_string())
         .with_field("round-speed", model.round().map_or("none".into(), |r| r.speed().factor().to_string()))
         .with_field("sim-tick", game.world().sim().state().tick.to_string())
         .with_field(

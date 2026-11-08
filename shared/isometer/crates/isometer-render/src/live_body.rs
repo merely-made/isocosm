@@ -18,25 +18,27 @@ use glam::Mat4;
 #[cfg(test)]
 use isometer_core::Yaw;
 use isometer_core::{PartId, VolumeRef};
-use isometer_mesh::{BodyMesh, PartMesh};
+use isometer_mesh::BodyMesh;
 use wgpu::util::DeviceExt;
 
 mod materials;
 mod palette;
 mod pose;
 mod query;
+mod resident;
 mod vertex;
 
-pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_colour, tissue_average};
+pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_average, tissue_colour};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
-pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad, part_transform};
+pub use query::{BodyHit, BodyQueryError, body_bounds, part_transform, pick_bodies, posed_quad};
+pub(crate) use resident::upload_in_order;
 
 use materials::part_appearance;
-use palette::{PaletteBlock, PaletteTable, palette_slot};
-use vertex::{BodyVertex, part_vertices};
 #[cfg(test)]
 use materials::valid_materials;
+use palette::{PaletteBlock, PaletteTable, palette_slot};
 use pose::{model_matrix, validate_body, validate_clip};
+use vertex::BodyVertex;
 
 /// A body owned by the caller's projection. Identity remains alongside this
 /// lightweight draw item in the host's attributed projection.
@@ -146,6 +148,7 @@ pub enum LiveBodyError {
     /// summary. Refuse rather than making a decorative claim about tissue.
     InvalidMaterials,
     InvalidClip,
+    InvalidSpriteCoverage,
 }
 
 struct CachedMesh {
@@ -249,7 +252,13 @@ impl LiveBodyRenderer {
     ) -> Self {
         let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
             label: Some("mesocosm live body"),
-            source: wgpu::ShaderSource::Wgsl(include_str!("live_body.wgsl").into()),
+            source: wgpu::ShaderSource::Wgsl(
+                concat!(
+                    include_str!("ordered_dither.wgsl"),
+                    include_str!("live_body.wgsl")
+                )
+                .into(),
+            ),
         });
         let frame_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("mesocosm live body frame"),
@@ -350,6 +359,87 @@ impl LiveBodyRenderer {
         clip_slab: Option<ClipSlab>,
         bodies: &[LiveBody<'_>],
     ) -> Result<BodyDrawStats, LiveBodyError> {
+        self.draw_inner(
+            device,
+            Some(queue),
+            encoder,
+            colour,
+            depth,
+            clip_from_world,
+            clip_slab,
+            bodies,
+            &[],
+        )
+    }
+
+    /// Draw the live side of a hybrid transition. Supply one sprite weight
+    /// in 0..=16 per body, with 0 keeping the body entirely live.
+    pub fn draw_hybrid(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        encoder: &mut wgpu::CommandEncoder,
+        colour: &wgpu::TextureView,
+        depth: &wgpu::TextureView,
+        clip_from_world: [[f32; 4]; 4],
+        clip_slab: Option<ClipSlab>,
+        bodies: &[LiveBody<'_>],
+        sprite_coverage: &[u32],
+    ) -> Result<BodyDrawStats, LiveBodyError> {
+        if sprite_coverage.len() != bodies.len()
+            || sprite_coverage.iter().any(|&weight| weight > 16)
+        {
+            return Err(LiveBodyError::InvalidSpriteCoverage);
+        }
+        self.draw_inner(
+            device,
+            Some(queue),
+            encoder,
+            colour,
+            depth,
+            clip_from_world,
+            clip_slab,
+            bodies,
+            sprite_coverage,
+        )
+    }
+
+    /// In an atlas refresh each layer clears and uses the same upload buffers
+    /// in encoder order. A queue write would be visible to all earlier passes.
+    pub(crate) fn bake(
+        &mut self,
+        device: &wgpu::Device,
+        encoder: &mut wgpu::CommandEncoder,
+        colour: &wgpu::TextureView,
+        depth: &wgpu::TextureView,
+        clip_from_world: [[f32; 4]; 4],
+        body: LiveBody<'_>,
+    ) -> Result<BodyDrawStats, LiveBodyError> {
+        self.draw_inner(
+            device,
+            None,
+            encoder,
+            colour,
+            depth,
+            clip_from_world,
+            None,
+            &[body],
+            &[],
+        )
+    }
+
+    fn draw_inner(
+        &mut self,
+        device: &wgpu::Device,
+        queue: Option<&wgpu::Queue>,
+        encoder: &mut wgpu::CommandEncoder,
+        colour: &wgpu::TextureView,
+        depth: &wgpu::TextureView,
+        clip_from_world: [[f32; 4]; 4],
+        clip_slab: Option<ClipSlab>,
+        bodies: &[LiveBody<'_>],
+        sprite_coverage: &[u32],
+    ) -> Result<BodyDrawStats, LiveBodyError> {
         if !clip_from_world
             .iter()
             .flatten()
@@ -366,13 +456,17 @@ impl LiveBodyRenderer {
         let mut instances: BTreeMap<([u8; 32], u32), Vec<Instance>> = BTreeMap::new();
         let mut tables: Vec<MaterialPalette<'_>> = Vec::new();
         let mut volumes: BTreeSet<[u8; 32]> = BTreeSet::new();
-        for body in bodies {
+        for (index, body) in bodies.iter().enumerate() {
             let slot = palette_slot(body.palette, &mut tables);
             for placement in &body.mesh.placements {
                 let key = (placement.volume.0, slot);
                 volumes.insert(placement.volume.0);
                 let model = model_matrix(*body, placement.yaw, placement.pivot, placement.pivot_at);
-                let appearance = part_appearance(*body, placement.part);
+                let mut appearance = part_appearance(*body, placement.part);
+                // The expression tail has one fraction and a spare lane for
+                // the per-body ordered transition weight.
+                appearance.expression_tail[1] =
+                    sprite_coverage.get(index).copied().unwrap_or(0) as f32;
                 instances.entry(key).or_default().push(Instance {
                     model: model.to_cols_array_2d(),
                     tint: appearance.tint,
@@ -418,18 +512,22 @@ impl LiveBodyRenderer {
                 if clip_slab.is_some() { 1.0 } else { 0.0 },
             ],
         };
+        let mut write = |buffer: &wgpu::Buffer, offset, bytes: &[u8]| match queue {
+            Some(queue) => queue.write_buffer(buffer, offset, bytes),
+            None => upload_in_order(device, encoder, buffer, offset, bytes),
+        };
         if self.last_frame.as_ref().map(bytemuck::bytes_of) != Some(bytemuck::bytes_of(&frame)) {
-            queue.write_buffer(&self.frame_buffer, 0, bytemuck::bytes_of(&frame));
+            write(&self.frame_buffer, 0, bytemuck::bytes_of(&frame));
             stats.frame_upload_bytes = size_of::<FrameUniform>();
             self.last_frame = Some(frame);
         }
         let mut blocks = vec![PaletteBlock::zeroed()];
         blocks.extend(tables.iter().map(|table| PaletteBlock::of(*table)));
-        stats.palette_upload_bytes = self.palettes.upload(device, queue, &blocks);
+        stats.palette_upload_bytes = self.palettes.upload(device, &blocks, &mut write);
         for (key, batch) in &instances {
             stats.instances += batch.len();
             stats.draw_parts += batch.len();
-            self.update_instances(device, queue, *key, batch, &mut stats);
+            self.update_instances(device, *key, batch, &mut stats, &mut write);
         }
         let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
             label: Some("mesocosm live bodies"),
@@ -438,14 +536,22 @@ impl LiveBodyRenderer {
                 depth_slice: None,
                 resolve_target: None,
                 ops: wgpu::Operations {
-                    load: wgpu::LoadOp::Load,
+                    load: if queue.is_some() {
+                        wgpu::LoadOp::Load
+                    } else {
+                        wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT)
+                    },
                     store: wgpu::StoreOp::Store,
                 },
             })],
             depth_stencil_attachment: Some(wgpu::RenderPassDepthStencilAttachment {
                 view: depth,
                 depth_ops: Some(wgpu::Operations {
-                    load: wgpu::LoadOp::Load,
+                    load: if queue.is_some() {
+                        wgpu::LoadOp::Load
+                    } else {
+                        wgpu::LoadOp::Clear(1.0)
+                    },
                     store: wgpu::StoreOp::Store,
                 }),
                 stencil_ops: None,
@@ -462,7 +568,11 @@ impl LiveBodyRenderer {
                 continue;
             }
             let instance_buffer = &self.instances.get(key).expect("updated before pass").buffer;
-            pass.set_bind_group(1, self.palettes.bind_group(), &[PaletteTable::offset(key.1)]);
+            pass.set_bind_group(
+                1,
+                self.palettes.bind_group(),
+                &[PaletteTable::offset(key.1)],
+            );
             pass.set_vertex_buffer(0, cached.vertices.slice(..));
             pass.set_vertex_buffer(1, instance_buffer.slice(..));
             pass.draw(0..cached.vertex_count, 0..batch.len() as u32);
@@ -472,97 +582,6 @@ impl LiveBodyRenderer {
         stats.cached_meshes = self.meshes.len();
         self.last_stats = stats;
         Ok(stats)
-    }
-
-    fn cache_mesh(
-        &mut self,
-        device: &wgpu::Device,
-        key: [u8; 32],
-        mesh: &PartMesh,
-        stats: &mut BodyDrawStats,
-    ) {
-        if let Some(cached) = self.meshes.get_mut(&key) {
-            cached.last_used = self.clock;
-            return;
-        }
-        while self.meshes.len() >= self.max_cached_meshes {
-            let oldest = self
-                .meshes
-                .iter()
-                .min_by_key(|(_, mesh)| mesh.last_used)
-                .map(|(key, _)| *key)
-                .expect("nonempty over capacity");
-            self.meshes.remove(&oldest);
-            self.instances.retain(|(volume, _), _| *volume != oldest);
-            stats.evictions += 1;
-        }
-        let vertices = part_vertices(mesh);
-        let vertex_count = vertices.len() as u32;
-        let buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label: Some("mesocosm live body volume"),
-            contents: if vertices.is_empty() {
-                bytemuck::bytes_of(&BodyVertex {
-                    position: [0.0; 3],
-                    colour: [0.0; 3],
-                    material_shade: [0.0; 2],
-                })
-            } else {
-                bytemuck::cast_slice(&vertices)
-            },
-            usage: wgpu::BufferUsages::VERTEX,
-        });
-        self.meshes.insert(
-            key,
-            CachedMesh {
-                vertices: buffer,
-                vertex_count,
-                last_used: self.clock,
-            },
-        );
-        stats.mesh_builds += 1;
-        stats.mesh_uploads += 1;
-        stats.mesh_upload_bytes += size_of::<BodyVertex>() * vertices.len();
-        stats.static_vertices_uploaded += vertices.len();
-    }
-
-    fn update_instances(
-        &mut self,
-        device: &wgpu::Device,
-        queue: &wgpu::Queue,
-        key: ([u8; 32], u32),
-        instances: &[Instance],
-        stats: &mut BodyDrawStats,
-    ) {
-        let bytes = bytemuck::cast_slice(instances);
-        let required = bytes.len().max(size_of::<Instance>());
-        let replace = self
-            .instances
-            .get(&key)
-            .is_none_or(|cached| cached.capacity < required);
-        if replace {
-            let capacity = required.next_power_of_two();
-            let buffer = device.create_buffer(&wgpu::BufferDescriptor {
-                label: Some("mesocosm live body instances"),
-                size: capacity as wgpu::BufferAddress,
-                usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
-                mapped_at_creation: false,
-            });
-            self.instances.insert(
-                key,
-                CachedInstances {
-                    buffer,
-                    capacity,
-                    bytes: Vec::new(),
-                },
-            );
-        }
-        let cached = self.instances.get_mut(&key).expect("inserted or present");
-        if cached.bytes != bytes {
-            queue.write_buffer(&cached.buffer, 0, bytes);
-            stats.instance_upload_bytes += bytes.len();
-            cached.bytes.clear();
-            cached.bytes.extend_from_slice(bytes);
-        }
     }
 }
 

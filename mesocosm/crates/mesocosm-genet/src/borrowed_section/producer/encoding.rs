@@ -122,8 +122,9 @@ impl Source {
             } else {
                 section.body_stats()
             };
-            let populated =
-                body.draw_parts > 0 || (capsules && (pose.is_some() || !roster.is_empty()));
+            let populated = body.draw_parts > 0
+                || section.hybrid_stats().sprite_bodies > 0
+                || (capsules && (pose.is_some() || !roster.is_empty()));
             self.costs.drawn(
                 &body,
                 section.terrain_diagnostics(),

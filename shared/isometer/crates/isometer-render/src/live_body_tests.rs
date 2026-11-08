@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use super::vertex::part_vertices;
 use isometer_core::{PartId, VolumeRef};
 use isometer_mesh::{Volume, place_point};
 

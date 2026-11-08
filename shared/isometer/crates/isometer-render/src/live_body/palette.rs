@@ -174,8 +174,8 @@ impl PaletteTable {
     pub(super) fn upload(
         &mut self,
         device: &wgpu::Device,
-        queue: &wgpu::Queue,
         blocks: &[PaletteBlock],
+        mut write: impl FnMut(&wgpu::Buffer, u64, &[u8]),
     ) -> usize {
         if blocks.len() > self.slots {
             let slots = blocks.len().next_power_of_two();
@@ -192,7 +192,7 @@ impl PaletteTable {
             if self.uploaded[at..at + bytes.len()] == *bytes {
                 continue;
             }
-            queue.write_buffer(&self.buffer, at as wgpu::BufferAddress, bytes);
+            write(&self.buffer, at as wgpu::BufferAddress, bytes);
             self.uploaded[at..at + bytes.len()].copy_from_slice(bytes);
             written += bytes.len();
         }

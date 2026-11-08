@@ -23,6 +23,9 @@ impl SectionProducer {
     pub(crate) fn body_stats(&mut self) -> Option<section::BodyFrameStats> {
         Some(self.accepted()?.0.body.clone())
     }
+    pub(crate) fn hybrid_stats(&mut self) -> Option<isometer::hybrid::HybridStats> {
+        Some(self.accepted()?.0.hybrid)
+    }
     pub(crate) fn terrain_stats(&mut self) -> Option<isometer::ResidencyStats> {
         Some(self.accepted()?.0.terrain)
     }

@@ -25,7 +25,7 @@ pub enum RefreshClass {
 }
 
 /// Pixel thresholds and sprite refresh periods, ordered from far to near.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct HybridPolicy {
     /// `[leave, enter]` for Medium, Fast, and Live respectively.
     bands: [[f32; 2]; 3],

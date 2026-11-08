@@ -41,6 +41,7 @@ struct VertexOut {
     @location(3) expression: vec4<f32>,
     @location(4) expression_tail: vec4<f32>,
     @location(5) inspection_accent: f32,
+    @location(6) @interpolate(flat) sprite_coverage: u32,
 };
 
 @vertex
@@ -63,6 +64,7 @@ fn vs_main(input: VertexIn) -> VertexOut {
         input.expression,
         input.expression_tail,
         input.tint.w,
+        u32(input.expression_tail.y),
     );
 }
 
@@ -106,6 +108,9 @@ fn srgb(linear: vec3<f32>) -> vec3<f32> {
 
 @fragment
 fn fs_main(input: VertexOut) -> @location(0) vec4<f32> {
+    if (selects_sprite(input.clip_position.xy, input.sprite_coverage)) {
+        discard;
+    }
     if (frame.slab_max_enabled.w > 0.5) {
         let slab = dot(frame.slab_normal_min.xyz, input.world_position);
         if (slab < frame.slab_normal_min.w || slab > frame.slab_max_enabled.x) {

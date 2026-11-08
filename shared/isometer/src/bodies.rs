@@ -25,6 +25,8 @@ use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
 
 mod eye;
+mod hybrid;
+pub(crate) use hybrid::HybridBody;
 pub use eye::{below_the_eye, eye_of};
 pub(crate) mod placement;
 mod snapshot;
@@ -110,6 +112,8 @@ struct PlacedBody {
     scale: f32,
     yaw_radians: f32,
     tint: [f32; 3],
+    bounds: ([f32; 3], [f32; 3]),
+    always_visible: bool,
     /// The colour table this body was prepared under, copied so a host may
     /// change its registry between prepare and draw without the frame
     /// changing colour half-way through.
@@ -425,6 +429,8 @@ impl BodyLayer {
                         scale: body.scale,
                         yaw_radians: body.pose.yaw_radians,
                         tint: body.tint,
+                        bounds: Default::default(),
+                        always_visible: body.always_visible,
                         palette: self
                             .palettes
                             .get(&body.subject)
@@ -432,7 +438,9 @@ impl BodyLayer {
                             .unwrap_or_default(),
                     };
                     match isometer_render::live_body::body_bounds(placed.live()) {
-                        Ok(Some(bounds)) if body.always_visible || intersects(bounds, window) => {},
+                        Ok(Some(bounds)) if body.always_visible || intersects(bounds, window) => {
+                            placed.bounds = bounds;
+                        },
                         Ok(_) => {
                             self.stats.candidates -= 1;
                             continue;
@@ -477,23 +485,43 @@ impl BodyLayer {
         colour: &wgpu::TextureView,
         camera: SlabCamera,
     ) -> Result<[[f32; 4]; 4], String> {
+        self.draw_hybrid(device, queue, encoder, colour, camera, &BTreeMap::new())
+    }
+
+    pub(crate) fn draw_hybrid(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        encoder: &mut wgpu::CommandEncoder,
+        colour: &wgpu::TextureView,
+        camera: SlabCamera,
+        coverage: &BTreeMap<SubjectKey, u32>,
+    ) -> Result<[[f32; 4]; 4], String> {
         let matrix = camera.clip_from_world();
+        let hybrid = !coverage.is_empty();
+        let mut sprite_coverage = Vec::new();
         let bodies: Vec<_> = self
             .placed
             .iter()
-            .map(|body| {
+            .filter_map(|body| {
+                let weight = coverage.get(&body.subject).copied().unwrap_or(0);
+                if weight == 16 {
+                    return None;
+                }
+                if hybrid {
+                    sprite_coverage.push(weight);
+                }
                 let mut live = body.live();
                 live.focused = self.focus_subject == Some(body.subject);
                 live.selected_part = self.selected.and_then(|address| {
                     (address.subject == body.subject && address.revision == body.revision)
                         .then_some(address.part)
                 });
-                live
+                Some(live)
             })
             .collect();
-        let stats = self
-            .renderer
-            .draw(
+        let stats = if !hybrid {
+            self.renderer.draw(
                 device,
                 queue,
                 encoder,
@@ -503,7 +531,10 @@ impl BodyLayer {
                 Some(camera.clip()),
                 &bodies,
             )
-            .map_err(|error| format!("voxel bodies: {error:?}"))?;
+        } else {
+            self.renderer.draw_hybrid(device, queue, encoder, colour, &self.depth_view,
+                matrix, Some(camera.clip()), &bodies, &sprite_coverage)
+        }.map_err(|error| format!("voxel bodies: {error:?}"))?;
         self.stats.mesh_builds = stats.mesh_builds;
         self.stats.mesh_upload_bytes = stats.mesh_upload_bytes as u64;
         self.stats.instance_upload_bytes = stats.instance_upload_bytes as u64;

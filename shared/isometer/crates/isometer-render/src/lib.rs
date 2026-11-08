@@ -28,6 +28,7 @@ pub mod geometry;
 pub mod hybrid;
 pub mod implicit;
 pub mod live_body;
+pub mod sprites;
 
 use isometer_mesh::BodyMesh;
 use wgpu::util::DeviceExt;

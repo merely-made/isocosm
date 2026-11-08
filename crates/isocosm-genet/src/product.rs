@@ -109,7 +109,8 @@ impl Product for Isocosm {
         app.drive_selftests(ctx);
         // The ground is brought up to date inside the producer's own draw, so
         // what an edit cost is only knowable once the frame is behind us.
-        if let Some(board) = app.scene_board.as_mut() {
+        let board_visible = app.family_table.is_none();
+        if let Some(board) = app.scene_board.as_mut().filter(|_| board_visible) {
             board.report_ground(ctx);
         }
         let started = app.started;

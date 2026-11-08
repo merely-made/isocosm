@@ -3,6 +3,7 @@
 
 //! Shared R0/R1 body selection and resident local-pose images (case 1161).
 
+mod settings;
 mod sprites;
 #[cfg(test)]
 mod tests;
@@ -11,4 +12,5 @@ pub use crate::camera::projected_size;
 pub use isometer_render::hybrid::{
     BodyChoice, BodyDetail, BodySelection, HybridPolicy, RefreshClass,
 };
+pub use settings::{HybridSettings, HybridStats};
 pub use sprites::{SpriteCache, SpriteInstance, SpritePlacement, SpriteRevisions, SpriteSource};

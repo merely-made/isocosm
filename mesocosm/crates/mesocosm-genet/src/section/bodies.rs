@@ -8,6 +8,9 @@
 //! which body is played, its tint, and the capsule stand-in a body falls back
 //! to when its voxels will not project.
 
+use std::num::NonZeroU64;
+
+use isometer::hybrid::{HybridPolicy, HybridSettings};
 use isometer::lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 use isometer::{BodyFrameStats, Pose, SceneBody, SubjectKey};
 
@@ -23,6 +26,8 @@ pub enum BodyMode {
     Capsules,
     Boxes,
     Voxels,
+    /// Shared voxel shading for live and baked images.
+    Hybrid,
 }
 
 impl BodyMode {
@@ -32,6 +37,7 @@ impl BodyMode {
             "capsules" => Some(Self::Capsules),
             "boxes" => Some(Self::Boxes),
             "voxels" => Some(Self::Voxels),
+            "hybrid" => Some(Self::Hybrid),
             _ => None,
         }
     }
@@ -42,7 +48,20 @@ impl BodyMode {
             Self::Capsules => "capsules",
             Self::Boxes => "boxes",
             Self::Voxels => "voxels",
+            Self::Hybrid => "hybrid",
         }
+    }
+
+    pub(super) fn hybrid_settings(self) -> Option<HybridSettings> {
+        if self != Self::Hybrid {
+            return None;
+        }
+        let policy = HybridPolicy::new(
+            [[10.0, 14.0], [18.0, 22.0], [30.0, 42.0]],
+            [12, 4, 2].map(|frames| NonZeroU64::new(frames).unwrap()),
+        )
+        .expect("Mesocosm hybrid bands and periods are ordered");
+        Some(HybridSettings::new(policy, 24, 8 * 1024 * 1024, 8))
     }
 }
 
@@ -142,7 +161,15 @@ impl super::Section {
         scene
             .bodies
             .iter()
-            .map(|body| self.host_bodies.scene_body(body, scene.played))
+            .map(|body| {
+                let mut body = self.host_bodies.scene_body(body, scene.played);
+                if self.body_mode == BodyMode::Hybrid {
+                    // Shared voxel face shading is fixed. The same product
+                    // intensity reaches the live draw and the sprite key.
+                    body.tint = body.tint.map(|channel| channel * self.body_tenant.light());
+                }
+                body
+            })
             .collect()
     }
 }

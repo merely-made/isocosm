@@ -135,6 +135,7 @@ pub(crate) enum Command {
     Speed(Speed),
     /// The next camera: overview, over the shoulder, first person (case 1131).
     View,
+    BodyQuality,
 }
 
 /// The session's keys, declared once (M3 of the isomere plan).
@@ -196,6 +197,7 @@ pub(crate) static KEYMAP: LazyLock<Keymap<'static, Press, Command>> = LazyLock::
             Speed::ALL.iter().map(|s| (Press::character(&s.factor().to_string()), Command::Speed(*s))).collect(),
         ),
         Binding::one("V", "view", Press::character("v"), Command::View),
+        Binding::one("B", "body image quality", Press::character("b"), Command::BodyQuality),
         Binding::one("Ctrl+S", "save", Press::with_ctrl("s"), Command::Save),
         Binding::one("Ctrl+L", "load", Press::with_ctrl("l"), Command::Load),
         Binding::one(
@@ -268,6 +270,8 @@ impl SessionApp {
             Command::Speed(speed) => self.set_speed(speed),
             // A camera, not a world act: it writes nothing and waits for nothing.
             Command::View => self.cycle_view(),
+            Command::BodyQuality if repeat => {},
+            Command::BodyQuality => self.cycle_body_quality(),
             // Swallow the repeat: a held Space must not toggle sixty times.
             Command::Charge if repeat => {},
             Command::Close => self.closing = true,
@@ -296,7 +300,8 @@ impl SessionApp {
             Command::Rest => self.rest(),
             Command::Injure => self.injure(),
             Command::Join => self.join_limb(PartId(2)),
-            Command::Move(_) | Command::Close | Command::Speed(_) | Command::View => {},
+            Command::Move(_) | Command::Close | Command::Speed(_) | Command::View
+            | Command::BodyQuality => {},
         }
     }
 
@@ -321,6 +326,13 @@ impl SessionApp {
     fn animating(&self) -> bool {
         // A round's minutes fall due whether or not anything moves.
         self.charging || self.motion_running() || self.in_rounds()
+    }
+
+    fn cycle_body_quality(&mut self) {
+        let mut model = self.model.borrow_mut();
+        let quality = model.body_quality().toggled();
+        model.set_body_quality(quality);
+        self.status = vec![format!("Body images: {}", quality.name())];
     }
 }
 
@@ -396,6 +408,14 @@ impl Product for Session {
         }
     }
 
+    fn after_frame(&mut self, ctx: &mut Ctx<'_, Self>) {
+        if ctx.runner.state().model.borrow().hybrid_needs_frame()
+            && let Some(window) = ctx.window
+        {
+            window.request_redraw();
+        }
+    }
+
     fn key(
         &mut self,
         runner: &mut Runner<SessionApp, view::Logic, view::Child>,
@@ -422,9 +442,9 @@ pub fn run() -> i32 {
     // same world every run; play takes them on a worker (case 1121).
     let mode = if options.driven || smoking { TickMode::InStep } else { TickMode::Worker };
     model.borrow_mut().start_rounds(Speed::X1, mode);
-    let scene = Rc::new(RefCell::new(SceneProducer::new(SceneModelSource::new(
-        model.clone(),
-    ))));
+    let mut scene = SceneProducer::new(SceneModelSource::new(model.clone()));
+    scene.set_render_scale(options.render_scale);
+    let scene = Rc::new(RefCell::new(scene));
     let saves = std::env::var_os("PAREDROS_SESSION_SAVES")
         .map(PathBuf::from)
         .unwrap_or_else(|| std::env::temp_dir().join("paredros-session"));

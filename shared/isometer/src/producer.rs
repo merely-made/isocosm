@@ -171,6 +171,12 @@ impl<'a> FrameRequest<'a> {
 /// sits, what the terrain is. What it does not own is the skip — it declares
 /// its inputs and is called only when they moved.
 pub trait SceneSource {
+    /// Presentation still needs another frame even if authoritative inputs
+    /// and camera are unchanged, for example during an ordered transition.
+    fn needs_animation_frame(&self) -> bool {
+        false
+    }
+
     /// Everything the frame this request would draw depends on. Called before
     /// every frame, including the ones that are skipped, so it must not encode
     /// and must not project.
@@ -321,7 +327,8 @@ impl<S: SceneSource> SceneProducer<S> {
         // producer's, so a host that never mentions the scale still redraws
         // when the scale moves under it.
         current.render_scale = request.scale();
-        if !request.needs_frame && self.produced && self.signature == current {
+        if !request.needs_frame && !self.source.needs_animation_frame()
+            && self.produced && self.signature == current {
             return Ok(None);
         }
         let mut view = self.source.frame(&scene)?;

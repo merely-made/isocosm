@@ -22,6 +22,9 @@
 //! **Headroom.** `ISOCOSM_SCENE_HEADROOM=<layers>` sets the spare brick
 //! layers the scene board's pointer volume keeps above the board's tallest
 //! tile; unset, the residency's own default of one, which is provisional.
+//! `ISOCOSM_SCENE_TOKEN_QUALITY=hybrid` enables the far-token trial.
+//! The default, `live`, draws every token as a live body. The side panel
+//! can change this local setting during the session.
 //!
 //! Nothing here runs unless the flag is set. With it unset the producer is
 //! never built, the leaf is never registered, and every existing receipt sees
@@ -31,8 +34,8 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use isocosm_views::{
-    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ResidencySettings, ScenePick,
-    UiState,
+    BoardBodyQuality, BoardHandle, BoardHybridStats, BoardProducer, BoardSource, BoardView,
+    GroundCost, ResidencySettings, ScenePick, UiState,
 };
 
 use crate::Ctx;
@@ -56,6 +59,7 @@ pub(crate) struct SceneBoard {
     /// The last ground change reported under `ISOCOSM_PROFILE`, so a still
     /// board says nothing and an edit says what it cost (B4).
     costed: Option<GroundCost>,
+    body_costed: Option<BoardHybridStats>,
     preferences: crate::terrain_preferences::Preferences,
     /// The look editor's preview: a one-tile board through a second source,
     /// so it draws exactly as the board does. Registered once, synced only
@@ -75,10 +79,25 @@ fn residency() -> ResidencySettings {
     settings
 }
 
+fn body_quality_override() -> Option<BoardBodyQuality> {
+    match std::env::var("ISOCOSM_SCENE_TOKEN_QUALITY").as_deref() {
+        Ok("hybrid") => Some(BoardBodyQuality::Hybrid),
+        Ok("live") => Some(BoardBodyQuality::Live),
+        Err(std::env::VarError::NotPresent) => None,
+        _ => {
+            eprintln!("[isocosm] ISOCOSM_SCENE_TOKEN_QUALITY wants live or hybrid");
+            None
+        },
+    }
+}
+
 impl SceneBoard {
     /// Restores the local terrain budget and builds the first board snapshot.
     pub(crate) fn new(ui: &mut UiState) -> Self {
         let preferences = crate::terrain_preferences::Preferences::local(ui);
+        if let Some(quality) = body_quality_override() {
+            ui.scene_body_quality = quality;
+        }
         let mut board = BoardView::new(ui.map.clone());
         board.sync(ui);
         let view = board.into_handle();
@@ -87,15 +106,16 @@ impl SceneBoard {
         let preview_producer = Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(
             preview_view.clone(),
         ))));
+        let mut source = BoardSource::new(view.clone()).with_residency(residency());
+        source.set_body_quality(ui.scene_body_quality);
         Self {
             preview: (preview_view, preview_producer),
-            view: view.clone(),
-            producer: Rc::new(RefCell::new(BoardProducer::new(
-                BoardSource::new(view).with_residency(residency()),
-            ))),
+            view,
+            producer: Rc::new(RefCell::new(BoardProducer::new(source))),
             scale: 1,
             reported: None,
             costed: None,
+            body_costed: None,
             preferences,
         }
     }
@@ -131,6 +151,9 @@ impl SceneBoard {
     /// board that then parks would never say what the last edit cost.
     pub(crate) fn report_ground(&mut self, ctx: &mut Ctx<'_>) {
         let source = self.producer.borrow();
+        if let Some(window) = ctx.window.filter(|_| source.source().hybrid_needs_frame()) {
+            window.request_redraw();
+        }
         let cost = source.source().ground_cost();
         if let Some(limit) = source.source().atlas_device_budget() {
             let omitted = cost.map_or(0, |cost| cost.residency.overflow);
@@ -152,6 +175,16 @@ impl SceneBoard {
                 eprintln!("[isocosm] scene board ground: {}", cost.line());
             }
         }
+        let body_cost = source
+            .source()
+            .hybrid_stats()
+            .filter(|stats| *stats != BoardHybridStats::default());
+        if self.body_costed != body_cost {
+            self.body_costed = body_cost;
+            if let Some(stats) = body_cost {
+                eprintln!("[isocosm] scene board bodies: {stats:?}");
+            }
+        }
     }
 
     /// Save a changed user request at dispatch, before a window can close.
@@ -167,11 +200,13 @@ impl SceneBoard {
     /// Per frame: take the board's state and set the pixel grid.
     pub(crate) fn sync(&mut self, ctx: &mut Ctx<'_>) {
         self.save_preferences(ctx);
-        self.producer
-            .borrow_mut()
-            .source_mut()
-            .set_atlas_budget(ctx.runner.state().terrain_settings.budget_bytes());
-        self.view.borrow_mut().sync(ctx.runner.state());
+        let state = ctx.runner.state();
+        {
+            let mut producer = self.producer.borrow_mut();
+            producer.source_mut().set_atlas_budget(state.terrain_settings.budget_bytes());
+            producer.source_mut().set_body_quality(state.scene_body_quality);
+        }
+        self.view.borrow_mut().sync(state);
         let device = ctx
             .window
             .map_or(1.0, |window| window.scale_factor() as f32);

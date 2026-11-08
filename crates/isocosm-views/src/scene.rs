@@ -66,9 +66,10 @@ mod view_tests;
 #[cfg(test)]
 mod world_tests;
 
-pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
+pub use board::{BOARD_SCENE_LEAF_KEY, BoardBodyQuality, BoardPick, BoardProducer, BoardSource};
 pub use columns::{BoardBricks, ColumnChange, TileColumns};
 pub use ground::{BoardGround, GroundCost, RESIDENCY_MARGIN};
+pub use isometer::hybrid::HybridStats as BoardHybridStats;
 /// The settings [`BoardSource::with_residency`] takes, named here so a host
 /// reaches them through the view layer as it reaches the rest of isometer.
 pub use isometer::ResidencySettings;

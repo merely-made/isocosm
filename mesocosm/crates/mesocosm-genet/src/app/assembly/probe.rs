@@ -33,6 +33,7 @@ impl mandrake::Product for Probe {
                         .unwrap_or("renderer upload counters")
                 });
         let body_stats = body_stats.unwrap_or_default();
+        let hybrid_stats = s.producer.borrow_mut().hybrid_stats().unwrap_or_default();
         let terrain_stats = s.producer.borrow_mut().terrain_stats().unwrap_or_default();
         let (scene_draws, mesh_bytes, instance_bytes) = s.producer.borrow().cost_totals();
         let native_sequence = r
@@ -203,6 +204,15 @@ impl mandrake::Product for Probe {
                 ),
                 ("bodies", s.host.config.body_mode.name().into()),
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
+                ("sprite-bodies", hybrid_stats.sprite_bodies.to_string()),
+                ("sprite-resident-slots", hybrid_stats.resident_slots.to_string()),
+                ("sprite-retained-bytes", hybrid_stats.retained_bytes.to_string()),
+                ("sprite-retiring-bytes", hybrid_stats.retiring_bytes.to_string()),
+                ("sprite-refreshes", hybrid_stats.refreshes.to_string()),
+                ("sprite-bake-upload-bytes", hybrid_stats.bake_upload_bytes.to_string()),
+                ("sprite-hits", hybrid_stats.hits.to_string()),
+                ("sprite-misses", hybrid_stats.misses.to_string()),
+                ("sprite-transition-bodies", hybrid_stats.transition_bodies.to_string()),
                 ("terrain-bricks", terrain_stats.resident.to_string()),
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
                 (

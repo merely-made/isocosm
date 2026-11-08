@@ -22,7 +22,7 @@ use isometer::core::{BodyDocument, PartId};
 use isometer::lens::Grade;
 use isometer::{
     BodyFrameStats, BodySignature, DeclaredExtentVolumes, FrameRequest, Pose, Scene, SceneBody,
-    SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    SceneFrame, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
     TerrainSource,
 };
 
@@ -35,11 +35,6 @@ pub(crate) const PALETTE: u32 = 3;
 /// Bodies one frame may project. The fixture worlds draw a handful; the cap
 /// exists so a populated settlement degrades by omission rather than by cost.
 pub(crate) const BODY_BUDGET: usize = 256;
-
-/// Eponym keeps no host presentation beside the scene: no capsule roster, no
-/// substitute for a body that would not project, no second counter set.
-struct PlainHost;
-impl SceneHost for PlainHost {}
 
 /// The shared session handle as a scene source.
 ///
@@ -67,6 +62,15 @@ impl SceneModelSource {
             .as_ref()
             .map(|scene| scene.bodies().stats.clone())
             .unwrap_or_default()
+    }
+
+    /// Image residency and refresh work of the last completed frame.
+    pub fn hybrid_stats(&self) -> isometer::hybrid::HybridStats {
+        self.handle
+            .borrow()
+            .scene
+            .as_ref()
+            .map_or_else(Default::default, Scene::hybrid_stats)
     }
 
     /// Intact parts of a subject's current anatomy, in document order.
@@ -127,6 +131,10 @@ impl SceneModelSource {
 impl SceneSource for SceneModelSource {
     fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
         self.handle.borrow().inputs(request)
+    }
+
+    fn needs_animation_frame(&self) -> bool {
+        self.handle.borrow().hybrid_needs_frame()
     }
 
     fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
@@ -256,15 +264,15 @@ impl SceneModel {
         };
         #[cfg(not(feature = "r1-proof"))]
         let terrain_revision = self.terrain.then(|| game.world().ground().revision());
+        let mut host = vec![self.played().0, u64::from(self.appearance.material)];
+        self.body_presentation.sign(&mut host);
         Ok(SceneSignature {
             size: request.size,
             render_scale: request.render_scale,
             camera: Some(camera),
             terrain_revision,
             bodies,
-            // The framed subject: the camera follows it, and which body wears
-            // the played tint turns on it.
-            host: vec![self.played().0],
+            host,
         })
     }
 
@@ -279,6 +287,7 @@ impl SceneModel {
         let material = self.appearance.material;
         let scale = self.appearance.scale;
         let played = self.played();
+        let mut body_presentation = self.body_presentation;
         let tints = (self.appearance.played, self.appearance.other);
         // First person draws only what lies below the played body's eye.
         let first_person = anatomy(self.game(), played)
@@ -362,7 +371,7 @@ impl SceneModel {
                 body_budget: BODY_BUDGET,
                 capsules: None,
             },
-            &mut PlainHost,
+            &mut body_presentation,
         )?;
         request.queue.submit(Some(encoder.finish()));
         // The encoded twin, not the sRGB-tagged one: the leaf declares

@@ -23,7 +23,8 @@ impl<S: SceneSource> SceneProducer<S> {
         let scene = request.for_scene();
         let mut current = self.source.inputs(&scene)?;
         current.render_scale = request.scale();
-        if !request.needs_frame && self.produced && self.signature == current {
+        if !request.needs_frame && !self.source.needs_animation_frame()
+            && self.produced && self.signature == current {
             if let Err(why) = self.source.stage_retained(&scene) {
                 self.source.discard_staged();
                 return Err(why);

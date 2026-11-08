@@ -26,7 +26,7 @@ use std::collections::BTreeMap;
 use isometer::lens::{BrickDiagnostics, Grade, TerrainAppearance};
 use isometer::{
     BodySignature, FrameRequest, Pick, Pose, ResidencySettings, Scene, SceneBody, SceneFrame,
-    SceneHost, SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
     TerrainSource,
 };
 use isocosm_core::{MapDocument, TileCoord, Token, TokenId};
@@ -37,6 +37,9 @@ use super::tokens::{TokenBodies, owner_tint, yaw_of};
 use super::view::BoardHandle;
 use super::world::BoardWorld;
 use crate::theme::{PANE_GROUND, hex_rgb};
+mod hybrid;
+pub use hybrid::BoardBodyQuality;
+use hybrid::BoardHost;
 pub(super) mod native;
 
 /// The producer key the board pane's scene leaf is registered under. Shared so
@@ -78,10 +81,10 @@ pub(super) fn board_appearance() -> TerrainAppearance {
     }
 }
 
-/// Isocosm keeps no host presentation beside the scene: no capsule roster and
-/// no substitute for a body that would not project.
+#[cfg(test)]
 pub(super) struct PlainHost;
-impl SceneHost for PlainHost {}
+#[cfg(test)]
+impl isometer::SceneHost for PlainHost {}
 
 /// What one pixel of the scene board shows.
 ///
@@ -126,6 +129,7 @@ pub struct BoardSource {
     palettes: BTreeMap<SubjectKey, Option<u64>>,
     /// Tokens the last frame drew as the placeholder body.
     placeholders: usize,
+    body_quality: BoardBodyQuality,
 }
 
 /// The producer the host registers: the skip and the pixel grid over the
@@ -145,6 +149,7 @@ impl BoardSource {
             world: None,
             palettes: BTreeMap::new(),
             placeholders: 0,
+            body_quality: BoardBodyQuality::default(),
             residency: ResidencySettings::default(),
             atlas_budget: isometer::lens::ATLAS_BUDGET_BYTES,
         }
@@ -188,6 +193,25 @@ impl BoardSource {
 
     pub fn view(&self) -> &BoardHandle {
         &self.view
+    }
+
+    /// Applies local token image quality on the next frame.
+    pub fn set_body_quality(&mut self, quality: BoardBodyQuality) {
+        self.body_quality = quality;
+    }
+
+    pub fn hybrid_stats(&self) -> Option<super::BoardHybridStats> {
+        if self.view.borrow().native.is_some() && self.native.presented.is_none() {
+            return None;
+        }
+        self.scene.as_ref().map(Scene::hybrid_stats)
+    }
+
+    pub fn hybrid_needs_frame(&self) -> bool {
+        if self.view.borrow().native.is_some() && self.native.presented.is_none() {
+            return false;
+        }
+        self.scene.as_ref().is_some_and(Scene::hybrid_needs_frame)
     }
 
     /// Tokens the last frame drew without a recipe.
@@ -390,6 +414,8 @@ impl SceneSource for BoardSource {
                 }
             })
             .collect();
+        let mut host = vec![u64::from(self.residency.headroom), self.atlas_budget];
+        BoardHost::new(self.body_quality, token_subject(view.selected_token)).append_inputs(&mut host);
         Ok(SceneSignature {
             size: request.size,
             render_scale: request.render_scale,
@@ -399,8 +425,12 @@ impl SceneSource for BoardSource {
             // edit, so `Ground::revision` stays zero for the board's lifetime.
             terrain_revision: Some(view.terrain_revision()),
             bodies,
-            host: vec![u64::from(self.residency.headroom), self.atlas_budget],
+            host,
         })
+    }
+
+    fn needs_animation_frame(&self) -> bool {
+        self.hybrid_needs_frame()
     }
 
     fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
@@ -437,6 +467,7 @@ impl SceneSource for BoardSource {
         // comes out of the source for the encode and goes straight back.
         let mut scene = self.scene.take().ok_or("the scene was not built")?;
         let held = self.view.borrow();
+        let mut host = BoardHost::new(self.body_quality, token_subject(held.selected_token));
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
@@ -490,7 +521,7 @@ impl SceneSource for BoardSource {
                 body_budget: BODY_BUDGET,
                 capsules: None,
             },
-            &mut PlainHost,
+            &mut host,
         );
         drop(bodies);
         drop(held);
@@ -532,6 +563,10 @@ impl SceneSource for BoardSource {
         self.palette_revision = None;
         self.palettes.clear();
     }
+}
+
+fn token_subject(token: Option<TokenId>) -> Option<SubjectKey> {
+    token.map(|id| SubjectKey(u64::from(id.0)))
 }
 
 impl BoardSource {

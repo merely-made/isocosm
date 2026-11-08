@@ -41,6 +41,7 @@ pub struct BoardView {
     /// What the board is saying about its tiles: the state tints, the fog and
     /// the focus elevation.
     pub overlays: Overlays,
+    pub(super) selected_token: Option<TokenId>,
     /// Bumped whenever anything the ground is grown from moves — the three
     /// terrain layers or any overlay — so the ground is regrown exactly then.
     pub(super) terrain_revision: u64,
@@ -67,6 +68,7 @@ impl BoardView {
             camera: (0.0, 0.0),
             pane: (0.0, 0.0),
             overlays: Overlays::default(),
+            selected_token: None,
             terrain_revision: 1,
             looks: BTreeMap::new(),
             library: Rc::new(Library::core()),
@@ -116,6 +118,7 @@ impl BoardView {
         self.pane = pane;
         self.camera = (pane.0 / 2.0, pane.1 * 0.82);
         self.native = None;
+        self.selected_token = None;
     }
 
     /// `token`'s look, falling back to its bare class.
@@ -147,6 +150,7 @@ impl BoardView {
     /// regrow — and the map is cloned only when one of them differs.
     pub fn sync(&mut self, ui: &UiState) {
         self.native=ui.native.world.as_ref().map(|_|super::board::native::read(ui));
+        self.selected_token = ui.selected_token;
         self.geo = ui.geo;
         self.camera = ui.camera;
         self.pane = ui.viewport;

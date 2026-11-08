@@ -11,6 +11,7 @@ impl UiState {
             camera: (0.0, 0.0),
             viewport: (0.0, 0.0),
             scene_board: false,
+            scene_body_quality: Default::default(),
             terrain_settings: TerrainSettings::default(),
             board_pick: None,
             focus_elevation: None,

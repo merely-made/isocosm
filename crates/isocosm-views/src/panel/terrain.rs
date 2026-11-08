@@ -1,6 +1,7 @@
-//! Player controls for local terrain memory and the current omitted count.
+//! Player controls for local scene quality and terrain memory.
 
 use super::*;
+use crate::scene::BoardBodyQuality;
 
 pub(super) fn controls(ui: &UiState) -> UiChild {
     if !ui.scene_board {
@@ -37,6 +38,27 @@ pub(super) fn controls(ui: &UiState) -> UiChild {
                     text(format!("{} terrain bricks omitted", settings.omitted)),
                 )
                 .attr("class", "side-line"),
+                el("div", text("Token detail")).attr("class", "side-line"),
+                el(
+                    "div",
+                    vec![
+                        map_button(
+                            "Live",
+                            ui.scene_body_quality != BoardBodyQuality::Live,
+                            |ui| {
+                                ui.scene_body_quality = BoardBodyQuality::Live;
+                            },
+                        ),
+                        map_button(
+                            "Hybrid",
+                            ui.scene_body_quality != BoardBodyQuality::Hybrid,
+                            |ui| {
+                                ui.scene_body_quality = BoardBodyQuality::Hybrid;
+                            },
+                        ),
+                    ],
+                )
+                .attr("class", "btn-row"),
             ),
         )
         .attr("class", "terrain-settings"),

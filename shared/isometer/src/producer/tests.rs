@@ -41,6 +41,7 @@ struct Specimen {
     refuse: Option<String>,
     /// Encodes this source actually ran, against the producer's own count.
     draws: u64,
+    animate: bool,
 }
 
 impl Specimen {
@@ -68,6 +69,7 @@ impl Specimen {
             half_height: 4.0,
             refuse: None,
             draws: 0,
+            animate: false,
         }
     }
 
@@ -106,6 +108,10 @@ fn scene_bodies<'a>(documents: &'a [BodyDocument], poses: &'a [Pose]) -> Vec<Sce
 }
 
 impl SceneSource for Specimen {
+    fn needs_animation_frame(&self) -> bool {
+        self.animate
+    }
+
     fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
         if let Some(why) = &self.refuse {
             return Err(why.clone());
@@ -187,6 +193,22 @@ fn request<'a>(
         needs_frame,
         render_scale: 1,
     }
+}
+
+#[test]
+fn a_presentation_only_transition_defeats_the_unchanged_input_skip() {
+    let (device, queue) = device().expect("animation gate needs a GPU");
+    let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    let frame = request(&device, &queue, false);
+    assert!(producer.render_scene(&frame).unwrap().is_some());
+    assert!(producer.render_scene(&frame).unwrap().is_none());
+    let signature = producer.signature().clone();
+    producer.source_mut().animate = true;
+    assert!(producer.render_scene(&frame).unwrap().is_some());
+    assert_eq!(*producer.signature(), signature);
+    producer.source_mut().animate = false;
+    assert!(producer.render_scene(&frame).unwrap().is_none());
+    assert_eq!(producer.renders(), 2);
 }
 
 /// One request at a leaf size and a pixel grid: `size` is the leaf's, and the

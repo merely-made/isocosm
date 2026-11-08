@@ -82,6 +82,7 @@ pub struct SceneModel {
     /// (the arrows' aim; Eponym bodies carry no facing of their own).
     pub aim: [f32; 3],
     pub appearance: Appearance,
+    pub(super) body_presentation: super::BodyPresentation,
     /// Draw the traced terrain under the bodies. The bodies-only arm is the
     /// isolated preview: same camera, same depth, no ground.
     pub terrain: bool,
@@ -119,6 +120,7 @@ impl SceneModel {
             perspective: Default::default(),
             aim: [1.0, 0.0, 0.0],
             appearance: Appearance::default(),
+            body_presentation: Default::default(),
             terrain: true,
             scene: None,
             scene_size: [0; 2],
@@ -162,6 +164,22 @@ impl SceneModel {
         self.played
     }
 
+    pub fn body_quality(&self) -> super::BodyQuality {
+        self.body_presentation.quality
+    }
+
+    pub fn set_body_quality(&mut self, quality: super::BodyQuality) {
+        self.body_presentation.quality = quality;
+    }
+
+    pub fn set_examined_subject(&mut self, subject: Option<SubjectId>) {
+        self.body_presentation.examined = subject.map(|subject| isometer::SubjectKey(subject.0));
+    }
+
+    pub fn hybrid_needs_frame(&self) -> bool {
+        self.scene.as_ref().is_some_and(isometer::Scene::hybrid_needs_frame)
+    }
+
     /// The subject the frame is centred on. Control changes through the
     /// session's own succession rule; this only follows it.
     pub fn set_played(&mut self, subject: SubjectId) {
@@ -194,6 +212,7 @@ impl SceneModel {
             let _ = self.drain_round();
         }
         self.held = Held::Plain(session);
+        self.set_examined_subject(None);
         self.forget_drawn();
     }
 
@@ -203,6 +222,7 @@ impl SceneModel {
             let _ = self.drain_round();
         }
         self.held = Held::Timed(Box::new(action));
+        self.set_examined_subject(None);
         self.forget_drawn();
     }
 
