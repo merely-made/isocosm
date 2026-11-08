@@ -204,6 +204,7 @@ impl State {
                 terrain: host.config.terrain_style,
                 terrain_y: at[1] as f32,
                 focus: host.config.dev.then(|| host.followed()).flatten(),
+                followed: host.followed(),
                 selection: committed.selection,
                 looking: host.looking(),
             };

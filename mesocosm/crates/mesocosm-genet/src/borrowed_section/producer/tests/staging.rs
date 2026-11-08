@@ -64,6 +64,7 @@ fn pending_scene_keeps_accepted_queries_and_promotes_only_its_frozen_input() {
         terrain_y: camera.centre[1],
         looking: section::perspective::Looking::overview(),
         focus: None,
+        followed: None,
         selection: None,
     };
     handle.present(&native.scene, 7, view_a.clone()).unwrap();

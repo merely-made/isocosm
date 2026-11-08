@@ -3,6 +3,26 @@
 
 use super::{BodyFrameStats, BodyMode, CritterPose, SiteScene, bodies, tenant};
 
+/// The subjects Mesocosm examines besides the played critter (Mark,
+/// 2026-11-08): the followed camera target and the dev inspection focus, its
+/// selected part's body included. Cosmograph's examined region joins once
+/// M4.8's host side exists.
+pub(super) fn examined_subjects(
+    followed: Option<u64>,
+    focus: Option<u64>,
+    selected: Option<u64>,
+) -> Vec<u64> {
+    let mut subjects: Vec<u64> = [followed, focus, selected].into_iter().flatten().collect();
+    subjects.sort_unstable();
+    subjects.dedup();
+    subjects
+}
+
+/// Any one of the played critter or an examined subject keeps a body live.
+fn examined(played: Option<u64>, examined: &[u64], subject: u64) -> bool {
+    played == Some(subject) || examined.contains(&subject)
+}
+
 /// The host policy one frame calls back into: Mesocosm's capsule stand-in for
 /// a body that would not project, and the counters only the scene can supply.
 pub(super) struct SectionHost<'a> {
@@ -19,6 +39,10 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     fn hybrid_settings(&self) -> Option<isometer::hybrid::HybridSettings> {
         self.mode.hybrid_settings()
+    }
+
+    fn hybrid_examined(&self, subject: isometer::SubjectKey) -> bool {
+        examined(self.scene.played, &self.bodies.examined, subject.0)
     }
 
     fn encode_body_tenant(
@@ -62,5 +86,27 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     fn played(&self) -> Option<&CritterPose> {
         self.bodies.played_fallback.as_ref()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn played_followed_and_dev_focus_each_keep_a_subject_examined() {
+        let set = examined_subjects(Some(4), Some(4), Some(9));
+        assert_eq!(set, [4, 9]);
+        assert!(examined(Some(1), &set, 1), "played");
+        assert!(examined(Some(1), &set, 4), "followed or dev focus");
+        assert!(examined(Some(1), &set, 9), "selected part's body");
+        assert!(!examined(Some(1), &set, 2), "an ordinary subject");
+        assert!(!examined(None, &[], 1), "nothing examined");
+        // Followed without dev: no focus or selection, still examined.
+        assert!(examined(
+            Some(1),
+            &examined_subjects(Some(7), None, None),
+            7
+        ));
     }
 }

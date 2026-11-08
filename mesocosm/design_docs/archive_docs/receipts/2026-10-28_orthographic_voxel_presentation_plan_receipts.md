@@ -436,3 +436,61 @@ release build, two GPU executions and their positive/negative controls,
 `rustfmt --check`, Python syntax parsing, scoped `git diff --check`,
 `responsa check` and the browser checks above. No new Cargo home, worktree or
 isolated target was created; the existing repository target is reused.
+
+## Mesocosm hybrid headed run (M4.7), 2026-11-08
+
+Run from the lane branch at `e09e8490` plus the M4.7 changes, built in release
+with debug info off. Command:
+`mesocosm-genet --play --seed 1793177320550931600 --mode creative --dev --paused --bodies {voxels|hybrid} [--render-scale 2] --frames 6000 --scenario testing/hybrid/m4-7.scenario`.
+Outputs, including PNG captures, receipts, `.timing.json` and the
+`compare-*.png` crops, are under
+`Code/testing/isocosm/m4-7-hybrid/2026-11-08/run3/`. Earlier tries, kept
+beside it, used the wrong zoom: at zoom 384 the bodies of roughly 100 voxels
+stayed above the live threshold, and ten-tick steps carried the played body
+off-site.
+
+Native outcomes:
+
+| Checkpoint | Tick | Hash (all three runs) |
+| --- | --- | --- |
+| near | 0 | d8eea18fe502aac1 |
+| zoom-out / far | 2 | 5be7c2e2da6c4207 |
+| zoom-in / mid | 12 | f43cdc42cb1b918d |
+| end | 17 | c763a19d3af1d832 |
+
+Hybrid counters, as deltas between snapshots, at a 24-pixel image and the
+`section/bodies.rs` bands:
+
+| Phase | Renders | Refreshes | Transition draws | Bake upload |
+| --- | --- | --- | --- | --- |
+| zoom out to 768 | 8 | 12 | 21 | 97,936 B |
+| ten ticks at 768 | 10 | 18 | 0 | 101,360 B |
+| reverse to 96 | 8 | 9 | 21 | 37,312 B |
+| five ticks at 512 | 12 | 10 | 7 | 35,856 B |
+
+- Anatomy changes: 9 during the ticks at zoom 768, 12 in total.
+- Resident atlas: 1,179,648 B. Capacity was 256 slots, capped by this
+  device's texture-array layers below the 8 MiB budget.
+- Evictions and live fallbacks: zero.
+
+Cost phases (native worker / native latency, p95, µs):
+
+| Phase | Hybrid | Voxels | Hybrid, half scale |
+| --- | --- | --- | --- |
+| zoom_out | 4,504 / 9,959 | 60 / 5,826 | 4,518 / 7,992 |
+| far_motion | 8,198 / 17,479 | 11,345 / 34,624 | 7,490 / 13,234 |
+| zoom_in | 36,954 / 45,610 | 75 / 6,046 | 14,804 / 19,387 |
+| mid_motion | 17,306 / 25,639 | 32,840 / 65,311 | 14,834 / 21,562 |
+
+The zoom_in cost is the reverse dither. It re-renders the whole scene for each
+of its 8 frames, while voxels presents once.
+
+Pixel checks:
+- Against voxels, hybrid differs only inside the body cluster's box: 553 px at
+  768 and 1,269 px at 512.
+- At the near views, which are all live, it differs by about 35,000 px. The
+  hybrid live rung is the shared, unlit body pass; voxel mode uses the lit
+  tenant.
+
+Limits: one run each, wall time on a shared machine, no GPU duration. The
+refreshes are not attributed between revision changes, pose age and facing.

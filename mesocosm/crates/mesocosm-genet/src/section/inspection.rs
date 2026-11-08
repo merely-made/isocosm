@@ -92,6 +92,18 @@ impl Section {
         )
     }
 
+    /// Mesocosm's examination for the hybrid rung, in addition to the played
+    /// critter: the followed body and the dev inspection focus.
+    pub fn set_examined(
+        &mut self,
+        followed: Option<u64>,
+        focus: Option<u64>,
+        selected: Option<BodySelection>,
+    ) {
+        self.host_bodies.examined =
+            super::host::examined_subjects(followed, focus, selected.map(|s| s.organism));
+    }
+
     pub fn set_body_focus(&mut self, subject: Option<u64>, selected: Option<BodySelection>) {
         self.scene.set_body_focus(
             subject.map(SubjectKey),

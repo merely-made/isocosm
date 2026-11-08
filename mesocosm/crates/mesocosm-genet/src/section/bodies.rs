@@ -73,6 +73,9 @@ pub(super) struct HostBodies {
     /// Capsule stand-ins for bodies whose voxels would not project.
     pub fallback: Vec<CritterPose>,
     pub played_fallback: Option<CritterPose>,
+    /// Subjects examination keeps live besides the played one; see
+    /// [`super::host::examined_subjects`].
+    pub examined: Vec<u64>,
 }
 
 impl HostBodies {
@@ -81,6 +84,7 @@ impl HostBodies {
             scale: 1.0,
             fallback: Vec::new(),
             played_fallback: None,
+            examined: Vec::new(),
         }
     }
 

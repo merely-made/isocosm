@@ -54,6 +54,9 @@ pub(crate) struct Presentation {
     pub terrain: section::TerrainStyle,
     pub terrain_y: f32,
     pub focus: Option<Id>,
+    /// The camera's body, dev or not: one of the subjects examination keeps
+    /// live in the hybrid rung.
+    pub followed: Option<Id>,
     pub selection: Option<section::BodySelection>,
     pub looking: section::perspective::Looking,
 }

@@ -1,0 +1,80 @@
+wait 600
+assert snap paused == yes
+act zoom 96
+settle 12
+capture near
+remember near
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+capture near-moved
+remember zoom-out
+cost-begin zoom_out
+act zoom 768
+settle 30
+cost-end
+capture far
+remember far
+cost-begin far_motion
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+cost-end
+capture far-moved
+remember zoom-in
+cost-begin zoom_in
+act zoom 96
+settle 30
+cost-end
+capture reversed
+remember mid
+cost-begin mid_motion
+act zoom 512
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+act .
+act enter
+settle 6
+cost-end
+capture mid
+remember end

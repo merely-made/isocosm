@@ -25,6 +25,7 @@ fn presented() -> (SceneHandle, Rc<SiteScene>, Presentation) {
         terrain_y: camera.centre[1],
         looking: section::perspective::Looking::overview(),
         focus: None,
+        followed: None,
         selection: None,
     };
     (handle, native.scene.clone(), view)

@@ -64,6 +64,7 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
         terrain_y: camera.centre[1],
         looking: section::perspective::Looking::overview(),
         focus: None,
+        followed: None,
         selection: None,
     };
     let request = FrameRequest {
@@ -108,6 +109,23 @@ fn hybrid_section_replaces_the_native_wounded_anatomy() {
     view.selection = None;
     handle.present(&original, 0, view.clone()).unwrap();
     assert!(producer.render_scene(&request).unwrap().is_some());
+    // Following the actor, without dev focus, examines it: Mesocosm's hook.
+    view.followed = Some(target);
+    handle.present(&original, 0, view.clone()).unwrap();
+    assert!(producer.render_scene(&request).unwrap().is_some());
+    let followed = producer.source().section.as_ref().unwrap().hybrid_stats();
+    assert_eq!(followed.sprite_bodies, 0, "the followed body stays live");
+    view.followed = None;
+    handle.present(&original, 0, view.clone()).unwrap();
+    let animate = FrameRequest {
+        needs_frame: true,
+        ..request
+    };
+    for _ in 0..16 {
+        producer.render_scene(&animate).unwrap();
+    }
+    let released = producer.source().section.as_ref().unwrap().hybrid_stats();
+    assert_eq!((released.sprite_bodies, released.transition_bodies), (1, 0));
     assert_eq!(session.save(), before);
 
     let mut control = Session::load(before, Execution::Individuals).unwrap();

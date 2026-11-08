@@ -76,6 +76,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
             .and_then(|id| native.scene.at(id))
             .map_or(camera.centre[1], |at| at[1] as f32),
         focus: None,
+        followed: None,
         selection: None,
         looking: section::perspective::Looking::overview(),
     };
