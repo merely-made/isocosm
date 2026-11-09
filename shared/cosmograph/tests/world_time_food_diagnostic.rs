@@ -26,6 +26,8 @@ mod ingesta;
 mod rates;
 #[path = "world_time_food_diagnostic/receipt.rs"]
 mod receipt;
+#[path = "world_time_year/recovery.rs"]
+mod recovery;
 #[path = "world_time_year/support.rs"]
 mod support;
 #[path = "world_time_year/tissue.rs"]
