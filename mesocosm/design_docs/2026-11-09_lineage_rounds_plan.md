@@ -49,6 +49,25 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1215, mesocosm.6 · plans sim · summary The sheet's tolerance axes are today's fields plus a temperature field the sim grows for it.
 
+- **D4, the order of heirs (2026-11-09), refines Mesocosm 1:** "You choose
+  from the list". Heirs are listed descendants first, nearer generations
+  first, then lineage-mates by fewest route steps from where the critter
+  died, closer relatives breaking ties; the player may take any of them, and
+  the first is the default. Offered against that order with no choice, and
+  against relatedness before distance.
+
+  Links: area Mesocosm · draws on 1204, 1217, mesocosm.1 · summary Heirs are listed descendants first, then lineage-mates by route distance with relatedness breaking ties; the player may take any, the first by default.
+
+- **D5, the body a round starts in (2026-11-09), applies Mesocosm 3:** "1 or
+  2", of a member already there with a journey to the fringe, or a critter
+  planted from the lineage's budget; a member there only was the third. Left
+  to the plan: LR1 takes the first, since the sim has no lineage budget yet.
+  In range the player takes a living member at the place; one step past it
+  they take the nearest member, which sets out on a journey there, paying
+  upkeep on the way. Planting follows with the shared budget (LR9, 1221).
+
+  Links: area Mesocosm · draws on 1211, 1221, mesocosm.3 · summary A round starts in a living member at the place, or in the nearest member journeying to a place one step past the range; planting waits for the lineage budget.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -76,6 +95,19 @@ whose line has no living member waits, and may offer to forfeit or end it
 of condition, a matter or biomass threshold, verified reachable by a forward
 copy before it is offered (1212, EB3's stop rule); solo, the agreement is the
 player's own call.
+It is built in four steps:
+- **LR1.1, succession.** One reading of heirs in the order D4 gives, shared by
+  the sim's loop and Mesocosm's checkpoint, which today each keep their own
+  (lowest id at the same site, then anywhere).
+- **LR1.2, the start.** A pick of lineage and place, refused outside the
+  range and its one-step fringe; the body is D5's. Today the lineage is fixed
+  at founding and the first life is whichever member a habitable site holds.
+- **LR1.3, the round's end.** The call after an agreed span, the first
+  condition, and waiting out with a forfeit. Today a round is a tick count and
+  nothing else ends it; the new state needs a save and replay path.
+- **LR1.4, the edit on survivors.** Controls only: a revision already changes
+  the lineage's recipe, not its members, and is refused when no body of the
+  line is left.
 - Done when, headless, by draws: a start outside the lineage's range and its
   one-step fringe is refused with a reason; a planted death hands on to
   offspring, to kin and to a far member in that order, one control each; a
@@ -87,7 +119,7 @@ player's own call.
 - Needs: `mesocosm-overlay` M4i.1; `sim` S10.2 propagules (1197) for the
   dormant control; the known-lineage reading comes with LR5, so until then
   every lineage is known.
-- Rulings: 1199, 1204, 1211, 1212, 1213, 1217; Mesocosm 1, Mesocosm 3
+- Rulings: 1199, 1204, 1211, 1212, 1213, 1217, D4, D5; Mesocosm 1, Mesocosm 3
 
 ### LR2. Drift: the success-weighted average
 Before the forward copy weighs candidates, a lineage's template moves to the
@@ -278,7 +310,27 @@ From the brief's §8, each naming the phase it holds up.
   habitable, food, water and air, with light as `sim:energy`. None is
   temperature.
 
+- 2026-11-09, the interim loop as LR1 finds it: succession is
+  `BorrowedInterim::next_life` (`directing/interim/borrowed.rs`) and,
+  separately, Mesocosm's `succession::heirs`; `sim:parent` and `sim:child`
+  are recorded at births and read by neither. The played lineage is fixed by
+  `Founding.played`, and `first_life` takes a member at a habitable site or
+  the first anywhere. There is no round type: `Pace` counts ticks and the
+  boundary fires on the epoch's tick count. `Command::Revise` replaces the
+  lineage's development, and `review::offers_using` refuses with "no body of
+  the line is left". No dormant or propagule state exists in code.
+
 ## Progress
 
+- 2026-11-09: LR1.1 built. `directing::readings::heirs` orders a lost
+  critter's heirs (descendants by generation, then route steps from its
+  site, then relatedness, then id), and `readings::route_steps` counts routes
+  both ways; the sim's `next_life` takes the first and Mesocosm's
+  `succession::heirs` lists the same order, any of which the player may take
+  (D4). Five controls in `directing/interim/tests.rs`: a child before a
+  same-site stranger; the nearer site first; a far member is an heir and the
+  lineage is not ended; unreachable sites and unknown kin last; the reading
+  the same from a replayed run. No existing test or pinned hash moved, and a
+  replay re-applies the logged `Take`, so old saves replay as before.
 - 2026-11-09: plan cut from the brief. The trophic rename (1222) landed the
   same day and is logged in the sim plan.

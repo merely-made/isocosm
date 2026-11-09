@@ -10,7 +10,7 @@
 //! The hold is the driver's; the world never learns anybody stopped.
 
 use cosmograph::directing::interim::{Happening, Interim, Turn};
-use cosmograph::schema::{Id, Method};
+use cosmograph::schema::Id;
 use cosmograph::Session;
 use serde::{Serialize, Deserialize};
 use cosmograph_overlay::Intent;
@@ -131,17 +131,10 @@ fn played_lineage(session: &Session, participant: Id) -> Option<String> {
 }
 
 /// The cohort as further lives: the life already taken up first, then the
-/// lost critter's living deliberative kin by identity.
+/// lost critter's living deliberative kin in the order cosmograph reads
+/// them (cases 1204, 1217).
 pub(crate) fn heirs(session: &Session, lost: Id, next: Option<Id>) -> Vec<Id> {
-    let pop = &session.sim.state().population;
-    let lineage = pop.get(lost).map(|e| e.lineage.clone());
     let mut heirs: Vec<Id> = next.into_iter().collect();
-    for (first, group) in &pop.groups {
-        let e = &group.entity;
-        let kin = Some(&e.lineage) == lineage.as_ref();
-        if kin && e.alive && e.method == Method::Deliberative && Some(*first) != next {
-            heirs.push(*first);
-        }
-    }
+    heirs.extend(cosmograph::directing::readings::heirs(&session.sim, lost).into_iter().filter(|h| Some(*h) != next));
     heirs
 }

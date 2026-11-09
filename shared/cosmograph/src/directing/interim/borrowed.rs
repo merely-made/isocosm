@@ -32,17 +32,7 @@ impl<'a> BorrowedInterim<'a> {
     }
 
     fn next_life(&self, near: Id) -> Option<Id> {
-        let pop = &self.session.sim.state().population;
-        let here = pop.get(near).map(|e| (&e.lineage, e.resident_site()));
-        pop.groups.iter().filter_map(|(first, g)| {
-            let e = &g.entity;
-            if !e.alive || e.method != Method::Deliberative || *first == near
-                || here.is_some_and(|(lineage, _)| *lineage != e.lineage) {
-                return None;
-            }
-            let away = here.is_some_and(|(_, p)| p.is_none() || p != e.resident_site());
-            Some((away, *first))
-        }).min().map(|(_, first)| first)
+        readings::heirs(&self.session.sim, near).first().copied()
     }
 
     pub fn round(&mut self,

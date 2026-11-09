@@ -6633,6 +6633,20 @@ summary = "The sheet's tolerance axes are today's fields plus a temperature fiel
 draws_on = ["1215", "mesocosm.6"]
 plans = ["sim"]
 
+[decisions."lineage-rounds D4"]
+title = "the order of heirs (2026-11-09), refines Mesocosm 1"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Heirs are listed descendants first, then lineage-mates by route distance with relatedness breaking ties; the player may take any, the first by default."
+draws_on = ["1204", "1217", "mesocosm.1"]
+
+[decisions."lineage-rounds D5"]
+title = "the body a round starts in (2026-11-09), applies Mesocosm 3"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A round starts in a living member at the place, or in the nearest member journeying to a place one step past the range; planting waits for the lineage budget."
+draws_on = ["1211", "1221", "mesocosm.3"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

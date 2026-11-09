@@ -196,6 +196,29 @@ fn hops_to(sim: &Simulation, target: Id) -> BTreeMap<Id, u32> {
     hops
 }
 
+/// Route steps from `site` to every site it connects with, counting each
+/// route as running both ways (cases 1204, 1217).
+pub fn route_steps(sim: &Simulation, site: Id) -> BTreeMap<Id, u32> {
+    let mut near: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
+    for (&id, s) in &sim.state().sites {
+        for r in &s.routes {
+            near.entry(id).or_default().push(r.to);
+            near.entry(r.to).or_default().push(id);
+        }
+    }
+    let mut steps = BTreeMap::from([(site, 0)]);
+    let mut queue = VecDeque::from([site]);
+    while let Some(at) = queue.pop_front() {
+        for &next in near.get(&at).into_iter().flatten() {
+            if !steps.contains_key(&next) {
+                steps.insert(next, steps[&at] + 1);
+                queue.push_back(next);
+            }
+        }
+    }
+    steps
+}
+
 /// Whether `p`'s static preconditions admit a member with `traits` at
 /// `site`: its actor traits and site conditions. Counts, ages and stores
 /// are read when the process runs, not here.
