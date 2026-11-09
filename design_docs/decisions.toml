@@ -6221,6 +6221,53 @@ area = "Ecology"
 summary = "A patch loss held elsewhere until a global loss reads held elsewhere, then global."
 draws_on = ["1173"]
 
+[cases."1192"]
+title = "Dormancy as ruled, then the consumer limit"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Dormancy is built as S10.2 says beside a control; the consumer limit follows, measured with it on."
+draws_on = ["1146", "1189"]
+plans = ["sim"]
+
+[cases."1193"]
+title = "Dormant stock is alive for extinction only"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Dormant stock keeps a lineage from extinction, reported apart; it is no resident for 1173 and never foreground."
+draws_on = ["1173"]
+
+[cases."1194"]
+title = "Seed size is a drawn, inherited lineage trait"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A producer's seed share is drawn per lineage and inherited: many cheap seeds or few robust ones."
+draws_on = ["1093", "1114"]
+plans = ["sim"]
+
+[cases."1195"]
+title = "Heavier seeds wake at less light, a keyed fraction a season"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A seed's waking light falls with its matter; a keyed fraction of a site's stock wakes each season."
+draws_on = ["973", "1194"]
+plans = ["sim"]
+
+[cases."1196"]
+title = "Dormant upkeep is a fraction of the active rate, on its law"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Dormant upkeep is a fraction of the active rate, read when needed; it follows the active rate to the mass law."
+draws_on = ["1163", "1194"]
+plans = ["sim"]
+
+[cases."1197"]
+title = "Propagules are individual bodies now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Propagules are bodies with a dormant-stage trait, visited by no pass until they wake; pooled when 1163 lands."
+draws_on = ["1163", "1174"]
+plans = ["sim"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6893,8 +6940,8 @@ draws_on = ["267", "283", "383", "879"]
 title = "Spread is overflow along routes"
 source = "design_docs/doctrine.md"
 area = "Ecology"
-summary = "Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
-draws_on = ["498", "590", "718", "827", "828", "831", "1089", "1091", "1092", "1093"]
+summary = "Overflow splits equally across transmitting routes; births scatter by air, water or walking, and seeds may lie dormant; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
+draws_on = ["498", "590", "718", "827", "828", "831", "1089", "1091", "1092", "1093", "1193", "1194", "1195", "1196"]
 
 [statements."ecology.5"]
 title = "Light and life"

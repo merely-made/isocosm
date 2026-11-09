@@ -13345,6 +13345,77 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1173 · summary A patch loss held elsewhere until a global loss reads held elsewhere, then global.
 
+1192. **Dormancy as ruled, then the consumer limit.** Ruled by Mark on
+      2026-11-08: "Dormancy, then consumers (Recommended)", over adding a
+      root floor regrowth may not lend, a breeding gate on prey matter, or
+      dormancy alone first (seed-bank brief, question 5). SC3's assessment
+      found a producer seed bank cannot pass 1173 on seeds 5 or 9 alone:
+      grazers and omnivores overshot (148 to 314 on seed 9, 171 to 350 on
+      seed 5), grazing passed production net of upkeep by month 14 to 16,
+      regrowth spent the roots by month 18 to 19, and four diets were lost
+      everywhere before a dormant stock could wake safely. Dormancy is built
+      as S10.2 says beside a no-dormancy control; SC1/SC2's consumer limit
+      follows, measured with dormancy on.
+
+      Links: area Ecology · draws on 1146, 1189 · plans sim · summary Dormancy is built as S10.2 says beside a control; the consumer limit follows, measured with it on.
+
+1193. **Dormant stock is alive for extinction only.** Ruled by Mark on
+      2026-11-08: "Extinction only (Recommended)", over counting it for
+      1173's residency too or for neither (seed-bank brief, question 3). A
+      lineage holding only propagules is not extinct, and its viable stock is
+      reported apart from living adults; it is no resident for 1173's diets
+      and never foreground.
+
+      Links: area Ecology · draws on 1173 · summary Dormant stock keeps a lineage from extinction, reported apart; it is no resident for 1173 and never foreground.
+
+1194. **Seed size is a drawn, inherited lineage trait.** Mark, answering
+      what dormancy costs: "hmm, well that opens up options: a player can
+      choose to release a bunch of cheap seeds or less, more robust seeds?
+      and the robust ones are more likely to survive because of the upkeep
+      rate?" Put back as where seed size comes from, ruled on 2026-11-08:
+      "Drawn per lineage, inherited (Recommended)", over player-set or drawn
+      and player-settable. A producer's seed share, a fixed 10 from the root
+      today (1114), is drawn per lineage within a declared range like scatter
+      propensity (1093) and inherited; heavier seeds mean fewer from the same
+      root, and selection sorts many cheap from few robust. A player steers it
+      only through whatever tools later steer traits.
+
+      Links: area Ecology · draws on 1093, 1114 · plans sim · summary A producer's seed share is drawn per lineage and inherited: many cheap seeds or few robust ones.
+
+1195. **Heavier seeds wake at less light, a keyed fraction a season.** Mark,
+      answering what wakes a propagule: "hmm. maybe seeds can have a
+      differing amount of mass, and the ones with more need less sun than the
+      ones with less mass?" Put back with seed size (1194), ruled on
+      2026-11-08: "Mass lowers threshold + keyed fraction (Recommended)", over
+      varying size per seed instead of keying, or no staggering. The light
+      share a dormant seed needs to wake (3,000 for a seedling today) falls as
+      its matter rises, and only a keyed fraction of a site's stock wakes each
+      season, so one flush cannot spend a bank into waiting grazers.
+
+      Links: area Ecology · draws on 973, 1194 · plans sim · summary A seed's waking light falls with its matter; a keyed fraction of a site's stock wakes each season.
+
+1196. **Dormant upkeep is a fraction of the active rate, on its law.** Ruled
+      by Mark on 2026-11-08: "Fraction of active, follows its law
+      (Recommended)", over the mass law for seeds now or upkeep proportional
+      to mass (seed-bank brief, question 2, put back with 1194). Dormant
+      upkeep is a stated fraction of the active rate, worked out when read
+      and accumulated deterministically; a propagule dies when its matter
+      runs out and its matter goes to the site. Active upkeep is flat per
+      body today, so a heavier seed lasts longer in proportion; both move to
+      the mass law when 1163's cohort form lands.
+
+      Links: area Ecology · draws on 1163, 1194 · plans sim · summary Dormant upkeep is a fraction of the active rate, read when needed; it follows the active rate to the mass law.
+
+1197. **Propagules are individual bodies now.** Ruled by Mark on
+      2026-11-08: "Individual propagules now (Recommended)", over a per-site
+      pool now or individuals never pooled (seed-bank brief, question 4). A
+      propagule is a body with a dormant-stage trait, carrying its own matter;
+      gated processes skip it through the filed index, its upkeep is a rate
+      and its waking a due event, so no pass visits it until it wakes. It
+      joins 1163's stage pools when the cohort form is built.
+
+      Links: area Ecology · draws on 1163, 1174 · plans sim · summary Propagules are bodies with a dormant-stage trait, visited by no pass until they wake; pooled when 1163 lands.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

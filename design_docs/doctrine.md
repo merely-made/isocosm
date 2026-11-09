@@ -672,10 +672,14 @@ carrion comes later.
 Births spread too: some land at a neighbouring site, seeds and spores
 carried by a site's air and water, a walker's young at its walking speed over
 the route's length (Bodies 16), each scaled by a drawn lineage trait. A
-lineage's range is read from where it persists. The dead's leftovers wait as detritus until decomposers make soil
+producer's seed size is drawn and inherited too; its seeds may lie dormant,
+paying a fraction of active upkeep, and wake at less light the heavier they
+are, a keyed fraction of a site's stock each season. Dormant stock keeps a
+lineage from extinction but is no resident. A lineage's range is read from
+where it persists. The dead's leftovers wait as detritus until decomposers make soil
 of them.
 
-Links: draws on 498, 590, 718, 827, 828, 831, 1089, 1091, 1092, 1093 · summary Overflow splits equally across transmitting routes; births scatter by air, water or walking; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
+Links: draws on 498, 590, 718, 827, 828, 831, 1089, 1091, 1092, 1093, 1193, 1194, 1195, 1196 · summary Overflow splits equally across transmitting routes; births scatter by air, water or walking, and seeds may lie dormant; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
 
 *Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
 rules".*
@@ -683,6 +687,10 @@ rules".*
 *Refined 2026-11-02 from cases 1089, 1091 and 1092 (Mark: "Births scatter
 along routes (Recommended)", "world:detritus", "Media + own speed
 (Recommended)").*
+
+*Refined 2026-11-08 from cases 1193 to 1196 (Mark: "maybe seeds can have a
+differing amount of mass, and the ones with more need less sun"); dormancy is
+not yet built (S10.2).*
 
 ### Ecology 5. Light and life
 
