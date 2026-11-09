@@ -244,14 +244,14 @@ three design docs that cite it. The record holds the words.
 | 383 | Harmony, order and chaos are ecological states read from balance: harmony is balanced and unmaintained, order balanced and maintained, chaos unbalanced; never stored. | none |
 | 498 | Territories and surfaces spread by overflow along routes: growth beyond substrate capacity moves to neighbours by route transmission after travel. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 590 | A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds. | none |
-| 684 | The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 684 | The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 687 | At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls. | none |
 | 689 | Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity. | none |
 | 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | none |
 | 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 764 | Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 765 | The native revision grows to tracts and systems at the boundary, built in the lineages family. | none |
+| 765 | The native revision grows to tracts and systems at the boundary, built in the lineages family. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 806 | A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 827 | Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules. | none |
 | 828 | Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source. | none |
@@ -302,6 +302,9 @@ three design docs that cite it. The record holds the words.
 | 1195 | A seed's waking light falls with its matter; a keyed fraction of a site's stock wakes each season. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
 | 1196 | Dormant upkeep is a fraction of the active rate, read when needed; it follows the active rate to the mass law. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
 | 1197 | Propagules are bodies with a dormant-stage trait, visited by no pass until they wake; pooled when 1163 lands. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
+| 1203 | A meal's yield is set by the eater's class, its kinship to the eaten and the ingredient's familiarity to its recipe. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1205 | Each edit proposes a child revision; matching edits merge, conflicting ones fork the lineage; the drift carries an unclaimed branch. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1208 | At the boundary a lineage's template moves to its members' recipes averaged by reproductive success; the forward copy weighs candidates from there. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Bodies and anatomy
 
@@ -439,6 +442,11 @@ three design docs that cite it. The record holds the words.
 | 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
 | 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1201 | A class bounds a recipe's operators and parts; a role is read from what members did, never chosen. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1202 | A recipe is a growth grammar whose ingredients add or tune rules step by step; the tagmata recipe becomes a preset. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1206 | Recipes draw on one set of growth operators that each class weights and bounds; subclasses are presets. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1207 | Classes are playstyles: plant, animal and fungus at the middle scale, and micro and macro, scales that play the same verbs differently. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1209 | A lineage changes scale class at a boundary by a major transition: multicellularity up from micro, accreting its own ecology up to macro, parasitism down. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Record and history
 
@@ -608,7 +616,7 @@ three design docs that cite it. The record holds the words.
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
 | 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [DOC README](DOC_README.md) |
 | 1051 | A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
@@ -818,6 +826,16 @@ three design docs that cite it. The record holds the words.
 | 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1172 | Hybrid is Mesocosm's default with 9e31bce4's values once bodies are lit; opt-in until then. | none |
 | 1175 | Hybrid stays opt-in until the zoom dither fits the frame and the smooth mode's contact gait is settled. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1198 | In a round the critter acts on its instinct; the player's only directive is the nudge, weighed by the bond. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1199 | A round is an epoch ended by players' agreement after an agreed span, a met condition, or nothing left to play. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1200 | Between rounds a lineage drifts by the forward copy, the player adds a draft from what it ate, and a creative mode edits freely; critters are generated from the recipe. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1204 | At a death the player continues as the critter's offspring, else its nearest kin left in the round. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1210 | A lineage becomes known by outpacing, eating, forking or meeting it; any known lineage may be watched, and directing it takes a bond. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1211 | A round starts where the lineage has members or one dispersal step beyond. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1212 | Players agree before a round on conditions from offers verified achievable and novel; a met condition ends the round. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1213 | A player's round ends when no offspring or kin is left in it; the edit lands on survivors anywhere, and with none it is lost. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1214 | A lineage's regard for a player rises with the benefit the player's lineages give it and sets each critter's starting bond; served nudges grow the bond in a life. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1215 | The sheet of needs, abilities and tolerance curves is read off the grown body, shown as a diff at the edit, each ingredient previewed. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Eponym
 

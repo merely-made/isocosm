@@ -10,6 +10,12 @@ the boundary, review, revision and speciation are native in `shared/cosmograph/s
 Open: certification of M3 and the interim M4 by draws, the headed three-epoch run, the full
 M4 (chosen in-site acts and contact reaching the same accepted world), and the
 between-epoch work below.
+2026-11-09: the [lineage-rounds brief](2026-11-09_lineage_rounds_brief.md)'s cases 1198
+to 1215 rule the between-epoch work's shape, none of it built: rounds end by an agreed
+span, a verified condition (EB3, 1212) or nothing left to play (1213); conflicting edits
+adopt or branch (EB6, 1205); the template moves to a success-weighted average before the
+forward copy (EB7, 1208); the player drafts from what the line ate (1200); succession is
+offspring, else kin (1204).
 
 **For:** Mesocosm as a game over the Cosmograph sim: directing (M3, called M3.1 to M3.3 here),
 the interim M4 at site grain (M4i.1 to M4i.3, was directing D4 and D5), the full M4 played

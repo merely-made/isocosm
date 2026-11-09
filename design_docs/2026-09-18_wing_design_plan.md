@@ -13416,6 +13416,246 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1163, 1174 · plans sim · summary Propagules are bodies with a dormant-stage trait, visited by no pass until they wake; pooled when 1163 lands.
 
+1198. **A round's critter lives by its instinct under the nudge.** Ruled by
+      Mark on 2026-11-09: "Nudge (Recommended)", over a pure watch or
+      possession at a cost (lineage-rounds brief, question 1). In a round the
+      critter acts by its own instinct, its lineage's policy and its body,
+      and the player's only directive is the nudge, weighed by the bond;
+      direct control still waits for sapience.
+
+      Links: area Mesocosm · draws on 175, 1054, mesocosm.2 · plans mesocosm-overlay · summary In a round the critter acts on its instinct; the player's only directive is the nudge, weighed by the bond.
+
+1199. **A round ends by an agreed span, a met condition or nothing left to
+      play.** Mark, asked what ends a round and opens the edit:
+      "Extinction, agreement among players after a pre agreed span of world
+      time has passed, or conditions (get x resources first!)." Offered
+      against a shared epoch clock, extinction or a cap, and extinction or
+      retiring (lineage-rounds brief, question 2). A round is an epoch
+      (Record 7): players agree to end it once a span of world time agreed
+      beforehand has passed; a condition ends it when met (1212); and a
+      player's round ends when nothing of their line is left in it to play,
+      an extinction 1213 makes local.
+
+      Links: area Mesocosm · draws on 451, 452, record.7 · plans mesocosm-overlay · summary A round is an epoch ended by players' agreement after an agreed span, a met condition, or nothing left to play.
+
+1200. **A lineage changes in three layers between rounds.** Mark, asked
+      what limits the edit: "3 as baseline aggregate drift representation,
+      1 for your input, 2 as creative (dev) mode. Oh, plus, what you can get
+      from eating something should probably pertain to your class and
+      lineage…. Think what came to mind for me was making monster hunter
+      equipment, but a bit more like making monsters… like armored core, but
+      you're generating from a recipe not hand assembling." (lineage-rounds
+      brief, question 3, its options a draft from what was eaten, free
+      editing under an upkeep budget, and picking what prospered in a
+      forward copy). The boundary's forward copy (684) is every lineage's
+      baseline drift, played or not; the player's input is a draft of
+      remaps drawn from what their line incorporated, picked within an
+      upkeep budget; free editing within the class's bounds is a creative
+      mode for development. Critters are generated from the recipe, never
+      assembled by hand. What a meal yields is 1203's.
+
+      Links: area Mesocosm · draws on 684, ecology.1 · plans mesocosm-overlay · summary Between rounds a lineage drifts by the forward copy, the player adds a draft from what it ate, and a creative mode edits freely; critters are generated from the recipe.
+
+1201. **Class bounds a lineage; its role is read from what it does.** Ruled
+      by Mark on 2026-11-09: "Class bounds, role emerges (Recommended)",
+      over class and role both declared or both emergent (lineage-rounds
+      brief, question 4). A class limits which growth operators and parts a
+      recipe may use (1206): a plant grows no pursuit motility without a
+      symbiosis or a crossing (1209). A role (producer, grazer, decomposer,
+      builder, host) is a reading of what members did, what they ate, fed,
+      broke down and built, never a choice.
+
+      Links: area Bodies and anatomy · draws on 1055, bodies.1 · summary A class bounds a recipe's operators and parts; a role is read from what members did, never chosen.
+
+1202. **The recipe is a growth grammar, ingredients contributing step by
+      step.** Mark, offered a class frame with slotted ingredients,
+      ingredients with ratios, or a growth grammar: "Wow. All three of those
+      are quite intriguing. The growth grammar with step by step ingredient
+      contributions as a model would be really fascinating. And you could
+      define each creature's body plan in a manner that feels natively
+      naturalistic, fractal, averaging the generated creature against the
+      whole to spread their genes or playing them to try to get a better
+      result than the aggregate averaging of the individual" (lineage-rounds
+      brief, question 5). A recipe is a developmental program of growth
+      rules; an ingredient adds a rule or tunes one at a step of growth, so
+      when a rule fires is itself editable, and bodies come out self-similar
+      where rules recur. Today's tagmata recipe becomes the segmented animal
+      preset (1206).
+
+      Links: area Bodies and anatomy · draws on 468, 478, bodies.6 · plans bodies · summary A recipe is a growth grammar whose ingredients add or tune rules step by step; the tagmata recipe becomes a preset.
+
+1203. **What a meal yields depends on class, kinship and familiarity.**
+      Mark, offered class digesting with kinship tuning, prey-part drops
+      gated by class, or lineage affinity: "I like 1 and 3!"
+      (lineage-rounds brief, question 6). A class decides what can be
+      extracted from what it eats: an animal tissues and organs, a plant
+      minerals from decay, a fungus compounds and enzymes, a microbe genes
+      by horizontal transfer. Kinship sets the yield, close kin taken easily
+      and distant prey potent, rare and risky; an ingredient near what the
+      recipe already is comes easily, a novel one only by exposure across
+      generations. Discovery, the lessons of eating a part whole (Ecology
+      1), is how a yield enters the draft (1200).
+
+      Links: area Ecology · draws on 1200, ecology.1, bodies.6 · summary A meal's yield is set by the eater's class, its kinship to the eaten and the ingredient's familiarity to its recipe.
+
+1204. **A dead critter is succeeded by its offspring, else its nearest
+      kin.** Ruled by Mark on 2026-11-09: "Offspring, else kin
+      (Recommended)", over any living member or the nearest member
+      (lineage-rounds brief, question 7). When the played critter dies the
+      player continues as its offspring, else its nearest kin left in the
+      round (1213); having young is how a player keeps playing a line.
+      Mesocosm 1's choice at a birth stands.
+
+      Links: area Mesocosm · draws on 202, mesocosm.1 · summary At a death the player continues as the critter's offspring, else its nearest kin left in the round.
+
+1205. **Conflicting edits adopt or branch.** Ruled by Mark on 2026-11-09:
+      "Adopt or branch (Recommended)", over a weighted blend or the biggest
+      share deciding (lineage-rounds brief, question 8). Each edit to a
+      lineage proposes a child revision; matching edits merge and
+      conflicting ones fork the lineage, so a disagreement between players,
+      or between a player and the drift, ends in speciation. The drift
+      carries a branch nobody claims. This rules the concurrency the overlay
+      plan's EB6 left open.
+
+      Links: area Ecology · draws on 182, ecology.1 · plans mesocosm-overlay · summary Each edit proposes a child revision; matching edits merge, conflicting ones fork the lineage; the drift carries an unclaimed branch.
+
+1206. **One set of growth operators, weighted and bounded per class.** Ruled
+      by Mark on 2026-11-09: "Shared operators, class presets
+      (Recommended)", over a grammar per class or one universal L-system
+      (lineage-rounds brief, question 9). He had asked that the definitions
+      wait on the mechanisms: "defining those [mechanisms] per
+      kingdom/role/form should be done after establishing decent
+      mechanisms". The operators, a reading until built, are repeat, branch,
+      differentiate by position, symmetry, fuse, switch on a condition,
+      accrete and allocate (the brief's §4); each class weights and bounds
+      them, subclasses are presets, and crossing a class line unlocks
+      another class's operators.
+
+      Links: area Bodies and anatomy · draws on 1202, bodies.6 · plans bodies · summary Recipes draw on one set of growth operators that each class weights and bounds; subclasses are presets.
+
+1207. **Classes are playstyles; micro and macro are scales that play
+      differently.** Mark, offered macro as a scale any class reaches, its
+      own class, or world-level and unplayable: "when a creature gets big
+      enough that it accretes its own ecology, it's sort of a class of its
+      own, right? i agree with 1 in spirit but i meant to divide different
+      types of playstyles with the classes, that's all. it's not
+      scientifically... accurate or anything... just like if stuff gets
+      small enough, it fundamentally plays different (micro). now if a duck
+      critter became really small and acted like germs, not really the same
+      thing; same if it became the size of the world. the basic behaviors
+      apply to different scales of environments in ways that are
+      fundamentally different, right? so it'd play differently."
+      (lineage-rounds brief, question 10). Five classes divide playstyles,
+      not taxa: plant, animal and fungus at the middle scale, and micro and
+      macro, scales whose physics plays the same verbs differently. Macro
+      is reached by accreting an ecology of one's own; a lineage keeps its
+      lifestyle in its recipe at any scale. The names wait for a naming
+      round (Naming 3).
+
+      Links: area Bodies and anatomy · draws on 1201, bodies.1 · summary Classes are playstyles: plant, animal and fungus at the middle scale, and micro and macro, scales that play the same verbs differently.
+
+1208. **A lineage's template moves to its members' success-weighted
+      average.** Ruled by Mark on 2026-11-09: "Success-weighted average
+      (Recommended)", over the best member winning or an average plus top
+      picks (lineage-rounds brief, question 11). At the boundary the
+      template becomes the average of its members' recipes, each weighted
+      by reproductive success, as an evolution strategy updates its mean;
+      the played critter counts like any member, so beating the aggregate
+      pulls the average harder. The forward copy (1200) weighs candidates
+      from there.
+
+      Links: area Ecology · draws on 684, 1200, ecology.1 · summary At the boundary a lineage's template moves to its members' recipes averaged by reproductive success; the forward copy weighs candidates from there.
+
+1209. **A lineage crosses scales by major transitions.** Ruled by Mark on
+      2026-11-09: "Via major transitions (Recommended)", over scale fixed at
+      founding or free at the edit (lineage-rounds brief, question 12).
+      Crossing is a class change at a boundary, gated by biology's major
+      transitions: micro to the middle scale by multicellularity or
+      aggregation, the middle scale to macro by accreting an ecology of its
+      own; a line may also shrink into a parasite or symbiont. The playstyle
+      changes when it crosses.
+
+      Links: area Bodies and anatomy · draws on 1207, bodies.1 · summary A lineage changes scale class at a boundary by a major transition: multicellularity up from micro, accreting its own ecology up to macro, parasitism down.
+
+1210. **Discovering a lineage makes it watchable; directing it takes a
+      bond.** Mark, offered outpacing, eating, one's own forks and meeting
+      as ways to unlock a lineage, chose all four: "Think about it this way;
+      you can watch any creature you discover, but are they gonna listen to
+      you? You have to be able to bond with 'em to direct 'em, right? So
+      maybe we should be asking how to bond with creatures… and i would
+      argue that establishing a synergistic relationship would improve the
+      lineage's opinion of your input (keyed identity by persona seed?).
+      Idk. But all these definitely work to add 'em to your pokedex so to
+      speak" (lineage-rounds brief, question 13). A lineage becomes known to
+      a player who outpaces it in biomass, incorporates its members, forks
+      it from their own or meets it; any known lineage may be watched, and
+      its critters heed the player only as far as a bond allows (1214).
+
+      Links: area Mesocosm · draws on mesocosm.2, mesocosm.3 · summary A lineage becomes known by outpacing, eating, forking or meeting it; any known lineage may be watched, and directing it takes a bond.
+
+1211. **A round starts where its lineage lives, or one hop beyond.** Ruled
+      by Mark on 2026-11-09: "Where it lives, or one hop (Recommended)",
+      over anywhere within its tolerances or only its range (lineage-rounds
+      brief, question 14). A player picks a known lineage and a start among
+      the places it has members or one dispersal step past them; a start
+      past the range seeds a new one, at its risk.
+
+      Links: area Mesocosm · draws on 1210, mesocosm.3 · summary A round starts where the lineage has members or one dispersal step beyond.
+
+1212. **A round's conditions are picked from verified offers.** Ruled by
+      Mark on 2026-11-09: "Pick from verified offers (Recommended)", over
+      player-written conditions or both (lineage-rounds brief, question 15).
+      The game offers a handful of conditions verified achievable and novel
+      for the world, the overlay plan's EB3 stop rule, and players agree on
+      one or more before the round; a met condition ends it (1199), Record
+      7's gated rule.
+
+      Links: area Mesocosm · draws on 1199, record.7 · plans mesocosm-overlay · summary Players agree before a round on conditions from offers verified achievable and novel; a met condition ends the round.
+
+1213. **A round's extinction is local; the edit lands on survivors.** Mark,
+      asked what becomes of an edit when the played lineage dies out (the
+      framing's "When they all die … edit the lineage you played last",
+      against the project description's "your line continues or it does
+      not" and Mesocosm 3): "I guess i just meant local extinction, in a
+      round. Like if there is no offspring or kin to play left. But 1", the
+      first option "Lands on survivors (Recommended)", over re-founding from
+      the edit or losing it (lineage-rounds brief, question 16). A round
+      ends for a player when no offspring or kin is left in it to play; the
+      lineage may live on elsewhere. The edit applies to what survives
+      anywhere (members elsewhere, dormant propagules, the nearest living
+      fork), and with nothing left it is lost.
+
+      Links: area Mesocosm · draws on 1197, 1199, mesocosm.3 · summary A player's round ends when no offspring or kin is left in it; the edit lands on survivors anywhere, and with none it is lost.
+
+1214. **A lineage's regard comes from synergy; a critter's bond from served
+      nudges.** Ruled by Mark on 2026-11-09: "Synergy + served nudges
+      (Recommended)", over synergy alone or served nudges alone
+      (lineage-rounds brief, question 17), drawn from his words in 1210.
+      When a player's lineages benefit a lineage (pollinating, dispersing,
+      cleaning or feeding it), its regard for that player rises; regard sets
+      each new critter's starting bond, and nudges that serve the critter
+      grow it within a life. Regard is keyed to the player's persona, the
+      participant entity, by a persona seed, and heritable within a bound,
+      so a wild line can be domesticated by effort (mesocosm-overlay D3's
+      candidate).
+
+      Links: area Mesocosm · draws on 1054, 1210, mesocosm-overlay D3, mesocosm.2 · summary A lineage's regard for a player rises with the benefit the player's lineages give it and sets each critter's starting bond; served nudges grow the bond in a life.
+
+1215. **The systems sheet is derived from the grown body, with previews.**
+      Mark proposed it: "i think the armored core/ftl abstraction is to
+      describe the resultant creature in a systems oriented and statistical
+      manner w/rt its needs/abilities/the environmental ranges that it could
+      exist in, maybe?" Ruled on 2026-11-09: "Derived, with previews", over
+      derived alone or summed from ingredients (lineage-rounds brief,
+      question 18). A lineage's sheet reads needs (upkeep by body size,
+      nutrients), abilities (speed, reach, force, senses, fecundity,
+      dispersal) and tolerance curves (temperature, moisture, light,
+      salinity) off the grown body, never the recipe. At the edit it shows
+      as a diff, upkeep and mass its caps, and each ingredient previews its
+      expected contribution before the player commits.
+
+      Links: area Mesocosm · draws on 1200, 1202 · plans mesocosm-overlay · summary The sheet of needs, abilities and tolerance curves is read off the grown body, shown as a diff at the edit, each ingredient previewed.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

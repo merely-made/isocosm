@@ -6268,6 +6268,140 @@ summary = "Propagules are bodies with a dormant-stage trait, visited by no pass 
 draws_on = ["1163", "1174"]
 plans = ["sim"]
 
+[cases."1198"]
+title = "A round's critter lives by its instinct under the nudge"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "In a round the critter acts on its instinct; the player's only directive is the nudge, weighed by the bond."
+draws_on = ["175", "1054", "mesocosm.2"]
+plans = ["mesocosm-overlay"]
+
+[cases."1199"]
+title = "A round ends by an agreed span, a met condition or nothing left to play"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A round is an epoch ended by players' agreement after an agreed span, a met condition, or nothing left to play."
+draws_on = ["451", "452", "record.7"]
+plans = ["mesocosm-overlay"]
+
+[cases."1200"]
+title = "A lineage changes in three layers between rounds"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Between rounds a lineage drifts by the forward copy, the player adds a draft from what it ate, and a creative mode edits freely; critters are generated from the recipe."
+draws_on = ["684", "ecology.1"]
+plans = ["mesocosm-overlay"]
+
+[cases."1201"]
+title = "Class bounds a lineage; its role is read from what it does"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A class bounds a recipe's operators and parts; a role is read from what members did, never chosen."
+draws_on = ["1055", "bodies.1"]
+
+[cases."1202"]
+title = "The recipe is a growth grammar, ingredients contributing step by step"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A recipe is a growth grammar whose ingredients add or tune rules step by step; the tagmata recipe becomes a preset."
+draws_on = ["468", "478", "bodies.6"]
+plans = ["bodies"]
+
+[cases."1203"]
+title = "What a meal yields depends on class, kinship and familiarity"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A meal's yield is set by the eater's class, its kinship to the eaten and the ingredient's familiarity to its recipe."
+draws_on = ["1200", "bodies.6", "ecology.1"]
+
+[cases."1204"]
+title = "A dead critter is succeeded by its offspring, else its nearest kin"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "At a death the player continues as the critter's offspring, else its nearest kin left in the round."
+draws_on = ["202", "mesocosm.1"]
+
+[cases."1205"]
+title = "Conflicting edits adopt or branch"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Each edit proposes a child revision; matching edits merge, conflicting ones fork the lineage; the drift carries an unclaimed branch."
+draws_on = ["182", "ecology.1"]
+plans = ["mesocosm-overlay"]
+
+[cases."1206"]
+title = "One set of growth operators, weighted and bounded per class"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Recipes draw on one set of growth operators that each class weights and bounds; subclasses are presets."
+draws_on = ["1202", "bodies.6"]
+plans = ["bodies"]
+
+[cases."1207"]
+title = "Classes are playstyles; micro and macro are scales that play differently"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Classes are playstyles: plant, animal and fungus at the middle scale, and micro and macro, scales that play the same verbs differently."
+draws_on = ["1201", "bodies.1"]
+
+[cases."1208"]
+title = "A lineage's template moves to its members' success-weighted average"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "At the boundary a lineage's template moves to its members' recipes averaged by reproductive success; the forward copy weighs candidates from there."
+draws_on = ["684", "1200", "ecology.1"]
+
+[cases."1209"]
+title = "A lineage crosses scales by major transitions"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A lineage changes scale class at a boundary by a major transition: multicellularity up from micro, accreting its own ecology up to macro, parasitism down."
+draws_on = ["1207", "bodies.1"]
+
+[cases."1210"]
+title = "Discovering a lineage makes it watchable; directing it takes a bond"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A lineage becomes known by outpacing, eating, forking or meeting it; any known lineage may be watched, and directing it takes a bond."
+draws_on = ["mesocosm.2", "mesocosm.3"]
+
+[cases."1211"]
+title = "A round starts where its lineage lives, or one hop beyond"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A round starts where the lineage has members or one dispersal step beyond."
+draws_on = ["1210", "mesocosm.3"]
+
+[cases."1212"]
+title = "A round's conditions are picked from verified offers"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Players agree before a round on conditions from offers verified achievable and novel; a met condition ends the round."
+draws_on = ["1199", "record.7"]
+plans = ["mesocosm-overlay"]
+
+[cases."1213"]
+title = "A round's extinction is local; the edit lands on survivors"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A player's round ends when no offspring or kin is left in it; the edit lands on survivors anywhere, and with none it is lost."
+draws_on = ["1197", "1199", "mesocosm.3"]
+
+[cases."1214"]
+title = "A lineage's regard comes from synergy; a critter's bond from served nudges"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A lineage's regard for a player rises with the benefit the player's lineages give it and sets each critter's starting bond; served nudges grow the bond in a life."
+draws_on = ["1054", "1210", "mesocosm-overlay D3", "mesocosm.2"]
+
+[cases."1215"]
+title = "The systems sheet is derived from the grown body, with previews"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "The sheet of needs, abilities and tolerance curves is read off the grown body, shown as a diff at the edit, each ingredient previewed."
+draws_on = ["1200", "1202"]
+plans = ["mesocosm-overlay"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6758,8 +6892,8 @@ amends = ["279", "673"]
 title = "Forms"
 source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
-summary = "Kingdom is class, scale orthogonal; bodies are part trees; molds are territories and micro life surfaces, expressing functions by matter per place."
-draws_on = ["39", "58", "467", "480", "488", "497", "499", "500"]
+summary = "Classes are playstyles, micro and macro scales among them; a class bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces."
+draws_on = ["39", "58", "467", "480", "488", "497", "499", "500", "1201", "1207", "1209"]
 
 [statements."bodies.2"]
 title = "Geometry is isometer's, physiology the sim's"
@@ -6793,8 +6927,8 @@ draws_on = ["446", "455", "459", "460", "463", "464", "504", "523", "544", "551"
 title = "Recipes and growth"
 source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
-summary = "A lineage carries a recipe of part templates and a lexicon; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity."
-draws_on = ["468", "478", "479", "511", "516", "531", "world.8"]
+summary = "A lineage's recipe is a growth grammar of shared operators weighted per class, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity."
+draws_on = ["468", "478", "479", "511", "516", "531", "1202", "1206", "world.8"]
 
 [statements."bodies.7"]
 title = "Life-history traits"
@@ -6919,8 +7053,8 @@ draws_on = ["103", "866", "1010", "vtt.4"]
 title = "Two doors change a lineage"
 source = "design_docs/doctrine.md"
 area = "Ecology"
-summary = "Reproduction rerolls expression; the epoch boundary changes the lineage; every lineage adapts against the web."
-draws_on = ["57", "182", "684", "764", "765", "806"]
+summary = "Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow class, kinship and familiarity; conflicting edits adopt or branch."
+draws_on = ["57", "182", "684", "764", "765", "806", "1200", "1203", "1205", "1208"]
 
 [statements."ecology.2"]
 title = "Regions follow biomass"
@@ -7045,22 +7179,22 @@ draws_on = ["919", "1064"]
 title = "What the player plays"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The player plays a critter whose lineage relates by its traits, directed until it is sapient; keeps the parent at a birth; speciating is the player's act."
-draws_on = ["155", "175", "183", "202", "671", "682", "1056"]
+summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; keeps the parent at a birth and continues as offspring or kin at a death; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204"]
 
 [statements."mesocosm.2"]
 title = "The only directive is a nudge"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The only directive is a nudge by click; standing orders grow from attention; trust is kept per kind of direction; bond and trust carry by world setting."
-draws_on = ["176", "177", "178", "205", "214", "215", "216", "228", "1054"]
+summary = "The only directive is a nudge by click; a critter's bond starts from its lineage's regard, earned by synergy, and grows from served nudges; trust is kept per kind of direction; bond and trust carry by world setting."
+draws_on = ["176", "177", "178", "205", "214", "215", "216", "228", "1054", "1214"]
 
 [statements."mesocosm.3"]
 title = "Starting, losing and going on"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "Start from habitability or later; a regional collapse is survivable; a total collapse ends the game, still watchable."
-draws_on = ["179", "181", "229", "230", "751", "753"]
+summary = "A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span, a verified condition or nothing left to play; the edit lands on survivors; a total collapse ends the game."
+draws_on = ["179", "181", "229", "230", "751", "753", "1199", "1210", "1211", "1212", "1213"]
 
 [statements."mesocosm.4"]
 title = "Physical space is the game's"
@@ -7075,6 +7209,13 @@ source = "design_docs/doctrine.md"
 area = "Mesocosm"
 summary = "Mesocosm defaults to A1, to statistical agreement and to 2 ticks a second, following measurement."
 draws_on = ["961", "978", "sim-execution D2"]
+
+[statements."mesocosm.6"]
+title = "The edit and its sheet"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; the edit reads against a sheet derived from the grown body, previewed per ingredient."
+draws_on = ["1200", "1215", "bodies.6", "ecology.1"]
 
 [statements."method.1"]
 title = "Evidence is drawn, not picked"
@@ -7432,7 +7573,7 @@ title = "Epochs and deep time"
 source = "design_docs/doctrine.md"
 area = "Record and history"
 summary = "An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs."
-draws_on = ["451", "452"]
+draws_on = ["451", "452", "1199", "1212"]
 
 [statements."schema.1"]
 title = "Authored content is native"

@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-03:** every area reviewed (2026-10-22), 138 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1215 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1 and Mesocosm 1 to 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -617,18 +617,28 @@ Links: draws on 5, 84, 86, record.3 · summary Reach stores arrivals; knowing is
 
 Reproduction rerolls expression, a lottery set by the heterogeneity of its
 genes; the epoch boundary changes the lineage itself, like the shop between
-rounds, folding in the variants that prospered (tracts and systems). Every
-lineage, played or not, adapts, inherits and develops there, weighing its
-adaptation against the rest of the web by growing a copy forward. Discovery is
-the lessons learned from eating a part whole. Lineages take their boundary
-turns by metabolic complexity: distinct functions and systems across all
-living members. A player may branch or fork a line, with a plan to compete or
+rounds, folding in what prospered (tracts and systems). There its template
+moves to its members' recipes averaged by reproductive success, and every
+lineage, played or not, weighs candidates from there against the rest of the
+web by growing a copy forward: its baseline drift. A player adds a draft
+drawn from what their line incorporated (Mesocosm 6). Discovery is the
+lessons learned from eating a part whole; what a meal can teach depends on
+the eater's class, its kinship to the eaten and how familiar the ingredient
+is to its recipe. Lineages take their boundary turns by metabolic
+complexity: distinct functions and systems across all living members.
+Conflicting edits adopt or branch: matching ones merge and conflicting ones
+fork the line, as a player may also fork it, with a plan to compete or
 cooperate with its origin.
 
-Links: draws on 57, 182, 684, 764, 765, 806 · summary Reproduction rerolls expression; the epoch boundary changes the lineage; every lineage adapts against the web.
+*Not yet built:* the success-weighted average, yields by class, kinship and
+familiarity, and adopt-or-branch between concurrent edits.
 
-*Reviewed 2026-10-22, new; drafted beside a materials statement Mark sent to
-the schema's area (case 97).*
+Links: draws on 57, 182, 684, 764, 765, 806, 1200, 1203, 1205, 1208 · summary Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow class, kinship and familiarity; conflicting edits adopt or branch.
+
+*Refined 2026-11-09 from cases 1200, 1203, 1205 and 1208 (Mark: "3 as baseline
+aggregate drift representation, 1 for your input, 2 as creative (dev) mode"),
+drafted without a card round at his word: "Brief, cases, doctrine
+(Recommended)".*
 
 ### Ecology 2. Regions follow biomass
 
@@ -733,20 +743,31 @@ Links: draws on 96, 97, 98, 100, 139, 739, 836, 1007 · summary A world's materi
 
 ### Bodies 1. Forms
 
-Kingdom is class, and scale is orthogonal to it: micro and macro forms play
-beside plant, animal and fungus. A body is a part tree, each part attaching to
-its parent; a terrain-body is a tree whose parts are big enough to carry
-places. A mold or fungus is one entity whose body is a territory: its matter
-in each covered place's ledger under its key, acting and spreading there.
-Micro life is a surface: its matter on places and in hosts under its
-lineage's key, its lineage its only identity, revising its genes by forking
-strains where a host or place selects. A territory or surface expresses its
-lineage's functions at each place, scaled by the matter it holds there.
+Classes divide playstyles, not taxa: plant, animal and fungus at the middle
+scale, and micro and macro, scales whose physics plays the same verbs
+differently; a lineage keeps its lifestyle in its recipe at any scale. A
+class bounds which growth operators and parts a recipe may use (Bodies 6); a
+role is read from what members did, never chosen. A lineage crosses scales by
+a major transition at a boundary: multicellularity or aggregation up from
+micro, accreting its own ecology up to macro, parasitism or symbiosis down. A
+body is a part tree, each part attaching to its parent; a terrain-body is a
+tree whose parts are big enough to carry places. A mold or fungus is one
+entity whose body is a territory: its matter in each covered place's ledger
+under its key, acting and spreading there. Micro life is a surface: its
+matter on places and in hosts under its lineage's key, its lineage its only
+identity, revising its genes by forking strains where a host or place
+selects. A territory or surface expresses its lineage's functions at each
+place, scaled by the matter it holds there.
 
-Links: draws on 39, 58, 467, 480, 488, 497, 499, 500 · summary Kingdom is class, scale orthogonal; bodies are part trees; molds are territories and micro life surfaces, expressing functions by matter per place.
+*Not yet built:* class bounds on operators, roles as readings, and crossings
+between scales; territories, surfaces and strains are built at site grain.
 
-*Reviewed 2026-10-22, new; checked built (territories, surfaces and strains
-at site grain). Mark: "As drafted".*
+Links: draws on 39, 58, 467, 480, 488, 497, 499, 500, 1201, 1207, 1209 · summary Classes are playstyles, micro and macro scales among them; a class bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces.
+
+*Refined 2026-11-09 from cases 1201, 1207 and 1209 (Mark: "it's not
+scientifically... accurate or anything... just like if stuff gets small
+enough, it fundamentally plays different (micro)"), drafted without a card
+round at his word: "Brief, cases, doctrine (Recommended)".*
 
 ### Bodies 2. Geometry is isometer's, physiology the sim's
 
@@ -814,19 +835,29 @@ and 456".*
 
 ### Bodies 6. Recipes and growth
 
-A lineage carries a recipe (tagmata of segment templates bearing kinds, with
-counts, variance and absence odds) and a placement policy; a kind is a part
-template, a box and its cells' functions, and the lexicon is the kinds it may
-express (World 8 draws founded recipes). Each child draws its own soma by its
-seed, so siblings differ. A body whose parts are full grows the next part it
-lacks toward the lineage's recipe, nearest the root first, at a cell's mass a
-cell, in the order its life-history traits set (Bodies 7). A body not hungry
-whose bite would take a whole part lands it at the first free box, teaching
-its lineage the kind; affinity decides how it lands.
+A lineage carries a recipe and a placement policy. The recipe is a growth
+grammar whose rules come from one set of operators (repeat, branch,
+differentiate by position, symmetry, fuse, switch on a condition, accrete,
+allocate), weighted and bounded by class, its subclasses presets; an
+ingredient adds a rule or tunes one at a step of growth. Today's recipe,
+tagmata of segment templates bearing kinds with counts, variance and absence
+odds, is the segmented animal preset. A kind is a part template, a box and
+its cells' functions, and the lexicon is the kinds it may express (World 8
+draws founded recipes). Each child draws its own soma by its seed, so
+siblings differ. A body whose parts are full grows the next part it lacks
+toward the lineage's recipe, nearest the root first, at a cell's mass a cell,
+in the order its life-history traits set (Bodies 7). A body not hungry whose
+bite would take a whole part lands it at the first free box, teaching its
+lineage the kind; affinity decides how it lands.
 
-Links: draws on 468, 478, 479, 511, 516, 531, world.8 · summary A lineage carries a recipe of part templates and a lexicon; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity.
+*Not yet built:* the grammar and its operators; the tagmata recipe is built.
 
-*Reviewed 2026-10-22, new; checked built. Mark: "Order traits apart".*
+Links: draws on 468, 478, 479, 511, 516, 531, 1202, 1206, world.8 · summary A lineage's recipe is a growth grammar of shared operators weighted per class, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity.
+
+*Refined 2026-11-09 from cases 1202 and 1206 (Mark: "The growth grammar with
+step by step ingredient contributions as a model would be really
+fascinating"), drafted without a card round at his word: "Brief, cases,
+doctrine (Recommended)".*
 
 ### Bodies 7. Life-history traits
 
@@ -1120,10 +1151,11 @@ so under the default year a century is a hundred.
 
 *Not yet built:* the gated rule, which is named only.
 
-Links: draws on 451, 452 · summary An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs.
+Links: draws on 451, 452, 1199, 1212 · summary An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs.
 
-*Reviewed 2026-10-22, new: drafted in the Processes review and placed here
-beside ages at Mark's word ("Epochs to Record").*
+*Applied 2026-11-09 by cases 1199 and 1212, Mesocosm's rounds as epochs
+(Mesocosm 3): "agreement among players after a pre agreed span of world time
+has passed, or conditions (get x resources first!)".*
 
 ## World generation
 
@@ -1915,20 +1947,19 @@ Links: draws on 923, 924, 959, 960, 962, record.1 · summary isonetry is the fam
 
 The player plays a critter of its lineage, and how the rest of the lineage
 relates depends on its traits: competitors, a cohort, or extensions of one
-organism (a fungal monocreature, a swarm). Mesocosm directs its critter, and
-drives one only once it is sapient (Directing 3). At a birth the player keeps the parent by default and may take
-the offspring, reversibly. Speciating (splitting the line and naming it; "the
-name is the doing") is the player's act; expressing a candidate is the
-critter's own development.
+organism (a fungal monocreature, a swarm). Mesocosm directs its critter,
+which lives by its own instinct under the nudge (Mesocosm 2), and drives one
+only once it is sapient (Directing 3). At a birth the player keeps the parent
+by default and may take the offspring, reversibly; at a death they continue
+as its offspring, else its nearest kin left in the round (Mesocosm 3).
+Speciating (splitting the line and naming it; "the name is the doing") is
+the player's act; expressing a candidate is the critter's own development.
 
-Links: draws on 155, 175, 183, 202, 671, 682, 1056 · summary The player plays a critter whose lineage relates by its traits, directed until it is sapient; keeps the parent at a birth; speciating is the player's act.
+Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; keeps the parent at a birth and continues as offspring or kin at a death; speciating is the player's act.
 
-*Refined 2026-10-31 from case 1056 ("in Mesocosm once a lineage is
-sapient") and Mark's words that day: "for direct control, you have to be
-able to embody the creature, which requires that they be sapient, so if you
-develop your lineage to sapience you get a real advantage in interacting with
-the world in the roguelike's rounds"; drafted without a card round at his
-word: "For the doctrine statements, you can rewrite".*
+*Refined 2026-11-09 from cases 1198 and 1204 (Mark: "Nudge (Recommended)",
+"Offspring, else kin (Recommended)"), drafted without a card round at his
+word: "Brief, cases, doctrine (Recommended)".*
 
 ### Mesocosm 2. The only directive is a nudge
 
@@ -1936,36 +1967,53 @@ A click draws the critter's attention to a place (a place-graph handle) or a
 thing, which it answers by its own lights, weighed by its bond; a right click
 shows a ring of its possible acts toward the target. No gesture warns:
 avoidance comes from experience and stance. Priorities, ranges, homes and
-stances grow from where attention keeps leading. The bond grows from how well
-the nudges served the critter, and under it the critter keeps trust per kind
-of direction (a place to range, a thing to approach, an act toward a target,
-keyed also by the target's lineage), learned from how following it turned out
-against what it expected: trusted kinds are taken faster, distrusted ones
+stances grow from where attention keeps leading. A critter's bond starts
+from its lineage's regard for the player, which rises when the player's
+lineages benefit it (pollinating, dispersing, cleaning, feeding), is keyed to
+the player's persona and is heritable within a bound; it grows from how well
+the nudges served the critter. Under it the critter keeps trust per kind of
+direction (a place to range, a thing to approach, an act toward a target,
+keyed also by the target's lineage), learned from how following it turned
+out against what it expected: trusted kinds are taken faster, distrusted ones
 hesitated over and then refused, and trust fades as memory does. Whether bond
 and trust carry to the next generation is a world setting (fresh, seeded,
 whole), seeded by default.
 
-*Not yet built:* trust per kind of direction.
+*Not yet built:* trust per kind of direction, and regard.
 
-Links: draws on 176, 177, 178, 205, 214, 215, 216, 228, 1054 · summary The only directive is a nudge by click; standing orders grow from attention; trust is kept per kind of direction; bond and trust carry by world setting.
+Links: draws on 176, 177, 178, 205, 214, 215, 216, 228, 1054, 1214 · summary The only directive is a nudge by click; a critter's bond starts from its lineage's regard, earned by synergy, and grows from served nudges; trust is kept per kind of direction; bond and trust carry by world setting.
 
-*Refined 2026-10-31 from case 1054 (Mark: "Per kind of direction
-(Recommended)"), drafted without a card round at his word: "For the doctrine
-statements, you can rewrite".*
+*Refined 2026-11-09 from case 1214 (Mark: "establishing a synergistic
+relationship would improve the lineage's opinion of your input (keyed identity
+by persona seed?)"), drafted without a card round at his word: "Brief, cases,
+doctrine (Recommended)".*
 
 ### Mesocosm 3. Starting, losing and going on
 
-A player starts when they choose: at the start of the world's habitability for
-their critter (the first epoch boundary where a site meets the lineage's
-conditions and a member lives there), or with as much added time as they like.
-Losing is not the end: after a regional collapse members migrate along routes
-and the player may start again elsewhere; when a lineage ends the player picks
-another here or a new world, their call. A total collapse ends the world as a
-game, still watchable.
+A round is an epoch (Record 7). A player picks a lineage they know (one they
+outpaced in biomass, incorporated, forked from their own or met: any known
+lineage may be watched, but only a bond makes its critters heed) and a start
+where it has members or one dispersal step beyond. A line's first round may
+start at the world's habitability for it (the first epoch boundary where a
+site meets its conditions and a member lives there), or with as much added
+time as they like. A round ends when players agree once a span of world time
+agreed beforehand has passed, when a condition picked from verified offers is
+met, or, for a player, when no offspring or kin is left in it to play. The
+lineage may live on elsewhere: the edit lands on what survives (members
+elsewhere, dormant propagules, the nearest living fork), and with nothing
+left it is lost. After a regional collapse members migrate along routes;
+when a lineage ends the player picks another here or a new world, their
+call. A total collapse ends the world as a game, still watchable.
 
-Links: draws on 179, 181, 229, 230, 751, 753 · summary Start from habitability or later; a regional collapse is survivable; a total collapse ends the game, still watchable.
+*Not yet built:* rounds as such: picking a known lineage and a start,
+agreed spans and verified conditions, and landing an edit on survivors.
 
-*Reviewed 2026-10-22, new. Put with the seeing statement, which Mark folded into Directing 1.*
+Links: draws on 179, 181, 229, 230, 751, 753, 1199, 1210, 1211, 1212, 1213 · summary A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span, a verified condition or nothing left to play; the edit lands on survivors; a total collapse ends the game.
+
+*Refined 2026-11-09 from cases 1199 and 1210 to 1213 (Mark: "I guess i just
+meant local extinction, in a round. Like if there is no offspring or kin to
+play left"), drafted without a card round at his word: "Brief, cases, doctrine
+(Recommended)".*
 
 ### Mesocosm 4. Physical space is the game's
 
@@ -1993,6 +2041,28 @@ Links: draws on 961, 978, sim-execution D2 · summary Mesocosm defaults to A1, t
 
 *Refined 2026-10-22 from the execution plan's D2 (Mark: "Also name it in
 Mesocosm 5").*
+
+### Mesocosm 6. The edit and its sheet
+
+Between rounds a player edits the lineage they played last, over the drift
+every lineage takes (Ecology 1): a draft of remaps drawn from what the line
+incorporated, picked within an upkeep budget, and, as a creative mode for
+development, free editing within the class's bounds. Critters are generated
+from the recipe (Bodies 6), never assembled by hand. The edit reads against
+a systems sheet derived from the grown body, never summed from the recipe:
+needs (upkeep by body size, nutrients), abilities (speed, reach, force,
+senses, fecundity, dispersal) and tolerance curves (temperature, moisture,
+light, salinity). It shows as a diff, upkeep and mass its caps, and each
+ingredient previews its expected contribution before the player commits.
+
+*Not yet built:* the draft, the creative mode and the sheet.
+
+Links: draws on 1200, 1215, ecology.1, bodies.6 · summary A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; the edit reads against a sheet derived from the grown body, previewed per ingredient.
+
+*New 2026-11-09 from cases 1200 and 1215 (Mark: "like armored core, but you're
+generating from a recipe not hand assembling"; "Derived, with previews"),
+drafted without a card round at his word: "Brief, cases, doctrine
+(Recommended)".*
 
 ## Eponym
 
