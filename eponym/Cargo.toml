@@ -30,9 +30,9 @@ members = [
 # upstream vello 0.10 still requires wgpu 29. Without this the graph carries
 # two wgpu majors and netrender's vello rasterizer stops type-checking
 # against this workspace's wgpu 30. Retires when a wgpu-30 vello ships.
-netrender-vello = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
-netrender-vello-encoding = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
-netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
+netrender-vello = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
+netrender-vello-encoding = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
+netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
 # Genet's vendored layout. `[patch]` does not inherit through a git dep, so a
 # consumer of genet-livery restates it at the same genet revision the
 # workspace dependencies pin (plan P0). No parley or fontique row: genet

@@ -49,9 +49,9 @@ mandrake = { git = "https://github.com/merely-made/mere.git", branch = "main", o
 # order to build standalone. Consumed by path from a product workspace, the
 # product's own identical patch table is the one that applies.
 [patch.crates-io]
-netrender-vello = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
-netrender-vello-encoding = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
-netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", rev = "dfb9b53b315561887761deff319afed08cc33ff0" }
+netrender-vello = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
+netrender-vello-encoding = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
+netrender-vello-shaders = { git = "https://github.com/mark-ik/vello", branch = "mark-ik/all-vellos" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
 # No taffy row: Livery and Buckram select the published genet-taffy 0.16, as
