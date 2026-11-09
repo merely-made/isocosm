@@ -6546,6 +6546,34 @@ area = "Bodies and anatomy"
 summary = "The lineage-rounds brief's kingdom kits are each kingdom's default preset, open to tuning."
 draws_on = ["1206", "1232", "1233"]
 
+[cases."1236"]
+title = "A parasite or symbiont is a part on its host's tree"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A parasite or symbiont is a part on its host's tree keeping its own lineage key; affinity and the graft allowance decide rejection."
+draws_on = ["1220", "bodies.3", "bodies.6"]
+
+[cases."1237"]
+title = "It steers its host by where it attaches"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A parasite or symbiont's access follows its attachment: gut taps intake, nerves add nudges to the host's choices, reproductive parts carry it into offspring."
+draws_on = ["1236", "bodies.10", "directing.4"]
+
+[cases."1238"]
+title = "Parasite and mutualist are one dial, rent paid by function"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "One dial sets what a parasite or symbiont takes against the functions it gives its host; regard follows the balance, and long mutualism may become a composite."
+draws_on = ["1214", "1220", "1236"]
+
+[cases."1239"]
+title = "It reaches a new host by being eaten, by contact, into offspring or by a free-living stage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A parasite or symbiont changes hosts by being eaten along the food web, by contact, through the host's offspring, or by a free-living stage."
+draws_on = ["1236", "1237"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -7143,6 +7171,13 @@ source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
 summary = "Speed is a world baseline times the root of leg over a reference leg, legless bodies at body lengths a second, stride capped by drawn joint ranges; it bounds handbacks and sets out-of-view travel."
 draws_on = ["1085", "1087", "1088", "1112", "bodies.1", "stack.12"]
+
+[statements."bodies.17"]
+title = "Parasites and symbionts"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "A parasite or symbiont is a part on its host's tree with its own lineage key; attachment gives access; one dial sets take against give; it changes hosts by eating, contact, offspring or a free stage."
+draws_on = ["1220", "1236", "1237", "1238", "1239", "bodies.3", "bodies.10"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"

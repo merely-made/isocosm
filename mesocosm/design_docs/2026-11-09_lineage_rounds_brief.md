@@ -272,6 +272,10 @@ to commit) are not cases.
 | 37 | Where active abilities come from | 1233 | Read off the body; mimicry is a skill of its own | Bodies 3 refined |
 | 38 | How active abilities pay | 1234 | Spend above an activity threshold; upkeep below it | Bodies 3 refined |
 | 39 | The kingdom kits | 1235 | Starting presets (§13) | None |
+| 40 | What a parasite or symbiont is | 1236 | A part on the host's tree | Bodies 17 new |
+| 41 | How it steers its host | 1237 | By where it attaches | Bodies 17 new |
+| 42 | Parasite and mutualist | 1238 | One dial, rent by function | Bodies 17 new |
+| 43 | How it reaches a new host | 1239 | Eaten, contact, offspring, a free-living stage | Bodies 17 new |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -420,3 +424,24 @@ and only exertion past a threshold the body sets spends (1234).
 | **Microbe** | Chemical gradients, quorum | Gene switches (1223) | Switch repertoire, plasmid capacity | Plasmid one-shots |
 | **World-class** | Births, deaths, tides, plates, vents | Time flow and cycles (1216) | Cycle lengths, chemistry, climate | Floods, droughts, eruptions, blooms, cast through conditions |
 | **Colony** | Pheromones; a ridden member's senses | Trails, castes, calls, the nest (1229) | Caste repertoire, queen fecundity, nest kinds | Calls: alarm, recruit, evacuate |
+
+## 14. The parasite or symbiont
+
+The second candidate kingdom designed (1236 to 1239; doctrine Bodies 17).
+
+- **What it is.** A part on its host's tree that keeps its own lineage key.
+  Living matter is already typed by lineage, and incorporated parts already
+  land by affinity under a graft allowance, so rejection is the host's
+  immune response. One body on one host at a time: a microbe is a
+  population across many.
+- **Steering.** Access follows attachment through the host's systems: the
+  gut taps intake, the nerves add nudges to the host's choices, the
+  reproductive parts carry it into the offspring. Choosing and moving the
+  attachment is the play.
+- **One dial.** What it takes against what it gives. Giving is a function
+  the host lacks: fixing energy as a coral's algae do, digesting, a toxin,
+  light. The host lineage's regard (1214) follows the balance, and a
+  mutualism kept long enough may become a composite (1220).
+- **Changing hosts.** Being eaten along the food web, the host steered into
+  its predator's mouth as Toxoplasma steers a mouse; contact; the host's
+  offspring; or a free-living stage of eggs, larvae or seeds.

@@ -451,6 +451,10 @@ three design docs that cite it. The record holds the words.
 | 1233 | An active move exists where the body's functions and systems can perform it; mimicking another lineage's ability is itself a heritable skill. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1234 | A body's ordinary activity is paid inside its upkeep; exertion beyond a threshold the body sets spends matter or energy, efficiency raising the threshold. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1235 | The lineage-rounds brief's kingdom kits are each kingdom's default preset, open to tuning. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1236 | A parasite or symbiont is a part on its host's tree keeping its own lineage key; affinity and the graft allowance decide rejection. | none |
+| 1237 | A parasite or symbiont's access follows its attachment: gut taps intake, nerves add nudges to the host's choices, reproductive parts carry it into offspring. | none |
+| 1238 | One dial sets what a parasite or symbiont takes against the functions it gives its host; regard follows the balance, and long mutualism may become a composite. | none |
+| 1239 | A parasite or symbiont changes hosts by being eaten along the food web, by contact, through the host's offspring, or by a free-living stage. | none |
 
 ## Record and history
 

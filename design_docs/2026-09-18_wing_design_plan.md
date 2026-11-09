@@ -13921,6 +13921,49 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1206, 1232, 1233 · summary The lineage-rounds brief's kingdom kits are each kingdom's default preset, open to tuning.
 
+1236. **A parasite or symbiont is a part on its host's tree.** Ruled by
+      Mark on 2026-11-09: "A part on the host's tree (Recommended)", over a
+      body inside the host as a place, or either by size (lineage-rounds
+      brief, question 40). It attaches as a part that keeps its own lineage
+      key, living matter being typed by lineage (Bodies 3); affinity and the
+      graft allowance decide whether the host rejects it, and it may detach
+      into a free-living stage (1239). It differs from a microbe in number:
+      one body on one host at a time, where a microbe is a population across
+      many.
+
+      Links: area Bodies and anatomy · draws on 1220, bodies.3, bodies.6 · summary A parasite or symbiont is a part on its host's tree keeping its own lineage key; affinity and the graft allowance decide rejection.
+
+1237. **It steers its host by where it attaches.** Ruled by Mark on
+      2026-11-09: "By where it attaches (Recommended)", over a general sway
+      or no steering (lineage-rounds brief, question 41). Position gives
+      access through the host's systems (Bodies 10): on the gut it taps
+      intake, on the nerves it adds nudges to the host's choices, on the
+      reproductive parts it rides into the offspring. Choosing and moving
+      its attachment is the play.
+
+      Links: area Bodies and anatomy · draws on 1236, bodies.10, directing.4 · summary A parasite or symbiont's access follows its attachment: gut taps intake, nerves add nudges to the host's choices, reproductive parts carry it into offspring.
+
+1238. **Parasite and mutualist are one dial, rent paid by function.** Ruled
+      by Mark on 2026-11-09: "One dial, rent by function (Recommended)",
+      over a choice at founding or two kingdoms (lineage-rounds brief,
+      question 42). The player sets what it takes against what it gives;
+      giving is expressing a function the host lacks (fixing energy,
+      digesting, a toxin, light). The host lineage's regard follows the
+      balance (1214), and a mutualism kept long enough may become a
+      composite (1220).
+
+      Links: area Bodies and anatomy · draws on 1214, 1220, 1236 · summary One dial sets what a parasite or symbiont takes against the functions it gives its host; regard follows the balance, and long mutualism may become a composite.
+
+1239. **It reaches a new host by being eaten, by contact, into offspring or
+      by a free-living stage.** Mark took all four offered (lineage-rounds
+      brief, question 43). Being eaten moves it through staged hosts along
+      the food web, the host steered into its predator's mouth; contact
+      moves it between hosts touching, mating, grooming or nesting together;
+      it rides the host's reproduction into its young; and it may detach as
+      eggs, larvae or seeds that wait or wander for the next host.
+
+      Links: area Bodies and anatomy · draws on 1236, 1237 · summary A parasite or symbiont changes hosts by being eaten along the food web, by contact, through the host's offspring, or by a free-living stage.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 140 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1235 (the lineage-rounds brief) refine Bodies 1, Bodies 3, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 141 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1239 (the lineage-rounds brief) refine Bodies 1, Bodies 3, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Bodies 17 and Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -1048,6 +1048,30 @@ Links: draws on 1085, 1087, 1088, 1112, bodies.1, stack.12 · summary Speed is a
 a factor on the baseline of 1", "Froude × joint swing (Recommended)", "Yes,
 drawn per lineage (Recommended)"); refined the same day by case 1112
 ("Relative Froude (Recommended)").*
+
+### Bodies 17. Parasites and symbionts
+
+A parasite or symbiont is a part on its host's tree that keeps its own
+lineage key; affinity and the graft allowance decide whether the host
+rejects it. It is one body on one host at a time, where a microbe is a
+population across many. Its access follows its attachment through the
+host's systems (Bodies 10): on the gut it taps intake, on the nerves it adds
+nudges to the host's choices, on the reproductive parts it rides into the
+offspring. One dial sets what it takes against what it gives, giving being a
+function the host lacks; the host lineage's regard follows the balance, and
+a mutualism kept long enough may become a composite. It reaches a new host
+by being eaten along the food web, by contact, through the host's offspring,
+or by a free-living stage.
+
+*Not yet built:* all of it; a candidate kingdom (case 1220). Incorporated
+parts landing by affinity under a graft allowance are built.
+
+Links: draws on 1220, 1236, 1237, 1238, 1239, bodies.3, bodies.10 · summary A parasite or symbiont is a part on its host's tree with its own lineage key; attachment gives access; one dial sets take against give; it changes hosts by eating, contact, offspring or a free stage.
+
+*New 2026-11-09 from cases 1236 to 1239 (Mark: "A part on the host's tree
+(Recommended)", "By where it attaches (Recommended)", "One dial, rent by
+function (Recommended)"), drafted without a card round at his word: "Brief,
+cases, doctrine (Recommended)".*
 
 ## Record and history
 
