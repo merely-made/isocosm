@@ -6611,6 +6611,28 @@ summary = "Start a broad effect catalogue with explicit edition correspondences 
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
 
+[decisions."lineage-rounds D1"]
+title = "the first slice (2026-11-09), applies Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The first slice is the solo loop on today's bodies: rounds, drift, the draft and the sheet, before the growth grammar."
+draws_on = ["1200", "1215", "mesocosm.6"]
+
+[decisions."lineage-rounds D2"]
+title = "drift and draft together (2026-11-09), applies Ecology 1"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "The player's drafted remaps are scored by the forward copy beside the averaged template, and the player chooses with the scores in view."
+draws_on = ["684", "1200", "1208", "ecology.1"]
+
+[decisions."lineage-rounds D3"]
+title = "the sheet's tolerance axes (2026-11-09), applies Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The sheet's tolerance axes are today's fields plus a temperature field the sim grows for it."
+draws_on = ["1215", "mesocosm.6"]
+plans = ["sim"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

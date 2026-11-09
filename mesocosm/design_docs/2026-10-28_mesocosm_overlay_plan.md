@@ -15,7 +15,9 @@ to 1215 rule the between-epoch work's shape, none of it built: rounds end by an 
 span, a verified condition (EB3, 1212) or nothing left to play (1213); conflicting edits
 adopt or branch (EB6, 1205); the template moves to a success-weighted average before the
 forward copy (EB7, 1208); the player drafts from what the line ate (1200); succession is
-offspring, else kin (1204).
+offspring, else kin (1204). Building them is the
+[lineage-rounds plan](2026-11-09_lineage_rounds_plan.md)'s (LR1 to LR3, LR9), which extends EB3,
+EB6 and EB7 and stands on M4i.1 and M4i.2.
 
 **For:** Mesocosm as a game over the Cosmograph sim: directing (M3, called M3.1 to M3.3 here),
 the interim M4 at site grain (M4i.1 to M4i.3, was directing D4 and D5), the full M4 played

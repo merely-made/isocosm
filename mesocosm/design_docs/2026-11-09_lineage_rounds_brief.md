@@ -8,7 +8,9 @@ the same day (§10) answered eight more as cases 1216 to 1222, and a third pass 
 word is *kingdom*, not *class* (1219), so read §3 to §7's "class" as
 "kingdom"; the five are named plant, animal, fungus, microbe and world-class
 (1218). Built: the sim's producer, consumer or decomposer reading renamed
-`Trophic` (1222). The rest is unbuilt; open questions are in §8.
+`Trophic` (1222). The rest is unbuilt; open questions are in §8. Building
+it is the [lineage-rounds plan](2026-11-09_lineage_rounds_plan.md)'s, cut the
+same day.
 
 **For:** the mechanisms under Mesocosm's rounds, settled before any
 per-class, per-role or per-form content, as Mark asked: what a class is, what
