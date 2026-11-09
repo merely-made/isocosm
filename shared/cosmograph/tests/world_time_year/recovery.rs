@@ -41,12 +41,14 @@ pub struct Route {
 pub enum Resolution {
     /// A native return within six months.
     Returned,
-    /// No return in time, the diet held elsewhere in the footprint meanwhile.
+    /// No return in time, the diet held elsewhere in the footprint when
+    /// the patch lost it. A later global loss overtaking it is reported on
+    /// its own (1191).
     HeldElsewhere,
-    /// Neither: the footprint lost the diet too.
-    Unresolved,
     /// The run ended inside the six months, the diet held elsewhere.
     Open,
+    /// Lost with the whole footprint at the same sample: that global loss.
+    Global,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -55,6 +57,8 @@ pub struct PatchLoss {
     pub site: Id,
     pub lost_month: u64,
     pub returned_month: Option<u64>,
+    /// The month a global loss overtook a patch held elsewhere (1191).
+    pub overtaken_month: Option<u64>,
     pub routes: Vec<Route>,
     pub resolution: Resolution,
 }
@@ -178,10 +182,10 @@ pub fn judge(months: &[Residents]) -> (Vec<PatchLoss>, Vec<GlobalLoss>) {
                 }
                 let back = (m + 1..months.len()).find(|&r| at(r, site, d));
                 let six = RETURN_MONTHS as usize;
-                let elsewhere = (m..back.unwrap_or(months.len())).all(|k| held(k, d));
+                let overtaken = (m..back.unwrap_or(months.len())).find(|&k| !held(k, d));
                 let resolution = match back {
                     Some(r) if r - m <= six => Resolution::Returned,
-                    _ if !elsewhere => Resolution::Unresolved,
+                    _ if overtaken == Some(m) => Resolution::Global,
                     None if months.len() - 1 - m < six => Resolution::Open,
                     _ => Resolution::HeldElsewhere,
                 };
@@ -190,6 +194,7 @@ pub fn judge(months: &[Residents]) -> (Vec<PatchLoss>, Vec<GlobalLoss>) {
                     site,
                     lost_month: m as u64,
                     returned_month: back.map(|r| r as u64),
+                    overtaken_month: overtaken.filter(|&k| k > m).map(|k| k as u64),
                     routes: vec![],
                     resolution,
                 });
@@ -211,10 +216,11 @@ pub fn lineage_losses(living: &[BTreeMap<Key, u64>]) -> Vec<LineageLoss> {
         .collect()
 }
 
-/// Passed over a full two years with no failing loss; failed on any
-/// global loss or unresolved patch loss however short the run.
-pub fn outcome(patch: &[PatchLoss], global: &[GlobalLoss], months: u64) -> super::Outcome {
-    if !global.is_empty() || patch.iter().any(|l| l.resolution == Resolution::Unresolved) {
+/// Passed over a full two years with no global loss; failed on any global
+/// loss however short the run. A patch loss fails only as part of one: it
+/// was returned, held elsewhere or lost with the footprint (1191).
+pub fn outcome(_patch: &[PatchLoss], global: &[GlobalLoss], months: u64) -> super::Outcome {
+    if !global.is_empty() {
         super::Outcome::Failed
     } else if months >= 24 {
         super::Outcome::Passed
