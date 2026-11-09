@@ -298,8 +298,8 @@ three design docs that cite it. The record holds the words.
 | 1191 | A patch loss held elsewhere until a global loss reads held elsewhere, then global. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1192 | Dormancy is built as S10.2 says beside a control; the consumer limit follows, measured with it on. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
 | 1193 | Dormant stock keeps a lineage from extinction, reported apart; it is no resident for 1173 and never foreground. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
-| 1194 | A producer's seed share is drawn per lineage and inherited: many cheap seeds or few robust ones. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
-| 1195 | A seed's waking light falls with its matter; a keyed fraction of a site's stock wakes each season. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
+| 1194 | A producer's seed share is drawn per lineage and inherited: many cheap seeds or few robust ones. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1195 | A seed's waking light falls with its matter; a keyed fraction of a site's stock wakes each season. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1196 | Dormant upkeep is a fraction of the active rate, read when needed; it follows the active rate to the mass law. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
 | 1197 | Propagules are bodies with a dormant-stage trait, visited by no pass until they wake; pooled when 1163 lands. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [seed bank](../mesocosm/design_docs/2026-11-08_seed_bank_brief.md) |
 | 1203 | A meal's yield is set by the eater's class, its kinship to the eaten and the ingredient's familiarity to its recipe. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
@@ -447,6 +447,10 @@ three design docs that cite it. The record holds the words.
 | 1206 | Recipes draw on one set of growth operators that each class weights and bounds; subclasses are presets. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1207 | Classes are playstyles: plant, animal and fungus at the middle scale, and micro and macro, scales that play the same verbs differently. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1209 | A lineage changes scale class at a boundary by a major transition: multicellularity up from micro, accreting its own ecology up to macro, parasitism down. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1232 | A kingdom makes some functions cheap and others dear but forbids none; crossing makes the dear ones cheap. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1233 | An active move exists where the body's functions and systems can perform it; mimicking another lineage's ability is itself a heritable skill. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1234 | A body's ordinary activity is paid inside its upkeep; exertion beyond a threshold the body sets spends matter or energy, efficiency raising the threshold. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1235 | The lineage-rounds brief's kingdom kits are each kingdom's default preset, open to tuning. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Record and history
 
@@ -846,7 +850,7 @@ three design docs that cite it. The record holds the words.
 | 1225 | Any strain may decompose, infect, aid, join or disperse through its switches; its strategy is read from what it did; joining a host is a transition to a composite. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1226 | A microbe player may aid or infect another player's critter; mutualism earns the host lineage's regard, and nudges are the counterplay. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1228 | A colony is played from its aggregate view, riding any member; it pools resources, members sacrifice for collective goals, and hormones and pheromones set castes and tasks. | none |
-| 1229 | A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes. | none |
+| 1229 | A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1230 | Only a colony's reproductives breed; losing the queen is a crisis; daughter colonies from nuptial flights are the lineage's critters for succession. | none |
 | 1231 | A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds. | none |
 

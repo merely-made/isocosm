@@ -268,6 +268,10 @@ to commit) are not cases.
 | 33 | How a colony is steered | 1229 | Trails, castes, calls riding the trail network, the nest | Mesocosm 7 new |
 | 34 | How a colony lives and breeds | 1230 | The queen is the germ line | Mesocosm 7 new |
 | 35 | How a colony is paced | 1231 | Both, live and by events, not tied to zoom | Mesocosm 7 new |
+| 36 | How hard a kingdom's boundary is | 1232 | Weights, not gates | Bodies 3 refined |
+| 37 | Where active abilities come from | 1233 | Read off the body; mimicry is a skill of its own | Bodies 3 refined |
+| 38 | How active abilities pay | 1234 | Spend above an activity threshold; upkeep below it | Bodies 3 refined |
+| 39 | The kingdom kits | 1235 | Starting presets (§13) | None |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -399,3 +403,20 @@ The first candidate kingdom designed (1228 to 1231; doctrine Mesocosm 7).
   watched, and its colony-level choices also fall due at colony events (a
   raid, a find, a threat to the queen, flight season), as a microbe's do.
   Mark: "idk about by zoom, but definitely both!"
+
+## 13. Kingdom kits
+
+The starting presets (1235), over the shared mechanisms. A kingdom weights
+functions and never gates them (1232); active moves are read off the body,
+and taking another lineage's (mimicry, kleptoplasty, plasmids) is a
+heritable skill of its own (1233); ordinary activity is paid inside upkeep,
+and only exertion past a threshold the body sets spends (1234).
+
+| Kingdom | Senses | Verbs | Traits | Abilities |
+|---|---|---|---|---|
+| **Plant** | Light share, soil share, crowding | Allocate (root, shoot, seed, store); time (flower, leaf drop, dormancy) | Growth form (Hallé and Oldeman's models), seed size and waking (1194, 1195), toxicity | Defence flush when grazed; lure pollinators and seed-carriers, earning regard (1214); poison neighbours' soil; mast years |
+| **Animal** | Nerves: sight, smell radius, hearing, extended by organs | The nudge, stances (Mesocosm 2) | Segments and limbs, size (Bodies 16), diet, armour | Sprint, strike, burrow, call, hide; kleptoplasty its road to fixing energy |
+| **Fungus** | Its matter here, the gradient downhill | Where the frontier extends; when to fruit; which roots to trade with | Hyphal density, enzymes, fruiting trigger | Spore burst; mycorrhizal trade; relaying sensing across its territory; zombifying a host |
+| **Microbe** | Chemical gradients, quorum | Gene switches (1223) | Switch repertoire, plasmid capacity | Plasmid one-shots |
+| **World-class** | Births, deaths, tides, plates, vents | Time flow and cycles (1216) | Cycle lengths, chemistry, climate | Floods, droughts, eruptions, blooms, cast through conditions |
+| **Colony** | Pheromones; a ridden member's senses | Trails, castes, calls, the nest (1229) | Caste repertoire, queen fecundity, nest kinds | Calls: alarm, recruit, evacuate |

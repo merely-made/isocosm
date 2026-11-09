@@ -13875,6 +13875,52 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Mesocosm · draws on 1224, 1228 · summary A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds.
 
+1232. **A kingdom weights functions; it never gates them.** Ruled by Mark
+      on 2026-11-09: "Weights, not gates (Recommended)", over hard gates or
+      gates on the player's verbs only (lineage-rounds brief, question 36).
+      Any kingdom may grow any function (Bodies 3); its kingdom makes some
+      cheap and others dear, and crossing (1209) is what makes the dear ones
+      cheap.
+
+      Links: area Bodies and anatomy · draws on 1201, 1209, bodies.3 · summary A kingdom makes some functions cheap and others dear but forbids none; crossing makes the dear ones cheap.
+
+1233. **An active ability is read off the body; taking another's is a skill
+      of its own.** Mark, offered abilities drafted from what a lineage met,
+      fixed per kingdom, or read off the body: "I do think mimicry is
+      possible but might be a skill in and of itself (not everything can).
+      My first thought was traits, but 3 is pretty good." (lineage-rounds
+      brief, question 37). An active move exists where the body's functions
+      and systems can perform it: a strong enough leg can sprint. Taking
+      another lineage's ability (mimicry, kleptoplasty, a microbe's
+      plasmids, 1223) is itself a heritable skill that not every lineage
+      has.
+
+      Links: area Bodies and anatomy · draws on 1223, bodies.3, bodies.10 · summary An active move exists where the body's functions and systems can perform it; mimicking another lineage's ability is itself a heritable skill.
+
+1234. **Activity below a threshold is upkeep; above it, it spends.** Mark,
+      offered metabolic spend, charges per round or cooldowns: "I like 1!
+      But eh, i do think some things shouldn't really cost much to do, so
+      maybe 1 above a threshold of activity, and below that, the costs are
+      swept into general body costs? Idk, i guess there is a possibly
+      micromanagement of basic capabilities i would likely want to avoid or
+      place on a larger bound by making those abilities more efficient or
+      drawing from a bigger pool…?" (lineage-rounds brief, question 38).
+      Read as physiology's metabolic scope: a body's ordinary activity is
+      paid inside its upkeep, and only exertion beyond a threshold the body
+      sets spends matter or energy of its own. Efficiency and a larger pool
+      raise the threshold, so basic capabilities are never micromanaged.
+
+      Links: area Bodies and anatomy · draws on mesocosm.6 · summary A body's ordinary activity is paid inside its upkeep; exertion beyond a threshold the body sets spends matter or energy, efficiency raising the threshold.
+
+1235. **The brief's kingdom kits are the starting presets.** Ruled by Mark
+      on 2026-11-09: "As starting presets (Recommended)", over tweaking
+      first or recording only the rulings (lineage-rounds brief, question
+      39). Each kingdom's senses, verbs, traits and abilities as the brief's
+      §13 tabulates them are its default kit, preset content over the shared
+      mechanisms and open to tuning.
+
+      Links: area Bodies and anatomy · draws on 1206, 1232, 1233 · summary The lineage-rounds brief's kingdom kits are each kingdom's default preset, open to tuning.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

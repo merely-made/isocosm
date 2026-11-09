@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 140 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1231 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 140 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1235 (the lineage-rounds brief) refine Bodies 1, Bodies 3, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -801,11 +801,22 @@ share of the part's cells, so form decides how well; the table of fits is
 what the generator draws by default. Living matter is typed by lineage, and a
 shape's identity is its roles. Forms are generated from geometric and
 functional primitives by nested composition, construction setting
-capabilities and limits; capability, repertoire and proficiency differ.
+capabilities and limits; capability, repertoire and proficiency differ. A
+kingdom weights functions, cheap or dear, and never gates one. An active
+move exists where the body's functions and systems can perform it; taking
+another lineage's ability (mimicry, kleptoplasty, plasmids) is itself a
+heritable skill. Ordinary activity is paid inside upkeep; only exertion past
+a threshold the body sets spends matter or energy, efficiency raising it.
 
-Links: draws on 273, 277, 278, 338, 339, 407, 461, 466, 492, 493 · summary Fifteen functions in one catalogue; no shape gates a function, each scaling with one measurement by cell share; forms compose from primitives.
+*Not yet built:* kingdom weights, the activity threshold and mimicry as a
+skill; the catalogue and its scaling are built.
 
-*Reviewed 2026-10-22, new; checked built. Mark: "Split the shape names".*
+Links: draws on 273, 277, 278, 338, 339, 407, 461, 466, 492, 493, 1232, 1233, 1234 · summary Fifteen functions in one catalogue; no shape or kingdom gates a function; active moves are read off the body; mimicry is a skill; activity past a threshold spends, below it is upkeep.
+
+*Refined 2026-11-09 from cases 1232 to 1234 (Mark: "maybe 1 above a threshold
+of activity, and below that, the costs are swept into general body costs"),
+drafted without a card round at his word: "Brief, cases, doctrine
+(Recommended)".*
 
 ### Bodies 4. Shape names
 
