@@ -5,12 +5,12 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The vitals panel over the native world: what the played critter holds,
-//! the kingdom its body reads as (`kingdom::of`), how it feeds, what its
+//! the trophic reading its body makes (`trophic::of`), how it feeds, what its
 //! graft allowance leaves (`rules::Compatibility`), and the enclosure's
 //! windows. The core answers what is; this crate says it.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use cosmograph::kingdom::{self, Kingdom};
+use cosmograph::trophic::{self, Trophic};
 use cosmograph::mosaic::ports::feeding;
 use cosmograph::schema::{Entity, Id};
 use cosmograph::simulation::Simulation;
@@ -37,7 +37,7 @@ pub struct Vitals {
     pub notice: Option<String>,
     pub replacement: Option<String>,
     pub warning: Option<String>,
-    pub kingdom: Option<String>,
+    pub trophic: Option<String>,
     pub feeding: Option<String>,
     pub graft: Option<String>,
 }
@@ -54,11 +54,11 @@ pub fn held_mg(e: &Entity) -> u64 {
     e.accounts.values().chain(parts).fold(0, |a, b| a.saturating_add(*b))
 }
 
-pub fn kingdom_word(kingdom: Kingdom) -> &'static str {
-    match kingdom {
-        Kingdom::Producer => "kingdom:flora",
-        Kingdom::Consumer => "kingdom:fauna",
-        Kingdom::Decomposer => "kingdom:myco",
+pub fn trophic_word(trophic: Trophic) -> &'static str {
+    match trophic {
+        Trophic::Producer => "trophic:producer",
+        Trophic::Consumer => "trophic:consumer",
+        Trophic::Decomposer => "trophic:decomposer",
     }
 }
 
@@ -92,8 +92,8 @@ pub fn vitals_of_with_terms(
         notice: notice.filter(|_| energy_mg.is_some()),
         replacement: trend.map(replacement_words),
         warning: trend.and_then(warning_words),
-        kingdom: e.and_then(kingdom::of)
-            .map(|k| terms.form(kingdom_word(k), "indefinite").to_owned()),
+        trophic: e.and_then(trophic::of)
+            .map(|k| terms.form(trophic_word(k), "indefinite").to_owned()),
         feeding: e.map(|e| terms.form(crate::dev::part::feeding_word(feeding(e)), "verb").to_owned()),
         graft: critter.filter(|_| e.is_some()).and_then(|id| allowance_words(sim, id)),
     }
@@ -155,7 +155,7 @@ pub fn vital_rows(vitals: &Vitals) -> Vec<(&'static str, String)> {
     for (key, value) in [
         ("wounded", &wounded),
         ("mood", &mood),
-        ("body", &vitals.kingdom),
+        ("body", &vitals.trophic),
         ("feeds", &vitals.feeding),
         ("graft", &vitals.graft),
         ("replacement", &vitals.replacement),

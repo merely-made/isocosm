@@ -3,8 +3,12 @@
 **Status:** 2026-11-09: put to Mark as five card rounds on 2026-11-09, opened
 by his roguelike framing (§1). Its eighteen answers are cases 1198 to 1215
 (§7). Doctrine refined from them the same day: Bodies 1, Bodies 6, Ecology 1
-and Mesocosm 1 to 3 refined, Record 7 applied, Mesocosm 6 new. Nothing is
-built. The open questions are in §8.
+and Mesocosm 1 to 3 refined, Record 7 applied, Mesocosm 6 new. A second pass
+the same day (§10) answered eight more as cases 1216 to 1222: the playstyle's
+word is *kingdom*, not *class* (1219), so read §3 to §7's "class" as
+"kingdom"; the five are named plant, animal, fungus, microbe and world-class
+(1218). Built: the sim's producer, consumer or decomposer reading renamed
+`Trophic` (1222). The rest is unbuilt; open questions are in §8.
 
 **For:** the mechanisms under Mesocosm's rounds, settled before any
 per-class, per-role or per-form content, as Mark asked: what a class is, what
@@ -72,6 +76,9 @@ meals, the systems sheet, rounds' own start and end rules, and bonding from
 synergy.
 
 ## 3. Classes are playstyles
+
+*Kingdoms since 1219; micro and macro are named microbe and world-class
+(1218).*
 
 Mark: "i meant to divide different types of playstyles with the classes,
 that's all. it's not scientifically... accurate or anything" (1207). Five
@@ -219,9 +226,10 @@ ingredient previews its expected contribution before the player commits.
 
 ## 7. Answered
 
-Put to Mark as five card rounds on 2026-11-09. Each answer is a case in the
-design record, in his words. Two operational answers (when to write this
-brief, and how far to record it) are not cases.
+Put to Mark as five card rounds on 2026-11-09, then four more in the second
+pass (§10). Each answer is a case in the design record, in his words.
+Operational answers (when to write this brief, how far to record it, whether
+to commit) are not cases.
 
 | # | Question | Case | Answer | Doctrine |
 |---|---|---|---|---|
@@ -243,6 +251,14 @@ brief, and how far to record it) are not cases.
 | 16 | What an extinct line's edit does | 1213 | Local extinction; lands on survivors | Mesocosm 3 refined |
 | 17 | How a bond is earned | 1214 | Synergy plus served nudges | Mesocosm 2 refined |
 | 18 | What the sheet is built from | 1215 | Derived, with previews | Mesocosm 6 new |
+| 19 | How scales are paced | 1216 | A microbe needs a medium; world-class is the aggregate view between rounds | Bodies 1, Mesocosm 1 refined |
+| 20 | A player with nothing to play, in company | 1217 | Hop to the nearest living member; with none, wait out the round, offering to forfeit or end it | Mesocosm 1 and 3 refined |
+| 21 | World-class view: rule or candidate | 1216 | Rule it | Mesocosm 1 refined |
+| 22 | The five names | 1218 | Plant, animal, fungus, microbe, world-class | Bodies 1 refined |
+| 23 | 'Class' has two senses | 1219 | "I was just using class for the rpg metaphor" | Naming 3 refined |
+| 24 | The playstyle's word | 1219 | Kingdom, retire the enum | Bodies 1 and 6, Ecology 1, Mesocosm 6, Naming 3 refined |
+| 25 | Candidate kingdoms | 1220, 1221 | All seven; a composite is two kingdoms in one lineage; players may share a lineage | Mesocosm 1 and 6 refined |
+| 26 | The reading's new name | 1222 | Trophic | Naming 3 refined; built |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -251,12 +267,9 @@ extinction is local to the round.
 
 ## 8. Open
 
-- **One player's end in company.** When a player has nothing left to play,
-  does the round end for everyone, or do they pick another known lineage
-  to play out the round, as Mesocosm 3's "picks another here" suggests?
-- **Time across scales.** Micro generations run fast and a macro life runs
-  slow on one world clock. How each scale's play is paced, and what the
-  coarse step (the coarse-step brief) owes it, is unasked.
+- **A microbe's pace.** World-class play sits between rounds (1216); how a
+  microbe's fast generations are paced inside its medium, and what the
+  coarse step (the coarse-step brief) owes either, is unasked.
 - **The persona seed.** What keys a player's persona across worlds that
   share a lineage, and the bound on regard's heritability.
 - **The operators.** Whether eight is the set; how a crossing unlocks
@@ -265,7 +278,12 @@ extinction is local to the round.
   preview is a static derivation or a short forward copy.
 - **Drift and draft together.** Whether the player's picks enter the copy as
   candidates beside the averaged template, or are applied after it.
-- **Naming.** The five class names, by a naming round (Naming 3).
+- **Candidate kingdoms** (1220): which come first, and what each needs of
+  the sim (a colony's castes, a host as a parasite's world, a replicator
+  with no body, sophonts for an idea).
+- **The asserted keys** stay `kingdom:flora` and its siblings (1218); the
+  founding record (§7) keeps *flora* off the game's words, which the
+  display terms now honour, but the key still carries it.
 - **The project description** says a player unlocks other lineages "as you
   outpace them"; outpacing is now one of four routes to discovery, and
   directing needs a bond. The description is the maintainer's; this is
@@ -285,3 +303,44 @@ extinction is local to the round.
   beside the bond and trust per kind of direction (1054).
 
 A plan follows when code changes (DOC_POLICY §8); this brief changes no code.
+
+## 10. The second pass
+
+Asked the same day, after the first commit, from the open questions above.
+
+- **Scales** (1216): a microbe lives in a medium, a host or a substrate. A
+  world-class lineage is played from the aggregate view between rounds,
+  in Mark's words "diagetic directing, the management of world cycles":
+  managing the world's time flow and cycles, and a stream of holistic and
+  specific events the sim's conditions raise. It sits beside World 4's
+  world as a generative entity and storyteller.
+- **A player out** (1217): with no offspring or kin near, the player hops to
+  the nearest living member of their line, however far. With none anywhere
+  they wait out the round, and may offer to forfeit it or end it where it
+  can be ended; the others agree or play on. This amends 1213: a round no
+  longer ends for a player while their line lives anywhere.
+- **Names** (1218, 1219): *kingdom* is the playstyle's word; the five are
+  plant, animal, fungus, microbe and world-class. Taken words were ruled
+  out first: clade, species and ancestral line mean lineage; grade, form,
+  habit, guild and realm are spoken for elsewhere in the wing.
+- **Candidate kingdoms** (1220): colony (a hive whose castes the player
+  allocates; a solitary-to-social transition), parasite or symbiont (the
+  host as world and vehicle), composite (two kingdoms coexisting in one
+  lineage, "kinda like ball x pit partners"), replicator (no body, only a
+  recipe hijacking others' growth), idea (spreading through sophonts'
+  minds, a bridge to Eponym), spirit (acting on a place through conditions
+  and belief, toward Organs 1's divinity) and construct (made, reproducing
+  by fabrication).
+- **Sharing** (1221): players may share a lineage or each play their own.
+  Sharing one, they plant its critters where they choose, add to its budget,
+  and add their edits to its gene pool, to be played or folded in;
+  individuating the critter a player plays draws on that budget, so a
+  shared line can be rich in edits and poor in bodies.
+- **Trophic** (1222), built: `shared/cosmograph/src/trophic.rs` (was
+  `kingdom.rs`) holds `Trophic` and `trophic::of`; isometer-render's
+  `trophic_colour` (was `kingdom_colour`) tints by guise; Mesocosm's vitals
+  and port words read `trophic:` terms, and the pack's kingdom terms display
+  the five names. Checked: the Mesocosm, cosmograph, isometer and Eponym
+  workspaces build with all targets; clippy is clean of errors; the
+  mesocosm-views, -phenotype, -genet and -runtime library tests and
+  cosmograph's trophic and port tests pass.

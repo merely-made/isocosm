@@ -89,8 +89,8 @@ pub fn part_of_with_terms(
 
 fn port_words(port: IntakePort, terms: &TermTable) -> String {
     let mut admitted = Vec::new();
-    for (kind, id) in [(NisKind::Producer, "kingdom:flora"),
-        (NisKind::Consumer, "kingdom:fauna"), (NisKind::Decomposer, "kingdom:myco")] {
+    for (kind, id) in [(NisKind::Producer, "trophic:producer"),
+        (NisKind::Consumer, "trophic:consumer"), (NisKind::Decomposer, "trophic:decomposer")] {
         if port.admits_live(kind) { admitted.push(terms.form(id, "label")); }
     }
     if port.admits_deadstock() { admitted.push(terms.form("intake:deadstock", "label")); }

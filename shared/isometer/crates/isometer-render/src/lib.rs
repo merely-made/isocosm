@@ -35,7 +35,7 @@ use wgpu::util::DeviceExt;
 
 pub use camera::Camera;
 pub use geometry::{
-    SceneItem, Vertex, build_scene_vertices, build_vertices, deadened, face_shade, kingdom_colour,
+    SceneItem, Vertex, build_scene_vertices, build_vertices, deadened, face_shade, trophic_colour,
     material_colour, warning_colour,
 };
 pub use live_body::{

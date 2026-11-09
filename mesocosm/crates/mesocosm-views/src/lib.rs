@@ -50,6 +50,6 @@ pub use review::{
 };
 pub use succession::{Succession, SuccessionChild, succession_css, succession_root};
 pub use vitals::{
-    Vitals, VitalsChild, compatibility_words, held_mg, kingdom_word, notice_in, refusal_words,
+    Vitals, VitalsChild, compatibility_words, held_mg, trophic_word, notice_in, refusal_words,
     vital_rows, vitals_css, vitals_of, vitals_of_with_terms, vitals_root,
 };

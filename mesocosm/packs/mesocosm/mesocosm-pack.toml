@@ -28,12 +28,27 @@ fixtures = [
 
 # Display forms only. These never enter the native rules or world digest.
 [terms."kingdom:flora"]
+label = "plant"
+indefinite = "a plant"
+[terms."kingdom:fauna"]
+label = "animal"
+indefinite = "an animal"
+[terms."kingdom:myco"]
+label = "fungus"
+indefinite = "a fungus"
+[terms."kingdom:micro"]
+label = "microbe"
+indefinite = "a microbe"
+[terms."kingdom:world"]
+label = "world-class"
+indefinite = "a world-class entity"
+[terms."trophic:producer"]
 label = "producer"
 indefinite = "a producer"
-[terms."kingdom:fauna"]
+[terms."trophic:consumer"]
 label = "consumer"
 indefinite = "a consumer"
-[terms."kingdom:myco"]
+[terms."trophic:decomposer"]
 label = "decomposer"
 indefinite = "a decomposer"
 [terms."intake:deadstock"]

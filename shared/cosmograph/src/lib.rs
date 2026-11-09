@@ -47,7 +47,7 @@ pub mod harm;
 pub mod history;
 mod journal;
 pub mod journey;
-pub mod kingdom;
+pub mod trophic;
 pub mod knowing;
 pub mod lineage;
 pub mod map;

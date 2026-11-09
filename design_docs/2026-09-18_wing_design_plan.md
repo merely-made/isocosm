@@ -13656,6 +13656,110 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Mesocosm · draws on 1200, 1202 · plans mesocosm-overlay · summary The sheet of needs, abilities and tolerance curves is read off the grown body, shown as a diff at the edit, each ingredient previewed.
 
+1216. **World-class is played from the aggregate view between rounds; a
+      microbe lives in a medium.** Mark, asked how play is paced across
+      scales: "Micro needs media, either host or environmental substrate.
+      When i think of what it would be like for a world-class entity, it
+      honestly looks a lot like diagetic directing, the management of world
+      cycles, etc., so maybe macro is kinda like the aggregate perspective
+      between the rounds, but managing a time flow and stream of holistic
+      and specific events from sim conditions and from that perspective?"
+      Put back as rule or candidate, ruled on 2026-11-09: "Rule it
+      (Recommended)", over keeping it a candidate or entering its bodies in
+      a round too (lineage-rounds brief, questions 19 and 21). A microbe
+      lives in a medium, a host or a substrate. A world-class lineage is
+      played from the aggregate view between rounds: managing the world's
+      time flow and cycles, and a stream of holistic and specific events
+      the sim's conditions raise.
+
+      Links: area Mesocosm · draws on 1207, world.4, bodies.1 · plans mesocosm-overlay · summary A world-class lineage is played from the aggregate view between rounds, managing time flow, cycles and events; a microbe lives in a host or a substrate.
+
+1217. **A player out of near kin hops to the nearest living member; with
+      none, they wait out the round.** Mark, asked whether a player with
+      nothing left to play ends the round for everyone: "Maybe they can hop
+      to the nearest living critter, with the understanding that may be far?
+      And if they truly have nothing, yeah, they're dead until the round
+      ends, but the option to forfeit the round or end it if it can be
+      should exist for the rest to agree to, or let 'em finish it out"
+      (lineage-rounds brief, question 20). Read: the nearest living member
+      of the player's own line, however far. A player whose line has no
+      living member anywhere waits out the round, and may offer to forfeit
+      it or to end it where it can be ended; the others agree, or play on.
+      This amends 1213's local extinction: a player's round no longer ends
+      while their line lives anywhere.
+
+      Links: area Mesocosm · amends 1204, 1213 · draws on mesocosm.3 · summary A player whose near kin are gone hops to the nearest living member of their line; with none they wait out the round and may offer to forfeit or end it.
+
+1218. **The kingdoms are plant, animal, fungus, microbe and world-class.**
+      Mark, naming the five: "Plant, animal, fungi, microbe, and world-
+      class? That fine?" Put back with 'fungi' plural among singulars and
+      'world-class' also meaning 'excellent', ruled on 2026-11-09: "Fungus,
+      singular (Recommended)", over the names as given or a separate round
+      for the fifth (lineage-rounds brief, question 22). They are display
+      names: the sim's keys stay `kingdom:flora`, `kingdom:fauna`,
+      `kingdom:myco`, `kingdom:micro` and `kingdom:world`, which no player
+      reads.
+
+      Links: area Naming · draws on 1207 · summary The five kingdoms are named plant, animal, fungus, microbe and world-class; the sim's keys are unchanged.
+
+1219. **Kingdom is the word for a lineage's playstyle.** Mark, told that
+      'class' already meant a look class in the VTT (VTT 7): "I was just
+      using class for the rpg metaphor. It can be whatever. Uhh, kingdom,
+      clade, species, biology, ancestral line, idk, hit me with more". Put
+      back with each word's existing senses, ruled on 2026-11-09: "Kingdom,
+      retire the enum", over lifeway, phylum and calling (lineage-rounds
+      brief, questions 23 and 24). *Kingdom* means only a lineage's
+      playstyle, as the sim's asserted `kingdom` key already did; the
+      reading that also held the word, what a body makes its living by, is
+      renamed (1222). Cases 1198 to 1215 say "class" for it.
+
+      Links: area Naming · draws on 1207, 1218, naming.3 · summary Kingdom is the word for a lineage's playstyle; the producer, consumer or decomposer reading gives the word up.
+
+1220. **Colony, parasite or symbiont, composite, replicator, idea, spirit
+      and construct are candidate kingdoms.** Mark, offered candidates
+      beyond the five: "Colony, Parasite / symbiont, Composite (co-op),
+      Replicator, All acceptable! I would say composite needn't be co-op
+      but could be, and the rest could be too … So the distinct thing about
+      a composite to me is that two separate playstyles coexist in one
+      lineage, kinda like ball x pit partners" (lineage-rounds brief,
+      question 25; his "All acceptable!" read as taking the idea, spirit
+      and construct kingdoms offered beside them). Each is a candidate,
+      defined by how it plays: a colony is a hive whose castes the player
+      allocates; a parasite or symbiont rides and steers a host; a composite
+      is two kingdoms coexisting in one lineage; a replicator has no body,
+      only a recipe that hijacks others' growth; an idea spreads through
+      sophonts' minds; a spirit acts on a place through its conditions and
+      belief; a construct is made, and reproduces by fabrication.
+
+      Links: area Mesocosm · draws on 1207, 1209, 1219 · summary Colony, parasite or symbiont, composite (two kingdoms in one lineage), replicator, idea, spirit and construct are candidate kingdoms.
+
+1221. **Players may share a lineage or each play their own.** Mark, in the
+      same answer as 1220: "that would just mean planting the same kind of
+      critter in different or the same areas and contributing to the budget
+      of the lineage, adding your edits to be played or added to the
+      lineage's genepool. You can both add to the gene pool, but you might
+      not have many resources to individuate the critter you're gonna
+      play", then: "Of course, that's if two players are playing the same
+      lineage. Just meant to show that that could be done besides with a
+      composite", and "Two players could also play different lineages, of
+      course". Players sharing a lineage plant its critters where they
+      choose, add to its budget, and add their edits to its gene pool, to be
+      played or folded in; individuating the critter a player plays draws
+      on that budget.
+
+      Links: area Mesocosm · draws on 1205, 1220, mesocosm.6 · summary Players may share a lineage, planting its critters, adding to its budget and gene pool, individuating from that budget; or each play their own.
+
+1222. **The producer, consumer or decomposer reading is trophic.** Ruled by
+      Mark on 2026-11-09: "Trophic", over livelihood and diet
+      (lineage-rounds brief, question 26). What a body makes its living by,
+      read off its feeding anatomy, is its trophic reading: cosmograph's
+      `kingdom` module and `Kingdom` type become `trophic` and `Trophic`,
+      isometer's `kingdom_colour` becomes `trophic_colour`, and Mesocosm's
+      displays read `trophic:` terms where they read kingdom terms before.
+      Built 2026-11-09.
+
+      Links: area Naming · draws on 755, 1219, naming.3 · summary A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

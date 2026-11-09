@@ -6,15 +6,16 @@
 //! holds a fixing plate up in the light, a consumer bears a mouth under its
 //! head, and a decomposer is neither, absorbing across its surface. Fixing
 //! comes first, so a body with both is read a producer. A reading beside the
-//! kingdom an entity asserts, never stored. Geometry is read through
-//! isometer's document (674).
+//! kingdom an entity asserts, never stored, and named apart from it so
+//! *kingdom* keeps one sense, a lineage's playstyle (cases 1219, 1222).
+//! Geometry is read through isometer's document (674).
 
 use crate::schema::*;
 use isometer_core::{BodyDocument, Role, classify};
 
-/// The three ways of making a living.
+/// The three ways of making a living: a body's trophic reading.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Kingdom {
+pub enum Trophic {
     Producer,
     Consumer,
     Decomposer,
@@ -67,20 +68,20 @@ pub fn mouth_part(doc: &BodyDocument) -> Option<PartId> {
     found
 }
 
-/// The kingdom `e`'s body reads as; none for a body without geometry. A
+/// The trophic reading `e`'s body makes; none for a body without geometry. A
 /// canopy plate counts only where its cells fix.
-pub fn of(e: &Entity) -> Option<Kingdom> {
+pub fn of(e: &Entity) -> Option<Trophic> {
     let doc = e.body.as_ref()?;
     let fixes = |id: &PartId| {
         let part = e.parts.get(id);
         part.is_some_and(|p| p.cells.get(FIX).copied().unwrap_or(0) > 0)
     };
     Some(if canopy_parts(doc).iter().any(fixes) {
-        Kingdom::Producer
+        Trophic::Producer
     } else if mouth_part(doc).is_some_and(|id| e.lives(id)) {
-        Kingdom::Consumer
+        Trophic::Consumer
     } else {
-        Kingdom::Decomposer
+        Trophic::Decomposer
     })
 }
 
@@ -104,7 +105,7 @@ mod tests {
         }
     }
 
-    fn read(parts: Vec<Sketch>) -> Option<Kingdom> {
+    fn read(parts: Vec<Sketch>) -> Option<Trophic> {
         let mut e = crate::probe::BodyFounding::default()
             .generate()
             .unwrap()
@@ -125,11 +126,11 @@ mod tests {
         let root = || sketch(None, [2, 2, 2], [0; 3], 0);
         let frond = sketch(Some(0), [4, 1, 4], [0, 3, 0], 4);
         let mouth = sketch(Some(0), [2, 1, 1], [0, -3, 0], 0);
-        assert_eq!(read(vec![root(), frond]), Some(Kingdom::Producer));
-        assert_eq!(read(vec![root(), mouth]), Some(Kingdom::Consumer));
-        assert_eq!(read(vec![root()]), Some(Kingdom::Decomposer));
+        assert_eq!(read(vec![root(), frond]), Some(Trophic::Producer));
+        assert_eq!(read(vec![root(), mouth]), Some(Trophic::Consumer));
+        assert_eq!(read(vec![root()]), Some(Trophic::Decomposer));
         // A plate on the flank covers rather than fixes.
         let shell = sketch(Some(0), [1, 4, 4], [3, 1, 0], 4);
-        assert_eq!(read(vec![root(), shell]), Some(Kingdom::Decomposer));
+        assert_eq!(read(vec![root(), shell]), Some(Trophic::Decomposer));
     }
 }

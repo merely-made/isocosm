@@ -836,6 +836,10 @@ three design docs that cite it. The record holds the words.
 | 1213 | A player's round ends when no offspring or kin is left in it; the edit lands on survivors anywhere, and with none it is lost. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1214 | A lineage's regard for a player rises with the benefit the player's lineages give it and sets each critter's starting bond; served nudges grow the bond in a life. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1215 | The sheet of needs, abilities and tolerance curves is read off the grown body, shown as a diff at the edit, each ingredient previewed. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1216 | A world-class lineage is played from the aggregate view between rounds, managing time flow, cycles and events; a microbe lives in a host or a substrate. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1217 | A player whose near kin are gone hops to the nearest living member of their line; with none they wait out the round and may offer to forfeit or end it. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1220 | Colony, parasite or symbiont, composite (two kingdoms in one lineage), replicator, idea, spirit and construct are candidate kingdoms. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1221 | Players may share a lineage, planting its critters, adding to its budget and gene pool, individuating from that budget; or each play their own. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Eponym
 
@@ -980,6 +984,9 @@ three design docs that cite it. The record holds the words.
 | 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
 | 1091 | The site account of dead matter awaiting decomposers is world:detritus. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1156 | The per-head member comparison is named MembersPer. | none |
+| 1218 | The five kingdoms are named plant, animal, fungus, microbe and world-class; the sim's keys are unchanged. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1219 | Kingdom is the word for a lineage's playstyle; the producer, consumer or decomposer reading gives the word up. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1222 | A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Licensing and sources
 

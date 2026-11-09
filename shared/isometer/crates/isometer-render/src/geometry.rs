@@ -69,14 +69,14 @@ pub fn material_colour(material: u8) -> [f32; 3] {
 
 /// The colour of a way of making a living.
 ///
-/// Colour by **guise**, never by kingdom: a thing is drawn as what it presents
-/// as, so a simulacrum reads as the thing it is pretending to be. The picture
-/// is allowed to be lied to.
+/// Colour by **guise**, never by trophic reading: a thing is drawn as what it
+/// presents as, so a simulacrum reads as the thing it is pretending to be. The
+/// picture is allowed to be lied to.
 ///
 /// This replaces hashing the material id, which produced a legible *palette*
 /// and an illegible *world*. The simulation had plants, grazers, and corpses
 /// in it; the render had confetti.
-pub fn kingdom_colour(guise: u8) -> [f32; 3] {
+pub fn trophic_colour(guise: u8) -> [f32; 3] {
     match guise {
         // Producer: green, the colour of something making its own living.
         0 => [0.42, 0.68, 0.34],

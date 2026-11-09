@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1215 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1 and Mesocosm 1 to 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1222 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -623,22 +623,23 @@ lineage, played or not, weighs candidates from there against the rest of the
 web by growing a copy forward: its baseline drift. A player adds a draft
 drawn from what their line incorporated (Mesocosm 6). Discovery is the
 lessons learned from eating a part whole; what a meal can teach depends on
-the eater's class, its kinship to the eaten and how familiar the ingredient
+the eater's kingdom, its kinship to the eaten and how familiar the ingredient
 is to its recipe. Lineages take their boundary turns by metabolic
 complexity: distinct functions and systems across all living members.
 Conflicting edits adopt or branch: matching ones merge and conflicting ones
 fork the line, as a player may also fork it, with a plan to compete or
 cooperate with its origin.
 
-*Not yet built:* the success-weighted average, yields by class, kinship and
+*Not yet built:* the success-weighted average, yields by kingdom, kinship and
 familiarity, and adopt-or-branch between concurrent edits.
 
-Links: draws on 57, 182, 684, 764, 765, 806, 1200, 1203, 1205, 1208 · summary Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow class, kinship and familiarity; conflicting edits adopt or branch.
+Links: draws on 57, 182, 684, 764, 765, 806, 1200, 1203, 1205, 1208, 1219 · summary Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow kingdom, kinship and familiarity; conflicting edits adopt or branch.
 
-*Refined 2026-11-09 from cases 1200, 1203, 1205 and 1208 (Mark: "3 as baseline
-aggregate drift representation, 1 for your input, 2 as creative (dev) mode"),
-drafted without a card round at his word: "Brief, cases, doctrine
-(Recommended)".*
+*Refined 2026-11-09 from cases 1200, 1203, 1205, 1208 and 1219 (Mark: "3 as
+baseline aggregate drift representation, 1 for your input, 2 as creative (dev)
+mode"; "Kingdom, retire the enum"), drafted without a card round at his word:
+"Brief, cases, doctrine (Recommended)".*
+
 
 ### Ecology 2. Regions follow biomass
 
@@ -743,14 +744,16 @@ Links: draws on 96, 97, 98, 100, 139, 739, 836, 1007 · summary A world's materi
 
 ### Bodies 1. Forms
 
-Classes divide playstyles, not taxa: plant, animal and fungus at the middle
-scale, and micro and macro, scales whose physics plays the same verbs
-differently; a lineage keeps its lifestyle in its recipe at any scale. A
-class bounds which growth operators and parts a recipe may use (Bodies 6); a
-role is read from what members did, never chosen. A lineage crosses scales by
-a major transition at a boundary: multicellularity or aggregation up from
-micro, accreting its own ecology up to macro, parasitism or symbiosis down. A
-body is a part tree, each part attaching to its parent; a terrain-body is a
+Kingdoms are playstyles, not taxa: plant, animal and fungus at the middle
+scale, and microbe and world-class, scales whose physics plays the same verbs
+differently; a lineage keeps its lifestyle in its recipe at any scale, and a
+microbe lives in a medium, a host or a substrate. What a body makes its
+living by (producer, consumer, decomposer) is its trophic reading, never its
+kingdom. A kingdom bounds which growth operators and parts a recipe may use
+(Bodies 6); a role is read from what members did, never chosen. A lineage
+crosses scales by a major transition at a boundary: multicellularity or
+aggregation up from microbe, accreting its own ecology up to world-class,
+parasitism or symbiosis down. A body is a part tree, each part attaching to its parent; a terrain-body is a
 tree whose parts are big enough to carry places. A mold or fungus is one
 entity whose body is a territory: its matter in each covered place's ledger
 under its key, acting and spreading there. Micro life is a surface: its
@@ -759,15 +762,17 @@ identity, revising its genes by forking strains where a host or place
 selects. A territory or surface expresses its lineage's functions at each
 place, scaled by the matter it holds there.
 
-*Not yet built:* class bounds on operators, roles as readings, and crossings
-between scales; territories, surfaces and strains are built at site grain.
+*Not yet built:* kingdom bounds on operators, roles as readings, and crossings
+between scales; territories, surfaces, strains and the trophic reading are
+built at site grain.
 
-Links: draws on 39, 58, 467, 480, 488, 497, 499, 500, 1201, 1207, 1209 · summary Classes are playstyles, micro and macro scales among them; a class bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces.
+Links: draws on 39, 58, 467, 480, 488, 497, 499, 500, 1201, 1207, 1209, 1216, 1218, 1219, 1222 · summary Kingdoms are playstyles, microbe and world-class scales among them; a body's living is its trophic reading; a kingdom bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces.
 
-*Refined 2026-11-09 from cases 1201, 1207 and 1209 (Mark: "it's not
-scientifically... accurate or anything... just like if stuff gets small
-enough, it fundamentally plays different (micro)"), drafted without a card
-round at his word: "Brief, cases, doctrine (Recommended)".*
+*Refined 2026-11-09 from cases 1201, 1207, 1209, 1216, 1218, 1219 and 1222
+(Mark: "I was just using class for the rpg metaphor"; "Kingdom, retire the
+enum"; "Micro needs media, either host or environmental substrate"), drafted
+without a card round at his word: "Brief, cases, doctrine (Recommended)".*
+
 
 ### Bodies 2. Geometry is isometer's, physiology the sim's
 
@@ -838,7 +843,7 @@ and 456".*
 A lineage carries a recipe and a placement policy. The recipe is a growth
 grammar whose rules come from one set of operators (repeat, branch,
 differentiate by position, symmetry, fuse, switch on a condition, accrete,
-allocate), weighted and bounded by class, its subclasses presets; an
+allocate), weighted and bounded by kingdom, its subclasses presets; an
 ingredient adds a rule or tunes one at a step of growth. Today's recipe,
 tagmata of segment templates bearing kinds with counts, variance and absence
 odds, is the segmented animal preset. A kind is a part template, a box and
@@ -852,12 +857,13 @@ lineage the kind; affinity decides how it lands.
 
 *Not yet built:* the grammar and its operators; the tagmata recipe is built.
 
-Links: draws on 468, 478, 479, 511, 516, 531, 1202, 1206, world.8 · summary A lineage's recipe is a growth grammar of shared operators weighted per class, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity.
+Links: draws on 468, 478, 479, 511, 516, 531, 1202, 1206, 1219, world.8 · summary A lineage's recipe is a growth grammar of shared operators weighted per kingdom, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity.
 
-*Refined 2026-11-09 from cases 1202 and 1206 (Mark: "The growth grammar with
-step by step ingredient contributions as a model would be really
-fascinating"), drafted without a card round at his word: "Brief, cases,
-doctrine (Recommended)".*
+*Refined 2026-11-09 from cases 1202, 1206 and 1219 (Mark: "The growth grammar
+with step by step ingredient contributions as a model would be really
+fascinating"; "Kingdom, retire the enum"), drafted without a card round at his
+word: "Brief, cases, doctrine (Recommended)".*
+
 
 ### Bodies 7. Life-history traits
 
@@ -1951,15 +1957,22 @@ organism (a fungal monocreature, a swarm). Mesocosm directs its critter,
 which lives by its own instinct under the nudge (Mesocosm 2), and drives one
 only once it is sapient (Directing 3). At a birth the player keeps the parent
 by default and may take the offspring, reversibly; at a death they continue
-as its offspring, else its nearest kin left in the round (Mesocosm 3).
+as its offspring, else its nearest kin left in the round, else the nearest
+living member of the line however far (Mesocosm 3). Players may share a
+lineage or each play their own. A world-class lineage is played from the
+aggregate view between rounds: managing the world's time flow and cycles,
+and a stream of holistic and specific events its conditions raise.
 Speciating (splitting the line and naming it; "the name is the doing") is
 the player's act; expressing a candidate is the critter's own development.
 
-Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; keeps the parent at a birth and continues as offspring or kin at a death; speciating is the player's act.
+Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204, 1216, 1217, 1221 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds; speciating is the player's act.
 
-*Refined 2026-11-09 from cases 1198 and 1204 (Mark: "Nudge (Recommended)",
-"Offspring, else kin (Recommended)"), drafted without a card round at his
-word: "Brief, cases, doctrine (Recommended)".*
+*Refined 2026-11-09 from cases 1198, 1204, 1216, 1217 and 1221 (Mark: "maybe
+macro is kinda like the aggregate perspective between the rounds"; "Rule it
+(Recommended)"; "Maybe they can hop to the nearest living critter, with the
+understanding that may be far?"), drafted without a card round at his word:
+"Brief, cases, doctrine (Recommended)".*
+
 
 ### Mesocosm 2. The only directive is a nudge
 
@@ -1998,22 +2011,25 @@ start at the world's habitability for it (the first epoch boundary where a
 site meets its conditions and a member lives there), or with as much added
 time as they like. A round ends when players agree once a span of world time
 agreed beforehand has passed, when a condition picked from verified offers is
-met, or, for a player, when no offspring or kin is left in it to play. The
-lineage may live on elsewhere: the edit lands on what survives (members
-elsewhere, dormant propagules, the nearest living fork), and with nothing
-left it is lost. After a regional collapse members migrate along routes;
+met. A player whose line has no living member anywhere waits out the round,
+and may offer to forfeit it or to end it where it can be ended; the others
+agree, or play on. The edit lands on what survives (members, dormant
+propagules, the nearest living fork), and with nothing left it is lost. After a regional collapse members migrate along routes;
 when a lineage ends the player picks another here or a new world, their
 call. A total collapse ends the world as a game, still watchable.
 
 *Not yet built:* rounds as such: picking a known lineage and a start,
-agreed spans and verified conditions, and landing an edit on survivors.
+agreed spans and verified conditions, forfeiting, and landing an edit on
+survivors.
 
-Links: draws on 179, 181, 229, 230, 751, 753, 1199, 1210, 1211, 1212, 1213 · summary A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span, a verified condition or nothing left to play; the edit lands on survivors; a total collapse ends the game.
+Links: draws on 179, 181, 229, 230, 751, 753, 1199, 1210, 1211, 1212, 1213, 1217 · summary A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span or a verified condition; a player with no member left waits it out and may offer to forfeit or end it; the edit lands on survivors.
 
-*Refined 2026-11-09 from cases 1199 and 1210 to 1213 (Mark: "I guess i just
-meant local extinction, in a round. Like if there is no offspring or kin to
-play left"), drafted without a card round at his word: "Brief, cases, doctrine
-(Recommended)".*
+*Refined 2026-11-09 from cases 1199, 1210 to 1213 and 1217 (Mark: "if they
+truly have nothing, yeah, they're dead until the round ends, but the option to
+forfeit the round or end it if it can be should exist for the rest to agree
+to, or let 'em finish it out"), drafted without a card round at his word:
+"Brief, cases, doctrine (Recommended)".*
+
 
 ### Mesocosm 4. Physical space is the game's
 
@@ -2047,22 +2063,27 @@ Mesocosm 5").*
 Between rounds a player edits the lineage they played last, over the drift
 every lineage takes (Ecology 1): a draft of remaps drawn from what the line
 incorporated, picked within an upkeep budget, and, as a creative mode for
-development, free editing within the class's bounds. Critters are generated
-from the recipe (Bodies 6), never assembled by hand. The edit reads against
+development, free editing within the kingdom's bounds. Players sharing a
+lineage each add their edits to its gene pool, to be played or folded in,
+and individuating the critter one plays draws on the lineage's budget.
+Critters are generated from the recipe (Bodies 6), never assembled by hand. The edit reads against
 a systems sheet derived from the grown body, never summed from the recipe:
 needs (upkeep by body size, nutrients), abilities (speed, reach, force,
 senses, fecundity, dispersal) and tolerance curves (temperature, moisture,
 light, salinity). It shows as a diff, upkeep and mass its caps, and each
 ingredient previews its expected contribution before the player commits.
 
-*Not yet built:* the draft, the creative mode and the sheet.
+*Not yet built:* the draft, the creative mode, shared gene pools and budgets,
+and the sheet.
 
-Links: draws on 1200, 1215, ecology.1, bodies.6 · summary A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; the edit reads against a sheet derived from the grown body, previewed per ingredient.
+Links: draws on 1200, 1215, 1219, 1221, ecology.1, bodies.6 · summary A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; players sharing a lineage add to its gene pool and individuate from its budget; the edit reads against a sheet derived from the grown body, previewed per ingredient.
 
-*New 2026-11-09 from cases 1200 and 1215 (Mark: "like armored core, but you're
-generating from a recipe not hand assembling"; "Derived, with previews"),
-drafted without a card round at his word: "Brief, cases, doctrine
-(Recommended)".*
+*New 2026-11-09 from cases 1200 and 1215, refined from 1219 and 1221 (Mark:
+"like armored core, but you're generating from a recipe not hand assembling";
+"You can both add to the gene pool, but you might not have many resources to
+individuate the critter you're gonna play"), drafted without a card round at
+his word: "Brief, cases, doctrine (Recommended)".*
+
 
 ## Eponym
 
@@ -2294,12 +2315,17 @@ sense, the newer sense takes a new word rather than a qualifier:
   where a part joins its *attachment*, an organ's place in a template its
   *situs*;
 - *shape* is only a part's form; a process's causal kind is its *causation*;
-- *lens* is only a projection; a player's narrowing choice is a *filter*.
+- *lens* is only a projection; a player's narrowing choice is a *filter*;
+- *kingdom* is only a lineage's playstyle; what a body makes its living by is
+  its *trophic* reading.
 
-Links: draws on 157, 251, 252, 340, 434 · summary A word carries one sense; a second sense takes a new word, not a qualifier.
+*Built:* the trophic reading's rename (`trophic::of`, `trophic_colour`).
 
-*Reviewed 2026-10-21, new: proposed from the pattern across its cases, not
-Mark's words. Mark: "Adopt it".*
+Links: draws on 157, 251, 252, 340, 434, 1219, 1222 · summary A word carries one sense; a second sense takes a new word, not a qualifier.
+
+*Refined 2026-11-09 from cases 1219 and 1222 (Mark: "Kingdom, retire the
+enum"; "Trophic"), drafted without a card round at his word: "Brief, cases,
+doctrine (Recommended)".*
 
 ### Naming 4. The rule catalogue's names
 

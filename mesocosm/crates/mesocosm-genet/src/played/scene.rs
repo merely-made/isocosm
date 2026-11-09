@@ -8,10 +8,10 @@
 //! critter's site, lifted to a Ground, and the bodies of its living members.
 
 use cosmograph::directing::readings::View;
-use cosmograph::kingdom::{self, Kingdom};
+use cosmograph::trophic::{self, Trophic};
 use cosmograph::schema::Id;
 use cosmograph::simulation::Simulation;
-use isometer::render::kingdom_colour;
+use isometer::render::trophic_colour;
 
 use crate::section::{PlacedBody, SiteScene, body_volumes};
 
@@ -88,7 +88,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         };
         bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical, walks: vec![],
             parts: crate::section::skin_parts(e), materials: vec![], palette: vec![],
-            tint:tint_of(kingdom::of(e)), alive:e.alive, display: None });
+            tint:tint_of(trophic::of(e)), alive:e.alive, display: None });
     }
     let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
@@ -124,20 +124,20 @@ pub fn placed(
                 .filter(|p| volume.holds(p.cell[0], p.cell[2]))
                 .map(|p| volume.to_ground(p.cell))
                 .unwrap_or_else(|| super::layout::spot(ground, index)),
-            tint: tint_of(kingdom::of(entity)),
+            tint: tint_of(trophic::of(entity)),
             parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
             alive: entity.alive, display: None })
         .collect()
 }
 
 /// A body's colour by the kingdom its body reads as.
-pub fn tint_of(kingdom: Option<Kingdom>) -> [f32; 3] {
-    let index = match kingdom {
-        Some(Kingdom::Producer) => 0,
-        Some(Kingdom::Consumer) | None => 1,
-        Some(Kingdom::Decomposer) => 2,
+pub fn tint_of(trophic: Option<Trophic>) -> [f32; 3] {
+    let index = match trophic {
+        Some(Trophic::Producer) => 0,
+        Some(Trophic::Consumer) | None => 1,
+        Some(Trophic::Decomposer) => 2,
     };
-    kingdom_colour(index)
+    trophic_colour(index)
 }
 
 /// Current actual saved poses through the supplied native seat cut. Bodies
@@ -169,7 +169,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         bodies.push(PlacedBody { id, document, at:cell, physical:Some(at.pose.clone()),
             walks: walks.get(&id).cloned().unwrap_or_default(),
             parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
-            tint:tint_of(kingdom::of(entity)), alive:entity.alive, display: None });
+            tint:tint_of(trophic::of(entity)), alive:entity.alive, display: None });
     }
     Ok(bodies)
 }

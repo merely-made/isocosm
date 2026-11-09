@@ -6,7 +6,7 @@
 //! there; and the feeding mode read from a body's active ports, as
 //! Mesocosm reads it. Geometry gives a body its founding ports only.
 
-use crate::kingdom;
+use crate::trophic;
 use crate::process::{FeedingMode, IntakePort, NisKind, Process, Registry};
 use crate::schema::*;
 
@@ -69,7 +69,7 @@ pub fn seed(e: &mut Entity) {
     let Some(doc) = e.body.as_ref() else { return };
     let registry = Registry::native();
     let by = |p: Process| registry.of_native(p).reference();
-    if kingdom::of(e) == Some(kingdom::Kingdom::Producer) {
+    if trophic::of(e) == Some(trophic::Trophic::Producer) {
         return;
     }
     let mouths: Vec<(PartId, IntakePort)> = doc

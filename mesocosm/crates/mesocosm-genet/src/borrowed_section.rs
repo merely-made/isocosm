@@ -314,7 +314,7 @@ impl SceneHandle {
                     parts: section::bodies::skin_parts(member),
                     materials: vec![],
                     palette: vec![],
-                    tint: scene::tint_of(cosmograph::kingdom::of(member)),
+                    tint: scene::tint_of(cosmograph::trophic::of(member)),
                     alive: member.alive,
                     display: None,
                 });
@@ -494,7 +494,7 @@ fn lower(
             parts: section::bodies::skin_parts(entity),
             materials: vec![],
             palette: vec![],
-            tint: scene::tint_of(cosmograph::kingdom::of(entity)),
+            tint: scene::tint_of(cosmograph::trophic::of(entity)),
             alive: entity.alive,
             display: None,
         });

@@ -6402,6 +6402,57 @@ summary = "The sheet of needs, abilities and tolerance curves is read off the gr
 draws_on = ["1200", "1202"]
 plans = ["mesocosm-overlay"]
 
+[cases."1216"]
+title = "World-class is played from the aggregate view between rounds; a microbe lives in a medium"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A world-class lineage is played from the aggregate view between rounds, managing time flow, cycles and events; a microbe lives in a host or a substrate."
+draws_on = ["1207", "bodies.1", "world.4"]
+plans = ["mesocosm-overlay"]
+
+[cases."1217"]
+title = "A player out of near kin hops to the nearest living member; with none, they wait out the round"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A player whose near kin are gone hops to the nearest living member of their line; with none they wait out the round and may offer to forfeit or end it."
+draws_on = ["mesocosm.3"]
+amends = ["1204", "1213"]
+
+[cases."1218"]
+title = "The kingdoms are plant, animal, fungus, microbe and world-class"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The five kingdoms are named plant, animal, fungus, microbe and world-class; the sim's keys are unchanged."
+draws_on = ["1207"]
+
+[cases."1219"]
+title = "Kingdom is the word for a lineage's playstyle"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Kingdom is the word for a lineage's playstyle; the producer, consumer or decomposer reading gives the word up."
+draws_on = ["1207", "1218", "naming.3"]
+
+[cases."1220"]
+title = "Colony, parasite or symbiont, composite, replicator, idea, spirit and construct are candidate kingdoms"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Colony, parasite or symbiont, composite (two kingdoms in one lineage), replicator, idea, spirit and construct are candidate kingdoms."
+draws_on = ["1207", "1209", "1219"]
+
+[cases."1221"]
+title = "Players may share a lineage or each play their own"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Players may share a lineage, planting its critters, adding to its budget and gene pool, individuating from that budget; or each play their own."
+draws_on = ["1205", "1220", "mesocosm.6"]
+
+[cases."1222"]
+title = "The producer, consumer or decomposer reading is trophic"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic."
+draws_on = ["755", "1219", "naming.3"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6892,8 +6943,8 @@ amends = ["279", "673"]
 title = "Forms"
 source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
-summary = "Classes are playstyles, micro and macro scales among them; a class bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces."
-draws_on = ["39", "58", "467", "480", "488", "497", "499", "500", "1201", "1207", "1209"]
+summary = "Kingdoms are playstyles, microbe and world-class scales among them; a body's living is its trophic reading; a kingdom bounds a recipe, a role is read, scales cross by major transitions; bodies are part trees; molds are territories and micro life surfaces."
+draws_on = ["39", "58", "467", "480", "488", "497", "499", "500", "1201", "1207", "1209", "1216", "1218", "1219", "1222"]
 
 [statements."bodies.2"]
 title = "Geometry is isometer's, physiology the sim's"
@@ -6927,8 +6978,8 @@ draws_on = ["446", "455", "459", "460", "463", "464", "504", "523", "544", "551"
 title = "Recipes and growth"
 source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
-summary = "A lineage's recipe is a growth grammar of shared operators weighted per class, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity."
-draws_on = ["468", "478", "479", "511", "516", "531", "1202", "1206", "world.8"]
+summary = "A lineage's recipe is a growth grammar of shared operators weighted per kingdom, the tagmata recipe its segmented preset; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity."
+draws_on = ["468", "478", "479", "511", "516", "531", "1202", "1206", "1219", "world.8"]
 
 [statements."bodies.7"]
 title = "Life-history traits"
@@ -7053,8 +7104,8 @@ draws_on = ["103", "866", "1010", "vtt.4"]
 title = "Two doors change a lineage"
 source = "design_docs/doctrine.md"
 area = "Ecology"
-summary = "Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow class, kinship and familiarity; conflicting edits adopt or branch."
-draws_on = ["57", "182", "684", "764", "765", "806", "1200", "1203", "1205", "1208"]
+summary = "Reproduction rerolls expression; at the boundary a lineage's template moves to a success-weighted average and every lineage drifts by a forward copy; yields follow kingdom, kinship and familiarity; conflicting edits adopt or branch."
+draws_on = ["57", "182", "684", "764", "765", "806", "1200", "1203", "1205", "1208", "1219"]
 
 [statements."ecology.2"]
 title = "Regions follow biomass"
@@ -7179,8 +7230,8 @@ draws_on = ["919", "1064"]
 title = "What the player plays"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; keeps the parent at a birth and continues as offspring or kin at a death; speciating is the player's act."
-draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204"]
+summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204", "1216", "1217", "1221"]
 
 [statements."mesocosm.2"]
 title = "The only directive is a nudge"
@@ -7193,8 +7244,8 @@ draws_on = ["176", "177", "178", "205", "214", "215", "216", "228", "1054", "121
 title = "Starting, losing and going on"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span, a verified condition or nothing left to play; the edit lands on survivors; a total collapse ends the game."
-draws_on = ["179", "181", "229", "230", "751", "753", "1199", "1210", "1211", "1212", "1213"]
+summary = "A round is an epoch: pick a known lineage and a start in or one hop past its range; it ends by an agreed span or a verified condition; a player with no member left waits it out and may offer to forfeit or end it; the edit lands on survivors."
+draws_on = ["179", "181", "229", "230", "751", "753", "1199", "1210", "1211", "1212", "1213", "1217"]
 
 [statements."mesocosm.4"]
 title = "Physical space is the game's"
@@ -7214,8 +7265,8 @@ draws_on = ["961", "978", "sim-execution D2"]
 title = "The edit and its sheet"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; the edit reads against a sheet derived from the grown body, previewed per ingredient."
-draws_on = ["1200", "1215", "bodies.6", "ecology.1"]
+summary = "A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; players sharing a lineage add to its gene pool and individuate from its budget; the edit reads against a sheet derived from the grown body, previewed per ingredient."
+draws_on = ["1200", "1215", "1219", "1221", "bodies.6", "ecology.1"]
 
 [statements."method.1"]
 title = "Evidence is drawn, not picked"
@@ -7299,7 +7350,7 @@ title = "One word, one sense"
 source = "design_docs/doctrine.md"
 area = "Naming"
 summary = "A word carries one sense; a second sense takes a new word, not a qualifier."
-draws_on = ["157", "251", "252", "340", "434"]
+draws_on = ["157", "251", "252", "340", "434", "1219", "1222"]
 
 [statements."naming.4"]
 title = "The rule catalogue's names"
