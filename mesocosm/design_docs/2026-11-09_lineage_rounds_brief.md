@@ -276,6 +276,10 @@ to commit) are not cases.
 | 41 | How it steers its host | 1237 | By where it attaches | Bodies 17 new |
 | 42 | Parasite and mutualist | 1238 | One dial, rent by function | Bodies 17 new |
 | 43 | How it reaches a new host | 1239 | Eaten, contact, offspring, a free-living stage | Bodies 17 new |
+| 44 | The routes to an ability | 1240 | Ten: his five and all four offered | Ecology 7 new |
+| 45 | How a route's skill is held | 1241 | Inherited as traits, read off the body | Ecology 7 new |
+| 46 | What watching gives | 1242 | Acts and looks, never organs | Ecology 7 new |
+| 47 | How long each lasts | 1243 | Three tiers | Ecology 7 new |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -445,3 +449,26 @@ The second candidate kingdom designed (1236 to 1239; doctrine Bodies 17).
 - **Changing hosts.** Being eaten along the food web, the host steered into
   its predator's mouth as Toxoplasma steers a mouse; contact; the host's
   offspring; or a free-living stage of eggs, larvae or seeds.
+
+## 15. Routes to an ability
+
+How a lineage comes by what another has (1240 to 1243; doctrine Ecology 7).
+
+| Tier | Route | What it gives |
+|---|---|---|
+| Grown, heritable | Mutation | A new variant of its own |
+| | Ingestion | The lineage learns a kind by eating a part whole (Bodies 6) |
+| | Hybridizing | Traits from interbreeding with near kin |
+| | Horizontal transfer | Genes from another strain or by a virus, costly to carry (1223) |
+| | Guise | The look of an ability it lacks; works while others are fooled |
+| Borrowed, while held | Kleptoplasty | The stolen part working in the body, toxins and stinging cells included |
+| | Symbiosis | A partner does it: inside as a part or surface, or alongside as a separate body held by regard |
+| | Tools and farming | It holds or keeps the thing instead of growing it |
+| | Riding | A parasite on the nerves uses its host's (1237) |
+| Learned, by teaching | Imitation | An act taken up by watching (1053, 1058) |
+
+Watching gives acts and looks, never organs (1242). A route's skill is
+inherited as traits, which the recipe maps into the generated body, and it
+is open to a critter when its grown body carries what the route needs:
+senses and nerves that reach the act for imitation, compatible tissue for
+kleptoplasty, near kin for hybridizing (1241). Siblings may differ.

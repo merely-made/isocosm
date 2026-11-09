@@ -6574,6 +6574,35 @@ area = "Bodies and anatomy"
 summary = "A parasite or symbiont changes hosts by being eaten along the food web, by contact, through the host's offspring, or by a free-living stage."
 draws_on = ["1236", "1237"]
 
+[cases."1240"]
+title = "There are ten routes to an ability"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Ten routes to an ability: mutation, ingestion, kleptoplasty, symbiosis, horizontal transfer, hybridizing, imitation, guise, tools and farming, riding."
+draws_on = ["1203", "1223", "1233", "1237", "ecology.1"]
+
+[cases."1241"]
+title = "A route's skill is inherited as traits and read off the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A route's skill is inherited as traits through the recipe and open to a critter when its grown body carries what the route needs."
+draws_on = ["1233", "1240", "bodies.6"]
+
+[cases."1242"]
+title = "Watching gives acts and looks, never organs"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Watching another creature gives behaviours and, over generations, a guise; organs and functions come only by genes or by taking the part."
+draws_on = ["1240"]
+amends = ["1053"]
+
+[cases."1243"]
+title = "Acquired abilities last in three tiers"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching."
+draws_on = ["1058", "1240"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -7269,6 +7298,13 @@ source = "design_docs/doctrine.md"
 area = "Ecology"
 summary = "A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density."
 draws_on = ["96", "97", "98", "100", "139", "739", "836", "1007"]
+
+[statements."ecology.7"]
+title = "Routes to an ability"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Ten routes to an ability in three tiers: grown and heritable, borrowed while held, learned by teaching; watching gives acts and looks, never organs; a route's skill is inherited and read off the body."
+draws_on = ["1053", "1058", "1233", "1240", "1241", "1242", "1243", "bodies.6", "ecology.1"]
 
 [statements."eponym.1"]
 title = "Lives and co-op"

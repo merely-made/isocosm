@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 141 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1239 (the lineage-rounds brief) refine Bodies 1, Bodies 3, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Bodies 17 and Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 142 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1243 (the lineage-rounds brief) refine Bodies 1, Bodies 3, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Bodies 17, Ecology 7 and Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -738,6 +738,29 @@ material.
 Links: draws on 96, 97, 98, 100, 139, 739, 836, 1007 · summary A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density.
 
 *Refined 2026-10-22 from case 1007 (Mark: "Both as drafted").*
+
+### Ecology 7. Routes to an ability
+
+A lineage comes by an ability ten ways, in three tiers of keeping. Grown,
+and heritable: mutation; ingestion, learning a kind by eating a part whole;
+hybridizing with near kin; horizontal transfer of genes; and guise, the look
+of an ability the body lacks. Borrowed, lasting while held: kleptoplasty,
+the stolen part working in the body; symbiosis, a partner doing it, inside
+as a part or surface or alongside as a separate body held by regard; tools
+and farming; and riding, a parasite using its host's. Learned, passing by
+teaching: imitation, an act taken up by watching. Watching gives acts and
+looks, never organs. A route's skill is inherited as traits through the
+recipe and open to a critter when its grown body carries what the route
+needs, so siblings may differ.
+
+*Not yet built:* the routes as such; ingestion's learning, incorporation by
+affinity and imitation's cases (1053, 1058) are ruled or built elsewhere.
+
+Links: draws on 1053, 1058, 1233, 1240, 1241, 1242, 1243, ecology.1, bodies.6 · summary Ten routes to an ability in three tiers: grown and heritable, borrowed while held, learned by teaching; watching gives acts and looks, never organs; a route's skill is inherited and read off the body.
+
+*New 2026-11-09 from cases 1240 to 1243 (Mark: "isn't like the trait -> body
+plan mapping part of how the body is generated?"), drafted without a card
+round at his word: "Brief, cases, doctrine (Recommended)".*
 
 ## Bodies and anatomy
 

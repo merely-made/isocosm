@@ -13964,6 +13964,55 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1236, 1237 · summary A parasite or symbiont changes hosts by being eaten along the food web, by contact, through the host's offspring, or by a free-living stage.
 
+1240. **There are ten routes to an ability.** Mark named five: "mimicry
+      (observation), mutation, kleptoplasty, ingestion, symbiosis (meso or
+      micro-scale?), all seem to be ways to acquire other abilities, to
+      various effect. am i missing anything?", and took all four offered
+      beside them: hybridizing, guise, tools and farming, and horizontal
+      transfer with riding (lineage-rounds brief, question 44). The routes:
+      mutation; ingestion, the lineage learning a kind by eating a part
+      whole; kleptoplasty, the stolen part working in the body; symbiosis, a
+      partner doing it, inside as a part or surface or alongside as a
+      separate body held by regard; horizontal transfer of genes; hybridizing
+      with near kin; imitation, an act learned by watching; guise, the look
+      of an ability the body lacks; tools and farming, holding or keeping it
+      instead of growing it; and riding, a parasite using its host's.
+
+      Links: area Ecology · draws on 1203, 1223, 1233, 1237, ecology.1 · summary Ten routes to an ability: mutation, ingestion, kleptoplasty, symbiosis, horizontal transfer, hybridizing, imitation, guise, tools and farming, riding.
+
+1241. **A route's skill is inherited as traits and read off the body.** Mark,
+      offered the skill read off the body, a heritable trait per route, or
+      open to all at a cost: "1, but isn't like the trait -> body plan
+      mapping part of how the body is generated?" (lineage-rounds brief,
+      question 45). Both, then: a lineage's traits map through its recipe
+      into the generated body, so a route's skill is heritable, and it is
+      open to a critter when its grown body carries what the route needs
+      (1233). Imitation needs senses and nerves that reach the act;
+      kleptoplasty compatible tissue under the graft allowance; hybridizing
+      near kin. Siblings may differ, each drawing its own soma.
+
+      Links: area Ecology · draws on 1233, 1240, bodies.6 · summary A route's skill is inherited as traits through the recipe and open to a critter when its grown body carries what the route needs.
+
+1242. **Watching gives acts and looks, never organs.** Ruled by Mark on
+      2026-11-09: "Acts and looks, never organs (Recommended)", over
+      watching also biasing the draft, or acts only (lineage-rounds brief,
+      question 46). Watching another creature teaches behaviours, by
+      imitation, and over generations a guise. Organs and functions come
+      only by genes or by taking the part. This widens 1053, which let only
+      acts cross between lineages.
+
+      Links: area Ecology · amends 1053 · draws on 1240 · summary Watching another creature gives behaviours and, over generations, a guise; organs and functions come only by genes or by taking the part.
+
+1243. **Acquired abilities last in three tiers.** Ruled by Mark on
+      2026-11-09: "Three tiers (Recommended)", over everything becoming
+      heritable in time, or deciding per route later (lineage-rounds brief,
+      question 47). Grown abilities (mutation, ingestion, hybridizing,
+      horizontal transfer, guise) are heritable; borrowed ones
+      (kleptoplasty, symbiosis, tools and farming, riding) last while held;
+      learned ones (imitation) pass by teaching, a third at birth (1058).
+
+      Links: area Ecology · draws on 1058, 1240 · summary Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
