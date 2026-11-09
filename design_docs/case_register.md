@@ -845,6 +845,10 @@ three design docs that cite it. The record holds the words.
 | 1224 | A microbe's choices fall due at host and patch events on the world clock; between them its spread can be watched live. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1225 | Any strain may decompose, infect, aid, join or disperse through its switches; its strategy is read from what it did; joining a host is a transition to a composite. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1226 | A microbe player may aid or infect another player's critter; mutualism earns the host lineage's regard, and nudges are the counterplay. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1228 | A colony is played from its aggregate view, riding any member; it pools resources, members sacrifice for collective goals, and hormones and pheromones set castes and tasks. | none |
+| 1229 | A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes. | none |
+| 1230 | Only a colony's reproductives breed; losing the queen is a crisis; daughter colonies from nuptial flights are the lineage's critters for succession. | none |
+| 1231 | A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds. | none |
 
 ## Eponym
 

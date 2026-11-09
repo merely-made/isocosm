@@ -6490,6 +6490,34 @@ summary = "A player's persona is their dramatis identity, minted if absent; bond
 draws_on = ["1214", "directing.4"]
 stack = true
 
+[cases."1228"]
+title = "A colony is played from its aggregate view, riding any member; its difference is coordination"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A colony is played from its aggregate view, riding any member; it pools resources, members sacrifice for collective goals, and hormones and pheromones set castes and tasks."
+draws_on = ["1220", "mesocosm.1"]
+
+[cases."1229"]
+title = "A colony is steered by trails, castes, calls and the nest"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes."
+draws_on = ["1228", "directing.4", "mesocosm.2"]
+
+[cases."1230"]
+title = "A colony's queen is its germ line"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Only a colony's reproductives breed; losing the queen is a crisis; daughter colonies from nuptial flights are the lineage's critters for succession."
+draws_on = ["1204", "1217", "1228"]
+
+[cases."1231"]
+title = "A colony plays live and by events"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds."
+draws_on = ["1224", "1228"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -7304,6 +7332,13 @@ source = "design_docs/doctrine.md"
 area = "Mesocosm"
 summary = "A player edits their last-played lineage by a draft from what it ate over every lineage's drift, with a creative mode; players sharing a lineage add to its gene pool and individuate from its budget; the edit reads against a sheet derived from the grown body, previewed per ingredient."
 draws_on = ["1200", "1215", "1219", "1221", "bodies.6", "ecology.1"]
+
+[statements."mesocosm.7"]
+title = "Colonies"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "A colony is played from its aggregate view or a ridden member; it pools resources and sacrifices members; it is steered by trails, caste shares, expiring calls and its nest; its queen is its germ line."
+draws_on = ["1220", "1228", "1229", "1230", "1231"]
 
 [statements."method.1"]
 title = "Evidence is drawn, not picked"

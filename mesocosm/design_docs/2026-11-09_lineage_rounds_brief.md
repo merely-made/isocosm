@@ -264,6 +264,10 @@ to commit) are not cases.
 | 29 | How strategies relate to a strain | 1225 | One strain, switchable | Mesocosm 1 refined |
 | 30 | A microbe inside another player's critter | 1226 | Open play, regard decides | Mesocosm 1 refined |
 | 31 | What keys a player's persona | 1227 | Their dramatis identity, minted if absent | None; Directing 4 unchanged |
+| 32 | What the player is, in a colony | 1228 | The aggregate view, riding any member; coordination is the difference | Mesocosm 7 new |
+| 33 | How a colony is steered | 1229 | Trails, castes, calls riding the trail network, the nest | Mesocosm 7 new |
+| 34 | How a colony lives and breeds | 1230 | The queen is the germ line | Mesocosm 7 new |
+| 35 | How a colony is paced | 1231 | Both, live and by events, not tied to zoom | Mesocosm 7 new |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -370,3 +374,28 @@ Asked the same day, after the first commit, from the open questions above.
   in another player's critter as gut mutualist or pathogen; mutualism earns
   the host lineage's regard (1214), and the animal's nudges (avoid carrion,
   eat bitter plants) are the counterplay.
+
+## 12. The colony
+
+The first candidate kingdom designed (1228 to 1231; doctrine Mesocosm 7).
+
+- **Why it is a kingdom.** Herds, packs and cohorts share a lineage; a
+  colony shares a will. Its resources are pooled, its members spend
+  themselves for a collective goal, if only to signal danger or food, and
+  hormones and pheromones individuate them into castes and coordinate tasks.
+- **What you play.** The colony, from its aggregate view, riding any
+  member when you want to see and nudge up close.
+- **Steering.** Nudges lay pheromone trails that members follow, reinforce
+  or let fade: Directing 4's standing orders as a literal trail network.
+  Caste shares set what new members are raised as. A call (alarm, recruit,
+  evacuate) is a potent, short-lived pheromone whose range rides the trail
+  network, turning it into a trail to its target until the call expires
+  and the network reverts. The nest accretes what the player directs.
+- **Life and death.** The queen is the germ line; workers are sterile parts.
+  Losing her is a crisis survived only by raising a new one where the
+  recipe allows. Nuptial flights found daughter colonies, the lineage's
+  critters for succession.
+- **Pacing.** Both, whichever view: the colony plays live, ridden or
+  watched, and its colony-level choices also fall due at colony events (a
+  raid, a find, a threat to the queen, flight season), as a microbe's do.
+  Mark: "idk about by zoom, but definitely both!"

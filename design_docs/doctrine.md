@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1226 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 140 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1231 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6 and 7. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -2087,6 +2087,28 @@ Links: draws on 1200, 1215, 1219, 1221, ecology.1, bodies.6 · summary A player 
 individuate the critter you're gonna play"), drafted without a card round at
 his word: "Brief, cases, doctrine (Recommended)".*
 
+
+### Mesocosm 7. Colonies
+
+A colony is played from its aggregate view, and the player may ride any
+member; it plays live, and its colony-level choices also fall due at colony
+events, whichever view the player holds. It differs from a cohort by coordination: its
+resources are pooled, its members spend themselves for a collective goal,
+and hormones and pheromones individuate them into castes and coordinate
+tasks. It is steered by pheromone trails its members follow, reinforce or
+let fade; by the share of new members raised to each caste; by calls, potent
+short-lived pheromones whose range rides the trail network to their target
+until they expire and the network reverts; and by what its nest accretes.
+Only its reproductives breed: losing the queen is a crisis, and nuptial
+flights found the daughter colonies that carry the lineage.
+
+*Not yet built:* all of it; a colony is a candidate kingdom (case 1220).
+
+Links: draws on 1220, 1228, 1229, 1230, 1231 · summary A colony is played from its aggregate view or a ridden member; it pools resources and sacrifices members; it is steered by trails, caste shares, expiring calls and its nest; its queen is its germ line.
+
+*New 2026-11-09 from cases 1228 to 1231 (Mark: "what would make a colony
+different is the coordination"), drafted without a card round at his word:
+"Brief, cases, doctrine (Recommended)".*
 
 ## Eponym
 

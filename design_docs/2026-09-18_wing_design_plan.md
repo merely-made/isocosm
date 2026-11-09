@@ -13817,6 +13817,64 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Directing and play · draws on 1214, directing.4 · stack · summary A player's persona is their dramatis identity, minted if absent; bonds and regard key to it across worlds.
 
+1228. **A colony is played from its aggregate view, riding any member; its
+      difference is coordination.** Mark, offered the colony ridden through
+      a member, the queen, or the colony from above: "i think 1 is
+      essentially how any cohort of critters works, no? except with a
+      defined nest. i suppose resources would also be split up by the colony
+      instead of by each critter in the lineage you ride. but what would
+      make a colony different is the coordination. you should expect the
+      members of a colony to be willing to sacrifice themselves for a
+      collective goal, even if it's just to signal where danger, food, etc.
+      are. i wouldn't say herds or packs or other cohorts are like that. i
+      also think colonies would take advantage of hormones and phermones to
+      individuate within the colony and coordinate group tasks. in that way,
+      i'd say 3 is right, but you might as well be able to ride any
+      individual member of the colony too, no?" (lineage-rounds brief,
+      question 32). A colony is played from its aggregate view, and the
+      player may ride any member. It differs from a cohort by coordination:
+      its resources are pooled in the colony, its members spend themselves
+      for a collective goal, if only to signal danger or food, and hormones
+      and pheromones individuate members into castes and coordinate tasks.
+
+      Links: area Mesocosm · draws on 1220, mesocosm.1 · summary A colony is played from its aggregate view, riding any member; it pools resources, members sacrifice for collective goals, and hormones and pheromones set castes and tasks.
+
+1229. **A colony is steered by trails, castes, calls and the nest.** Mark
+      took all four offered (trails, caste allocation, alarm and recruit,
+      nest building), with alarm and recruit as "additional phermones with
+      potent range extended by other phermones? so the network turns into a
+      trail to the thing, and when the call phermone expires, the network of
+      phermone trails goes back to its previous phermone types and
+      signalling." (lineage-rounds brief, question 33). Nudges lay pheromone
+      trails members follow, reinforce or let fade, the standing orders of
+      Directing 4 as a trail network; the player sets the share of new
+      members raised to each caste; a call is a potent, short-lived
+      pheromone whose range rides the trail network, turning it into a
+      trail to its target until it expires and the network reverts; and the
+      player directs what the nest accretes.
+
+      Links: area Mesocosm · draws on 1228, directing.4, mesocosm.2 · summary A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes.
+
+1230. **A colony's queen is its germ line.** Ruled by Mark on 2026-11-09:
+      "Queen is the germ line (Recommended)", over any member budding or a
+      colony immortal while fed (lineage-rounds brief, question 34). Only
+      reproductives breed; workers are sterile parts. Losing the queen is a
+      crisis, survived only by raising a new one where the recipe allows;
+      nuptial flights found daughter colonies, which are the lineage's
+      critters for succession (1204, 1217).
+
+      Links: area Mesocosm · draws on 1204, 1217, 1228 · summary Only a colony's reproductives breed; losing the queen is a crisis; daughter colonies from nuptial flights are the lineage's critters for succession.
+
+1231. **A colony plays live and by events.** Mark, offered live only,
+      event-paced only, or both by zoom: "Both, by zoom", then: "idk about by
+      zoom, but definitely both!" (lineage-rounds brief, question 35). The
+      colony runs live on the world clock, and the player may ride any
+      member live at any time; its colony-level choices also fall due at
+      colony events (a raid, a find, a threat to the queen, flight season),
+      as a microbe's do (1224), whichever view the player holds.
+
+      Links: area Mesocosm · draws on 1224, 1228 · summary A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
