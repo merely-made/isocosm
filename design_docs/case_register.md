@@ -625,6 +625,7 @@ three design docs that cite it. The record holds the words.
 | 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | [denizen](2026-11-02_denizen_plan.md) |
 | 1167 | Travel crosses site borders map by map first, the lift hidden in the crossing; seamless later as a world setting. | none |
 | 1168 | The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture. | none |
+| 1227 | A player's persona is their dramatis identity, minted if absent; bonds and regard key to it across worlds. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Presentation
 
@@ -840,6 +841,10 @@ three design docs that cite it. The record holds the words.
 | 1217 | A player whose near kin are gone hops to the nearest living member of their line; with none they wait out the round and may offer to forfeit or end it. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1220 | Colony, parasite or symbiont, composite (two kingdoms in one lineage), replicator, idea, spirit and construct are candidate kingdoms. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1221 | Players may share a lineage, planting its critters, adding to its budget and gene pool, individuating from that budget; or each play their own. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1223 | A microbe lineage is played by gene switches the population carries out and one-shot plasmids drafted from contact with other strains. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1224 | A microbe's choices fall due at host and patch events on the world clock; between them its spread can be watched live. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1225 | Any strain may decompose, infect, aid, join or disperse through its switches; its strategy is read from what it did; joining a host is a transition to a composite. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
+| 1226 | A microbe player may aid or infect another player's critter; mutualism earns the host lineage's regard, and nudges are the counterplay. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 
 ## Eponym
 

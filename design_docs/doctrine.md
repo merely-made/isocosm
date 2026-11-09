@@ -7,7 +7,7 @@ Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan, archived:
 [the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
-**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1222 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-11-09:** every area reviewed (2026-10-22), 139 statements, within the per-area statement caps in `doctrine_budget.toml` (headings counted; body lines not checked); case 1161 refines Presentation 2's hybrid image refresh. 2026-11-08: cases 1163 to 1168 refine Processes 6 (the coarse tier as the one sim's cohort form) and Directing 5 (the measured window, travel map by map). 2026-11-09: cases 1198 to 1226 (the lineage-rounds brief) refine Bodies 1, Bodies 6, Ecology 1, Mesocosm 1 to 3 and Naming 3, apply Record 7, and add Mesocosm 6. The design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -1961,17 +1961,20 @@ as its offspring, else its nearest kin left in the round, else the nearest
 living member of the line however far (Mesocosm 3). Players may share a
 lineage or each play their own. A world-class lineage is played from the
 aggregate view between rounds: managing the world's time flow and cycles,
-and a stream of holistic and specific events its conditions raise.
-Speciating (splitting the line and naming it; "the name is the doing") is
+and a stream of holistic and specific events its conditions raise. A
+microbe lineage is played by gene switches its population carries out and a
+draft of one-shot plasmids from contact, any strain free to decompose,
+infect, aid, join or leave a host; its choices fall due at host and patch
+events, its spread watchable live between them. Speciating (splitting the line and naming it; "the name is the doing") is
 the player's act; expressing a candidate is the critter's own development.
 
-Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204, 1216, 1217, 1221 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds; speciating is the player's act.
+Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204, 1216, 1217, 1221, 1223, 1224, 1225, 1226 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds, a microbe by switches and plasmids at host events; speciating is the player's act.
 
-*Refined 2026-11-09 from cases 1198, 1204, 1216, 1217 and 1221 (Mark: "maybe
-macro is kinda like the aggregate perspective between the rounds"; "Rule it
-(Recommended)"; "Maybe they can hop to the nearest living critter, with the
-understanding that may be far?"), drafted without a card round at his word:
-"Brief, cases, doctrine (Recommended)".*
+*Refined 2026-11-09 from cases 1198, 1204, 1216, 1217, 1221 and 1223 to 1226
+(Mark: "you could watch where your microbes are if you wanted, to observe the
+ecology and think about what to do when the event pops up"), drafted without a
+card round at his word: "Brief, cases, doctrine (Recommended)".*
+
 
 
 ### Mesocosm 2. The only directive is a nudge

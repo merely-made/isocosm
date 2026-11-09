@@ -4,7 +4,7 @@
 by his roguelike framing (§1). Its eighteen answers are cases 1198 to 1215
 (§7). Doctrine refined from them the same day: Bodies 1, Bodies 6, Ecology 1
 and Mesocosm 1 to 3 refined, Record 7 applied, Mesocosm 6 new. A second pass
-the same day (§10) answered eight more as cases 1216 to 1222: the playstyle's
+the same day (§10) answered eight more as cases 1216 to 1222, and a third pass (§11) four more as 1223 to 1226: the playstyle's
 word is *kingdom*, not *class* (1219), so read §3 to §7's "class" as
 "kingdom"; the five are named plant, animal, fungus, microbe and world-class
 (1218). Built: the sim's producer, consumer or decomposer reading renamed
@@ -259,6 +259,11 @@ to commit) are not cases.
 | 24 | The playstyle's word | 1219 | Kingdom, retire the enum | Bodies 1 and 6, Ecology 1, Mesocosm 6, Naming 3 refined |
 | 25 | Candidate kingdoms | 1220, 1221 | All seven; a composite is two kingdoms in one lineage; players may share a lineage | Mesocosm 1 and 6 refined |
 | 26 | The reading's new name | 1222 | Trophic | Naming 3 refined; built |
+| 27 | What a microbe player directs | 1223 | Switches + plasmid draft | Mesocosm 1 refined |
+| 28 | How microbe play is paced | 1224 | Event-paced, watchable live | Mesocosm 1 refined |
+| 29 | How strategies relate to a strain | 1225 | One strain, switchable | Mesocosm 1 refined |
+| 30 | A microbe inside another player's critter | 1226 | Open play, regard decides | Mesocosm 1 refined |
+| 31 | What keys a player's persona | 1227 | Their dramatis identity, minted if absent | None; Directing 4 unchanged |
 
 Question 16 came back because the framing's "When they all die … edit the
 lineage you played last" read against the project description's "your line
@@ -267,11 +272,10 @@ extinction is local to the round.
 
 ## 8. Open
 
-- **A microbe's pace.** World-class play sits between rounds (1216); how a
-  microbe's fast generations are paced inside its medium, and what the
-  coarse step (the coarse-step brief) owes either, is unasked.
-- **The persona seed.** What keys a player's persona across worlds that
-  share a lineage, and the bound on regard's heritability.
+- **The microbe's numbers.** Which switches and plasmids exist, what each
+  costs to carry, and what the coarse step owes crowd-grain strains in hosts.
+- **Regard's bound.** How far regard is heritable; the persona itself is the
+  player's dramatis identity (1227).
 - **The operators.** Whether eight is the set; how a crossing unlocks
   another class's operators; what self-similar growth costs at site grain.
 - **The sheet.** Which tolerance axes the world exposes, and whether a
@@ -344,3 +348,25 @@ Asked the same day, after the first commit, from the open questions above.
   workspaces build with all targets; clippy is clean of errors; the
   mesocosm-views, -phenotype, -genet and -runtime library tests and
   cosmograph's trophic and port tests pass.
+
+## 11. Microbe play
+
+- **What you direct** (1223): a standing stance of gene switches (virulence,
+  motility, biofilm, spores, enzymes, nutrients leaked to the host), which
+  the population carries out, as real strains regulate genes and flip them
+  at quorum; and a draft of one-shot plasmid abilities picked up by contact
+  with other strains, costly to carry and lost without selection, spent to
+  break into a host or survive a purge.
+- **Pacing** (1224): the strain runs at crowd grain on the world clock.
+  Choices fall due at host and patch events: entering a host, quorum, the
+  host eating, mating or dying, immunity rising, contact with another
+  strain. Between them the player can watch the spread live. No one waits.
+- **Strategies** (1225): any strain may decompose, infect, aid a host,
+  join it or disperse on wind and water. The virulence–transmission
+  tradeoff is the pathogen's core choice: kill fast and strand yourself, or
+  keep the host walking. Staying integrated long enough is the
+  endosymbiont's transition into a composite with the host.
+- **Beside an animal player** (1226): open play. A microbe player can live
+  in another player's critter as gut mutualist or pathogen; mutualism earns
+  the host lineage's regard (1214), and the animal's nudges (avoid carrion,
+  eat bitter plants) are the counterplay.

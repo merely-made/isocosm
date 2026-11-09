@@ -13760,6 +13760,63 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Naming · draws on 755, 1219, naming.3 · summary A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic.
 
+1223. **A microbe player directs gene switches and a plasmid draft.** Ruled
+      by Mark on 2026-11-09: "Switches + plasmid draft (Recommended)", over
+      switches only or one-shots only (lineage-rounds brief, question 27).
+      A microbe lineage is played by a standing stance of gene switches
+      (virulence, motility, biofilm, spores, enzymes, nutrients leaked to
+      its host), carried out by the population, beside a draft of one-shot
+      plasmid abilities gained by contact with other strains, costly to
+      carry and lost without selection, spent to break into a host or
+      survive a purge.
+
+      Links: area Mesocosm · draws on 1216, mesocosm.2 · summary A microbe lineage is played by gene switches the population carries out and one-shot plasmids drafted from contact with other strains.
+
+1224. **Microbe play is event-paced and watchable live.** Mark, offered
+      event-paced decisions, a time zoom per host, or real time: "i am down
+      for 1, but doesn't that also effectively leave 3 there and available?
+      like, you could watch where your microbes are if you wanted, to
+      observe the ecology and think about what to do when the event pops
+      up." (lineage-rounds brief, question 28). The strain runs at crowd
+      grain (Processes 6) on the world clock; its choices fall due at host
+      and patch events (entering a host, quorum, the host eating, mating or
+      dying, immunity rising, contact with another strain), and between them
+      the player may watch the strain spread live. No player waits on
+      another.
+
+      Links: area Mesocosm · draws on 1216, processes.6 · plans mesocosm-overlay · summary A microbe's choices fall due at host and patch events on the world clock; between them its spread can be watched live.
+
+1225. **A strain may pursue any strategy.** Ruled by Mark on 2026-11-09:
+      "One strain, switchable (Recommended)", over a strategy fixed per
+      lineage, or fixed with endosymbiosis always open (lineage-rounds
+      brief, question 29). Decomposing, infecting, aiding a host, joining
+      it as an endosymbiont and dispersing are open to any strain through
+      its switches and recipe; which it pursued is read from what it did
+      (1201). Joining a host's recipe is the major transition into a
+      composite (1209, 1220).
+
+      Links: area Mesocosm · draws on 1201, 1209, 1220 · summary Any strain may decompose, infect, aid, join or disperse through its switches; its strategy is read from what it did; joining a host is a transition to a composite.
+
+1226. **Inside another player's critter, either may help or harm; regard
+      decides.** Ruled by Mark on 2026-11-09: "Open play, regard decides
+      (Recommended)", over consent first or mutualism only between players
+      (lineage-rounds brief, question 30). A microbe player may live in
+      another player's critter as mutualist or pathogen; a mutualist earns
+      the host lineage's regard (1214), and the animal player's nudges are a
+      pathogen's counterplay.
+
+      Links: area Mesocosm · draws on 1214, 1225 · summary A microbe player may aid or infect another player's critter; mutualism earns the host lineage's regard, and nudges are the counterplay.
+
+1227. **A player's persona is their dramatis identity.** Mark, of what keys
+      a player's persona across worlds: "mint an id if you don't have one,
+      dramatis, use it to identify yourself here" (lineage-rounds brief,
+      question 31). The participant entity a player's bonds and regard hang
+      from (Directing 4, 1214) is keyed to their dramatis persona, minted
+      for a player who has none, so a lineage's regard follows the same
+      player across worlds that share it.
+
+      Links: area Directing and play · draws on 1214, directing.4 · stack · summary A player's persona is their dramatis identity, minted if absent; bonds and regard key to it across worlds.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

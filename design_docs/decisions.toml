@@ -6453,6 +6453,43 @@ area = "Naming"
 summary = "A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic."
 draws_on = ["755", "1219", "naming.3"]
 
+[cases."1223"]
+title = "A microbe player directs gene switches and a plasmid draft"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A microbe lineage is played by gene switches the population carries out and one-shot plasmids drafted from contact with other strains."
+draws_on = ["1216", "mesocosm.2"]
+
+[cases."1224"]
+title = "Microbe play is event-paced and watchable live"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A microbe's choices fall due at host and patch events on the world clock; between them its spread can be watched live."
+draws_on = ["1216", "processes.6"]
+plans = ["mesocosm-overlay"]
+
+[cases."1225"]
+title = "A strain may pursue any strategy"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Any strain may decompose, infect, aid, join or disperse through its switches; its strategy is read from what it did; joining a host is a transition to a composite."
+draws_on = ["1201", "1209", "1220"]
+
+[cases."1226"]
+title = "Inside another player's critter, either may help or harm; regard decides"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "A microbe player may aid or infect another player's critter; mutualism earns the host lineage's regard, and nudges are the counterplay."
+draws_on = ["1214", "1225"]
+
+[cases."1227"]
+title = "A player's persona is their dramatis identity"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "A player's persona is their dramatis identity, minted if absent; bonds and regard key to it across worlds."
+draws_on = ["1214", "directing.4"]
+stack = true
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -7230,8 +7267,8 @@ draws_on = ["919", "1064"]
 title = "What the player plays"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds; speciating is the player's act."
-draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204", "1216", "1217", "1221"]
+summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds, a microbe by switches and plasmids at host events; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204", "1216", "1217", "1221", "1223", "1224", "1225", "1226"]
 
 [statements."mesocosm.2"]
 title = "The only directive is a nudge"
