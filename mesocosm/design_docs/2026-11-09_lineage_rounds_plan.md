@@ -157,6 +157,17 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area World generation · draws on 1215 · plans sim · summary Temperature follows latitude, height and season, and is moved by weather.
 
+- **D16, fundaments before LR9 and LR10 (2026-11-10):**
+  "1, 2, 3, 4, parallelize as needed", of hosts, a playable handle,
+  body-size rates with propagules, and members' learning; and of LR9 and
+  LR10: "Park them (Recommended)". Asked: "proceed, or should we build some
+  of the fundaments we've noted here? lookin' at the stack...?" The four are
+  built in that order, since the phases from LR5 on kept naming the same few
+  things the sim lacks; shared lineages, crossings and the candidate kingdoms
+  wait for them.
+
+  Links: area Mesocosm · draws on 1220, 1221 · plans sim, mesocosm-overlay · summary Hosts, a playable handle, body-size rates with propagules, and members' learning are built before LR9 and LR10, which are parked.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -417,6 +428,10 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   meals needed (LR3): first cuts.
 - **Water and light strain outside a band is one-sided** (LR4.2): too little
   water or light strains; too much does not.
+- **Hosting's numbers** (hosts): a turn every six ticks; a tenth of its own
+  matter taken, a twentieth given, a tenth sent into each body. Dead matter
+  is detritus, then soil. A surface enters every living body at its site
+  that is not its own lineage's, a participant's or world-class.
 
 ## Questions for Mark
 
@@ -462,6 +477,21 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: hosts built (D16's first fundament; cases 1223, 1225, 1226).
+  `Rules.hosting`, unset by default, gives a surface a turn every `period`
+  ticks: with `gene:rot` it takes a site's detritus then soil, with
+  `gene:feed` a living host's reserve then tissue, with `gene:leak` it gives
+  to a host's reserve as far as there is room, with `gene:enter` it sends
+  matter into the bodies residing at its site, and whatever its genes it is
+  released to the site when its host is dead. Surface stock already counts
+  in world matter, so each move is one unit for one and the turn is checked
+  for conservation. Each move is a flow made by `hosting:*` naming the
+  lineage of each side, so feeding and leaking reach regard through
+  `dealings`. Hosting never kills: an emptied host starves by the existing
+  process. Fourteen controls in `spread/hosting_tests.rs`, replay the same
+  under both executions; no pinned hash moved. Owed: the crowd model, which
+  refuses a world with the rule; a host with matter-bearing parts under
+  test; a Mesocosm flag and a world that founds surfaces with these genes.
 - 2026-11-10: LR8's first cut, what the sim can carry. A microbe here is a
   surface: matter under its lineage's key on sites, places and in hosts, no
   entity of its own, its traits gating its capacity. **A gene switch:**

@@ -153,6 +153,13 @@ pub(crate) struct Leg {
     pub amount: u64,
 }
 
+/// A surface's move and the kind each side stands for (cases 1223, 1225, 1226).
+pub(crate) struct Kinded {
+    pub made_by: MadeBy,
+    pub leg: Leg,
+    pub kinds: [Option<Kind>; 2],
+}
+
 /// Where one take or give of a body's own matter went among its parts
 /// (ruling 504), in the order the act made it.
 #[derive(Clone, Debug)]
@@ -264,6 +271,26 @@ impl Simulation {
             to: leg.to,
             amount: leg.amount,
             count,
+            composition: None,
+        }));
+    }
+
+    /// Records a surface's moves (cases 1223, 1225, 1226): its stock is no
+    /// body's, so each leg names the lineage and kingdom of each side itself.
+    pub(crate) fn flowed_kinds(&mut self, moves: Vec<Kinded>) {
+        if !self.flows.keeping {
+            return;
+        }
+        let tick = self.state.tick;
+        self.flows.flows.extend(moves.into_iter().map(|m| Flow {
+            tick,
+            made_by: m.made_by,
+            from_kind: m.kinds[0].clone(),
+            to_kind: m.kinds[1].clone(),
+            from: m.leg.from,
+            to: m.leg.to,
+            amount: m.leg.amount,
+            count: 1,
             composition: None,
         }));
     }

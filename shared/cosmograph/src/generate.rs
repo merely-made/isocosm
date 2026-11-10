@@ -315,6 +315,7 @@ impl Founding {
             climate: None,
             kingdoms: None,
             exertion: None,
+            hosting: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

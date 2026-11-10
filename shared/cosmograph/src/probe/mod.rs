@@ -55,6 +55,9 @@ impl ProbeWorld {
             || g.spreads.next_transit != 0 {
             return Err("independent spread crowd supports site grain without titled transit".into());
         }
+        if g.rules.hosting.is_some() {
+            return Err("independent spread crowd does not model a surface's hosting turns".into());
+        }
         if g.rules.owned_stock.is_some() || g.rules.item_custody.is_some()
             || g.rules.processes.values().any(|p| p.period.is_some() && crowd::directing(p).is_none())
             || !g.rules.competitions.is_empty() {

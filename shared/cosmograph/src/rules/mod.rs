@@ -14,6 +14,8 @@ mod climate;
 pub use climate::Climate;
 mod exertion;
 pub use exertion::{Exertion, ease};
+mod hosting;
+pub use hosting::Hosting;
 mod competition;
 mod directing;
 mod defence;
@@ -346,6 +348,10 @@ pub struct Rules {
     /// paid inside upkeep and worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exertion: Option<Exertion>,
+    /// What a surface does where it lives (cases 1223, 1225, 1226); absent,
+    /// surfaces only hold matter and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hosting: Option<Hosting>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -404,6 +410,7 @@ impl Rules {
         if let Some(companions) = &self.companions { companions.validate(self)?; }
         if let Some(kingdoms) = &self.kingdoms { kingdoms.validate(self)?; }
         if let Some(exertion) = &self.exertion { exertion.validate()?; }
+        if let Some(hosting) = &self.hosting { hosting.validate(self)?; }
         Ok(())
     }
 }

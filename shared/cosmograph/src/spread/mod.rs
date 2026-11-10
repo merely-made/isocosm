@@ -18,6 +18,7 @@ mod owned;
 mod placement;
 mod direction;
 mod happened;
+mod hosting;
 pub(crate) use direction::{Direction, declarations as directions};
 pub use direction::resolved_overflow_routes;
 pub use placement::{Placement, Supply, place_stock};
@@ -37,3 +38,5 @@ pub(crate) use strain::switch;
 mod tests;
 #[cfg(test)]
 mod happened_tests;
+#[cfg(test)]
+mod hosting_tests;

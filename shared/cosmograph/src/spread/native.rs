@@ -19,7 +19,7 @@ pub enum Command {
     Switch { lineage: Key, on: BTreeSet<Key>, off: BTreeSet<Key> },
 }
 
-fn validate_state(state: &State, rules: &crate::rules::Rules) -> Result<()> {
+pub(super) fn validate_state(state: &State, rules: &crate::rules::Rules) -> Result<()> {
     validate(&state.spreads, rules, &state.population, &state.sites, &state.lineages)?;
     if state.polities.values().any(|p| p.accounts.keys().any(|k| state.spreads.owns(k))) {
         return Err("spread stocks belong to places or hosts, not polities".into());
@@ -103,10 +103,12 @@ impl Simulation {
         loop {
             let journey = self.journeys.as_ref().and_then(crate::journey::Journeys::next);
             let spread = self.state.spreads.transit.iter().map(|t| t.arrives).min();
-            let Some(tick) = journey.into_iter().chain(spread).min().filter(|t| *t <= until) else { break; };
+            let turn = self.next_turn();
+            let Some(tick) = journey.into_iter().chain(spread).chain(turn).min().filter(|t| *t <= until) else { break; };
             if tick < self.state.tick { return Err("spread or journey arrival precedes the current clock".into()); }
             self.arrive_until(tick, work)?;
             self.land_spreads(tick)?;
+            if turn == Some(tick) { self.take_turn(tick)?; }
         }
         Ok(())
     }

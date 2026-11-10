@@ -292,6 +292,7 @@ impl BodyFounding {
             climate: None,
             kingdoms: None,
             exertion: None,
+            hosting: None,
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),

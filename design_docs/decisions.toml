@@ -6718,6 +6718,14 @@ summary = "Temperature follows latitude, height and season, and is moved by weat
 draws_on = ["1215"]
 plans = ["sim"]
 
+[decisions."lineage-rounds D16"]
+title = "fundaments before LR9 and LR10 (2026-11-10)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Hosts, a playable handle, body-size rates with propagules, and members' learning are built before LR9 and LR10, which are parked."
+draws_on = ["1220", "1221"]
+plans = ["mesocosm-overlay", "sim"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
