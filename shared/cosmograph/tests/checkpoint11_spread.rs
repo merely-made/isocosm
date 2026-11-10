@@ -404,3 +404,68 @@ fn normative_direction_requires_exact_owned_quantities_and_retains_claims_throug
         exact(&s, mass);
     }
 }
+
+fn switch(lineage: &str, on: &[&str], off: &[&str]) -> Command {
+    Command::Spread(spread::Command::Switch { lineage: lineage.into(),
+        on: on.iter().map(|k| (*k).into()).collect(), off: off.iter().map(|k| (*k).into()).collect() })
+}
+
+#[test]
+fn a_gene_switch_changes_a_surface_lineage_in_place_and_replays() {
+    let mut w = world(17);
+    w.genesis.rules.traits.insert("c11:extra".into());
+    let line = w.surface.key();
+    for execution in [Execution::Individuals, Execution::Grouped] {
+        let mut s = Session::new(w.genesis.clone(), execution).unwrap();
+        let mass = s.sim.matter();
+        let before = s.sim.state().lineages[&line].clone();
+        assert_eq!(s.command(switch(&line, &["c11:extra"], &[GENE])).unwrap(), "switched");
+        let after = &s.sim.state().lineages[&line];
+        assert_eq!(after.revision, before.revision + 1);
+        assert!(after.traits.contains("c11:extra") && !after.traits.contains(GENE));
+        assert!(after.traits.contains("function:fix"));
+        s.command(switch(&line, &[GENE], &["c11:extra"])).unwrap();
+        assert_eq!(s.sim.state().lineages[&line].revision, before.revision + 2);
+        assert!(s.sim.state().lineages[&line].traits.contains(GENE));
+        s.advance(3).unwrap();
+        exact(&s, mass);
+    }
+    let json = serde_json::to_string(&spread::Command::Switch { lineage: line.clone(),
+        on: BTreeSet::new(), off: BTreeSet::new() }).unwrap();
+    assert!(json.starts_with("{\"Switch\":"), "the variant is tagged by name, so older logs are unaffected");
+}
+
+#[test]
+fn a_gene_switch_refuses_what_it_cannot_do_and_changes_nothing() {
+    let w = world(17);
+    let line = w.surface.key();
+    let mut s = Session::new(w.genesis.clone(), Execution::Individuals).unwrap();
+    let before = s.save();
+    for bad in [switch("world:ground", &[], &[GENE]), switch("lineage:absent", &[GENE], &[]),
+        switch(&line, &["c11:unknown"], &[]), switch(&line, &[GENE], &[GENE]),
+        switch(&line, &[GENE], &[]), switch(&line, &[], &["c11:unknown"]), switch(&line, &[], &[])] {
+        assert!(s.command(bad).is_err());
+        assert_eq!(s.save(), before);
+    }
+}
+
+#[test]
+fn a_gene_switch_that_lowers_capacity_spills_as_a_lowered_modifier_does() {
+    let w = world(17);
+    let line = w.surface.key();
+    let mut s = Session::new(w.genesis.clone(), Execution::Grouped).unwrap();
+    let mass = s.sim.matter();
+    place(&mut s, &w, &w.surface, Substrate::Site(w.from), 20);
+    assert!(s.sim.state().spreads.transit.is_empty());
+    s.command(switch(&line, &[], &[GENE])).unwrap();
+    assert_eq!(spread::capacity(s.sim.state(), &w.genesis.rules, Substrate::Site(w.from), &w.surface).unwrap(), 0);
+    let queue = &s.sim.state().spreads.transit;
+    assert_eq!(queue.iter().map(|t| (t.to, t.amount)).collect::<Vec<_>>(), vec![(w.to[0], 5), (w.to[1], 10)]);
+    assert_eq!(spread::held(s.sim.state(), Substrate::Site(w.from), &w.surface).unwrap(), 5);
+    exact(&s, mass);
+    let mut whole = s.clone();
+    whole.advance(6).unwrap();
+    for _ in 0..6 { s.advance(1).unwrap(); }
+    assert_eq!(whole.sim.state_hash(), s.sim.state_hash());
+    exact(&s, mass);
+}

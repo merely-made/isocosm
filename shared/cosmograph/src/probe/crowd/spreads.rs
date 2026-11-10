@@ -134,6 +134,21 @@ impl Model {
                 format!("dispatched:{}", self.overflow(rules, identity, *at)?),
             spread::Command::Place(placement) =>
                 format!("placed:{}", self.place(rules, placement)?),
+            spread::Command::Switch { lineage, on, off } => {
+                if !self.details.identities.contains(&Identity::Surface(lineage.clone())) {
+                    return Err("switch names no registered surface lineage".into());
+                }
+                if !on.is_subset(&rules.traits) { return Err("switch turns on an unknown trait".into()); }
+                if !on.is_disjoint(off) { return Err("switch turns a trait both on and off".into()); }
+                let present = self.lineages.get_mut(lineage).ok_or("unknown switch lineage")?;
+                let mut traits = present.traits.clone();
+                traits.extend(on.iter().cloned());
+                traits.retain(|key| !off.contains(key));
+                if traits == present.traits { return Err("switch changes no trait".into()); }
+                present.revision = present.revision.checked_add(1).ok_or("switch revision overflows")?;
+                present.traits = traits;
+                "switched".into()
+            },
         })
     }
 

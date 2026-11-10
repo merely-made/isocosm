@@ -66,7 +66,7 @@ fn height(rules: &Rules, site: &Site) -> i64 {
 /// A triangle over the world's year, from -1,000 to 1,000: nought at tick 0,
 /// rising a quarter year, falling a half, rising a quarter. None where the
 /// sun is tidally locked and the year does not turn.
-fn wave(rules: &Rules, tick: Tick) -> i128 {
+pub(crate) fn wave(rules: &Rules, tick: Tick) -> i128 {
     if rules.sun.as_ref().is_some_and(|s| s.tidal_lock) {
         return 0;
     }

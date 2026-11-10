@@ -462,6 +462,27 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR8's first cut, what the sim can carry. A microbe here is a
+  surface: matter under its lineage's key on sites, places and in hosts, no
+  entity of its own, its traits gating its capacity. **A gene switch:**
+  `spread::Command::Switch { lineage, on, off }` changes a surface lineage's
+  traits in place, journalled as a strain fork is, re-running overflow where
+  capacity falls (case 1223). **Surface events:** `spread::happened` reads,
+  between two states, a surface reaching or leaving a substrate, brimming at
+  its capacity, its host dying, and meeting another surface (1224). **World
+  events:** `readings::world::raised` reads a lineage going extinct, a region
+  falling, a site's soil running out, a lineage's matter doubling, and the
+  year turning (1216). **Time flow:** `Interim::ahead(epochs)` runs the world
+  to the Nth next boundary unwatched, every lineage adapting, on the
+  deep-time path unchanged, logged so a save replays, and returns what was
+  raised. The crowd model gained a matching switch. No existing test or pin
+  moved. Owed, for want of anything in the sim to stand on: growth of a
+  surface (nothing credits its matter); any effect between a surface and its
+  host (infection, harm, aid, immunity, release at death); plasmids; playing
+  a surface through the loop, which plays a critter and has nothing to take;
+  a world-class player changing a cycle, the cycles being rules fixed at
+  founding; and all of it in Mesocosm's saved loop and host, which neither
+  draws nor asks about surfaces.
 - 2026-11-10: LR7 built for what the sim can carry. **Why not:**
   `readings::unable` lists each Choice process a critter is not offered now
   with the reason the act path gives when it is tried; the chooser's

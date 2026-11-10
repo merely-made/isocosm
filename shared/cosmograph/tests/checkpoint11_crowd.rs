@@ -170,6 +170,23 @@ fn seeded_strain_forks_only_selected_host_and_retains_local_functions() {
 }
 
 #[test]
+fn independent_gene_switch_matches_native_spill_and_refusals() {
+    let w = world(17);
+    let mut p = Pair::new(&w,&BTreeSet::new());
+    p.place(&w,&w.surface,Substrate::Site(w.from),20);
+    let line = w.surface.key();
+    let switch = |on:&[&str],off:&[&str]| spread::Command::Switch {lineage:line.clone(),
+        on:on.iter().map(|k| (*k).into()).collect(),off:off.iter().map(|k| (*k).into()).collect()};
+    p.refused(switch(&[],&[]));
+    p.refused(switch(&["c11:unknown"],&[]));
+    p.refused(switch(&[GENE],&[GENE]));
+    assert_eq!(p.command(switch(&[],&[GENE])),"switched");
+    assert_eq!(p.crowd.spread_held(Substrate::Site(w.from),&w.surface).unwrap(),5);
+    p.advance(4);
+    p.replay();
+}
+
+#[test]
 fn modifier_and_local_supply_refusals_publish_no_partial_candidate() {
     let w = world(17);
     let mut p = Pair::new(&w,&BTreeSet::new());

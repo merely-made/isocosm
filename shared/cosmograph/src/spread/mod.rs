@@ -17,6 +17,7 @@ mod capacity;
 mod owned;
 mod placement;
 mod direction;
+mod happened;
 pub(crate) use direction::{Direction, declarations as directions};
 pub use direction::resolved_overflow_routes;
 pub use placement::{Placement, Supply, place_stock};
@@ -28,7 +29,11 @@ pub use capacity::{CapacityLayer, CapacityRules, Stacking, capacity};
 pub use transport::{Dispatch, dispatch_changed, overflow, overflow_at, resolved_overflow,
     resolved_overflow_at, settle};
 pub(crate) use transport::dispatch_changed_except;
+pub use happened::{Surfaced, happened, surfaced};
 pub use strain::{fork_strain, strain_key};
+pub(crate) use strain::switch;
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod happened_tests;

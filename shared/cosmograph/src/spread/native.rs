@@ -15,6 +15,8 @@ pub enum Command {
     RemoveModifier { key: Key },
     Overflow { identity: Identity, at: Substrate },
     Place(super::Placement),
+    /// Change a surface lineage's traits in place (case 1223).
+    Switch { lineage: Key, on: BTreeSet<Key>, off: BTreeSet<Key> },
 }
 
 fn validate_state(state: &State, rules: &crate::rules::Rules) -> Result<()> {
@@ -69,6 +71,7 @@ impl Simulation {
                 format!("dispatched:{}", resolved_overflow_at(&mut candidate, rules, identity, *at)?)
             },
             Command::Place(placement) => format!("placed:{}", super::place_stock(&mut candidate,rules,placement)?),
+            Command::Switch { lineage, on, off } => super::switch(&mut candidate, rules, lineage, on, off)?,
         };
         validate_state(&candidate, rules)?;
         dispatch_changed(&self.state, &mut candidate, rules)?;

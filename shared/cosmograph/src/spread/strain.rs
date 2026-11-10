@@ -40,3 +40,26 @@ fn fork_inner(state:&mut State, rules:&Rules, seed:u64, parent:&str, at:Substrat
     *state = candidate;
     Ok(key)
 }
+
+/// Turn traits on and off on a surface lineage in place; no matter moves
+/// (case 1223).
+///
+/// # Errors
+/// The lineage is not a registered surface, a trait to turn on is unknown,
+/// the two sets overlap, or the switch changes nothing.
+pub fn switch(state: &mut State, rules: &Rules, lineage: &str, on: &BTreeSet<Key>,
+    off: &BTreeSet<Key>) -> Result<String> {
+    if !state.spreads.identities.contains(&Identity::Surface(lineage.into())) {
+        return Err("switch names no registered surface lineage".into());
+    }
+    if !on.is_subset(&rules.traits) { return Err("switch turns on an unknown trait".into()); }
+    if !on.is_disjoint(off) { return Err("switch turns a trait both on and off".into()); }
+    let present = state.lineages.get_mut(lineage).ok_or("unknown switch lineage")?;
+    let mut traits = present.traits.clone();
+    traits.extend(on.iter().cloned());
+    traits.retain(|key| !off.contains(key));
+    if traits == present.traits { return Err("switch changes no trait".into()); }
+    present.revision = present.revision.checked_add(1).ok_or("switch revision overflows")?;
+    present.traits = traits;
+    Ok("switched".into())
+}

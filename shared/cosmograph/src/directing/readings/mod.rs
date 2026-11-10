@@ -19,6 +19,7 @@ pub mod scopes;
 pub mod starts;
 pub mod survival;
 pub mod unable;
+pub mod world;
 
 pub use abilities::{Ability, abilities};
 pub use habitable::habitable;
@@ -30,6 +31,7 @@ pub use scopes::{Absence, Means, Scope, ScopeReading, Source, absence, reading, 
 pub use starts::{StartAt, start_at, starts};
 pub use survival::{Mode, View, view};
 pub use unable::{Unable, unable};
+pub use world::{Raised, raised};
 
 /// An act the critter considered and could take beside its choice.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -72,3 +74,5 @@ pub fn from_receipt(sim: &Simulation, receipt: &crate::simulation::Receipt) -> V
 mod tests;
 #[cfg(test)]
 mod unable_tests;
+#[cfg(test)]
+mod world_tests;

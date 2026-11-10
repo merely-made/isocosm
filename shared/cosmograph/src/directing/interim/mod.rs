@@ -16,6 +16,7 @@ use serde::{Deserialize, Serialize};
 
 pub use crate::lineage::boundary;
 pub mod deep;
+mod ahead;
 mod begin;
 mod borrowed;
 pub(crate) mod regard;
@@ -379,3 +380,6 @@ mod ending_tests;
 
 #[cfg(test)]
 mod reproduction;
+
+#[cfg(test)]
+mod ahead_tests;
