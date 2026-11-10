@@ -41,6 +41,10 @@ pub struct Sheet {
     pub systems: BTreeSet<Key>,
     /// Matter a tick its upkeep takes, where the world prices upkeep by the body.
     pub upkeep: Option<u64>,
+    /// The comfort band in degrees, where the world has a climate (case 1215;
+    /// lineage-rounds D14), shifted by the development's offset.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub comfort: Option<[i64; 2]>,
 }
 
 /// The sheet of a fully grown body of `lineage` under `d`. The adult is
@@ -121,6 +125,10 @@ pub fn of(
             .map(|(k, _)| k.clone())
             .collect(),
         upkeep: upkeep(rules, lineages, &mut e),
+        comfort: rules
+            .climate
+            .as_ref()
+            .map(|c| crate::climate::band(c, mass, i64::from(d.comfort))),
     })
 }
 

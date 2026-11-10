@@ -147,6 +147,20 @@ impl Staged<'_> {
                         bitten,
                     ))
                 },
+                Reading::Strain { who } => {
+                    let body = self.body(*who)?;
+                    let place = body.resident_site().ok_or("strain needs a resident site")?;
+                    let site = sim.state.sites.get(&place).ok_or("site missing")?;
+                    let owed = crate::climate::owed(
+                        &sim.genesis.rules,
+                        seed,
+                        &sim.state.lineages,
+                        body,
+                        (place, site),
+                        sim.state.tick,
+                    );
+                    i64::try_from(owed).map_err(|e| e.to_string())
+                },
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
                     let part = body.parts.get(&id).ok_or("bound part missing")?;

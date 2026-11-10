@@ -141,6 +141,11 @@ pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
     if let (Some(a), Some(b)) = (had.upkeep, offered.upkeep) {
         out.extend(signed(a.into(), b.into()).map(|d| format!("{d} upkeep")));
     }
+    if let (Some(a), Some(b)) = (had.comfort, offered.comfort)
+        && a != b
+    {
+        out.push(format!("comfort {}..{} -> {}..{}", a[0], a[1], b[0], b[1]));
+    }
     let keys: std::collections::BTreeSet<&String> =
         had.functions.keys().chain(offered.functions.keys()).collect();
     for key in keys {
@@ -362,6 +367,7 @@ mod tests {
             functions: [("function:contract".to_string(), 8), ("function:store".to_string(), 6)].into(),
             systems: ["system:respiration".to_string()].into(),
             upkeep: Some(4),
+            comfort: None,
         }
     }
 
@@ -400,6 +406,24 @@ mod tests {
         c.functions.remove("function:store");
         c.functions.insert("function:fix".into(), 3);
         assert_eq!(sheet_words(&had, &c), "+fix 3, -store 6");
+    }
+
+    #[test]
+    fn a_moved_comfort_band_reads_after_upkeep() {
+        let mut had = sheet();
+        had.comfort = Some([10, 30]);
+        let mut b = had.clone();
+        b.upkeep = Some(6);
+        b.comfort = Some([8, 28]);
+        b.functions.insert("function:contract".into(), 20);
+        assert_eq!(sheet_words(&had, &b), "+2 upkeep, comfort 10..30 -> 8..28, +contract 12");
+        // A band only one side has, or an unmoved one, is no change.
+        b.comfort = had.comfort;
+        b.upkeep = had.upkeep;
+        b.functions = had.functions.clone();
+        assert_eq!(sheet_words(&had, &b), "");
+        b.comfort = None;
+        assert_eq!(sheet_words(&had, &b), "");
     }
 
     fn offer(cost: Option<u128>, with: Option<Sheet>) -> Offer {

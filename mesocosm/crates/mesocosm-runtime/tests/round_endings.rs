@@ -177,7 +177,7 @@ fn the_sheet_rule_is_off_by_default_and_a_sheeted_review_survives_a_restore() {
     // A sheet, where there is one, is carried on the reading and survives the wire.
     use cosmograph::{lineage::sheet::Sheet, process::FeedingMode};
     let sheet = Sheet { mass: 9, speed: None, reach: 1, clutch: 1, trophic: None, feeding: FeedingMode::Grazer,
-        functions: Default::default(), systems: Default::default(), upkeep: None };
+        functions: Default::default(), systems: Default::default(), upkeep: None, comfort: None };
     let mut carried = reading;
     carried.sheet = Some(sheet.clone());
     if let Some(offer) = carried.offers.first_mut() { (offer.sheet, offer.cost) = (Some(sheet), Some(3)); }

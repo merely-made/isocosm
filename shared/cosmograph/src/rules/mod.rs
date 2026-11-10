@@ -10,6 +10,8 @@ mod amount;
 mod query;
 pub use query::Query;
 mod body;
+mod climate;
+pub use climate::Climate;
 mod competition;
 mod directing;
 mod defence;
@@ -325,6 +327,11 @@ pub struct Rules {
     /// worlds, whose native allocation and bite draw retain their meaning.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub root_stores: BTreeMap<Key, RootStore>,
+    /// Temperature and what it costs a body outside its comfort (case 1215;
+    /// lineage-rounds D13 to D15); absent, there is no temperature and
+    /// worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub climate: Option<Climate>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

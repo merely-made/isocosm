@@ -313,6 +313,7 @@ impl ProbeFounding {
             .collect();
         let rules = Rules {
             root_stores: BTreeMap::new(),
+            climate: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,

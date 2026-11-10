@@ -301,6 +301,14 @@ pub struct Development {
     /// folded none serialize and hash as before.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub systems: BTreeMap<Key, super::System>,
+    /// Degrees the lineage's comfort band is shifted, heritably (case 1215;
+    /// lineage-rounds D14). Nought serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "is_nought")]
+    pub comfort: i16,
+}
+
+fn is_nought(degrees: &i16) -> bool {
+    *degrees == 0
 }
 
 /// One declared tract: `cells` of `function` on each part read as `shape`.

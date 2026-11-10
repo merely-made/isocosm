@@ -59,6 +59,7 @@ fn richer_rosters_develop_paid_serial_chains_and_keep_old_recipe_bytes() {
                 anamorphic: false,
                 tracts: vec![],
                 systems: Default::default(),
+                comfort: 0,
             };
             let soma = crate::development::soma(&rules, &d.recipe, 123);
             let grown = crate::development::develop(&rules, &d, &soma).expect(&body);

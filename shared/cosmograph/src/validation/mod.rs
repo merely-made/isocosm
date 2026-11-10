@@ -182,6 +182,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     if let Some(directing) = &rules.directing {
         directing.validate()?;
     }
+    if let Some(climate) = &rules.climate {
+        climate.validate()?;
+    }
     if let Some(social) = &rules.social {
         social.validate(key)?;
     }

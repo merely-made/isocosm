@@ -145,6 +145,7 @@ impl BodyFounding {
                 anamorphic: false,
                 tracts: vec![],
                 systems: Default::default(),
+                comfort: 0,
             };
             i += 1;
             d

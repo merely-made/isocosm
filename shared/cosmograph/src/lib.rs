@@ -30,6 +30,9 @@ pub mod diffusion;
 pub mod directing;
 pub mod ecology;
 pub mod defence;
+pub mod climate;
+#[cfg(test)]
+mod climate_tests;
 pub mod collapse;
 mod edits;
 pub mod effects;

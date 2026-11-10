@@ -235,3 +235,52 @@ fn upkeep_is_what_the_process_charges_a_grown_member() {
     let (s, line, _) = learned();
     assert_eq!(sheet_of(&s, &line, &development(&s, &line)).upkeep, None);
 }
+
+#[test]
+fn the_band_is_on_the_sheet_only_where_the_world_has_a_climate() {
+    let (mut s, line) = drafted();
+    let d = development(&s, &line);
+    let plain = sheet_of(&s, &line, &d);
+    assert_eq!(plain.comfort, None);
+    assert!(!serde_json::to_string(&plain).unwrap().contains("comfort"));
+    let climate = Climate { doubling: 3, ..Climate::default() };
+    Arc::make_mut(&mut s.sim.genesis).rules.climate = Some(climate.clone());
+    let own = sheet_of(&s, &line, &d);
+    assert_eq!(own.comfort, Some(crate::climate::band(&climate, own.mass, 0)));
+    assert_eq!(Sheet { comfort: None, ..own.clone() }, plain, "nothing else on the sheet moves");
+    // The lineage's offset shifts the band whole.
+    let mut shifted = d.clone();
+    shifted.comfort = 4;
+    let moved = sheet_of(&s, &line, &shifted).comfort.unwrap();
+    let was = own.comfort.unwrap();
+    assert_eq!(moved, [was[0] + 4, was[1] + 4]);
+    // An offer that changes the body's mass shows the band moving: heavier,
+    // colder.
+    let r = review(&s, &line, Some(10));
+    let offers = bearing(&r);
+    assert!(!offers.is_empty());
+    for o in offers {
+        let had = o.sheet.as_ref().unwrap();
+        assert_eq!(had.comfort, Some(crate::climate::band(&climate, had.mass, 0)), "{}", o.name);
+        if had.mass >= 2 * own.mass {
+            assert!(had.comfort.unwrap()[0] < was[0], "{}: a heavier body sits colder", o.name);
+        }
+        assert!(had.comfort.unwrap()[0] <= was[0], "{}", o.name);
+    }
+}
+
+#[test]
+fn a_much_heavier_body_sits_colder() {
+    let (mut s, line) = drafted();
+    let climate = Climate::default();
+    Arc::make_mut(&mut s.sim.genesis).rules.climate = Some(climate.clone());
+    let d = development(&s, &line);
+    let own = sheet_of(&s, &line, &d);
+    let mut big = d.clone();
+    for tagma in &mut big.recipe.tagmata {
+        tagma.segments *= 4;
+    }
+    let heavy = sheet_of(&s, &line, &big);
+    assert!(heavy.mass > own.mass);
+    assert!(heavy.comfort.unwrap()[0] < own.comfort.unwrap()[0], "{heavy:?} against {own:?}");
+}

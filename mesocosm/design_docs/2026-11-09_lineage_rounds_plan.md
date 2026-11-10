@@ -430,6 +430,28 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR4.2 built for temperature, behind the world rule
+  `rules.climate` (unset by default; unserialized when unset, so genesis and
+  hashes are as before). `climate.rs`: `temperature` is a pure function of
+  the rules, the seed, a site and the tick: a base, less a poleward term from
+  the site's latitude, less a lapse for its height (its elevation less its
+  water), plus an integer seasonal wave over the sun's year, opposite across
+  the equator, plus a seeded weather draw per site and spell (D15). `band`
+  centres a comfort band that falls a set number of degrees for each doubling
+  of adult mass, shifted by the recipe's heritable `Development.comfort`
+  (D14); `strain` is the degrees outside it. A world with the rule gains one
+  `climate:strain-{i}` process beside each lineage's upkeep, spending
+  `Reading::Strain` at the rule's rate into the same soil, the fraction
+  accumulating exactly; a body short of it pays what it has and nothing is
+  refused (D13). The sheet carries the band, and the board shows it moving.
+  Controls in `climate_tests.rs`: the rule unset leaving genesis as it was;
+  purity; each driver alone; the band by mass and offset; strain paid by the
+  stated amount, arriving in the soil with world matter conserved; nothing
+  paid inside the band; a run replaying to the same hash. No existing test or
+  pin moved. The rule's numbers are a first cut to tune. Owed: water and
+  light bands (D14); the crowd path, which cannot read strain and errors in a
+  climate world; a host flag for the rule; and room in `simulation.rs`, now
+  at 599 lines of 600.
 - 2026-11-09: the host is wired (`mesocosm-genet`), checked by build, tests
   and the help text only: the window was not run. Flags: `--rounds
   capped|waiting|continuous`, `--condition`, `--drift`, `--draft`, `--sheet`

@@ -233,6 +233,12 @@ pub enum Reading {
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         rest: bool,
     },
+    /// The matter a body owes this tick for being outside its comfort
+    /// (case 1215; lineage-rounds D13). Only an act's stage knows the site
+    /// and the tick, so everywhere else it reads nought.
+    Strain {
+        who: Binding,
+    },
 }
 
 /// Ruling 493's measurements, each read from a part's box.
@@ -276,6 +282,7 @@ impl Reading {
             | Self::Lacking { .. }
             | Self::Carried { .. }
             | Self::Room { .. }
+            | Self::Strain { .. }
             | Self::Healing { .. } => 0,
         }
     }
@@ -295,6 +302,7 @@ impl Reading {
             | Self::Measured { who, .. }
             | Self::Carried { who, .. }
             | Self::Room { who, .. }
+            | Self::Strain { who }
             | Self::Healing { who, .. } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,

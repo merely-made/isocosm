@@ -202,7 +202,8 @@ pub struct Simulation {
 }
 
 impl Simulation {
-    pub fn new(genesis: Genesis, mode: Execution) -> Result<Self> {
+    pub fn new(mut genesis: Genesis, mode: Execution) -> Result<Self> {
+        crate::climate::processes(&mut genesis.rules)?;
         genesis.validate()?;
         let revision = genesis.rules.revision();
         let state = State {

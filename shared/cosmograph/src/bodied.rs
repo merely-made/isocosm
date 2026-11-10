@@ -457,6 +457,7 @@ pub(crate) fn embody_within(
             anamorphic,
             tracts: vec![],
             systems: Default::default(),
+            comfort: 0,
         });
         let provision = AccountKind::Matter {
             lineage: key.clone(),

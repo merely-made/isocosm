@@ -70,6 +70,7 @@ fn developed() -> Genesis {
         anamorphic: false,
         tracts: vec![],
         systems: Default::default(),
+        comfort: 0,
     });
     g
 }

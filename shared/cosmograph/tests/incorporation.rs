@@ -73,6 +73,7 @@ fn development(t: Tagma, domain: u16) -> Development {
         anamorphic: false,
         tracts: vec![],
         systems: Default::default(),
+        comfort: 0,
     }
 }
 

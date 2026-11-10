@@ -67,6 +67,7 @@ fn development(clutch: u32) -> Development {
         anamorphic: false,
         tracts: vec![],
         systems: Default::default(),
+        comfort: 0,
     }
 }
 

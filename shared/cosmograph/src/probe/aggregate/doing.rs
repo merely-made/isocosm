@@ -284,6 +284,7 @@ impl Doing<'_> {
                     let room = crate::anatomy::room_within(body(who)?, rules, key, caps.as_ref());
                     i64::try_from(room).map_err(|e| e.to_string())
                 },
+                (Reading::Strain { .. }, _) => Err("the crowd reads no strain".into()),
                 (Reading::Carried { .. }, who) => {
                     let e = body(who)?;
                     let l = lineages.and_then(|l| l.get(&e.lineage));

@@ -65,6 +65,7 @@ fn recipe(anamorphic: bool) -> Development {
         anamorphic,
         tracts: vec![],
         systems: Default::default(),
+        comfort: 0,
     }
 }
 
