@@ -80,6 +80,25 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1211, mesocosm.2, mesocosm.3 · summary A fringe start exists only where a member can walk there; it nudges the taken body and a cohort of its kin toward the site, their going their own choice.
 
+- **D7, three ways a round runs past its span (2026-11-09), refines Record
+  7:** "I'd say 1 is default for co-op, 2 is a continuous play mode (if you
+  want to keep playing for multiple spans), and 3 is a capped mode." Waiting:
+  no lineage adapts until the players call the round, the default in
+  company. Continuous: unplayed lineages take a boundary turn every span and
+  only the player's own edit waits for their call. Capped: the round ends at
+  the span unless everyone agrees to extend it by another.
+
+  Links: area Record and history · draws on 1199, record.7 · summary A round runs past its span in one of three modes: waiting for the call (the default in company), continuous with others adapting each span, or capped at the span unless extended.
+
+- **D8, the first condition (2026-11-09), applies Mesocosm 3:** "Beat your
+  own forward copy (Recommended)". The condition is to hold more matter than
+  the played lineage peaks at in a forward copy left to itself over the
+  span. It is verified because the copy reached that mark; the round ends the
+  moment the lineage passes it. Offered against growing by a set share and
+  spreading to a new site.
+
+  Links: area Mesocosm · draws on 1199, 1212, mesocosm.3 · summary The first round-ending condition is holding more matter than the lineage's own unsteered forward copy peaks at over the span.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -103,10 +122,11 @@ nearest kin left in the round, else the nearest living member of the line
 however far (1204, 1217). A round ends when the players call it after a span
 of world time agreed beforehand, or when a condition is met (1199); a player
 whose line has no living member waits, and may offer to forfeit or end it
-(1217). The edit lands on what survives (1213). The first cut offers one kind
-of condition, a matter or biomass threshold, verified reachable by a forward
-copy before it is offered (1212, EB3's stop rule); solo, the agreement is the
-player's own call.
+(1217). The edit lands on what survives (1213). The first cut offers one
+condition: to hold more matter than the lineage's own forward copy, left to
+itself, peaks at over the span (D8; 1212, EB3's stop rule). A round runs past
+its span in one of three modes: waiting for the call, continuous, or capped
+(D7). Solo, the agreement is the player's own call.
 It is built in four steps:
 - **LR1.1, succession.** One reading of heirs in the order D4 gives, shared by
   the sim's loop and Mesocosm's checkpoint, which today each keep their own
@@ -115,9 +135,11 @@ It is built in four steps:
   range and its one-step fringe; the body is D5's. Today the lineage is fixed
   at founding and the first life is whichever member a habitable site holds.
 - **LR1.3, the round's end.** The call after an agreed span, the first
-  condition, and waiting out with a forfeit. Today a round is a tick count and
-  nothing else ends it; the new state needs a save and replay path.
-- **LR1.4, the edit on survivors.** Controls only: a revision already changes
+  condition, waiting out with a forfeit, and D7's three modes. Today the
+  boundary fires on the epoch's tick count and nothing else ends one, which is
+  the capped mode without its extension. The sim's loop carries the epoch's
+  ending first; Mesocosm's saved loop follows, with a save and replay path.
+- **LR1.4, the edit on survivors.** Controls only, and owed: a revision already changes
   the lineage's recipe, not its members, and is refused when no body of the
   line is left.
 - Done when, headless, by draws: a start outside the lineage's range and its
@@ -131,7 +153,7 @@ It is built in four steps:
 - Needs: `mesocosm-overlay` M4i.1; `sim` S10.2 propagules (1197) for the
   dormant control; the known-lineage reading comes with LR5, so until then
   every lineage is known.
-- Rulings: 1199, 1204, 1211, 1212, 1213, 1217, D4, D5, D6; Mesocosm 1, Mesocosm 3
+- Rulings: 1199, 1204, 1211, 1212, 1213, 1217, D4 to D8; Mesocosm 1, Mesocosm 3
 
 ### LR2. Drift: the success-weighted average
 Before the forward copy weighs candidates, a lineage's template moves to the
@@ -338,6 +360,25 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR1.3 built, in the sim and Mesocosm's saved loop. The sim's
+  loop carries `interim::Ending` (wait, since, call, extend, forfeit, par):
+  left at its default the boundary fires on the epoch's tick count as
+  before; waiting holds it for a call once the span has passed; an extension
+  skips one timed boundary; a forfeit or a met condition fires it at once
+  (`SpanPassed`, `ConditionMet`). `boundary::par` grows a copy a span, left to
+  itself, and returns the most matter the lineage holds in it (D8);
+  `par_using` does so through a product's clock. Mesocosm's `LoopSettings`
+  gain `rounds` (capped by default, waiting, continuous; D7) and `condition`,
+  unserialized at their defaults so old saves read and write as before; the
+  loop answers gain `Call`, `Extend` and `Forfeit`; the ending is saved with
+  the loop and each round's source, and a saved boundary is validated by the
+  rule that fired it (`Ending::due`) where it was by the tick count alone. In
+  continuous mode the played line's review opens at the first boundary after
+  a call. Controls: eight in `directing/interim/ending_tests.rs`, four in
+  `tests/round_endings.rs` with every question revalidated after a save and
+  restore, and the forfeit end to end in `continuation/ending_tests.rs`.
+  Owed: the host's keys for the three answers (LR4h), and further kinds of
+  condition (Questions).
 - 2026-11-09: LR1.2 built, sim side and the host's flag.
   `directing::readings::starts` lists a lineage's valid starts (range sites
   with their lowest playable member, then fringe sites with the nearest) and

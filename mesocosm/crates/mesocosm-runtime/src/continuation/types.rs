@@ -2,14 +2,31 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use cosmograph::{Command, schema::Id, directing::{interim::{Happening, OnCollapse, Pace,
-    Start, Handover}, readings::Mode}, lineage::boundary::Score};
+    Start, Handover, Ending}, readings::Mode}, lineage::boundary::Score};
 use cosmograph_overlay::{EntityHandle, ParticipantHandle, Tick, mesocosm::CheckpointAnswer};
 use serde::{Deserialize, Serialize};
 use crate::{Checkpoint, FlowWindows, Review};
 
+/// How a round runs past its span (lineage-rounds D7; cases 1199, 1217):
+/// capped at the epoch, held for the player's call, or continuous, where
+/// other lineages adapt every span and the played line's review waits for a call.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Rounds { #[default] Capped, Waiting, Continuous }
+
+impl Rounds { fn is_default(&self) -> bool { *self == Self::Capped } }
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct LoopSettings { pub mode: Mode, pub pace: Pace, pub on_collapse: OnCollapse }
+pub struct LoopSettings {
+    pub mode: Mode, pub pace: Pace, pub on_collapse: OnCollapse,
+    #[serde(default, skip_serializing_if = "Rounds::is_default")]
+    pub rounds: Rounds,
+    /// Each epoch's par is what the played line left alone would hold (D8).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub condition: bool,
+}
+
+fn no_ending(ending: &Ending) -> bool { *ending == Ending::default() }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -31,6 +48,9 @@ pub enum LoopAction { Configure(LoopSettings), Step, Answer(LoopAnswer) }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum LoopAnswer {
     Checkpoint(CheckpointAnswer), OtherLineage(EntityHandle), Watch, NewWorld,
+    /// End the epoch (case 1199); `Extend` skips the next capped boundary once
+    /// (case 1217); `Forfeit` ends it for a player with no living member (case 1212).
+    Call, Extend, Forfeit,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -52,6 +72,8 @@ pub struct LoopReading {
     pub personal: Option<PersonalQuestion>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub world_ended_at: Option<u64>,
+    #[serde(default, skip_serializing_if = "no_ending")]
+    pub ending: Ending,
 }
 
 /// Only an owned run has these actual founding/deep-time facts.
@@ -79,6 +101,9 @@ pub struct SavedExpressionSource {
 #[serde(deny_unknown_fields)]
 pub struct RoundSource {
     pub first_entry: String, pub from: u64, pub native: String, pub played: Option<Id>,
+    /// The ending as it stood before this round's ticks, par included.
+    #[serde(default, skip_serializing_if = "no_ending")]
+    pub ending: Ending,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -107,4 +132,6 @@ pub struct Continuation {
     pub origin: Option<Origin>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fault: Option<String>,
+    #[serde(default, skip_serializing_if = "no_ending")]
+    pub ending: Ending,
 }

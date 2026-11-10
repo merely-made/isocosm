@@ -10,6 +10,8 @@ pub(crate) mod round;
 pub(crate) mod scoring;
 pub(crate) mod restore;
 mod verified;
+#[cfg(test)]
+mod ending_tests;
 pub(crate) use verified::{VerifiedQuestion, validate_replayed_question};
 pub(crate) use admission::answer_verified;
 pub use types::*;

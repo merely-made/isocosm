@@ -6654,6 +6654,20 @@ area = "Mesocosm"
 summary = "A fringe start exists only where a member can walk there; it nudges the taken body and a cohort of its kin toward the site, their going their own choice."
 draws_on = ["1211", "mesocosm.2", "mesocosm.3"]
 
+[decisions."lineage-rounds D7"]
+title = "three ways a round runs past its span (2026-11-09), refines Record 7"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Record and history"
+summary = "A round runs past its span in one of three modes: waiting for the call (the default in company), continuous with others adapting each span, or capped at the span unless extended."
+draws_on = ["1199", "record.7"]
+
+[decisions."lineage-rounds D8"]
+title = "the first condition (2026-11-09), applies Mesocosm 3"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The first round-ending condition is holding more matter than the lineage's own unsteered forward copy peaks at over the span."
+draws_on = ["1199", "1212", "mesocosm.3"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

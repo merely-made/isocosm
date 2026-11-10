@@ -15,7 +15,7 @@
 
 use std::cell::Ref;
 
-use cosmograph::directing::interim::{Handover, Happening, Interim, OnCollapse, Pace, Start};
+use cosmograph::directing::interim::{Ending, Handover, Happening, Interim, OnCollapse, Pace, Start};
 use cosmograph::directing::readings::{Mode, View};
 use cosmograph::schema::{Entity, Id, Tick};
 use cosmograph::simulation::{Genesis, Simulation};
@@ -119,12 +119,14 @@ pub struct Loop {
     pub handover: Handover,
     /// The boundary at which the played lineage first had a habitable site.
     pub habitable_at: Tick,
+    /// How the current epoch ends (cases 1199, 1212, 1217; lineage-rounds D7).
+    pub ending: Ending,
 }
 
 impl Loop {
     fn split(interim: Interim) -> (Session, Self) {
-        let Interim { session, participant, mode, pace, on_collapse, handover, habitable_at } = interim;
-        (session, Self { participant, mode, pace, on_collapse, handover, habitable_at })
+        let Interim { session, participant, mode, pace, on_collapse, handover, habitable_at, ending } = interim;
+        (session, Self { participant, mode, pace, on_collapse, handover, habitable_at, ending })
     }
 }
 

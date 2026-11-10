@@ -102,6 +102,9 @@ impl Host {
             LoopAnswer::Watch => "Watch this world".into(),
             LoopAnswer::NewWorld => "Request a new world".into(),
             LoopAnswer::Checkpoint(_) => "Checkpoint answer".into(),
+            LoopAnswer::Call => "Call the epoch".into(),
+            LoopAnswer::Extend => "Extend the epoch".into(),
+            LoopAnswer::Forfeit => "Forfeit the epoch".into(),
         }
     }
 

@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::succession::{self, Occasion};
-use cosmograph::{Session, Command, lineage::Review};
+use cosmograph::{Session, Command, lineage::{Review, boundary}};
 
 pub(crate) fn validate_question(saved: &Continuation, session: &Session) -> Result<(), String> {
     if let Some(stamp) = &saved.world_end {
@@ -113,10 +113,11 @@ fn interval(saved: &Continuation, session: &Session) -> Result<(), String> {
         return Err("saved question lacks the exact declared physical round".into());
     }
     if let Some(checkpoint) = &saved.checkpoint
-        && matches!(&checkpoint.occasion, Occasion::Epoch(_)) {
+        && let Occasion::Epoch(ended) = &checkpoint.occasion {
         let epoch = session.sim.genesis().rules.epoch_ticks;
-        if epoch == 0 || cursor / epoch <= source.from / epoch {
-            return Err("saved review has no actual crossed native epoch".into());
+        let held = boundary::standing(session, &ended.lineage).0;
+        if epoch == 0 || !source.ending.due(source.from, cursor, epoch, held) {
+            return Err("saved review has no actual ended native epoch".into());
         }
     }
     Ok(())

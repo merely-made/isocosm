@@ -14,7 +14,9 @@ use cosmograph::directing::interim::Happening;
 
 impl Mesocosm {
     pub(crate) fn loop_settings(&self) -> LoopSettings {
-        LoopSettings { mode: self.lp.mode, pace: self.lp.pace, on_collapse: self.lp.on_collapse }
+        let kept = self.spatial.continuation.as_ref().map(|saved| saved.settings);
+        LoopSettings { mode: self.lp.mode, pace: self.lp.pace, on_collapse: self.lp.on_collapse,
+            rounds: kept.map(|s| s.rounds).unwrap_or_default(), condition: kept.is_some_and(|s| s.condition) }
     }
 
     /// The game with its saved loop sealed against the world's session.
@@ -51,7 +53,8 @@ impl Mesocosm {
             world_end: prior.and_then(|p| p.world_end.clone()),
             queued,
             round: prior.and_then(|p| p.round.clone()),
-            origin: prior.and_then(|p| p.origin.clone()), fault: self.fault.clone() };
+            origin: prior.and_then(|p| p.origin.clone()), fault: self.fault.clone(),
+            ending: self.lp.ending };
         saved.seal(&session, &game);
         game.continuation = Some(saved);
         game.version = game.current_version();
@@ -86,6 +89,7 @@ impl Mesocosm {
             self.lp.handover = origin.handover;
             self.lp.habitable_at = origin.habitable_at;
         }
+        self.lp.ending = saved.ending;
         self.checkpoint = saved.checkpoint.clone();
         self.review = saved.review.clone();
         self.happenings = saved.happenings.clone();

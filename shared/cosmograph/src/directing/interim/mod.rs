@@ -56,6 +56,45 @@ pub struct Pace {
     pub scoring: Tick,
 }
 
+/// How the current epoch ends (Record 7; cases 1199, 1212, 1217;
+/// lineage-rounds D7, D8).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct Ending {
+    /// Hold the boundary for the players' call; false keeps the timed rule.
+    pub wait: bool,
+    /// The tick this epoch began.
+    pub since: Tick,
+    /// The players' call to end it, honoured once the span has passed.
+    pub call: bool,
+    /// Under the timed rule, skip the next boundary once (an agreed extension).
+    pub extend: bool,
+    /// End it now, whatever the span (a forfeit).
+    pub forfeit: bool,
+    /// The condition: the played lineage's held matter to beat.
+    pub par: Option<u128>,
+}
+
+impl Ending {
+    /// Whether the boundary is due after a step from `from` to `now` (pure;
+    /// an unspent extension holds a timed boundary back).
+    pub fn due(&self, from: Tick, now: Tick, epoch: Tick, held: u128) -> bool {
+        let met = self.par.is_some_and(|par| held > par);
+        met || self.forfeit || if self.wait { self.call && now - self.since >= epoch }
+            else { now / epoch > from / epoch && !self.extend }
+    }
+
+    /// Whether this step first passed the span under the waiting rule.
+    pub fn span_passed(&self, from: Tick, now: Tick, epoch: Tick) -> bool {
+        self.wait && self.since + epoch > from && self.since + epoch <= now
+    }
+
+    /// Starts the next epoch at `now`, keeping only the rule.
+    pub fn begin(&mut self, now: Tick) {
+        *self = Self { wait: self.wait, since: now, ..Self::default() };
+    }
+}
+
 /// What a round brought.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Happening {
@@ -79,6 +118,12 @@ pub enum Happening {
         lineage: Key,
     },
     WorldEnded { tick: Tick },
+    /// The epoch's span has passed; under the waiting rule it ends on a call
+    /// (case 1199, lineage-rounds D7).
+    SpanPassed { tick: Tick },
+    /// The played lineage held more than the par it had to beat (case 1212,
+    /// lineage-rounds D8).
+    ConditionMet { tick: Tick, held: u128, par: u128 },
 }
 
 #[derive(Clone, Debug)]
@@ -91,6 +136,8 @@ pub struct Interim {
     pub handover: Handover,
     /// The boundary at which the played lineage first had a habitable site.
     pub habitable_at: Tick,
+    /// How the current epoch ends (cases 1199, 1212, 1217; lineage-rounds D7).
+    pub ending: Ending,
 }
 
 /// Nothing to weigh, for a boundary that adapts no line; the default is
@@ -157,6 +204,7 @@ impl Interim {
             on_collapse: OnCollapse::Stay,
             handover,
             habitable_at,
+            ending: Ending::default(),
         };
         interim.take_first_life(&lineage, start)?;
         Ok(interim)
@@ -199,6 +247,7 @@ impl Interim {
             on_collapse: OnCollapse::Stay,
             handover,
             habitable_at: 0,
+            ending: Ending::default(),
         })
     }
 
@@ -285,8 +334,27 @@ impl Interim {
         advance: &mut dyn FnMut(&mut Session) -> Result<Vec<crate::flows::Flow>>,
         score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,
     ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
-        BorrowedInterim::new(&mut self.session, self.participant, self.mode,
-            self.pace, self.on_collapse)?.round(candidates, advance, score)
+        let mut borrowed = BorrowedInterim::new(&mut self.session, self.participant,
+            self.mode, self.pace, self.on_collapse)?;
+        borrowed.ending = self.ending;
+        let out = borrowed.round(candidates, advance, score);
+        self.ending = borrowed.ending;
+        out
+    }
+
+    /// Sets the condition to beat: the most the played lineage holds in a
+    /// copy grown an epoch from now (case 1212; lineage-rounds D8).
+    ///
+    /// # Errors
+    /// Fails if the copy cannot be forked or grown.
+    pub fn set_par(&mut self) -> Result<Option<u128>> {
+        let Some(played) = self.critter() else { return Ok(None); };
+        let Some(entity) = self.session.sim.state().population.get(played) else { return Ok(None); };
+        let lineage = entity.lineage.clone();
+        let span = self.session.sim.genesis().rules.epoch_ticks;
+        let par = boundary::par(&self.session, &lineage, span)?;
+        self.ending.par = Some(par);
+        Ok(Some(par))
     }
 
 }
@@ -298,6 +366,9 @@ mod diag;
 
 #[cfg(test)]
 mod start_tests;
+
+#[cfg(test)]
+mod ending_tests;
 
 #[cfg(test)]
 mod reproduction;

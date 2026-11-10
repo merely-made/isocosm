@@ -46,7 +46,10 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
         settings: *settings, native: String::new(), native_entries: 0, native_tick: 0, physical: String::new(), phase: LoopPhase::Running,
         checkpoint: None, review: None, proposed: Vec::new(), happenings: Vec::new(),
         windows: FlowWindows::new(), expression: None, ended_lineage: None, world_end: None,
-        queued: Vec::new(), round: None, origin: None, fault: None };
+        queued: Vec::new(), round: None, origin: None, fault: None,
+        ending: Default::default() };
+    // A waiting epoch counts its span from here (case 1199).
+    if settings.rounds == Rounds::Waiting { saved.ending.since = session.sim.state().tick; }
     saved.seal(session, game);
     game.continuation = Some(saved);
     game.version = game.current_version();
@@ -143,6 +146,25 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
         LoopAnswer::Watch if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::NewWorldRequested | LoopPhase::WorldEnded) => saved.phase = LoopPhase::Watching,
         LoopAnswer::NewWorld if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching | LoopPhase::WorldEnded) =>
             saved.phase = LoopPhase::NewWorldRequested,
+        LoopAnswer::Call => {
+            let rounds = saved.settings.rounds;
+            let epoch = candidate.sim.genesis().rules.epoch_ticks;
+            let passed = candidate.sim.state().tick.checked_sub(saved.ending.since).is_some_and(|ran| ran >= epoch);
+            if !matches!(saved.phase, LoopPhase::Running | LoopPhase::Watching) || rounds == Rounds::Capped
+                || (rounds == Rounds::Waiting && !passed) || saved.ending.call { return Err(Refusal::Unasked); }
+            saved.ending.call = true;
+        },
+        LoopAnswer::Extend => {
+            if saved.phase != LoopPhase::Running || saved.settings.rounds != Rounds::Capped
+                || saved.ending.extend { return Err(Refusal::Unasked); }
+            saved.ending.extend = true;
+        },
+        LoopAnswer::Forfeit => {
+            if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching)
+                || saved.world_end.is_some() || saved.ending.forfeit { return Err(Refusal::Unasked); }
+            saved.ending.forfeit = true;
+            saved.phase = LoopPhase::Watching;
+        },
         _ => return Err(Refusal::Unasked),
     }
     saved.checkpoint = None; saved.review = None; saved.proposed.clear();

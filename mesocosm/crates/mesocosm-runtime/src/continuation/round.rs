@@ -43,6 +43,16 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     let driver = RefCell::new(physical(game));
     let settings = saved.settings;
     let mut world_end = saved.world_end.clone();
+    saved.ending.wait = settings.rounds == Rounds::Waiting;
+    let played_lineage = session.sim.plays(participant)
+        .and_then(|id| session.sim.state().population.get(id)).map(|e| e.lineage.clone());
+    if let (true, LoopPhase::Running, Some(lineage), None) =
+        (settings.condition, saved.phase, &played_lineage, saved.ending.par) {
+        let span = candidate.sim.genesis().rules.epoch_ticks;
+        saved.ending.par = Some(scoring::par(&candidate, game, lineage, span).map_err(Refusal::Sim)?);
+    }
+    let ending_before = saved.ending;
+    let mut ending = saved.ending;
     let mut advance = |session: &mut Session| driver.borrow_mut().advance_clock_with_geometry(session, geometry)
         .map(|out| out.flows);
     let mut scorer = scoring::Scorer::default();
@@ -64,18 +74,27 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
             world_end = Some(WorldEndSource { entry: entry.id.clone(), tick: now });
             out.push(Happening::WorldEnded { tick: now });
         }
-        if now / epoch > before / epoch {
+        let due = ending.due(before, now, epoch, 0);
+        if ending.span_passed(before, now, epoch) { out.push(Happening::SpanPassed { tick: now }); }
+        if !ending.wait && now / epoch > before / epoch && ending.extend && !due { ending.extend = false; }
+        if due {
+            ending.begin(now);
             let turns = boundary::adapt_using(&mut candidate, None, &revise::revisions,
                 settings.pace.scoring, &mut score).map_err(Refusal::Sim)?;
             out.push(Happening::Boundary { tick: now, turns });
         }
         (out, flows)
     } else {
-        crate::profile::measure("round.native_work", || {
-            BorrowedInterim::new(&mut candidate, participant, settings.mode,
-                settings.pace, settings.on_collapse).map_err(Refusal::Sim)?
-                .round(&revise::revisions, &mut advance, &mut score).map_err(Refusal::Sim)
-        })?
+        let (out, flows, spent) = crate::profile::measure("round.native_work", || {
+            let mut interim = BorrowedInterim::new(&mut candidate, participant, settings.mode,
+                settings.pace, settings.on_collapse).map_err(Refusal::Sim)?;
+            interim.ending = ending;
+            let (out, flows) = interim.round(&revise::revisions, &mut advance, &mut score)
+                .map_err(Refusal::Sim)?;
+            Ok::<_, Refusal>((out, flows, interim.ending))
+        })?;
+        ending = spent;
+        (out, flows)
     };
     drop(advance);
     drop(score);
@@ -88,8 +107,13 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
             let entry = candidate.entries.last().ok_or_else(|| Refusal::Sim("world end lacks its accepted clock entry".into()))?;
             world_end = Some(WorldEndSource { entry: entry.id.clone(), tick: candidate.sim.state().tick });
         }
+        // Continuous: a timed boundary opens the played line's review only after a call.
+        let quiet = settings.rounds == Rounds::Continuous && !ending_before.call && !ending_before.forfeit
+            && !happenings.iter().any(|h| matches!(h, Happening::ConditionMet { .. }));
+        let opens: Vec<_> = happenings.iter().filter(|h|
+            !(quiet && matches!(h, Happening::Boundary { .. }))).cloned().collect();
         saved.checkpoint = if world_ended { None } else {
-            succession::opened_for(&candidate, participant, &happenings)
+            succession::opened_for(&candidate, participant, &opens)
         };
         saved.ended_lineage = happenings.iter().find_map(|h| match h {
             Happening::LineageEnded { lineage } => Some(lineage.clone()), _ => None,
@@ -105,12 +129,15 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
         saved.proposed = super::restore::proposals(&saved, &candidate).map_err(Refusal::Sim)?;
     }
     saved.happenings = happenings;
+    // `since` only means something while waiting; keeping it zero leaves other saves as they were.
+    if !ending.wait { ending.since = 0; }
+    saved.ending = ending;
     saved.world_end = world_end;
     saved.round = Some(RoundSource {
         first_entry: candidate.entries.get(start).ok_or_else(||
             Refusal::Sim("loop clock produced no native entry".into()))?.id.clone(),
         from: before_tick, native: before_native,
-        played: session.sim.plays(participant),
+        played: session.sim.plays(participant), ending: ending_before,
     });
     saved.seal(&candidate, &next);
     next.continuation = Some(saved);

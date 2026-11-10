@@ -3,7 +3,7 @@
 
 //! Enter an admitted, already-evolved world without founding it a second time.
 
-use super::{Interim, Mode, Pace, Start, OnCollapse, deep::{Handover, run_deep_time_using}, readings};
+use super::{Ending, Interim, Mode, Pace, Start, OnCollapse, deep::{Handover, run_deep_time_using}, readings};
 use crate::{Result, Session, Command, rules::DeepTimeSpan};
 
 impl Interim {
@@ -46,7 +46,7 @@ impl Interim {
         let participant = joined.strip_prefix("participant:").and_then(|id| id.parse().ok())
             .ok_or("a join names its participant")?;
         let mut interim = Self { session, participant, mode, pace,
-            on_collapse: OnCollapse::Stay, handover, habitable_at };
+            on_collapse: OnCollapse::Stay, handover, habitable_at, ending: Ending::default() };
         interim.take_first_life(&lineage, start)?;
         Ok(interim)
     }

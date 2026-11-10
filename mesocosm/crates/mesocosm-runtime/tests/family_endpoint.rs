@@ -133,6 +133,8 @@ fn played_turn_records_section_only_setup_and_native_step_and_refusal_is_inert()
             scoring: 6,
         },
         on_collapse: OnCollapse::Stay,
+        rounds: Default::default(),
+        condition: false,
     })
     .unwrap();
     let configure = invoke(&mut endpoint, "turn", CONFIGURE, &settings);

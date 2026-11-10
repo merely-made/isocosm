@@ -17,6 +17,7 @@ fn reading(label: &str) -> LoopReading {
         lineages: vec![],
         personal: None,
         world_ended_at: None,
+        ending: Default::default(),
     }
 }
 #[test]

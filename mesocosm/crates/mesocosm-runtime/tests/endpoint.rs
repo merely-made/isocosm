@@ -39,7 +39,8 @@ fn invoke(snapshot: &ProjectionSnapshot, id: &str, intent: &str, payload: Vec<u8
 
 fn settings() -> Vec<u8> {
     serde_json::to_vec(&LoopSettings { mode: Mode::Survival, pace: Pace { round: 1, scoring: 6 },
-        on_collapse: OnCollapse::Stay }).unwrap()
+        on_collapse: OnCollapse::Stay,
+        rounds: Default::default(), condition: false }).unwrap()
 }
 
 fn configured() -> (MesocosmEndpoint, ProjectionSnapshot) {

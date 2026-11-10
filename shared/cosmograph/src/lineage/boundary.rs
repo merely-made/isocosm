@@ -110,6 +110,31 @@ pub fn score_using(
     grow_score(copy, lineage, candidate, ticks, advance)
 }
 
+/// The most matter `lineage` holds at any tick of a copy grown `span` ticks
+/// from now, left to itself: the mark a played line must beat (lineage-rounds D8).
+///
+/// # Errors
+/// Fails if the copy cannot be forked or advanced.
+pub fn par(session: &Session, lineage: &str, span: Tick) -> Result<u128> {
+    par_using(session, lineage, span, &mut |copy, ticks| copy.advance(ticks).map(|_| ()))
+}
+
+/// `par` through the product's actual physical clock on a disposable fork.
+///
+/// # Errors
+/// Fails if the copy cannot be forked or advanced.
+pub fn par_using(session: &Session, lineage: &str, span: Tick,
+    advance: &mut dyn FnMut(&mut Session, Tick) -> Result<()>) -> Result<u128> {
+    let now = session.sim.state().tick;
+    let mut copy = session.fork_at(now, "branch:par".into())?;
+    let mut most = standing(&copy, lineage).0;
+    for _ in 0..span {
+        advance(&mut copy, 1)?;
+        most = most.max(standing(&copy, lineage).0);
+    }
+    Ok(most)
+}
+
 fn grow_score(mut copy: Session, lineage: &str, candidate: &Candidate, ticks: Tick,
     advance: &mut dyn FnMut(&mut Session, Tick) -> Result<()>) -> Result<Score> {
     for command in &candidate.commands {

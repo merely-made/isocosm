@@ -3,7 +3,7 @@
 
 //! The interim loop borrows its one native owner, including its scoring clock.
 
-use super::{boundary, Candidate, Happening, Mode, OnCollapse, Pace, Score};
+use super::{boundary, Candidate, Ending, Happening, Mode, OnCollapse, Pace, Score};
 use crate::{directing::readings, history::Command, schema::*, Result, Session};
 
 pub struct BorrowedInterim<'a> {
@@ -12,6 +12,8 @@ pub struct BorrowedInterim<'a> {
     pub mode: Mode,
     pub pace: Pace,
     pub on_collapse: OnCollapse,
+    /// How the current epoch ends (cases 1199, 1212, 1217; lineage-rounds D7).
+    pub ending: Ending,
 }
 
 impl<'a> BorrowedInterim<'a> {
@@ -21,7 +23,7 @@ impl<'a> BorrowedInterim<'a> {
             .is_some_and(crate::directing::is_participant) {
             return Err("interim participant absent".into());
         }
-        Ok(Self { session, participant, mode, pace, on_collapse })
+        Ok(Self { session, participant, mode, pace, on_collapse, ending: Ending::default() })
     }
 
     fn critter(&self) -> Option<Id> { self.session.sim.plays(self.participant) }
@@ -71,10 +73,25 @@ impl<'a> BorrowedInterim<'a> {
             out.push(Happening::Died { critter: played, next });
             if next.is_none() { out.push(Happening::LineageEnded { lineage: lineage.clone() }); }
         }
-        if now / epoch > from / epoch {
+        let e = self.ending;
+        // Read only where a condition is set, so the default loop costs as before.
+        let held = e.par.map(|_| boundary::standing(self.session, &lineage).0).unwrap_or_default();
+        let met = e.par.is_some_and(|par| held > par);
+        let due = e.due(from, now, epoch, held);
+        if e.span_passed(from, now, epoch) {
+            out.push(Happening::SpanPassed { tick: now });
+        }
+        if !e.wait && now / epoch > from / epoch && e.extend && !due {
+            self.ending.extend = false;
+        }
+        if due {
+            if met {
+                out.push(Happening::ConditionMet { tick: now, held, par: e.par.unwrap_or_default() });
+            }
             let turns = boundary::adapt_using(self.session, Some(&lineage),
                 candidates, self.pace.scoring, score)?;
             out.push(Happening::Boundary { tick: now, turns });
+            self.ending.begin(now);
         }
         if let Some(c) = self.critter().filter(|c|
             self.session.sim.state().population.get(*c).is_some_and(|e| e.alive)) {

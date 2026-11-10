@@ -154,6 +154,7 @@ mod offered_tests {
             settings: None, phase: LoopPhase::Held, checkpoint: None, offers: Vec::new(),
             happenings: Vec::new(), lineages: Vec::new(),
             personal: Some(PersonalQuestion::Birth { parent: 6 }), world_ended_at: None,
+            ending: Default::default(),
         };
         assert_eq!(offered_answer(&checkpoint, &reading, Some(6), &Press::Char('t')), None);
         assert!(matches!(offered_answer(&checkpoint, &reading, Some(6), &Press::Named(Named::Enter)),

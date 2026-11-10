@@ -31,6 +31,19 @@ impl Scorer {
     }
 }
 
+/// The par the played lineage must beat over `span`, grown through the
+/// product's physical clock as a forecast is (lineage-rounds D8).
+pub(crate) fn par(session: &Session, game: &Game, lineage: &str, span: u64) -> Result<u128> {
+    let mut driver = physical(game);
+    driver.ecology=None;
+    driver.version=driver.current_version();
+    boundary::par_using(session, lineage, span, &mut |copy, ticks| {
+        driver.refresh(copy)?;
+        for _ in 0..ticks { let _flows = driver.advance_clock(copy)?; }
+        Ok(())
+    })
+}
+
 pub(crate) fn review(session: &Session, game: &Game, participant: u64,
     ticks: u64) -> Result<Review> {
     let played = session.sim.plays(participant).ok_or("review has no played member")?;

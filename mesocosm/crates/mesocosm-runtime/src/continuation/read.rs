@@ -14,12 +14,14 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
     }
     let mut out = LoopReading { cut: cut(session, game), settings: None,
         phase: LoopPhase::Running, checkpoint: None, offers: Vec::new(),
-        happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None };
+        happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None,
+        ending: Default::default() };
     let Some(saved) = &game.continuation else { return Ok(out); };
     if saved.participant != access.participant.0 {
         return Err("saved loop belongs to another participant".into());
     }
     out.settings = Some(saved.settings);
+    out.ending = saved.ending;
     out.phase = saved.phase;
     out.world_ended_at = saved.world_end.as_ref().map(|source| source.tick);
     let origin = saved.round.as_ref().and_then(|source| source.played);
