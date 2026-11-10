@@ -166,7 +166,7 @@ mod offered_tests {
             settings: None, phase: LoopPhase::Held, checkpoint: None, offers: Vec::new(),
             happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(),
             personal: Some(PersonalQuestion::Birth { parent: 6 }), world_ended_at: None,
-            ending: Default::default(), sheet: None,
+            ending: Default::default(), sheet: None, held: Vec::new(), holdable: Vec::new(),
         };
         assert_eq!(offered_answer(&checkpoint, &reading, Some(6), &Press::Char('t')), None);
         assert!(matches!(offered_answer(&checkpoint, &reading, Some(6), &Press::Named(Named::Enter)),
@@ -187,7 +187,7 @@ mod offered_tests {
             cut: LoopCut { native: String::new(), game: String::new(), question: None },
             settings: None, phase: LoopPhase::Held, checkpoint: Some(checkpoint.clone()), offers: Vec::new(),
             happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(), personal: None, world_ended_at: None,
-            ending: Default::default(), sheet: None,
+            ending: Default::default(), sheet: None, held: Vec::new(), holdable: Vec::new(),
         };
         let next = |row| match heir_at(offered_answer(&checkpoint, &reading, Some(4), &Press::Named(Named::Enter))
             .unwrap(), &checkpoint, row) {

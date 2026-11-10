@@ -58,7 +58,14 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     let mut scorer = scoring::Scorer::default();
     let mut score = |session: &Session, lineage: &str, choice: &boundary::Candidate, ticks|
         scorer.score(session, &driver.borrow(), lineage, choice, ticks);
-    let (happenings, flows) = if saved.phase == LoopPhase::Watching {
+    // A watcher's round, or a holder's with no living body to play: the sim's
+    // body-less round runs no epoch boundary and keeps no ending, so both run
+    // the clock and the ending here, and a holder's lineages report after.
+    let holds = candidate.sim.holds(participant);
+    let bodiless = saved.phase == LoopPhase::Watching
+        || (saved.phase == LoopPhase::Running && super::holding::bodiless(&candidate, participant));
+    let held_before = (!holds.is_empty()).then(|| candidate.sim.clone());
+    let (happenings, flows) = if bodiless {
         let before = candidate.sim.state().tick;
         let epoch = candidate.sim.genesis().rules.epoch_ticks;
         if epoch == 0 { return Err(Refusal::Sim("watch epoch length is zero".into())); }
@@ -83,6 +90,9 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
                 settings.pace.scoring, &mut score).map_err(Refusal::Sim)?;
             out.push(Happening::Boundary { tick: now, turns });
         }
+        if let Some(was) = &held_before {
+            out.extend(super::holding::happenings(was, &candidate.sim, &holds));
+        }
         (out, flows)
     } else {
         let (out, flows, spent) = crate::profile::measure("round.native_work", || {
@@ -101,7 +111,9 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     let mut next = driver.into_inner();
     next.refresh_with(&mut candidate, geometry).map_err(Refusal::Sim)?;
     saved.windows.absorb(&candidate.sim, &happenings, &flows);
-    if saved.phase != LoopPhase::Watching {
+    // A holder's ended world is watched, as a watcher's is.
+    if bodiless && world_end.is_some() { saved.phase = LoopPhase::Watching; }
+    if !bodiless {
         let world_ended = happenings.iter().any(|h| matches!(h, Happening::WorldEnded { .. }));
         if world_ended && world_end.is_none() {
             let entry = candidate.entries.last().ok_or_else(|| Refusal::Sim("world end lacks its accepted clock entry".into()))?;
@@ -116,7 +128,9 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
             succession::opened_for(&candidate, participant, &opens)
         };
         saved.ended_lineage = happenings.iter().find_map(|h| match h {
-            Happening::LineageEnded { lineage } => Some(lineage.clone()), _ => None,
+            // A held surface's end is its holder's news, not the played line's.
+            Happening::LineageEnded { lineage } if !candidate.sim.is_surface(lineage) => Some(lineage.clone()),
+            _ => None,
         });
         saved.phase = if world_ended { LoopPhase::WorldEnded } else if saved.ended_lineage.is_some() {
             LoopPhase::LineageEnded

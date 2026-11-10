@@ -163,6 +163,11 @@ fn main() {
             "--climate" => config.world_rules.climate = true,
             "--regard" => config.world_rules.regard = true,
             "--exertion" => config.world_rules.exertion = true,
+            "--hosting" => config.world_rules.hosting = true,
+            "--learning" => config.world_rules.learning = true,
+            "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
+                .filter(|bound| *bound >= 0)
+                .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
             "--rounds-rules" => config.world_rules = WorldRules::all(),
             "--mode" => config.mode = Some(match args.next().as_deref() {
                 Some("survival") => cosmograph::directing::readings::Mode::Survival,
@@ -404,6 +409,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --climate       world rule: temperature, and upkeep that rises outside a body's comfort band
   --regard        world rule: lineages you come to know, and their regard for you, which starts a bond
   --exertion      world rule: chosen acts past a body's ease in a span spend matter
+  --hosting       world rule: a microbe lineage you can hold; it rots dead matter and enters bodies
+  --learning      world rule: members learn (needs a world that founds a lineage policy)
+  --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)

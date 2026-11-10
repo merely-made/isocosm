@@ -15,7 +15,8 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
     let mut out = LoopReading { cut: cut(session, game), settings: None,
         phase: LoopPhase::Running, checkpoint: None, offers: Vec::new(),
         happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(), personal: None, world_ended_at: None,
-        ending: Default::default(), sheet: None };
+        ending: Default::default(), sheet: None, held: Vec::new(), holdable: Vec::new() };
+    (out.held, out.holdable) = super::holding::reading(&session.sim, access.participant.0);
     let Some(saved) = &game.continuation else { return Ok(out); };
     if saved.participant != access.participant.0 {
         return Err("saved loop belongs to another participant".into());
@@ -64,6 +65,9 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
             if visible.shows(*critter) && next.is_none_or(|id| visible.shows(id)) => Some(h.clone()),
         cosmograph::directing::interim::Happening::Boundary { tick, .. } =>
             Some(cosmograph::directing::interim::Happening::Boundary { tick: *tick, turns: Vec::new() }),
+        // What befell what the participant holds (cases 1224, 1226).
+        cosmograph::directing::interim::Happening::Surfaced(_) | cosmograph::directing::interim::Happening::Raised(_) => Some(h.clone()),
+        cosmograph::directing::interim::Happening::LineageEnded { lineage } if session.sim.is_surface(lineage) => Some(h.clone()),
         cosmograph::directing::interim::Happening::LineageEnded { .. }
             if saved.phase == LoopPhase::LineageEnded && out.checkpoint.is_some() => Some(h.clone()),
         cosmograph::directing::interim::Happening::WorldEnded { .. }

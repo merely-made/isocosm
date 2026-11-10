@@ -41,6 +41,7 @@ fn choices(reading: &LoopReading) -> Vec<LoopAnswer> {
     }
     let mut choices: Vec<_> = reading.lineages.iter().copied().map(LoopAnswer::OtherLineage).collect();
     choices.extend(reading.starts.iter().map(|start| LoopAnswer::Start { lineage: start.lineage.clone(), site: start.site }));
+    choices.extend(reading.holdable.iter().map(|lineage| LoopAnswer::Hold { lineage: lineage.clone() }));
     if reading.phase == LoopPhase::LineageEnded { choices.push(LoopAnswer::Watch); }
     choices.push(LoopAnswer::NewWorld);
     choices
@@ -120,6 +121,10 @@ impl Host {
             LoopAnswer::Call => "Call the epoch".into(),
             LoopAnswer::Extend => "Extend the epoch".into(),
             LoopAnswer::Forfeit => "Forfeit the epoch".into(),
+            LoopAnswer::Hold { lineage } => self.hold_label(lineage),
+            LoopAnswer::Unhold { lineage } => format!("let go of {}", self.hold_label(lineage).trim_start_matches("hold ")),
+            LoopAnswer::Steer { .. } => "Steer the held lineage".into(),
+            LoopAnswer::Turn { shift, .. } => format!("Turn the climate to {shift:+}"),
         }
     }
 
@@ -146,7 +151,8 @@ impl Host {
                 Some(("status".into(), self.continuation.notice.clone().unwrap_or_else(||
                     if let Some(tick) = reading.world_ended_at { format!("The authored world predicate ended the game at tick {tick}.") }
                     else if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }
-                    else { "The world waits for your choice.".into() })))].into_iter().flatten().collect(),
+                    else { "The world waits for your choice.".into() })))].into_iter().flatten()
+                .chain(self.held_facts(reading)).collect(),
             stay: "[Up/Down / Tab] select; [Enter / click panel] apply".into(),
             take: Some(if matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::WorldEnded) { "[W] watch; [N] request new world" }
                 else { "[N] request new world" }.into()),
@@ -232,6 +238,7 @@ impl Host {
     }
 
     pub(super) fn try_continuation_key(&mut self, key: &Key) -> bool {
+        if self.try_holding_key(key) { return true; }
         if let Some(answer) = crate::input::round_key(key) {
             self.answer_round(answer);
             return true;

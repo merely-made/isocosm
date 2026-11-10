@@ -5,6 +5,7 @@ use cosmograph::{Command, schema::Id, directing::{interim::{Happening, OnCollaps
     Start, Handover, Ending}, readings::Mode}, lineage::{boundary::Score, sheet::Sheet}};
 use cosmograph_overlay::{EntityHandle, ParticipantHandle, Tick, mesocosm::CheckpointAnswer};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
 use crate::{Checkpoint, FlowWindows, Review};
 
 /// How a round runs past its span (lineage-rounds D7; cases 1199, 1217):
@@ -53,6 +54,15 @@ pub enum LoopAnswer {
     /// End the epoch (case 1199); `Extend` skips the next capped boundary once
     /// (case 1217); `Forfeit` ends it for a player with no living member (case 1212).
     Call, Extend, Forfeit,
+    /// Hold a surface or world-class lineage (cases 1216, 1221). Appended, so
+    /// older answers keep their encoding.
+    Hold { lineage: String },
+    /// Let go of a held lineage.
+    Unhold { lineage: String },
+    /// A holder's stance on a surface: the genes switched on and off (cases 1223, 1226).
+    Steer { lineage: String, on: BTreeSet<String>, off: BTreeSet<String> },
+    /// A holder of a world-class lineage shifts the world's temperature (case 1216).
+    Turn { lineage: String, shift: i32 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -94,6 +104,27 @@ pub struct LoopReading {
     /// What a fully grown body of the played line's recipe is (case 1215).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sheet: Option<Sheet>,
+    /// What the participant holds, as it stands (cases 1216, 1223); empty unless one holds.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub held: Vec<HeldLine>,
+    /// The lineages the participant could hold and does not (case 1221).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub holdable: Vec<String>,
+}
+
+/// One held lineage as its holder sees it: a surface's matter, genes and
+/// end, or the world-class lineage's turn of the cycles (cases 1216, 1223).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HeldLine {
+    Surface(cosmograph::directing::readings::Held),
+    /// `shift` degrees now, within `bound` where the climate sets one.
+    World { lineage: String, shift: i64, bound: Option<i32> },
+}
+
+impl HeldLine {
+    pub fn lineage(&self) -> &str {
+        match self { Self::Surface(held) => &held.lineage, Self::World { lineage, .. } => lineage }
+    }
 }
 
 /// Only an owned run has these actual founding/deep-time facts.

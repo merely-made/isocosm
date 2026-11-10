@@ -77,6 +77,7 @@ fn happening(happening: &Happening) -> String {
         Happening::Collapsed { moved_to, .. } => format!("A region collapsed; next life: {moved_to:?}"),
         Happening::LineageEnded { lineage } => format!("Lineage {lineage} ended"),
         Happening::WorldEnded { tick } => format!("This world ended at tick {tick}"),
+        other => format!("{other:?}"),
     }
 }
 

@@ -38,7 +38,7 @@ pub fn settings(rounds: Rounds, condition: bool) -> LoopSettings {
 }
 
 impl Door {
-    fn over(mut genesis: Genesis) -> Self {
+    pub fn over(mut genesis: Genesis) -> Self {
         genesis.rules.epoch_ticks = EPOCH;
         let interim = Interim::found(genesis, Start::default(), Mode::Survival, PACE, Execution::Grouped).unwrap();
         Door { participant: interim.participant, session: interim.session, game: Game::default() }

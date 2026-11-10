@@ -21,6 +21,7 @@ pub mod effect_experiment;
 #[cfg(feature = "endpoint")]
 pub mod endpoint;
 pub mod glyphs;
+pub mod microbe;
 pub mod perception;
 pub mod readings;
 pub mod review;

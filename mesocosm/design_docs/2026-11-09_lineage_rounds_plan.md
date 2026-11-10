@@ -447,6 +447,10 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   proposed. As built, a served act raises and a failed act lowers the
   member's weight on the needs that pressed, by 4 of 64, doubled in youth,
   bounded at 32, a quarter fading each day.
+- **The seeded microbe** (wiring): `--hosting` gives every played world one
+  microbe, with rot and enter on, 24 of matter from the first site's soil.
+  A generated world has no surface lineage of its own; whether its
+  `kingdom:micro` lineages should be surfaces is unruled.
 
 ## Questions for Mark
 
@@ -492,6 +496,24 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: the fundaments wired into Mesocosm. `--hosting` sets the
+  hosting rule and seeds a microbe to hold: `lineage:micro`, with the rot
+  and enter genes, 24 of matter taken from the soil at the played region's
+  first site, declared in the genesis and made a surface's stock by two
+  logged commands, world matter unchanged. `--turn N` bounds the climate
+  shift (with `--climate`); `--learning` sets members' learning. The loop
+  answers `Hold`, `Unhold`, `Steer` and `Turn`; its reading carries the
+  held lines and what may be held; a holder with no body is admitted and
+  takes the watcher's round, which runs the clock, the ending and the
+  boundary for every line, with the held lineage's happenings appended. A
+  held surface's end no longer ends the played line. Keys 1 to 4 switch
+  rot, feed, leak and enter; 9 and 0 lower and raise the shift; the
+  lineage-ended choice offers "hold" rows. `mesocosm-views::held` gives the
+  words. Sixteen controls, among them reload and replay for a body-less
+  holder. Owed: `--learning` has no world to run in, since no generated
+  Mesocosm world founds a lineage policy; nothing draws a surface in the
+  scene; the keys are tested as functions, not in the window; dormancy,
+  which needs world-time rates.
 - 2026-11-10: members' learning built, first cut (D16's fourth fundament;
   cases 1051, 1058; overlay plan M3.6). `Directing.learning`, unset by
   default and needing a founded policy, gives each member a delta on its

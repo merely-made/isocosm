@@ -23,6 +23,7 @@ pub mod drive;
 mod follow;
 mod view;
 mod graft;
+mod holding;
 mod inspection;
 mod pointer;
 mod reading;

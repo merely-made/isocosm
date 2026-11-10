@@ -137,6 +137,13 @@ mod tests {
     }
 
     #[test]
+    fn the_holding_keys_are_free_of_round_and_dev_keys() {
+        for key in ["1", "2", "3", "4", "9", "0"] {
+            assert_eq!((round_key(&Key::Character(key.into())), dev_key(&Key::Character(key.into()))), (None, None), "{key}");
+        }
+    }
+
+    #[test]
     fn dev_keys_never_collide_with_play_keys() {
         for key in ["e", "q", "s", "t", "r"] {
             assert_eq!(dev_key(&Key::Character(key.into())), None, "{key}");

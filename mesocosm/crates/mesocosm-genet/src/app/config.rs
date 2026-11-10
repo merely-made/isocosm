@@ -105,22 +105,49 @@ pub struct HostConfig {
 /// The directing rules a new generated world may switch on (lineage-rounds
 /// D9, D11, D12; case 1215).
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct WorldRules { pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool, pub regard: bool, pub exertion: bool }
+pub struct WorldRules {
+    pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool, pub regard: bool, pub exertion: bool,
+    /// Hosting, and a microbe to hold (cases 1223, 1225, 1226).
+    pub hosting: bool,
+    /// Members' learning (cases 1051, 1058); needs a world that founds a policy.
+    pub learning: bool,
+    /// The bound of the climate's turn, in degrees (case 1216); needs the climate.
+    pub turn: Option<i32>,
+}
 
 impl WorldRules {
     /// The three rules of the rounds; the climate is its own flag.
-    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false } }
+    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
+        hosting: false, learning: false, turn: None }
+    }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
-    pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) {
-        if self.climate { genesis.rules.climate = Some(cosmograph::rules::Climate::default()); }
+    ///
+    /// # Errors
+    /// `--turn` without the climate, `--learning` in a world that founds no
+    /// policy, or `--hosting` in a world with no soil to seed from.
+    pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) -> Result<(), String> {
+        if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
+        if self.climate {
+            let climate = cosmograph::rules::Climate { turn: self.turn, ..Default::default() };
+            genesis.rules.climate = Some(climate);
+        }
         if self.exertion { genesis.rules.exertion = Some(cosmograph::rules::Exertion::default()); }
-        if !(self.drift || self.draft || self.sheet || self.regard) { return; }
+        if self.hosting { mesocosm_runtime::microbe::declare(genesis)?; }
+        if self.learning {
+            let directing = genesis.rules.directing.get_or_insert_with(Default::default);
+            if directing.policy == Default::default() {
+                return Err("--learning needs a world that founds a lineage policy, and this world founds none".into());
+            }
+            directing.learning = Some(cosmograph::rules::Learning::default());
+        }
+        if !(self.drift || self.draft || self.sheet || self.regard) { return Ok(()); }
         let directing = genesis.rules.directing.get_or_insert_with(Default::default);
         if self.drift { directing.drift = true; }
         if self.draft { directing.draft = Some(cosmograph::rules::Draft::default()); }
         if self.sheet { directing.sheet = true; }
         if self.regard { directing.regard = Some(cosmograph::rules::Regard::default()); }
+        Ok(())
     }
 }
 
@@ -131,7 +158,7 @@ impl HostConfig {
         let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::default();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard and --exertion require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning and --turn require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 
@@ -275,28 +302,54 @@ mod tests {
         assert_eq!(HostConfig::parse_rounds("continuous"), Some(Rounds::Continuous));
         assert_eq!(HostConfig::parse_rounds("capped"), Some(Rounds::Capped));
         assert_eq!(HostConfig::parse_rounds("Waiting"), None);
-        assert_eq!(WorldRules::all(), WorldRules { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false });
+        assert_eq!(WorldRules::all(), WorldRules { drift: true, draft: true, sheet: true, ..Default::default() });
     }
 
     #[test]
     fn world_rules_set_only_what_is_asked() {
         let mut genesis = mesocosm_runtime::Founded::generated(9, 256).unwrap().genesis;
         let before = genesis.rules.directing().clone();
-        WorldRules::default().apply(&mut genesis);
+        WorldRules::default().apply(&mut genesis).unwrap();
         assert_eq!(genesis.rules.directing(), before);
-        WorldRules { drift: true, ..Default::default() }.apply(&mut genesis);
+        WorldRules { drift: true, ..Default::default() }.apply(&mut genesis).unwrap();
         let d = genesis.rules.directing();
         assert!(d.drift && d.draft.is_none() && !d.sheet);
-        WorldRules::all().apply(&mut genesis);
+        WorldRules::all().apply(&mut genesis).unwrap();
         let d = genesis.rules.directing();
         assert!(d.drift && d.sheet);
         assert_eq!(d.draft, Some(cosmograph::rules::Draft::default()));
         assert!(genesis.rules.climate.is_none(), "the rounds' rules leave the climate alone");
-        WorldRules { climate: true, ..Default::default() }.apply(&mut genesis);
+        WorldRules { climate: true, ..Default::default() }.apply(&mut genesis).unwrap();
         assert_eq!(genesis.rules.climate, Some(cosmograph::rules::Climate::default()));
         assert!(genesis.rules.directing().regard.is_none(), "regard is its own flag");
-        WorldRules { regard: true, ..Default::default() }.apply(&mut genesis);
+        WorldRules { regard: true, ..Default::default() }.apply(&mut genesis).unwrap();
         assert_eq!(genesis.rules.directing().regard, Some(cosmograph::rules::Regard::default()));
+    }
+
+    #[test]
+    fn hosting_learning_and_turn_are_off_by_default_and_each_checked() {
+        let found = || mesocosm_runtime::Founded::generated(9, 256).unwrap().genesis;
+        let plain = found();
+        let mut genesis = found();
+        WorldRules::default().apply(&mut genesis).unwrap();
+        assert!(genesis == plain, "no flag, no change");
+        WorldRules { hosting: true, ..Default::default() }.apply(&mut genesis).unwrap();
+        let rules = &genesis.rules;
+        assert!(rules.hosting.is_some() && ["gene:rot", "gene:feed", "gene:leak", "gene:enter"].iter()
+            .all(|gene| rules.traits.contains(*gene)));
+        assert!(genesis.lineages.contains_key(mesocosm_runtime::microbe::KEY));
+        genesis.validate().unwrap();
+        let mut genesis = found();
+        assert!(WorldRules { turn: Some(3), ..Default::default() }.apply(&mut genesis).unwrap_err().contains("--climate"));
+        WorldRules { climate: true, turn: Some(3), ..Default::default() }.apply(&mut genesis).unwrap();
+        assert_eq!(genesis.rules.climate.as_ref().and_then(|c| c.turn), Some(3));
+        let learning = WorldRules { learning: true, ..Default::default() };
+        assert!(learning.apply(&mut found()).unwrap_err().contains("founds none"), "no policy, no learning");
+        let mut gated = found();
+        gated.rules.directing.get_or_insert_with(Default::default).policy =
+            cosmograph::rules::PolicyVariation { founding: 0, expression: 0, candidates: 1 };
+        learning.apply(&mut gated).unwrap();
+        assert_eq!(gated.rules.directing().learning, Some(cosmograph::rules::Learning::default()));
     }
 
     #[test]

@@ -24,6 +24,7 @@
 pub mod body_menu;
 pub mod caption;
 pub mod dev;
+pub mod held;
 pub mod leaf;
 pub mod minimap;
 pub mod review;
@@ -39,6 +40,7 @@ pub use dev::{
     Dev, DevChild, Follow, Lost, PartInspection, PartReading, dev_css, dev_root, follow_of,
     lost_of, lost_words, part_of, part_of_with_terms, role_word,
 };
+pub use held::{held_ended_words, held_words, kingdom_word, raised_words, short_key, surfaced_words};
 pub use leaf::MinimapLeaf;
 pub use minimap::{
     MINIMAP_ADAPTER, dominant_lineages, lineage_tint, minimap_leaf, minimap_scene, minimap_score,

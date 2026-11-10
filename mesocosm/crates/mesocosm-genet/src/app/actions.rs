@@ -180,9 +180,10 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         "right" => Some(Key::Named(NamedKey::ArrowRight)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
-        // The round: D call, A extend, H forfeit.
+        // The round: D call, A extend, H forfeit. A held lineage: 1 to 4 steer, 9 and 0 turn.
         "e" | "q" | "s" | "t" | "r" | "z" | "v" | "y" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
-        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" | "a" | "d" | "h" => Some(Key::Character(name.into())),
+        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" | "a" | "d" | "h"
+        | "1" | "2" | "3" | "4" | "9" | "0" => Some(Key::Character(name.into())),
         _ => None,
     }
 }

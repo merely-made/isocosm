@@ -76,14 +76,22 @@ fn lost(seed: u64) -> Option<(Session, u64, Game, VerifiedQuestion)> { lost_with
 
 /// `lost`, with the world's regard rule set where `regard` (cases 1210, 1214).
 fn lost_with(seed: u64, regard: bool) -> Option<(Session, u64, Game, VerifiedQuestion)> {
+    lost_in(seed, |genesis| if regard {
+        genesis.rules.directing.get_or_insert_with(Default::default).regard = Some(Default::default());
+    }, |_| {})
+}
+
+/// `lost`, over the genesis `tune` changes and the session `prepare` readies
+/// before the loop is configured.
+pub(super) fn lost_in(seed: u64, tune: impl FnOnce(&mut cosmograph::simulation::Genesis),
+    prepare: impl FnOnce(&mut Session)) -> Option<(Session, u64, Game, VerifiedQuestion)> {
     let mut genesis = Founding { seed, sites: 4, population: 48, cohort_size: 4, lineages: 3, ecology: true,
         played: Some(Played { lineage: 1, region_sites: 2 }), ..Default::default() }.generate().unwrap();
     genesis.rules.epoch_ticks = EPOCH;
-    if regard {
-        genesis.rules.directing.get_or_insert_with(Default::default).regard = Some(Default::default());
-    }
+    tune(&mut genesis);
     let i = Interim::found(genesis, Start::default(), Mode::Survival, PACE, Execution::Grouped).unwrap();
     let (mut session, participant, mut game) = (i.session, i.participant, Game::default());
+    prepare(&mut session);
     let access = |s: &Session| OrdinaryAccess { participant: ParticipantHandle(participant), seat: Seat::Player,
         subject: s.sim.plays(participant).map(EntityHandle) };
     let input = |s: &Session, g: &Game, action| LoopInput { kind: KIND.into(), version: VERSION,
@@ -136,7 +144,7 @@ fn lost_where(wanted: impl Fn(&[LoopStart]) -> bool) -> Option<(Session, u64, Ga
 }
 
 /// Answers `answer` on the receipt for the held question.
-fn take(session: &mut Session, participant: u64, game: &mut Game, proof: &VerifiedQuestion, answer: LoopAnswer)
+pub(super) fn take(session: &mut Session, participant: u64, game: &mut Game, proof: &VerifiedQuestion, answer: LoopAnswer)
     -> Result<String, Refusal> {
     let access = OrdinaryAccess { participant: ParticipantHandle(participant), seat: Seat::Player,
         subject: session.sim.plays(participant).map(EntityHandle) };

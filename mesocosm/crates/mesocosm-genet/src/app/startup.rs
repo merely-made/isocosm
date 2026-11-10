@@ -25,7 +25,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
         .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
-    rules.apply(&mut founded.genesis);
+    rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     mesocosm_runtime::runtime::ecology::Setup::generated_classified(
         founded, cosmograph::Execution::Individuals)
 }
@@ -76,7 +76,14 @@ fn select_a1_candidate<T>(
         "no A1 candidate met the requested food/placement conditions after {attempts} candidate(s)")))
 }
 
+/// A generated world; with `--hosting`, its microbe is seeded before play.
 pub(super) fn generated(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> Result<Runtime, String> {
+    let mut runtime = generated_world(config, affinity)?;
+    if config.world_rules.hosting { runtime.seed_microbe()?; }
+    Ok(runtime)
+}
+
+fn generated_world(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> Result<Runtime, String> {
     if config.ecology_rates.is_some()
         && (config.bench_world || config.ecology_candidate.is_some()
             || config.watch.is_some()
@@ -91,7 +98,7 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<cosmograph::rules:
         founded.genesis.rules.epoch_ticks = config.bench_epoch;
         if let Some(start) = config.start { founded.start = start; }
         if let Some(mode) = config.mode { founded.mode = mode; }
-        config.world_rules.apply(&mut founded.genesis);
+        config.world_rules.apply(&mut founded.genesis)?;
         return Runtime::bench(founded, config.ticks_per_second);
     }
     if let Some(path) = &config.ecology_candidate {
@@ -309,6 +316,19 @@ mod tests {
         let setup = a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None,
             super::super::config::WorldRules::all()).unwrap();
         assert!(setup.founded.genesis.rules.directing().sheet, "set after the A1 regeneration");
+    }
+
+    #[test]
+    fn hosting_seeds_a_microbe_before_play_and_leaves_the_world_matter_alone() {
+        let found = |hosting| generated(&HostConfig { bench_world: true, seed: 9, population: 256,
+            world_rules: super::super::config::WorldRules { hosting, ..Default::default() },
+            ..Default::default() }, None).unwrap();
+        let (plain, hosted) = (found(false), found(true));
+        assert_eq!(plain.sim().matter(), hosted.sim().matter());
+        assert!(!plain.sim().is_surface(mesocosm_runtime::microbe::KEY));
+        assert!(hosted.sim().is_surface(mesocosm_runtime::microbe::KEY));
+        let line = cosmograph::directing::readings::held(&hosted.sim(), mesocosm_runtime::microbe::KEY).unwrap();
+        assert_eq!(line.sites.total, mesocosm_runtime::microbe::SEED_AMOUNT);
     }
 
     #[test]

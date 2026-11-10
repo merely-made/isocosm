@@ -19,6 +19,7 @@ fn reading(label: &str) -> LoopReading {
         world_ended_at: None,
         ending: Default::default(),
         sheet: None,
+        held: vec![], holdable: vec![],
     }
 }
 #[test]
@@ -152,4 +153,14 @@ fn the_cursor_reaches_a_start_and_confirming_it_goes_through_the_door() {
     // The bench world is not in a loop phase, so the door refuses it: nothing is sent.
     host.submit_selected_continuation();
     assert!(host.events.is_empty());
+}
+
+#[test]
+fn a_lost_or_watching_loop_offers_to_hold_what_is_holdable() {
+    let read = LoopReading { holdable: vec!["lineage:micro".into()], ..reading("holdable") };
+    assert!(choices(&read).contains(&LoopAnswer::Hold { lineage: "lineage:micro".into() }));
+    let none = reading("none");
+    assert!(choices(&none).iter().all(|c| !matches!(c, LoopAnswer::Hold { .. })));
+    let host = Host::new(super::super::HostConfig { bench_world: true, seed: 9, population: 256, ..Default::default() });
+    assert_eq!(host.hold_label("world:ground"), "hold world-class lineage ground");
 }

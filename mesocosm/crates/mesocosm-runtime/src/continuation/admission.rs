@@ -2,35 +2,47 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use super::holding;
 use crate::{Refusal, FlowWindows, succession::Occasion};
 use cosmograph::{Session, Command, directing::{Aim, Toward, readings::{self, Mode, View}}};
 use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
 
-fn access(session: &Session, access: OrdinaryAccess) -> Result<(), Refusal> {
+/// How a participant stands to the loop: playing its one body, or holding a
+/// lineage with no living body (case 1217).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Standing { Playing, Holding }
+
+fn access(session: &Session, access: OrdinaryAccess) -> Result<Standing, Refusal> {
     // Mesocosm plays one body (its limit, case 1065): a participant who plays
     // several, by another product's TakeAlso, is not played here.
-    if access.seat != Seat::Player || access.subject.is_none()
-        || session.sim.played(access.participant.0).len() != 1
-        || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0) {
-        return Err(Refusal::NotPlayed);
+    if access.seat != Seat::Player { return Err(Refusal::NotPlayed); }
+    if access.subject.is_some() && session.sim.played(access.participant.0).len() == 1
+        && session.sim.plays(access.participant.0) == access.subject.map(|id| id.0) {
+        return Ok(Standing::Playing);
     }
-    Ok(())
+    // A holder with no living body is admitted for the round and the handle;
+    // one that holds nothing is not (case 1217).
+    if session.sim.plays(access.participant.0) == access.subject.map(|id| id.0)
+        && super::holding::bodiless(session, access.participant.0) {
+        return Ok(Standing::Holding);
+    }
+    Err(Refusal::NotPlayed)
 }
 
 fn source(session: &Session, game: &Game, access: OrdinaryAccess, input: &LoopInput)
-    -> Result<(), Refusal> {
-    self::access(session, access)?;
+    -> Result<Standing, Refusal> {
+    let standing = self::access(session, access)?;
     game.validate(session).map_err(Refusal::Sim)?;
     if input.kind != KIND || input.version != VERSION || input.participant != access.participant
         || input.tick.0 != session.sim.state().tick || input.expected != cut(session, game) {
         return Err(Refusal::Sim("loop input names another native/product/question cut".into()));
     }
-    Ok(())
+    Ok(standing)
 }
 
 pub fn configure_loop(session: &mut Session, game: &mut Game,
     access: OrdinaryAccess, input: &LoopInput) -> Result<String, Refusal> {
-    source(session, game, access, input)?;
+    if source(session, game, access, input)? != Standing::Playing { return Err(Refusal::NotPlayed); }
     let LoopAction::Configure(settings) = &input.action else { return Err(Refusal::Unasked); };
     if game.continuation.is_some() {
         return Err(Refusal::Sim("saved loop already configured; a hold cannot be overwritten".into()));
@@ -57,7 +69,11 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
 }
 
 pub(crate) fn visible(session: &Session, game: &Game, access: OrdinaryAccess) -> Result<View, Refusal> {
-    let observer = access.subject.ok_or(Refusal::NotPlayed)?.0;
+    // A holder with no body at all sees through no eye (case 1217).
+    let Some(observer) = access.subject.map(|id| id.0) else {
+        return if super::holding::bodiless(session, access.participant.0) { Ok(View::default()) }
+            else { Err(Refusal::NotPlayed) };
+    };
     // These global lifecycle controls reveal no bodies or inputs and need no
     // fabricated eye when an otherwise living observer's binding is unavailable.
     if game.continuation.as_ref().is_some_and(|saved| saved.world_end.is_some()) {
@@ -82,8 +98,12 @@ pub fn answer_loop(session: &mut Session, game: &mut Game,
 pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
     access: OrdinaryAccess, input: &LoopInput, verified: Option<&VerifiedQuestion>)
     -> Result<String, Refusal> {
-    source(session, game, access, input)?;
+    let standing = source(session, game, access, input)?;
     let LoopAction::Answer(answer) = &input.action else { return Err(Refusal::Unasked); };
+    if standing == Standing::Holding && !matches!(answer, LoopAnswer::Call | LoopAnswer::Extend
+        | LoopAnswer::Forfeit | LoopAnswer::Watch | LoopAnswer::NewWorld) && !holding::is_handle(answer) {
+        return Err(Refusal::NotPlayed);
+    }
     let view = visible(session, game, access)?;
     let offered = read_loop(session, game, access, &view).map_err(Refusal::Sim)?;
     let mut saved = game.continuation.clone().ok_or(Refusal::Unasked)?;
@@ -101,6 +121,9 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
         return Err(Refusal::Sim("saved expression differs from its actual authored proposal".into()));
     }
     let mut candidate = session.clone();
+    if holding::is_handle(answer) {
+        return handle(session, game, candidate, saved, answer);
+    }
     match answer {
         LoopAnswer::Checkpoint(answer) => {
             let personal_parent = matches!((&offered.personal, answer.kind),
@@ -189,6 +212,26 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
     next.validate(&candidate).map_err(Refusal::Sim)?;
     *session = candidate; *game = next;
     Ok("answered exact saved loop question".into())
+}
+
+/// A holding answer: the sim's command, the loop's question and phase left
+/// as they stand, and the loop resealed over the new native cut. A held
+/// question is not answered by it, so a held loop refuses it.
+fn handle(session: &mut Session, game: &mut Game, mut candidate: Session, saved: Continuation,
+    answer: &LoopAnswer) -> Result<String, Refusal> {
+    if saved.phase == LoopPhase::Held || saved.phase == LoopPhase::NewWorldRequested
+        || (saved.world_end.is_some() && !matches!(answer, LoopAnswer::Unhold { .. })) {
+        return Err(Refusal::Unasked);
+    }
+    holding::apply(&mut candidate, saved.participant, answer)?;
+    let mut saved = saved;
+    let mut next = physical(game);
+    next.refresh(&mut candidate).map_err(Refusal::Sim)?;
+    saved.seal(&candidate, &next);
+    next.continuation = Some(saved); next.version = next.current_version();
+    next.validate(&candidate).map_err(Refusal::Sim)?;
+    *session = candidate; *game = next;
+    Ok("answered the held lineage".into())
 }
 
 pub fn submit_loop(session: &mut Session, game: &mut Game,
