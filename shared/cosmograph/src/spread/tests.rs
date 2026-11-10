@@ -6,7 +6,7 @@ use crate::{Founding, Session, Execution, schema::*, simulation::Genesis};
 use isometer_space::places::PlaceId;
 use std::collections::BTreeSet;
 
-pub(super) fn fixture() -> (Genesis, Id, Identity, Identity, PlaceId) {
+pub(crate) fn fixture() -> (Genesis, Id, Identity, Identity, PlaceId) {
     let mut g = Founding { seed: 17, sites: 3, population: 12, lineages: 1,
         cohort_size: 3, ecology: true, ..Default::default() }.generate().unwrap();
     g.rules.processes.clear();

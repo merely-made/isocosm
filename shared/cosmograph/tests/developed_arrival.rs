@@ -36,7 +36,7 @@ fn world(stores: u32) -> Session {
         kingdom: "kingdom:fauna".into(), traits: Default::default(),
         development: Some(Development { lexicon: recipe.kinds(), recipe, policy: Policy::default(),
             domain: 0, clutch: 1, anamorphic: false, tracts: vec![], systems: Default::default(), comfort: 0, grammar: None }),
-        decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
+        decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(),
     });
     Session::new(g, Execution::Grouped).unwrap()
 }

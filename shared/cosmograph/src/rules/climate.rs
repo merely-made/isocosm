@@ -44,6 +44,11 @@ pub struct Climate {
     /// matter a tick (numerator, denominator) for each unit of light below it.
     pub shade: i64,
     pub dim: [u32; 2],
+    /// The most degrees a holder of a world-class lineage may shift every
+    /// temperature by, either way (cases 1216, 1217); none, cycles cannot be
+    /// turned, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub turn: Option<i32>,
 }
 
 impl Default for Climate {
@@ -80,6 +85,7 @@ impl Default for Climate {
             // 37 matter through a night.
             shade: 250,
             dim: [1, 5_000],
+            turn: None,
         }
     }
 }
@@ -103,6 +109,9 @@ impl Climate {
         }
         if !(0..=100).contains(&self.thirst) || self.buffer < 0 || self.shade < 0 {
             return Err("a climate's thirst must be within 0 to 100, its buffer and shade not below nought".into());
+        }
+        if self.turn.is_some_and(|bound| bound < 0) {
+            return Err("a climate's turn bound cannot be below nought".into());
         }
         if self.width < 0 || self.weather < 0 {
             return Err("a climate's width and weather cannot be below nought".into());

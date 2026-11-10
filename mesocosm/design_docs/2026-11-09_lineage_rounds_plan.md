@@ -437,6 +437,12 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   shares drawn from 5 to 20. Dormant upkeep goes to soil, not detritus.
 - **A woken seed keeps the age it was laid at** (propagules): nothing resets
   it, so a long-dormant seed wakes already old.
+- **A world-class player's lever is one temperature shift** (the handle):
+  a single bounded offset on the climate, set by the holder of a
+  world-class lineage. Floods, droughts and blooms cast through conditions
+  (brief §13) have nothing yet to be cast through.
+- **Holding is open** (the handle): any participant may hold any surface or
+  world-class lineage, with no bond, knowing or cost asked.
 
 ## Questions for Mark
 
@@ -482,6 +488,27 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: the handle built in the sim (D16's second fundament; cases
+  1216, 1221, 1223, 1224). A participant holds a lineage that has no critter
+  to take: `Command::Hold` and `Unhold` keep `Lineage.held`, for a surface
+  lineage or a world-class one, several holders allowed; a critter lineage
+  is refused, being taken. `Command::Steer` is a gene switch that checks
+  the holder, then does what `spread::Switch` does. `Command::Turn` sets a
+  shift on the climate kept in world state (`State.turn`), within the bound
+  `Climate.turn` states, for the holder of a world-class lineage;
+  temperature and the strain bodies owe read it. A round runs for a holder
+  with no body: the clock advances a round's pace and the round returns
+  `Happening::Surfaced` for a held surface's events (reached, left,
+  brimmed, host died, met), `LineageEnded` when it first holds no matter
+  anywhere, and `Happening::Raised` for a world-class holder; a player
+  with a critter and a hold gets both. `Interim::ahead` works for a holder.
+  `readings::held` and `holdable` report a held surface and what may be
+  held; a held lineage is known. `history.rs`'s dispatch moved to
+  `history/dispatch.rs`. Twenty controls; no pinned hash moved. Owed: the
+  boundary for a body-less round (no adaptation, span or condition there
+  yet, only through `ahead`); the crowd's strain reading, which has no
+  state and sees no shift; colony play, which has no castes, trails or
+  calls to stand on; and all of it in Mesocosm's loop, keys and views.
 - 2026-11-10: dormant propagules built (D16's third fundament, first half;
   cases 1192 to 1197; the sim plan's S10.2 first slice). `Founding.dormancy`,
   unset by default and for world-time worlds with sensing bodies only, makes

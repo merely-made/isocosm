@@ -12,6 +12,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 mod choice;
+mod holding;
 mod infeasible;
 pub mod found;
 pub mod interim;
@@ -33,6 +34,8 @@ pub const BOND: &str = "directing:bond";
 pub const KNOWS: &str = "directing:knows";
 /// The critter a participant plays now.
 pub const PLAYS: &str = "directing:plays";
+/// The kingdom of the world-class lineages, which have no critter body.
+pub const WORLD: &str = "kingdom:world";
 
 /// What a nudge asks: to attend, or to act (690).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -349,6 +352,8 @@ impl Simulation {
 
 #[cfg(test)]
 mod choice_tests;
+#[cfg(test)]
+pub(crate) mod holding_tests;
 #[cfg(test)]
 mod known_tests;
 #[cfg(test)]

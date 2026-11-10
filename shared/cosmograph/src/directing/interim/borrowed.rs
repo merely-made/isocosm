@@ -26,7 +26,7 @@ impl<'a> BorrowedInterim<'a> {
         Ok(Self { session, participant, mode, pace, on_collapse, ending: Ending::default() })
     }
 
-    fn critter(&self) -> Option<Id> { self.session.sim.plays(self.participant) }
+    pub(super) fn critter(&self) -> Option<Id> { self.session.sim.plays(self.participant) }
 
     fn take(&mut self, critter: Id) -> Result<()> {
         self.session.command(Command::Take { participant: self.participant, critter })?;
@@ -37,7 +37,8 @@ impl<'a> BorrowedInterim<'a> {
         readings::heirs(&self.session.sim, near).first().copied()
     }
 
-    pub fn round(&mut self,
+    /// The played critter's round; `round` adds what a held lineage met.
+    pub(super) fn round_played(&mut self,
         candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
         advance: &mut dyn FnMut(&mut Session) -> Result<Vec<crate::flows::Flow>>,
         score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,

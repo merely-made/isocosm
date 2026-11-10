@@ -20,15 +20,19 @@ impl Interim {
     /// `round`, whose succession handles it as it does any death.
     ///
     /// # Errors
-    /// Nobody is played, the world's epoch is not timed, the pace's scoring
+    /// Nobody is played and nothing is held, the world's epoch is not timed, the pace's scoring
     /// span is nought, the played critter is gone with no heir, or the run
-    /// is refused; the loop is then untouched.
+    /// is refused; the loop is then untouched. A holder with no critter has
+    /// no heir to take up and runs the same path.
     pub fn ahead(&mut self, epochs: u32) -> Result<Vec<Raised>> {
-        let played = self.critter().ok_or("nobody is played")?;
+        let played = self.critter();
+        if played.is_none() && self.session.sim.holds(self.participant).is_empty() {
+            return Err("nobody is played and nothing is held".into());
+        }
         let before = self.session.sim.clone();
         let mut run = self.session.clone();
         deep::run_deep_time_adapting(&mut run, DeepTimeSpan { epochs }, self.pace.scoring)?;
-        if run.sim.state().population.get(played).is_none() {
+        if let Some(played) = played.filter(|played| run.sim.state().population.get(*played).is_none()) {
             let heir = readings::heirs(&run.sim, played).first().copied()
                 .ok_or("the played critter is gone and has no heir")?;
             run.command(Command::Take { participant: self.participant, critter: heir })?;

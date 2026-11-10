@@ -152,13 +152,14 @@ impl Staged<'_> {
                     let body = self.body(*who)?;
                     let place = body.resident_site().ok_or("strain needs a resident site")?;
                     let site = sim.state.sites.get(&place).ok_or("site missing")?;
-                    let owed = crate::climate::owed(
+                    let owed = crate::climate::owed_shifted(
                         &sim.genesis.rules,
                         seed,
                         &sim.state.lineages,
                         body,
                         (place, site),
                         sim.state.tick,
+                        sim.state.turn,
                     );
                     i64::try_from(owed).map_err(|e| e.to_string())
                 },

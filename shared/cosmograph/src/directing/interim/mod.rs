@@ -19,6 +19,7 @@ pub mod deep;
 mod ahead;
 mod begin;
 mod borrowed;
+mod held;
 pub(crate) mod regard;
 pub use borrowed::BorrowedInterim;
 
@@ -132,6 +133,12 @@ pub enum Happening {
     /// The played lineage held more than the par it had to beat (case 1212,
     /// lineage-rounds D8).
     ConditionMet { tick: Tick, held: u128, par: u128 },
+    /// Something befell a surface lineage the participant holds (cases
+    /// 1224, 1226).
+    Surfaced(crate::spread::Surfaced),
+    /// What the world's conditions raised, for a holder of a world-class
+    /// lineage (case 1216).
+    Raised(readings::Raised),
 }
 
 #[derive(Clone, Debug)]
@@ -383,3 +390,6 @@ mod reproduction;
 
 #[cfg(test)]
 mod ahead_tests;
+
+#[cfg(test)]
+mod held_tests;

@@ -35,6 +35,7 @@ pub(crate) fn flat() -> Climate {
         drought: [0, 1],
         shade: 250,
         dim: [0, 1],
+        turn: None,
     }
 }
 

@@ -185,4 +185,16 @@ pub enum Command {
         knows: Vec<Id>,
         regard: Vec<(Key, i64)>,
     },
+    /// A participant holds a surface or world-class lineage, a handle for
+    /// one that has no critter body (cases 1216, 1217, 1221).
+    Hold { participant: Id, lineage: Key },
+    /// A participant lets go of a lineage it holds (`Release` names a
+    /// released entity already, so this is not called that).
+    Unhold { participant: Id, lineage: Key },
+    /// A holder's stance on a surface: gene switches the population carries
+    /// out, as `Spread(Switch)` makes them (cases 1223, 1226).
+    Steer { participant: Id, lineage: Key, on: std::collections::BTreeSet<Key>, off: std::collections::BTreeSet<Key> },
+    /// A holder of a world-class lineage shifts the world's temperature by
+    /// `shift` degrees, within the climate's bound (cases 1216, 1217).
+    Turn { participant: Id, lineage: Key, shift: i32 },
 }

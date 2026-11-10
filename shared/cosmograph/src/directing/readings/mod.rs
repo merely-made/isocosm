@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod abilities;
 pub mod habitable;
+pub mod held;
 pub mod heirs;
 pub mod known;
 pub mod orders;
@@ -24,6 +25,7 @@ pub mod world;
 
 pub use abilities::{Ability, abilities};
 pub use habitable::habitable;
+pub use held::{Held, Tally, held, holdable};
 pub use heirs::heirs;
 pub use known::{known, regard};
 pub use orders::{Orders, orders};
@@ -74,6 +76,8 @@ pub fn from_receipt(sim: &Simulation, receipt: &crate::simulation::Receipt) -> V
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod held_tests;
 #[cfg(test)]
 mod unable_tests;
 #[cfg(test)]

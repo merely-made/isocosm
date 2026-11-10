@@ -168,7 +168,7 @@ impl Pack {
             return Err("the pack's lineage is already the world's".into());
         }
         genesis.lineages.insert(self.lineage.key.clone(), Lineage { policy: None, parent: None, revision: 1,
-            traits: BTreeSet::new(), kingdom: self.lineage.kingdom.clone(), development: None, decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), });
+            traits: BTreeSet::new(), kingdom: self.lineage.kingdom.clone(), development: None, decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(), });
         let r = &mut genesis.rules;
         r.relations.insert(TENANT.to_string());
         r.processes.extend(crate::social::processes(&self.vocabulary));

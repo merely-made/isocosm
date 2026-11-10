@@ -36,6 +36,20 @@ pub fn temperature(
     site: &Site,
     tick: Tick,
 ) -> Option<i64> {
+    shifted(rules, seed, site_id, site, tick, 0)
+}
+
+/// `temperature` with the world's turn added: the degrees a holder of a
+/// world-class lineage has shifted every cycle by, kept in state (cases 1216,
+/// 1217). Callers that have the state pass `state.turn`; nought is `temperature`.
+pub fn shifted(
+    rules: &Rules,
+    seed: u64,
+    site_id: Id,
+    site: &Site,
+    tick: Tick,
+    turn: i64,
+) -> Option<i64> {
     let c = rules.climate.as_ref()?;
     let latitude = site
         .conditions
@@ -51,7 +65,7 @@ pub fn temperature(
     let span = u64::try_from(2 * c.weather.max(0) + 1).unwrap_or(1);
     let weather = i128::from(draw(seed, "climate:weather", &[site_id, spell]) % span)
         - i128::from(c.weather.max(0));
-    let degrees = i128::from(c.base) - cold - aloft + swing + weather;
+    let degrees = i128::from(c.base) - cold - aloft + swing + weather + i128::from(turn);
     Some(i64::try_from(degrees).unwrap_or(if degrees < 0 { i64::MIN } else { i64::MAX }))
 }
 
@@ -217,12 +231,26 @@ pub(crate) fn owed(
     seed: u64,
     lineages: &BTreeMap<Key, Lineage>,
     e: &Entity,
+    at: (Id, &Site),
+    tick: Tick,
+) -> u64 {
+    owed_shifted(rules, seed, lineages, e, at, tick, 0)
+}
+
+/// `owed` under the world's turn (cases 1216, 1217): the temperature it
+/// reads is shifted by `turn` degrees.
+pub(crate) fn owed_shifted(
+    rules: &Rules,
+    seed: u64,
+    lineages: &BTreeMap<Key, Lineage>,
+    e: &Entity,
     (place, site): (Id, &Site),
     tick: Tick,
+    turn: i64,
 ) -> u64 {
     let Some(c) = rules.climate.as_ref() else { return 0 };
     let Some([want, shade]) = needs(rules, e, lineages) else { return 0 };
-    let heat = match (comfort(rules, e, lineages), temperature(rules, seed, place, site, tick)) {
+    let heat = match (comfort(rules, e, lineages), shifted(rules, seed, place, site, tick, turn)) {
         (Some(band), Some(degrees)) => strain(band, degrees),
         _ => 0,
     };
@@ -322,6 +350,6 @@ impl Simulation {
     /// climate and the site is there (case 1215; lineage-rounds D15).
     pub fn temperature(&self, site: Id) -> Option<i64> {
         let found = self.state.sites.get(&site)?;
-        temperature(&self.genesis.rules, self.genesis.seed, site, found, self.state.tick)
+        shifted(&self.genesis.rules, self.genesis.seed, site, found, self.state.tick, self.state.turn)
     }
 }

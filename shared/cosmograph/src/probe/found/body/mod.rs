@@ -235,7 +235,7 @@ impl BodyFounding {
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
                 development: None,
-                decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
+                decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(),
             },
         )]);
         let mut processes = BTreeMap::new();
@@ -273,7 +273,7 @@ impl BodyFounding {
                     traits: carried,
                     kingdom: kingdom.into(),
                     development: Some(developments[i as usize].clone()),
-                    decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
+                    decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(),
                 },
             );
             for p in physiology::natives(i, 2, i == 0, rates) {

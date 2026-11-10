@@ -97,6 +97,10 @@ pub struct State {
     /// Exact resident roots published by native spatial acts in opt-in worlds.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub spatial_poses: BTreeMap<Id, crate::spatial::foraging::Resident>,
+    /// The degrees a holder of a world-class lineage has shifted every
+    /// temperature by (cases 1216, 1217); nought, its default, hashes as before.
+    #[serde(default, skip_serializing_if = "crate::schema::is_zero_turn")]
+    pub turn: i64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -233,6 +237,7 @@ impl Simulation {
             projects: crate::projects::Projects::default(),
             institutions: Default::default(),
             spatial_poses: crate::spatial::foraging::founding_poses(&genesis),
+            turn: 0,
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {

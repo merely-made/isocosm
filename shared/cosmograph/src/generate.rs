@@ -161,7 +161,7 @@ impl Founding {
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
                 development: None,
-                decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
+                decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(),
             },
         )]);
         let mut accounts = BTreeMap::from([
@@ -199,7 +199,7 @@ impl Founding {
                     traits: BTreeSet::from([ability.clone()]),
                     kingdom: kingdoms[i as usize % kingdoms.len()].into(),
                     development: None,
-                    decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
+                    decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(), held: Default::default(),
                 },
             );
             let n = 2 + random("compartments", u64::from(i)) % 3;

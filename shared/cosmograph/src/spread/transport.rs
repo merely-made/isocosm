@@ -96,7 +96,7 @@ fn resolved_overflow_inner(state:&mut State, rules:&crate::rules::Rules, identit
     overflow_at(state, identity, at, limit, &dispatch)
 }
 
-pub(super) fn stocks(state: &State) -> Vec<(Substrate, Identity)> {
+pub(crate) fn stocks(state: &State) -> Vec<(Substrate, Identity)> {
     let identities: std::collections::BTreeMap<_, _> = state.spreads.identities.iter()
         .map(|identity| (identity.key(), identity.clone())).collect();
     let mut sources = BTreeSet::new();

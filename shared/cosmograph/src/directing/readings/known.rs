@@ -13,10 +13,11 @@ use crate::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
-/// The lineages `participant` knows; none unless the world sets regard.
+/// The lineages `participant` knows: those it holds, whatever the world's
+/// rules, and under the regard rule those it has played, met or outpaced.
 pub fn known(session: &Session, participant: Id) -> BTreeSet<Key> {
     let state = session.sim.state();
-    let mut out = BTreeSet::new();
+    let mut out: BTreeSet<Key> = session.sim.holds(participant).into_iter().collect();
     if session.sim.genesis().rules.directing.as_ref().is_none_or(|d| d.regard.is_none()) {
         return out;
     }

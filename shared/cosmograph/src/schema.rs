@@ -253,6 +253,11 @@ pub struct Lineage {
     pub regard: BTreeMap<Id, i64>,
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub ate: BTreeSet<Key>,
+    /// The participants who hold this lineage, a surface or a world-class
+    /// one that has no critter body to take (cases 1216, 1217, 1221, 1223);
+    /// empty unless one holds it, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub held: BTreeSet<Id>,
 }
 
 /// What a line has eaten whole of one kind (lineage-rounds D10).
@@ -552,3 +557,6 @@ impl Default for Limits {
 
 /// Whether a tick is zero, for fields that serialize only when set.
 pub fn is_zero_tick(tick: &Tick) -> bool { *tick == 0 }
+
+/// Whether a temperature shift is nought, for a state field that serializes only when set.
+pub fn is_zero_turn(shift: &i64) -> bool { *shift == 0 }

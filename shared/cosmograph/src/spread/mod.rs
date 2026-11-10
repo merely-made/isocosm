@@ -21,6 +21,7 @@ mod happened;
 mod hosting;
 pub(crate) use direction::{Direction, declarations as directions};
 pub use direction::resolved_overflow_routes;
+pub(crate) use transport::stocks;
 pub use placement::{Placement, Supply, place_stock};
 
 pub use stock::{functions, held, ledger_mass, provenance};
@@ -35,7 +36,7 @@ pub use strain::{fork_strain, strain_key};
 pub(crate) use strain::switch;
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;
 #[cfg(test)]
 mod happened_tests;
 #[cfg(test)]

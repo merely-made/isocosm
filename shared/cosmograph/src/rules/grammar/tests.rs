@@ -194,6 +194,7 @@ fn lines(d: &Development) -> BTreeMap<String, Lineage> {
         meals: BTreeMap::new(),
         regard: BTreeMap::new(),
         ate: BTreeSet::new(),
+        held: BTreeSet::new(),
     };
     BTreeMap::from([("lineage:t".to_string(), line)])
 }

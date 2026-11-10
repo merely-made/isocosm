@@ -61,6 +61,7 @@ impl Simulation {
         if !s.projects.is_empty() { put(&mut w, "projects", &s.projects); }
         if !s.institutions.is_empty() { put(&mut w, "institutions", &s.institutions); }
         if !s.spatial_poses.is_empty() { put(&mut w, "spatial_poses", &s.spatial_poses); }
+        if s.turn != 0 { put(&mut w, "turn", &s.turn); }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -156,6 +157,7 @@ impl Simulation {
         if !s.projects.is_empty() { put(&mut w, "projects", &s.projects); }
         if !s.institutions.is_empty() { put(&mut w, "institutions", &s.institutions); }
         for (id, pose) in &s.spatial_poses { put(&mut w, label("spatial_pose", [id]), pose); }
+        if s.turn != 0 { put(&mut w, "turn", &s.turn); }
         w
     }
 }
