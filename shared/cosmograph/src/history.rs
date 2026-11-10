@@ -27,7 +27,6 @@ pub struct Entry {
 /// v5 records how the world's life history was founded (case 1073).
 pub const SAVE_VERSION: u32 = 5;
 
-
 /// An epoch boundary's per-field entries (rulings 633 and 651).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Checkpoint {
@@ -529,6 +528,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.leave(*participant, *critter)?;
             Ok("left".into())
         },
+        Command::Regard { participant, knows, regard } => sim.set_regard(*participant, knows, regard).map(|()| "regarded".into()),
         Command::Nudge {
             participant,
             critter,

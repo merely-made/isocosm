@@ -112,7 +112,7 @@ pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
         kingdom: kingdom.into(),
         development: None,
         decides: None,
-        policy: None, meals: Default::default(),
+        policy: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
     };
     let mut sophont = lineage("kingdom:fauna");
     sophont.development = Some(body::install(&mut g.rules));
@@ -193,7 +193,7 @@ pub(crate) fn legacy_genesis_v2(seed: u64, side: u32, extent: u64) -> Result<Gen
         kingdom: kingdom.into(),
         development: None,
         decides: None,
-        policy: None, meals: Default::default(),
+        policy: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
     };
     g.lineages.insert(SOPHONT.into(), lineage("kingdom:fauna"));
     for item in [FOOD, DRESSING, SCRAP] {

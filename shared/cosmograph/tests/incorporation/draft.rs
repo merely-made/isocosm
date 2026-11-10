@@ -69,3 +69,17 @@ fn a_run_with_a_drafted_meal_replays_to_the_same_hash() {
     assert_eq!(again.sim.state_hash(), s.sim.state_hash());
     assert_eq!(again.sim.state().lineages, s.sim.state().lineages);
 }
+
+#[test]
+fn a_real_meal_is_recorded_as_eaten_and_dealt_between_two_lines_when_regard_is_set() {
+    let (mut g, eater, prey) = world(0, 1000, true);
+    g.rules.directing = Some(Directing { regard: Some(Default::default()), ..Default::default() });
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    let command = Command::Act { actor: eater, target: Some(prey), process: "test:graze".into(), cause: None };
+    let moves = s.command_with_flows(command).unwrap().flows;
+    assert_eq!(s.sim.state().lineages["lineage:1"].ate.iter().collect::<Vec<_>>(), ["lineage:0"]);
+    assert!(s.sim.state().lineages["lineage:0"].ate.is_empty(), "the donor ate nothing");
+    let between: Vec<_> = moves.iter().filter(|f| matches!((&f.from_kind, &f.to_kind),
+        (Some(a), Some(b)) if a.lineage == "lineage:0" && b.lineage == "lineage:1")).collect();
+    assert_eq!(between.len(), 1, "a meal is one move from the prey's body to the eater's");
+}

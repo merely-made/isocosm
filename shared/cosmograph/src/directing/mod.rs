@@ -28,6 +28,8 @@ pub const PLACELESS: Id = Id::MAX;
 pub const PARTICIPANT: &str = "kingdom:participant";
 /// A participant's bond to a critter, its value the weight (688).
 pub const BOND: &str = "directing:bond";
+/// A lineage a participant knows, by an entity of it (case 1210).
+pub const KNOWS: &str = "directing:knows";
 /// The critter a participant plays now.
 pub const PLAYS: &str = "directing:plays";
 
@@ -218,9 +220,12 @@ impl Simulation {
                     .is_some_and(|f| f.lineage == lineage)
             })
             .and_then(|b| self.bond(participant, b));
+        // A lineage's regard for the participant seeds a bond not yet held (case 1214).
+        let regard = rules.regard.and(self.state.lineages.get(&lineage))
+            .and_then(|l| l.regard.get(&participant)).copied();
         let weight = self
             .bond(participant, critter)
-            .unwrap_or_else(|| rules.inherit(forebear));
+            .unwrap_or_else(|| regard.map_or_else(|| rules.inherit(forebear), |r| r.clamp(0, rules.most)));
         // Take switches: every body played before is put down. TakeAlso keeps them.
         if !beside {
             for before in self.played(participant) {
@@ -252,6 +257,36 @@ impl Simulation {
             s.relations.remove(&held);
         }
         s.relations.insert(new);
+    }
+    /// Records what `participant` has come to know and each lineage's new
+    /// regard for it (cases 1210, 1214); refused unless the rule is set.
+    pub(crate) fn set_regard(&mut self, participant: Id, knows: &[Id], regard: &[(Key, i64)]) -> Result<()> {
+        self.participant(participant)?;
+        let most = match self.genesis.rules.directing().regard {
+            Some(_) => self.genesis.rules.directing().most,
+            None => return Err("the world keeps no regard".into()),
+        };
+        if let Some(missing) = knows.iter().find(|id| self.state.population.get(**id).is_none()) {
+            return Err(format!("{missing} is no entity to know a lineage by"));
+        }
+        if let Some((key, _)) = regard.iter().find(|(k, _)| !self.state.lineages.contains_key(k)) {
+            return Err(format!("{key} is no lineage"));
+        }
+        for object in knows {
+            let new = Relation::new(participant, KNOWS, *object);
+            if related(&self.state.relations, participant, KNOWS, *object).is_none() {
+                if let Some(j) = &mut self.journal {
+                    j.relation(&new, false);
+                }
+                self.state.relations.insert(new);
+            }
+        }
+        for (key, value) in regard {
+            if let Some(line) = self.state.lineages.get_mut(key) {
+                line.regard.insert(participant, (*value).clamp(0, most));
+            }
+        }
+        Ok(())
     }
     /// Logs a nudge; refused unless the participant is bonded to a living
     /// critter and what it names is there (686, 690).
@@ -312,6 +347,8 @@ impl Simulation {
 
 #[cfg(test)]
 mod choice_tests;
+#[cfg(test)]
+mod known_tests;
 #[cfg(test)]
 mod movement_tie_tests;
 #[cfg(test)]

@@ -386,6 +386,29 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 - Needs: LR6, LR7; LR8 for crossings from microbe
 - Rulings: 1209, 1220, 1228 to 1231, 1236 to 1239; Bodies 17, Mesocosm 7
 
+## Choices awaiting Mark's ruling
+
+Made to keep building at his word ("no need to wait on me! let's build what
+we can and sort on wednesday", 2026-11-10); none is a decision of his.
+
+- **Being eaten feeds them** (LR5). Matter a lineage's bodies take from the
+  played line's bodies raises its regard for the player, case 1214's
+  "feeding it" read literally; a predator comes to regard its prey's player.
+- **Regard's numbers** (LR5): the bond's scale; one point gained per ten of
+  matter given and two lost per ten taken; a fork starts with half its
+  parent's regard.
+- **The persona waits** (LR5, 1227). A participant has no identity beyond its
+  entity in one world: joining carries no data, and a dramatis identity
+  needs its custodian running, which Mesocosm does not depend on. Regard is
+  keyed to the participant within a world.
+- **Absence odds need a record in the world** (LR2): the odds move only where
+  some group has a recorded absence, so a world where nobody drew one never
+  reaches zero.
+- **The climate's numbers** (LR4.2), the draft's half share and the terms of
+  meals needed (LR3): first cuts.
+- **Water and light strain outside a band is one-sided** (LR4.2): too little
+  water or light strains; too much does not.
+
 ## Questions for Mark
 
 From the brief's §8, each naming the phase it holds up.
@@ -430,6 +453,26 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR5 built without the persona, behind the world rule
+  `directing.regard` (unset by default; the host's `--regard` sets it). A
+  participant comes to know a lineage by playing it, by a fork, by their
+  played line eating a part of it whole (`Lineage.ate`), by their played
+  critter sharing a site with a living member, and by out-holding it at a
+  boundary; the last two are `directing:knows` relations
+  (`readings::known`). A lineage's regard for a participant
+  (`Lineage.regard`, on the bond's scale, from `fresh` at a first dealing)
+  rises with matter the played line's bodies give its bodies and falls with
+  matter taken, read from the step's flows; a critter taken up starts its
+  bond from it; a fork starts with a share of its parent's. Recording is one
+  logged `Command::Regard` a step, so a run replays to the same hash.
+  Mesocosm offers bodies of known lineages as well as visible ones. Controls
+  in `directing/known_tests.rs`. No existing test or pin moved. In the worlds
+  tested the only matter move between two lineages' bodies is a meal, so
+  regard today falls for a lineage the player's line eats and rises for one
+  that eats it; giving by any other route had to be planted. World-kingdom
+  lineages are left out of meeting and outpacing. Owed: the persona (1227);
+  benefit the sim cannot see (through the soil, pollinating, dispersing,
+  cleaning); D6's kin cohort, which regard now makes possible.
 - 2026-11-10: the host offers starts. The lineage-ended and watching choice
   gains a row per start after the other bodies and before Watch and New
   World, reading "<lineage> at site N" or "<lineage> toward site N (a

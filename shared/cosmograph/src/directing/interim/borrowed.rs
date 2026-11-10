@@ -78,6 +78,9 @@ impl<'a> BorrowedInterim<'a> {
         let held = e.par.map(|_| boundary::standing(self.session, &lineage).0).unwrap_or_default();
         let met = e.par.is_some_and(|par| held > par);
         let due = e.due(from, now, epoch, held);
+        if self.session.sim.genesis().rules.directing.as_ref().is_some_and(|d| d.regard.is_some()) {
+            self.record(played, &lineage, &flows, due)?;
+        }
         if e.span_passed(from, now, epoch) {
             out.push(Happening::SpanPassed { tick: now });
         }

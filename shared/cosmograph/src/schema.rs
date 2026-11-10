@@ -243,6 +243,12 @@ pub struct Lineage {
     /// hashes as before.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub meals: BTreeMap<Key, Eaten>,
+    /// Its regard for each participant, and the lines it has eaten a part
+    /// of whole (cases 1210, 1214); empty unless the regard rule is set.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub regard: BTreeMap<Id, i64>,
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub ate: BTreeSet<Key>,
 }
 
 /// What a line has eaten whole of one kind (lineage-rounds D10).

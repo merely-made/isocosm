@@ -73,6 +73,9 @@ pub fn learn(
     let Some(line) = lines.get_mut(eater) else {
         return;
     };
+    if eater != donor && rules.directing.as_ref().is_some_and(|d| d.regard.is_some()) {
+        line.ate.insert(donor.to_string());
+    }
     let Some(asked) = asked else {
         if let Some(d) = line.development.as_mut() {
             d.lexicon.insert(kind.clone());

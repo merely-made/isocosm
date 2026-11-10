@@ -71,9 +71,11 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
         _ => None,
     }).collect();
     if saved.world_end.is_none() && matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching) {
+        // A known line is offered too, seen or not (case 1210); none is known unless the world sets regard.
+        let known = readings::known(session, access.participant.0);
         out.lineages = session.sim.state().population.groups.iter().filter(|(first, group)| {
             let e = &group.entity;
-            visible.shows(**first) && e.alive && e.method == Method::Deliberative
+            (visible.shows(**first) || known.contains(&e.lineage)) && e.alive && e.method == Method::Deliberative
                 && saved.ended_lineage.as_ref().is_some_and(|lineage| *lineage != e.lineage)
         }).map(|(first, _)| EntityHandle(*first)).collect();
         let kept: std::collections::BTreeSet<&str> = out.lineages.iter()

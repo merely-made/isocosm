@@ -42,10 +42,18 @@ impl Simulation {
             .get(&parent)
             .filter(|l| l.kingdom != "kingdom:world")
             .ok_or("the founder's line cannot split")?;
-        let fork = Lineage {
+        let mut fork = Lineage {
             parent: Some(parent),
             ..line.clone()
         };
+        // A fork keeps a share of its parent's regard (case 1214).
+        match self.genesis.rules.directing().regard {
+            Some(r) => fork.regard.values_mut().for_each(|v| *v = *v * i64::from(r.heritable) / 1000),
+            None => {
+                fork.regard.clear();
+                fork.ate.clear();
+            },
+        }
         self.state.population.lift(founder)?.lineage = made.clone();
         self.state.lineages.insert(made.clone(), fork);
         Ok(made)

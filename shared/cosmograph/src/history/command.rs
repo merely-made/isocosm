@@ -178,4 +178,11 @@ pub enum Command {
         participant: Id,
         critter: Id,
     },
+    /// A participant comes to know lineages by an entity of each, and the
+    /// lineages' new regard for them (cases 1210, 1214).
+    Regard {
+        participant: Id,
+        knows: Vec<Id>,
+        regard: Vec<(Key, i64)>,
+    },
 }

@@ -105,20 +105,21 @@ pub struct HostConfig {
 /// The directing rules a new generated world may switch on (lineage-rounds
 /// D9, D11, D12; case 1215).
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct WorldRules { pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool }
+pub struct WorldRules { pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool, pub regard: bool }
 
 impl WorldRules {
     /// The three rules of the rounds; the climate is its own flag.
-    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false } }
+    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false } }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
     pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) {
         if self.climate { genesis.rules.climate = Some(cosmograph::rules::Climate::default()); }
-        if !(self.drift || self.draft || self.sheet) { return; }
+        if !(self.drift || self.draft || self.sheet || self.regard) { return; }
         let directing = genesis.rules.directing.get_or_insert_with(Default::default);
         if self.drift { directing.drift = true; }
         if self.draft { directing.draft = Some(cosmograph::rules::Draft::default()); }
         if self.sheet { directing.sheet = true; }
+        if self.regard { directing.regard = Some(cosmograph::rules::Regard::default()); }
     }
 }
 
@@ -129,7 +130,7 @@ impl HostConfig {
         let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::default();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet and --climate require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate and --regard require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 
@@ -273,7 +274,7 @@ mod tests {
         assert_eq!(HostConfig::parse_rounds("continuous"), Some(Rounds::Continuous));
         assert_eq!(HostConfig::parse_rounds("capped"), Some(Rounds::Capped));
         assert_eq!(HostConfig::parse_rounds("Waiting"), None);
-        assert_eq!(WorldRules::all(), WorldRules { drift: true, draft: true, sheet: true, climate: false });
+        assert_eq!(WorldRules::all(), WorldRules { drift: true, draft: true, sheet: true, climate: false, regard: false });
     }
 
     #[test]
@@ -292,6 +293,9 @@ mod tests {
         assert!(genesis.rules.climate.is_none(), "the rounds' rules leave the climate alone");
         WorldRules { climate: true, ..Default::default() }.apply(&mut genesis);
         assert_eq!(genesis.rules.climate, Some(cosmograph::rules::Climate::default()));
+        assert!(genesis.rules.directing().regard.is_none(), "regard is its own flag");
+        WorldRules { regard: true, ..Default::default() }.apply(&mut genesis);
+        assert_eq!(genesis.rules.directing().regard, Some(cosmograph::rules::Regard::default()));
     }
 
     #[test]

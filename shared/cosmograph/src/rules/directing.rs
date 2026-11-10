@@ -75,6 +75,27 @@ pub struct Directing {
     /// (case 1215).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub sheet: bool,
+    /// Known lineages and regard (cases 1210, 1214); unset, none is kept.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub regard: Option<Regard>,
+}
+
+/// Known lineages and regard (cases 1210, 1214).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Regard {
+    /// Regard gained for each `per` of matter given, and lost for each taken.
+    pub gain: i64,
+    pub loss: i64,
+    pub per: u64,
+    /// Thousandths of a parent's regard a forked line starts with.
+    pub heritable: u32,
+}
+
+impl Default for Regard {
+    /// First cuts to tune.
+    fn default() -> Self {
+        Self { gain: 1, loss: 2, per: 10, heritable: 500 }
+    }
 }
 
 /// The player's draft (cases 1200, 1203; lineage-rounds D10 to D12).
@@ -132,6 +153,7 @@ impl Default for Directing {
             drift: false,
             draft: None,
             sheet: false,
+            regard: None,
         }
     }
 }
@@ -160,6 +182,9 @@ impl Directing {
         }
         if self.draft.is_some_and(|d| d.share[1] == 0) {
             return Err("the draft's share has a denominator of nought".into());
+        }
+        if self.regard.is_some_and(|r| r.per == 0 || r.heritable > 1000 || r.gain < 0 || r.loss < 0) {
+            return Err("regard needs a per above nought, a heritable of at most 1000 and no negative gain or loss".into());
         }
         Ok(())
     }

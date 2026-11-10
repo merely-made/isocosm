@@ -161,6 +161,7 @@ fn main() {
             "--draft" => config.world_rules.draft = true,
             "--sheet" => config.world_rules.sheet = true,
             "--climate" => config.world_rules.climate = true,
+            "--regard" => config.world_rules.regard = true,
             "--rounds-rules" => config.world_rules = WorldRules::all(),
             "--mode" => config.mode = Some(match args.next().as_deref() {
                 Some("survival") => cosmograph::directing::readings::Mode::Survival,
@@ -400,6 +401,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --sheet         world rule: show what a grown body would be beside each offer
   --rounds-rules  --drift, --draft and --sheet together
   --climate       world rule: temperature, and upkeep that rises outside a body's comfort band
+  --regard        world rule: lineages you come to know, and their regard for you, which starts a bond
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)

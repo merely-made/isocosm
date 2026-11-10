@@ -18,6 +18,7 @@ pub use crate::lineage::boundary;
 pub mod deep;
 mod begin;
 mod borrowed;
+pub(crate) mod regard;
 pub use borrowed::BorrowedInterim;
 
 pub use boundary::{Candidate, Score, Turn};

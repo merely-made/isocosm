@@ -72,10 +72,16 @@ fn a_forfeit_moves_a_lost_lineage_to_watching_and_the_next_step_ends_the_epoch()
 
 /// A world whose played lineage has just ended by a dev kill, the loop resealed
 /// and stepped to `LineageEnded`; the receipt for that verified question.
-fn lost(seed: u64) -> Option<(Session, u64, Game, VerifiedQuestion)> {
+fn lost(seed: u64) -> Option<(Session, u64, Game, VerifiedQuestion)> { lost_with(seed, false) }
+
+/// `lost`, with the world's regard rule set where `regard` (cases 1210, 1214).
+fn lost_with(seed: u64, regard: bool) -> Option<(Session, u64, Game, VerifiedQuestion)> {
     let mut genesis = Founding { seed, sites: 4, population: 48, cohort_size: 4, lineages: 3, ecology: true,
         played: Some(Played { lineage: 1, region_sites: 2 }), ..Default::default() }.generate().unwrap();
     genesis.rules.epoch_ticks = EPOCH;
+    if regard {
+        genesis.rules.directing.get_or_insert_with(Default::default).regard = Some(Default::default());
+    }
     let i = Interim::found(genesis, Start::default(), Mode::Survival, PACE, Execution::Grouped).unwrap();
     let (mut session, participant, mut game) = (i.session, i.participant, Game::default());
     let access = |s: &Session| OrdinaryAccess { participant: ParticipantHandle(participant), seat: Seat::Player,
@@ -207,4 +213,21 @@ fn a_start_that_was_not_offered_is_refused() {
         assert!(matches!(refused, Err(Refusal::Unasked)), "{refused:?}");
     }
     assert_eq!((session.sim.state_hash(), game.continuation.as_ref().unwrap().phase), (before, LoopPhase::LineageEnded));
+}
+
+#[test]
+fn a_known_lineage_is_offered_though_unseen_and_an_unset_rule_offers_as_before() {
+    let access = |s: &Session, p: u64| OrdinaryAccess { participant: ParticipantHandle(p), seat: Seat::Player,
+        subject: s.sim.plays(p).map(EntityHandle) };
+    let blind = cosmograph::directing::readings::View::default();
+    let (session, p, game, _) = (1..60).find_map(|seed| lost_with(seed, true)).expect("a seed that loses a line");
+    let read = read_loop(&session, &game, access(&session, p), &blind).unwrap();
+    let known = cosmograph::directing::readings::known(&session, p);
+    assert!(!read.lineages.is_empty() && !read.starts.is_empty(), "the forked line is known, so offered unseen");
+    let kept = |id: &EntityHandle| session.sim.state().population.get(id.0).map(|e| e.lineage.clone()).unwrap();
+    assert!(read.lineages.iter().all(|id| known.contains(&kept(id))), "only known lineages");
+    assert!(read.starts.iter().all(|s| known.contains(&s.lineage)));
+    let (session, p, game, _) = (1..60).find_map(|seed| lost_with(seed, false)).expect("a seed that loses a line");
+    let read = read_loop(&session, &game, access(&session, p), &blind).unwrap();
+    assert!(read.lineages.is_empty() && read.starts.is_empty(), "unset, nothing unseen is offered");
 }

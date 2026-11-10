@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod habitable;
 pub mod heirs;
+pub mod known;
 pub mod orders;
 pub mod regions;
 pub mod scopes;
@@ -19,6 +20,7 @@ pub mod survival;
 
 pub use habitable::habitable;
 pub use heirs::heirs;
+pub use known::{known, regard};
 pub use orders::{Orders, orders};
 pub use regions::{Region, region_of, regions};
 pub use scopes::{Absence, Means, Scope, ScopeReading, Source, absence, reading, route_steps, sources};
