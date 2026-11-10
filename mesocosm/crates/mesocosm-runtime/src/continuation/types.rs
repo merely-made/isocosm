@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use cosmograph::{Command, schema::Id, directing::{interim::{Happening, OnCollapse, Pace,
-    Start, Handover, Ending}, readings::Mode}, lineage::boundary::Score};
+    Start, Handover, Ending}, readings::Mode}, lineage::{boundary::Score, sheet::Sheet}};
 use cosmograph_overlay::{EntityHandle, ParticipantHandle, Tick, mesocosm::CheckpointAnswer};
 use serde::{Deserialize, Serialize};
 use crate::{Checkpoint, FlowWindows, Review};
@@ -57,6 +57,12 @@ pub enum LoopAnswer {
 #[serde(deny_unknown_fields)]
 pub struct LoopOffer {
     pub index: usize, pub name: String, pub score: Score, pub why_not: Option<String>,
+    /// The adult mass it adds, in a draft review (case 1203).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cost: Option<u128>,
+    /// What a fully grown body of it would be (case 1215).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sheet: Option<Sheet>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -74,6 +80,9 @@ pub struct LoopReading {
     pub world_ended_at: Option<u64>,
     #[serde(default, skip_serializing_if = "no_ending")]
     pub ending: Ending,
+    /// What a fully grown body of the played line's recipe is (case 1215).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sheet: Option<Sheet>,
 }
 
 /// Only an owned run has these actual founding/deep-time facts.

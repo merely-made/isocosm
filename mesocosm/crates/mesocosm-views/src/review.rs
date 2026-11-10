@@ -24,7 +24,8 @@
 //! decides when there is anything to show.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use cosmograph::lineage::{Offer, Reading};
+use cosmograph::lineage::{Offer, Reading, sheet::Sheet};
+use std::fmt::Debug;
 use isomere::{JournalClasses, JournalRow};
 use mesocosm_runtime::Trend;
 
@@ -118,7 +119,55 @@ fn offer_name(offer: &Offer) -> String {
     }
 }
 
-pub fn row_words(offer: &Offer, selected: bool) -> BoardRow {
+/// What a candidate's grown body would change against the line's own, as
+/// signed changes in a fixed order: mass, reach, speed, clutch, upkeep,
+/// cells by function, systems gained and lost, feeding, then how it lives
+/// (case 1215). Empty where nothing differs.
+pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
+    fn signed(from: i128, to: i128) -> Option<String> {
+        (from != to).then(|| format!("{:+}", to - from))
+    }
+    fn word(of: impl Debug) -> String {
+        format!("{of:?}").to_lowercase()
+    }
+    let n = |v: u128| i128::try_from(v).unwrap_or(i128::MAX);
+    let mut out: Vec<String> = Vec::new();
+    out.extend(signed(n(had.mass), n(offered.mass)).map(|d| format!("{d} mg")));
+    out.extend(signed(had.reach.into(), offered.reach.into()).map(|d| format!("{d} reach")));
+    if let (Some(a), Some(b)) = (had.speed, offered.speed) {
+        out.extend(signed(a.into(), b.into()).map(|d| format!("{d} speed")));
+    }
+    out.extend(signed(had.clutch.into(), offered.clutch.into()).map(|d| format!("{d} clutch")));
+    if let (Some(a), Some(b)) = (had.upkeep, offered.upkeep) {
+        out.extend(signed(a.into(), b.into()).map(|d| format!("{d} upkeep")));
+    }
+    let keys: std::collections::BTreeSet<&String> =
+        had.functions.keys().chain(offered.functions.keys()).collect();
+    for key in keys {
+        let (a, b) = (had.functions.get(key).copied(), offered.functions.get(key).copied());
+        let (a, b) = (a.unwrap_or(0), b.unwrap_or(0));
+        let name = key.trim_start_matches("function:");
+        if a != b {
+            let sign = if b > a { '+' } else { '-' };
+            out.push(format!("{sign}{name} {}", a.abs_diff(b)));
+        }
+    }
+    let bare = |k: &String| k.trim_start_matches("system:").to_string();
+    out.extend(offered.systems.difference(&had.systems).map(|k| format!("gains system {}", bare(k))));
+    out.extend(had.systems.difference(&offered.systems).map(|k| format!("loses system {}", bare(k))));
+    if had.feeding != offered.feeding {
+        out.push(format!("feeds {} -> {}", word(had.feeding), word(offered.feeding)));
+    }
+    if had.trophic != offered.trophic {
+        let of = |t: Option<_>| t.map_or("none".into(), word);
+        out.push(format!("lives {} -> {}", of(had.trophic), of(offered.trophic)));
+    }
+    out.join(", ")
+}
+
+/// A row in words; `had` is the review's own sheet, which an offer's sheet
+/// is set beside for its preview (case 1215).
+pub fn row_words(offer: &Offer, selected: bool, had: Option<&Sheet>) -> BoardRow {
     BoardRow {
         name: offer_name(offer),
         source: "the boundary".into(),
@@ -130,7 +179,7 @@ pub fn row_words(offer: &Offer, selected: bool) -> BoardRow {
             0 => "nothing to change".into(),
             n => format!("{n} change{}", if n == 1 { "" } else { "s" }),
         },
-        preview: String::new(),
+        preview: had.zip(offer.sheet.as_ref()).map_or_else(String::new, |(a, b)| sheet_words(a, b)),
         reason: offer.why_not.clone(),
         selected,
     }
@@ -285,3 +334,60 @@ pub fn board_css() -> &'static str {
 "#
 }
 
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cosmograph::{lineage::sheet::Sheet, process::FeedingMode, trophic::Trophic};
+
+    fn sheet() -> Sheet {
+        Sheet {
+            mass: 1000,
+            speed: Some(500),
+            reach: 3,
+            clutch: 2,
+            trophic: Some(Trophic::Consumer),
+            feeding: FeedingMode::Grazer,
+            functions: [("function:contract".to_string(), 8), ("function:store".to_string(), 6)].into(),
+            systems: ["system:respiration".to_string()].into(),
+            upkeep: Some(4),
+        }
+    }
+
+    #[test]
+    fn no_difference_says_nothing() {
+        assert_eq!(sheet_words(&sheet(), &sheet()), "");
+        // A figure only one side has is no change.
+        let mut b = sheet();
+        b.speed = None;
+        b.upkeep = None;
+        assert_eq!(sheet_words(&sheet(), &b), "");
+    }
+
+    #[test]
+    fn each_change_appears_once_in_a_fixed_order() {
+        let had = sheet();
+        let mut b = sheet();
+        b.mass += 120;
+        b.reach += 1;
+        b.speed = Some(460);
+        b.clutch += 1;
+        b.upkeep = Some(6);
+        b.functions.insert("function:contract".into(), 20);
+        b.functions.insert("function:store".into(), 2);
+        b.systems = ["system:circulation".to_string()].into();
+        b.feeding = FeedingMode::Omnivore;
+        b.trophic = Some(Trophic::Producer);
+        assert_eq!(
+            sheet_words(&had, &b),
+            "+120 mg, +1 reach, -40 speed, +1 clutch, +2 upkeep, +contract 12, -store 4, \
+             gains system circulation, loses system respiration, feeds grazer -> omnivore, \
+             lives consumer -> producer"
+        );
+        // A function gained or lost whole is a change of its cells.
+        let mut c = sheet();
+        c.functions.remove("function:store");
+        c.functions.insert("function:fix".into(), 3);
+        assert_eq!(sheet_words(&had, &c), "+fix 3, -store 6");
+    }
+}

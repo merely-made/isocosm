@@ -6696,6 +6696,28 @@ area = "Mesocosm"
 summary = "The player takes one draft pick a round."
 draws_on = ["1200", "mesocosm.6"]
 
+[decisions."lineage-rounds D13"]
+title = "what a tolerance does (2026-11-09), refines Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "Outside its comfort band for a condition a body's upkeep rises with the distance; nothing is refused."
+draws_on = ["1215", "mesocosm.6"]
+
+[decisions."lineage-rounds D14"]
+title = "where a comfort band comes from (2026-11-09), refines Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A lineage's comfort band for a condition is set by its body's build and nudged by a heritable offset."
+draws_on = ["1215", "bodies.3"]
+
+[decisions."lineage-rounds D15"]
+title = "what drives temperature (2026-11-09), refines D3"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "World generation"
+summary = "Temperature follows latitude, height and season, and is moved by weather."
+draws_on = ["1215"]
+plans = ["sim"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

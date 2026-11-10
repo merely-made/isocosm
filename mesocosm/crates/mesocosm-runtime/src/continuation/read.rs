@@ -15,7 +15,7 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
     let mut out = LoopReading { cut: cut(session, game), settings: None,
         phase: LoopPhase::Running, checkpoint: None, offers: Vec::new(),
         happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None,
-        ending: Default::default() };
+        ending: Default::default(), sheet: None };
     let Some(saved) = &game.continuation else { return Ok(out); };
     if saved.participant != access.participant.0 {
         return Err("saved loop belongs to another participant".into());
@@ -52,7 +52,9 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
         if let Some(review) = &saved.review {
             out.offers = review.offers.iter().enumerate().map(|(index, offer)| LoopOffer {
                 index, name: offer.name.clone(), score: offer.score, why_not: offer.why_not.clone(),
+                cost: offer.cost, sheet: offer.sheet.clone(),
             }).collect();
+            out.sheet = review.sheet.clone();
         }
     }
     out.happenings = saved.happenings.iter().filter_map(|h| match h {

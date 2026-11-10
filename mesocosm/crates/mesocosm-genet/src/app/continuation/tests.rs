@@ -18,6 +18,7 @@ fn reading(label: &str) -> LoopReading {
         personal: None,
         world_ended_at: None,
         ending: Default::default(),
+        sheet: None,
     }
 }
 #[test]

@@ -26,6 +26,13 @@ pub fn door() -> Door {
     Door::over(candidate.genesis)
 }
 
+/// The same world with the systems sheet rule set (case 1215).
+pub fn sheeted() -> Door {
+    let mut genesis = native_fixture::candidate_with_played("test:round-endings", 1).genesis;
+    genesis.rules.directing.get_or_insert_with(Default::default).sheet = true;
+    Door::over(genesis)
+}
+
 pub fn settings(rounds: Rounds, condition: bool) -> LoopSettings {
     LoopSettings { mode: Mode::Survival, pace: PACE, on_collapse: OnCollapse::Stay, rounds, condition }
 }

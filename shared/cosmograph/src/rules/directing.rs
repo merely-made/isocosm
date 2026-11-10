@@ -71,6 +71,10 @@ pub struct Directing {
     /// a kind is learned at the first meal.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub draft: Option<Draft>,
+    /// Attach a systems sheet to the played line's review and its offers
+    /// (case 1215).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub sheet: bool,
 }
 
 /// The player's draft (cases 1200, 1203; lineage-rounds D10 to D12).
@@ -127,6 +131,7 @@ impl Default for Directing {
             policy: PolicyVariation::default(),
             drift: false,
             draft: None,
+            sheet: false,
         }
     }
 }

@@ -22,6 +22,7 @@ pub mod program;
 pub mod reckon;
 pub mod review;
 pub mod revise;
+pub mod sheet;
 pub mod speciate;
 pub mod tree;
 
@@ -39,3 +40,5 @@ mod tests;
 mod draft_tests;
 #[cfg(test)]
 mod drift_tests;
+#[cfg(test)]
+mod sheet_tests;

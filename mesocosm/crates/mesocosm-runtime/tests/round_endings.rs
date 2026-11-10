@@ -12,7 +12,7 @@ mod door;
 
 use cosmograph::directing::interim::Happening;
 use cosmograph::directing::readings::Mode;
-use door::{Door, EPOCH, door, settings};
+use door::{Door, EPOCH, door, settings, sheeted};
 use mesocosm_runtime::continuation::LoopAction;
 use mesocosm_runtime::{Occasion, Refusal, continuation::{LoopAnswer, LoopPhase, Rounds}};
 
@@ -149,4 +149,39 @@ fn with_the_draft_unset_an_epoch_review_is_as_before_in_both_modes() {
         assert!(!text.contains("\"cost\"") && !text.contains("\"budget\""), "{mode:?} saves as before");
         d.reloaded().expect("the saved review validates after a restore");
     }
+}
+
+#[test]
+fn the_sheet_rule_is_off_by_default_and_a_sheeted_review_survives_a_restore() {
+    // Unset, the reading carries no new keys.
+    let mut plain = door();
+    plain.configure(Rounds::Capped, false);
+    let (_, held) = run(&mut plain, 2 * EPOCH + 2, |_| false);
+    assert!(held);
+    let reading = plain.reading();
+    assert!(reading.sheet.is_none() && reading.offers.iter().all(|o| o.sheet.is_none() && o.cost.is_none()));
+    let text = serde_json::to_string(&reading).unwrap();
+    assert!(!text.contains("\"sheet\"") && !text.contains("\"cost\""), "{text}");
+    // Set, the review and the reading carry it, and it validates after a restore.
+    let mut d = sheeted();
+    d.configure(Rounds::Capped, false);
+    let (_, held) = run(&mut d, 2 * EPOCH + 2, |_| false);
+    assert!(held, "the sheeted world holds at an epoch");
+    let review = d.saved().review.clone().expect("the hold carries its review");
+    // The fixture's lines have no recipe to grow, and a line with none has no sheet.
+    assert!(review.sheet.is_none() && review.offers.iter().all(|o| o.sheet.is_none()));
+    let reading = d.reading();
+    assert_eq!(reading.sheet, review.sheet);
+    assert!(reading.offers.iter().zip(&review.offers).all(|(r, o)| r.sheet == o.sheet && r.cost == o.cost));
+    d.reloaded().expect("a saved review under the sheet rule validates after a restore");
+    // A sheet, where there is one, is carried on the reading and survives the wire.
+    use cosmograph::{lineage::sheet::Sheet, process::FeedingMode};
+    let sheet = Sheet { mass: 9, speed: None, reach: 1, clutch: 1, trophic: None, feeding: FeedingMode::Grazer,
+        functions: Default::default(), systems: Default::default(), upkeep: None };
+    let mut carried = reading;
+    carried.sheet = Some(sheet.clone());
+    if let Some(offer) = carried.offers.first_mut() { (offer.sheet, offer.cost) = (Some(sheet), Some(3)); }
+    let wire = serde_json::to_string(&carried).unwrap();
+    assert!(wire.contains("\"sheet\""));
+    assert_eq!(serde_json::from_str::<mesocosm_runtime::continuation::LoopReading>(&wire).unwrap(), carried);
 }

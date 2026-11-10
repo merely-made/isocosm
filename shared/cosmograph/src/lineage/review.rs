@@ -7,7 +7,7 @@
 //! the status quo first, and those it cannot take kept with the reason.
 //! It decides nothing; a commit is the offer's commands, sent as any other.
 
-use super::{draft, program, reckon};
+use super::{draft, program, reckon, sheet::{self, Sheet}};
 use crate::directing::interim::boundary::{self, Candidate, Score};
 use crate::{Result, Session, history::Command, schema::*};
 use serde::{Deserialize, Serialize};
@@ -25,6 +25,10 @@ pub struct Offer {
     /// review (case 1203; lineage-rounds D11).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cost: Option<u128>,
+    /// What a fully grown body of the revision would be, where the world's
+    /// `sheet` rule is set (case 1215).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sheet: Option<Sheet>,
 }
 
 impl Offer {
@@ -47,6 +51,10 @@ pub struct Review {
     /// What a variant may cost, in a draft review (case 1203).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub budget: Option<u128>,
+    /// What a fully grown body of the line's recipe is, where the world's
+    /// `sheet` rule is set (case 1215).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sheet: Option<Sheet>,
 }
 
 impl Review {
@@ -79,6 +87,7 @@ impl Review {
             program: program::digest(&program::program(session, lineage)),
             offers: offers_draft_using(session, lineage, scoring, draft, score)?,
             budget,
+            sheet: own_sheet(session, lineage)?,
         })
     }
 
@@ -122,6 +131,7 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
         commands: vec![],
         why_not: None,
         cost: None,
+        sheet: None,
     }];
     let living = boundary::standing(session, lineage).1 > 0;
     let most = sim.genesis().rules.directing().variants as usize;
@@ -132,6 +142,8 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
     let budget = draft.and_then(|_| draft::budget(session, lineage));
     let eaten = budget.and(draft.zip(line)).map(|(since, l)| draft::eaten_since(l, since));
     let rules = &sim.genesis().rules;
+    let sheeted = rules.directing().sheet;
+    let lines = &sim.state().lineages;
     let offered = super::revise::offered_borne(session, lineage, d, most, eaten.as_ref());
     for (name, development, bears) in offered {
         let cost = match (budget, bears) {
@@ -155,6 +167,10 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
                 _ => None,
             },
         };
+        let sheet = match sheeted {
+            true => Some(sheet::of(rules, lines, lineage, &development)?),
+            false => None,
+        };
         let score = match why_not {
             None => score(session, lineage, &candidate, scoring)?,
             Some(_) => standing,
@@ -165,7 +181,21 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
             commands: candidate.commands,
             why_not,
             cost,
+            sheet,
         });
     }
     Ok(out)
+}
+
+/// The sheet of the line's current recipe, where the world's `sheet` rule
+/// is set and the line develops (case 1215).
+fn own_sheet(session: &Session, lineage: &str) -> Result<Option<Sheet>> {
+    let sim = &session.sim;
+    let rules = &sim.genesis().rules;
+    let lines = &sim.state().lineages;
+    let d = lines.get(lineage).and_then(|l| l.development.as_ref());
+    match (rules.directing().sheet, d) {
+        (true, Some(d)) => sheet::of(rules, lines, lineage, d).map(Some),
+        _ => Ok(None),
+    }
 }

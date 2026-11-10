@@ -11,6 +11,7 @@ use super::tree;
 use crate::{
     Result, Session,
     development::{Soma, develop},
+    geometry::Body,
     rules::{Development, Rules},
     schema::*,
 };
@@ -104,16 +105,23 @@ pub fn eaten_since(lineage: &Lineage, since: Tick) -> BTreeSet<Key> {
         .collect()
 }
 
-/// The adult mass of the body `d` grows into, each tagma at its segments.
-fn grown(rules: &Rules, d: &Development) -> Result<u128> {
+/// The fully grown body `d` develops, each tagma at its segments.
+///
+/// # Errors
+/// Fails if `d` cannot develop a body.
+pub(super) fn grown_body(rules: &Rules, d: &Development) -> Result<Body> {
     let soma = Soma {
         segments: d.recipe.tagmata.iter().map(|t| t.segments).collect(),
         absent: vec![],
         seed: 0,
     };
-    let body = develop(rules, d, &soma)?;
+    develop(rules, d, &soma)
+}
+
+/// The adult mass of the body `d` grows into.
+fn grown(rules: &Rules, d: &Development) -> Result<u128> {
     let b = rules.body();
-    Ok(body
+    Ok(grown_body(rules, d)?
         .doc
         .parts
         .iter()

@@ -132,6 +132,31 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1200, mesocosm.6 · summary The player takes one draft pick a round.
 
+- **D13, what a tolerance does (2026-11-09), refines Mesocosm 6:** "Upkeep
+  rises (Recommended)". The further a body is from its comfort band for a
+  condition, the more it pays to live there, so a marginal site is survivable
+  and dear. Asked because the sim has no tolerance: only a process's
+  one-sided threshold. Offered against processes refusing outside the band,
+  and against both.
+
+  Links: area Ecology · draws on 1215, mesocosm.6 · summary Outside its comfort band for a condition a body's upkeep rises with the distance; nothing is refused.
+
+- **D14, where a comfort band comes from (2026-11-09), refines Mesocosm 6:**
+  "Build, shifted by traits". The body sets the band (a bigger body holds
+  heat, store cells buffer drought, fixing cells set the light it needs) and
+  a heritable offset per condition nudges it. Offered against the build
+  alone and against heritable numbers alone.
+
+  Links: area Bodies and anatomy · draws on 1215, bodies.3 · summary A lineage's comfort band for a condition is set by its body's build and nudged by a heritable offset.
+
+- **D15, what drives temperature (2026-11-09), refines D3:** "Those, plus
+  weather", those being latitude, height and season. Temperature is cooler
+  at altitude and toward the poles, swings with the year, and is moved by
+  weather, so there are cold snaps and heat waves. Offered against latitude,
+  height and season alone, and against a fixed value per site.
+
+  Links: area World generation · draws on 1215 · plans sim · summary Temperature follows latitude, height and season, and is moved by weather.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -235,6 +260,12 @@ already makes variants bearing a learned kind.
 - Rulings: 1200, 1203, D2, D10, D11, D12; Ecology 1, Mesocosm 6
 
 ### LR4. The systems sheet, with previews
+
+Built in two steps. **LR4.1, the sheet:** what a grown body of the recipe is
+and can do, read without running the sim, on the review and each offer.
+**LR4.2, tolerances:** temperature (D15), the comfort band (D14) and the
+upkeep that rises outside it (D13), which is the temperature field's
+consumer.
 A lineage's sheet is read off a grown body, never summed from the recipe
 (1215): needs (upkeep by body size, particular matter), abilities (speed,
 reach, force, senses, fecundity, dispersal) and tolerance curves. The
@@ -253,7 +284,7 @@ by a forward copy.
   sheet and diff at the review.
 - Needs: LR3; `sim` rates from body size (ecology brief 3.1) for upkeep;
   `place-graph-engine` field admission for temperature
-- Rulings: 1215, D3; Mesocosm 6
+- Rulings: 1215, D3, D13, D14, D15; Mesocosm 6
 
 ### LR4h. The loop, played
 Three rounds in the headed host, solo, on a seed nobody chose: pick, play
@@ -359,8 +390,6 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 
 From the brief's §8, each naming the phase it holds up.
 
-- **Temperature's shape** (LR4): what drives it (latitude, height, season,
-  weather) and at what grain, when the field is designed.
 - **Regard's bound** (LR5): how far regard is heritable.
 - **The operators** (LR6): whether eight is the set, and how a crossing
   unlocks another kingdom's.
@@ -401,6 +430,24 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR4.1 built, behind the world rule `directing.sheet` (off by
+  default). `lineage/sheet.rs`: `sheet::of` develops the full recipe's body,
+  builds an adult of the lineage from it as a birth does but unvaried, and
+  reads its adult mass, speed (where the world has speed rules), reach,
+  clutch, trophic reading, feeding mode, cells by function, the systems it
+  realises, and its upkeep where the world prices upkeep by the body (the
+  `body:upkeep` process's amount evaluated on the filled adult; none under
+  the flat rate). It runs no simulation. The review and each offer that
+  revises the recipe carry a sheet; Mesocosm's loop reading carries them, and
+  the board's preview shows the difference as signed changes
+  (`mesocosm_views::sheet_words`). Controls: seven in
+  `lineage/sheet_tests.rs` (the rule unset; purity; the mass agreeing with the
+  draft's cost; a preview equalling the sheet after commit; hand checks; the
+  upkeep equalling what the real process charges a grown member), two in
+  `mesocosm-views`, one in `tests/round_endings.rs`. No existing test or pin
+  moved. Not body-derived in the sim, so not on the sheet: smell range (a
+  per-lineage rule number), dispersal (processes and site conditions) and
+  force (no function). Owed: LR4.2, tolerances.
 - 2026-11-09: LR3 built, behind the world rule `directing.draft` (unset by
   default; set, its `share` is the budget's, a half). `lineage/draft.rs`:
   `needed` is one meal, plus one for another kingdom, plus none, one or two

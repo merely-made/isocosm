@@ -14,7 +14,7 @@ use crate::schema::*;
 use isometer_core::{BodyDocument, Role, classify};
 
 /// The three ways of making a living: a body's trophic reading.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, serde::Serialize, serde::Deserialize)]
 pub enum Trophic {
     Producer,
     Consumer,
