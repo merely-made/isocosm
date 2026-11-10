@@ -451,6 +451,11 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   microbe, with rot and enter on, 24 of matter from the first site's soil.
   A generated world has no surface lineage of its own; whether its
   `kingdom:micro` lineages should be surfaces is unruled.
+- **The mass law's reference and bounds** (mass law): the median adult mass
+  keeps today's rates; factors run from a quarter to four times. A
+  producer's growth and the death hazard's rate scale too, which 1148
+  does not name: without them heavy plants starve and long ceilings do
+  not lengthen lives.
 
 ## Questions for Mark
 
@@ -496,6 +501,23 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: the mass law built, first cut (D16's third fundament, second
+  half; case 1148; the sim plan's S10.2 scaling slice). `Founding.mass_law`,
+  unset by default, layers on the flat Stock and A1 rates at founding. A
+  lineage's adult mass is its sheet's mass (1215); the reference is the
+  world's median, recorded in the rule. Upkeep, meals and a producer's
+  growth scale by mass to the three-quarter power; birth spacing, the age
+  gates of maturity and lifespan, and the hazard's rate by the
+  one-quarter power; each factor is kept between a quarter and four
+  times; walking speed is untouched. A lineage at the reference has the
+  flat world's processes byte for byte. `readings::mass_law` reports each
+  line's mass and factors; Mesocosm takes `--mass-law`. Eight controls;
+  no pinned hash moved. Finding: the seed-9 played A1 world, run
+  unpiloted for 300 ticks, is extinct in every lineage with the law off
+  and on alike; the law changes who lasts longest, not the outcome.
+  Owed: a temperature term (S10.2); the aligned-diet meal partition and
+  bodiless lineages, which stay flat; the two-year bar rerun under the
+  law (1166); the reading on the sheet.
 - 2026-11-10: the fundaments wired into Mesocosm. `--hosting` sets the
   hosting rule and seeds a microbe to hold: `lineage:micro`, with the rot
   and enter genes, 24 of matter taken from the soil at the played region's

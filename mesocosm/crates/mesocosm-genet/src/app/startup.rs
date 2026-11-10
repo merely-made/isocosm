@@ -24,6 +24,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     let mut founding = founded.genesis.founding.clone()
         .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
+    if rules.mass_law { founding.mass_law = Some(cosmograph::ecology::MassLaw::default()); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     mesocosm_runtime::runtime::ecology::Setup::generated_classified(
@@ -329,6 +330,21 @@ mod tests {
         assert!(hosted.sim().is_surface(mesocosm_runtime::microbe::KEY));
         let line = cosmograph::directing::readings::held(&hosted.sim(), mesocosm_runtime::microbe::KEY).unwrap();
         assert_eq!(line.sites.total, mesocosm_runtime::microbe::SEED_AMOUNT);
+    }
+
+    #[test]
+    fn mass_law_sets_the_founding_rule_and_default_flags_leave_the_genesis_alone() {
+        let setup = |mass_law| a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None,
+            super::super::config::WorldRules { mass_law, ..Default::default() }).unwrap().founded.genesis;
+        let (off, on) = (setup(false), setup(true));
+        assert!(off.founding.as_ref().unwrap().mass_law.is_none());
+        assert_eq!(cosmograph::digest(&off), cosmograph::digest(&setup(false)));
+        let law = on.founding.as_ref().unwrap().mass_law.clone().expect("the flag sets the rule");
+        assert!(law.reference.is_some_and(|r| r > 0), "the reference is stated at founding");
+        assert_ne!(cosmograph::digest(&off), cosmograph::digest(&on));
+        assert!(!serde_json::to_string(&off).unwrap().contains("mass_law"));
+        assert!(super::super::config::WorldRules { mass_law: true, ..Default::default() }
+            .apply(&mut off.clone()).is_err(), "a world founded without it refuses the late flag");
     }
 
     #[test]

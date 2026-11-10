@@ -14,6 +14,7 @@ mod run;
 mod validated_run;
 mod independence;
 pub(crate) mod rates;
+pub mod mass_law;
 mod web;
 pub mod world_time;
 #[cfg(test)]
@@ -22,6 +23,7 @@ pub(crate) use web::Role;
 pub use web::Web;
 pub use independence::*;
 pub use rates::Rates;
+pub use mass_law::MassLaw;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};
 pub use validated_run::{AdmittedJointRun, ValidatedJointRun};

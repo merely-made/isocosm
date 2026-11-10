@@ -66,7 +66,9 @@ adds the lineages you come to know and their regard for you. `--exertion`
 makes chosen acts past a body's ease spend matter. `--hosting` seeds a microbe you can hold
 (it rots dead matter and enters bodies; 1 to 4 switch its rot, feed, leak and enter genes), `--turn N` lets a
 holder of the world turn its temperature up to N degrees (needs `--climate`; 9 and 0 lower and raise the
-shift), and `--learning` lets members learn (it needs a world that founds a lineage policy). D calls the
+shift), `--learning` lets members learn (it needs a world that founds a lineage policy), and `--mass-law`
+scales upkeep, meals, maturity, lifespan and birth spacing with a body's adult mass (the three-quarter and
+one-quarter powers, held to a quarter and four times the flat rate). D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,
 and at a loss Tab moves among the heirs.
 

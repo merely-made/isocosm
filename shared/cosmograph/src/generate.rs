@@ -58,6 +58,10 @@ pub struct Founding {
     /// ecology of sensing bodies. Absent, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dormancy: Option<crate::rules::Dormancy>,
+    /// Rates scaled by adult body mass (case 1148), in a bodied ecology.
+    /// Absent, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mass_law: Option<crate::ecology::MassLaw>,
 }
 
 impl Default for Founding {
@@ -82,6 +86,7 @@ impl Default for Founding {
             web: Default::default(),
             experimental_food_contract: false,
             dormancy: None,
+            mass_law: None,
         }
     }
 }
@@ -585,6 +590,7 @@ impl Founding {
         if let Some(played) = self.played {
             crate::directing::found::found(self, &mut genesis, played)?;
         }
+        crate::ecology::mass_law::apply(self, &mut genesis)?;
         crate::spatial::Templates::declare(&mut genesis)?;
         genesis.validate()?;
         Ok(genesis)
