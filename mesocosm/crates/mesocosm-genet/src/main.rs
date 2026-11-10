@@ -29,7 +29,7 @@
 use std::path::PathBuf;
 
 use mesocosm_genet::section::{BodyMode, CameraMode, TerrainStyle};
-use mesocosm_genet::{Host, HostConfig, played};
+use mesocosm_genet::{Host, HostConfig, WorldRules, played};
 
 fn main() {
     let mut config = HostConfig::default();
@@ -154,6 +154,13 @@ fn main() {
                 };
                 config.start = Some(cosmograph::directing::interim::Start { within, epochs, pick });
             },
+            "--rounds" => config.rounds = HostConfig::parse_rounds(&args.next().unwrap_or_default())
+                .unwrap_or_else(|| fail("--rounds wants capped, waiting or continuous")),
+            "--condition" => config.condition = true,
+            "--drift" => config.world_rules.drift = true,
+            "--draft" => config.world_rules.draft = true,
+            "--sheet" => config.world_rules.sheet = true,
+            "--rounds-rules" => config.world_rules = WorldRules::all(),
             "--mode" => config.mode = Some(match args.next().as_deref() {
                 Some("survival") => cosmograph::directing::readings::Mode::Survival,
                 Some("creative") => cosmograph::directing::readings::Mode::Creative,
@@ -281,6 +288,7 @@ fn main() {
     if config.start.is_some() && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
         fail("--start requires an ordinary new generated world; authored spread declares its own start");
     }
+    if let Some(why) = config.round_flags_refused(replay.is_some(), bench) { fail(why); }
     if config.mode.is_some() && (config.spread.is_some() || replay.is_some() || bench) {
         fail("--mode applies to ordinary new or watched worlds; authored spread declares its own mode");
     }
@@ -384,6 +392,13 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --start W:E     wait at most W epochs for habitability, then add E epochs
                   W:E:SITE also picks the start site, in the lineage's
                   range or one route step beyond it
+  --rounds MODE   capped (default), waiting for a call, or continuous: how a round runs past its span
+  --condition     each epoch's par is the matter the line left alone would hold; beat it to end the round
+  --drift         world rule: a lineage's template moves to its members' average at a boundary
+  --draft         world rule: the player drafts one pick a round within a budget
+  --sheet         world rule: show what a grown body would be beside each offer
+  --rounds-rules  --drift, --draft and --sheet together
+                  (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
@@ -428,6 +443,11 @@ in the hint panel: Up/Down select, Enter or click the panel sends the hint,
 at a checkpoint the keys narrow:
   Enter  carry on (keep the parent, take the first heir, close the boundary)
   T      take the body on offer
+  Tab    at a loss with several heirs, move among them; Enter takes the chosen one
+at any time in a round (a refusal shows in the vitals notice):
+  D      call the round (waiting or continuous, once the span has passed)
+  A      extend a capped round past its span, once
+  H      forfeit the round when no body of the line is left
 at the boundary the trait board comes up:
   Tab    move among the offers
   R      commit the selected offer

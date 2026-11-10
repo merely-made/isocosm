@@ -72,7 +72,7 @@ pub fn board_of(
         .iter()
         .enumerate()
         .map(|(index, offer)| {
-            let mut row = mesocosm_views::row_words(offer, index == selected, review.sheet.as_ref());
+            let mut row = mesocosm_views::row_words_of(offer, index == selected, review.sheet.as_ref(), review.budget);
             let mine = proposed.iter().filter(|p| p.offer == index);
             let authored: Vec<String> = mine.map(mesocosm_views::authored_words).collect();
             if !authored.is_empty() {

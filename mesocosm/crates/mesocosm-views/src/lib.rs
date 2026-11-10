@@ -46,10 +46,10 @@ pub use minimap::{
 };
 pub use review::{
     Board, BoardChild, BoardRow, authored_words, board_css, board_root, commit_words, evidence_words,
-    reading_words, row_words, sheet_words,
+    reading_words, row_words, row_words_of, sheet_words,
 };
 pub use succession::{Succession, SuccessionChild, succession_css, succession_root};
 pub use vitals::{
     Vitals, VitalsChild, compatibility_words, held_mg, trophic_word, notice_in, refusal_words,
-    vital_rows, vitals_css, vitals_of, vitals_of_with_terms, vitals_root,
+    par_words, round_words, vital_rows, vitals_css, vitals_of, vitals_of_with_terms, vitals_root,
 };

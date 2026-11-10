@@ -80,3 +80,29 @@ fn a_dead_or_absent_critter_states_its_state_alone() {
         assert_eq!(vital_rows(&dead), [("state", "dead".to_owned())]);
     }
 }
+
+#[test]
+fn the_round_states_each_mode_and_a_pending_call_or_extension() {
+    let at = |rounds, ending: Ending, passed| round_words(rounds, &ending, passed);
+    let plain = Ending::default();
+    assert_eq!(at(Rounds::Capped, plain, true), None, "capped and plain says nothing");
+    assert_eq!(at(Rounds::Capped, Ending { extend: true, ..plain }, false).as_deref(), Some("capped, extended"));
+    assert_eq!(at(Rounds::Waiting, plain, false).as_deref(), Some("waiting, span running"));
+    assert_eq!(at(Rounds::Waiting, plain, true).as_deref(), Some("waiting, span passed"));
+    assert_eq!(at(Rounds::Waiting, Ending { call: true, ..plain }, true).as_deref(), Some("waiting, span passed, call pending"));
+    assert_eq!(at(Rounds::Continuous, plain, false).as_deref(), Some("continuous"));
+    assert_eq!(at(Rounds::Continuous, Ending { call: true, ..plain }, false).as_deref(), Some("continuous, call pending"));
+    assert_eq!(par_words(&plain), None);
+    assert_eq!(par_words(&Ending { par: Some(1250), ..plain }).as_deref(), Some("1250 mg to beat"));
+}
+
+#[test]
+fn the_round_rows_follow_the_holdings_and_a_plain_panel_has_none() {
+    let (s, critter) = played();
+    let mut vitals = reading(&s, critter);
+    assert!(row(&vital_rows(&vitals), "round").is_none() && row(&vital_rows(&vitals), "par").is_none());
+    vitals.round = Some("waiting, span running".into());
+    vitals.par = Some("40 mg to beat".into());
+    let rows = vital_rows(&vitals);
+    assert_eq!((row(&rows, "round"), row(&rows, "par")), (Some("waiting, span running"), Some("40 mg to beat")));
+}

@@ -37,5 +37,5 @@ pub mod section;
 pub mod succession;
 pub mod vitals;
 
-pub use app::{Host, HostConfig};
+pub use app::{Host, HostConfig, WorldRules};
 pub use played::{PlayedReceipt, PlayedTrace};

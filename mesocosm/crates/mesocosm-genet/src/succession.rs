@@ -82,6 +82,21 @@ pub fn succession_of(sim: &Simulation, checkpoint: &Checkpoint) -> Succession {
     }
 }
 
+/// [`ordinary_of`], with a loss's several heirs listed in the loop's order and
+/// the one at `row` marked as the one Enter takes (lineage-rounds D4).
+pub fn ordinary_of_at(sim: &Simulation, reading: &mesocosm_runtime::continuation::LoopReading, row: usize)
+    -> Option<Succession> {
+    let mut panel = ordinary_of(sim, reading)?;
+    let Some(Checkpoint { occasion: Occasion::Loss(_), heirs, .. }) = &reading.checkpoint else { return Some(panel) };
+    if heirs.len() < 2 { return Some(panel); }
+    let at = if row < heirs.len() { row } else { 0 };
+    let list: Vec<String> = heirs.iter().enumerate()
+        .map(|(i, heir)| if i == at { format!("[{heir}]") } else { heir.to_string() }).collect();
+    panel.facts.push(("heirs".into(), list.join(", ")));
+    panel.take = Some(format!("continue as critter {}; [Tab] next heir", heirs[at]));
+    Some(panel)
+}
+
 /// Show the same offered question as the ordinary native answer door.
 pub fn ordinary_of(sim: &Simulation, reading: &mesocosm_runtime::continuation::LoopReading)
     -> Option<Succession> {
@@ -258,3 +273,36 @@ impl SuccessionChrome {
         );
     }
 }
+
+#[cfg(test)]
+mod heir_tests {
+    use super::*;
+    use mesocosm_runtime::{Loss, continuation::{LoopCut, LoopPhase, LoopReading}};
+
+    fn losing(heirs: Vec<Id>) -> LoopReading {
+        LoopReading {
+            cut: LoopCut { native: String::new(), game: String::new(), question: None },
+            settings: None, phase: LoopPhase::Held, offers: Vec::new(), happenings: Vec::new(),
+            lineages: Vec::new(), personal: None, world_ended_at: None, ending: Default::default(), sheet: None,
+            checkpoint: Some(Checkpoint { tick: 9, occasion: Occasion::Loss(Loss { critter: 4, next: heirs.first().copied() }), heirs }),
+        }
+    }
+
+    #[test]
+    fn several_heirs_are_listed_in_order_and_the_chosen_one_is_marked() {
+        let sim = cosmograph::Session::new(mesocosm_runtime::Founded::generated(3, 60).unwrap().genesis,
+            cosmograph::Execution::Individuals).unwrap().sim;
+        let reading = losing(vec![8, 3, 12]);
+        let plain = ordinary_of(&sim, &reading).unwrap();
+        assert!(plain.facts.iter().all(|(key, _)| key != "heirs"), "the first-heir panel is unchanged");
+        for (row, shown, taken) in [(0, "[8], 3, 12", 8), (1, "8, [3], 12", 3), (2, "8, 3, [12]", 12), (9, "[8], 3, 12", 8)] {
+            let panel = ordinary_of_at(&sim, &reading, row).unwrap();
+            assert!(panel.facts.contains(&("heirs".into(), shown.into())), "{row}: {:?}", panel.facts);
+            assert!(panel.take.unwrap().starts_with(&format!("continue as critter {taken};")));
+        }
+        // One heir is the old panel.
+        let one = losing(vec![8]);
+        assert_eq!(ordinary_of_at(&sim, &one, 0), ordinary_of(&sim, &one));
+    }
+}
+

@@ -8,6 +8,8 @@
 
 use std::path::PathBuf;
 
+use mesocosm_runtime::continuation::Rounds;
+
 use crate::section::{self, CameraMode};
 
 #[derive(Clone, Debug)]
@@ -92,9 +94,52 @@ pub struct HostConfig {
     /// Optional native ecology profile. New ordinary worlds default to A1;
     /// an existing authored witness retains its historical Stock declaration.
     pub ecology_rates: Option<cosmograph::ecology::Rates>,
+    /// How a round runs past its span (lineage-rounds D7); capped by default.
+    pub rounds: Rounds,
+    /// Each epoch's par is what the played line left alone would hold (D8).
+    pub condition: bool,
+    /// The world rules for lineage rounds, all off by default (D2, D9, D12).
+    pub world_rules: WorldRules,
+}
+
+/// The directing rules a new generated world may switch on (lineage-rounds
+/// D9, D11, D12; case 1215).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct WorldRules { pub drift: bool, pub draft: bool, pub sheet: bool }
+
+impl WorldRules {
+    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true } }
+
+    /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
+    pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) {
+        if *self == Self::default() { return; }
+        let directing = genesis.rules.directing.get_or_insert_with(Default::default);
+        if self.drift { directing.drift = true; }
+        if self.draft { directing.draft = Some(cosmograph::rules::Draft::default()); }
+        if self.sheet { directing.sheet = true; }
+    }
 }
 
 impl HostConfig {
+    /// Why the round flags cannot apply to this startup, if they cannot: like
+    /// `--start`, they are for an ordinary new generated world.
+    pub fn round_flags_refused(&self, replay: bool, bench: bool) -> Option<&'static str> {
+        let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::default();
+        (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
+            || self.ecology_witness.is_some() || replay || bench)).then_some(
+            "--rounds, --condition, --drift, --draft and --sheet require an ordinary new generated world; \
+a resumed save, authored spread, candidate, witness, replay or bench declares its own")
+    }
+
+    pub fn parse_rounds(value: &str) -> Option<Rounds> {
+        match value {
+            "capped" => Some(Rounds::Capped),
+            "waiting" => Some(Rounds::Waiting),
+            "continuous" => Some(Rounds::Continuous),
+            _ => None,
+        }
+    }
+
     pub fn ordinary_ecology_rates(&self) -> cosmograph::ecology::Rates {
         self.ecology_rates.unwrap_or_else(|| {
             if self.ecology_witness.is_some() {
@@ -168,6 +213,9 @@ impl Default for HostConfig {
             ecology_witness: None,
             ecology_candidate: None,
             ecology_rates: None,
+            rounds: Rounds::Capped,
+            condition: false,
+            world_rules: WorldRules::default(),
         }
     }
 }
@@ -212,5 +260,49 @@ mod tests {
             Some(cosmograph::ecology::Rates::A1)
         );
         assert_eq!(HostConfig::parse_ecology_rates("A1"), None);
+    }
+
+    #[test]
+    fn round_flags_default_off_and_parse_their_words() {
+        let config = HostConfig::default();
+        assert_eq!((config.rounds, config.condition, config.world_rules),
+            (Rounds::Capped, false, WorldRules::default()));
+        assert_eq!(HostConfig::parse_rounds("waiting"), Some(Rounds::Waiting));
+        assert_eq!(HostConfig::parse_rounds("continuous"), Some(Rounds::Continuous));
+        assert_eq!(HostConfig::parse_rounds("capped"), Some(Rounds::Capped));
+        assert_eq!(HostConfig::parse_rounds("Waiting"), None);
+        assert_eq!(WorldRules::all(), WorldRules { drift: true, draft: true, sheet: true });
+    }
+
+    #[test]
+    fn world_rules_set_only_what_is_asked() {
+        let mut genesis = mesocosm_runtime::Founded::generated(9, 256).unwrap().genesis;
+        let before = genesis.rules.directing().clone();
+        WorldRules::default().apply(&mut genesis);
+        assert_eq!(genesis.rules.directing(), before);
+        WorldRules { drift: true, ..Default::default() }.apply(&mut genesis);
+        let d = genesis.rules.directing();
+        assert!(d.drift && d.draft.is_none() && !d.sheet);
+        WorldRules::all().apply(&mut genesis);
+        let d = genesis.rules.directing();
+        assert!(d.drift && d.sheet);
+        assert_eq!(d.draft, Some(cosmograph::rules::Draft::default()));
+    }
+
+    #[test]
+    fn round_flags_are_refused_where_start_is() {
+        let mut config = HostConfig::default();
+        assert_eq!(config.round_flags_refused(true, true), None, "nothing set, nothing refused");
+        config.rounds = Rounds::Waiting;
+        assert_eq!(config.round_flags_refused(false, false), None);
+        assert!(config.round_flags_refused(true, false).is_some());
+        assert!(config.round_flags_refused(false, true).is_some());
+        config.watch = Some("save.json".into());
+        assert!(config.round_flags_refused(false, false).is_some());
+        let mut config = HostConfig { condition: true, ..Default::default() };
+        config.spread = Some("spread.json".into());
+        assert!(config.round_flags_refused(false, false).is_some());
+        let config = HostConfig { world_rules: WorldRules::all(), ecology_witness: Some("w.json".into()), ..Default::default() };
+        assert!(config.round_flags_refused(false, false).is_some());
     }
 }

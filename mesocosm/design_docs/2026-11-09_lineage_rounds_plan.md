@@ -430,6 +430,18 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: the host is wired (`mesocosm-genet`), checked by build, tests
+  and the help text only: the window was not run. Flags: `--rounds
+  capped|waiting|continuous`, `--condition`, `--drift`, `--draft`, `--sheet`
+  and `--rounds-rules` for all three rules, refused where `--start` is. Keys:
+  D calls the round, A extends a capped one, H forfeits; a refusal shows as a
+  notice. At a loss Tab moves among the heirs and Enter takes the chosen one,
+  where only the first was offered. The vitals panel shows the round's state
+  and the par; the board row shows an offer's cost against the budget beside
+  the sheet's difference. `Runtime::set_rounds` sets the loop's settings,
+  which a configured run otherwise refuses. A waiting span counts from
+  startup. Owed for LR4h: the played check itself, and the keys' path through
+  the window.
 - 2026-11-09: LR4.1 built, behind the world rule `directing.sheet` (off by
   default). `lineage/sheet.rs`: `sheet::of` develops the full recipe's body,
   builds an adult of the lineage from it as a birth does but unvaried, and

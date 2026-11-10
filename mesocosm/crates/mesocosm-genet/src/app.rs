@@ -29,7 +29,7 @@ mod reading;
 mod scene_source;
 mod startup;
 
-pub use config::HostConfig;
+pub use config::{HostConfig, WorldRules};
 
 /// Steps the dev "step N" key runs at once (DT1).
 pub const DEV_STEP_N: u64 = 10;
@@ -75,6 +75,8 @@ pub struct Host {
     inspection: inspection::Inspection,
     pointer: pointer::Pointer,
     continuation: continuation::Pane,
+    /// The newest refused round key and the tick it stops showing at.
+    round_notice: Option<(String, u64)>,
     /// The scenario driving this run, when `--scenario` gave it one (DT4).
     scenario: Option<taproot::Scenario>,
     /// Semantic events since the driver last drained them.
@@ -167,6 +169,7 @@ impl Host {
             inspection: inspection::Inspection::default(),
             pointer: pointer::Pointer::default(),
             continuation: continuation::Pane::default(),
+            round_notice: None,
             scenario,
             events: Vec::new(),
             pump: None,
@@ -380,6 +383,8 @@ impl Host {
         }
         let elapsed_us = self.dev_paced_elapsed(elapsed_us);
         self.steps += self.runtime.advance(elapsed_us);
+        // An answered question leaves no stale cursor for the next one.
+        if self.runtime.review().is_none() && self.runtime.checkpoint().is_none() { self.board_row = 0; }
     }
 }
 

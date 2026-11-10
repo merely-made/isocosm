@@ -151,10 +151,11 @@ impl State {
             &sim,
             r.critter(),
             30,
-            r.fault().map(str::to_owned),
+            r.fault().map(str::to_owned).or_else(|| host.round_notice(sim.state().tick)),
             Some(&r.trend()),
             r.terms(),
         );
+        (self.vitals.round, self.vitals.par) = host.round_state(sim);
         self.board = r
             .review()
             .map(|review| crate::review::board_of(review, r.proposed(), &r.trend(), host.board_row))
@@ -166,7 +167,7 @@ impl State {
                 r.checkpoint()
                     .filter(|_| r.review().is_none())
                     .and_then(|_| r.loop_reading().ok())
-                    .and_then(|reading| crate::succession::ordinary_of(&sim, &reading))
+                    .and_then(|reading| crate::succession::ordinary_of_at(&sim, &reading, host.board_row))
             });
         self.question_open = question.is_some();
         self.question = question.unwrap_or_else(empty_question);

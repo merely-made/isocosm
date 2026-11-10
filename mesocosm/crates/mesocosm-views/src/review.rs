@@ -168,6 +168,16 @@ pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
 /// A row in words; `had` is the review's own sheet, which an offer's sheet
 /// is set beside for its preview (case 1215).
 pub fn row_words(offer: &Offer, selected: bool, had: Option<&Sheet>) -> BoardRow {
+    row_words_of(offer, selected, had, None)
+}
+
+/// A row in words, with a draft offer's cost set against the review's
+/// `budget` in its price (cases 1203; lineage-rounds D11).
+pub fn row_words_of(offer: &Offer, selected: bool, had: Option<&Sheet>, budget: Option<u128>) -> BoardRow {
+    let changes = match offer.commands.len() {
+        0 => "nothing to change".to_string(),
+        n => format!("{n} change{}", if n == 1 { "" } else { "s" }),
+    };
     BoardRow {
         name: offer_name(offer),
         source: "the boundary".into(),
@@ -175,9 +185,10 @@ pub fn row_words(offer: &Offer, selected: bool, had: Option<&Sheet>) -> BoardRow
             "{} mg held by {} over {} ticks",
             offer.score.held, offer.score.members, offer.score.ticks
         ),
-        price: match offer.commands.len() {
-            0 => "nothing to change".into(),
-            n => format!("{n} change{}", if n == 1 { "" } else { "s" }),
+        price: match (offer.cost, budget) {
+            (Some(cost), Some(budget)) => format!("{changes}, costs {cost} of {budget} mg"),
+            (Some(cost), None) => format!("{changes}, costs {cost} mg"),
+            _ => changes,
         },
         preview: had.zip(offer.sheet.as_ref()).map_or_else(String::new, |(a, b)| sheet_words(a, b)),
         reason: offer.why_not.clone(),
@@ -389,5 +400,31 @@ mod tests {
         c.functions.remove("function:store");
         c.functions.insert("function:fix".into(), 3);
         assert_eq!(sheet_words(&had, &c), "+fix 3, -store 6");
+    }
+
+    fn offer(cost: Option<u128>, with: Option<Sheet>) -> Offer {
+        Offer {
+            name: "candidate:wider-gut".into(),
+            score: cosmograph::lineage::boundary::Score { held: 900, members: 4, ticks: 60 },
+            commands: vec![cosmograph::history::Command::Leave { participant: 0, critter: 0 }],
+            why_not: None,
+            cost,
+            sheet: with,
+        }
+    }
+
+    #[test]
+    fn a_draft_row_shows_its_cost_against_the_budget_and_the_sheet_diff() {
+        let mut more = sheet();
+        more.mass += 120;
+        let row = row_words_of(&offer(Some(120), Some(more.clone())), true, Some(&sheet()), Some(500));
+        assert_eq!(row.price, "1 change, costs 120 of 500 mg");
+        assert_eq!(row.preview, "+120 mg");
+        assert!(journal_row(&row).founding.contains("1 change, costs 120 of 500 mg / +120 mg"), "{:?}", journal_row(&row).founding);
+        // No budget, no cost, or no sheet: the row reads as it did.
+        assert_eq!(row_words_of(&offer(Some(120), None), false, None, None).price, "1 change, costs 120 mg");
+        let plain = row_words(&offer(None, None), false, None);
+        assert_eq!((plain.price.as_str(), plain.preview.as_str()), ("1 change", ""));
+        assert_eq!(plain, row_words_of(&offer(None, None), false, None, Some(500)));
     }
 }

@@ -165,6 +165,21 @@ impl Runtime {
 
     pub fn loop_settings(&self) -> LoopSettings { self.driver.product().loop_settings() }
 
+    /// Sets the round mode and condition on a new run, before play: the
+    /// saved loop keeps them from here (lineage-rounds D7, D8). A waiting
+    /// epoch counts its span from now.
+    pub fn set_rounds(&mut self, rounds: continuation::Rounds, condition: bool) {
+        self.with_product(|product, world| {
+            product.sync_loop(world);
+            if let Some(saved) = &mut product.spatial.continuation {
+                saved.settings.rounds = rounds;
+                saved.settings.condition = condition;
+            }
+            if rounds == continuation::Rounds::Waiting { product.lp.ending.since = session(world).sim.state().tick; }
+            product.sync_loop(world);
+        });
+    }
+
     pub fn loop_reading(&self) -> Result<LoopReading, String> {
         let _span = crate::profile::Span::new("loop_reading.total");
         self.driver.product().question_reading(self.driver.world(), self.driver.queued().cloned().collect())

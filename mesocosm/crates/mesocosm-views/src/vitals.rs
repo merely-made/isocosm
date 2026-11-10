@@ -14,7 +14,8 @@ use cosmograph::trophic::{self, Trophic};
 use cosmograph::mosaic::ports::feeding;
 use cosmograph::schema::{Entity, Id};
 use cosmograph::simulation::Simulation;
-use mesocosm_runtime::{Refusal, TermTable, Trend};
+use cosmograph::directing::interim::Ending;
+use mesocosm_runtime::{Refusal, TermTable, Trend, continuation::Rounds};
 
 mod graft;
 #[cfg(test)]
@@ -40,6 +41,10 @@ pub struct Vitals {
     pub trophic: Option<String>,
     pub feeding: Option<String>,
     pub graft: Option<String>,
+    /// How the round runs, when it is not capped and plain (lineage-rounds D7).
+    pub round: Option<String>,
+    /// The condition's par, in mg to beat (D8).
+    pub par: Option<String>,
 }
 
 impl Vitals {
@@ -96,7 +101,26 @@ pub fn vitals_of_with_terms(
             .map(|k| terms.form(trophic_word(k), "indefinite").to_owned()),
         feeding: e.map(|e| terms.form(crate::dev::part::feeding_word(feeding(e)), "verb").to_owned()),
         graft: critter.filter(|_| e.is_some()).and_then(|id| allowance_words(sim, id)),
+        round: None,
+        par: None,
     }
+}
+
+/// The round's state in short words: nothing while it is capped and plain.
+/// `passed` is whether the span has run, which only a waiting round states
+/// (lineage-rounds D7).
+pub fn round_words(rounds: Rounds, ending: &Ending, passed: bool) -> Option<String> {
+    let call = if ending.call { ", call pending" } else { "" };
+    match rounds {
+        Rounds::Capped => ending.extend.then(|| "capped, extended".into()),
+        Rounds::Waiting => Some(format!("waiting, span {}{call}", if passed { "passed" } else { "running" })),
+        Rounds::Continuous => Some(format!("continuous{call}")),
+    }
+}
+
+/// The condition's par, as the matter to beat (lineage-rounds D8).
+pub fn par_words(ending: &Ending) -> Option<String> {
+    ending.par.map(|par| format!("{par} mg to beat"))
 }
 
 /// What the world's graft rule allows this body beyond what it keeps.
@@ -158,6 +182,8 @@ pub fn vital_rows(vitals: &Vitals) -> Vec<(&'static str, String)> {
         ("body", &vitals.trophic),
         ("feeds", &vitals.feeding),
         ("graft", &vitals.graft),
+        ("round", &vitals.round),
+        ("par", &vitals.par),
         ("replacement", &vitals.replacement),
     ] {
         if let Some(value) = value {

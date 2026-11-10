@@ -19,7 +19,7 @@
 //! played one. Those eight move host state. `X` end the epoch, `F` force a
 //! birth, `K` kill and `G` place matter are the keymap's dev intents.
 
-use mesocosm_runtime::{Named, Press};
+use mesocosm_runtime::{Named, Press, continuation::LoopAnswer};
 use winit::keyboard::{Key, NamedKey};
 
 /// The key that cycles the overview, over the shoulder and first person.
@@ -53,6 +53,19 @@ pub fn lower(key: &Key) -> Option<Press> {
 
 /// Whether a key moves the trait board's cursor, which is host state.
 pub fn board_cursor(key: &Key) -> bool { matches!(key, Key::Named(NamedKey::Tab)) }
+
+/// The loop answer a key gives about the round (lineage-rounds D7): D calls
+/// it, A extends it, H forfeits it. Host keys, free in every phase: whether
+/// one is asked is the world's to say.
+pub fn round_key(key: &Key) -> Option<LoopAnswer> {
+    let Key::Character(c) = key else { return None };
+    Some(match c.to_lowercase().as_str() {
+        "d" => LoopAnswer::Call,
+        "a" => LoopAnswer::Extend,
+        "h" => LoopAnswer::Forfeit,
+        _ => return None,
+    })
+}
 
 /// A dev-only action a key maps to.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -109,6 +122,18 @@ mod tests {
         assert_eq!(lower(&Key::Character("E".into())), Some(Press::Char('e')));
         assert_eq!(lower(&Key::Named(NamedKey::Space)), Some(Press::Named(Named::Space)));
         assert_eq!(lower(&Key::Named(NamedKey::F1)), None);
+    }
+
+    #[test]
+    fn round_keys_answer_and_collide_with_nothing() {
+        for (key, answer) in [("d", LoopAnswer::Call), ("A", LoopAnswer::Extend), ("h", LoopAnswer::Forfeit)] {
+            assert_eq!(round_key(&Key::Character(key.into())), Some(answer), "{key}");
+            assert_eq!(dev_key(&Key::Character(key.into())), None, "{key}");
+        }
+        for key in ["e", "q", "s", "t", "r", "w", "n", "z", "x"] {
+            assert_eq!(round_key(&Key::Character(key.into())), None, "{key}");
+        }
+        assert_eq!(round_key(&Key::Named(NamedKey::Enter)), None);
     }
 
     #[test]

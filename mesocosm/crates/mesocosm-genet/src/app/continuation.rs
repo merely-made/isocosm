@@ -11,6 +11,9 @@ use mesocosm_runtime::continuation::{self, LoopAction, LoopAnswer, LoopInput,
 use mesocosm_views::{Succession, SuccessionChild};
 use winit::keyboard::{Key, NamedKey};
 
+/// How many ticks a refused round key stays in the vitals notice.
+const ROUND_NOTICE_TICKS: u64 = 50;
+
 #[derive(Default)]
 pub(super) struct Pane {
     reading: Option<LoopReading>, presented: Option<LoopReading>,
@@ -170,7 +173,47 @@ impl Host {
         }
     }
 
+    /// The round's state words and the condition's par, from the loop's own
+    /// settings and ending: nothing read from history (lineage-rounds D7, D8).
+    pub(super) fn round_state(&self, sim: &cosmograph::simulation::Simulation) -> (Option<String>, Option<String>) {
+        let (ending, rounds) = (self.runtime.interim().ending, self.runtime.loop_settings().rounds);
+        let passed = sim.state().tick.saturating_sub(ending.since) >= sim.genesis().rules.epoch_ticks;
+        (mesocosm_views::round_words(rounds, &ending, passed), mesocosm_views::par_words(&ending))
+    }
+
+    /// The newest refused round key, while it still shows.
+    pub(super) fn round_notice(&self, tick: u64) -> Option<String> {
+        self.round_notice.as_ref().filter(|(_, until)| tick < *until).map(|(words, _)| words.clone())
+    }
+
+    /// Sends a round answer (call, extend, forfeit) on the loop's current cut;
+    /// a refusal is shown, as the other refused answers are.
+    pub(super) fn answer_round(&mut self, answer: LoopAnswer) {
+        let result = self.runtime.loop_reading().and_then(|current| {
+            let input = LoopInput { kind: continuation::KIND.into(), version: continuation::VERSION,
+                participant: ParticipantHandle(self.runtime.interim().participant), tick: Tick(self.runtime.tick()),
+                expected: current.cut, action: LoopAction::Answer(answer) };
+            self.runtime.submit_loop_input(&input).map_err(|why| match why {
+                mesocosm_runtime::Refusal::Sim(why) => why,
+                other => mesocosm_views::refusal_words(&other),
+            })
+        });
+        match result {
+            Ok(note) => { self.events.push(note); self.round_notice = None; self.last = None; },
+            Err(why) => {
+                eprintln!("round: {why}");
+                self.events.push(format!("refused: {why}"));
+                self.round_notice = Some((why, self.runtime.tick() + ROUND_NOTICE_TICKS));
+            },
+        }
+        self.refresh_continuation();
+    }
+
     pub(super) fn try_continuation_key(&mut self, key: &Key) -> bool {
+        if let Some(answer) = crate::input::round_key(key) {
+            self.answer_round(answer);
+            return true;
+        }
         if !self.continuation_open() { return false; }
         match key {
             Key::Named(NamedKey::ArrowUp | NamedKey::ArrowDown | NamedKey::Tab) => {

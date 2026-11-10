@@ -4,9 +4,19 @@
 //! Ordinary explicit start/view choices over existing native founding law.
 
 use super::{HostConfig, Runtime};
+use mesocosm_runtime::continuation::Rounds;
 
-fn a1_setup(mut founded: mesocosm_runtime::Founded,
+#[cfg(test)]
+fn a1_setup(founded: mesocosm_runtime::Founded,
     affinity: Option<cosmograph::rules::Affinity>)
+    -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+    a1_setup_with(founded, affinity, super::config::WorldRules::default())
+}
+
+/// `a1_setup` with the chosen world rules set in the regenerated genesis,
+/// before the setup classifies it (lineage-rounds D2, D9, D12).
+fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
+    affinity: Option<cosmograph::rules::Affinity>, rules: super::config::WorldRules)
     -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
     if affinity.is_some() {
         return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 cannot be combined with the authored pack affinity; remove that affinity before selecting A1".into()));
@@ -15,6 +25,7 @@ fn a1_setup(mut founded: mesocosm_runtime::Founded,
         .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+    rules.apply(&mut founded.genesis);
     mesocosm_runtime::runtime::ecology::Setup::generated_classified(
         founded, cosmograph::Execution::Individuals)
 }
@@ -80,6 +91,7 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<cosmograph::rules:
         founded.genesis.rules.epoch_ticks = config.bench_epoch;
         if let Some(start) = config.start { founded.start = start; }
         if let Some(mode) = config.mode { founded.mode = mode; }
+        config.world_rules.apply(&mut founded.genesis);
         return Runtime::bench(founded, config.ticks_per_second);
     }
     if let Some(path) = &config.ecology_candidate {
@@ -100,7 +112,7 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<cosmograph::rules:
                 .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
             if let Some(start) = config.start { founded.start = start; }
             if let Some(mode) = config.mode { founded.mode = mode; }
-            a1_setup(founded, affinity.clone())
+            a1_setup_with(founded, affinity.clone(), config.world_rules)
         }).map_err(|error| match error {
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
@@ -170,7 +182,7 @@ fn play(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> R
             bodies.proportions = config.body_proportions.unwrap_or(
                 !config.body_roster && config.body_founding.is_none());
             bodies.limb_scale = if bodies.proportions { [1,2] } else { [0,0] };
-            let mut founded = a1_setup(founded, affinity.clone())?.founded;
+            let mut founded = a1_setup_with(founded, affinity.clone(), config.world_rules)?.founded;
             founded.genesis.rules.epoch_ticks = config.play_epoch;
             for site in founded.genesis.sites.values_mut() {
                 if let Some(soil) = site.accounts.get_mut("world:soil") { *soil = *soil * config.play_soil / 100; }
@@ -283,6 +295,20 @@ mod tests {
         assert_eq!(setup.specification.horizon, 60);
         assert_eq!(setup.founded.genesis.rules.ecology_witness.as_ref(), Some(&setup.specification));
         assert_eq!(setup.execution, cosmograph::Execution::Individuals);
+    }
+
+    #[test]
+    fn world_rules_reach_the_founded_genesis_and_default_leaves_it_alone() {
+        let found = |world_rules| generated(&HostConfig { bench_world: true, seed: 9, population: 256, world_rules,
+            ..Default::default() }, None).unwrap().founded().genesis.rules.directing();
+        let plain = found(super::super::config::WorldRules::default());
+        assert!(!plain.drift && plain.draft.is_none() && !plain.sheet);
+        let all = found(super::super::config::WorldRules::all());
+        assert!(all.drift && all.sheet);
+        assert_eq!(all.draft, Some(cosmograph::rules::Draft::default()));
+        let setup = a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None,
+            super::super::config::WorldRules::all()).unwrap();
+        assert!(setup.founded.genesis.rules.directing().sheet, "set after the A1 regeneration");
     }
 
     #[test]
@@ -409,7 +435,8 @@ pub(super) fn configured(config: &HostConfig, authored: &mesocosm_runtime::Autho
     if config.spread.is_some() && (config.start.is_some() || config.mode.is_some() || config.unchosen_seed) {
         return Err("authored spread supplies its own seed, start and viewing mode".into());
     }
-    match (&config.watch, &config.spread) {
+    if let Some(why) = config.round_flags_refused(false, false) { return Err(why.into()); }
+    let mut runtime = match (&config.watch, &config.spread) {
             (Some(_), Some(_)) => {
                 Err("authored spread founding cannot replace a resumed run".into())
             },
@@ -424,6 +451,7 @@ pub(super) fn configured(config: &HostConfig, authored: &mesocosm_runtime::Autho
                 crate::played::resume_with_mode(path, config.ticks_per_second, config.mode)
             },
             (None, None) => generated(config, authored.affinity().cloned()),
-        }
-
+        }?;
+    if config.rounds != Rounds::Capped || config.condition { runtime.set_rounds(config.rounds, config.condition); }
+    Ok(runtime)
 }

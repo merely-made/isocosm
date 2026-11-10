@@ -17,6 +17,7 @@
 //! | `follow-nearest` | camera onto the first other living body in the played site |
 //! | `demo <steps>` | N rounds of the demo script, off the clock |
 
+use mesocosm_runtime::{Checkpoint, Occasion};
 use winit::keyboard::{Key, NamedKey};
 
 use super::Host;
@@ -65,8 +66,13 @@ impl Host {
     /// The trait board's cursor while a review stands: host state, sent nowhere.
     fn move_board_cursor(&mut self, key: &Key) -> bool {
         if !input::board_cursor(key) { return false; }
-        let Some(review) = self.runtime.review() else { return false };
-        self.board_row = (self.board_row + 1) % review.offers.len().max(1);
+        let rows = match (self.runtime.review(), self.runtime.checkpoint()) {
+            (Some(review), _) => review.offers.len(),
+            // At a loss the cursor moves among its heirs, in the list's order (D4).
+            (None, Some(Checkpoint { occasion: Occasion::Loss(_), heirs, .. })) if heirs.len() > 1 => heirs.len(),
+            _ => return false,
+        };
+        self.board_row = (self.board_row + 1) % rows.max(1);
         true
     }
 
@@ -174,8 +180,9 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         "right" => Some(Key::Named(NamedKey::ArrowRight)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
+        // The round: D call, A extend, H forfeit.
         "e" | "q" | "s" | "t" | "r" | "z" | "v" | "y" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
-        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" => Some(Key::Character(name.into())),
+        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" | "a" | "d" | "h" => Some(Key::Character(name.into())),
         _ => None,
     }
 }

@@ -52,7 +52,8 @@ impl Mesocosm {
         }
         if let Some(checkpoint) = &self.checkpoint {
             let reading = self.question_reading(world, Vec::new()).ok()?;
-            return offered_answer(checkpoint, &reading, critter, press);
+            return offered_answer(checkpoint, &reading, critter, press)
+                .map(|intent| heir_at(intent, checkpoint, context.row));
         }
         let (critter, site) = (critter?, self.site(world)?);
         match press {
@@ -117,6 +118,17 @@ fn answer(checkpoint: &Checkpoint, critter: Option<Id>, press: &Press) -> Option
     Some(MesocosmIntent::Checkpoint(CheckpointAnswer { entity: EntityHandle(entity), kind }))
 }
 
+/// A loss's answer takes the heir the cursor is on, in the list's order
+/// (lineage-rounds D4); the first when the cursor is past the list.
+fn heir_at(intent: MesocosmIntent, checkpoint: &Checkpoint, row: usize) -> MesocosmIntent {
+    match (intent, checkpoint.heirs.get(row)) {
+        (MesocosmIntent::Checkpoint(CheckpointAnswer { entity, kind: CheckpointAnswerKind::Death(_) }), Some(heir)) =>
+            MesocosmIntent::Checkpoint(CheckpointAnswer { entity,
+                kind: CheckpointAnswerKind::Death(DeathAnswer { next: EntityHandle(*heir) }) }),
+        (intent, _) => intent,
+    }
+}
+
 /// Apply the same disclosure projection used by native checkpoint admission.
 fn offered_answer(saved: &Checkpoint, reading: &crate::continuation::LoopReading,
     critter: Option<Id>, press: &Press) -> Option<MesocosmIntent> {
@@ -164,5 +176,24 @@ mod offered_tests {
         assert!(matches!(offered_answer(&checkpoint, &reading, Some(6), &Press::Char('t')),
             Some(MesocosmIntent::Checkpoint(CheckpointAnswer {
                 kind: CheckpointAnswerKind::Birth(BirthAnswer::TakeOffspring), .. }))));
+    }
+
+    #[test]
+    fn a_loss_takes_the_heir_the_cursor_is_on_and_the_first_past_the_list() {
+        use crate::succession::Loss;
+        let checkpoint = Checkpoint { tick: 9, occasion: Occasion::Loss(Loss { critter: 4, next: Some(5) }),
+            heirs: vec![5, 7, 9] };
+        let reading = LoopReading {
+            cut: LoopCut { native: String::new(), game: String::new(), question: None },
+            settings: None, phase: LoopPhase::Held, checkpoint: Some(checkpoint.clone()), offers: Vec::new(),
+            happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None,
+            ending: Default::default(), sheet: None,
+        };
+        let next = |row| match heir_at(offered_answer(&checkpoint, &reading, Some(4), &Press::Named(Named::Enter))
+            .unwrap(), &checkpoint, row) {
+            MesocosmIntent::Checkpoint(CheckpointAnswer { kind: CheckpointAnswerKind::Death(death), .. }) => death.next.0,
+            other => panic!("{other:?}"),
+        };
+        assert_eq!((next(0), next(1), next(2), next(3)), (5, 7, 9, 5));
     }
 }
