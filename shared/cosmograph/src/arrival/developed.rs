@@ -26,6 +26,7 @@ impl Simulation {
         let soma = development::soma(rules, &d.recipe, seed);
         let mut next = held.clone();
         next.embody(development::develop(rules, d, &soma)?);
+        next.absent = development::recorded(rules, &soma);
         next.soma = soma.segments;
         next.systems = d.systems.clone();
         crate::systems::inherit(&mut next);

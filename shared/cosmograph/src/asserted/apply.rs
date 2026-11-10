@@ -242,6 +242,7 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         tenets: Default::default(),
         disposition: [0; 5],
         soma: vec![],
+        absent: vec![],
         systems: Default::default(),
         varied: vec![],
         patch: None,

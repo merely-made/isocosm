@@ -14,7 +14,7 @@ fn reading(label: &str) -> LoopReading {
         checkpoint: None,
         offers: vec![],
         happenings: vec![],
-        lineages: vec![],
+        lineages: vec![], starts: vec![],
         personal: None,
         world_ended_at: None,
         ending: Default::default(),

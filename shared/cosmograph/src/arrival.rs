@@ -85,6 +85,7 @@ impl Simulation {
             tenets: Default::default(),
             disposition: a.disposition,
             soma: vec![],
+            absent: vec![],
             systems: Default::default(),
             varied: vec![],
             patch: None,

@@ -185,3 +185,58 @@ fn the_sheet_rule_is_off_by_default_and_a_sheeted_review_survives_a_restore() {
     assert!(wire.contains("\"sheet\""));
     assert_eq!(serde_json::from_str::<mesocosm_runtime::continuation::LoopReading>(&wire).unwrap(), carried);
 }
+
+/// An outsider of the played line arrives holding matter: a dev grant that
+/// makes the live world hold more than its unsteered copy, which the loop's
+/// own input door has no way to do in this static fixture. The saved native
+/// cut is resealed to it, as a dev edit between rounds must be.
+fn immigrate(d: &mut Door, amount: u64) {
+    use cosmograph::{Command, arrival::Arrival, schema::Method};
+    let played = d.session.sim.plays(d.participant).unwrap();
+    let e = d.session.sim.state().population.get(played).unwrap();
+    let (lineage, site) = (e.lineage.clone(), e.place);
+    let account = d.session.sim.genesis().rules.accounts.iter().find(|(_, k)| matches!(k,
+        cosmograph::rules::AccountKind::Matter { lineage: l, reserve: false, provision: false } if *l == lineage))
+        .map(|(k, _)| k.clone()).unwrap();
+    d.session.command(Command::Arrive(Arrival { lineage, site, method: Method::Reactive,
+        accounts: [(account, amount)].into(), traits: Default::default(), skills: Default::default(),
+        disposition: [0; 5], character: None })).unwrap();
+    let saved = d.game.continuation.as_mut().unwrap();
+    saved.native = cosmograph::digest(&(&d.session.branch, d.session.sim.genesis(), &d.session.entries,
+        d.session.sim.state().tick));
+    saved.native_entries = d.session.entries.len() as u64;
+    saved.native_tick = d.session.sim.state().tick;
+}
+
+/// A round ended by its condition, end to end (case 1212; lineage-rounds D8).
+/// The par is the real one, grown by the forward copy; it is beaten, not
+/// planted, by a dev grant to the live lineage after the par is set (lever
+/// (b): a dev `Arrive` of matter). The round waits with no call, so only the
+/// condition can end it.
+#[test]
+fn a_met_condition_ends_the_round_and_holds_the_epoch_for_its_review() {
+    let mut d = door();
+    d.configure(Rounds::Waiting, true);
+    d.step();
+    let par = d.saved().ending.par.expect("the first step sets the par");
+    let (_, held) = run(&mut d, 2, |_| false);
+    assert!(!held && d.saved().ending.par == Some(par), "left to itself the lineage never beats its copy");
+    let line = d.session.sim.state().population.get(d.session.sim.plays(d.participant).unwrap()).unwrap().lineage.clone();
+    immigrate(&mut d, 40);
+    assert!(cosmograph::lineage::boundary::standing(&d.session, &line).0 > par);
+    assert!(!d.saved().ending.call && d.saved().settings.rounds == Rounds::Waiting && d.tick() - d.saved().ending.since < EPOCH,
+        "no call and no span: only the condition is left to end it");
+    let happened = d.step();
+    let at = happened.iter().position(|h| matches!(h, Happening::ConditionMet { .. })).expect("the condition is met");
+    assert!(matches!(&happened[at], Happening::ConditionMet { held, par: p, .. } if *p == par && *held > par));
+    assert!(happened[at..].iter().any(|h| matches!(h, Happening::Boundary { .. })), "then the boundary");
+    assert!(epoch_hold(&d) && d.saved().review.is_some() && d.phase() == LoopPhase::Held, "and the epoch is held");
+    assert!(d.reading().checkpoint.is_some() && !d.reading().offers.is_empty());
+    d.reloaded().expect("the held question validates after a save and a restore");
+    assert_eq!(d.saved().ending.par, None, "the par is cleared at the boundary");
+    d.review().unwrap();
+    assert_eq!((d.phase(), d.saved().ending.par), (LoopPhase::Running, None));
+    d.step();
+    let fresh = d.saved().ending.par.expect("the next epoch's first step sets a fresh par");
+    assert!(fresh > par, "grown from the world as it now stands, with the newcomer ({fresh} over {par})");
+}

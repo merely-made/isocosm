@@ -10,6 +10,7 @@
 
 use crate::{
     Result, Session,
+    development::may_lack,
     directing::policy::LineagePolicy,
     history::Command,
     rules::Development,
@@ -58,8 +59,39 @@ fn pooled(held: impl Iterator<Item = (u64, Option<i128>)>, current: i128) -> Opt
     (total > 0).then(|| mean(sum, total, current))
 }
 
-/// The line's development with each tagma's segments moved to its weighted
-/// members' mean; none if it has no development, nothing moved, or the
+/// The recipe's absence odds moved to the weighted frequency its members
+/// drew: absences drawn over tagmata that could have drawn one, reduced.
+/// None if none could, the odds already say it, it will not fit, or no one
+/// in the world has recorded a draw (a world whose members were never
+/// recorded, so an empty record says nothing).
+fn absence(sim: &Simulation, recipe: &crate::rules::Recipe, weighed: &BTreeMap<Id, u64>) -> Option<[u32; 2]> {
+    let rules = &sim.genesis().rules;
+    let groups = &sim.state().population.groups;
+    if !groups.values().any(|g| !g.entity.absent.is_empty()) {
+        return None;
+    }
+    let may = recipe.tagmata.iter().filter(|t| may_lack(rules, t)).count() as u128;
+    let (mut drawn, mut eligible) = (0u128, 0u128);
+    for (id, &w) in weighed {
+        let e = &groups[id].entity;
+        if e.soma.len() == recipe.tagmata.len() {
+            drawn += u128::from(w) * e.absent.len() as u128;
+            eligible += u128::from(w) * may;
+        }
+    }
+    let [odds, of] = recipe.absence;
+    if eligible == 0 || drawn * u128::from(of) == u128::from(odds) * eligible {
+        return None;
+    }
+    let (mut a, mut b) = (drawn, eligible);
+    while b != 0 {
+        (a, b) = (b, a % b);
+    }
+    Some([u32::try_from(drawn / a).ok()?, u32::try_from(eligible / a).ok()?])
+}
+
+/// The line's development with each tagma's segments, and the recipe's
+/// absence odds, moved to its weighted members' mean; none if it has no development, nothing moved, or the
 /// world would refuse the result.
 pub fn development(sim: &Simulation, lineage: &str, since: Tick) -> Option<Development> {
     let had = sim.state().lineages.get(lineage)?.development.as_ref()?;
@@ -73,6 +105,9 @@ pub fn development(sim: &Simulation, lineage: &str, since: Tick) -> Option<Devel
         if let Some(m) = pooled(held, i128::from(t.segments)) {
             t.segments = m.clamp(1, 255) as u8;
         }
+    }
+    if let Some(odds) = absence(sim, &moved.recipe, &weighed) {
+        moved.recipe.absence = odds;
     }
     (moved != *had && sim.revisable(lineage, &moved).is_ok()).then_some(moved)
 }

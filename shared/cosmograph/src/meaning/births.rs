@@ -108,8 +108,9 @@ pub(crate) fn hatch(
             parts: BTreeMap::from([(PartId(0), root)]),
         };
     }
-    let seed = soma.seed;
+    let (seed, absent) = (soma.seed, development::recorded(rules, &soma));
     let mut child = newborn(parent, body, soma.segments, tick);
+    child.absent = absent;
     born(&mut child, rules, &l.d, seed);
     child.traits.extend(young.cloned());
     let given =
@@ -232,7 +233,9 @@ pub(crate) fn seedling(
         doc: crate::geometry::document(&root),
         parts: BTreeMap::from([(PartId(0), part)]),
     };
+    let absent = development::recorded(rules, &soma);
     let mut child = newborn(parent, body, soma.segments, tick);
+    child.absent = absent;
     born(&mut child, rules, &l.d, soma.seed);
     child
 }

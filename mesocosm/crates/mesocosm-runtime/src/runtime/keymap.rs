@@ -164,7 +164,7 @@ mod offered_tests {
         let mut reading = LoopReading {
             cut: LoopCut { native: String::new(), game: String::new(), question: None },
             settings: None, phase: LoopPhase::Held, checkpoint: None, offers: Vec::new(),
-            happenings: Vec::new(), lineages: Vec::new(),
+            happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(),
             personal: Some(PersonalQuestion::Birth { parent: 6 }), world_ended_at: None,
             ending: Default::default(), sheet: None,
         };
@@ -186,7 +186,7 @@ mod offered_tests {
         let reading = LoopReading {
             cut: LoopCut { native: String::new(), game: String::new(), question: None },
             settings: None, phase: LoopPhase::Held, checkpoint: Some(checkpoint.clone()), offers: Vec::new(),
-            happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None,
+            happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(), personal: None, world_ended_at: None,
             ending: Default::default(), sheet: None,
         };
         let next = |row| match heir_at(offered_answer(&checkpoint, &reading, Some(4), &Press::Named(Named::Enter))

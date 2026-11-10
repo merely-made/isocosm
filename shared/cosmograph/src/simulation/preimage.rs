@@ -74,6 +74,8 @@ pub(super) struct Entity<'a> {
     disposition: &'a [i16; 5],
     #[serde(skip_serializing_if = "Vec::is_empty")]
     soma: &'a Vec<u8>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    absent: &'a Vec<(u8, u8)>,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     systems: &'a BTreeMap<Key, crate::rules::System>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -111,6 +113,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             tenets,
             disposition,
             soma,
+            absent,
             systems,
             varied,
             drawn,
@@ -139,6 +142,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             tenets,
             disposition,
             soma,
+            absent,
             systems,
             varied,
             drawn: *drawn,

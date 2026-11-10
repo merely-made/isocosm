@@ -115,6 +115,10 @@ pub struct Entity {
     /// epimorphic body grows toward; absent in bodies without a recipe.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub soma: Vec<u8>,
+    /// The segments, by tagma and index, whose borne kind it drew absent
+    /// (case 1208); kept only where the world's drift reads them.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub absent: Vec<(u8, u8)>,
     /// The systems it carries (rulings 568, 574 and 583), the world's
     /// defaults as founding realized them, riffed and passed down; absent in
     /// bodies that read none, which serialize and hash as before.

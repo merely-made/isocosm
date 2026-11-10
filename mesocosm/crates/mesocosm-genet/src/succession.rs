@@ -283,7 +283,7 @@ mod heir_tests {
         LoopReading {
             cut: LoopCut { native: String::new(), game: String::new(), question: None },
             settings: None, phase: LoopPhase::Held, offers: Vec::new(), happenings: Vec::new(),
-            lineages: Vec::new(), personal: None, world_ended_at: None, ending: Default::default(), sheet: None,
+            lineages: Vec::new(), starts: Vec::new(), personal: None, world_ended_at: None, ending: Default::default(), sheet: None,
             checkpoint: Some(Checkpoint { tick: 9, occasion: Occasion::Loss(Loss { critter: 4, next: heirs.first().copied() }), heirs }),
         }
     }

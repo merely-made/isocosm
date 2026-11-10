@@ -102,6 +102,7 @@ impl Host {
         match answer {
             LoopAnswer::OtherLineage(id) => self.runtime.sim().state().population.get(id.0)
                 .map_or_else(|| "Unavailable body".into(), |body| format!("body {}, {}", id.0, body.lineage)),
+            LoopAnswer::Start { lineage, site } => format!("{lineage} at site {site}"),
             LoopAnswer::Watch => "Watch this world".into(),
             LoopAnswer::NewWorld => "Request a new world".into(),
             LoopAnswer::Checkpoint(_) => "Checkpoint answer".into(),

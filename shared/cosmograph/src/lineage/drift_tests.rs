@@ -358,6 +358,111 @@ fn a_run_with_the_rule_on_replays_to_the_same_hash() {
     }
 }
 
+/// The group at `id` drew an absence at each of `n` segments of tagma 0.
+fn lack(s: &mut Session, id: Id, n: u8) {
+    s.sim.state.population.groups.get_mut(&id).unwrap().entity_mut().absent = (0..n).map(|k| (0, k)).collect();
+}
+
+fn gcd(a: u128, b: u128) -> u128 {
+    if b == 0 { a } else { gcd(b, a % b) }
+}
+
+fn odds(s: &Session, line: &str) -> [u32; 2] {
+    template(s, line).recipe.absence
+}
+
+/// A world with the rule on, and a developing line whose tagmata could
+/// draw an absence, its first two groups alive with the young given.
+fn lacking(young: [u64; 2]) -> (Session, Key, [Id; 2]) {
+    let (mut s, _, _) = world(true);
+    uniform(&mut s);
+    let line = s.sim.state().lineages.iter().find(|(k, l)| {
+        let rules = &s.sim.genesis().rules;
+        l.development.as_ref().is_some_and(|d| d.recipe.tagmata.iter().any(|t| crate::development::may_lack(rules, t)))
+            && ours(&s, k).len() >= 2
+    }).map(|(k, _)| k.clone()).expect("a line that could lack");
+    let ids = ours(&s, &line);
+    for id in &ids[2..] {
+        s.sim.state.population.groups.get_mut(id).unwrap().entity_mut().alive = false;
+    }
+    for (id, n) in ids.iter().zip(young) {
+        bear(&mut s, *id, SINCE, n);
+    }
+    (s, line, [ids[0], ids[1]])
+}
+
+/// How many tagmata of the line's recipe could draw an absence.
+fn eligible(s: &Session, line: &str) -> u128 {
+    let rules = &s.sim.genesis().rules;
+    template(s, line).recipe.tagmata.iter().filter(|t| crate::development::may_lack(rules, t)).count() as u128
+}
+
+/// A seed whose soma draws an absence from the line's recipe.
+fn lacking_seed(s: &Session, line: &str) -> u64 {
+    let (rules, d) = (&s.sim.genesis().rules, template(s, line));
+    (0..4000).find(|&seed| !crate::development::soma(rules, &d.recipe, seed).absent.is_empty())
+        .expect("a seed that draws an absence")
+}
+
+/// A newborn's drawn absences, as developed on arrival, under the rule as given.
+fn arrive(on: bool) -> [Vec<(u8, u8)>; 2] {
+    let (mut s, line, _) = lacking([0, 0]);
+    rule(&mut s, on);
+    let seed = lacking_seed(&s, &line);
+    let id = ours(&s, &line)[0];
+    let e = s.sim.state.population.groups.get_mut(&id).unwrap().entity_mut();
+    (e.body, e.parts, e.accounts) = (None, Default::default(), Default::default());
+    s.sim.develop_arrival(id, seed).unwrap();
+    let drew = crate::development::soma(&s.sim.genesis().rules, &template(&s, &line).recipe, seed).absent;
+    [s.sim.state().population.groups[&id].entity.absent.clone(), drew]
+}
+
+#[test]
+fn absences_are_recorded_only_where_the_rule_reads_them() {
+    let [off, drew] = arrive(false);
+    assert!(off.is_empty() && !drew.is_empty(), "rule off: nothing recorded");
+    let [on, drew] = arrive(true);
+    assert_eq!(on, drew, "rule on: the newborn records what it drew");
+}
+
+#[test]
+fn absences_drawn_by_breeders_raise_the_odds_to_the_weighted_frequency() {
+    let (mut s, line, ids) = lacking([2, 5]);
+    let w = drift::weights(&s.sim, &line, SINCE);
+    let (w0, w1) = (u128::from(w[&ids[0]]), u128::from(w[&ids[1]]));
+    lack(&mut s, ids[0], 1);
+    lack(&mut s, ids[1], 0);
+    let (drawn, of) = (w0, (w0 + w1) * eligible(&s, &line));
+    let g = gcd(drawn, of);
+    let moved = drift::development(&s.sim, &line, SINCE).expect("the odds move");
+    assert_eq!(moved.recipe.absence, [(drawn / g) as u32, (of / g) as u32]);
+    assert!(s.sim.revisable(&line, &moved).is_ok());
+    assert!(drift::commands(&s.sim, &line, SINCE).iter().any(|c| matches!(c, Command::Revise { .. })));
+}
+
+#[test]
+fn no_absences_drawn_in_a_recorded_world_drops_the_odds_to_zero() {
+    let (mut s, line, ids) = lacking([0, 0]);
+    let other = *s.sim.state().population.groups.keys().find(|i| !ids.contains(i)).unwrap();
+    lack(&mut s, other, 1);
+    let moved = drift::development(&s.sim, &line, SINCE).expect("the odds move");
+    assert_eq!(moved.recipe.absence, [0, 1]);
+    assert!(s.sim.revisable(&line, &moved).is_ok());
+}
+
+#[test]
+fn an_observed_frequency_equal_to_the_odds_moves_nothing() {
+    let (mut s, line, ids) = lacking([0, 0]);
+    lack(&mut s, ids[0], 1);
+    let w = drift::weights(&s.sim, &line, SINCE);
+    let (drawn, of) = (u128::from(w[&ids[0]]), w.values().map(|&n| u128::from(n)).sum::<u128>() * eligible(&s, &line));
+    let g = gcd(drawn, of);
+    let same = [(drawn / g) as u32, (of / g) as u32];
+    s.sim.state.lineages.get_mut(&line).unwrap().development.as_mut().unwrap().recipe.absence = same;
+    assert_eq!(odds(&s, &line), same);
+    assert!(drift::development(&s.sim, &line, SINCE).is_none());
+}
+
 #[test]
 #[ignore = "a readout, not a check"]
 fn drift_cost() {

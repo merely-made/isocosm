@@ -78,7 +78,7 @@ impl LegacyEntity {
             visits:self.visits.clone(), journey:None, born:self.born, alive:self.alive,
             body_revision:self.body_revision, body:None, parts, traits:self.traits.clone(),
             accounts:self.accounts.clone(), skills:self.skills.clone(), tenets:self.tenets.clone(),
-            disposition:self.disposition, soma:self.soma.clone(), systems:Default::default(),
+            disposition:self.disposition, soma:self.soma.clone(), absent:vec![], systems:Default::default(),
             varied:vec![], patch:None, authored:None, settled:None })
     }
 }

@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::{Refusal, FlowWindows, succession::Occasion};
-use cosmograph::{Session, Command, directing::readings::{self, Mode, View}};
+use cosmograph::{Session, Command, directing::{Aim, Toward, readings::{self, Mode, View}}};
 use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
 
 fn access(session: &Session, access: OrdinaryAccess) -> Result<(), Refusal> {
@@ -140,6 +140,20 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
             if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching)
                 || saved.world_end.is_some() || !offered.lineages.contains(critter) { return Err(Refusal::Unasked); }
             candidate.command(Command::Take { participant: saved.participant, critter: critter.0 }).map_err(Refusal::Sim)?;
+            saved.ended_lineage = None;
+            saved.phase = LoopPhase::Running;
+        },
+        LoopAnswer::Start { lineage, site } => {
+            if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching) || saved.world_end.is_some() {
+                return Err(Refusal::Unasked);
+            }
+            let at = offered.starts.iter().find(|s| s.lineage == *lineage && s.site == *site).ok_or(Refusal::Unasked)?;
+            candidate.command(Command::Take { participant: saved.participant, critter: at.critter.0 }).map_err(Refusal::Sim)?;
+            if at.journey {
+                // As the interim's first life does: the going is the body's own choice.
+                candidate.command(Command::Nudge { participant: saved.participant, critter: at.critter.0,
+                    aim: Aim::Attend, toward: Toward::Site(*site), act: None }).map_err(Refusal::Sim)?;
+            }
             saved.ended_lineage = None;
             saved.phase = LoopPhase::Running;
         },

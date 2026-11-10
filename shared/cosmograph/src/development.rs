@@ -13,7 +13,7 @@
 use crate::{
     Result,
     geometry::{Body, Frame},
-    rules::{Anchor, Development, Facing, Recipe, Rules, Template},
+    rules::{Anchor, Development, Facing, Recipe, Rules, Tagma, Template},
     schema::*,
 };
 use serde::{Deserialize, Serialize};
@@ -39,6 +39,22 @@ fn present(t: &Template) -> bool {
         .any(|f| t.cells.get(*f).copied().unwrap_or(0) > 0)
 }
 
+/// Whether a tagma bears something its child may draw absent: it bears a
+/// kind that neither feeds, senses nor fixes, and no chain kind does
+/// (case 1208).
+pub(crate) fn may_lack(rules: &Rules, t: &Tagma) -> bool {
+    let borne = t.bears.as_ref().and_then(|k| rules.kinds.get(k));
+    t.per_segment != 0
+        && borne.is_some_and(|b| !present(b))
+        && !t.chain.iter().any(|l| rules.kinds.get(&l.kind).is_some_and(present))
+}
+
+/// The absences a child records: those it drew, where the world's drift
+/// reads them, else none, so other worlds hash as before (case 1208).
+pub(crate) fn recorded(rules: &Rules, soma: &Soma) -> Vec<(u8, u8)> {
+    if rules.directing().drift { soma.absent.clone() } else { vec![] }
+}
+
 /// The soma `seed` draws from `recipe`.
 pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
     let draw = |domain: &str, i: usize| crate::draw(seed, domain, &[i as u64]);
@@ -53,11 +69,7 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
         let count = (i32::from(t.segments) + drift).clamp(1, 255) as u8;
         segments.push(count);
         let [odds, of] = recipe.absence;
-        let borne = t.bears.as_ref().and_then(|k| rules.kinds.get(k));
-        if t.per_segment == 0 || borne.is_none_or(present)
-            || t.chain
-                .iter()
-                .any(|l| rules.kinds.get(&l.kind).is_some_and(present)) || odds == 0 {
+        if !may_lack(rules, t) || odds == 0 {
             continue;
         }
         if draw("soma-absent", i) % u64::from(of) < u64::from(odds) {

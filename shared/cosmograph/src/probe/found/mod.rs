@@ -512,6 +512,7 @@ pub(super) fn member(
         tenets: BTreeMap::new(),
         disposition: [0; 5],
         soma: vec![],
+        absent: vec![],
         systems: BTreeMap::new(),
         varied: vec![],
         patch: None,

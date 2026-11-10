@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use cosmograph::{Session, directing::readings::View, schema::Method};
+use cosmograph::{Session, directing::readings::{self, View}, schema::Method};
 use cosmograph_overlay::{OrdinaryAccess, EntityHandle};
 use crate::succession::Occasion;
 
@@ -14,7 +14,7 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
     }
     let mut out = LoopReading { cut: cut(session, game), settings: None,
         phase: LoopPhase::Running, checkpoint: None, offers: Vec::new(),
-        happenings: Vec::new(), lineages: Vec::new(), personal: None, world_ended_at: None,
+        happenings: Vec::new(), lineages: Vec::new(), starts: Vec::new(), personal: None, world_ended_at: None,
         ending: Default::default(), sheet: None };
     let Some(saved) = &game.continuation else { return Ok(out); };
     if saved.participant != access.participant.0 {
@@ -76,6 +76,11 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
             visible.shows(**first) && e.alive && e.method == Method::Deliberative
                 && saved.ended_lineage.as_ref().is_some_and(|lineage| *lineage != e.lineage)
         }).map(|(first, _)| EntityHandle(*first)).collect();
+        let kept: std::collections::BTreeSet<&str> = out.lineages.iter()
+            .filter_map(|id| session.sim.state().population.get(id.0).map(|e| e.lineage.as_str())).collect();
+        out.starts = kept.into_iter().flat_map(|lineage| readings::starts(&session.sim, lineage).into_iter()
+            .map(move |at| LoopStart { lineage: lineage.to_string(), site: at.site,
+                critter: EntityHandle(at.critter), journey: at.journey })).collect();
     }
     Ok(out)
 }

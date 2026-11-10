@@ -430,6 +430,24 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: three follow-ons. **The drift moves absence odds:** under the
+  drift rule a member records what it drew absent (`Entity.absent`, empty and
+  unserialized otherwise), and `drift::development` moves `recipe.absence` to
+  the weighted frequency of absences drawn over tagmata that could have
+  lacked one (`development::may_lack`), as a reduced fraction. It moves only
+  where some group in the world has a recorded absence: a world whose rule
+  was set after its members were drawn carries no records, and would
+  otherwise read as nobody lacking anything. So a world where truly nobody
+  drew one never falls to zero odds; owed. **Starts when changing lineage:**
+  `LoopReading.starts` lists each offered lineage's starts, range then
+  walkable fringe, and `LoopAnswer::Start` takes one, nudging the body toward
+  a fringe site; the host has no picker for them yet. **A met condition, end
+  to end** (`tests/round_endings.rs`): under waiting with no call, a real
+  forward-copy par, then a dev arrival of a body of the played line holding
+  matter, then `ConditionMet`, the boundary and the Epoch hold with its
+  review, validated after a save and restore; the par clears and a fresh one
+  is set next epoch. Nudges could not beat the copy in that fixture, whose
+  standing is static. No existing test or pin moved.
 - 2026-11-10: LR4.2 completed for water and light (D14), and the crowd path
   fixed. `climate::thirst` is the least water a body is comfortable with,
   falling with its share of store cells; `climate::light` the light it

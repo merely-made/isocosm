@@ -504,6 +504,7 @@ pub(crate) fn embody_within(
             crate::draw(seed, "founder-soma", &[*first]),
         );
         e.embody(develop(&rules, &d, &drawn)?);
+        e.absent = crate::development::recorded(&rules, &drawn);
         e.soma = drawn.segments;
         let own: Vec<Key> = e
             .accounts

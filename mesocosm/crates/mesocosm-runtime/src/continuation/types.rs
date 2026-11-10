@@ -48,6 +48,8 @@ pub enum LoopAction { Configure(LoopSettings), Step, Answer(LoopAnswer) }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum LoopAnswer {
     Checkpoint(CheckpointAnswer), OtherLineage(EntityHandle), Watch, NewWorld,
+    /// Begin as another lineage at an offered start site (case 1211; lineage-rounds D5, D6).
+    Start { lineage: String, site: u64 },
     /// End the epoch (case 1199); `Extend` skips the next capped boundary once
     /// (case 1217); `Forfeit` ends it for a player with no living member (case 1212).
     Call, Extend, Forfeit,
@@ -68,12 +70,21 @@ pub struct LoopOffer {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PersonalQuestion { Birth { parent: Id }, Loss { critter: Id }, Epoch { entity: Id } }
 
+/// One place a round may begin for a lineage: the body taken there, and
+/// whether it must first journey to the site (a fringe start).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct LoopStart { pub lineage: String, pub site: u64, pub critter: EntityHandle, pub journey: bool }
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct LoopReading {
     pub cut: LoopCut, pub settings: Option<LoopSettings>, pub phase: LoopPhase,
     pub checkpoint: Option<Checkpoint>, pub offers: Vec<LoopOffer>,
     pub happenings: Vec<Happening>, pub lineages: Vec<EntityHandle>,
+    /// The starts of those lineages (case 1211; lineage-rounds D5, D6).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub starts: Vec<LoopStart>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub personal: Option<PersonalQuestion>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

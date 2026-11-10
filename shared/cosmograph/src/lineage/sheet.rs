@@ -99,6 +99,7 @@ pub fn of(
         tenets: BTreeMap::new(),
         disposition: [0; 5],
         soma: d.recipe.tagmata.iter().map(|t| t.segments).collect(),
+        absent: vec![],
         systems: BTreeMap::new(),
         varied: vec![],
         patch: None,
