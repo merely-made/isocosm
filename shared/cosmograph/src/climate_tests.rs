@@ -15,7 +15,7 @@ use crate::{
 use std::collections::BTreeMap;
 
 /// Every driver nought, a flat 30 degrees, a band of 10..30 at the reference.
-fn flat() -> Climate {
+pub(crate) fn flat() -> Climate {
     Climate {
         base: 30,
         poleward: 0,
@@ -29,10 +29,16 @@ fn flat() -> Climate {
         reference: 100,
         doubling: 2,
         strain: [1, 1],
+        // Water and light cost nothing here; their own tests set a rate.
+        thirst: 40,
+        buffer: 30,
+        drought: [0, 1],
+        shade: 250,
+        dim: [0, 1],
     }
 }
 
-fn founded() -> Genesis {
+pub(crate) fn founded() -> Genesis {
     let founding = Founding {
         seed: 31,
         lineages: 3,
@@ -42,7 +48,7 @@ fn founded() -> Genesis {
     founding.generate().unwrap()
 }
 
-fn site(latitude: Option<i64>, extra: &[(&str, i64)]) -> Site {
+pub(crate) fn site(latitude: Option<i64>, extra: &[(&str, i64)]) -> Site {
     let mut conditions: BTreeMap<Key, i64> = extra.iter().map(|(k, v)| ((*k).into(), *v)).collect();
     if let Some(l) = latitude {
         conditions.insert(LATITUDE.into(), l);
@@ -50,7 +56,7 @@ fn site(latitude: Option<i64>, extra: &[(&str, i64)]) -> Site {
     Site { terrain_seed: 0, conditions, accounts: Ledger::new(), routes: vec![], authored: None }
 }
 
-fn with(climate: Climate) -> Rules {
+pub(crate) fn with(climate: Climate) -> Rules {
     let mut rules = founded().rules;
     rules.climate = Some(climate);
     rules
@@ -212,7 +218,7 @@ fn strain_is_the_distance_beyond_the_nearer_edge() {
 }
 
 /// What `e` holds of matter, in its accounts and its parts.
-fn held(rules: &Rules, e: &Entity) -> u128 {
+pub(crate) fn held(rules: &Rules, e: &Entity) -> u128 {
     rules
         .accounts
         .keys()
@@ -222,13 +228,13 @@ fn held(rules: &Rules, e: &Entity) -> u128 {
 }
 
 /// The soil, summed over the sites.
-fn soil(sim: &Simulation) -> u128 {
+pub(crate) fn soil(sim: &Simulation) -> u128 {
     sim.state().sites.values().map(|s| u128::from(crate::meaning::value(&s.accounts, "world:soil"))).sum()
 }
 
 /// A world whose first living lineage sits `beyond` degrees above its band
 /// under a flat climate paying `rate`, and that lineage's first member.
-fn warm(g: &Genesis, beyond: i64, rate: [u32; 2]) -> (Genesis, Id) {
+pub(crate) fn warm(g: &Genesis, beyond: i64, rate: [u32; 2]) -> (Genesis, Id) {
     let mut g = g.clone();
     let (first, e) = g.population.groups.iter()
         .find(|(_, c)| c.entity.lineage.starts_with("lineage:") && c.entity.alive)
@@ -244,7 +250,7 @@ fn warm(g: &Genesis, beyond: i64, rate: [u32; 2]) -> (Genesis, Id) {
 }
 
 /// A flat-upkeep ecology world and a body-priced one.
-fn worlds() -> Vec<(&'static str, Genesis)> {
+pub(crate) fn worlds() -> Vec<(&'static str, Genesis)> {
     let ecology = Founding { seed: 5, lineages: 3, ecology: true, ..Default::default() };
     let bodied = crate::probe::BodyFounding { seed: 3, ..Default::default() };
     vec![("flat", ecology.generate().unwrap()), ("body", bodied.generate().unwrap().genesis)]

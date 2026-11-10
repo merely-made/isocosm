@@ -33,6 +33,8 @@ pub mod defence;
 pub mod climate;
 #[cfg(test)]
 mod climate_tests;
+#[cfg(test)]
+mod climate_needs_tests;
 pub mod collapse;
 mod edits;
 pub mod effects;

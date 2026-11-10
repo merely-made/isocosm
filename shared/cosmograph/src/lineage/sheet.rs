@@ -45,6 +45,14 @@ pub struct Sheet {
     /// lineage-rounds D14), shifted by the development's offset.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub comfort: Option<[i64; 2]>,
+    /// The least `world:water` the body is comfortable with, where the world
+    /// has a climate (lineage-rounds D14): store cells buffer drought.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub water: Option<i64>,
+    /// The light the body needs, on the ecology's sunlight scale, where the
+    /// world has a climate: fixing cells set it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub light: Option<i64>,
 }
 
 /// The sheet of a fully grown body of `lineage` under `d`. The adult is
@@ -111,6 +119,10 @@ pub fn of(
         }
     }
     let doc = e.body.as_ref().expect("embodied above");
+    let [store, fix, cells] = crate::climate::tally(&functions);
+    let needs = rules.climate.as_ref().map(|c| {
+        (crate::climate::thirst(c, store, cells), crate::climate::light(c, fix, cells))
+    });
     Ok(Sheet {
         mass,
         speed: rules.speed.as_ref().map(|s| s.of(doc)),
@@ -129,6 +141,8 @@ pub fn of(
             .climate
             .as_ref()
             .map(|c| crate::climate::band(c, mass, i64::from(d.comfort))),
+        water: needs.map(|n| n.0),
+        light: needs.map(|n| n.1),
     })
 }
 

@@ -247,7 +247,7 @@ fn the_band_is_on_the_sheet_only_where_the_world_has_a_climate() {
     Arc::make_mut(&mut s.sim.genesis).rules.climate = Some(climate.clone());
     let own = sheet_of(&s, &line, &d);
     assert_eq!(own.comfort, Some(crate::climate::band(&climate, own.mass, 0)));
-    assert_eq!(Sheet { comfort: None, ..own.clone() }, plain, "nothing else on the sheet moves");
+    assert_eq!(Sheet { comfort: None, water: None, light: None, ..own.clone() }, plain, "nothing else on the sheet moves");
     // The lineage's offset shifts the band whole.
     let mut shifted = d.clone();
     shifted.comfort = 4;
@@ -283,4 +283,56 @@ fn a_much_heavier_body_sits_colder() {
     let heavy = sheet_of(&s, &line, &big);
     assert!(heavy.mass > own.mass);
     assert!(heavy.comfort.unwrap()[0] < own.comfort.unwrap()[0], "{heavy:?} against {own:?}");
+}
+
+/// A sheet of a body of two authored functions' cells, under the default climate.
+fn built(s: &Session, line: &str, cells: [(&str, u32); 2]) -> Sheet {
+    let mut rules = s.sim.genesis().rules.clone();
+    rules.climate = Some(Climate::default());
+    rules.kinds.insert("kind:authored".into(), Template {
+        half_extent: [2, 2, 2],
+        cells: cells.map(|(f, n)| (f.to_string(), n)).into(),
+        shape: String::new(), port: None,
+    });
+    let mut d = development(s, line);
+    let mut tagma = d.recipe.tagmata[0].clone();
+    (tagma.segments, tagma.segment) = (1, "kind:authored".into());
+    (tagma.bears, tagma.per_segment, tagma.chain) = (None, 0, vec![]);
+    d.recipe.tagmata = vec![tagma];
+    sheet::of(&rules, &s.sim.state().lineages, line, &d).unwrap()
+}
+
+#[test]
+fn water_and_light_are_on_the_sheet_only_where_the_world_has_a_climate() {
+    let (mut s, line) = drafted();
+    let d = development(&s, &line);
+    let plain = sheet_of(&s, &line, &d);
+    assert_eq!((plain.water, plain.light), (None, None));
+    let json = serde_json::to_string(&plain).unwrap();
+    assert!(!json.contains("water") && !json.contains("light"), "{json}");
+    let climate = Climate::default();
+    Arc::make_mut(&mut s.sim.genesis).rules.climate = Some(climate.clone());
+    let own = sheet_of(&s, &line, &d);
+    let cells = own.functions.values().map(|n| u64::from(*n)).sum();
+    let of = |f: &str| u64::from(own.functions.get(f).copied().unwrap_or(0));
+    assert_eq!(own.water, Some(crate::climate::thirst(&climate, of("function:store"), cells)));
+    assert_eq!(own.light, Some(crate::climate::light(&climate, of("function:fix"), cells)));
+    assert!(serde_json::to_string(&own).unwrap().contains("water"));
+}
+
+#[test]
+fn more_store_cells_lower_the_water_and_more_fixing_cells_raise_the_light() {
+    let (s, line) = drafted();
+    let c = Climate::default();
+    let (store, fix) = ("function:store", "function:fix");
+    let few = built(&s, &line, [(store, 1), (fix, 3)]);
+    let many = built(&s, &line, [(store, 3), (fix, 1)]);
+    assert_eq!(few.water, Some(c.thirst - c.buffer / 4), "a quarter of the cells store");
+    assert_eq!(many.water, Some(c.thirst - 3 * c.buffer / 4));
+    assert!(many.water < few.water, "{many:?} against {few:?}");
+    assert_eq!(few.light, Some(3 * c.shade / 4));
+    assert_eq!(many.light, Some(c.shade / 4));
+    assert!(few.light > many.light);
+    let none = built(&s, &line, [(store, 0), (fix, 0)]);
+    assert_eq!((none.water, none.light), (Some(c.thirst), Some(0)));
 }

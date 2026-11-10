@@ -42,6 +42,9 @@ pub(super) struct Doing<'a> {
     /// (581).
     pub(super) caps: [Option<crate::anatomy::Caps>; 2],
     pub(super) draws: &'a BTreeMap<u8, u64>,
+    /// The genesis seed, where the crowd has it to give: what strain reads
+    /// the weather by (case 1215).
+    pub(super) seed: Option<u64>,
     /// What its meal took of the prey, the kinds its lineage learned, and
     /// the births its act made, which the crowd draws for each member.
     pub(super) took: Option<Took>,
@@ -247,7 +250,7 @@ impl Doing<'_> {
             }
         };
         let (member, seen, prey, kept) = (&self.member, &self.seen, &self.prey, &self.kept);
-        let site_id = self.site_id;
+        let (site_id, seed, tick) = (self.site_id, self.seed, self.tick);
         let (caps, bitten) = (&self.caps, self.bitten);
         let part = self
             .part
@@ -284,7 +287,21 @@ impl Doing<'_> {
                     let room = crate::anatomy::room_within(body(who)?, rules, key, caps.as_ref());
                     i64::try_from(room).map_err(|e| e.to_string())
                 },
-                (Reading::Strain { .. }, _) => Err("the crowd reads no strain".into()),
+                (Reading::Strain { who }, _) => {
+                    let seed = seed.ok_or("the crowd needs the genesis seed to read strain")?;
+                    let body = body(*who)?;
+                    if body.resident_site() != Some(site_id) { return Err("strain needs a resident site".into()); }
+                    let none = BTreeMap::new();
+                    let owed = crate::climate::owed(
+                        rules,
+                        seed,
+                        lineages.unwrap_or(&none),
+                        body,
+                        (site_id, seen),
+                        tick,
+                    );
+                    i64::try_from(owed).map_err(|e| e.to_string())
+                },
                 (Reading::Carried { .. }, who) => {
                     let e = body(who)?;
                     let l = lineages.and_then(|l| l.get(&e.lineage));

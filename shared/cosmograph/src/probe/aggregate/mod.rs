@@ -129,6 +129,9 @@ pub(super) struct Act<'a> {
     pub lineages: Lineages<'a>,
     /// Each slot's draw, fixed for the members the act stands for.
     pub draws: &'a BTreeMap<u8, u64>,
+    /// The genesis seed where the caller has it, which strain reads the
+    /// weather by (case 1215); without it a strain read is an error.
+    pub seed: Option<u64>,
     /// A meal's prey as the pass began, the matter the meal's share takes
     /// of it (ruling 454), and the part the bite lands on where the prey
     /// keeps its matter in parts (ruling 459).
@@ -247,6 +250,7 @@ pub(super) fn apply(
         rules,
         lineages,
         draws: &draws,
+        seed: None,
         meal: None,
     };
     Ok(act(p, e, site, run, a)?.map(|done| done.member))
@@ -345,6 +349,7 @@ pub(super) fn act(
         kept: BTreeMap::new(),
         caps: [None, None],
         draws: a.draws,
+        seed: a.seed,
         took: None,
         lessons: vec![],
         born: vec![],
@@ -432,6 +437,7 @@ pub(super) fn act_on(
         kept: BTreeMap::new(),
         caps: [None, None],
         draws: a.draws,
+        seed: a.seed,
         took: None,
         lessons: vec![],
         born: vec![],
@@ -508,6 +514,7 @@ pub(super) fn mouthful(
         kept: BTreeMap::new(),
         caps: [None, None],
         draws: &draws,
+        seed: None,
         took: None,
         lessons: vec![],
         born: vec![],

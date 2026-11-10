@@ -386,6 +386,7 @@ impl<'w> Crowd<'w> {
                 rules,
                 lineages: Some(&self.lineages),
                 draws,
+                seed: Some(self.world.genesis.seed),
                 meal: None,
             };
             let blocked = aggregate::act(p, e, &mut scratch, run, a)?;
@@ -444,6 +445,7 @@ impl<'w> Crowd<'w> {
                 rules,
                 lineages: Some(&self.lineages),
                 draws: &draws,
+                seed: Some(self.world.genesis.seed),
                 meal: None,
             };
             match aggregate::act(p, &e, site, run, a)? {
@@ -477,8 +479,19 @@ impl<'w> Crowd<'w> {
         let start = site.clone();
         let rules = &world.genesis.rules;
         let run = aggregate::Run::Free;
-        let bodies = (rules, Some(&self.lineages));
-        let next = aggregate::apply(p, e, &start, site, n, self.tick, bodies, run)?
+        let draws = BTreeMap::new();
+        let a = aggregate::Act {
+            start: &start,
+            count: n,
+            tick: self.tick,
+            rules,
+            lineages: Some(&self.lineages),
+            draws: &draws,
+            seed: Some(world.genesis.seed),
+            meal: None,
+        };
+        let next = aggregate::act(p, e, site, run, a)?
+            .map(|done| done.member)
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)

@@ -25,7 +25,7 @@ const DAY: u64 = 1440;
 
 /// The media seeds and spores ride (1092): a lineage draws one.
 const AIR: &str = "world:air";
-const WATER: &str = "world:water";
+pub(crate) const WATER: &str = "world:water";
 const MEDIA: [&str; 2] = [AIR, WATER];
 /// A medium's strength where neither the site's region or world (1103) nor
 /// a laid terrain gives one: a candidate pending its ruling.

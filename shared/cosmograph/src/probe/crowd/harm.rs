@@ -85,6 +85,7 @@ impl Crowd<'_> {
                     rules,
                     lineages: Some(&self.lineages),
                     draws: &draws,
+                    seed: Some(self.world.genesis.seed),
                     meal: None,
                 };
                 let kin = self.kin.iter().map(|(id, e)| (e.clone(), 1, Who::Kin(*id)));
@@ -148,6 +149,7 @@ impl Crowd<'_> {
                     rules,
                     lineages: Some(&self.lineages),
                     draws: &draws,
+                    seed: Some(self.world.genesis.seed),
                     meal: None,
                 };
                 let mut site = self.sites[&actor.place].clone();

@@ -121,7 +121,7 @@ fn offer_name(offer: &Offer) -> String {
 
 /// What a candidate's grown body would change against the line's own, as
 /// signed changes in a fixed order: mass, reach, speed, clutch, upkeep,
-/// cells by function, systems gained and lost, feeding, then how it lives
+/// comfort, water, light, cells by function, systems gained and lost, feeding, then how it lives
 /// (case 1215). Empty where nothing differs.
 pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
     fn signed(from: i128, to: i128) -> Option<String> {
@@ -145,6 +145,16 @@ pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
         && a != b
     {
         out.push(format!("comfort {}..{} -> {}..{}", a[0], a[1], b[0], b[1]));
+    }
+    if let (Some(a), Some(b)) = (had.water, offered.water)
+        && a != b
+    {
+        out.push(format!("water {a} -> {b}"));
+    }
+    if let (Some(a), Some(b)) = (had.light, offered.light)
+        && a != b
+    {
+        out.push(format!("light {a} -> {b}"));
     }
     let keys: std::collections::BTreeSet<&String> =
         had.functions.keys().chain(offered.functions.keys()).collect();
@@ -368,6 +378,8 @@ mod tests {
             systems: ["system:respiration".to_string()].into(),
             upkeep: Some(4),
             comfort: None,
+            water: None,
+            light: None,
         }
     }
 
@@ -423,6 +435,30 @@ mod tests {
         b.functions = had.functions.clone();
         assert_eq!(sheet_words(&had, &b), "");
         b.comfort = None;
+        assert_eq!(sheet_words(&had, &b), "");
+    }
+
+    #[test]
+    fn moved_water_and_light_read_after_the_comfort_band() {
+        let mut had = sheet();
+        had.comfort = Some([10, 30]);
+        had.water = Some(40);
+        had.light = Some(0);
+        let mut b = had.clone();
+        b.comfort = Some([8, 28]);
+        b.water = Some(31);
+        b.light = Some(12);
+        b.functions.insert("function:contract".into(), 20);
+        assert_eq!(
+            sheet_words(&had, &b),
+            "comfort 10..30 -> 8..28, water 40 -> 31, light 0 -> 12, +contract 12"
+        );
+        // A figure only one side has, or an unmoved one, is no change.
+        b.comfort = had.comfort;
+        b.functions = had.functions.clone();
+        b.light = None;
+        assert_eq!(sheet_words(&had, &b), "water 40 -> 31");
+        b.water = had.water;
         assert_eq!(sheet_words(&had, &b), "");
     }
 

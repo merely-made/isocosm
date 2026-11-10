@@ -232,6 +232,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
         rules,
         lineages: Some(&g.lineages),
         draws: &draws,
+        seed: None,
         meal: Some((&prey, &portion, Some(PartId(0)))),
     };
     let p = &rules.processes["body:graze-1"];

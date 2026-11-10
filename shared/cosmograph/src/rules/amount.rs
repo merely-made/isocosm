@@ -233,8 +233,9 @@ pub enum Reading {
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         rest: bool,
     },
-    /// The matter a body owes this tick for being outside its comfort
-    /// (case 1215; lineage-rounds D13). Only an act's stage knows the site
+    /// The matter a body owes this tick for being outside its comfort in
+    /// heat, water or light, the three added (case 1215; lineage-rounds
+    /// D13, D14). Only an act's stage knows the site
     /// and the tick, so everywhere else it reads nought.
     Strain {
         who: Binding,

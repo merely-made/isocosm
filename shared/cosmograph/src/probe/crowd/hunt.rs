@@ -262,6 +262,7 @@ impl Crowd<'_> {
                     rules,
                     lineages: Some(&self.lineages),
                     draws: &draws,
+                    seed: Some(self.world.genesis.seed),
                     meal: Some((was, &portion, bitten)),
                 };
                 let run = aggregate::Run::Free;

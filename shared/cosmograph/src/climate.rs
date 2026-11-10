@@ -4,12 +4,15 @@
 //! Temperature and what it costs a body outside its comfort (case 1215;
 //! lineage-rounds D13 to D15). Temperature is a pure function of the rules,
 //! a site and the tick, as `light::at` is: nothing stored, nothing hashed.
-//! It is whole degrees throughout, with no floating point. Unset, a world
-//! has no temperature and every function here answers none or nought.
+//! It is whole degrees throughout, with no floating point. Water and light
+//! add two more strains to the same process: store cells buffer drought,
+//! and fixing cells set the light a body needs (D14). Unset, a world has no
+//! temperature and every function here answers none or nought.
 
 use crate::{
     Result, Simulation, anatomy, draw,
-    light::LATITUDE,
+    ecology::{LIGHT, world_time::WATER},
+    light::{self, LATITUDE},
     rules::{
         Amount, Binding, Climate, Effect, Expr, Query, Reading, Rules, year_ticks,
     },
@@ -138,11 +141,77 @@ pub fn comfort(
     Some(band(c, mass, offset))
 }
 
+/// The function key of a cell that fixes light.
+const FIX: &str = "function:fix";
+
+/// The store, fixing and all cells of a body, summed over its parts' cells by
+/// function as the sheet sums them.
+pub(crate) fn tally<'a>(cells: impl IntoIterator<Item = (&'a Key, &'a u32)>) -> [u64; 3] {
+    let mut sums = [0; 3];
+    for (function, n) in cells {
+        let n = u64::from(*n);
+        sums[0] += n * u64::from(*function == anatomy::STORE);
+        sums[1] += n * u64::from(function == FIX);
+        sums[2] += n;
+    }
+    sums
+}
+
+/// The least `world:water` a body of `store` cells among `cells` is
+/// comfortable with: `thirst` less `buffer` for a body all of store cells,
+/// in proportion, and never below nought (case 1215; lineage-rounds D14).
+pub fn thirst(climate: &Climate, store: u64, cells: u64) -> i64 {
+    let held = if cells == 0 {
+        0
+    } else {
+        i128::from(climate.buffer) * i128::from(store.min(cells)) / i128::from(cells)
+    };
+    i64::try_from((i128::from(climate.thirst) - held).max(0)).unwrap_or(0)
+}
+
+/// The light a body of `fix` cells among `cells` needs: `shade` for a body
+/// all of fixing cells, in proportion, nought for one with none (case 1215;
+/// lineage-rounds D14).
+pub fn light(climate: &Climate, fix: u64, cells: u64) -> i64 {
+    if cells == 0 {
+        return 0;
+    }
+    let need = i128::from(climate.shade) * i128::from(fix.min(cells)) / i128::from(cells);
+    i64::try_from(need).unwrap_or(i64::MAX)
+}
+
+/// What `e` needs of water and of light, as `[thirst, light]`, from its
+/// build: the cells of its parts. None where the world has no climate.
+/// A lineage's development shifts only the temperature band, so `lineages`
+/// is not read yet.
+pub fn needs(
+    rules: &Rules,
+    e: &Entity,
+    _lineages: &BTreeMap<Key, Lineage>,
+) -> Option<[i64; 2]> {
+    let c = rules.climate.as_ref()?;
+    let [store, fix, cells] = tally(e.parts.values().flat_map(|p| p.cells.iter()));
+    let cells = if e.body.is_none() { 0 } else { cells };
+    let [store, fix] = if cells == 0 { [0, 0] } else { [store, fix] };
+    Some([thirst(c, store, cells), light(c, fix, cells)])
+}
+
+/// The light at `site` on `tick` in the units the ecology stages sunlight
+/// in: its full credit scaled by the sun's intensity, rounded as the staging
+/// of `Effect::Sunlight` rounds it, only with the site's latitude.
+fn lit(rules: &Rules, site: &Site, tick: Tick) -> i64 {
+    let sky = light::at(rules, tick, Some(site));
+    let intensity = sky.sun.map_or(0.0, |sun| f64::from(sun.intensity));
+    i64::try_from((LIGHT as f64 * intensity).round() as u64).unwrap_or(i64::MAX)
+}
+
 /// The matter `e`, resident at site `place`, owes on `tick` for being
-/// outside its comfort: its strain times the world's rate, the fraction kept
+/// outside its comfort: the sum of three strains, each its points beyond
+/// the body's need (degrees outside the band, water below its thirst, light
+/// below what it needs) times that part's rate. Each part keeps its fraction
 /// by paying the whole matter due by the end of the tick less that due by
-/// its start, so that a small strain is not lost to rounding. Nought where
-/// the world has no climate.
+/// its start, so that a small strain is not lost to rounding, and the parts
+/// add exactly. Nought where the world has no climate.
 pub(crate) fn owed(
     rules: &Rules,
     seed: u64,
@@ -152,15 +221,22 @@ pub(crate) fn owed(
     tick: Tick,
 ) -> u64 {
     let Some(c) = rules.climate.as_ref() else { return 0 };
-    let (Some(band), Some(degrees)) =
-        (comfort(rules, e, lineages), temperature(rules, seed, place, site, tick))
-    else {
-        return 0;
+    let Some([want, shade]) = needs(rules, e, lineages) else { return 0 };
+    let heat = match (comfort(rules, e, lineages), temperature(rules, seed, place, site, tick)) {
+        (Some(band), Some(degrees)) => strain(band, degrees),
+        _ => 0,
     };
-    let rate = u128::from(strain(band, degrees)) * u128::from(c.strain[0]);
-    let by = |t: u128| t * rate / u128::from(c.strain[1].max(1));
-    let tick = u128::from(tick);
-    u64::try_from(by(tick + 1) - by(tick)).unwrap_or(u64::MAX)
+    let water = site.conditions.get(WATER).copied().unwrap_or(100);
+    let dry = u64::try_from(want.saturating_sub(water)).unwrap_or(0);
+    let dark = if shade > 0 { u64::try_from(shade - lit(rules, site, tick)).unwrap_or(0) } else { 0 };
+    let t = u128::from(tick);
+    let due = |points: u64, [n, d]: [u32; 2]| {
+        let rate = u128::from(points) * u128::from(n);
+        let by = |t: u128| t * rate / u128::from(d.max(1));
+        by(t + 1) - by(t)
+    };
+    let total = due(heat, c.strain) + due(dry, c.drought) + due(dark, c.dim);
+    u64::try_from(total).unwrap_or(u64::MAX)
 }
 
 /// Gives each lineage whose upkeep the world prices a process beside it,

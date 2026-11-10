@@ -22,6 +22,8 @@ pub mod readings;
 pub mod settle;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod climate_tests;
 
 pub use crate::rules::{Competition, Competitor, Mind, Need, Similitude};
 pub use crowd::{Crowd, Variant};

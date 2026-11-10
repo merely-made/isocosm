@@ -430,6 +430,20 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR4.2 completed for water and light (D14), and the crowd path
+  fixed. `climate::thirst` is the least water a body is comfortable with,
+  falling with its share of store cells; `climate::light` the light it
+  needs, rising with its share of fixing cells, on the ecology's sunlight
+  credit as it is staged for a site. The one `climate:strain` process now
+  spends the sum of three parts (temperature, drought, dim light), each at
+  its own rate and accumulating exactly, so the parts add. At the first-cut
+  rates a fully fixing body pays about 37 matter through one night. The
+  crowd's acts carry the genesis seed, so a bin pays what its members pay one
+  by one (`probe/climate_tests.rs`); a whole-run crowd against exact
+  comparison is not possible in the body world, where the two already differ
+  by breeding draws. The sheet carries `water` and `light`. The knowing and
+  notes methods moved to `simulation/knowing.rs`, leaving `simulation.rs` at
+  476 lines. The host takes `--climate`. No existing assertion or pin moved.
 - 2026-11-09: LR4.2 built for temperature, behind the world rule
   `rules.climate` (unset by default; unserialized when unset, so genesis and
   hashes are as before). `climate.rs`: `temperature` is a pure function of
@@ -448,10 +462,7 @@ From the brief's §8, each naming the phase it holds up.
   purity; each driver alone; the band by mass and offset; strain paid by the
   stated amount, arriving in the soil with world matter conserved; nothing
   paid inside the band; a run replaying to the same hash. No existing test or
-  pin moved. The rule's numbers are a first cut to tune. Owed: water and
-  light bands (D14); the crowd path, which cannot read strain and errors in a
-  climate world; a host flag for the rule; and room in `simulation.rs`, now
-  at 599 lines of 600.
+  pin moved. The rule's numbers are a first cut to tune.
 - 2026-11-09: the host is wired (`mesocosm-genet`), checked by build, tests
   and the help text only: the window was not run. Flags: `--rounds
   capped|waiting|continuous`, `--condition`, `--drift`, `--draft`, `--sheet`

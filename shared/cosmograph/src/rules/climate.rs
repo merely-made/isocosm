@@ -32,6 +32,18 @@ pub struct Climate {
     pub doubling: i64,
     /// Matter a tick (numerator, denominator) for each degree outside the band.
     pub strain: [u32; 2],
+    /// Water: the least `world:water` (0 to 100) a body with no store cells
+    /// is comfortable with, how far that falls for a body all of whose cells
+    /// store, and the matter a tick (numerator, denominator) for each point
+    /// of water below it (lineage-rounds D14).
+    pub thirst: i64,
+    pub buffer: i64,
+    pub drought: [u32; 2],
+    /// Light: what a body all of whose cells fix needs, on the scale the
+    /// ecology stages sunlight at (nought to its full credit, 500), and the
+    /// matter a tick (numerator, denominator) for each unit of light below it.
+    pub shade: i64,
+    pub dim: [u32; 2],
 }
 
 impl Default for Climate {
@@ -59,14 +71,23 @@ impl Default for Climate {
             doubling: 2,
             // A tenth of a matter a tick for each degree outside.
             strain: [1, 10],
+            // Dry below 40, and a body of store cells copes with 30 less.
+            thirst: 40,
+            buffer: 30,
+            drought: [1, 20],
+            // Half of the full credit of 500; a body of fixing cells in the
+            // dark pays 250 a 5,000 (a twentieth of a matter) a tick, about
+            // 37 matter through a night.
+            shade: 250,
+            dim: [1, 5_000],
         }
     }
 }
 
 impl Climate {
     /// # Errors
-    /// Fails if a spell, rise, reference or denominator is nought, or the
-    /// band's width is below nought.
+    /// Fails if a spell, rise, reference or denominator is nought, the band's
+    /// width is below nought, or thirst, buffer or shade is out of range.
     pub fn validate(&self) -> Result<()> {
         if self.spell == 0 {
             return Err("a climate's spell must last some ticks".into());
@@ -77,8 +98,11 @@ impl Climate {
         if self.reference == 0 {
             return Err("a climate's reference mass must be some matter".into());
         }
-        if self.strain[1] == 0 {
-            return Err("a climate's strain needs a denominator".into());
+        if self.strain[1] == 0 || self.drought[1] == 0 || self.dim[1] == 0 {
+            return Err("a climate's strain, drought and dim need denominators".into());
+        }
+        if !(0..=100).contains(&self.thirst) || self.buffer < 0 || self.shade < 0 {
+            return Err("a climate's thirst must be within 0 to 100, its buffer and shade not below nought".into());
         }
         if self.width < 0 || self.weather < 0 {
             return Err("a climate's width and weather cannot be below nought".into());

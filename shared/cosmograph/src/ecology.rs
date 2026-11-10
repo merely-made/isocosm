@@ -39,7 +39,7 @@ const SUN: &str = "sim:energy";
 /// one tick, so light limits when they crowd and not otherwise. In bodied
 /// ecologies the sun process's presence reseeds which part receives new
 /// tissue, so their trajectories differ (wing ruling 929).
-const LIGHT: u64 = 500;
+pub(crate) const LIGHT: u64 = 500;
 const STORE: u64 = 720 * LIGHT;
 /// The trophic levels and the kingdom each is generated in, by `Role::level`.
 const LEVELS: [&str; 3] = crate::directing::found::LEVELS;

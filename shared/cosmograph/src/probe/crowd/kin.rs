@@ -145,6 +145,7 @@ impl Crowd<'_> {
                 rules,
                 lineages: Some(&self.lineages),
                 draws: &draws,
+                seed: Some(self.world.genesis.seed),
                 meal: None,
             };
             let chosen = self.kin.iter().find(|(c, t)| {
