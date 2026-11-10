@@ -123,8 +123,10 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
         } else if saved.checkpoint.is_some() { LoopPhase::Held } else { LoopPhase::Running };
         saved.review = if saved.checkpoint.as_ref().is_some_and(|c|
             matches!(&c.occasion, succession::Occasion::Epoch(_))) {
+            let epoch = candidate.sim.genesis().rules.epoch_ticks;
+            let draft = scoring::draft(settings.mode, ending_before, before_tick, epoch);
             Some(scoring::review(&candidate, &next, participant,
-                settings.pace.scoring).map_err(Refusal::Sim)?)
+                settings.pace.scoring, draft).map_err(Refusal::Sim)?)
         } else { None };
         saved.proposed = super::restore::proposals(&saved, &candidate).map_err(Refusal::Sim)?;
     }

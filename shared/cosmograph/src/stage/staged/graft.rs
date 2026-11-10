@@ -80,7 +80,8 @@ impl Staged<'_> {
             crate::validation::part(&self.sim.genesis.rules,&self.stage.bodies[&actor],*part)?;
         }
         let lineage = self.stage.bodies[&actor].lineage.clone();
-        self.stage.lessons.extend(kinds.into_iter().map(|kind| (lineage.clone(),kind)));
+        let from = self.stage.bodies[&donor].lineage.clone();
+        self.stage.lessons.extend(kinds.into_iter().map(|kind| (lineage.clone(),kind,from.clone())));
         self.stage.graft = Some(graft::Record { actor,donor,action:cause.into(),
             process:self.stage.process.clone(),preview });
         Ok(())

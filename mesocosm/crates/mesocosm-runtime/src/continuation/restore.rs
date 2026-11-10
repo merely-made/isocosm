@@ -64,7 +64,11 @@ pub(crate) fn validate_question(saved: &Continuation, session: &Session) -> Resu
             let review = saved.review.as_ref().ok_or("saved epoch hold has no review")?;
             // Forecast numbers grant nothing. The exact current offer repertoire,
             // commands, refusal reasons and native reading must still match.
-            let actual = Review::of_using(session, &boundary.lineage, saved.settings.pace.scoring,
+            let epoch = session.sim.genesis().rules.epoch_ticks;
+            let draft = saved.round.as_ref().and_then(|source|
+                super::scoring::draft(saved.settings.mode, source.ending, source.from, epoch));
+            let actual = Review::of_draft_using(session, &boundary.lineage,
+                saved.settings.pace.scoring, draft,
                 &mut |_, _, candidate, _| {
                     review.offers.iter().find(|offer| offer.name == candidate.name
                         && offer.commands == candidate.commands).map(|offer| offer.score)

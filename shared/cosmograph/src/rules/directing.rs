@@ -66,6 +66,25 @@ pub struct Directing {
     /// average at a boundary (case 1208; lineage-rounds D9).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub drift: bool,
+    /// The player's draft: meals a kind needs, this round's meals only and
+    /// a mass budget (cases 1200, 1203; lineage-rounds D10 to D12); unset,
+    /// a kind is learned at the first meal.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub draft: Option<Draft>,
+}
+
+/// The player's draft (cases 1200, 1203; lineage-rounds D10 to D12).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Draft {
+    /// The budget: this share (numerator, denominator) of what the line's
+    /// average living member holds.
+    pub share: [u32; 2],
+}
+
+impl Default for Draft {
+    fn default() -> Self {
+        Self { share: [1, 2] }
+    }
 }
 
 /// How far a lineage policy varies, in its weights' units: at founding
@@ -107,6 +126,7 @@ impl Default for Directing {
             variants: four(),
             policy: PolicyVariation::default(),
             drift: false,
+            draft: None,
         }
     }
 }
@@ -132,6 +152,9 @@ impl Directing {
         }
         for level in self.slots.keys() {
             crate::validation::key(level)?;
+        }
+        if self.draft.is_some_and(|d| d.share[1] == 0) {
+            return Err("the draft's share has a denominator of nought".into());
         }
         Ok(())
     }

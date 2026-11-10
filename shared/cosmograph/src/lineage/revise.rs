@@ -15,13 +15,26 @@ use crate::{
     schema::*,
     simulation::Simulation,
 };
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// The variants of `d` a line could commit, named, at most `most`: each
 /// learned kind its recipe lacks, borne on each tagma in turn.
 pub fn variants(d: &Development, most: usize) -> Vec<(Key, Development)> {
+    borne(d, most, None).into_iter().map(|(name, v, _)| (name, v)).collect()
+}
+
+/// The same variants, each with the kind it bears, those only of the kinds
+/// in `only` when given (case 1200).
+pub(super) fn borne(
+    d: &Development,
+    most: usize,
+    only: Option<&BTreeSet<Key>>,
+) -> Vec<(Key, Development, Key)> {
     let named = d.recipe.kinds();
-    let learned = d.lexicon.iter().filter(|k| !named.contains(*k));
+    let learned = d
+        .lexicon
+        .iter()
+        .filter(|k| !named.contains(*k) && only.is_none_or(|o| o.contains(*k)));
     let mut out = Vec::new();
     for kind in learned {
         for i in 0..d.recipe.tagmata.len() {
@@ -30,7 +43,7 @@ pub fn variants(d: &Development, most: usize) -> Vec<(Key, Development)> {
             t.bears = Some(kind.clone());
             t.chain.clear();
             t.per_segment = t.per_segment.max(1);
-            out.push((format!("revision:{i}-bears-{kind}"), v));
+            out.push((format!("revision:{i}-bears-{kind}"), v, kind.clone()));
         }
     }
     out.truncate(most);
@@ -74,9 +87,30 @@ pub fn offered(
     d: &Development,
     most: usize,
 ) -> Vec<(Key, Development)> {
-    let mut out = variants(d, most);
-    out.extend(declarations(session, lineage, d).into_iter().take(most));
-    out.extend(folds(session, lineage, d).into_iter().take(most));
+    offered_borne(session, lineage, d, most, None)
+        .into_iter()
+        .map(|(name, v, _)| (name, v))
+        .collect()
+}
+
+/// `offered`, each with the kind it bears if it bears one; the bearing
+/// variants only of the kinds in `only` when given (case 1200).
+pub(super) fn offered_borne(
+    session: &Session,
+    lineage: &str,
+    d: &Development,
+    most: usize,
+    only: Option<&BTreeSet<Key>>,
+) -> Vec<(Key, Development, Option<Key>)> {
+    let mut out: Vec<_> = borne(d, most, only)
+        .into_iter()
+        .map(|(name, v, kind)| (name, v, Some(kind)))
+        .collect();
+    let rest = declarations(session, lineage, d)
+        .into_iter()
+        .take(most)
+        .chain(folds(session, lineage, d).into_iter().take(most));
+    out.extend(rest.map(|(name, v)| (name, v, None)));
     out
 }
 

@@ -76,6 +76,12 @@ pub struct Ending {
 }
 
 impl Ending {
+    /// The tick the epoch that ends at a step from `from` began: held under
+    /// the waiting rule, else the timed span's start (case 1200).
+    pub fn began(&self, from: Tick, epoch: Tick) -> Tick {
+        if self.wait { self.since } else { (from / epoch) * epoch }
+    }
+
     /// Whether the boundary is due after a step from `from` to `now` (pure;
     /// an unspent extension holds a timed boundary back).
     pub fn due(&self, from: Tick, now: Tick, epoch: Tick, held: u128) -> bool {

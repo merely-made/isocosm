@@ -70,7 +70,7 @@ pub(crate) struct Stage {
     site: Option<Site>,
     births: Vec<Entity>,
     /// Kinds lineages learned by what their bodies took in (ruling 468).
-    lessons: Vec<(Key, Key)>,
+    lessons: Vec<(Key, Key, Key)>,
     /// Inserted (`true`) and removed relations, in the order the act made
     /// them.
     relations: Vec<(Relation, bool)>,
@@ -467,14 +467,15 @@ impl Simulation {
         for (relation, present) in stage.relations {
             crate::directing::hold(&mut s.relations, relation, present);
         }
-        for (lineage, kind) in stage.lessons {
-            let learned = s
-                .lineages
-                .get_mut(&lineage)
-                .and_then(|l| l.development.as_mut());
-            if let Some(d) = learned {
-                d.lexicon.insert(kind);
-            }
+        for (lineage, kind, donor) in stage.lessons {
+            crate::lineage::draft::learn(
+                &mut s.lineages,
+                &genesis.rules,
+                &lineage,
+                &donor,
+                &kind,
+                s.tick,
+            );
         }
         s.polities.extend(stage.polities);
         s.projects.records.extend(stage.projects.records);

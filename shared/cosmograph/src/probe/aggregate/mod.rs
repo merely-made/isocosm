@@ -67,7 +67,7 @@ pub(in crate::probe) enum Took {
 pub(in crate::probe) struct Acted {
     pub member: Entity,
     pub took: Option<Took>,
-    pub lessons: Vec<(Key, Key)>,
+    pub lessons: Vec<(Key, Key, Key)>,
     pub born: Vec<Pending>,
 }
 

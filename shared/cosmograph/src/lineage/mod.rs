@@ -16,6 +16,7 @@ pub mod body;
 pub mod body_read;
 pub mod boundary;
 pub mod chronicle;
+pub mod draft;
 pub mod drift;
 pub mod program;
 pub mod reckon;
@@ -34,5 +35,7 @@ pub use speciate::speciated_at;
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod draft_tests;
 #[cfg(test)]
 mod drift_tests;

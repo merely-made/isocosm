@@ -6675,6 +6675,27 @@ area = "Ecology"
 summary = "In the drift each living member weighs one plus its offspring born in the round."
 draws_on = ["1208", "ecology.1"]
 
+[decisions."lineage-rounds D10"]
+title = "what a meal yields (2026-11-09), applies Ecology 1"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "A kind joins a line's lexicon after enough whole meals of it: one from close kin of its kingdom, more for distant or other-kingdom prey, fewer when familiar."
+draws_on = ["1203", "ecology.1"]
+
+[decisions."lineage-rounds D11"]
+title = "the draft's budget (2026-11-09), applies Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A draft pick costs the adult mass it adds to a grown body, against a budget that is a share of the average member's holdings, until upkeep follows body size."
+draws_on = ["1200", "mesocosm.6"]
+
+[decisions."lineage-rounds D12"]
+title = "picks a round (2026-11-09), applies Mesocosm 6"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The player takes one draft pick a round."
+draws_on = ["1200", "mesocosm.6"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

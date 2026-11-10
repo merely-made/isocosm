@@ -11,7 +11,9 @@
 mod door;
 
 use cosmograph::directing::interim::Happening;
-use door::{Door, EPOCH, door};
+use cosmograph::directing::readings::Mode;
+use door::{Door, EPOCH, door, settings};
+use mesocosm_runtime::continuation::LoopAction;
 use mesocosm_runtime::{Occasion, Refusal, continuation::{LoopAnswer, LoopPhase, Rounds}};
 
 fn boundaries(happenings: &[Happening]) -> usize {
@@ -131,4 +133,20 @@ fn a_condition_sets_the_par_on_the_first_step_and_it_survives_a_restore() {
     plain.configure(Rounds::Capped, false);
     plain.step();
     assert!(!serde_json::to_string(&plain.game).unwrap().contains("\"ending\""));
+}
+
+#[test]
+fn with_the_draft_unset_an_epoch_review_is_as_before_in_both_modes() {
+    for mode in [Mode::Survival, Mode::Creative] {
+        let mut d = door();
+        d.send(LoopAction::Configure(mesocosm_runtime::continuation::LoopSettings {
+            mode, ..settings(Rounds::Capped, false) })).unwrap();
+        let (_, held) = run(&mut d, 2 * EPOCH + 2, |_| false);
+        assert!(held, "{mode:?} holds at an epoch");
+        let review = d.saved().review.clone().expect("the hold carries its review");
+        assert!(review.budget.is_none() && review.offers.iter().all(|o| o.cost.is_none()), "{mode:?}");
+        let text = serde_json::to_string(&review).unwrap();
+        assert!(!text.contains("\"cost\"") && !text.contains("\"budget\""), "{mode:?} saves as before");
+        d.reloaded().expect("the saved review validates after a restore");
+    }
 }

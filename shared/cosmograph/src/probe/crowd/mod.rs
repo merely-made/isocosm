@@ -276,15 +276,10 @@ impl<'w> Crowd<'w> {
     }
 
     /// Kinds its lineages learned by what their bodies took in (468).
-    fn learn(&mut self, lessons: &[(Key, Key)]) {
-        for (lineage, kind) in lessons {
-            let d = self
-                .lineages
-                .get_mut(lineage)
-                .and_then(|l| l.development.as_mut());
-            if let Some(d) = d {
-                d.lexicon.insert(kind.clone());
-            }
+    fn learn(&mut self, lessons: &[(Key, Key, Key)]) {
+        let rules = &self.world.genesis.rules;
+        for (lineage, kind, donor) in lessons {
+            crate::lineage::draft::learn(&mut self.lineages, rules, lineage, donor, kind, self.tick);
         }
     }
 

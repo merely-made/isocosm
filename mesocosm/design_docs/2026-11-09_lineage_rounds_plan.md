@@ -107,6 +107,31 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Ecology · draws on 1208, ecology.1 · summary In the drift each living member weighs one plus its offspring born in the round.
 
+- **D10, what a meal yields (2026-11-09), applies Ecology 1:** "Meals needed
+  before it's offered (Recommended)". A kind joins a line's lexicon once the
+  line has eaten it whole enough times: one meal from close kin of its own
+  kingdom, more for distant or other-kingdom prey, fewer as the kind is
+  familiar to its recipe. No draw decides it, so the game can show progress.
+  Offered against a price on each pick and against odds at each meal.
+
+  Links: area Ecology · draws on 1203, ecology.1 · summary A kind joins a line's lexicon after enough whole meals of it: one from close kin of its kingdom, more for distant or other-kingdom prey, fewer when familiar.
+
+- **D11, the draft's budget (2026-11-09), applies Mesocosm 6:** "Mass now,
+  upkeep later (Recommended)". A pick costs the adult mass it adds to a grown
+  body, and the budget is a share of what the line's average member holds;
+  it becomes upkeep when rates follow body size (LR4). Asked because upkeep
+  is flat per lineage today. Offered against the forward copy as the only
+  judge and against fixed points a round.
+
+  Links: area Mesocosm · draws on 1200, mesocosm.6 · summary A draft pick costs the adult mass it adds to a grown body, against a budget that is a share of the average member's holdings, until upkeep follows body size.
+
+- **D12, picks a round (2026-11-09), applies Mesocosm 6:** "One per round
+  (Recommended)". The review commits one offer, each scored by the forward
+  copy, as it does today. Offered against several within the budget and
+  against one with passed offers banked.
+
+  Links: area Mesocosm · draws on 1200, mesocosm.6 · summary The player takes one draft pick a round.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -191,8 +216,9 @@ move in this cut. Extends `lineage/boundary.rs` and the overlay plan's EB7.
 At the played line's review (`lineage/review.rs`), the offers are remaps
 drawn from what the line incorporated that round, beside the status quo
 (1200). What a meal yields follows the eater's kingdom, its kinship to the
-eaten and the ingredient's familiarity to its recipe (1203). Picks are
-bounded by an upkeep budget. The picks are candidates in the forward copy
+eaten and the ingredient's familiarity to its recipe (1203): a kind
+joins the lexicon after enough whole meals of it (D10). The player takes one
+pick a round (D12), bounded by a budget in adult mass (D11). The picks are candidates in the forward copy
 beside the averaged template, and the player chooses with their scores in
 view (D2). Creative mode offers any remap the kingdom's
 bounds allow; until LR6 that bound is today's lexicon. `lineage/revise.rs`
@@ -206,7 +232,7 @@ already makes variants bearing a learned kind.
   mode's wider offers appear only in creative mode; a committed draft
   replays.
 - Needs: LR2
-- Rulings: 1200, 1203, D2; Ecology 1, Mesocosm 6
+- Rulings: 1200, 1203, D2, D10, D11, D12; Ecology 1, Mesocosm 6
 
 ### LR4. The systems sheet, with previews
 A lineage's sheet is read off a grown body, never summed from the recipe
@@ -375,6 +401,29 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR3 built, behind the world rule `directing.draft` (unset by
+  default; set, its `share` is the budget's, a half). `lineage/draft.rs`:
+  `needed` is one meal, plus one for another kingdom, plus none, one or two
+  as the donor is kin, a distant relation or unrelated, less one where the
+  kind carries only functions the eater's recipe already has kinds for,
+  never below one (D10); `learn` counts whole meals per kind on the lineage
+  (`Lineage.meals`: count, the least needed, the last tick) and adds the kind
+  to the lexicon at the needed count; every lesson path, the staged meal, the
+  graft and the coarse ones, now carries the donor's lineage and goes through
+  it. `Review::of_draft_using` given the tick the round began offers a
+  variant only for kinds eaten whole since, each with its `cost`, the adult
+  mass it adds to a grown body, against `Review.budget`, the share of the
+  average member's holdings (D11); an offer over it is refused with the
+  cost, the budget and the shortfall. One offer is committed, as before
+  (D12). Mesocosm passes the round's first tick in survival mode and none in
+  creative, which offers the whole lexicon unbudgeted; a saved review is
+  re-read the same way. Unplayed lines' candidates are as they were.
+  Controls: eight in `lineage/draft_tests.rs`, three in
+  `tests/incorporation/draft.rs` (a real staged meal counted against its
+  donor; a run with a meal replaying to the same hash), one in
+  `tests/round_endings.rs`. No existing test or pin moved. Owed: a product
+  switch for the rule, with LR4h; yields beyond part kinds (minerals,
+  compounds, genes), which the sim has no stock of yet.
 - 2026-11-09: LR2 built. `lineage/drift.rs`: `weights` gives each living
   group its count plus the offspring its first member bore since the epoch
   began; `development` moves each tagma's segments to the members' weighted

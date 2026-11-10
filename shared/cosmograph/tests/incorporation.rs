@@ -26,6 +26,9 @@ mod adapter;
 #[path = "incorporation/scruple.rs"]
 mod scruple;
 
+#[path = "incorporation/draft.rs"]
+mod draft;
+
 fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
     Template {
         half_extent,

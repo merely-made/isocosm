@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::{physical, Game};
-use cosmograph::{Session, Result, lineage::{Review, boundary::{self, Candidate, Score}}};
+use cosmograph::{Session, Result, lineage::{Review, boundary::{self, Candidate, Score}},
+    directing::{interim::Ending, readings::Mode}};
 
 #[derive(Default)]
 pub(crate) struct Scorer { source: Option<boundary::ScoringSource> }
@@ -44,12 +45,18 @@ pub(crate) fn par(session: &Session, game: &Game, lineage: &str, span: u64) -> R
     })
 }
 
+/// The tick a survival review's draft counts meals from (case 1200); a
+/// creative one lifts the draft.
+pub(crate) fn draft(mode: Mode, ending: Ending, from: u64, epoch: u64) -> Option<u64> {
+    (mode == Mode::Survival).then(|| ending.began(from, epoch.max(1)))
+}
+
 pub(crate) fn review(session: &Session, game: &Game, participant: u64,
-    ticks: u64) -> Result<Review> {
+    ticks: u64, draft: Option<u64>) -> Result<Review> {
     let played = session.sim.plays(participant).ok_or("review has no played member")?;
     let lineage = &session.sim.state().population.get(played)
         .ok_or("review member absent")?.lineage;
     let mut scorer = Scorer::default();
-    Review::of_using(session, lineage, ticks,
+    Review::of_draft_using(session, lineage, ticks, draft,
         &mut |session, lineage, candidate, ticks| scorer.score(session, game, lineage, candidate, ticks))
 }

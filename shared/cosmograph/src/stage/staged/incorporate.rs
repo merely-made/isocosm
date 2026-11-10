@@ -56,7 +56,8 @@ impl Staged<'_> {
         }
         if let Some(kind) = w.kind {
             let eater = self.actor().lineage.clone();
-            self.stage.lessons.push((eater, kind));
+            let donor = self.stage.bodies[&prey].lineage.clone();
+            self.stage.lessons.push((eater, kind, donor));
         }
         Ok(true)
     }

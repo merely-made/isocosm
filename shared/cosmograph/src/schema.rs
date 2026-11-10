@@ -234,6 +234,22 @@ pub struct Lineage {
     /// the hand-written score, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub policy: Option<crate::directing::policy::LineagePolicy>,
+    /// What it has eaten whole, by kind (case 1203; lineage-rounds D10);
+    /// empty unless the world's draft rule is set, which serializes and
+    /// hashes as before.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub meals: BTreeMap<Key, Eaten>,
+}
+
+/// What a line has eaten whole of one kind (lineage-rounds D10).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Eaten {
+    /// Whole meals of the kind so far.
+    pub count: u32,
+    /// The fewest meals any of them asked for.
+    pub needed: u8,
+    /// The tick of the latest.
+    pub last: Tick,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

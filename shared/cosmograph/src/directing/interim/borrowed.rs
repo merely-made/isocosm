@@ -88,7 +88,7 @@ impl<'a> BorrowedInterim<'a> {
             if met {
                 out.push(Happening::ConditionMet { tick: now, held, par: e.par.unwrap_or_default() });
             }
-            let since = if e.wait { e.since } else { (from / epoch) * epoch };
+            let since = e.began(from, epoch);
             // The played line takes its own turn in the review; its template drifts here.
             crate::lineage::drift::commit(self.session, &lineage, since)?;
             let turns = boundary::adapt_since_using(self.session, Some(&lineage), since,

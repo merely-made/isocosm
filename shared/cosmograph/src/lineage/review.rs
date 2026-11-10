@@ -7,7 +7,7 @@
 //! the status quo first, and those it cannot take kept with the reason.
 //! It decides nothing; a commit is the offer's commands, sent as any other.
 
-use super::{program, reckon};
+use super::{draft, program, reckon};
 use crate::directing::interim::boundary::{self, Candidate, Score};
 use crate::{Result, Session, history::Command, schema::*};
 use serde::{Deserialize, Serialize};
@@ -21,6 +21,10 @@ pub struct Offer {
     /// What committing it sends; empty for the status quo.
     pub commands: Vec<Command>,
     pub why_not: Option<String>,
+    /// The adult mass a variant adds to a fully grown body, in a draft
+    /// review (case 1203; lineage-rounds D11).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cost: Option<u128>,
 }
 
 impl Offer {
@@ -40,6 +44,9 @@ pub struct Review {
     /// The program the line is born under; `None` for its founding.
     pub program: Option<String>,
     pub offers: Vec<Offer>,
+    /// What a variant may cost, in a draft review (case 1203).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub budget: Option<u128>,
 }
 
 impl Review {
@@ -51,12 +58,27 @@ impl Review {
     /// Reads the same offers through an explicitly supplied scoring clock.
     pub fn of_using(session: &Session, lineage: &str, scoring: Tick,
         score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Self> {
+        Self::of_draft_using(session, lineage, scoring, None, score)
+    }
+
+    /// The same, as the player's draft when given the tick the round began
+    /// and the world's `draft` rule is set: variants only of kinds eaten
+    /// whole since then, each with its cost against the line's budget
+    /// (cases 1200, 1203; lineage-rounds D10 to D12).
+    ///
+    /// # Errors
+    /// Fails if scoring an offer or growing a variant's body fails.
+    pub fn of_draft_using(session: &Session, lineage: &str, scoring: Tick,
+        draft: Option<Tick>,
+        score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Self> {
+        let budget = draft.and_then(|_| draft::budget(session, lineage));
         Ok(Self {
             tick: session.sim.state().tick,
             lineage: lineage.into(),
             readings: reckon::readings(&session.sim),
             program: program::digest(&program::program(session, lineage)),
-            offers: offers_using(session, lineage, scoring, score)?,
+            offers: offers_draft_using(session, lineage, scoring, draft, score)?,
+            budget,
         })
     }
 
@@ -77,6 +99,17 @@ pub fn offers(session: &Session, lineage: &str, scoring: Tick) -> Result<Vec<Off
 /// The offer repertoire is unchanged; only the fork's clock is supplied.
 pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
     score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Vec<Offer>> {
+    offers_draft_using(session, lineage, scoring, None, score)
+}
+
+/// The offers of a draft review when `draft` names the round's first tick
+/// and the world's rule is set (case 1200, 1203), else as `offers_using`.
+///
+/// # Errors
+/// Fails if scoring an offer or growing a variant's body fails.
+pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
+    draft: Option<Tick>,
+    score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Vec<Offer>> {
     let sim = &session.sim;
     let stay = Candidate {
         name: "candidate:stay".into(),
@@ -88,6 +121,7 @@ pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
         score: standing,
         commands: vec![],
         why_not: None,
+        cost: None,
     }];
     let living = boundary::standing(session, lineage).1 > 0;
     let most = sim.genesis().rules.directing().variants as usize;
@@ -95,7 +129,15 @@ pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
     let Some(d) = line.and_then(|l| l.development.as_ref()) else {
         return Ok(out);
     };
-    for (name, development) in super::revise::offered(session, lineage, d, most) {
+    let budget = draft.and_then(|_| draft::budget(session, lineage));
+    let eaten = budget.and(draft.zip(line)).map(|(since, l)| draft::eaten_since(l, since));
+    let rules = &sim.genesis().rules;
+    let offered = super::revise::offered_borne(session, lineage, d, most, eaten.as_ref());
+    for (name, development, bears) in offered {
+        let cost = match (budget, bears) {
+            (Some(_), Some(_)) => Some(draft::cost(rules, d, &development)?),
+            _ => None,
+        };
         let candidate = Candidate {
             name,
             commands: vec![Command::Revise {
@@ -106,7 +148,12 @@ pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
         let why_not = match sim.revisable(lineage, &development) {
             Err(why) => Some(why),
             Ok(_) if !living => Some("no body of the line is left".into()),
-            Ok(_) => None,
+            Ok(_) => match (cost, budget) {
+                (Some(c), Some(b)) if c > b => {
+                    Some(format!("costs {c} mg, {} mg over the budget of {b} mg", c - b))
+                }
+                _ => None,
+            },
         };
         let score = match why_not {
             None => score(session, lineage, &candidate, scoring)?,
@@ -117,6 +164,7 @@ pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
             score,
             commands: candidate.commands,
             why_not,
+            cost,
         });
     }
     Ok(out)

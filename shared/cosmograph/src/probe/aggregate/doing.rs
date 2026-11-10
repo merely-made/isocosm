@@ -45,7 +45,7 @@ pub(super) struct Doing<'a> {
     /// What its meal took of the prey, the kinds its lineage learned, and
     /// the births its act made, which the crowd draws for each member.
     pub(super) took: Option<Took>,
-    pub(super) lessons: Vec<(Key, Key)>,
+    pub(super) lessons: Vec<(Key, Key, Key)>,
     pub(super) born: Vec<Pending>,
 }
 
@@ -218,7 +218,8 @@ impl Doing<'_> {
         };
         growth::take_whole(&mut self.member, prey, id, &w).ok_or("bitten part missing")?;
         let eater = self.member.lineage.clone();
-        self.lessons.extend(w.kind.map(|k| (eater, k)));
+        let donor = prey.lineage.clone();
+        self.lessons.extend(w.kind.map(|k| (eater, k, donor)));
         self.took = Some(Took::Whole(id));
         Ok(true)
     }
