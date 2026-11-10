@@ -6668,6 +6668,13 @@ area = "Mesocosm"
 summary = "The first round-ending condition is holding more matter than the lineage's own unsteered forward copy peaks at over the span."
 draws_on = ["1199", "1212", "mesocosm.3"]
 
+[decisions."lineage-rounds D9"]
+title = "the drift's weights (2026-11-09), applies Ecology 1"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "In the drift each living member weighs one plus its offspring born in the round."
+draws_on = ["1208", "ecology.1"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

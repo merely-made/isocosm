@@ -99,6 +99,14 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1199, 1212, mesocosm.3 · summary The first round-ending condition is holding more matter than the lineage's own unsteered forward copy peaks at over the span.
 
+- **D9, the drift's weights (2026-11-09), applies Ecology 1:** "Everyone
+  once, plus offspring (Recommended)". Each living member counts once, and
+  once more per offspring born in the round, so a line with few births barely
+  moves and a strong breeder pulls noticeably. Offered against breeders only,
+  by offspring, and against a fixed step toward the breeders' average.
+
+  Links: area Ecology · draws on 1208, ecology.1 · summary In the drift each living member weighs one plus its offspring born in the round.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -139,7 +147,7 @@ It is built in four steps:
   boundary fires on the epoch's tick count and nothing else ends one, which is
   the capped mode without its extension. The sim's loop carries the epoch's
   ending first; Mesocosm's saved loop follows, with a save and replay path.
-- **LR1.4, the edit on survivors.** Controls only, and owed: a revision already changes
+- **LR1.4, the edit on survivors.** Controls only: a revision already changes
   the lineage's recipe, not its members, and is refused when no body of the
   line is left.
 - Done when, headless, by draws: a start outside the lineage's range and its
@@ -158,10 +166,17 @@ It is built in four steps:
 ### LR2. Drift: the success-weighted average
 Before the forward copy weighs candidates, a lineage's template moves to the
 average of its members' variation, each weighted by reproductive success
-(1208). Members share one recipe today, so the variation averaged is what a
-member already carries: its drawn soma (segment counts, absent appendages,
-Bodies 6) and its policy draw (M3.5). Extends `lineage/boundary.rs` and the
-overlay plan's EB7.
+(1208), one plus its offspring born in the round (D9). Members share one
+recipe today, so the variation averaged is what a member already carries:
+its drawn segment count per tagma (`Entity.soma`, Bodies 6) and the policy
+weights its draw expresses (`Entity.drawn`, M3.5). A child draws afresh
+around the template rather than inheriting its parent's draw, so this is an
+evolution strategy's update of its mean. The move is committed as logged
+`Revise` and `Policy` commands for every lineage, the played one included,
+before candidates are scored, behind a world rule that is off by default
+(Schema 10). Averages are integer, ties rounding toward the current value.
+Drawn absences are not recorded on a member, so the recipe's odds do not
+move in this cut. Extends `lineage/boundary.rs` and the overlay plan's EB7.
 - Done when: with no variation among members a boundary adopts exactly what
   it adopts today (hashes equal, the negative control); a planted variant
   whose bearers leave more offspring moves the template toward it in
@@ -170,7 +185,7 @@ overlay plan's EB7.
   weight is its own reproductive success, no more; cost is measured per
   boundary at a few hundred members.
 - Needs: `mesocosm-overlay` M3.5 (built), EB7
-- Rulings: 684, 1208; Ecology 1
+- Rulings: 684, 1208, D9; Ecology 1
 
 ### LR3. The player's draft
 At the played line's review (`lineage/review.rs`), the offers are remaps
@@ -360,6 +375,11 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR1.4's controls, in `lineage/tests.rs`: with the played
+  member's site lost and one group of the line alive at another site, the
+  review still offers an edit and committing it revises the line; with no
+  body of the line left every offer but the status quo is refused, "no body
+  of the line is left". Owed: the dormant-propagule control, on `sim` S10.2.
 - 2026-11-09: LR1.3 built, in the sim and Mesocosm's saved loop. The sim's
   loop carries `interim::Ending` (wait, since, call, extend, forfeit, par):
   left at its default the boundary fires on the epoch's tick count as

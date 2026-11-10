@@ -140,3 +140,53 @@ fn readings_are_never_of_nothing() {
             .any(|r| r.lineage == line && r.feat == reckon::GROWTH)
     );
 }
+
+/// The line's living members, one id per group.
+fn living(s: &Session, line: &str) -> Vec<Id> {
+    let groups = &s.sim.state().population.groups;
+    groups.iter().filter(|(_, g)| g.entity.alive && g.entity.lineage == line).map(|(f, _)| *f).collect()
+}
+
+/// An edit changes the line's recipe, not a member, so after the played
+/// member's site is lost it lands on the line wherever it survives (case
+/// 1213).
+#[test]
+fn an_edit_after_local_loss_lands_on_the_line_where_it_survives() {
+    let (mut s, line, member) = learned();
+    let here = s.sim.state().population.get(member).unwrap().place;
+    let far = *s.sim.state().sites.keys().find(|site| **site != here).unwrap();
+    let ours = living(&s, &line);
+    let survivor = *ours.iter().find(|id| **id != member).expect("a second group of the line");
+    // Whole groups at once: lifting a member would leave its band alive.
+    for (first, group) in &mut s.sim.state.population.groups {
+        let e = group.entity_mut();
+        if e.lineage != line { continue; }
+        if *first == survivor { e.place = far; } else { e.alive = false; }
+    }
+    assert_eq!(living(&s, &line), vec![survivor], "only the far member lives");
+    let review = Review::of(&s, &line, 2).unwrap();
+    let i = review.offers.iter().position(Offer::takeable).expect("an edit is still offered");
+    let before = s.sim.state().lineages[&line].revision;
+    for c in review.commit(i).unwrap() {
+        s.command(c.clone()).unwrap();
+    }
+    assert_eq!(s.sim.state().lineages[&line].revision, before + 1);
+    assert_eq!(s.sim.state().population.get(survivor).unwrap().lineage, line);
+}
+
+/// With no body of the line left anywhere the edit is refused, and says so
+/// (case 1213).
+#[test]
+fn an_edit_is_refused_when_no_body_of_the_line_is_left() {
+    let (mut s, line, _) = learned();
+    for group in s.sim.state.population.groups.values_mut() {
+        let e = group.entity_mut();
+        if e.lineage == line { e.alive = false; }
+    }
+    let review = Review::of(&s, &line, 2).unwrap();
+    assert!(review.offers.len() > 1, "the line still has a learned kind to offer");
+    for (i, offer) in review.offers.iter().enumerate().skip(1) {
+        assert_eq!(offer.why_not.as_deref(), Some("no body of the line is left"));
+        assert!(review.commit(i).is_none());
+    }
+}
