@@ -305,6 +305,10 @@ pub struct Development {
     /// lineage-rounds D14). Nought serializes and hashes as before.
     #[serde(default, skip_serializing_if = "is_nought")]
     pub comfort: i16,
+    /// The growth grammar the recipe's tagmata unfold from, where the line
+    /// has one (cases 1202, 1206). None serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub grammar: Option<super::Grammar>,
 }
 
 fn is_nought(degrees: &i16) -> bool {

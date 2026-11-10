@@ -22,6 +22,8 @@ use std::collections::{BTreeMap, BTreeSet};
 mod feeding;
 mod proportions;
 mod rooted;
+mod tips;
+pub use tips::tips;
 
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
@@ -458,6 +460,7 @@ pub(crate) fn embody_within(
             tracts: vec![],
             systems: Default::default(),
             comfort: 0,
+            grammar: None,
         });
         let provision = AccountKind::Matter {
             lineage: key.clone(),

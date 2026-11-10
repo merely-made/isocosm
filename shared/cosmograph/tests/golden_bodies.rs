@@ -27,6 +27,7 @@ fn authored(recipe: Recipe) -> Development {
         tracts: vec![],
         systems: Default::default(),
         comfort: 0,
+        grammar: None,
     }
 }
 

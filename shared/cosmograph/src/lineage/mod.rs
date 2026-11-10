@@ -18,6 +18,7 @@ pub mod boundary;
 pub mod chronicle;
 pub mod draft;
 pub mod drift;
+pub mod grammar;
 pub mod program;
 pub mod reckon;
 pub mod review;
@@ -40,5 +41,7 @@ mod tests;
 mod draft_tests;
 #[cfg(test)]
 mod drift_tests;
+#[cfg(test)]
+mod grammar_tests;
 #[cfg(test)]
 mod sheet_tests;

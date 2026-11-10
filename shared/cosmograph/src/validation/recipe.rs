@@ -56,6 +56,28 @@ pub(super) fn kinds(rules: &Rules) -> Result<()> {
     Ok(())
 }
 
+/// Why `tagmata` cannot develop, if they cannot (the checks of a recipe's
+/// tagmata, which a grammar's seed and unfolding meet too).
+fn tagmata(tagmata: &[Tagma]) -> Option<&'static str> {
+    for (i, t) in tagmata.iter().enumerate() {
+        if t.segments == 0 {
+            return Some("has a tagma of no segments");
+        }
+        if t.bears.is_some() != (t.per_segment > 0) {
+            return Some("bears a kind on no segment, or none on some");
+        }
+        if !t.chain.is_empty()
+            && (t.bears.is_none() || t.chain.len() * usize::from(t.per_segment) * 2 > 255)
+        {
+            return Some("has an unbound or oversized appendage chain");
+        }
+        if t.parent.is_some_and(|p| usize::from(p) >= i) {
+            return Some("branches a tagma from one not yet placed");
+        }
+    }
+    None
+}
+
 pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<()> {
     let affinity = rules.affinity.clone().unwrap_or_default();
     for (id, lineage) in lineages {
@@ -67,21 +89,8 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
         if recipe.tagmata.is_empty() {
             return refuse("has no tagmata");
         }
-        for (i, t) in recipe.tagmata.iter().enumerate() {
-            if t.segments == 0 {
-                return refuse("has a tagma of no segments");
-            }
-            if t.bears.is_some() != (t.per_segment > 0) {
-                return refuse("bears a kind on no segment, or none on some");
-            }
-            if !t.chain.is_empty()
-                && (t.bears.is_none() || t.chain.len() * usize::from(t.per_segment) * 2 > 255)
-            {
-                return refuse("has an unbound or oversized appendage chain");
-            }
-            if t.parent.is_some_and(|p| usize::from(p) >= i) {
-                return refuse("branches a tagma from one not yet placed");
-            }
+        if let Some(why) = tagmata(&recipe.tagmata) {
+            return refuse(why);
         }
         // A declared tract names a catalogued function on some part (765).
         if d.tracts.iter().any(|t| t.cells == 0 || !rules.functions.contains_key(&t.function)) {
@@ -94,6 +103,22 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
         let kinds = recipe.kinds();
         if let Some(k) = kinds.iter().find(|k| !d.lexicon.contains(*k)) {
             return Err(format!("{id}'s recipe names {k}, which its lexicon lacks"));
+        }
+        if let Some(grammar) = &d.grammar {
+            if grammar.seed.is_empty() {
+                return refuse("has a grammar with no seed");
+            }
+            if let Some(why) = tagmata(&grammar.seed) {
+                return Err(format!("{id}'s grammar seed {why}"));
+            }
+            let unfolded = unfold(grammar).map_err(|why| format!("{id}'s grammar: {why}"))?;
+            if let Some(why) = tagmata(&unfolded) {
+                return Err(format!("{id}'s grammar unfolds to tagmata that {why}"));
+            }
+            let named = Recipe { tagmata: unfolded, ..recipe.clone() }.kinds();
+            if let Some(k) = named.iter().find(|k| !d.lexicon.contains(*k)) {
+                return Err(format!("{id}'s grammar names {k}, which its lexicon lacks"));
+            }
         }
         if let Some(k) = d.lexicon.iter().find(|k| !rules.kinds.contains_key(*k)) {
             return Err(format!("{id}'s lexicon holds {k}, which the world lacks"));

@@ -146,9 +146,9 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
     let sheeted = rules.directing().sheet;
     let lines = &sim.state().lineages;
     let offered = super::revise::offered_borne(session, lineage, d, most, eaten.as_ref());
-    for (name, development, bears) in offered {
-        let cost = match (budget, bears) {
-            (Some(_), Some(_)) => Some(draft::cost(rules, kingdom, d, &development)?),
+    for (name, development, costed) in offered {
+        let cost = match (budget, costed) {
+            (Some(_), true) => Some(draft::cost(rules, kingdom, d, &development)?),
             _ => None,
         };
         let candidate = Candidate {

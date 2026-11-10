@@ -78,6 +78,7 @@ fn development(tagmata: Vec<Tagma>, variance: u8, absence: [u32; 2]) -> Developm
         tracts: vec![],
         systems: Default::default(),
         comfort: 0,
+        grammar: None,
     }
 }
 

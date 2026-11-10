@@ -46,6 +46,6 @@ pub(super) fn install(rules: &mut Rules) -> Development {
     };
     Development {
         lexicon: recipe.kinds(), recipe, policy: Policy::default(), domain: 0, clutch: 1,
-        anamorphic: false, tracts: vec![], systems: Default::default(), comfort: 0,
+        anamorphic: false, tracts: vec![], systems: Default::default(), comfort: 0, grammar: None,
     }
 }

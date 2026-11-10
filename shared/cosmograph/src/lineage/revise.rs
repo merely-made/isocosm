@@ -79,8 +79,8 @@ pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candi
 }
 
 /// Everything a line could commit, named: its recipe's variants, the
-/// tracts it could declare and the systems it could fold in, at most
-/// `most` of each.
+/// tracts it could declare, the systems it could fold in and the edits to
+/// its growth grammar (cases 1202, 1206), at most `most` of each.
 pub fn offered(
     session: &Session,
     lineage: &str,
@@ -93,24 +93,30 @@ pub fn offered(
         .collect()
 }
 
-/// `offered`, each with the kind it bears if it bears one; the bearing
-/// variants only of the kinds in `only` when given (case 1200).
+/// `offered`, each with whether it grows the body, so is costed in a draft;
+/// the bearing variants and grammar additions only of the kinds in `only`
+/// when given (case 1200).
 pub(super) fn offered_borne(
     session: &Session,
     lineage: &str,
     d: &Development,
     most: usize,
     only: Option<&BTreeSet<Key>>,
-) -> Vec<(Key, Development, Option<Key>)> {
+) -> Vec<(Key, Development, bool)> {
     let mut out: Vec<_> = borne(d, most, only)
         .into_iter()
-        .map(|(name, v, kind)| (name, v, Some(kind)))
+        .map(|(name, v, _)| (name, v, true))
         .collect();
     let rest = declarations(session, lineage, d)
         .into_iter()
         .take(most)
         .chain(folds(session, lineage, d).into_iter().take(most));
-    out.extend(rest.map(|(name, v)| (name, v, None)));
+    out.extend(rest.map(|(name, v)| (name, v, false)));
+    let edits = super::grammar::candidates(d, only)
+        .into_iter()
+        .filter(|(_, v)| session.sim.revisable(lineage, v).is_ok())
+        .take(most);
+    out.extend(edits.map(|(name, v)| (name, v, true)));
     out
 }
 

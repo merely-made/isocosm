@@ -391,6 +391,12 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 Made to keep building at his word ("no need to wait on me! let's build what
 we can and sort on wednesday", 2026-11-10); none is a decision of his.
 
+- **The grammar unfolds into tagmata** (LR6) rather than replacing them: the
+  tagmata stay the truth, and a rule edit regenerates them, overwriting what
+  drift had moved. Five operators are in (repeat, branch, differentiate,
+  allocate, and the existing bilateral symmetry); the plant preset's leaf is
+  the broad plate, since fronds collide on side runs.
+- **Kingdom weights' numbers** (LR6): halves and doubles on a few functions.
 - **Being eaten feeds them** (LR5). Matter a lineage's bodies take from the
   played line's bodies raises its regard for the player, case 1214's
   "feeding it" read literally; a predator comes to regard its prey's player.
@@ -453,6 +459,30 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR6's third step, the grammar. A development may carry a
+  `Grammar` (`rules/grammar.rs`): a seed of tagmata and rules applied in
+  order, which `unfold` into the ordinary `recipe.tagmata` every reader
+  already uses; a development with none is exactly as it was, and the golden
+  digest is unmoved (the test gained one `grammar: None`). Rules: `Repeat`
+  lengthens a run; `Branch` cuts its bearer into pieces of `every` segments
+  chained tip to base, each whole piece bearing a side run `taper` shorter,
+  to two levels, the second turned to the third axis so the lattice cannot
+  collide; `Differentiate` splits a run and gives its far part a kind;
+  `Allocate` caps the body's segments, shortening the longest runs first.
+  `develop` is unchanged. Rule edits are review offers (`lineage/grammar.rs`):
+  each parameter up or down, and a `Differentiate` for a learned kind the
+  body lacks, costed and budgeted in a draft review, the add filtered by this
+  round's meals. `bodied::tips` is a plant preset grown from its tips: a stem
+  of 8 in pieces of 2, four side runs of 6 and twelve of 4 or 3, 72 segments
+  and 152 parts, no boxes overlapping; it is wired into no founding. Controls
+  in `rules/grammar/tests.rs`, `lineage/grammar_tests.rs` and
+  `tests/grammar.rs`. Limits: branching past two levels and a facing along
+  the bearer's axis are refused; non-overlap is guaranteed for bare segments
+  and checked for the preset, not for an arbitrary grammar's borne parts; a
+  tune that leaves the unfolded tagmata unchanged is still offered. Owed:
+  radial symmetry (the geometry layer's), fuse, switch and accrete; a kingdom's
+  bounds on the operators; drift over a grammar's parameters; a founding
+  that uses the preset.
 - 2026-11-10: LR6's first two steps. **A golden test**
   (`tests/golden_bodies.rs`), pinned on unchanged source before anything
   else: one digest over the bodies developed from the eight authored recipes

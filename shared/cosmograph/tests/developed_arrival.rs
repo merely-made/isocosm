@@ -35,7 +35,7 @@ fn world(stores: u32) -> Session {
     g.lineages.insert(LINE.into(), Lineage { parent: None, revision: 1, policy: None,
         kingdom: "kingdom:fauna".into(), traits: Default::default(),
         development: Some(Development { lexicon: recipe.kinds(), recipe, policy: Policy::default(),
-            domain: 0, clutch: 1, anamorphic: false, tracts: vec![], systems: Default::default(), comfort: 0 }),
+            domain: 0, clutch: 1, anamorphic: false, tracts: vec![], systems: Default::default(), comfort: 0, grammar: None }),
         decides: None, meals: Default::default(), regard: Default::default(), ate: Default::default(),
     });
     Session::new(g, Execution::Grouped).unwrap()

@@ -146,6 +146,7 @@ impl BodyFounding {
                 tracts: vec![],
                 systems: Default::default(),
                 comfort: 0,
+                grammar: None,
             };
             i += 1;
             d

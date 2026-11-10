@@ -74,6 +74,7 @@ fn development(t: Tagma, domain: u16) -> Development {
         tracts: vec![],
         systems: Default::default(),
         comfort: 0,
+        grammar: None,
     }
 }
 
