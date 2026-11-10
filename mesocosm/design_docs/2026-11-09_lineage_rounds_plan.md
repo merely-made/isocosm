@@ -430,6 +430,13 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: the host offers starts. The lineage-ended and watching choice
+  gains a row per start after the other bodies and before Watch and New
+  World, reading "<lineage> at site N" or "<lineage> toward site N (a
+  journey)"; Enter sends `LoopAnswer::Start`. The panel shows only the
+  selected row, so a fuller picker that draws every row is owed, as are start
+  rows in the runtime's own offered list (`endpoint.rs`). The window was not
+  run, and no test drives Enter to an admitted start through the runtime.
 - 2026-11-10: three follow-ons. **The drift moves absence odds:** under the
   drift rule a member records what it drew absent (`Entity.absent`, empty and
   unserialized otherwise), and `drift::development` moves `recipe.absence` to

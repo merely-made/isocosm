@@ -27,6 +27,12 @@ fn active(phase: LoopPhase) -> bool {
     matches!(phase, LoopPhase::LineageEnded | LoopPhase::Watching | LoopPhase::NewWorldRequested | LoopPhase::WorldEnded)
 }
 
+/// A start's words: its lineage and site, a fringe start a journey
+/// (case 1211; lineage-rounds D5, D6).
+fn start_words(lineage: &str, site: u64, journey: bool) -> String {
+    if journey { format!("{lineage} toward site {site} (a journey)") } else { format!("{lineage} at site {site}") }
+}
+
 fn choices(reading: &LoopReading) -> Vec<LoopAnswer> {
     if reading.phase == LoopPhase::NewWorldRequested { return vec![LoopAnswer::Watch]; }
     if reading.phase == LoopPhase::WorldEnded { return vec![LoopAnswer::Watch, LoopAnswer::NewWorld]; }
@@ -34,6 +40,7 @@ fn choices(reading: &LoopReading) -> Vec<LoopAnswer> {
         return Vec::new();
     }
     let mut choices: Vec<_> = reading.lineages.iter().copied().map(LoopAnswer::OtherLineage).collect();
+    choices.extend(reading.starts.iter().map(|start| LoopAnswer::Start { lineage: start.lineage.clone(), site: start.site }));
     if reading.phase == LoopPhase::LineageEnded { choices.push(LoopAnswer::Watch); }
     choices.push(LoopAnswer::NewWorld);
     choices
@@ -102,7 +109,11 @@ impl Host {
         match answer {
             LoopAnswer::OtherLineage(id) => self.runtime.sim().state().population.get(id.0)
                 .map_or_else(|| "Unavailable body".into(), |body| format!("body {}, {}", id.0, body.lineage)),
-            LoopAnswer::Start { lineage, site } => format!("{lineage} at site {site}"),
+            LoopAnswer::Start { lineage, site } => {
+                let journey = self.continuation.presented.as_ref().or(self.continuation.reading.as_ref())
+                    .is_some_and(|reading| reading.starts.iter().any(|start| start.journey && start.lineage == *lineage && start.site == *site));
+                start_words(lineage, *site, journey)
+            },
             LoopAnswer::Watch => "Watch this world".into(),
             LoopAnswer::NewWorld => "Request a new world".into(),
             LoopAnswer::Checkpoint(_) => "Checkpoint answer".into(),
@@ -129,12 +140,13 @@ impl Host {
                 LoopPhase::Watching if reading.world_ended_at.is_some() => "Watching this ended world",
                 LoopPhase::Watching => "Watching this world",
                 LoopPhase::WorldEnded => "This world has ended as a game", _ => "Your lineage has ended" }.into(),
-            facts: vec![("choose".into(), selected),
-                ("other bodies".into(), format!("{} offered in the current native view", reading.lineages.len())),
-                ("status".into(), self.continuation.notice.clone().unwrap_or_else(||
+            facts: [Some(("choose".into(), selected)),
+                Some(("other bodies".into(), format!("{} offered in the current native view", reading.lineages.len()))),
+                (!reading.starts.is_empty()).then(|| ("starts".into(), format!("{} offered", reading.starts.len()))),
+                Some(("status".into(), self.continuation.notice.clone().unwrap_or_else(||
                     if let Some(tick) = reading.world_ended_at { format!("The authored world predicate ended the game at tick {tick}.") }
                     else if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }
-                    else { "The world waits for your choice.".into() }))],
+                    else { "The world waits for your choice.".into() })))].into_iter().flatten().collect(),
             stay: "[Up/Down / Tab] select; [Enter / click panel] apply".into(),
             take: Some(if matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::WorldEnded) { "[W] watch; [N] request new world" }
                 else { "[N] request new world" }.into()),
@@ -210,6 +222,15 @@ impl Host {
         self.refresh_continuation();
     }
 
+    fn move_continuation_cursor(&mut self, up: bool) {
+        let Some(reading) = &self.continuation.presented else { return; };
+        let choices = choices(reading);
+        if choices.is_empty() { return; }
+        let at = self.continuation.selected.as_ref().and_then(|answer| choices.iter().position(|choice| choice == answer));
+        let next = if up { at.map_or(choices.len()-1, |i| (i+choices.len()-1)%choices.len()) } else { at.map_or(0, |i| (i+1)%choices.len()) };
+        self.continuation.selected = Some(choices[next].clone()); self.continuation.notice = None;
+    }
+
     pub(super) fn try_continuation_key(&mut self, key: &Key) -> bool {
         if let Some(answer) = crate::input::round_key(key) {
             self.answer_round(answer);
@@ -218,14 +239,7 @@ impl Host {
         if !self.continuation_open() { return false; }
         match key {
             Key::Named(NamedKey::ArrowUp | NamedKey::ArrowDown | NamedKey::Tab) => {
-                let Some(reading) = &self.continuation.presented else { return true; };
-                let choices = choices(reading);
-                if !choices.is_empty() {
-                    let at = self.continuation.selected.as_ref().and_then(|answer| choices.iter().position(|choice| choice == answer));
-                    let next = if matches!(key, Key::Named(NamedKey::ArrowUp)) { at.map_or(choices.len()-1, |i| (i+choices.len()-1)%choices.len()) }
-                        else { at.map_or(0, |i| (i+1)%choices.len()) };
-                    self.continuation.selected = Some(choices[next].clone()); self.continuation.notice = None;
-                }
+                self.move_continuation_cursor(matches!(key, Key::Named(NamedKey::ArrowUp)));
             },
             Key::Named(NamedKey::Enter) => self.submit_selected_continuation(),
             Key::Character(c) if c.eq_ignore_ascii_case("w") => self.submit_continuation(LoopAnswer::Watch),

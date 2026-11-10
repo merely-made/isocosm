@@ -108,3 +108,48 @@ fn a_condition_shows_its_par_once_there_is_one() {
     let sim = host.runtime.sim().clone();
     assert_eq!(host.round_state(&sim), (None, Some(format!("{par} mg to beat"))));
 }
+
+fn started(phase: LoopPhase) -> LoopReading {
+    let start = |lineage: &str, site, journey| continuation::LoopStart { lineage: lineage.into(), site, critter: cosmograph_overlay::EntityHandle(7), journey };
+    LoopReading { phase, lineages: vec![cosmograph_overlay::EntityHandle(3)], starts: vec![start("lineage:2", 4, false), start("lineage:2", 5, true)], ..reading("starts") }
+}
+
+fn start(lineage: &str, site: u64) -> LoopAnswer { LoopAnswer::Start { lineage: lineage.into(), site } }
+
+#[test]
+fn start_rows_follow_the_other_bodies_and_precede_watch_and_new_world() {
+    let ended = choices(&started(LoopPhase::LineageEnded));
+    assert_eq!(ended, [LoopAnswer::OtherLineage(cosmograph_overlay::EntityHandle(3)), start("lineage:2", 4), start("lineage:2", 5), LoopAnswer::Watch, LoopAnswer::NewWorld]);
+    let watching = choices(&started(LoopPhase::Watching));
+    assert_eq!(watching, [ended[0].clone(), ended[1].clone(), ended[2].clone(), LoopAnswer::NewWorld]);
+    let none = LoopReading { starts: vec![], ..started(LoopPhase::LineageEnded) };
+    assert_eq!(choices(&none), [ended[0].clone(), LoopAnswer::Watch, LoopAnswer::NewWorld]);
+}
+
+#[test]
+fn start_rows_read_as_a_range_start_and_a_journey() {
+    let mut host = host(continuation::Rounds::Capped, false);
+    host.continuation.reading = Some(started(LoopPhase::LineageEnded));
+    assert_eq!(host.continuation_label(&start("lineage:2", 4)), "lineage:2 at site 4");
+    assert_eq!(host.continuation_label(&start("lineage:2", 5)), "lineage:2 toward site 5 (a journey)");
+    let facts = host.continuation_reading().unwrap().facts;
+    assert!(facts.contains(&("starts".into(), "2 offered".into())));
+    host.continuation.reading = Some(LoopReading { starts: vec![], ..started(LoopPhase::LineageEnded) });
+    assert!(host.continuation_reading().unwrap().facts.iter().all(|(key, _)| key != "starts"));
+}
+
+#[test]
+fn the_cursor_reaches_a_start_and_confirming_it_goes_through_the_door() {
+    let mut host = host(continuation::Rounds::Capped, false);
+    host.continuation.presented = Some(started(LoopPhase::LineageEnded));
+    host.move_continuation_cursor(false);
+    host.move_continuation_cursor(false);
+    assert_eq!(host.continuation.selected, Some(start("lineage:2", 4)));
+    host.move_continuation_cursor(false);
+    assert_eq!(host.continuation.selected, Some(start("lineage:2", 5)));
+    host.move_continuation_cursor(true);
+    assert_eq!(host.continuation.selected, Some(start("lineage:2", 4)));
+    // The bench world is not in a loop phase, so the door refuses it: nothing is sent.
+    host.submit_selected_continuation();
+    assert!(host.events.is_empty());
+}

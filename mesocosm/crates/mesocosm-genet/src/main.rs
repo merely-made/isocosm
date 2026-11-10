@@ -454,7 +454,8 @@ at the boundary the trait board comes up:
   Tab    move among the offers
   R      commit the selected offer
 when the lineage or authored global world ends, or while watching:
-  Up/Down or Tab select a native-visible other body, Watch, or New World
+  Up/Down or Tab select a native-visible other body, a start (a lineage and a
+  site; a fringe one is a journey), Watch, or New World
   Enter or click the pane applies the selected choice; W watches, N requests
   a new world. Esc saves the configured trace and quits; a new run starts
   separately through the startup flags, and --watch PATH resumes this world.
