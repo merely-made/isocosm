@@ -1325,7 +1325,7 @@ dependencies = [
 [[package]]
 name = "chartulary"
 version = "0.3.0"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "muniment",
  "petgraph",
@@ -2202,7 +2202,7 @@ dependencies = [
 [[package]]
 name = "eidetic"
 version = "0.0.3"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "async-trait",
  "blake3",
@@ -2720,7 +2720,7 @@ dependencies = [
 [[package]]
 name = "gemot"
 version = "0.1.1"
-source = "git+https://github.com/merely-made/gemot.git?branch=main#d23224de1d98f21f21cae8c260062009df993810"
+source = "git+https://github.com/merely-made/gemot.git?branch=main#638cfd2b9af1d00dab6764b6a8829f3ac0c7b139"
 dependencies = [
  "insigne",
  "mere-proofs",
@@ -3286,7 +3286,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "serde",
 ]
@@ -3971,7 +3971,7 @@ checksum = "6e44b0a4eaa4c82f441d50a963f2d5f05a787240aeee097597033e72accfd22f"
 [[package]]
 name = "impresa"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "serde",
  "serde_json",
@@ -5099,7 +5099,7 @@ checksum = "4050469837a6ff301cd14c1f8f24f88549e6d548f24f64e2148eb0f72cebc51f"
 [[package]]
 name = "luggage"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "semver",
  "serde",
@@ -5199,7 +5199,7 @@ dependencies = [
 [[package]]
 name = "mere-edit"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "serde",
 ]
@@ -5207,7 +5207,7 @@ dependencies = [
 [[package]]
 name = "mere-framing"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "postcard",
  "serde",
@@ -5241,7 +5241,7 @@ dependencies = [
 [[package]]
 name = "mere-proofs"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "blake3",
  "serde",
@@ -5259,7 +5259,7 @@ dependencies = [
 [[package]]
 name = "mere-transport"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/murm.git?branch=main#e58307266acc12b4f7b71dba1a757a949069dc07"
+source = "git+https://github.com/merely-made/murm.git?branch=main#6ce72f7f27656fa48490b3e8078767272f5fa7e2"
 dependencies = [
  "async-trait",
  "bao-tree",
@@ -5292,7 +5292,7 @@ dependencies = [
 [[package]]
 name = "mien"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/gemot.git?branch=main#d23224de1d98f21f21cae8c260062009df993810"
+source = "git+https://github.com/merely-made/gemot.git?branch=main#638cfd2b9af1d00dab6764b6a8829f3ac0c7b139"
 dependencies = [
  "insigne",
  "muniment",
@@ -5369,7 +5369,7 @@ dependencies = [
 [[package]]
 name = "mooting"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/gemot.git?branch=main#d23224de1d98f21f21cae8c260062009df993810"
+source = "git+https://github.com/merely-made/gemot.git?branch=main#638cfd2b9af1d00dab6764b6a8829f3ac0c7b139"
 dependencies = [
  "p2mere-core",
  "serde",
@@ -5437,7 +5437,7 @@ dependencies = [
 [[package]]
 name = "muniment"
 version = "0.2.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "async-trait",
  "blake3",
@@ -5449,7 +5449,7 @@ dependencies = [
 [[package]]
 name = "murm"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/murm.git?branch=main#e58307266acc12b4f7b71dba1a757a949069dc07"
+source = "git+https://github.com/merely-made/murm.git?branch=main#6ce72f7f27656fa48490b3e8078767272f5fa7e2"
 dependencies = [
  "async-trait",
  "blake3",
@@ -5473,7 +5473,7 @@ dependencies = [
 [[package]]
 name = "murm-sync"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/murm.git?branch=main#e58307266acc12b4f7b71dba1a757a949069dc07"
+source = "git+https://github.com/merely-made/murm.git?branch=main#6ce72f7f27656fa48490b3e8078767272f5fa7e2"
 dependencies = [
  "bytes",
  "futures-util",
@@ -5495,7 +5495,7 @@ dependencies = [
 [[package]]
 name = "murm-webrtc"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/murm.git?branch=main#e58307266acc12b4f7b71dba1a757a949069dc07"
+source = "git+https://github.com/merely-made/murm.git?branch=main#6ce72f7f27656fa48490b3e8078767272f5fa7e2"
 dependencies = [
  "blake3",
  "luggage",
@@ -6693,9 +6693,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-auth"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f869395536478d26a3b68ffb6292a479c38f8732bcd55d5d075915348eab085"
+checksum = "fc77c9e13e9a375b31dd30d8325ba5839f29cf797ed80edb097f91b900d6c812"
 dependencies = [
  "p2mere-core",
  "petgraph",
@@ -6705,9 +6705,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-core"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c15b784917e4ce22c172cc440493a9feb9053571f6823dc08f094dee88b02faf"
+checksum = "1a67d1f1973733b0fb3d56762c9bdba4cab9f940f5f5cac0d6069d4a9e6d6106"
 dependencies = [
  "blake3",
  "cbor-core",
@@ -6721,9 +6721,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-discovery"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72f25f2a75377f8358f6abea798c1cce809cd429f0cd9c16d56d7fff0d6c8f39"
+checksum = "5ca9fbc5ad0b2f5d326715f48f3401f99c9e827a853323d232e739517b071a47"
 dependencies = [
  "blake3",
  "futures-util",
@@ -6737,9 +6737,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-encryption"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4cd68e2e46efeb84e1a6a5ae3cb33d870b6f86ebbaeca6a03cc9298caf3e2e99"
+checksum = "66f89e7e0b84d4153ba9a3ffb2e940c62b1ca2b94e6ca413aae0ae8ed826edbc"
 dependencies = [
  "chacha20poly1305 0.10.1",
  "curve25519-dalek",
@@ -6761,9 +6761,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-net"
-version = "0.9.1"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12a5ae68357f318d7133b4ecfb36f2e3f78f65f8c637bcc6929d252b83666fbe"
+checksum = "800308b8899c30bef6dc980eade61a68fa7575910450573678a4a0a9f9fb30bb"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -6790,9 +6790,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-store"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc97eccd1875ea2c6ec6a99b89ec545266556e11262bfe35d06164174b0268f8"
+checksum = "6bb5772a4d6fce7323f81803fff06eb9d6ead8b22b0f92ea36f872067873b0c1"
 dependencies = [
  "async-stream",
  "futures-util",
@@ -6801,9 +6801,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-sync"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c9fa1b92205033f7d222a6a9a2949ceb0a9a1d94e85b53afb32e8dc9a40823a6"
+checksum = "01292ae797b2df7df27f914368f471538f76b2d4551030c27bb70013b83dbd62"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -8591,7 +8591,7 @@ dependencies = [
 [[package]]
 name = "servitor"
 version = "0.0.3"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "chartulary",
  "insigne",
@@ -8932,7 +8932,7 @@ dependencies = [
 [[package]]
 name = "state-witness"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "mere-framing",
  "postcard",
@@ -8948,7 +8948,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "stickleback"
 version = "0.2.0"
-source = "git+https://github.com/merely-made/eidetic.git?branch=main#8e903bf15936935bd1369547310877d52429ab63"
+source = "git+https://github.com/merely-made/eidetic.git?branch=main#60f3d601acc0b8de467d0b154d4843ada09740a3"
 dependencies = [
  "blake3",
  "cbor-core",
