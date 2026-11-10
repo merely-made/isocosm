@@ -62,6 +62,10 @@ pub struct Directing {
     /// default, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "PolicyVariation::is_none")]
     pub policy: PolicyVariation,
+    /// Move each lineage's template to its members' success-weighted
+    /// average at a boundary (case 1208; lineage-rounds D9).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub drift: bool,
 }
 
 /// How far a lineage policy varies, in its weights' units: at founding
@@ -102,6 +106,7 @@ impl Default for Directing {
             slots: BTreeMap::new(),
             variants: four(),
             policy: PolicyVariation::default(),
+            drift: false,
         }
     }
 }

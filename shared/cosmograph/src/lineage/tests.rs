@@ -6,7 +6,7 @@ use crate::{Execution, Founding, Session, history::Command, schema::*};
 
 /// A bodied world whose first developing line has learned a kind its
 /// recipe lacks, and a living member of that line.
-fn learned() -> (Session, Key, Id) {
+pub(super) fn learned() -> (Session, Key, Id) {
     let founding = Founding {
         seed: 31,
         lineages: 3,

@@ -375,6 +375,24 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR2 built. `lineage/drift.rs`: `weights` gives each living
+  group its count plus the offspring its first member bore since the epoch
+  began; `development` moves each tagma's segments to the members' weighted
+  mean of what they drew, and `policy` each weight to the mean of what they
+  express; `commands` yields a `Revise` and a `Policy` where they moved, and
+  nothing unless the world's `directing.drift` rule is set (off by default).
+  `boundary::adapt_since_using` commits a line's drift before its candidates
+  are gathered and scored, and the interim loop commits the played line's at
+  the boundary, so its review reads the moved template. Ten controls in
+  `lineage/drift_tests.rs`: the rule off; no variation, hashing as the rule
+  off does; the weights; a planted variant moving the template by the exact
+  weighted mean, further with more offspring; equal pulls cancelling; an exact
+  half rounding toward the value held; the policy's weights; the drift
+  committed before scoring; the played line drifting; a run with the rule on
+  replaying to the same hash. Measured: one lineage of 600 members takes
+  about half a millisecond a boundary (`drift_cost`, development only). No
+  existing test or pin moved. Owed: a product switch for the rule, with LR4h;
+  the recipe's absence odds, which no member records a draw of.
 - 2026-11-09: LR1.4's controls, in `lineage/tests.rs`: with the played
   member's site lost and one group of the line alive at another site, the
   review still offers an edit and committing it revises the line; with no

@@ -69,6 +69,10 @@ pub struct Turn {
     pub lineage: Key,
     pub considered: Vec<(Key, Score)>,
     pub committed: Option<Key>,
+    /// Whether its template drifted to its members' average first (case
+    /// 1208; lineage-rounds D9).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub drifted: bool,
 }
 
 /// The line's living matter and members now.
@@ -167,6 +171,22 @@ pub fn adapt_using(
     candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>, ticks: Tick,
     score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,
 ) -> Result<Vec<Turn>> {
+    let epoch = session.sim.genesis().rules.epoch_ticks;
+    let since = session.sim.state().tick.saturating_sub(epoch);
+    adapt_since_using(session, played, since, candidates, ticks, score)
+}
+
+/// `adapt_using` for an epoch that began at `since`: each line's template
+/// first drifts to its members' average, before its candidates are
+/// gathered and scored (case 1208; lineage-rounds D9).
+///
+/// # Errors
+/// Fails if a copy cannot be scored or a commit is refused.
+pub fn adapt_since_using(
+    session: &mut Session, played: Option<&str>, since: Tick,
+    candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>, ticks: Tick,
+    score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,
+) -> Result<Vec<Turn>> {
     let mut lines: Vec<(usize, Key)> = session
         .sim
         .state()
@@ -179,9 +199,13 @@ pub fn adapt_using(
     lines.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| a.1.cmp(&b.1)));
     let mut turns = Vec::new();
     for (_, lineage) in lines {
+        let drifted = super::drift::commit(session, &lineage, since)?;
         let offered = candidates(session, &lineage);
         // A line with nothing but what it has takes no turn.
         if offered.is_empty() {
+            if drifted {
+                turns.push(Turn { lineage, considered: vec![], committed: None, drifted });
+            }
             continue;
         }
         let stay = Candidate {
@@ -207,6 +231,7 @@ pub fn adapt_using(
             lineage,
             considered,
             committed: chosen.map(|c| c.name.clone()),
+            drifted,
         });
     }
     Ok(turns)
