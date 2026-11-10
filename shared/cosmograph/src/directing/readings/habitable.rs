@@ -57,7 +57,7 @@ pub fn habitable(sim: &Simulation, lineage: &str) -> BTreeSet<Id> {
             .all(|(key, least)| at(key).is_some_and(|v| v >= *least))
     };
     let living = s.population.groups.values().map(|g| g.entity.as_ref());
-    let living = living.filter(|e| e.alive && e.lineage == lineage);
+    let living = living.filter(|e| e.alive && e.lineage == lineage && !sim.genesis().rules.dormant(e));
     living
         .filter_map(Entity::resident_site)
         .filter(|place| s.sites.get(place).is_some_and(meets))

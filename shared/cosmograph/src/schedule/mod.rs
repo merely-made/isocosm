@@ -374,6 +374,9 @@ impl Simulation {
         if !entity.alive || !self.due_for(process, entity.born) {
             return None;
         }
+        if self.genesis.rules.passes_dormant(process).is_some_and(|key| entity.traits.contains(key)) {
+            return None;
+        }
         if process.causation == Causation::Agentless {
             if entity.kingdom != "kingdom:world" {
                 return None;

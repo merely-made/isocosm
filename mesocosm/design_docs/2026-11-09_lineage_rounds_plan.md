@@ -432,6 +432,11 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   matter taken, a twentieth given, a tenth sent into each body. Dead matter
   is detritus, then soil. A surface enters every living body at its site
   that is not its own lineage's, a participant's or world-class.
+- **Dormancy's numbers** (propagules): upkeep a tenth of the active rate, a
+  quarter of a bank waking each season, a season of ninety days, seed
+  shares drawn from 5 to 20. Dormant upkeep goes to soil, not detritus.
+- **A woken seed keeps the age it was laid at** (propagules): nothing resets
+  it, so a long-dormant seed wakes already old.
 
 ## Questions for Mark
 
@@ -477,6 +482,26 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: dormant propagules built (D16's third fundament, first half;
+  cases 1192 to 1197; the sim plan's S10.2 first slice). `Founding.dormancy`,
+  unset by default and for world-time worlds with sensing bodies only, makes
+  a producer's young a propagule: a body carrying `stage:dormant` whose
+  matter is banked whole in its root store. Every other process skips it at
+  the filed gates; it is left out of crowding, member counts, feed targets,
+  diet counts, standing, heirs and starts, and counts as a member so its
+  lineage is not extinct; `readings::propagules` reports the bank apart.
+  Three processes run for it alone: upkeep to the soil at a tenth of the
+  active rate, death when its matter is spent, and waking by a keyed draw
+  each season where the light share covers `3000 * 10 / share`. The seed
+  share is drawn per lineage within the rule's range and kept in the rule
+  by birth process, which a fork inherits with its cycle trait; a root's
+  store of 20 seeds four at share 5 and one at share 20. Nine controls in
+  `dormancy_tests.rs`, among them the lean interval beside a no-dormancy
+  control with matter conserved, and the same seeds waking under both
+  executions and a replay. No pinned hash moved. Owed: the flat rate sets
+  Mesocosm's worlds use, which have no season to wake on; a woken seed's
+  age, which still counts from when it was laid; the two-year bar rerun
+  with dormancy on (1192); and the mass law itself (1148), the second half.
 - 2026-11-10: hosts built (D16's first fundament; cases 1223, 1225, 1226).
   `Rules.hosting`, unset by default, gives a surface a turn every `period`
   ticks: with `gene:rot` it takes a site's detritus then soil, with

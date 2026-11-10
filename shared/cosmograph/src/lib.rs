@@ -42,6 +42,8 @@ mod execute;
 mod exertion;
 #[cfg(test)]
 mod exertion_tests;
+#[cfg(test)]
+mod dormancy_tests;
 pub mod flows;
 mod founding_events;
 pub mod generate;

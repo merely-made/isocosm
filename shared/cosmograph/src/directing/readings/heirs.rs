@@ -40,6 +40,7 @@ pub fn heirs(sim: &Simulation, lost: Id) -> Vec<Id> {
         .filter(|(first, g)| {
             let e = &g.entity;
             e.alive
+                && !sim.genesis().rules.dormant(e)
                 && e.method == Method::Deliberative
                 && **first != lost
                 && here.is_none_or(|h| h.lineage == e.lineage)

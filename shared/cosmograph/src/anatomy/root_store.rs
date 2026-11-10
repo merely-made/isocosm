@@ -206,6 +206,25 @@ pub(crate) fn initialize(
     }))
 }
 
+/// A propagule's matter (1197): all of it in the store, where the body's
+/// internal draws, its dormant upkeep among them, reach it. No matter is made.
+pub(crate) fn bank(
+    e: &mut Entity,
+    rules: &Rules,
+    key: &str,
+    amount: u64,
+) -> Option<Result<Vec<(PartId, u64)>>> {
+    let a = allocation(e, rules, key)?;
+    let p = &e.parts[&a.store];
+    let room = a.rule.stored.saturating_add(a.rule.seed).saturating_sub(held_at(e, a.store, key))
+        .min(space(e.extent(a.store), p, rules, key));
+    if room < amount {
+        return Some(Err(format!("no room in the store for a propagule's {amount} of {key}")));
+    }
+    let split = vec![(a.store, amount)];
+    Some(apply(e, key, &split, credit).map(|()| split))
+}
+
 /// How much a conservative regrowth can move now, limited by the store
 /// and the actual body's exposed deficit rather than its total biomass.
 pub(crate) fn regrowth(e: &Entity, rules: &Rules, key: &str, amount: u64) -> Result<u64> {

@@ -49,6 +49,9 @@ pub(crate) struct Gates {
     /// A hazard drawn once (E7b): a group is filed for it only from the
     /// first tick one of its members' draws names.
     death: Option<crate::death::Drawn>,
+    /// The dormant trait a body must lack, where the world has dormancy and
+    /// the process does not ask for it (1197).
+    unless: Option<Key>,
 }
 
 /// What gates read beyond a body: the tick, the rules, the sites bodies
@@ -168,6 +171,9 @@ impl Gates {
                 _ => {},
             }
         }
+        if !g.none() {
+            g.unless = rules.passes_dormant(p).cloned();
+        }
         if g.holds > 0 || g.empty_body {
             let matter = rules.accounts.iter().filter_map(|(k, kind)| match kind {
                 AccountKind::Matter { .. } => Some(k.clone()),
@@ -244,6 +250,7 @@ impl Gates {
         let resident = |sites: &BTreeSet<Id>| e.resident_site().is_some_and(|s| sites.contains(&s));
         (!self.alive || e.alive)
             && self.traits.iter().all(|t| e.traits.contains(t))
+            && self.unless.as_ref().is_none_or(|t| !e.traits.contains(t))
             && (chooses || self.resides.as_ref().is_none_or(resident))
             && self.at_least.iter().all(|(k, v)| r.held(k) >= *v)
             && self.below.iter().all(|(k, v)| r.held(k) < *v)

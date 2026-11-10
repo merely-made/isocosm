@@ -73,10 +73,19 @@ impl Staged<'_> {
         child.skills.clear();
         child.provenance = Provenance::Born(child.lineage.clone());
         child.authored = None;
+        // A seeding lineage's young lie dormant (1193, 1197).
+        let seed = rules.dormancy.as_ref().filter(|d| d.seeds.contains_key(&self.stage.process));
+        if let Some(d) = seed {
+            child.traits.insert(d.key.clone());
+        }
         for (key, value) in provision {
             self.take(Binding::Actor, key, *value)?;
             let given = if crate::anatomy::root_store::allocation(&child, rules, key).is_some() {
-                crate::anatomy::root_store::initialize(&mut child, rules, key, *value)
+                // A propagule banks its matter whole, where its upkeep reaches it.
+                match seed {
+                    Some(_) => crate::anatomy::root_store::bank(&mut child, rules, key, *value),
+                    None => crate::anatomy::root_store::initialize(&mut child, rules, key, *value),
+                }
             } else { crate::anatomy::give(&mut child, rules, key, *value) };
             if let Some(given) = given {
                 for (part, amount) in given? {

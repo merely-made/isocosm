@@ -97,7 +97,7 @@ pub fn reading(sim: &Simulation, scope: &Scope) -> crate::Result<ScopeReading> {
     };
     for g in sim.state().population.groups.values() {
         let e = &g.entity;
-        if !e.alive || e.method == Method::Inert {
+        if !e.alive || e.method == Method::Inert || sim.genesis().rules.dormant(e) {
             continue;
         }
         if let Some(site) = e.resident_site() {
@@ -240,6 +240,10 @@ fn effects(p: &Process) -> impl Iterator<Item = &Effect> {
 ///
 /// # Errors
 /// A target the world lacks.
+fn state_rules(sim: &Simulation) -> &crate::rules::Rules {
+    &sim.genesis().rules
+}
+
 pub fn sources(sim: &Simulation, lineage: &str, target: Id) -> crate::Result<Vec<Source>> {
     let state = sim.state();
     if !state.sites.contains_key(&target) {
@@ -249,7 +253,7 @@ pub fn sources(sim: &Simulation, lineage: &str, target: Id) -> crate::Result<Vec
     let mut members: BTreeMap<Id, (u64, BTreeSet<Key>)> = BTreeMap::new();
     for g in state.population.groups.values() {
         let e = &g.entity;
-        let Some(site) = e.resident_site().filter(|&s| e.alive && e.lineage == lineage && s != target) else {
+        let Some(site) = e.resident_site().filter(|&s| e.alive && !state_rules(sim).dormant(e) && e.lineage == lineage && s != target) else {
             continue;
         };
         let entry = members.entry(site).or_default();

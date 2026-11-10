@@ -54,6 +54,10 @@ pub struct Founding {
     /// Selects the protected-root and feeding-port experiment for a world-time ecology.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub experimental_food_contract: bool,
+    /// Producers' young lie dormant (cases 1192 to 1197), in a world-time
+    /// ecology of sensing bodies. Absent, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dormancy: Option<crate::rules::Dormancy>,
 }
 
 impl Default for Founding {
@@ -77,6 +81,7 @@ impl Default for Founding {
             ecology_rates: Default::default(),
             web: Default::default(),
             experimental_food_contract: false,
+            dormancy: None,
         }
     }
 }
@@ -316,6 +321,7 @@ impl Founding {
             kingdoms: None,
             exertion: None,
             hosting: None,
+            dormancy: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

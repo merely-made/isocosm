@@ -80,7 +80,7 @@ pub fn standing(session: &Session, lineage: &str) -> (u128, u64) {
     let rules = &session.sim.genesis().rules;
     let living = session.sim.state().population.groups.values();
     living
-        .filter(|g| g.entity.alive && g.entity.lineage == lineage)
+        .filter(|g| g.entity.alive && g.entity.lineage == lineage && !rules.dormant(&g.entity))
         .fold((0, 0), |(held, n), g| {
             let mass = crate::meaning::mass(&crate::anatomy::books(&g.entity), rules);
             // A band's pool holds what its members hold beyond the representative's.

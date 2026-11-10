@@ -317,6 +317,7 @@ impl ProbeFounding {
             kingdoms: None,
             exertion: None,
             hosting: None,
+            dormancy: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,

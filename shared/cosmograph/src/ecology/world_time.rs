@@ -18,6 +18,7 @@ use super::Role;
 use crate::{Founding, Result, generate::process, rules::*, schema::{Key, Tick}, simulation::Genesis};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod dormant;
 mod plants;
 pub use plants::{Plants, reserve};
 
@@ -137,6 +138,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     // each role's span; the start is a whole number of years.
     let oldest = (0..founding.lineages).map(|i| role_time(Role::of(founding.web, i)).founding_age_days)
         .max().unwrap_or(0);
+    let mut dormancy = dormant::declare(founding, g)?;
     let started = minutes(oldest * DAY).div_ceil(year) * year;
     g.started = started;
     for (&first, group) in g.population.groups.iter_mut() {
@@ -175,6 +177,8 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             time.bite = 3;
             time.kept = 1;
         }
+        let share = dormancy.as_ref().filter(|_| role == Role::Producer).map(|d| d.drawn(founding.seed, i));
+        if let Some(share) = share { time.child = share; }
         let body = format!("matter:{i}-0");
         if rooted && role == Role::Producer {
             g.rules.root_stores.insert(body.clone(), RootStore {
@@ -284,6 +288,10 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             if !experimental && founding.bodies.is_some() {
                 plants::bodied(g, i, &time, &minutes);
             }
+            if let (Some(rule), Some(share)) = (&mut dormancy, share) {
+                dormant::record(rule, i, share);
+                dormant::seeds(g, i, rule, share, minutes(rule.season));
+            }
             continue;
         }
         let Some(feed) = g.rules.processes.get_mut(&format!("ecology:feed-{i}")) else { continue };
@@ -334,6 +342,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             g.rules.processes.insert(detritus.id.clone(), detritus);
         }
     }
+    g.rules.dormancy = dormancy;
     Ok(())
 }
 

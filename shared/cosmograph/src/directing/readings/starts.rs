@@ -29,7 +29,7 @@ pub fn starts(sim: &Simulation, lineage: &str) -> Vec<StartAt> {
     let mut range: BTreeMap<Id, Vec<(Id, bool)>> = BTreeMap::new();
     for (&first, g) in &sim.state().population.groups {
         let e = &g.entity;
-        if e.alive && e.lineage == lineage
+        if e.alive && e.lineage == lineage && !sim.genesis().rules.dormant(e)
             && let Some(site) = e.resident_site()
         {
             range.entry(site).or_default().push((first, e.method == Method::Deliberative));
@@ -78,7 +78,7 @@ pub fn start_at(sim: &Simulation, lineage: &str, site: Id) -> Result<StartAt> {
         .groups
         .values()
         .map(|g| &g.entity)
-        .filter(|e| e.alive && e.lineage == lineage)
+        .filter(|e| e.alive && e.lineage == lineage && !sim.genesis().rules.dormant(e))
         .collect::<Vec<_>>();
     if living.is_empty() {
         return Err(format!("{lineage} has no living member to start {site} with"));

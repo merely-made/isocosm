@@ -16,6 +16,8 @@ mod exertion;
 pub use exertion::{Exertion, ease};
 mod hosting;
 pub use hosting::Hosting;
+mod dormancy;
+pub use dormancy::Dormancy;
 mod competition;
 mod directing;
 mod defence;
@@ -352,6 +354,10 @@ pub struct Rules {
     /// surfaces only hold matter and worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hosting: Option<Hosting>,
+    /// Whether a producer's young lie dormant (cases 1192 to 1197); absent,
+    /// no body is dormant and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dormancy: Option<Dormancy>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -411,6 +417,7 @@ impl Rules {
         if let Some(kingdoms) = &self.kingdoms { kingdoms.validate(self)?; }
         if let Some(exertion) = &self.exertion { exertion.validate()?; }
         if let Some(hosting) = &self.hosting { hosting.validate(self)?; }
+        if let Some(dormancy) = &self.dormancy { dormancy.validate(self)?; }
         Ok(())
     }
 }

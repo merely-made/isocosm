@@ -39,7 +39,8 @@ fn living(sim: &Simulation) -> BTreeMap<Key, (u128, u64)> {
         let mass = crate::meaning::mass(&crate::anatomy::books(&g.entity), rules);
         let pool: i128 = g.pool.iter().filter(|(k, _)| crate::meaning::matter(rules, k))
             .map(|(_, v)| *v).sum();
-        let held = (mass * u128::from(g.count)).saturating_add_signed(pool);
+        // Dormant stock keeps a lineage from extinction but is not its living matter (1193).
+        let held = if rules.dormant(&g.entity) { 0 } else { (mass * u128::from(g.count)).saturating_add_signed(pool) };
         let tally = by.entry(line.clone()).or_default();
         tally.0 += held;
         tally.1 += g.count;

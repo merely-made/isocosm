@@ -47,7 +47,7 @@ pub(crate) fn site_mass<'a>(
         let Some(site) = e
             .resident_site()
             .and_then(|site| by.get_mut(&site))
-            .filter(|_| e.alive)
+            .filter(|_| e.alive && !rules.dormant(e))
         else {
             continue;
         };

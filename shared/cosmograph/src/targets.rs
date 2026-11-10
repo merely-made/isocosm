@@ -138,7 +138,7 @@ impl Simulation {
         let mut total = 0u64;
         for first in self.searched(&selector, site) {
             let Some((first, count)) = self.target_span(first) else { continue };
-            let Some(prey) = self.body_at_start(first).filter(|e| e.resident_site() == Some(site)) else { continue };
+            let Some(prey) = self.body_at_start(first).filter(|e| e.resident_site() == Some(site) && !self.genesis.rules.dormant(e)) else { continue };
             if p.food_weight(body, prey, &self.genesis.rules, &self.state.lineages) > 0 {
                 let own = u64::from(first <= actor && actor < first + count);
                 total = total.saturating_add(count - own);
@@ -162,7 +162,7 @@ impl Simulation {
     pub(crate) fn members_at(&self, site: Id, among: &BTreeSet<Key>) -> u64 {
         let selector = Target { same_place: true, alive: Some(true), lineage: None, among: among.clone(), weighted: false };
         let here = |first: &Id| self.body_at_start(*first)
-            .is_some_and(|b| b.alive && among.contains(&b.lineage) && b.resident_site() == Some(site));
+            .is_some_and(|b| b.alive && among.contains(&b.lineage) && b.resident_site() == Some(site) && !self.genesis.rules.dormant(b));
         let firsts = self.searched(&selector, site).into_iter().filter(here);
         firsts.filter_map(|first| self.target_span(first).map(|(_, count)| count)).sum()
     }
@@ -253,6 +253,7 @@ impl Simulation {
             let (_, count) = self.target_span(first)?;
             let candidate = if first == actor { first + 1 } else { first };
             let accepted = candidate < first + count
+                && !self.body_at_start(first).is_some_and(|b| self.genesis.rules.dormant(b))
                 && self.target_matches(actor, Some(candidate), p)
                 && of_prey
                     .iter()
