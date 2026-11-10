@@ -47,8 +47,24 @@ impl Interim {
             .ok_or("a join names its participant")?;
         let mut interim = Self { session, participant, mode, pace,
             on_collapse: OnCollapse::Stay, handover, habitable_at };
-        let critter = interim.first_life(&lineage).ok_or("the played lineage has no living member")?;
-        interim.take(critter)?;
+        interim.take_first_life(&lineage, start)?;
         Ok(interim)
+    }
+
+    /// Takes the first life: the picked start's body (case 1211, lineage-rounds
+    /// D5), else `first_life`. A fringe start takes the nearest body and
+    /// nudges it to attend the site: the nudge is the only directive, so
+    /// whether it sets out is its own choice (Mesocosm 2).
+    pub(super) fn take_first_life(&mut self, lineage: &str, start: Start) -> Result<()> {
+        let Some(site) = start.pick else {
+            let critter = self.first_life(lineage).ok_or("the played lineage has no living member")?;
+            return self.take(critter);
+        };
+        let at = readings::start_at(&self.session.sim, lineage, site)?;
+        self.take(at.critter)?;
+        if at.journey {
+            self.nudge(super::super::Aim::Attend, super::super::Toward::Site(site), None)?;
+        }
+        Ok(())
     }
 }

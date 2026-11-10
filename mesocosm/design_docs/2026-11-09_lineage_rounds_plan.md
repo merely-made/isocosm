@@ -68,6 +68,18 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1211, 1221, mesocosm.3 · summary A round starts in a living member at the place, or in the nearest member journeying to a place one step past the range; planting waits for the lineage budget.
 
+- **D6, the fringe start (2026-11-09), refines Mesocosm 3:** "some stuff
+  probably can't move and you gotta take it where it is. Otherwise, 1, but
+  then maybe nudge several, like a cohort of related critters". Asked because
+  the sim has no command that sends a critter anywhere, only the nudge. A
+  fringe start is offered only where a member can walk to the site; a body
+  that cannot move starts where it is. The start nudges toward the site,
+  the critter's going its own choice, and nudges a cohort of related
+  critters with it. Offered against a guaranteed journey by a new command,
+  and against no fringe until planting.
+
+  Links: area Mesocosm · draws on 1211, mesocosm.2, mesocosm.3 · summary A fringe start exists only where a member can walk there; it nudges the taken body and a cohort of its kin toward the site, their going their own choice.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -119,7 +131,7 @@ It is built in four steps:
 - Needs: `mesocosm-overlay` M4i.1; `sim` S10.2 propagules (1197) for the
   dormant control; the known-lineage reading comes with LR5, so until then
   every lineage is known.
-- Rulings: 1199, 1204, 1211, 1212, 1213, 1217, D4, D5; Mesocosm 1, Mesocosm 3
+- Rulings: 1199, 1204, 1211, 1212, 1213, 1217, D4, D5, D6; Mesocosm 1, Mesocosm 3
 
 ### LR2. Drift: the success-weighted average
 Before the forward copy weighs candidates, a lineage's template moves to the
@@ -306,6 +318,10 @@ From the brief's §8, each naming the phase it holds up.
 - 2026-11-09: members of a lineage share one `Development` recipe; what
   varies per member is the soma drawn by its seed and the policy's one drawn
   number (`directing/policy.rs`). LR2 averages those.
+- 2026-11-09: journeys start only as a process's `Effect::Move` or
+  `MovePaced`, through `journey::depart`; no `Command` moves a critter. A
+  player's way to send one is `Command::Nudge` toward a site
+  (`directing/mod.rs`).
 - 2026-11-09: the world's fields in code are soil, ground, weather,
   habitable, food, water and air, with light as `sim:energy`. None is
   temperature.
@@ -322,6 +338,22 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-09: LR1.2 built, sim side and the host's flag.
+  `directing::readings::starts` lists a lineage's valid starts (range sites
+  with their lowest playable member, then fringe sites with the nearest) and
+  `start_at` refuses any other site by name. `Start` carries an optional
+  `pick`, absent in old saves and unserialized when absent; with none the
+  first life is chosen as before. A fringe site is one a playable member can
+  walk to in one route step, read from `readings::sources`' walk means, so a
+  body that cannot move starts where it is (D6). A fringe start takes that
+  body and nudges it to attend the site: the sim has no command that sends a
+  critter anywhere, and the nudge is the only directive (Mesocosm 2).
+  Mesocosm's host takes `--start W:E:SITE`. Eight controls in
+  `directing/interim/start_tests.rs`. Owed: D6's cohort, since a nudge needs
+  a bond and only the taken body has one until regard gives its kin theirs
+  (LR5); and the pick in Mesocosm's saved loop, where a change of lineage
+  already offers every living playable body, so a range start, and no
+  fringe.
 - 2026-11-09: LR1.1 built. `directing::readings::heirs` orders a lost
   critter's heirs (descendants by generation, then route steps from its
   site, then relatedness, then id), and `readings::route_steps` counts routes

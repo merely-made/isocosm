@@ -58,6 +58,7 @@ fn the_start_waits_for_a_habitable_site() {
     let start = Start {
         within: 2,
         epochs: 0,
+        ..Default::default()
     };
     let refused = Interim::found(g, start, Mode::Creative, PACE, Execution::Individuals);
     assert!(refused.unwrap_err().contains("no habitable site within 2"));

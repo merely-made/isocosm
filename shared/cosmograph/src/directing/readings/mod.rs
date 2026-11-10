@@ -14,6 +14,7 @@ pub mod heirs;
 pub mod orders;
 pub mod regions;
 pub mod scopes;
+pub mod starts;
 pub mod survival;
 
 pub use habitable::habitable;
@@ -21,6 +22,7 @@ pub use heirs::heirs;
 pub use orders::{Orders, orders};
 pub use regions::{Region, region_of, regions};
 pub use scopes::{Absence, Means, Scope, ScopeReading, Source, absence, reading, route_steps, sources};
+pub use starts::{StartAt, start_at, starts};
 pub use survival::{Mode, View, view};
 
 /// An act the critter considered and could take beside its choice.

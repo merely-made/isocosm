@@ -6647,6 +6647,13 @@ area = "Mesocosm"
 summary = "A round starts in a living member at the place, or in the nearest member journeying to a place one step past the range; planting waits for the lineage budget."
 draws_on = ["1211", "1221", "mesocosm.3"]
 
+[decisions."lineage-rounds D6"]
+title = "the fringe start (2026-11-09), refines Mesocosm 3"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A fringe start exists only where a member can walk there; it nudges the taken body and a cohort of its kin toward the site, their going their own choice."
+draws_on = ["1211", "mesocosm.2", "mesocosm.3"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

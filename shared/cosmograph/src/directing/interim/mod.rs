@@ -31,6 +31,10 @@ pub use deep::{Handover, run_deep_time, run_deep_time_using};
 pub struct Start {
     pub within: u32,
     pub epochs: u32,
+    /// The site to start at, in the lineage's range or fringe (case 1211,
+    /// lineage-rounds D5); none keeps the first life `first_life` picks.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pick: Option<Id>,
 }
 
 /// What to do when the played critter's region collapses: both are offered
@@ -154,10 +158,7 @@ impl Interim {
             handover,
             habitable_at,
         };
-        let first = interim
-            .first_life(&lineage)
-            .ok_or("the played lineage has no living member")?;
-        interim.take(first)?;
+        interim.take_first_life(&lineage, start)?;
         Ok(interim)
     }
 
@@ -294,6 +295,9 @@ impl Interim {
 mod tests;
 #[cfg(test)]
 mod diag;
+
+#[cfg(test)]
+mod start_tests;
 
 #[cfg(test)]
 mod reproduction;

@@ -67,7 +67,7 @@ fn run(label: &str, mut g: Genesis, ticks: u64) {
         round: 1,
         scoring: 1,
     };
-    let start = Start { within: 0, epochs: 0 };
+    let start = Start { within: 0, epochs: 0, ..Default::default() };
     {
         let sim = crate::Simulation::new(g.clone(), Execution::Individuals).unwrap();
         let want = crate::directing::readings::habitable::conditions(&sim, "lineage:1");

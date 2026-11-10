@@ -142,10 +142,17 @@ fn main() {
             },
             "--start" => {
                 let value = args.next().unwrap_or_default();
-                let (within, epochs) = value.split_once(':')
-                    .and_then(|(within, epochs)| Some((within.parse().ok()?, epochs.parse().ok()?)))
-                    .unwrap_or_else(|| fail("--start wants WITHIN:EPOCHS, both unsigned epoch counts"));
-                config.start = Some(cosmograph::directing::interim::Start { within, epochs });
+                // An optional third field picks the start site (case 1211).
+                let mut fields = value.split(':').map(|field| field.parse::<u64>().ok());
+                let (within, epochs, pick) = match (fields.next(), fields.next(), fields.next(), fields.next()) {
+                    (Some(Some(within)), Some(Some(epochs)), None, _) => (within, epochs, None),
+                    (Some(Some(within)), Some(Some(epochs)), Some(Some(site)), None) => (within, epochs, Some(site)),
+                    _ => fail("--start wants WITHIN:EPOCHS or WITHIN:EPOCHS:SITE, all unsigned"),
+                };
+                let (Ok(within), Ok(epochs)) = (within.try_into(), epochs.try_into()) else {
+                    fail("--start wants WITHIN:EPOCHS or WITHIN:EPOCHS:SITE, all unsigned")
+                };
+                config.start = Some(cosmograph::directing::interim::Start { within, epochs, pick });
             },
             "--mode" => config.mode = Some(match args.next().as_deref() {
                 Some("survival") => cosmograph::directing::readings::Mode::Survival,
@@ -375,6 +382,8 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
   --curve N       run N headless demo steps; save explicit --trace and --receipt outputs
   --start W:E     wait at most W epochs for habitability, then add E epochs
+                  W:E:SITE also picks the start site, in the lineage's
+                  range or one route step beyond it
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)

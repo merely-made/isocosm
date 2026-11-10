@@ -88,7 +88,7 @@ fn begin_using_runs_deep_wait_and_start_once_on_the_witness_ended_owner() {
         let session = witnessed(mode, true);
         let accepted = session.save();
         let mut calls = 0;
-        let interim = Interim::begin_using(session, Start { within: 1, epochs: 1 },
+        let interim = Interim::begin_using(session, Start { within: 1, epochs: 1, ..Default::default() },
             Mode::Survival, PACE, &mut |session| { calls += 1; clock(session) }).unwrap();
         assert_eq!(calls, 5, "tick1 -> deep boundary2 -> habitable boundary4 -> added boundary6");
         assert_eq!(interim.session.sim.state().tick, 6);

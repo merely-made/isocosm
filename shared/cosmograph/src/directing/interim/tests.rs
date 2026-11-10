@@ -39,6 +39,7 @@ fn three_epochs_end_to_end_replay_to_the_same_hash() {
             let start = Start {
                 within: 0,
                 epochs: 1,
+                ..Default::default()
             };
             let mut i =
                 Interim::found(genesis(seed), start, mode, PACE, Execution::Individuals).unwrap();
