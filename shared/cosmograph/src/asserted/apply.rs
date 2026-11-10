@@ -249,5 +249,6 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         authored: Some(c.clone()),
         settled: None,
         spent: None,
+        learned: None,
     }
 }

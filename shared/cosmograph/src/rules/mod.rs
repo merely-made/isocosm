@@ -16,6 +16,8 @@ mod exertion;
 pub use exertion::{Exertion, ease};
 mod hosting;
 pub use hosting::Hosting;
+mod learning;
+pub use learning::Learning;
 mod dormancy;
 pub use dormancy::Dormancy;
 mod competition;

@@ -36,6 +36,16 @@ impl Chosen {
         self.by.clear();
     }
 
+    /// Whether `actor`'s choice this tick named needs that were pressing (M3.6).
+    pub(crate) fn pressed(&self, actor: Id) -> bool {
+        self.by.get(&actor).is_some_and(|c| !c.pressed.is_empty())
+    }
+
+    /// The needs, by place in the world's list, `actor`'s choice answered.
+    pub(crate) fn pressing(&self, actor: Id) -> Vec<usize> {
+        self.by.get(&actor).map(|c| c.pressed.clone()).unwrap_or_default()
+    }
+
     /// An empty result lasts for one pass; a selected process lasts the tick (813).
     pub(crate) fn begin_pass(&mut self) {
         self.by.retain(|_, choice| choice.process.is_some());
@@ -57,6 +67,9 @@ pub(crate) struct Choice {
     /// Where a lineage policy chose: whether the hand-written score's best
     /// is above the chosen act's (M3.5).
     pub otherwise: Option<bool>,
+    /// Where a lineage policy chose under a world that learns: the needs,
+    /// by place in the world's list, the chosen act's terms scored (M3.6).
+    pub pressed: Vec<usize>,
 }
 
 /// What the methodology says of one actor's act in a pass.
@@ -149,7 +162,7 @@ fn need_score(process: &Process, mood: i64, pressing: &[&Need]) -> i64 {
 
 /// What a lineage policy reads of `process`, its needs as `serves` feeds
 /// them: each the hand-written score's own term, which sum to it exactly.
-fn terms(rules: &Rules, serves: &Process, process: &Process, mood: i64, pressing: &[&Need],
+pub(super) fn terms(rules: &Rules, serves: &Process, process: &Process, mood: i64, pressing: &[&Need],
     target: Option<Id>) -> super::policy::Terms {
     let all = crate::meaning::needs(rules);
     let lift = 100 + (-mood).max(0);
@@ -484,6 +497,9 @@ impl Simulation {
             best.explicit_target = *explicit_target;
             best.answers = answers.clone();
         }
+        if policy.is_some() && directing.learning.is_some() {
+            best.pressed = self.pressed_by(&best, mood, &pressing);
+        }
         if policy.is_some() {
             let most = written.values().copied().max();
             let chosen = best.process.as_ref().and_then(|p| written.get(p).copied());
@@ -502,8 +518,7 @@ impl Simulation {
         (mood, held): (i64, u128),
         accepted: bool,
     ) {
-        let (now, has) = self.wellbeing(actor);
-        let served = accepted && (now > mood || (now == mood && has >= held));
+        let served = self.served_by(actor, (mood, held), accepted);
         let d = self.genesis.rules.directing();
         let site = self
             .state

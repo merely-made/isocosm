@@ -5,6 +5,7 @@
 //! a bond passes down, how far it moves, how long a nudge stays live, and
 //! each trophic level's slot in a region.
 
+use super::Learning;
 use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -78,6 +79,11 @@ pub struct Directing {
     /// Known lineages and regard (cases 1210, 1214); unset, none is kept.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub regard: Option<Regard>,
+    /// Members' learning (cases 1051, 1058; mesocosm-overlay M3.6): each
+    /// member's own delta on its lineage's policy. It needs the policy
+    /// gate (`policy`) set; unset, no member learns.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub learning: Option<Learning>,
 }
 
 /// Known lineages and regard (cases 1210, 1214).
@@ -154,6 +160,7 @@ impl Default for Directing {
             draft: None,
             sheet: false,
             regard: None,
+            learning: None,
         }
     }
 }
@@ -185,6 +192,12 @@ impl Directing {
         }
         if self.regard.is_some_and(|r| r.per == 0 || r.heritable > 1000 || r.gain < 0 || r.loss < 0) {
             return Err("regard needs a per above nought, a heritable of at most 1000 and no negative gain or loss".into());
+        }
+        if let Some(learning) = &self.learning {
+            learning.validate()?;
+            if self.policy.is_none() {
+                return Err("learning needs the policy gate set: a policy variation above nought".into());
+            }
         }
         Ok(())
     }

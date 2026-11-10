@@ -155,10 +155,19 @@ impl Simulation {
     pub(crate) fn expressed(&self, actor: Id, size: i16) -> Option<LineagePolicy> {
         let e = self.body_at_start(actor)?;
         let policy = self.state.lineages.get(&e.lineage)?.policy.as_ref()?;
-        Some(match e.drawn {
+        let mut policy = match e.drawn {
             Some(drawn) => policy.varied(drawn, size),
             None => policy.clone(),
-        })
+        };
+        // What the member has learned is added to its drives (M3.6).
+        if let Some(delta) = self.learned_of(e) {
+            for (&k, &w) in &delta.weights {
+                if let Some(d) = policy.drives.get_mut(k as usize) {
+                    *d = (i32::from(*d) + w).clamp(i32::from(i16::MIN), i32::from(i16::MAX)) as i16;
+                }
+            }
+        }
+        Some(policy)
     }
 
     /// Commits `policy` as `lineage`'s. Its living members keep their

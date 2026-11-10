@@ -14,6 +14,7 @@ use std::collections::BTreeSet;
 mod choice;
 mod holding;
 mod infeasible;
+mod learn;
 pub mod found;
 pub mod interim;
 pub mod policy;
@@ -22,6 +23,7 @@ pub use crate::lineage::revise;
 pub mod tier;
 
 pub(crate) use choice::{Chosen, Deliberated};
+pub(crate) use learn::inherited;
 pub use found::Played;
 pub use tier::{Tier, TierLine};
 
@@ -170,6 +172,7 @@ impl Simulation {
             authored: None,
             settled: None,
             spent: None,
+            learned: None,
         };
         if self.state.population.count() >= self.genesis.rules.limits.entities {
             return Err("entity limit".into());
@@ -372,3 +375,6 @@ mod tests;
 mod tier_tests;
 #[cfg(test)]
 mod wound_tests;
+
+#[cfg(test)]
+mod learning_tests;

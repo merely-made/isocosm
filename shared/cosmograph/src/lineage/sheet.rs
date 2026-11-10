@@ -106,6 +106,7 @@ pub fn of(
         authored: None,
         settled: None,
         spent: None,
+        learned: None,
     };
     e.embody(body);
     let carried = match d.systems.is_empty() {

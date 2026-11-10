@@ -72,6 +72,7 @@ impl Recipe {
             authored: None,
             settled: None,
             spent: None,
+            learned: None,
         })
     }
 }

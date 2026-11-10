@@ -13,6 +13,9 @@ pub type Ledger = BTreeMap<Key, u64>;
 
 pub mod spread;
 
+mod learned;
+pub use learned::Learned;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Storage {
     Asserted,
@@ -152,6 +155,11 @@ pub struct Entity {
     /// made there (case 1234); absent elsewhere, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub spent: Option<(Tick, u32)>,
+    /// Its learned delta on its lineage's policy (case 1051, M3.6), where
+    /// the world's directing rules a learning; absent elsewhere, which
+    /// serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub learned: Option<Learned>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the

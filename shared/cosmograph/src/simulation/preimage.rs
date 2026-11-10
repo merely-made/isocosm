@@ -90,6 +90,8 @@ pub(super) struct Entity<'a> {
     settled: Option<Tick>,
     #[serde(skip_serializing_if = "Option::is_none")]
     spent: Option<(Tick, u32)>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    learned: Option<&'a Learned>,
 }
 
 impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
@@ -123,6 +125,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             authored,
             settled,
             spent,
+            learned,
         } = value;
         Self {
             lineage,
@@ -153,6 +156,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             authored: authored.as_ref().map(Character::from),
             settled: *settled,
             spent: *spent,
+            learned: learned.as_ref(),
         }
     }
 }

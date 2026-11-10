@@ -469,6 +469,7 @@ impl Founding {
                     authored: None,
                     settled: None,
                     spent: None,
+                    learned: None,
                 },
                 1,
             )?;
@@ -530,6 +531,7 @@ impl Founding {
                     authored: None,
                     settled: None,
                     spent: None,
+                    learned: None,
                 },
                 count,
             )?;

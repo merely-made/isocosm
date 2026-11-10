@@ -443,6 +443,10 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   (brief §13) have nothing yet to be cast through.
 - **Holding is open** (the handle): any participant may hold any surface or
   world-class lineage, with no bond, knowing or cost asked.
+- **The learning rule** (members' learning): the overlay plan leaves it
+  proposed. As built, a served act raises and a failed act lowers the
+  member's weight on the needs that pressed, by 4 of 64, doubled in youth,
+  bounded at 32, a quarter fading each day.
 
 ## Questions for Mark
 
@@ -488,6 +492,30 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: members' learning built, first cut (D16's fourth fundament;
+  cases 1051, 1058; overlay plan M3.6). `Directing.learning`, unset by
+  default and needing a founded policy, gives each member a delta on its
+  lineage's drives (`Entity.learned`, by need). After any act its policy
+  chose, nudged or not, the member reads whether the act served it as a
+  nudged act is read, and moves the delta on the needs that pressed: up
+  if served, down if not, twice as far while young, within a bound. The
+  delta is added to the drives its policy is expressed with, fades by
+  whole spans worked out when read, and a third passes to a child from
+  the one parent a birth shows. A member is lifted to its own row only
+  when its delta changes; equal histories merge back. Fifteen controls.
+  The player-demonstration task passes: a critter nudged to feed six
+  times goes on feeding un-nudged, where a never-nudged twin and a
+  nudged twin without learning do not. The delayed-reward task does not:
+  a move that pays on arrival is not credited, since the reading is
+  taken as the act ends and a move's score has no need term; the test
+  asserts that limit. So M3.6's done-condition is half met. Owed: a
+  pending credit settled when wellbeing next improves, with a score term
+  for acts that feed nothing directly (the plan's sensed target features
+  and persistent intention); imitation of kin and teaching (1053); trust
+  per kind of direction; folding deltas into the lineage at the
+  boundary; a maturity the lineage states, where today it is read from
+  the age gate on a birth process and the default ecology has none, so
+  nobody there is young.
 - 2026-11-10: the handle built in the sim (D16's second fundament; cases
   1216, 1221, 1223, 1224). A participant holds a lineage that has no critter
   to take: `Command::Hold` and `Unhold` keep `Lineage.held`, for a surface

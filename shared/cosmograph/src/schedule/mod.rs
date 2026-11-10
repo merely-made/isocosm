@@ -469,7 +469,8 @@ impl Simulation {
                 Deliberated::Chosen { answers, .. } if !answers.is_empty() => Some(answers),
                 _ => None,
             };
-            let before = answering.map(|_| self.wellbeing(actor));
+            let learning = matches!(deliberated, Deliberated::Chosen { .. }) && self.learns(actor);
+            let before = (answering.is_some() || learning).then(|| self.wellbeing(actor));
             let planned = self.frame.as_ref().and_then(|f| f.planned.as_ref());
             let (target, accepted) = match planned.map(|p| p.get(&actor).cloned()) {
                 None if self.risk_misses(actor, process) => (None, false),
@@ -492,6 +493,11 @@ impl Simulation {
             self.record_food_outcome(actor, id, accepted);
             if let (Some(answers), Some(before)) = (answering, before) {
                 self.answered(actor, id, answers, before, accepted);
+            }
+            // A member's own delta learns from every act its policy chose (M3.6).
+            if let (true, Some(before)) = (learning, before) {
+                let served = self.served_by(actor, before, accepted);
+                self.learn_from(actor, multiplicity, served);
             }
             work.evaluations += 1;
             work.represented += multiplicity;

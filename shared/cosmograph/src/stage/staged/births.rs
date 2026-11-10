@@ -73,6 +73,7 @@ impl Staged<'_> {
         child.skills.clear();
         child.provenance = Provenance::Born(child.lineage.clone());
         child.authored = None;
+        child.learned = crate::directing::inherited(&child.learned, rules, tick);
         // A seeding lineage's young lie dormant (1193, 1197).
         let seed = rules.dormancy.as_ref().filter(|d| d.seeds.contains_key(&self.stage.process));
         if let Some(d) = seed {

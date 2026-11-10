@@ -523,6 +523,7 @@ pub(super) fn member(
         authored: None,
         settled: None,
         spent: None,
+        learned: None,
     }
 }
 
