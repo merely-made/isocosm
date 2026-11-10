@@ -159,6 +159,10 @@ impl Parties for Doing<'_> {
             .and_then(|l| l.development.clone())
             .ok_or_else(|| format!("{lineage}'s bodies cannot grow here"))
     }
+    fn kingdom(&self, lineage: &str) -> Key {
+        let line = self.lineages.and_then(|l| l.get(lineage));
+        line.map(|l| l.kingdom.clone()).unwrap_or_default()
+    }
     fn lineage_trait(&self, lineage: &str, key: &str) -> bool {
         self.lineages
             .and_then(|l| l.get(lineage))

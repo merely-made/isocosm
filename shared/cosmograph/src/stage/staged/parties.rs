@@ -40,6 +40,10 @@ impl Parties for Staged<'_> {
             .get(lineage)
             .is_some_and(|l| l.traits.contains(key))
     }
+    fn kingdom(&self, lineage: &str) -> Key {
+        let line = self.sim.state.lineages.get(lineage);
+        line.map(|l| l.kingdom.clone()).unwrap_or_default()
+    }
     fn development(&mut self, lineage: &str) -> Result<crate::rules::Development> {
         let l = self.sim.state.lineages.get(lineage);
         l.and_then(|l| l.development.clone())

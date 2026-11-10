@@ -264,6 +264,35 @@ fn a_variant_has_a_cost_and_a_budget_that_can_refuse_it() {
     assert!(r.offers[at].takeable());
 }
 
+/// A kingdom pays more for a dear function and less for a cheap one, so the
+/// same variant costs more or less against the budget (case 1232).
+#[test]
+fn a_variant_bearing_a_dear_kind_costs_more_and_a_cheap_one_less() {
+    let (mut s, line, _) = learned();
+    let kind = taught(&s, &line);
+    ate(&mut s, &line, &kind, 10);
+    rule(&mut s, Some(Draft { share: [1_000_000, 1] }));
+    let name = bearing(&review(&s, &line, Some(10)))[0].name.clone();
+    let cost = |s: &Session| {
+        let r = review(s, &line, Some(10));
+        r.offers.iter().find(|o| o.name == name).unwrap().cost.unwrap()
+    };
+    let plain = cost(&s);
+    let kingdom = s.sim.state().lineages[&line].kingdom.clone();
+    let functions: Vec<Key> = s.sim.genesis().rules.kinds[&kind].cells.keys().cloned().collect();
+    let weigh = |s: &mut Session, w: [u32; 2]| {
+        let named = functions.iter().map(|f| (f.clone(), w)).collect();
+        let g = Arc::make_mut(&mut s.sim.genesis);
+        g.rules.kingdoms = Some(Kingdoms { weights: BTreeMap::from([(kingdom.clone(), named)]) });
+    };
+    weigh(&mut s, [3, 1]);
+    assert!(cost(&s) > plain, "a dear kind costs more");
+    weigh(&mut s, [1, 2]);
+    assert!(cost(&s) < plain, "a cheap kind costs less");
+    weigh(&mut s, [1, 1]);
+    assert_eq!(cost(&s), plain, "an even weight costs the ordinary price");
+}
+
 #[test]
 fn creative_lifts_the_draft() {
     let (mut s, line, _) = learned();

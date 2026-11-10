@@ -79,7 +79,7 @@ impl Review {
     pub fn of_draft_using(session: &Session, lineage: &str, scoring: Tick,
         draft: Option<Tick>,
         score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Self> {
-        let budget = draft.and_then(|_| draft::budget(session, lineage));
+    let budget = draft.and_then(|_| draft::budget(session, lineage));
         Ok(Self {
             tick: session.sim.state().tick,
             lineage: lineage.into(),
@@ -140,6 +140,7 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
         return Ok(out);
     };
     let budget = draft.and_then(|_| draft::budget(session, lineage));
+    let kingdom = line.map_or("", |l| l.kingdom.as_str());
     let eaten = budget.and(draft.zip(line)).map(|(since, l)| draft::eaten_since(l, since));
     let rules = &sim.genesis().rules;
     let sheeted = rules.directing().sheet;
@@ -147,7 +148,7 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
     let offered = super::revise::offered_borne(session, lineage, d, most, eaten.as_ref());
     for (name, development, bears) in offered {
         let cost = match (budget, bears) {
-            (Some(_), Some(_)) => Some(draft::cost(rules, d, &development)?),
+            (Some(_), Some(_)) => Some(draft::cost(rules, kingdom, d, &development)?),
             _ => None,
         };
         let candidate = Candidate {

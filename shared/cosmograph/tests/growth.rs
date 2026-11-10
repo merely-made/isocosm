@@ -249,7 +249,13 @@ fn grow_act() -> Process {
 /// `taken` of its tissue gone; returns the simulation, its id and the
 /// world's matter before.
 fn grown(hand: u64, reserve: u64, taken: u64) -> (Simulation, Id, u128) {
+    grown_under(None, hand, reserve, taken)
+}
+
+/// `grown`, in a world whose kingdoms pay `weights` (case 1232).
+fn grown_under(weights: Option<Kingdoms>, hand: u64, reserve: u64, taken: u64) -> (Simulation, Id, u128) {
     let mut g = world(false);
+    g.rules.kingdoms = weights;
     g.rules.processes.insert("test:grow".into(), grow_act());
     let id = first_grazer(&g);
     let mut e = body(&g, &[1], &[], &[[0, 0, 2]], reserve);
@@ -283,7 +289,7 @@ fn growth_pays_pd2s_price_from_the_reserve_and_fills_the_part_from_hand() {
     let limb = &e.parts[&at];
     // A limb of 63 voxels weighs 50 mg in 2 cells: its price is 50 mg,
     // the reserve's 12 and then 38 of tissue, into the ground as soil.
-    assert_eq!(price(rules, &e.frame(at), limb), 50);
+    assert_eq!(price(rules, "kingdom:fauna", &e.frame(at), limb), 50);
     assert_eq!(anatomy::held(e, rules, "reserve:1"), 0);
     // The hand of 30 fills the room the price and the new limb opened.
     assert_eq!(e.accounts.get(SOIL).copied().unwrap_or(0), 0);
@@ -350,4 +356,41 @@ fn a_catalogued_growth_candidate_still_uses_paid_native_growth_and_exact_history
         restored.sim.witness().digest(),
         session.sim.witness().digest()
     );
+}
+
+/// The grazer's limb under `weights`: its price, whether it grew, and
+/// whether the world's matter held.
+fn limb_under(weights: Option<Kingdoms>) -> (u64, bool, bool) {
+    let (sim, id, before) = grown_under(weights, 30, 12, 0);
+    let e = sim.state().population.get(id).unwrap();
+    let at = e.living().find(|(id, _)| e.situs(*id) == Some([0, 0, 2]));
+    let Some((at, _)) = at else {
+        return (0, false, sim.matter() == before);
+    };
+    let kingdom = &sim.state().lineages["lineage:1"].kingdom;
+    let price = price(&sim.genesis().rules, kingdom, &e.frame(at), &e.parts[&at]);
+    (price, true, sim.matter() == before)
+}
+
+/// A kingdom pays more or less for a function without refusing it, and the
+/// matter growth moves stays the world's (case 1232).
+#[test]
+fn a_kingdom_weighs_what_growth_charges_and_no_function_is_refused() {
+    let g = world(false);
+    let kingdom = g.lineages["lineage:1"].kingdom.clone();
+    let weigh = |w: [u32; 2]| {
+        Some(Kingdoms {
+            weights: [(kingdom.clone(), [("function:contract".to_string(), w)].into())].into(),
+        })
+    };
+    // Unset: the limb of 2 contract cells costs 50 mg, as before.
+    assert_eq!(limb_under(None), (50, true, true));
+    // Dear, it costs double and still grows; cheap, half.
+    assert_eq!(limb_under(weigh([2, 1])), (100, true, true));
+    assert_eq!(limb_under(weigh([1, 2])), (25, true, true));
+    // A kingdom that names another function leaves the price alone.
+    let other = Some(Kingdoms {
+        weights: [(kingdom, [("function:fix".to_string(), [3, 1])].into())].into(),
+    });
+    assert_eq!(limb_under(other), (50, true, true));
 }

@@ -453,6 +453,21 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR6's first two steps. **A golden test**
+  (`tests/golden_bodies.rs`), pinned on unchanged source before anything
+  else: one digest over the bodies developed from the eight authored recipes
+  and the lineages of five generated worlds, each at its recipe's counts and
+  at three drawn somas. These bodies must not change. **Kingdom weights**,
+  behind the world rule `rules.kingdoms` (unset by default): each kingdom
+  pays a share of the ordinary price for a function's cells and none is
+  refused (case 1232). `kingdoms::weighed` scales a part's price by the
+  cell-weighted mean of its functions' weights; growth charges it (the price
+  is spent to the soil and the part filled from the hand, so matter is
+  conserved as before) and the draft's cost weighs each part's adult mass.
+  What a body is and holds is untouched, and the golden digest holds with the
+  rule set. First-cut weights: plants half for fixing and storing, double
+  for contracting; animals half for contracting and sensing, double for
+  fixing; fungi half for secreting and conducting.
 - 2026-11-10: LR5 built without the persona, behind the world rule
   `directing.regard` (unset by default; the host's `--regard` sets it). A
   participant comes to know a lineage by playing it, by a fork, by their

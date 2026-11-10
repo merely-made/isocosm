@@ -313,6 +313,7 @@ impl Founding {
         let mut rules = Rules {
             root_stores: BTreeMap::new(),
             climate: None,
+            kingdoms: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

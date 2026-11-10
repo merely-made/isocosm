@@ -444,6 +444,10 @@ pub(crate) trait Parties {
     fn lineage_trait(&self, _lineage: &str, _key: &str) -> bool {
         false
     }
+    /// A lineage's kingdom, empty where none is known (case 1232).
+    fn kingdom(&self, _lineage: &str) -> Key {
+        Key::new()
+    }
     /// The part the act's bite landed on, where it bit.
     fn bitten(&self) -> Option<PartId> {
         None

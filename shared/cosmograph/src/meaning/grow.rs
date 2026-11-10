@@ -3,7 +3,7 @@
 
 //! Growth with the parts full grows the parts a body lacks (rulings 479
 //! and 510): one at a time, nearest the root first, each paying PD2's price
-//! from the reserve and then the tissue into the ground, and then filled by
+//! (weighed by its kingdom, case 1232) from the reserve and then the tissue into the ground, and then filled by
 //! what the act holds in hand, given to the parts by their room (464).
 
 use super::{Parties, convert, spend};
@@ -27,6 +27,7 @@ pub(crate) fn grow(
     let mut grown = Grown::default();
     let lineage = p.body(Binding::Actor)?.lineage.clone();
     let development = p.development(&lineage)?;
+    let kingdom = p.kingdom(&lineage);
     let anatomy::Own {
         tissue, reserve, ..
     } = anatomy::own(rules, &lineage);
@@ -47,7 +48,7 @@ pub(crate) fn grow(
         let Some((frame, part)) = growth::lacking(rules, &development, body)? else {
             break;
         };
-        let price = growth::price(rules, &frame, &part);
+        let price = growth::price(rules, &kingdom, &frame, &part);
         let funds: u64 = pay
             .iter()
             .map(|k| anatomy::held(body, rules, k))

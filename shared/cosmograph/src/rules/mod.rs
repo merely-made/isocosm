@@ -18,6 +18,8 @@ mod defence;
 mod effect;
 mod feeding;
 mod graft;
+mod kingdoms;
+pub use kingdoms::{Kingdoms, weighed};
 mod epoch;
 mod span;
 pub use span::{Rung, Span};
@@ -332,6 +334,10 @@ pub struct Rules {
     /// worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub climate: Option<Climate>,
+    /// What each kingdom pays for a function's cells (case 1232); absent,
+    /// every function costs the ordinary price and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub kingdoms: Option<Kingdoms>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -388,6 +394,7 @@ impl Rules {
         if let Some(collapse) = &self.global_collapse { collapse.validate(self)?; }
         if let Some(witness) = &self.ecology_witness { witness.validate(self)?; }
         if let Some(companions) = &self.companions { companions.validate(self)?; }
+        if let Some(kingdoms) = &self.kingdoms { kingdoms.validate(self)?; }
         Ok(())
     }
 }

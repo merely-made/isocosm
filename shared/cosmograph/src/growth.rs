@@ -166,10 +166,13 @@ pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
 }
 
 /// What expressing a new part's functions costs (PD2): one cell's mass for
-/// each cell it expresses.
-pub fn price(rules: &Rules, f: &Frame, p: &Part) -> u64 {
+/// each cell it expresses, weighed by what `kingdom` pays for its functions
+/// where the world sets that (case 1232).
+pub fn price(rules: &Rules, kingdom: &str, f: &Frame, p: &Part) -> u64 {
     let cells: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
-    cells.saturating_mul(anatomy::cell_mass(f.half_extent, rules.body()))
+    let plain = cells.saturating_mul(anatomy::cell_mass(f.half_extent, rules.body()));
+    let weighed = crate::rules::weighed(rules, kingdom, p, u128::from(plain));
+    u64::try_from(weighed).unwrap_or(u64::MAX)
 }
 
 /// A part taken whole (rulings 468, 516 and 544): how its crossing lets it

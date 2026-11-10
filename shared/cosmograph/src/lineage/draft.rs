@@ -12,7 +12,7 @@ use crate::{
     Result, Session,
     development::{Soma, develop},
     geometry::Body,
-    rules::{Development, Rules},
+    rules::{Development, Rules, weighed},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -121,24 +121,31 @@ pub(super) fn grown_body(rules: &Rules, d: &Development) -> Result<Body> {
     develop(rules, d, &soma)
 }
 
-/// The adult mass of the body `d` grows into.
-fn grown(rules: &Rules, d: &Development) -> Result<u128> {
+/// The adult mass of the body `d` grows into, each part weighed by what
+/// `kingdom` pays for its functions where the world sets that (case 1232).
+fn grown(rules: &Rules, kingdom: &str, d: &Development) -> Result<u128> {
     let b = rules.body();
-    Ok(grown_body(rules, d)?
+    let body = grown_body(rules, d)?;
+    Ok(body
         .doc
         .parts
         .iter()
-        .map(|p| u128::from(crate::anatomy::ceiling(p.half_extent, b)))
+        .map(|p| {
+            let mass = u128::from(crate::anatomy::ceiling(p.half_extent, b));
+            body.parts.get(&p.id).map_or(mass, |part| weighed(rules, kingdom, part, mass))
+        })
         .sum())
 }
 
 /// The adult mass `moved` adds to a fully grown body over `had`, nought if
-/// it adds none (case 1203; lineage-rounds D11).
+/// it adds none; a part counts at what `kingdom` pays for it, so a dear
+/// function weighs more against the budget (cases 1203, 1232;
+/// lineage-rounds D11).
 ///
 /// # Errors
 /// Fails if either development cannot develop a body.
-pub fn cost(rules: &Rules, had: &Development, moved: &Development) -> Result<u128> {
-    Ok(grown(rules, moved)?.saturating_sub(grown(rules, had)?))
+pub fn cost(rules: &Rules, kingdom: &str, had: &Development, moved: &Development) -> Result<u128> {
+    Ok(grown(rules, kingdom, moved)?.saturating_sub(grown(rules, kingdom, had)?))
 }
 
 /// What the played line may spend on a variant: the rule's share of what

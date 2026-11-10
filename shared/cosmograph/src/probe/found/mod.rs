@@ -314,6 +314,7 @@ impl ProbeFounding {
         let rules = Rules {
             root_stores: BTreeMap::new(),
             climate: None,
+            kingdoms: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
