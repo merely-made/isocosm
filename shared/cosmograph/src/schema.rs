@@ -148,6 +148,10 @@ pub struct Entity {
     /// serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub settled: Option<Tick>,
+    /// The span of the world's exertion it is in and the chosen acts it has
+    /// made there (case 1234); absent elsewhere, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spent: Option<(Tick, u32)>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the

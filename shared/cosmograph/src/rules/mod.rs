@@ -12,6 +12,8 @@ pub use query::Query;
 mod body;
 mod climate;
 pub use climate::Climate;
+mod exertion;
+pub use exertion::{Exertion, ease};
 mod competition;
 mod directing;
 mod defence;
@@ -340,6 +342,10 @@ pub struct Rules {
     /// every function costs the ordinary price and worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub kingdoms: Option<Kingdoms>,
+    /// What acts past a body's ease spend (case 1234); absent, activity is
+    /// paid inside upkeep and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub exertion: Option<Exertion>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -397,6 +403,7 @@ impl Rules {
         if let Some(witness) = &self.ecology_witness { witness.validate(self)?; }
         if let Some(companions) = &self.companions { companions.validate(self)?; }
         if let Some(kingdoms) = &self.kingdoms { kingdoms.validate(self)?; }
+        if let Some(exertion) = &self.exertion { exertion.validate()?; }
         Ok(())
     }
 }

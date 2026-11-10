@@ -12,6 +12,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 mod choice;
+mod infeasible;
 pub mod found;
 pub mod interim;
 pub mod policy;
@@ -165,6 +166,7 @@ impl Simulation {
             patch: None,
             authored: None,
             settled: None,
+            spent: None,
         };
         if self.state.population.count() >= self.genesis.rules.limits.entities {
             return Err("entity limit".into());

@@ -62,7 +62,8 @@ Rounds (the [lineage-rounds plan](design_docs/2026-11-09_lineage_rounds_plan.md)
 `--condition` sets a mark to beat, and `--rounds-rules` turns on the drift,
 the draft and the sheet (`--drift`, `--draft`, `--sheet` singly). `--climate` adds
 temperature, drought and dim light as upkeep outside a body's comfort. `--regard`
-adds the lineages you come to know and their regard for you. D calls the
+adds the lineages you come to know and their regard for you. `--exertion`
+makes chosen acts past a body's ease spend matter. D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,
 and at a loss Tab moves among the heirs.
 

@@ -239,6 +239,26 @@ pub(crate) fn owed(
     u64::try_from(total).unwrap_or(u64::MAX)
 }
 
+/// The suffix a lineage's upkeep process id carries, the lineage's number.
+pub(crate) fn upkeep_of(id: &str) -> Option<&str> {
+    id.strip_prefix("body:upkeep-").or_else(|| id.strip_prefix("ecology:upkeep-"))
+}
+
+/// Each lineage's priced upkeep, by its number: the process, and its rank (a
+/// body-priced upkeep outranks the flat one a lineage may keep).
+pub(crate) fn upkeeps(rules: &Rules) -> BTreeMap<String, (&str, usize)> {
+    let mut lines = BTreeMap::<String, (&str, usize)>::new();
+    for (id, p) in &rules.processes {
+        let Some(i) = upkeep_of(id) else { continue };
+        let paid = p.effects.iter().find_map(paying);
+        let rank = usize::from(id.starts_with("body:"));
+        if paid.is_some() && lines.get(i).is_none_or(|(_, held)| *held < rank) {
+            lines.insert(i.into(), (id.as_str(), rank));
+        }
+    }
+    lines
+}
+
 /// Gives each lineage whose upkeep the world prices a process beside it,
 /// `climate:strain-<i>`, that spends the strain's matter from the same
 /// accounts into the same soil as its upkeep does (case 1215; lineage-rounds
@@ -251,21 +271,7 @@ pub(crate) fn processes(rules: &mut Rules) -> Result<()> {
     if rules.climate.is_none() {
         return Ok(());
     }
-    let mut lines = BTreeMap::<String, (&str, usize)>::new();
-    for (id, p) in &rules.processes {
-        let Some(i) = id
-            .strip_prefix("body:upkeep-")
-            .or_else(|| id.strip_prefix("ecology:upkeep-"))
-        else {
-            continue;
-        };
-        let paid = p.effects.iter().find_map(paying);
-        // A body-priced upkeep outranks the flat one a lineage may keep.
-        let rank = usize::from(id.starts_with("body:"));
-        if paid.is_some() && lines.get(i).is_none_or(|(_, held)| *held < rank) {
-            lines.insert(i.into(), (id.as_str(), rank));
-        }
-    }
+    let lines = upkeeps(rules);
     let mut made = Vec::new();
     for (i, (id, _)) in lines {
         let beside = &rules.processes[id];
@@ -301,7 +307,7 @@ pub(crate) fn processes(rules: &mut Rules) -> Result<()> {
 
 /// What an upkeep effect pays from and into: the accounts it takes, and
 /// where they go.
-fn paying(effect: &Effect) -> Option<(Vec<Key>, Key)> {
+pub(crate) fn paying(effect: &Effect) -> Option<(Vec<Key>, Key)> {
     match effect {
         Effect::Spend { from, into: Some(into), .. } => Some((from.clone(), into.clone())),
         Effect::Transform { take, give, .. } if !take.is_empty() => {

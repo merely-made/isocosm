@@ -317,6 +317,9 @@ impl Simulation {
                 },
             }
         }
+        if !planning {
+            staged.exert( definition, &id);
+        }
         self.diagnostic_stage("commit_checks");
         if stage.direction.is_none()
             && let Err(why) = self.complete_process_debits()

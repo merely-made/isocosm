@@ -105,6 +105,7 @@ pub fn of(
         patch: None,
         authored: None,
         settled: None,
+        spent: None,
     };
     e.embody(body);
     let carried = match d.systems.is_empty() {

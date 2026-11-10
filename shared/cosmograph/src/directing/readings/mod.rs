@@ -9,6 +9,7 @@
 use crate::{schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 
+pub mod abilities;
 pub mod habitable;
 pub mod heirs;
 pub mod known;
@@ -17,7 +18,9 @@ pub mod regions;
 pub mod scopes;
 pub mod starts;
 pub mod survival;
+pub mod unable;
 
+pub use abilities::{Ability, abilities};
 pub use habitable::habitable;
 pub use heirs::heirs;
 pub use known::{known, regard};
@@ -26,6 +29,7 @@ pub use regions::{Region, region_of, regions};
 pub use scopes::{Absence, Means, Scope, ScopeReading, Source, absence, reading, route_steps, sources};
 pub use starts::{StartAt, start_at, starts};
 pub use survival::{Mode, View, view};
+pub use unable::{Unable, unable};
 
 /// An act the critter considered and could take beside its choice.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -66,3 +70,5 @@ pub fn from_receipt(sim: &Simulation, receipt: &crate::simulation::Receipt) -> V
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod unable_tests;

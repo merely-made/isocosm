@@ -39,6 +39,9 @@ pub mod collapse;
 mod edits;
 pub mod effects;
 mod execute;
+mod exertion;
+#[cfg(test)]
+mod exertion_tests;
 pub mod flows;
 mod founding_events;
 pub mod generate;

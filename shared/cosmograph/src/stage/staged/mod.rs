@@ -31,6 +31,7 @@ mod owned;
 mod pace;
 mod graft;
 mod direction;
+mod exertion;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {

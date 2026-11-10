@@ -71,6 +71,7 @@ impl Recipe {
             patch: None,
             authored: None,
             settled: None,
+            spent: None,
         })
     }
 }

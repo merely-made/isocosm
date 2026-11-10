@@ -314,6 +314,7 @@ impl Founding {
             root_stores: BTreeMap::new(),
             climate: None,
             kingdoms: None,
+            exertion: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),
@@ -460,6 +461,7 @@ impl Founding {
                     patch: None,
                     authored: None,
                     settled: None,
+                    spent: None,
                 },
                 1,
             )?;
@@ -520,6 +522,7 @@ impl Founding {
                     patch: None,
                     authored: None,
                     settled: None,
+                    spent: None,
                 },
                 count,
             )?;

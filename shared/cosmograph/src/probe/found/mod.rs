@@ -315,6 +315,7 @@ impl ProbeFounding {
             root_stores: BTreeMap::new(),
             climate: None,
             kingdoms: None,
+            exertion: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
@@ -519,6 +520,7 @@ pub(super) fn member(
         patch: None,
         authored: None,
         settled: None,
+        spent: None,
     }
 }
 

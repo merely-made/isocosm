@@ -184,7 +184,7 @@ fn binds_place(p: &Process) -> bool {
     p.commitments.iter().chain(&p.effects).any(at)
 }
 
-fn hunts(p: &Process) -> bool {
+pub(crate) fn hunts(p: &Process) -> bool {
     fn meal(e: &Effect) -> bool {
         matches!(
             e,
@@ -355,13 +355,7 @@ impl Simulation {
     }
 
     fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
-        let part = self.bind_part(actor, p);
-        self.route_ready(actor, p) && self.direction_ready(actor, p).is_ok() && self.target_matches(actor, target, p)
-            && self.foraging_walk_matches(actor, target, p)
-            && self.owned_process_ready(actor,target,p)
-            && p.requires
-                .iter()
-                .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
+        self.infeasible(actor, target, p, place).is_none()
     }
 
     /// Whether an act of `p` at `place` on `target` answers `n`.
@@ -428,35 +422,10 @@ impl Simulation {
             .values()
             .filter(|p| p.causation == Causation::Choice);
         for p in choices.filter(|p| !due_only || due(p)) {
-            let have = |a: &Key| {
-                self.body_at_start(actor)
-                    .map_or(0, |e| crate::anatomy::held(e, rules, a))
-            };
-            if p.need_account
-                .as_ref()
-                .is_some_and(|a| have(a) >= p.need_below)
-            {
+            if self.satisfied(actor, p) {
                 continue;
             }
-            // A nudge to act on a thing names the target, where it can be.
-            let nudged = live.iter().find_map(|&i| {
-                let n = &self.state.nudges[i];
-                if hunts(p) && n.act.as_ref().is_some_and(|act| act != &p.id) {
-                    return None;
-                }
-                match n {
-                    Nudge {
-                        aim: Aim::Act,
-                        toward: Toward::Thing(t),
-                        ..
-                    } if p.target.is_some() && self.feasible(actor, Some(*t), p, place) => Some(*t),
-                    _ => None,
-                }
-            });
-            let target = match p.target {
-                Some(_) => nudged.or_else(|| self.choose_target(actor, p)),
-                None => None,
-            };
+            let (nudged, target) = self.aim(actor, p, &live, place);
             if !self.feasible(actor, target, p, place) {
                 continue;
             }

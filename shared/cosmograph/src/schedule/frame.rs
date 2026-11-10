@@ -347,7 +347,8 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
         born,
         alive,
         tenets,
-        disposition
+        disposition,
+        spent
     );
 }
 

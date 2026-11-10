@@ -308,7 +308,7 @@ three design docs that cite it. The record holds the words.
 | 1240 | Ten routes to an ability: mutation, ingestion, kleptoplasty, symbiosis, horizontal transfer, hybridizing, imitation, guise, tools and farming, riding. | none |
 | 1241 | A route's skill is inherited as traits through the recipe and open to a critter when its grown body carries what the route needs. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1242 | Watching another creature gives behaviours and, over generations, a guise; organs and functions come only by genes or by taking the part. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
-| 1243 | Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching. | none |
+| 1243 | Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
 
 ## Bodies and anatomy
 

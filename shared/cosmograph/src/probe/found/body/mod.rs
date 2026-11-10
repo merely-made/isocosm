@@ -291,6 +291,7 @@ impl BodyFounding {
             root_stores: BTreeMap::new(),
             climate: None,
             kingdoms: None,
+            exertion: None,
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),

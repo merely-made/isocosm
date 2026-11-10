@@ -91,6 +91,7 @@ impl Simulation {
             patch: None,
             authored: None,
             settled: None,
+            spent: None,
         };
         let conserved = self.conserved.checked_add(issued).ok_or("matter overflow")?;
         let total = self.issued.checked_add(issued).ok_or("matter overflow")?;

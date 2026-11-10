@@ -391,6 +391,9 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 Made to keep building at his word ("no need to wait on me! let's build what
 we can and sort on wednesday", 2026-11-10); none is a decision of his.
 
+- **Efficiency is the share of cells that contract** (LR7), and exertion's
+  numbers: four chosen acts at ease in 24 ticks, up to twelve for a body all
+  muscle, one matter an act beyond. Feeding and fixing count as chosen acts.
 - **The grammar unfolds into tagmata** (LR6) rather than replacing them: the
   tagmata stay the truth, and a rule edit regenerates them, overwriting what
   drift had moved. Five operators are in (repeat, branch, differentiate,
@@ -459,6 +462,27 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: LR7 built for what the sim can carry. **Why not:**
+  `readings::unable` lists each Choice process a critter is not offered now
+  with the reason the act path gives when it is tried; the chooser's
+  `feasible` is now `infeasible(..).is_none()`, so the two cannot disagree
+  (case 1233). **Abilities:** `readings::abilities` lists each function a
+  body's living parts express, borrowed where only parts made mostly of
+  another lineage's matter carry it, with the donors; a control shows a
+  borrowed ability gone, and its act unable, once its part is lost (1243).
+  **Exertion**, behind the world rule `rules.exertion` (unset by default; the
+  host's `--exertion`): a body makes `ease` chosen acts a span at no cost,
+  more by its share of contracting cells, and each act past that spends
+  matter from its upkeep's accounts into the same soil, staged with the act;
+  a body short of it still acts (1234). The count is `Entity.spent`, kept
+  only under the rule. A lineage's own upkeep process never counts. No
+  existing test or pin moved. Owed: six routes with nothing under them in the
+  sim (hybridizing, since reproduction has one parent; horizontal transfer,
+  since no genes move between strains; guise; symbiosis alongside and riding,
+  since no body attaches to another; tools and farming; imitation and
+  teaching, which wait on members' learning); exertion in the probe's crowd
+  path, which keeps no count per member; the host showing why-not and
+  abilities.
 - 2026-11-10: LR6's third step, the grammar. A development may carry a
   `Grammar` (`rules/grammar.rs`): a seed of tagmata and rules applied in
   order, which `unfold` into the ordinary `recipe.tagmata` every reader

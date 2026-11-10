@@ -20,6 +20,9 @@ use cosmograph::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "incorporation/abilities.rs"]
+mod abilities;
+
 #[path = "incorporation/adapter.rs"]
 mod adapter;
 
