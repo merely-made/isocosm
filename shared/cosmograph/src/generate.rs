@@ -62,6 +62,11 @@ pub struct Founding {
     /// Absent, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mass_law: Option<crate::ecology::MassLaw>,
+    /// Limits on consumers of the living: fullness and a per-site ceiling,
+    /// in a bodied stock or A1 ecology. Absent, which serializes and hashes
+    /// as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub limits: Option<crate::ecology::Limits>,
 }
 
 impl Default for Founding {
@@ -87,6 +92,7 @@ impl Default for Founding {
             experimental_food_contract: false,
             dormancy: None,
             mass_law: None,
+            limits: None,
         }
     }
 }
@@ -112,25 +118,6 @@ pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> P
         note: false,
         port_feeding: None,
         goal_directives: Vec::new(),
-    }
-}
-
-/// The world's declared total collapse (ruling 891): no living organism
-/// remains. World bodies and the participant seat are inert, so they never
-/// count, and no lineage is named, so speciation cannot dodge it.
-fn extinction() -> crate::collapse::Predicate {
-    use crate::collapse::{Lineages, PopulationFilter, Predicate, WorldReading};
-    let living: Key = "world:living".into();
-    Predicate {
-        inputs: BTreeMap::from([(living.clone(), WorldReading::Population {
-            selector: PopulationFilter {
-                lineages: Lineages::All,
-                methods: BTreeSet::from([Method::Reactive, Method::Deliberative, Method::Normative]),
-                alive: true,
-            },
-        })]),
-        // AtLeast(0, n) is one exactly while n is zero.
-        condition: Expr::AtLeast(Box::new(Expr::Const(0)), Box::new(Expr::Read(Reading::Kept { name: living }))),
     }
 }
 
@@ -350,7 +337,7 @@ impl Founding {
             institution_producers: BTreeMap::new(),
             item_custody: None,
             defence: None,
-            global_collapse: Some(extinction()),
+            global_collapse: Some(crate::collapse::extinction()),
             spatial_templates: None,
             senses: None,
             ecology_witness: None,

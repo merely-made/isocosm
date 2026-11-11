@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 mod admission;
 mod dormant;
 mod joint;
+mod limits;
 mod validate;
 mod evidence;
 mod run;
@@ -20,11 +21,14 @@ mod web;
 pub mod world_time;
 #[cfg(test)]
 mod web_tests;
+#[cfg(test)]
+mod limits_tests;
 pub(crate) use web::Role;
 pub use web::Web;
 pub use independence::*;
 pub use rates::Rates;
 pub use mass_law::MassLaw;
+pub use limits::Limits;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};
 pub use validated_run::{AdmittedJointRun, ValidatedJointRun};
@@ -350,11 +354,13 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 }
 
 /// What lays over the configured and embodied ecology: the mass law, then
-/// the flat rate sets' dormancy, which copies the scaled active rates.
+/// the flat rate sets' dormancy, which copies the scaled active rates, then
+/// the consumers' limits, which gate the feed and birth processes as scaled.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
     if founding.ecology_rates != Rates::WorldTime {
         dormant::flat(founding, g)?;
     }
+    limits::apply(founding, g)?;
     Ok(())
 }

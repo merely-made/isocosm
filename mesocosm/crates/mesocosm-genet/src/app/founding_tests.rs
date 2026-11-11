@@ -47,6 +47,18 @@ fn runs_120(rules: WorldRules, seed: u64) -> Runtime {
 #[test] fn mass_law_founds_and_runs() { runs_120(WorldRules { mass_law: true, ..Default::default() }, 9); }
 #[test] fn dormancy_founds_and_runs() { runs_120(WorldRules { dormancy: true, ..Default::default() }, 9); }
 
+/// A founding rule, so it passes native admission with no declared rules; the
+/// flag alone lays the gates on the founded world's consumers.
+#[test]
+fn limits_found_and_run() {
+    let runtime = runs_120(WorldRules { limits: true, ..Default::default() }, 9);
+    let sim = runtime.sim();
+    let g = sim.genesis();
+    assert!(g.founding.as_ref().unwrap().limits.is_some());
+    assert!(g.rules.processes["ecology:feed-1"].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::Below { .. })));
+    assert!(g.rules.processes["ecology:birth-1"].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::MembersBelow { .. })));
+}
+
 #[test]
 fn hosting_founds_with_its_microbe_and_runs() {
     let runtime = runs_120(WorldRules { hosting: true, ..Default::default() }, 9);
@@ -69,7 +81,7 @@ fn the_climate_founds_where_its_witness_passes_and_runs_while_the_line_lives() {
 
 /// Every rule but the climate, which kills the line too soon to run 120 steps.
 fn all_rules() -> WorldRules {
-    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true,
+    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true,
         ..WorldRules::all() }
 }
 

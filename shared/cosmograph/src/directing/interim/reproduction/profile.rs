@@ -74,7 +74,16 @@ impl Form {
 
 pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
     let rates = if original { Rates::Stock } else { Rates::A1 };
-    let founding = form.founding(seed, rates);
+    let mut founding = form.founding(seed, rates);
+    // `COSMOGRAPH_REPRO_LIMITS=full,n,d` founds the consumers' limits (the
+    // default limits with `default`); a bare form has no bodies to limit.
+    if let Ok(spec) = std::env::var("COSMOGRAPH_REPRO_LIMITS") {
+        let n: Vec<u64> = spec.split(',').filter_map(|v| v.parse().ok()).collect();
+        founding.limits = Some(match n[..] {
+            [full, n, d] => crate::ecology::Limits { full, ceiling: [n, d] },
+            _ => crate::ecology::Limits::default(),
+        });
+    }
     world_from_founding(founding, original, std::env::var("COSMOGRAPH_REPRO_TWEAK").ok().as_deref())
 }
 

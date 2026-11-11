@@ -30,6 +30,11 @@ pub struct WorldRules {
     /// Producers' young lie dormant (cases 1192 to 1197): set in the
     /// founding, so it reaches only the A1 world that is generated from it.
     pub dormancy: bool,
+    /// Limits on consumers of the living: they feed only while not full and
+    /// bear young only below a per-site ceiling. Set in the founding, so it
+    /// reaches only the A1 world that is generated from it.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub limits: bool,
 }
 
 impl WorldRules {
@@ -38,7 +43,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -52,6 +57,9 @@ impl WorldRules {
         }
         if self.dormancy && genesis.founding.as_ref().is_none_or(|f| f.dormancy.is_none()) {
             return Err("--dormancy is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.limits && genesis.founding.as_ref().is_none_or(|f| f.limits.is_none()) {
+            return Err("--limits is a founding rule: it needs the generated A1 world".into());
         }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {

@@ -173,3 +173,21 @@ impl Simulation {
         Ok(Some(CollapseReading { tick: self.state.tick, inputs, result, collapsed: result != 0 }))
     }
 }
+
+/// The world's declared total collapse (ruling 891): no living organism
+/// remains. World bodies and the participant seat are inert, so they never
+/// count, and no lineage is named, so speciation cannot dodge it.
+pub(crate) fn extinction() -> Predicate {
+    let living: Key = "world:living".into();
+    Predicate {
+        inputs: BTreeMap::from([(living.clone(), WorldReading::Population {
+            selector: PopulationFilter {
+                lineages: Lineages::All,
+                methods: BTreeSet::from([Method::Reactive, Method::Deliberative, Method::Normative]),
+                alive: true,
+            },
+        })]),
+        // AtLeast(0, n) is one exactly while n is zero.
+        condition: Expr::AtLeast(Box::new(Expr::Const(0)), Box::new(Expr::Read(Reading::Kept { name: living }))),
+    }
+}

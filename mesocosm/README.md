@@ -70,7 +70,10 @@ shift), `--learning` lets members learn (it founds each deciding lineage a polic
 scales upkeep, meals, maturity, lifespan and birth spacing with a body's adult mass (the three-quarter and
 one-quarter powers, held to a quarter and four times the flat rate), and `--dormancy`
 makes a producer's young lie dormant as seeds that cost a tenth of the upkeep and wake by season where
-the site is not crowded, so a line a lean spell empties can come back from its seed bank. D calls the
+the site is not crowded, so a line a lean spell empties can come back from its seed bank. `--limits`
+limits the eaters of the living (grazers and the like): each feeds only while it holds less than a
+set fullness and bears young only where fewer than a ceiling of its line stand at its site, which stops
+the grazers outrunning their food. D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,
 and at a loss Tab moves among the heirs.
 

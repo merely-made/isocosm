@@ -167,6 +167,7 @@ fn main() {
             "--learning" => config.world_rules.learning = true,
             "--mass-law" => config.world_rules.mass_law = true,
             "--dormancy" => config.world_rules.dormancy = true,
+            "--limits" => config.world_rules.limits = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -416,6 +417,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --learning      world rule: members learn (it founds each deciding lineage a policy)
   --mass-law      world rule: upkeep, meals, life and breeding scale with a body's adult mass (3/4 and 1/4 powers)
   --dormancy      world rule: producers' young lie dormant as seeds, waking by season where the site is not crowded
+  --limits        world rule: grazers and other eaters of the living feed only while not full and breed only below a per-site ceiling
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

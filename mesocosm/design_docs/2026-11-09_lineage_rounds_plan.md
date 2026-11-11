@@ -475,6 +475,11 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   Decomposers only. Grazers' meals can lose to a move at the same
   decision too and were left as they are; ordering meals before moves
   for every body is an engine change not made.
+- **Consumers' limits** (`--limits`, built on Mark's word 2026-11-11):
+  mine: fullness 12; the ceiling as a ratio of the lineage's founding
+  share per site, three times it (18 grazers a site in the played
+  world), since twice drops the played battery to 18 of 20; it covers
+  grazer, predator and omnivore, not decomposers; off by default.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -524,6 +529,23 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: limits on consumers of the living, opt-in
+  (`Founding.limits`, `ecology/limits.rs`, Mesocosm `--limits`). A
+  consumer feeds only while it holds less than 12 and bears young only
+  where fewer than three times its founding share per site stand.
+  Unset, nothing founds or hashes differently; no pin moved. Measured
+  on the played A1 world, seeds 3, 5, 9, 11 and 17 to tick 600
+  (`tests/limits_measure.rs`). The ceiling does the work: grazer peaks
+  fall by half or more (seed 9: 553 to 101) and, without dormancy, the
+  first producer, the grazer and the decomposer live at 600 on all
+  five seeds, where seed 9 was down to two decomposers. The fullness
+  gate is nearly inert: alone it changes almost nothing. Finding: the
+  second producer (L3) dies by about tick 200 on every seed without
+  dormancy, under all 16 settings and with no limits, so it is not the
+  grazers; it looks like one producer crowding out the other. With
+  dormancy all four lines live at 600 on every seed and setting.
+  Played battery with the default: 20/20. Owed: why L3 loses; bodied
+  and bare batteries under the limits.
 - 2026-11-11: A1's decomposers live. Finding: they never ate in a played
   world. A played founding gives every lineage hunger-driven moves at
   priority 0, some of a tick, so a hungry body moved at every decision

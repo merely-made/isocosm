@@ -26,6 +26,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
     if rules.mass_law { founding.mass_law = Some(cosmograph::ecology::MassLaw::default()); }
     if rules.dormancy { founding.dormancy = Some(cosmograph::rules::Dormancy::flat()); }
+    if rules.limits { founding.limits = Some(cosmograph::ecology::Limits::default()); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     let mut setup = mesocosm_runtime::runtime::ecology::Setup::generated_classified(
