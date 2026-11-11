@@ -23,8 +23,23 @@ const FILL_ALPHA: f32 = 0.35;
 /// The played critter's marker radius, in leaf pixels.
 const MARKER_RADIUS: f32 = 4.0;
 
-/// A realized minimap: regions tinted by holder, sites dotted, the player
-/// marked.
+/// What a held surface leaves at a site: a ring on the ground, and a diamond
+/// where bodies carry it, each as a strength from nought to one.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct HoldMark {
+    /// The site, in scene units.
+    pub at: (f32, f32),
+    pub land: f32,
+    pub hosts: f32,
+}
+
+/// The ring's colour (amber) and the diamond's (cyan), apart from every
+/// lineage tint's muted range and from the white player mark.
+const LAND_COLOUR: (f32, f32, f32) = (0.96, 0.62, 0.16);
+const HOST_COLOUR: (f32, f32, f32) = (0.25, 0.85, 0.9);
+
+/// A realized minimap: regions tinted by holder, sites dotted, held surfaces
+/// ringed, the player marked.
 pub struct MinimapLeaf {
     scene: Scene,
     /// One tint per scene region, adapter-resolved, in region order. `None`
@@ -32,6 +47,8 @@ pub struct MinimapLeaf {
     tints: Vec<Option<ColorF>>,
     /// The played critter's world x/z, if anyone is embodied.
     player: Option<(f32, f32)>,
+    /// Where held surfaces lie; empty when nothing is held.
+    holds: Vec<HoldMark>,
     size: Size,
     dirty: bool,
 }
@@ -42,6 +59,7 @@ impl MinimapLeaf {
             scene,
             tints,
             player,
+            holds: Vec::new(),
             size: Size {
                 width: 160.0,
                 height: 160.0,
@@ -50,22 +68,32 @@ impl MinimapLeaf {
         }
     }
 
+    /// The same minimap with the marks of held surfaces.
+    pub fn with_holds(mut self, holds: Vec<HoldMark>) -> Self {
+        self.holds = holds;
+        self
+    }
+
+    pub fn holds(&self) -> &[HoldMark] { &self.holds }
+
     /// Replaces the projection wholesale. The next paint repaints everything;
     /// diffing a nine-region minimap would cost more than it saves.
-    pub fn update(&mut self, scene: Scene, tints: Vec<Option<ColorF>>, player: Option<(f32, f32)>) {
-        if self.scene == scene && self.tints == tints && self.player == player {
+    pub fn update(&mut self, scene: Scene, tints: Vec<Option<ColorF>>, player: Option<(f32, f32)>,
+        holds: Vec<HoldMark>) {
+        if self.scene == scene && self.tints == tints && self.player == player && self.holds == holds {
             return;
         }
         self.scene = scene;
         self.tints = tints;
         self.player = player;
+        self.holds = holds;
         self.dirty = true;
     }
 
     /// Adopts a freshly assembled projection, keeping this leaf's paint
     /// retention: identical projections stay settled.
     pub fn refresh_from(&mut self, fresh: MinimapLeaf) {
-        self.update(fresh.scene, fresh.tints, fresh.player);
+        self.update(fresh.scene, fresh.tints, fresh.player, fresh.holds);
     }
 
     /// Scene units to leaf pixels: fit the scene bounds into the leaf,
@@ -140,6 +168,25 @@ impl Leaf for MinimapLeaf {
             cx.fill_path(Path::circle(x, y, 1.5), ColorF::new(0.85, 0.85, 0.85, 0.9));
         }
 
+        // Held surfaces, over the sites: a ring for matter on the ground and
+        // a diamond beside it for bodies that carry it.
+        for mark in &self.holds {
+            let (x, y) = self.to_px(Vec2::new(mark.at.0, mark.at.1));
+            if mark.land > 0.0 {
+                let (r, g, b) = LAND_COLOUR;
+                cx.path(Path::circle(x, y, 3.0 + 5.0 * mark.land), None,
+                    Some(solid_stroke(ColorF::new(r, g, b, mark.land), 2.0)));
+            }
+            if mark.hosts > 0.0 {
+                let (r, g, b) = HOST_COLOUR;
+                let size = 2.5 + 2.5 * mark.hosts;
+                let (cx0, cy0) = (x + 6.0, y - 6.0);
+                let diamond = Path::new().move_to(cx0, cy0 - size).line_to(cx0 + size, cy0)
+                    .line_to(cx0, cy0 + size).line_to(cx0 - size, cy0).close().build();
+                cx.fill_path(diamond, ColorF::new(r, g, b, mark.hosts));
+            }
+        }
+
         // The player, over everything: the one mark that answers "where am I".
         if let Some((wx, wz)) = self.player {
             let (x, y) = self.to_px(Vec2::new(wx, wz));
@@ -157,3 +204,37 @@ impl Leaf for MinimapLeaf {
     }
 }
 
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn leaf(holds: Vec<HoldMark>) -> MinimapLeaf {
+        let score = crate::minimap::minimap_score_of(&[(1, Vec2::new(0.0, 0.0))]);
+        MinimapLeaf::new(scenomise::solve(&score), vec![None], None).with_holds(holds)
+    }
+
+    fn painted(leaf: &mut MinimapLeaf) -> usize {
+        let mut cmds = Vec::new();
+        let mut cx = PaintCx::new(&mut cmds, Size { width: 160.0, height: 160.0 });
+        leaf.paint(&mut cx);
+        cmds.len()
+    }
+
+    #[test]
+    fn held_marks_add_paint_and_a_changed_mark_repaints() {
+        let bare = painted(&mut leaf(vec![]));
+        let ring = HoldMark { at: (0.0, 0.0), land: 0.5, hosts: 0.0 };
+        let both = HoldMark { hosts: 1.0, ..ring };
+        let with_ring = painted(&mut leaf(vec![ring]));
+        let with_both = painted(&mut leaf(vec![both]));
+        assert!(with_ring > bare && with_both > with_ring, "{bare} {with_ring} {with_both}");
+        let mut settled = leaf(vec![ring]);
+        painted(&mut settled);
+        assert!(!settled.paint_dirty());
+        settled.refresh_from(leaf(vec![ring]));
+        assert!(!settled.paint_dirty(), "an identical projection stays settled");
+        settled.refresh_from(leaf(vec![both]));
+        assert!(settled.paint_dirty(), "a new mark repaints");
+    }
+}

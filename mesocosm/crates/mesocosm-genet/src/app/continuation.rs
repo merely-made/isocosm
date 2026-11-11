@@ -148,6 +148,7 @@ impl Host {
             facts: [Some(("choose".into(), selected)),
                 Some(("other bodies".into(), format!("{} offered in the current native view", reading.lineages.len()))),
                 (!reading.starts.is_empty()).then(|| ("starts".into(), format!("{} offered", reading.starts.len()))),
+                mesocosm_views::banked_words(&self.runtime.sim(), None).map(|words| ("seeds".into(), words)),
                 Some(("status".into(), self.continuation.notice.clone().unwrap_or_else(||
                     if let Some(tick) = reading.world_ended_at { format!("The authored world predicate ended the game at tick {tick}.") }
                     else if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }

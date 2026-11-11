@@ -28,8 +28,17 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     if rules.dormancy { founding.dormancy = Some(cosmograph::rules::Dormancy::flat()); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
-    mesocosm_runtime::runtime::ecology::Setup::generated_classified(
-        founded, cosmograph::Execution::Individuals)
+    let mut setup = mesocosm_runtime::runtime::ecology::Setup::generated_classified(
+        founded, cosmograph::Execution::Individuals)?;
+    // The admission lays the same rules over its basis, so they are baseline.
+    setup.rules = rules;
+    Ok(setup)
+}
+
+#[cfg(test)]
+pub(super) fn a1_setup_with_for_tests(founded: mesocosm_runtime::Founded, rules: super::config::WorldRules)
+    -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+    a1_setup_with(founded, None, rules)
 }
 
 fn candidate_seed(base: u64, attempt: u32) -> u64 {
@@ -70,6 +79,10 @@ fn select_a1_candidate<T>(
             Err(CandidateError::MissingPlayedPlacement) => {
                 if !permit_search { return Err(CandidateError::MissingPlayedPlacement); }
                 eprintln!("A1 candidate seed {seed} has no declared stand for its controlled body.");
+            }
+            Err(CandidateError::WitnessIncomplete(message)) => {
+                if !permit_search { return Err(CandidateError::Invalid(message)); }
+                eprintln!("A1 candidate seed {seed} ran its witness but {message}; trying the next candidate.");
             }
             Err(error @ CandidateError::Invalid(_)) => return Err(error),
         }
@@ -121,23 +134,28 @@ fn generated_world(config: &HostConfig, affinity: Option<cosmograph::rules::Affi
                 .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
             if let Some(start) = config.start { founded.start = start; }
             if let Some(mode) = config.mode { founded.mode = mode; }
-            a1_setup_with(founded, affinity.clone(), config.world_rules)
+            let setup = a1_setup_with(founded, affinity.clone(), config.world_rules)?;
+            eprintln!("A1 preflight accepted seed {candidate}; running full ecology witness.");
+            setup.offer_with_progress(config.ticks_per_second, &mut |tick, horizon| {
+                if tick % 10 == 0 || tick == horizon {
+                    eprintln!("A1 ecology witness: live tick {tick}/{horizon} completed.");
+                }
+                if tick == horizon { eprintln!("A1 ecology witness: validating native history."); }
+            }).map_err(|message| if message.starts_with("joint ecology witness is incomplete")
+                || message.contains("found no habitable site") {
+                mesocosm_runtime::runtime::ecology::GeneratedSetupError::WitnessIncomplete(message)
+            } else { mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) })
         }).map_err(|error| match error {
-            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
+                | mesocosm_runtime::runtime::ecology::GeneratedSetupError::WitnessIncomplete(message) => message,
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
                 "candidate search ended unexpectedly".into(),
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement =>
                 "candidate has no declared physical stand".into(),
         })?;
-        eprintln!("A1 preflight accepted seed {} after {} candidate(s); running full ecology witness.", selected.seed, selected.attempts);
-        let runtime = selected.setup.offer_with_progress(config.ticks_per_second,
-            &mut |tick, horizon| {
-                if tick % 10 == 0 || tick == horizon {
-                    eprintln!("A1 ecology witness: live tick {tick}/{horizon} completed.");
-                }
-                if tick == horizon { eprintln!("A1 ecology witness: validating native history."); }
-            })?;
-        eprintln!("A1 ecology witness accepted in {:.3}s.", began.elapsed().as_secs_f64());
+        let runtime = selected.setup;
+        eprintln!("A1 ecology witness accepted seed {} after {} candidate(s) in {:.3}s.",
+            selected.seed, selected.attempts, began.elapsed().as_secs_f64());
         return Ok(runtime);
     }
     let mut founded = mesocosm_runtime::Founded::generated_with_affinity(seed, config.population, affinity.clone())?;
@@ -213,7 +231,8 @@ fn play(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> R
             }
             Ok(runtime)
         }).map_err(|error| match error {
-            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
+                | mesocosm_runtime::runtime::ecology::GeneratedSetupError::WitnessIncomplete(message) => message,
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
                 "no candidate had a living consumer with food".into(),
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement =>

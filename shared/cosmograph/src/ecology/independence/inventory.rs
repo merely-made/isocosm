@@ -15,6 +15,17 @@ impl GeneratedBasis {
         ordinary(founding)?;
         Ok(Self { source: founding.generate()? })
     }
+    /// The generated basis with the product's declared world rules laid over
+    /// it, as a founding's own rule fields are (mass law, dormancy). The
+    /// caller lays the same rules over the candidate, so they are the
+    /// world's baseline and not an added native definition; the captured
+    /// basis is saved with the admission and used on restore.
+    pub fn declared(founding: &Founding, declare: impl FnOnce(&mut Genesis) -> Result<()>) -> Result<Self> {
+        ordinary(founding)?;
+        let mut source = founding.generate()?;
+        declare(&mut source)?;
+        Ok(Self { source })
+    }
     pub fn source_digest(&self) -> Key { crate::digest(&self.source) }
 }
 

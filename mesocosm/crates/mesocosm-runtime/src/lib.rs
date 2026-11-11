@@ -32,6 +32,7 @@ pub mod spatial;
 pub mod tactile;
 pub mod terrain;
 pub mod voxel_profile;
+pub mod world_rules;
 
 pub use cosmograph_host::drive::{Advance, Button, Clock, Context, InputRefusal, Named, Pick, Pointed, Press};
 pub use runtime::author_spread;

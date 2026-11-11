@@ -52,8 +52,11 @@ impl Mesocosm {
         }
         if let Some(checkpoint) = &self.checkpoint {
             let reading = self.question_reading(world, Vec::new()).ok()?;
+            // The heir is read from the list the player is shown, which the
+            // admission also uses: a kin out of sight is not on it.
+            let shown = reading.checkpoint.as_ref().unwrap_or(checkpoint);
             return offered_answer(checkpoint, &reading, critter, press)
-                .map(|intent| heir_at(intent, checkpoint, context.row));
+                .map(|intent| heir_at(intent, shown, context.row));
         }
         let (critter, site) = (critter?, self.site(world)?);
         match press {

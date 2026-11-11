@@ -39,10 +39,14 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
         Occasion::Epoch(_) => access.subject.is_some_and(|id| visible.shows(id.0)),
     });
     if let Some(checkpoint) = &mut out.checkpoint {
-        checkpoint.heirs.retain(|id| visible.shows(*id));
+        // A holder who lost the body keeps the heirs of its own line on the
+        // list though the dead eye sees none of them: otherwise a line whose
+        // kin all live out of sight leaves the question with no answer.
+        let own_loss = matches!(&checkpoint.occasion, Occasion::Loss(loss) if origin == Some(loss.critter) || access.subject.map(|id| id.0) == Some(loss.critter));
+        checkpoint.heirs.retain(|id| own_loss || visible.shows(*id));
         // This is a visibility projection, never the authoritative saved hold.
         if let Occasion::Loss(loss) = &mut checkpoint.occasion {
-            loss.next = loss.next.filter(|id| visible.shows(*id));
+            loss.next = loss.next.filter(|id| own_loss || visible.shows(*id));
         }
         if let Occasion::Epoch(boundary) = &mut checkpoint.occasion {
             // The saved forecast is not a disclosure of unplayed lineages.

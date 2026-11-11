@@ -26,7 +26,14 @@ fn has_living_role(genesis: &cosmograph::simulation::Genesis, lineage: &str, rol
 }
 
 #[derive(Debug)]
-pub enum GeneratedSetupError { MissingViableConsumerFood, MissingPlayedPlacement, Invalid(String) }
+pub enum GeneratedSetupError {
+    MissingViableConsumerFood, MissingPlayedPlacement,
+    /// The 60-tick joint witness ran and lacked a role, or the played line
+    /// had no habitable start after it (a world whose rules kill its
+    /// producers or its lineage does this); another candidate may not.
+    WitnessIncomplete(String),
+    Invalid(String),
+}
 
 fn generated_specification(genesis: &cosmograph::simulation::Genesis) -> Result<JointSpec, GeneratedSetupError> {
     let founding = genesis.founding.as_ref().ok_or_else(|| GeneratedSetupError::Invalid("generated ecology needs its founding".into()))?;
@@ -121,6 +128,12 @@ pub struct Setup {
     /// and retain their historical site-grain meaning.
     #[serde(default, skip_serializing_if = "is_false")]
     pub generated_templates: bool,
+    /// The world rules laid over the generated basis as well as the
+    /// candidate, so they are the world's baseline and not added definitions
+    /// the admission would ask evidence for (case 875). Older setup files
+    /// omit this and declare none.
+    #[serde(default, skip_serializing_if = "crate::world_rules::WorldRules::is_off")]
+    pub rules: crate::world_rules::WorldRules,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -137,7 +150,7 @@ impl Setup {
         Self::generated_classified(founded, execution).map_err(|error| match error {
             GeneratedSetupError::MissingViableConsumerFood => "default generated ecology offer needs a living producer and a living consumer whose native feed targets it".into(),
             GeneratedSetupError::MissingPlayedPlacement => "generated play needs a declared physical stand for its controlled body".into(),
-            GeneratedSetupError::Invalid(message) => message,
+            GeneratedSetupError::WitnessIncomplete(message) | GeneratedSetupError::Invalid(message) => message,
         })
     }
 
@@ -150,7 +163,7 @@ impl Setup {
         let mut founded = founded;
         founded.genesis.rules.ecology_witness = Some(specification.clone());
         founded.genesis.validate().map_err(GeneratedSetupError::Invalid)?;
-        Ok(Self { version: 1, founded, specification, execution, spatial: None, generated_templates: true })
+        Ok(Self { version: 1, founded, specification, execution, spatial: None, generated_templates: true, rules: Default::default() })
     }
 
     pub fn check(&self) -> Result<(), String> {
@@ -219,7 +232,8 @@ impl Setup {
         progress: &mut dyn FnMut(u64, u64)) -> Result<Runtime, String> {
         let founding=self.founded.genesis.founding.as_ref().ok_or("generated candidate has no founding")?;
         // This producer captures its real basis; authored JSON cannot replace it.
-        let basis=cosmograph::ecology::GeneratedBasis::new(founding)?;
+        // The world rules the player chose are laid over it, as over the candidate.
+        let basis=cosmograph::ecology::GeneratedBasis::declared(founding, |genesis| self.rules.apply(genesis))?;
         let criterion=self.specification.independence.as_ref()
             .ok_or("generated-world offer needs explicit native mechanical-effect declarations879")?;
         let (run, spatial) = self.assess_validated(progress)?;

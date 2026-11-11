@@ -466,6 +466,10 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   chosen act, so every seed pays it.
 - **Upkeep alignment** (finding): fixing it so every body pays moves the
   A1 pins and every played world's course. Not done; yours to call.
+- **The climate is lethal as numbered** (finding): `--climate` leaves three
+  seeds in 120 that found, and none keeps its played line 120 steps. At a
+  fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
+  cut of mine (LR4.2) and need retuning.
 
 ## Questions for Mark
 
@@ -511,6 +515,32 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: the rule flags work in the real binary, and a held microbe
+  shows. Finding: `--regard`, `--exertion`, `--drift`, `--draft`,
+  `--sheet`, `--rounds-rules`, `--learning`, `--hosting` and `--climate`
+  had never founded through the binary. The native admission diffs the
+  offered genesis against one regenerated from the founding and wants
+  evidence for each changed definition; these flags edited rules after
+  generation, and their tests went through the bench path, which has no
+  admission. Only `--mass-law` and `--dormancy`, being founding fields,
+  passed. Fixed without loosening the check: `GeneratedBasis::declared`
+  lays the product's declared rules over the regenerated basis, the
+  rules (`WorldRules`, now in `mesocosm-runtime`) travel in the `Setup`,
+  and an undeclared rule still fails. Tests in `founding_tests.rs` go
+  through `startup::configured`, the binary's own path, one per flag.
+  Also fixed: `--rounds-rules` dropped flags given before it; a loss
+  answered with an heir out of sight stalled the loop; a holder who lost
+  its body could be asked a question with no answer; `--unchosen-seed`
+  now tries the next candidate when a witness is incomplete; `--curve`
+  stops with a reason at a question the demo cannot answer. Every flag
+  but climate founds on seed 9 (exertion on seed 3) and runs to tick 180.
+  Finding: `--climate` founds on 3 seeds of 120 and the played line dies
+  before 120 steps on each; the default climate's temperature strain
+  kills most A1 lineages inside the 60-tick witness. Views: the minimap
+  rings a site where a held surface lies and marks one where bodies
+  carry it, with a legend row; carrying bodies are tinted in the scene;
+  "N seeds banked" shows in vitals and the continuation pane. Owed: the
+  climate's numbers; a look at the marks and tint in a window.
 - 2026-11-11: propagules under the flat rate sets, and why the played world
   dies. `Founding.dormancy` now works for bodied Stock and A1 worlds
   (`ecology/dormant.rs`, shared with world time): a producer's birth lays

@@ -142,9 +142,12 @@ impl State {
             super::reading::CommittedSubject::capture(host, sim, native.clone(), revision);
         self.tick_reading = sim.state().tick;
         self.review_open = r.review().is_some();
+        // What the participant holds is marked on the map, bodiless or not:
+        // the map asks nothing of a played critter, only its mark does.
+        let surfaces = mesocosm_views::held_surfaces(sim, r.interim().participant);
         let map_key = (native, r.critter());
         if self.map_key.as_ref() != Some(&map_key) {
-            self.minimap = Some(mesocosm_views::minimap_leaf(&sim, r.critter()));
+            self.minimap = Some(mesocosm_views::minimap_leaf_holding(sim, r.critter(), &surfaces));
             self.map_key = Some(map_key);
         }
         self.vitals = mesocosm_views::vitals_of_with_terms(
@@ -156,6 +159,8 @@ impl State {
             r.terms(),
         );
         (self.vitals.round, self.vitals.par) = host.round_state(sim);
+        self.vitals.map_key = mesocosm_views::hold_legend_words(&surfaces,
+            &|key| sim.state().lineages.get(key).map(|line| line.kingdom.clone()).unwrap_or_default());
         self.board = r
             .review()
             .map(|review| crate::review::board_of(review, r.proposed(), &r.trend(), host.board_row))

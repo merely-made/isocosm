@@ -140,6 +140,29 @@ pub fn tint_of(trophic: Option<Trophic>) -> [f32; 3] {
     trophic_colour(index)
 }
 
+/// The colour a body carrying a held surface's matter is drawn toward: the
+/// minimap's diamond for the same bodies.
+pub const CARRIER: [f32; 3] = [0.25, 0.85, 0.9];
+
+/// A tint drawn most of the way toward the carrier colour.
+pub fn carrier_tint(tint: [f32; 3]) -> [f32; 3] {
+    let mut out = tint;
+    for (channel, toward) in out.iter_mut().zip(CARRIER) { *channel = *channel * 0.35 + toward * 0.65; }
+    out
+}
+
+/// Badges the bodies that carry matter of a held surface in their accounts,
+/// by tinting them toward [`CARRIER`]; the one mark a body takes here is its
+/// tint, which the renderers already read (the pack's styles resolve apart).
+pub fn badge_carriers(bodies: &mut [PlacedBody], sim: &Simulation, surfaces: &[cosmograph::schema::Key]) {
+    if surfaces.is_empty() { return; }
+    for body in bodies {
+        let carries = sim.state().population.get(body.id)
+            .is_some_and(|entity| mesocosm_views::carries_held(entity, surfaces));
+        if carries { body.tint = carrier_tint(body.tint); }
+    }
+}
+
 /// Current actual saved poses through the supplied native seat cut. Bodies
 /// without physical input are omitted; neither layout nor eye is a root pose.
 pub fn placed_physical(sim: &Simulation, site: Id,
@@ -260,3 +283,7 @@ pub fn style(
             .map(|style| style.display);
     }
 }
+
+#[cfg(test)]
+#[path = "scene_badge_tests.rs"]
+mod badge_tests;

@@ -249,6 +249,7 @@ impl Host {
 
         self.scene_extractions += 1;
         let visible = self.runtime.view();
+        let holder = self.runtime.interim().participant;
         if physical {
             let result = self
                 .runtime
@@ -266,7 +267,7 @@ impl Host {
                         scene,
                         self.config.component_scene,
                         &mut self.scene_components,
-                        |scene| styled(scene, &sim, styles),
+                        |scene| styled(scene, &sim, styles, holder),
                     )
                 });
             return match result {
@@ -325,7 +326,7 @@ impl Host {
                 scene,
                 self.config.component_scene,
                 &mut self.scene_components,
-                |scene| styled(scene, &sim, styles),
+                |scene| styled(scene, &sim, styles, holder),
             ) {
                 Ok(scene) => Some(scene),
                 Err(why) => {
@@ -345,7 +346,7 @@ impl Host {
                     scene,
                     self.config.component_scene,
                     &mut self.scene_components,
-                    |scene| styled(scene, &sim, styles),
+                    |scene| styled(scene, &sim, styles, holder),
                 )
             });
         match result {
@@ -393,6 +394,10 @@ impl Host {
 #[path = "app/scene_cache_tests.rs"]
 mod scene_cache_tests;
 
+#[cfg(test)]
+#[path = "app/founding_tests.rs"]
+mod founding_tests;
+
 #[path = "app/curve.rs"]
 mod curve_run;
 pub use curve_run::run as curve;
@@ -411,7 +416,11 @@ fn styled(
     scene: &mut SiteScene,
     sim: &cosmograph::simulation::Simulation,
     styles: &mesocosm_runtime::StyleSheet,
+    holder: cosmograph::schema::Id,
 ) {
     let played = scene.played;
     crate::played::scene::style(&mut scene.bodies, sim, played, styles);
+    // Bodies carrying what the holder holds are tinted (the minimap's diamond).
+    let surfaces = mesocosm_views::held_surfaces(sim, holder);
+    crate::played::scene::badge_carriers(&mut scene.bodies, sim, &surfaces);
 }

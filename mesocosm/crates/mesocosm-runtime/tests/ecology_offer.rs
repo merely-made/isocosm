@@ -14,7 +14,7 @@ fn setup(execution: Execution) -> Setup {
     Setup { version: 1,
         founded: Founded { genesis: candidate.genesis, start: Start::default(), mode: Mode::Survival,
             pace: Pace { round: 1, scoring: 1 }, on_collapse: OnCollapse::Stay },
-        specification: candidate.spec, execution, spatial: None, generated_templates: false }
+        specification: candidate.spec, execution, spatial: None, generated_templates: false, rules: Default::default() }
 }
 
 #[test]

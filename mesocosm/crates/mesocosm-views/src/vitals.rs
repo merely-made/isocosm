@@ -45,6 +45,10 @@ pub struct Vitals {
     pub round: Option<String>,
     /// The condition's par, in mg to beat (D8).
     pub par: Option<String>,
+    /// The seeds the world banks, when it banks any (case 1193).
+    pub banked: Option<String>,
+    /// What the minimap's marks of a held surface mean, in words.
+    pub map_key: Option<String>,
 }
 
 impl Vitals {
@@ -103,6 +107,8 @@ pub fn vitals_of_with_terms(
         graft: critter.filter(|_| e.is_some()).and_then(|id| allowance_words(sim, id)),
         round: None,
         par: None,
+        banked: crate::held_map::banked_words(sim, e.map(|e| e.lineage.as_str())),
+        map_key: None,
     }
 }
 
@@ -184,6 +190,8 @@ pub fn vital_rows(vitals: &Vitals) -> Vec<(&'static str, String)> {
         ("graft", &vitals.graft),
         ("round", &vitals.round),
         ("par", &vitals.par),
+        ("seeds", &vitals.banked),
+        ("map", &vitals.map_key),
         ("replacement", &vitals.replacement),
     ] {
         if let Some(value) = value {

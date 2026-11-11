@@ -48,8 +48,21 @@ pub fn run(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
     let mut runtime = startup::configured(config, &authored)?;
     let mut observations = vec![reading(&runtime)];
     persist(config, &runtime, &observations)?;
+    let mut stalled = 0;
     for step in 0..ticks {
+        let before = runtime.sim().state().tick;
         crate::played::demo_step(&mut runtime, step);
+        // The demo answers a question once; one it cannot answer (a lost
+        // line with no heir, say) holds the clock, and stepping on only
+        // repeats the same tick, so the run stops and says why.
+        if runtime.sim().state().tick == before && runtime.checkpoint().is_some() {
+            stalled += 1;
+            if stalled >= 3 {
+                let held = runtime.checkpoint().map(|c| format!("{:?}", c.occasion)).unwrap_or_default();
+                println!("curve: held at tick {before} after {step} steps by a question the demo cannot answer: {held}");
+                break;
+            }
+        } else { stalled = 0; }
         if step % every.max(1) == 0 || step + 1 == ticks {
             let sample = reading(&runtime);
             let living: u64 = runtime

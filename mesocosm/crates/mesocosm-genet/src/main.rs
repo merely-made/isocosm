@@ -170,7 +170,8 @@ fn main() {
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
-            "--rounds-rules" => config.world_rules = WorldRules::all(),
+            // Only the three rules of the rounds: flags given before it stay set.
+            "--rounds-rules" => config.world_rules = WorldRules { drift: true, draft: true, sheet: true, ..config.world_rules },
             "--mode" => config.mode = Some(match args.next().as_deref() {
                 Some("survival") => cosmograph::directing::readings::Mode::Survival,
                 Some("creative") => cosmograph::directing::readings::Mode::Creative,

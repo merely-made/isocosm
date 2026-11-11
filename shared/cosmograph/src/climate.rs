@@ -295,7 +295,7 @@ pub(crate) fn upkeeps(rules: &Rules) -> BTreeMap<String, (&str, usize)> {
 ///
 /// # Errors
 /// Fails if the new processes pass the world's limit on them.
-pub(crate) fn processes(rules: &mut Rules) -> Result<()> {
+pub fn processes(rules: &mut Rules) -> Result<()> {
     if rules.climate.is_none() {
         return Ok(());
     }

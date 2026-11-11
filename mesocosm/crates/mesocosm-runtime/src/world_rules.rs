@@ -1,0 +1,88 @@
+// Copyright 2026 Mark Alan Boykin
+// SPDX-License-Identifier: MPL-2.0
+
+//! The world rules a new generated world may switch on (lineage-rounds D2,
+//! D9, D11, D12; cases 1215, 1216, 1223, 1226). They live here, not in the
+//! host, because the ecology admission lays them over its basis as well as
+//! over the candidate (case 875's baseline), and the offer is built in this
+//! crate.
+
+use serde::{Deserialize, Serialize};
+
+/// The directing rules a new generated world may switch on (lineage-rounds
+/// D9, D11, D12; case 1215).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct WorldRules {
+    pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool, pub regard: bool, pub exertion: bool,
+    /// Hosting, and a microbe to hold (cases 1223, 1225, 1226).
+    pub hosting: bool,
+    /// Members' learning (cases 1051, 1058). A generated world founds no
+    /// lineage policy, so this founds one: the smallest variation that
+    /// counts as set, and for each lineage that decides, a policy that
+    /// scores as the hand-written score does.
+    pub learning: bool,
+    /// The bound of the climate's turn, in degrees (case 1216); needs the climate.
+    pub turn: Option<i32>,
+    /// Rates scaled by adult body mass (case 1148): set in the founding, so
+    /// it reaches only the A1 world that is generated from it.
+    pub mass_law: bool,
+    /// Producers' young lie dormant (cases 1192 to 1197): set in the
+    /// founding, so it reaches only the A1 world that is generated from it.
+    pub dormancy: bool,
+}
+
+impl WorldRules {
+    /// No rule is chosen.
+    pub fn is_off(&self) -> bool { *self == Self::default() }
+
+    /// The three rules of the rounds; the climate is its own flag.
+    pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false }
+    }
+
+    /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
+    ///
+    /// # Errors
+    /// `--turn` without the climate, or `--hosting` in a world with no soil
+    /// to seed from.
+    pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) -> Result<(), String> {
+        if self.mass_law && genesis.founding.as_ref().is_none_or(|f| f.mass_law.is_none()) {
+            return Err("--mass-law is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.dormancy && genesis.founding.as_ref().is_none_or(|f| f.dormancy.is_none()) {
+            return Err("--dormancy is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
+        if self.climate {
+            let climate = cosmograph::rules::Climate { turn: self.turn, ..Default::default() };
+            genesis.rules.climate = Some(climate);
+            // The sim adds each lineage's strain process on founding; adding
+            // them here, which is idempotent, keeps the witness driver's
+            // check that the sim's genesis is the one it was given.
+            cosmograph::climate::processes(&mut genesis.rules)?;
+        }
+        if self.exertion { genesis.rules.exertion = Some(cosmograph::rules::Exertion::default()); }
+        if self.hosting { crate::microbe::declare(genesis)?; }
+        if self.learning {
+            let needs = genesis.rules.mind.as_ref().map_or(0, |m| m.needs.len());
+            let directing = genesis.rules.directing.get_or_insert_with(Default::default);
+            // One candidate and no variation: the gate learning needs, and
+            // nothing drawn, so every policy is the founding one.
+            if directing.policy == Default::default() {
+                directing.policy = cosmograph::rules::PolicyVariation { founding: 0, expression: 0, candidates: 1 };
+            }
+            directing.learning = Some(cosmograph::rules::Learning::default());
+            for lineage in genesis.lineages.values_mut().filter(|l| l.decides.is_some() && l.policy.is_none()) {
+                lineage.policy = Some(cosmograph::directing::policy::LineagePolicy::founding(needs));
+            }
+        }
+        if !(self.drift || self.draft || self.sheet || self.regard) { return Ok(()); }
+        let directing = genesis.rules.directing.get_or_insert_with(Default::default);
+        if self.drift { directing.drift = true; }
+        if self.draft { directing.draft = Some(cosmograph::rules::Draft::default()); }
+        if self.sheet { directing.sheet = true; }
+        if self.regard { directing.regard = Some(cosmograph::rules::Regard::default()); }
+        Ok(())
+    }
+}

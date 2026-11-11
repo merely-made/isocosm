@@ -69,13 +69,18 @@ pub fn site_points(sim: &Simulation) -> BTreeMap<Id, Vec2> {
 }
 
 pub fn minimap_score(sim: &Simulation) -> Score {
+    minimap_score_of(&site_points(sim).into_iter().collect::<Vec<_>>())
+}
+
+/// The score over sites already placed.
+pub fn minimap_score_of(points: &[(Id, Vec2)]) -> Score {
     let mut score = Score::new(Arrangement::Hulls(Hulls {
         origin: Vec2::ZERO,
         units_per_coordinate: 1.0,
         invert_y: false,
         bounds: Rect::new(Vec2::new(-EXTENT, -EXTENT), Size2::new(EXTENT * 2.0, EXTENT * 2.0)),
     }));
-    for (id, at) in site_points(sim) {
+    for (id, at) in points.iter().copied() {
         score.items.push(ScoreItem {
             source: SourceRef::new(MINIMAP_ADAPTER, format!("site:{id}")),
             ordinal: id as u32,
@@ -145,6 +150,31 @@ fn hsl(h: f32, s: f32, l: f32) -> (f32, f32, f32) {
 /// back through their member's source ref, so the leaf never learns what a
 /// place is.
 pub fn minimap_leaf(sim: &Simulation, played: Option<Id>) -> crate::leaf::MinimapLeaf {
+    minimap_leaf_holding(sim, played, &[])
+}
+
+/// The marks a held surface leaves on the map: a ring at each site whose
+/// ground holds it, stronger for more, and a diamond where bodies carry it.
+pub fn hold_marks(sim: &Simulation, surfaces: &[Key]) -> Vec<crate::leaf::HoldMark> {
+    let holds = crate::held_map::site_holds(sim, surfaces);
+    let points = site_points(sim);
+    let peak_land = holds.values().map(|h| h.land).max().unwrap_or(0);
+    let peak_hosts = holds.values().map(|h| h.hosts).max().unwrap_or(0);
+    holds.into_iter().filter_map(|(site, hold)| Some(crate::leaf::HoldMark {
+        at: points.get(&site).map(|p| (p.x, p.y))?,
+        land: crate::held_map::mark_strength(hold.land, peak_land),
+        hosts: crate::held_map::mark_strength(hold.hosts, peak_hosts),
+    })).collect()
+}
+
+/// [`minimap_leaf`] with the marks of the surface lineages a participant
+/// holds. The player mark is simply absent for a holder with no body, and
+/// the map still shows: it asks nothing of a played critter.
+///
+/// # Panics
+/// A scene region names a source that is not a site, which the score cannot make.
+pub fn minimap_leaf_holding(sim: &Simulation, played: Option<Id>, surfaces: &[Key])
+    -> crate::leaf::MinimapLeaf {
     let scene = minimap_scene(sim);
     let holders = dominant_lineages(sim);
     let points = site_points(sim);
@@ -163,5 +193,5 @@ pub fn minimap_leaf(sim: &Simulation, played: Option<Id>) -> crate::leaf::Minima
         .and_then(|c| pop.get(c))
         .and_then(|e| e.resident_site()).and_then(|site| points.get(&site))
         .map(|p| (p.x, p.y));
-    crate::leaf::MinimapLeaf::new(scene, tints, player)
+    crate::leaf::MinimapLeaf::new(scene, tints, player).with_holds(hold_marks(sim, surfaces))
 }
