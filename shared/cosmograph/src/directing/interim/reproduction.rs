@@ -32,10 +32,13 @@ use profile::{Form, world};
 // Rerecorded 2026-11-11 under D16 (case 1076): upkeep and a producer's growth
 // became transitions, rates every body runs on its own clock, so the rules'
 // causation, and this digest, moved.
+// Rerecorded 2026-11-11: A1's decomposers pay upkeep every 10 ticks, feed at
+// every decision and meal before moves (period 3 -> 1, priority 10 -> -1), so
+// the founded A1 rules' decomposer processes, and this digest, moved.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "7587614ad07b412e40c144ff3325e7dac1f6f956fd3da6677130b3052fb09905");
+    assert_eq!(crate::digest(&genesis), "ba2e401389f92cf667f107a100c9c46f4eb4e161f11363bf642b88cdea1a5b9b");
     genesis
 }
 

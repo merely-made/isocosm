@@ -469,6 +469,12 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   they share the configure; upkeep no longer earns bond, regard or
   learning credit and no longer shows as an ability or an order; the
   probe foundings' `probe:upkeep-*` are still choices and still paced.
+- **A1's decomposer** (retune, on Mark's word 2026-11-11): upkeep every
+  10 ticks, as a grazer's, was 5; a meal due at every decision, was
+  every 3 ticks; the meal runs before the moves (priority -1, was 10).
+  Decomposers only. Grazers' meals can lose to a move at the same
+  decision too and were left as they are; ordering meals before moves
+  for every body is an engine change not made.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -518,6 +524,26 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: A1's decomposers live. Finding: they never ate in a played
+  world. A played founding gives every lineage hunger-driven moves at
+  priority 0, some of a tick, so a hungry body moved at every decision
+  and its meal, at priority 10, found it in transit: no target on every
+  attempt. Before upkeep became a rate most never paid, which hid it.
+  Also no dead matter exists before the first hazard deaths at tick 60,
+  and a reserve of 10 paid every 5 ticks ends at 50. Changed, A1 and
+  decomposers only (`Rates::{upkeep_period, feed_period,
+  feed_priority}` by role): upkeep every 10, a meal due at every
+  decision, the meal before the moves. Raising the moves' priority
+  instead was tried and reverted: a played choice scores by priority.
+  Pins: the seed-9 genesis digest moved (`ba2e4013…`); the climate
+  test's seed moved 76 to 3, and many more seeds now found under the
+  climate; `golden_bodies` did not move. Control:
+  `tests/decomposer_start.rs`. Seed 9 with flat dormancy at tick 600:
+  102, 170, 135, 135 (L0 to L3); all four lines live at 600 on seeds 3,
+  5, 9, 11 and 17. Without dormancy the world lasts to 600 with two
+  decomposers left, was extinct at 356. A1 battery: played and bodied
+  20/20, bare 8 to 10. Finding: the decomposer line swings (39 at tick
+  200, 259 at 450 on seed 9).
 - 2026-11-11: upkeep and a producer's growth are rates. Both were chosen
   acts, so in a played world they ran only for members due by
   `(tick + id) % decides` on top of the body's clock: about a fifth of

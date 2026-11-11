@@ -101,7 +101,7 @@ fn check(g: &Genesis, original: bool) {
         let birth_process = &p[&format!("ecology:birth-{i}")];
         assert!(birth_process.requires.iter().any(|q| matches!(q, Query::Account { at_least, .. } if *at_least == want)));
         assert_eq!(birth_process.period, Some(if i == 1 { birth } else { 7 }));
-        assert_eq!(p[&format!("ecology:upkeep-{i}")].period, Some(if i == 1 { upkeep } else { 5 }));
+        assert_eq!(p[&format!("ecology:upkeep-{i}")].period, Some(if i == 1 || (i == 2 && !original) { upkeep } else { 5 }));
         let ceiling = p[&format!("ecology:age-{i}")].requires.iter().find_map(|q| match q {
             Query::Age { at_least } => Some(*at_least),
             _ => None,

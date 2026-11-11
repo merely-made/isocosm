@@ -29,8 +29,9 @@ pub enum Rates {
     #[default]
     Stock,
     /// Declared at `stock_min` 8: birth gate 12 (consumers 9), consumers
-    /// eat 3, are born every 14 ticks and pay upkeep every 10, and every
-    /// lineage's lifespan, the ceiling under its death hazard, is drawn from 100 to 140.
+    /// eat 3, are born every 14 ticks and pay upkeep every 10, decomposers
+    /// pay upkeep every 10 and feed at every decision, and every lineage's
+    /// lifespan, the ceiling under its death hazard, is drawn from 100 to 140.
     A1,
     /// The ecology in world time (cases 1077, 1078): each role's life,
     /// metabolism, feeding and growth from `world_time::role_time`.
@@ -54,12 +55,35 @@ impl Rates {
         if self == Self::A1 && consumer { 14 } else { 7 }
     }
 
-    pub(super) fn upkeep_period(self, consumer: bool) -> u64 {
-        if self == Self::A1 && consumer { 10 } else { 5 }
+    /// Under A1 a decomposer, like a grazer, pays every 10 ticks. Upkeep runs
+    /// on every body's own clock, and the dead it eats are few until the
+    /// first hazard deaths (maturity, 60 minutes): a founding reserve of 10
+    /// paid down every 5 ticks was gone at tick 50, the whole line with it.
+    pub(super) fn upkeep_period(self, role: super::Role) -> u64 {
+        if self == Self::A1 && role.level() != 0 { 10 } else { 5 }
     }
 
     pub(super) fn meal(self, consumer: bool) -> u64 {
         if self == Self::A1 && consumer { 3 } else { 1 }
+    }
+
+    /// How often a feeding process falls due on a body's own clock, in ticks.
+    /// A decomposer decides every 5 ticks (`DECIDES`), so a period of 3 left
+    /// it a bite every 15 and a bite of dead matter is small: under A1 it is
+    /// due at every decision, as often as its decisions allow.
+    pub(super) fn feed_period(self, role: super::Role) -> u64 {
+        if self == Self::A1 && role.level() == 2 { 1 } else { 3 }
+    }
+
+    /// When in a tick a feeding process runs among the others (they run in
+    /// priority order). A played world's moves run at 0, before a meal at 10,
+    /// and a hungry body is due to move at every decision (some route of its
+    /// site takes a tick), so a move left it in transit at the very decision
+    /// its meal fell due: a hungry decomposer could never feed. Under A1 its
+    /// meal runs first. (Not the moves' priority: a played lineage's choice
+    /// scores a process by it, and raising it would bury the needs.)
+    pub(super) fn feed_priority(self, role: super::Role) -> i32 {
+        if self == Self::A1 && role.level() == 2 { -1 } else { 10 }
     }
 
     /// A lineage's lifespan in minutes: the base plus a draw of 0 to 40 (the

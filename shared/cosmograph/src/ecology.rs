@@ -150,7 +150,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // A predator pays upkeep twice as often as a grazer and breeds at
         // half its pace: the cost of a meal that runs.
         let predator = role == Role::Predator;
-        let upkeep_every = rates.upkeep_period(consumer);
+        let upkeep_every = rates.upkeep_period(role);
         upkeep.period = Some(if predator { (upkeep_every / 2).max(1) } else { upkeep_every });
         upkeep.priority = 20;
         g.rules.processes.insert(upkeep.id.clone(), upkeep);
@@ -332,8 +332,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 among: prey,
                 weighted: true,
             });
-            feed.period = Some(3);
-            feed.priority = 10;
+            feed.period = Some(rates.feed_period(role));
+            feed.priority = rates.feed_priority(role);
             g.rules.processes.insert(feed.id.clone(), feed);
         }
         g.lineages

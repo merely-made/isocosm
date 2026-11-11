@@ -54,7 +54,8 @@ fn hosting_founds_with_its_microbe_and_runs() {
 }
 
 /// The default climate kills most A1 lineages inside the witness's 60 ticks,
-/// so few seeds found at all (3 of 120 tried), and the played line there dies
+/// so few seeds found (3 of 120 at first, more since A1's decomposers were
+/// retuned on 2026-11-11), and the played line there dies
 /// out by about tick 80 to 120; the tests found and run it as far as it goes.
 #[test]
 fn the_climate_founds_where_its_witness_passes_and_runs_while_the_line_lives() {
@@ -75,10 +76,14 @@ fn all_rules() -> WorldRules {
 #[test]
 fn every_flag_but_the_climate_founds_and_runs() { runs_120(all_rules(), 5); }
 
+// Rerecorded 2026-11-11: seed 76 stopped founding when A1's decomposers took
+// their own upkeep, feeding and meal-before-move rates (the witness's 60 ticks
+// run differently); seed 3 founds (as do 2, 7, 13, 14, 18, 19, 21, 22, 24 and
+// more).
 #[test]
 fn every_flag_with_the_climate_founds_and_runs_while_the_line_lives() {
     let rules = WorldRules { climate: true, turn: Some(5), ..all_rules() };
-    let (_, tick) = found_and_run(rules, 76, 20);
+    let (_, tick) = found_and_run(rules, 3, 20);
     assert!(tick > 60);
 }
 
