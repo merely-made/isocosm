@@ -371,6 +371,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } | Query::MembersPerHead { .. } => "members".into(),
             Query::Sensed { reading, .. } => reading.clone(),
             Query::FoodPerHead { .. } => "food-members".into(),
+            Query::EdiblePerHead { .. } => "edible-matter".into(),
             Query::EmptyBody => "matter".into(),
             Query::Project { .. } | Query::ProjectDecision => "project".into(),
             Query::InstitutionDecision | Query::Institution { .. } => "institution".into(),

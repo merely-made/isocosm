@@ -150,6 +150,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
                 | Query::MembersPerHead { .. }
                 | Query::FoodPerHead { .. }
+                | Query::EdiblePerHead { .. }
                 | Query::Sensed { .. } => return true,
                 Query::Project { .. } | Query::ProjectDecision
                 | Query::InstitutionDecision | Query::Institution { .. } => return true,

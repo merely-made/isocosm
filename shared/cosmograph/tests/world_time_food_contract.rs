@@ -20,6 +20,8 @@ use cosmograph::{
 mod compatibility;
 #[path = "world_time_food_contract/counts.rs"]
 mod counts;
+#[path = "world_time_food_contract/edible.rs"]
+mod edible;
 #[path = "world_time_food_contract/mixed.rs"]
 mod mixed;
 #[path = "world_time_food_contract/native.rs"]

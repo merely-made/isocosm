@@ -93,7 +93,7 @@ fn framed(p: &Process) -> bool {
     // So does a sense reading (1071): its crowding, gradient or activity.
     let counts = p.requires.iter()
         .any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
-            | Query::MembersPerHead { .. } | Query::FoodPerHead { .. } | Query::Sensed { .. }));
+            | Query::MembersPerHead { .. } | Query::FoodPerHead { .. } | Query::EdiblePerHead { .. } | Query::Sensed { .. }));
     p.target.is_some()
         || counts
         || p.risk.is_some()

@@ -494,6 +494,12 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   off), not in the sim's A1 rate set, because changing what an absent
   `Founding.dormancy` means would make every saved A1 world fail
   admission. A saved setup without the field stays without it.
+- **`stocked` stays unset** (finding, mine): the edible-matter gate is
+  kept as an option and a diagnostic, with no default and no Mesocosm
+  flag, because in A1 it only lowers peaks and costs battery seeds. A
+  feed with no feeding contract is weighed by what its plain `Eat` can
+  take of the prey's matter accounts; that reading of "edible" for the
+  flat world is mine.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -543,6 +549,24 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: edible matter per head, read and tried (Mark's
+  direction). `Simulation::edible_matter` sums what a feed's admitted
+  resident holders hold at the eater's site (`src/targets/edible.rs`),
+  once a site a pass (`EdibleCache`); `Query::EdiblePerHead` sets it
+  against the lineage's heads; `Limits.stocked` (unset by default)
+  makes a consumer's birth require `k` feeding periods of demand. No
+  pin moved. Trial, `tests/limits_stocked.rs`, played A1 without
+  dormancy, seeds 3, 5, 9, 11, 17 to tick 600. Finding: in A1 matter
+  and headcount fall together (about 8 matter a plant), so the reading
+  gives no warning the headcount lacks; on seed 9 matter per grazer
+  falls below 4 periods of demand at tick 180, after the producers'
+  crash at 156. Gated grazers do stop breeding, mostly before producer
+  tissue bottoms, but deaths go on: lower peaks, earlier and deeper
+  collapses, no better than the ceiling alone at 600. Under dormancy
+  `k` of 2 or 4 leaves seed 9 healthy and 8 starves it. Battery:
+  ceiling 20/20; with `k` 1 or 2, 19/20 (seed 12); 4, 18/20; 8, 19/20;
+  `stocked` alone at 2 or 4, 20/20. Owed: a world where holders outlast
+  their tissue (grazed-down reserves), the case the reading is for.
 - 2026-11-11: plant readings once a site a pass, the sun once a tick
   (Mark's direction). `Frame` keeps a pass-local memo of a site's
   light, soil and plant count (`PlantCache`, after `BooksCache`), and

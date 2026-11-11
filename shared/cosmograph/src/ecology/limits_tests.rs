@@ -29,7 +29,7 @@ fn consumer(i: u32) -> bool {
 }
 
 fn big() -> Limits {
-    Limits { full: 1_000_000, ceiling: [1_000_000, 1] }
+    Limits { full: 1_000_000, ceiling: [1_000_000, 1], stocked: None }
 }
 
 #[test]
@@ -43,16 +43,16 @@ fn unset_limits_found_and_hash_as_before() {
 
 #[test]
 fn limits_round_trip() {
-    let f = founding(Some(Limits { full: 11, ceiling: [5, 2] }));
+    let f = founding(Some(Limits { full: 11, ceiling: [5, 2], stocked: None }));
     let json = serde_json::to_string(&f).unwrap();
     assert!(json.contains("\"limits\""));
     assert_eq!(serde_json::from_str::<Founding>(&json).unwrap(), f);
-    assert_eq!(Limits::default(), Limits { full: FULL, ceiling: CEILING });
+    assert_eq!(Limits::default(), Limits { full: FULL, ceiling: CEILING, stocked: None });
 }
 
 #[test]
 fn the_ceiling_is_a_ratio_of_the_founding_share() {
-    let l = |n, d| Limits { full: 1, ceiling: [n, d] };
+    let l = |n, d| Limits { full: 1, ceiling: [n, d], stocked: None };
     assert_eq!(l(3, 1).most(6), 18);
     assert_eq!(l(2, 1).most(6), 12);
     assert_eq!(l(3, 2).most(5), 8, "rounded up");
@@ -203,4 +203,83 @@ fn the_limits_name_what_they_cannot_found() {
     says(founding(Some(Limits { full: 0, ..Limits::default() })), "no fullness");
     says(founding(Some(Limits { ceiling: [0, 1], ..Limits::default() })), "no ceiling");
     says(founding(Some(Limits { ceiling: [3, 0], ..Limits::default() })), "no divisor");
+}
+
+#[test]
+fn stocking_is_optional_and_absent_from_the_wire_when_unset() {
+    let json = serde_json::to_string(&Limits::default()).unwrap();
+    assert!(!json.contains("stocked"), "{json}");
+    let old: Limits = serde_json::from_str(&json).unwrap();
+    assert_eq!(old, Limits::default());
+    let stocked = Limits { stocked: Some(4), ..Limits::default() };
+    let wire = serde_json::to_string(&founding(Some(stocked.clone()))).unwrap();
+    assert!(wire.contains("\"stocked\":4"));
+    assert_eq!(serde_json::from_str::<Founding>(&wire).unwrap().limits, Some(stocked));
+    // Unset, the founded world is the one the ceiling alone founds.
+    let plain = founding(Some(Limits::default())).generate().unwrap();
+    let explicit = founding(Some(Limits { stocked: None, ..Limits::default() })).generate().unwrap();
+    assert_eq!(crate::digest(&plain), crate::digest(&explicit));
+    for p in plain.rules.processes.values() {
+        assert!(!p.requires.iter().any(|q| matches!(q, Query::EdiblePerHead { .. })));
+    }
+}
+
+#[test]
+fn stocking_lays_k_feeding_periods_of_demand_on_the_consumers_births() {
+    let (plain, on) = (
+        founding(Some(Limits::default())).generate().unwrap(),
+        founding(Some(Limits { stocked: Some(4), ..Limits::default() })).generate().unwrap(),
+    );
+    for (id, p) in &on.rules.processes {
+        let extra = added(p, &plain.rules.processes[id]);
+        let i = id.rsplit('-').next().and_then(|n| n.parse::<u32>().ok());
+        if id.starts_with("ecology:birth-") && i.is_some_and(consumer) {
+            let i = i.unwrap();
+            let feed = &on.rules.processes[&format!("ecology:feed-{i}")];
+            let pace = on.lineages[&format!("lineage:{i}")].decides;
+            let want = 4 * feed.meal_demand(pace).unwrap();
+            assert_eq!(extra, [Query::EdiblePerHead { feed: format!("ecology:feed-{i}"), at_least: want, per_members: 1 }], "{id}");
+        } else {
+            assert!(extra.is_empty(), "{id}: {extra:?}");
+        }
+    }
+    // The played grazer decides every 2 ticks and eats 3: 4 periods ask 24.
+    let birth = &on.rules.processes["ecology:birth-1"];
+    assert!(birth.requires.iter().any(|q| matches!(q, Query::EdiblePerHead { at_least: 24, .. })));
+}
+
+#[test]
+fn stocking_names_what_it_cannot_found() {
+    let e = founding(Some(Limits { stocked: Some(0), ..Limits::default() })).generate().err().unwrap_or_else(|| panic!("nought periods founded"));
+    assert!(e.to_string().contains("limits"), "{e}");
+}
+
+/// The history of state hashes over `ticks`, and the consumers born.
+fn history(limits: Limits, mode: Execution, ticks: u64) -> (Vec<u64>, usize) {
+    let mut s = Session::new(founding(Some(limits)).generate().unwrap(), mode).unwrap();
+    let mut hashes = vec![];
+    for _ in 0..ticks {
+        s.advance(1).unwrap();
+        hashes.push(s.sim.state_hash());
+    }
+    let born = s.sim.state().population.groups.values()
+        .filter(|c| c.entity.alive && c.entity.born > 0 && c.entity.lineage.strip_prefix("lineage:")
+            .and_then(|n| n.parse::<u32>().ok()).is_some_and(consumer))
+        .count();
+    (hashes, born)
+}
+
+#[test]
+fn a_run_that_uses_the_stocked_query_is_the_same_in_both_executions() {
+    let ticks = 90;
+    // Stocked enough to bite late and loosely: a demand the meadow can meet.
+    let limits = Limits { stocked: Some(2), ..big() };
+    let (individuals, born) = history(limits.clone(), Execution::Individuals, ticks);
+    let (grouped, _) = history(limits.clone(), Execution::Grouped, ticks);
+    assert_eq!(individuals, grouped);
+    assert!(born > 0, "the gate lets a stocked world breed");
+    // And it is a gate: a demand no meadow meets stops every birth.
+    let (_, none) = history(Limits { stocked: Some(1_000_000), ..big() }, Execution::Individuals, ticks);
+    assert_eq!(none, 0);
+    assert_ne!(individuals, history(big(), Execution::Individuals, ticks).0, "stocking changes the run");
 }

@@ -90,6 +90,7 @@ fn limits_over_seeds_and_settings() {
                     let limits = (full > 0 || ceil > 0).then_some(Limits {
                         full: if full > 0 { full } else { u64::MAX },
                         ceiling: [if ceil > 0 { ceil } else { u64::MAX / 2 }, 1],
+                        stocked: None,
                     });
                     let (seen, peak) = run(founding(seed, limits, dormant), ticks);
                     println!("LIMITS dorm={} full={full} ceil={ceil} seed={seed} peak={peak} at100/300/end={seen:?}",

@@ -11,7 +11,7 @@ use crate::{
     simulation::Genesis,
 };
 
-fn fixture(seed: u64, place: Id) -> (Genesis, Id, Id, Id) {
+pub(super) fn fixture(seed: u64, place: Id) -> (Genesis, Id, Id, Id) {
     let mut g = Founding {
         seed,
         sites: 2,
@@ -132,7 +132,7 @@ fn expanded(s: &Simulation, actor: Id, p: &Process, bound: Id) -> Option<Id> {
     unreachable!()
 }
 
-fn start(s: &mut Simulation) {
+pub(super) fn start(s: &mut Simulation) {
     s.state.tick = 1;
     s.targets = Some(Targets::new(&s.state.population));
     s.pass = Some(Pass::new(&s.state.population));

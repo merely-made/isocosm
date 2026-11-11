@@ -72,9 +72,24 @@ impl Clone for PlantCache {
     }
 }
 
+/// Derivative pass-local edible matter (`Simulation::edible_matter`) summed
+/// over every admitted holder at a site, by site, feed and the one thing it
+/// reads of the eater, its active intake port. Reset when a frame is cloned.
+#[derive(Debug, Default)]
+struct EdibleCache(Mutex<BTreeMap<EdibleKey, u128>>);
+
+pub(crate) type EdibleKey = (Id, Key, Option<crate::process::IntakePort>);
+
+impl Clone for EdibleCache {
+    fn clone(&self) -> Self {
+        Self::default()
+    }
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
     plants: PlantCache,
+    edible: EdibleCache,
     pub(crate) spatial_poses: BTreeMap<Id, Option<crate::spatial::foraging::Resident>>,
     books: BooksCache,
     notes_bound: Option<usize>,
@@ -169,6 +184,19 @@ impl Frame {
         let made = make()?;
         let mut cache = self.plants.0.lock().unwrap_or_else(|p| p.into_inner());
         Some(*cache.sites.entry(site).or_insert(made))
+    }
+    /// A site's edible matter for one feed and intake, made once.
+    pub(crate) fn edible(&self, key: EdibleKey, make: impl FnOnce() -> u128) -> u128 {
+        if let Some(v) = self.edible.0.lock().unwrap_or_else(|p| p.into_inner()).get(&key) {
+            return *v;
+        }
+        // Made outside the lock; nothing it reads holds this cache.
+        let made = make();
+        *self.edible.0.lock().unwrap_or_else(|p| p.into_inner()).entry(key).or_insert(made)
+    }
+    #[cfg(test)]
+    pub(crate) fn edible_len(&self) -> usize {
+        self.edible.0.lock().unwrap_or_else(|p| p.into_inner()).len()
     }
     pub(crate) fn books(&self, id: Id, body: &Entity) -> Arc<Ledger> {
         self.books.get_or_insert(id, || crate::anatomy::books(body))

@@ -124,6 +124,10 @@ pub struct BirthOpportunity {
     /// Actual admitted exposed holders, from the native FoodPerHead contract.
     pub food_members: Option<u64>,
     pub food_gate_ready: Option<bool>,
+    /// Edible matter the feed's admitted holders hold, from the native
+    /// EdiblePerHead contract, beside the headcount above.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub edible_matter: Option<u64>,
     pub consumer_members: u64,
     pub at_least: u64,
     pub per_members: u64,
@@ -136,6 +140,12 @@ pub struct BirthOpportunity {
 pub struct Range {
     pub min: u64,
     pub max: u64,
+}
+
+impl Range {
+    pub(crate) fn is_unset(&self) -> bool {
+        *self == Self::default()
+    }
 }
 
 impl Range {
@@ -169,5 +179,7 @@ pub struct BirthTally {
     pub role_members: Range,
     pub port_members: Range,
     pub food_members: Range,
+    #[serde(default, skip_serializing_if = "Range::is_unset")]
+    pub edible_matter: Range,
     pub consumer_members: Range,
 }

@@ -42,6 +42,7 @@ impl Capture {
             role_members: Range::default(),
             port_members: Range::default(),
             food_members: Range::default(),
+            edible_matter: Range::default(),
             consumer_members: Range::default(),
         });
         let first = t.opportunities == 0;
@@ -77,6 +78,9 @@ impl Capture {
         t.port_members.include(r.port_members, first);
         if let Some(food) = r.food_members {
             t.food_members.include(food, first);
+        }
+        if let Some(matter) = r.edible_matter {
+            t.edible_matter.include(matter, first);
         }
         t.consumer_members.include(r.consumer_members, first);
         let seen = self
@@ -119,6 +123,7 @@ impl Simulation {
                 port_members: 0,
                 food_members: None,
                 food_gate_ready: None,
+                edible_matter: None,
                 consumer_members: 0,
                 at_least: 0,
                 per_members: 0,
@@ -175,6 +180,14 @@ impl Simulation {
                         r.at_least = *at_least;
                         r.per_members = *per_members;
                         r.food_gate_ready = Some(self.query(id, None, e.place, None, q).is_ok());
+                    },
+                    Query::EdiblePerHead { feed, at_least, per_members } => {
+                        r.edible_matter = self.edible_matter(id, feed).ok();
+                        r.consumer_members = site.map_or(0, |s| {
+                            self.members_at(s, &BTreeSet::from([e.lineage.clone()]))
+                        });
+                        r.at_least = *at_least;
+                        r.per_members = *per_members;
                     },
                     _ => {},
                 }

@@ -76,6 +76,17 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
                 return Err("food per head requires its feed to declare a target selector".into());
             }
         }
+        Query::EdiblePerHead { feed, per_members, .. } => {
+            if *per_members == 0 {
+                return Err("edible matter per head names a positive denominator".into());
+            }
+            let Some(p) = rules.processes.get(feed) else {
+                return Err("edible matter per head names a feed that is not a process".into());
+            };
+            if p.target.is_none() || !p.effects.iter().any(|e| matches!(e, Effect::Eat { .. })) {
+                return Err("edible matter per head requires a feed that eats from a target selector".into());
+            }
+        }
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
         }

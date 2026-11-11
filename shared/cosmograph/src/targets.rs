@@ -16,6 +16,8 @@
 use crate::{meaning::mass, population::Population, rules::*, schema::*, simulation::Simulation};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod edible;
+
 /// Where a group is filed: its place (none while travelling), its lineage,
 /// and whether it lives.
 type Filing = (Option<Id>, Key, bool);
@@ -44,6 +46,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
         | Query::MembersPerHead { .. }
         | Query::FoodPerHead { .. }
+        | Query::EdiblePerHead { .. }
         | Query::EmptyBody
         | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
@@ -332,5 +335,7 @@ impl Simulation {
     }
 }
 
+#[cfg(test)]
+mod edible_tests;
 #[cfg(test)]
 mod tests;

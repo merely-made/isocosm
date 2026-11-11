@@ -89,6 +89,9 @@ impl Simulation {
             let reading = format!("{query:?} = {food}/{heads}");
             return if yes { Ok(reading) } else { Err(format!("missing requirement: {reading}")) };
         }
+        if let Query::EdiblePerHead { feed, at_least, per_members } = query {
+            return self.edible_per_head(actor, place, feed, *at_least, *per_members);
+        }
         if let Query::Sensed { reading, at_least } = query {
             let v = self.sensed(actor, reading);
             return match v {

@@ -37,11 +37,18 @@ pub struct Limits {
     /// bearing young, as a ratio `[n, d]` of the lineage's founding share per
     /// site.
     pub ceiling: [u64; 2],
+    /// When set to `k`, a consumer also bears young only where the edible
+    /// matter its feed could draw from at its site (`EdiblePerHead`) covers
+    /// `k` feeding periods of every member's demand (`k` times one meal at
+    /// the lineage's pace), so breeding stops before the food is gone, not
+    /// after the holders are. Unset, the birth carries no such requirement.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub stocked: Option<u64>,
 }
 
 impl Default for Limits {
     fn default() -> Self {
-        Self { full: FULL, ceiling: CEILING }
+        Self { full: FULL, ceiling: CEILING, stocked: None }
     }
 }
 
@@ -86,6 +93,9 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     if limits.ceiling[0] == 0 || limits.ceiling[1] == 0 {
         return Err("the limits' ceiling must be a ratio of two numbers above nought".into());
     }
+    if limits.stocked == Some(0) {
+        return Err("the limits' stocking is nought feeding periods".into());
+    }
     let sites = (g.sites.len() as u64).max(1);
     for i in (0..founding.lineages).filter(|&i| Role::of(founding.web, i).consumer()) {
         let lineage: Key = format!("lineage:{i}");
@@ -94,11 +104,24 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
             .map(|c| c.count)
             .sum();
         let most = limits.most(founded.div_ceil(sites).max(1));
+        // Matter one member asks over `k` feeding periods, read before the
+        // fullness gate lands on the feed (it changes no amount).
+        let stocked = match limits.stocked {
+            Some(k) => {
+                let feed = g.rules.processes.get(&format!("ecology:feed-{i}")).ok_or("a stocked consumer has no feed")?;
+                let demand = feed.meal_demand(g.lineages.get(&lineage).and_then(|l| l.decides))?;
+                Some(k.checked_mul(demand).ok_or("the limits' stocking overflows")?)
+            },
+            None => None,
+        };
         if let Some(feed) = g.rules.processes.get_mut(&format!("ecology:feed-{i}")) {
             feed.requires.push(Query::Below { who: Binding::Actor, key: format!("matter:{i}-0"), amount: limits.full });
         }
         if let Some(birth) = g.rules.processes.get_mut(&format!("ecology:birth-{i}")) {
-            birth.requires.push(Query::MembersBelow { among: BTreeSet::from([lineage]), amount: most });
+            birth.requires.push(Query::MembersBelow { among: BTreeSet::from([lineage.clone()]), amount: most });
+            if let Some(k) = stocked {
+                birth.requires.push(Query::EdiblePerHead { feed: format!("ecology:feed-{i}"), at_least: k, per_members: 1 });
+            }
         }
     }
     Ok(())

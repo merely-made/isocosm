@@ -133,4 +133,14 @@ pub enum Query {
         at_least: u64,
         per_members: u64,
     },
+    /// At least `at_least` units of edible matter per `per_members` members
+    /// of the actor's current lineage at its site: the matter the named
+    /// feed's admitted resident holders hold (`edible_matter`), not their
+    /// number, set against living pass-start heads. An upper bound on what
+    /// bites can take.
+    EdiblePerHead {
+        feed: Key,
+        at_least: u64,
+        per_members: u64,
+    },
 }
