@@ -62,17 +62,17 @@ netrender_text = { git = "https://github.com/merely-made/netrender.git", branch 
 # below matches Mesocosm's revision for its git family, so the graph holds
 # one identity per family: cargo keys a git source by URL plus reference,
 # and a second reference would be a second crate identity of one commit.
-cambium = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-cambium-desktop = { git = "https://github.com/merely-made/mere.git", branch = "main" }
-sprigging = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+cambium = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
+cambium-rootstock = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
+cambium-desktop = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
+sprigging = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
 taproot = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # The scenario lane the session acceptance run is built on. It was this
 # repository's `shared/wing-scenario` until mere took it into the cambium
 # family as `mandrake` (mere 3675a352, 2026-09-14), so it is a mere.git pin at
 # the family rev like every other cambium row above.
-mandrake = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+mandrake = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 genet-livery = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 paint_list_api = { git = "https://github.com/merely-made/netrender.git", branch = "main" }

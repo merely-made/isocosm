@@ -127,7 +127,7 @@ thiserror = "1"
 # campaign-to-score adapter in `isocosm-views`; the shared crates carry only
 # opaque source refs, measured footprints, and scenes.
 sceno = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
-scenomise = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+scenomise = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 scenotime = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The endpoint and its carriers: mere folded `graphshell-stdio`, `-local` and
 # `-network` into `graphshell_endpoint::{stdio, local, network}` (mere
@@ -162,7 +162,7 @@ chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "
 # The node-label floor the old registry pin used to state is long past —
 # `with_node_labels` labels carry node state from cambium 0.3.2 on, and mere
 # main is 0.3.3.
-cambium = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+cambium = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The single-root Cambium desktop host (genet G1, 2026-08-09; mere's since
 # 2026-09-03). It owns the winit lifecycle, the surface, layout, paint, hit
 # testing, input routing and the AccessKit sync Isocosm used to assemble by
@@ -170,11 +170,11 @@ cambium = { git = "https://github.com/merely-made/mere.git", branch = "main" }
 # genet-winit, cambium-winit, netrender, paint_list_*, wgpu, winit) are
 # gone from this workspace. They still arrive transitively; only what Isocosm
 # may *name* changed.
-cambium-desktop = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+cambium-desktop = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # Cambium's retained custom-paint leaves (the graph-canvas swatch's painted
 # nodes + edges). A host wires them directly, the pelt-desktop pattern. From the
 # same git source as cambium, which is what keeps one `PaintCmd` in the graph.
-sprigging = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+sprigging = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 
 # The DOM seams that stayed in genet when Cambium left. Their revision is not
 # free: mere's `cambium-desktop` takes `layout-dom-api` (as

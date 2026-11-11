@@ -9,7 +9,7 @@
 use cambium_genet_winit_host::SceneProducer;
 use cambium_rootstock::ProducerSemantics;
 use graphshell_host::board::RemoteBoard;
-use pictograph::canvas::{BoardFit, BoardText, PhysicsChoice, PhysicsLaw, Speed};
+use cartography::canvas::{BoardFit, BoardText, PhysicsChoice, PhysicsLaw, Speed};
 
 use crate::client::Client;
 
@@ -45,7 +45,7 @@ impl Default for Board {
 }
 
 impl Board {
-    fn stage(&self) -> pictograph::canvas::dynamics_spec::DynamicsSpec {
+    fn stage(&self) -> cartography::canvas::dynamics_spec::DynamicsSpec {
         let mut choice = PhysicsChoice::default();
         choice.law = self.law;
         choice.into_spec()

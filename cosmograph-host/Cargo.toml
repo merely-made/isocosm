@@ -22,14 +22,14 @@ endpoint = ["dep:chirograph", "dep:sceno", "dep:scenomise", "dep:graphshell-endp
 society = ["cosmograph/society"]
 # The world-graph viewer (sim host plan H9, cases 1038 and 1048): a native
 # Graphshell client of the endpoint, drawn on Pictograph's board.
-viewer = ["endpoint", "society", "dep:graphshell-client", "dep:graphshell-host", "dep:pictograph",
+viewer = ["endpoint", "society", "dep:graphshell-client", "dep:graphshell-host", "dep:cartography",
     "dep:cambium", "dep:cambium-desktop", "dep:mandrake", "dep:cambium-rootstock", "dep:taproot", "dep:netrender"]
 
 [dependencies]
 chirograph = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 graphshell-endpoint = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true, features = ["stdio", "local"] }
 sceno = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
-scenomise = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
+scenomise = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 cosmograph = { path = "../shared/cosmograph", default-features = false }
 cosmograph-overlay = { path = "../shared/cosmograph-overlay" }
 serde = { version = "1", features = ["derive"] }
@@ -37,12 +37,12 @@ serde_json = "1"
 tempfile = "=3.27.0"
 # The viewer's client, board and window (feature `viewer`).
 graphshell-client = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
-graphshell-host = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["board"], optional = true }
-pictograph = { git = "https://github.com/merely-made/mere.git", branch = "main", default-features = false, features = ["canvas", "physics-engine"], optional = true }
-cambium = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
-cambium-desktop = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
-mandrake = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", branch = "main", optional = true }
+graphshell-host = { git = "https://github.com/merely-made/graphshell.git", branch = "main", default-features = false, features = ["board"], optional = true }
+cartography = { package = "mere-cartography", git = "https://github.com/merely-made/graphshell.git", branch = "main", default-features = false, features = ["canvas", "physics-engine"], optional = true }
+cambium = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
+cambium-desktop = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
+mandrake = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
+cambium-rootstock = { git = "https://github.com/merely-made/graphshell.git", branch = "main", optional = true }
 taproot = { git = "https://github.com/merely-made/genet.git", branch = "main", default-features = false, features = ["accesskit"], optional = true }
 netrender = { git = "https://github.com/merely-made/netrender.git", branch = "main", optional = true }
 
@@ -78,7 +78,7 @@ armillary = { version = "0.1.1", git = "https://github.com/merely-made/armillary
 
 [patch.crates-io]
 document-session-api = { git = "https://github.com/merely-made/genet.git", branch = "main" }
-light-file-dialog = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+light-file-dialog = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 armillary = { version = "0.1.1", git = "https://github.com/merely-made/armillary.git", branch = "main" }
 chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }

@@ -49,6 +49,7 @@ pub fn action(intent: &str, label: &str, explanation: &str, schema: &str, effect
         explanation: explanation.into(),
         payload_schema: schema.into(),
         input_form: None,
+        icon: None,
         effect,
     }
 }

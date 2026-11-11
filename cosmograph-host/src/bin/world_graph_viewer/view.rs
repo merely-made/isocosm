@@ -12,7 +12,7 @@ use cambium::{
     AnyView, GenetCtx, GenetElement, PointerEvent, PointerPhase, WheelEvent, clickable, custom_leaf, el,
     focusable, on_pointer, on_wheel, text,
 };
-use pictograph::canvas::{CANVAS_PHYSICS_LAWS, PhysicsLaw};
+use cartography::canvas::{CANVAS_PHYSICS_LAWS, PhysicsLaw};
 use cosmograph_host::endpoint::graph::{CLOSE, Domain, OPEN};
 use cosmograph_host::endpoint::{BIRTH, BRANCH, DEATH, FILTER, LINE, SCRUB, STEP};
 

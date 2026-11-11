@@ -492,7 +492,7 @@ dependencies = [
 [[package]]
 name = "catchment"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/mere.git?branch=main#299d19b631ac647bf0fa7fdcc10e61b9caf13b94"
 dependencies = [
  "async-trait",
  "dirs",
@@ -628,8 +628,8 @@ dependencies = [
 
 [[package]]
 name = "chirograph"
-version = "0.0.4"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+version = "0.0.5"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "base64 0.22.1",
  "blake3",
@@ -1305,6 +1305,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 
 [[package]]
+name = "emblem"
+version = "0.2.0"
+source = "git+https://github.com/merely-made/emblem.git?branch=main#e577e849810cf8b3f5bbe44e844c239dc08372b8"
+
+[[package]]
 name = "ena"
 version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1765,7 +1770,7 @@ dependencies = [
 [[package]]
 name = "graphshell-client"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "chirograph",
  "hest",
@@ -1777,8 +1782,8 @@ dependencies = [
 
 [[package]]
 name = "graphshell-endpoint"
-version = "0.0.3"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+version = "0.0.4"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "chirograph",
  "serde",
@@ -1789,7 +1794,7 @@ dependencies = [
 [[package]]
 name = "graphshell-host"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "base64 0.22.1",
  "blake3",
@@ -1804,6 +1809,7 @@ dependencies = [
  "ostiary",
  "pandect",
  "personae",
+ "pictograph",
  "rand_core 0.6.4",
  "sceno",
  "scenotime",
@@ -2026,7 +2032,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "hest"
 version = "0.2.1"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "serde",
 ]
@@ -2429,7 +2435,7 @@ dependencies = [
 [[package]]
 name = "incipit"
 version = "0.2.3"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "catchment",
  "serde",
@@ -3261,14 +3267,13 @@ dependencies = [
 [[package]]
 name = "mere-kernel"
 version = "0.0.3"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/mere.git?branch=main#299d19b631ac647bf0fa7fdcc10e61b9caf13b94"
 dependencies = [
  "accesskit",
  "chartulary",
  "crossbeam-channel",
  "euclid",
  "futures-util",
- "hest",
  "infer",
  "mime_guess",
  "muniment",
@@ -4222,7 +4227,7 @@ dependencies = [
 [[package]]
 name = "pandect"
 version = "0.2.0"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/mere.git?branch=main#299d19b631ac647bf0fa7fdcc10e61b9caf13b94"
 dependencies = [
  "async-trait",
  "blake3",
@@ -4402,6 +4407,15 @@ dependencies = [
  "hashbrown 0.14.5",
  "rand 0.8.8",
  "thiserror 1.0.69",
+]
+
+[[package]]
+name = "pictograph"
+version = "0.2.0"
+source = "git+https://github.com/merely-made/emblem.git?branch=main#e577e849810cf8b3f5bbe44e844c239dc08372b8"
+dependencies = [
+ "emblem",
+ "serde",
 ]
 
 [[package]]
@@ -5306,7 +5320,7 @@ dependencies = [
 [[package]]
 name = "sceno"
 version = "0.0.7"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "serde",
  "serde_json",
@@ -5315,7 +5329,7 @@ dependencies = [
 [[package]]
 name = "sceno-backdrops"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "sceno",
  "serde",
@@ -5325,7 +5339,7 @@ dependencies = [
 [[package]]
 name = "scenograph"
 version = "0.0.6"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "incipit",
  "sceno",
@@ -5336,7 +5350,7 @@ dependencies = [
 [[package]]
 name = "scenomise"
 version = "0.0.7"
-source = "git+https://github.com/merely-made/mere.git?branch=main#3494d9804ffb5916899692710e7703ce5a695dd5"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "libm",
  "sceno",
@@ -5349,7 +5363,7 @@ dependencies = [
 [[package]]
 name = "scenotime"
 version = "0.0.5"
-source = "git+https://github.com/merely-made/graphshell.git?branch=main#64813dffc00c6b6db1c7ddc51efa69a30136fde0"
+source = "git+https://github.com/merely-made/graphshell.git?branch=main#893818f6cb74606f7ed9dcd0cd38947e538f564b"
 dependencies = [
  "sceno",
  "serde",

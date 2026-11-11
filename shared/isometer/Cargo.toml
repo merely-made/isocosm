@@ -35,7 +35,7 @@ isometer-render = { path = "crates/isometer-render" }
 isometer-space = { path = "crates/isometer-space" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", branch = "main" }
+cambium-rootstock = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }

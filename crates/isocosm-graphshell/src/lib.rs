@@ -436,6 +436,7 @@ fn advertised(
         explanation: explanation.into(),
         payload_schema: r#"{"type":"null"}"#.into(),
         input_form: None,
+        icon: None,
         effect,
     }
 }
