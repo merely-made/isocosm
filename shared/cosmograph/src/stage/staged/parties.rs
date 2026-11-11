@@ -33,6 +33,9 @@ impl Staged<'_> {
 }
 
 impl Parties for Staged<'_> {
+    fn tick(&self) -> crate::schema::Tick {
+        self.sim.state.tick
+    }
     fn lineage_trait(&self, lineage: &str, key: &str) -> bool {
         self.sim
             .state

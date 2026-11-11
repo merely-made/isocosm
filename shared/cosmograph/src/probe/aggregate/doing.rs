@@ -53,6 +53,9 @@ pub(super) struct Doing<'a> {
 }
 
 impl Parties for Doing<'_> {
+    fn tick(&self) -> Tick {
+        self.tick
+    }
     fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
         match who {
             Binding::Actor => Ok(crate::anatomy::held(&self.member, self.rules, key)),

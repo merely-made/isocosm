@@ -32,7 +32,15 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             key,
             present,
         } => p.part().and_then(|(b, id)| mark_part(b, id, key, *present)),
-        Effect::Trait { who, key, present } => p.body(*who).and_then(|b| mark(b, key, *present)),
+        Effect::Trait { who, key, present } => {
+            // A flat lineage's seed wakes to a life counted from waking (1195).
+            let tick = p.tick();
+            let renew = !present && rules.dormancy.as_ref().is_some_and(|d| d.renew && d.key == *key);
+            p.body(*who).and_then(|b| {
+                if renew { b.born = tick; }
+                mark(b, key, *present)
+            })
+        },
         Effect::Practice { key, amount } => amount.resolved().and_then(|amount| {
             p.body(Binding::Actor)
                 .and_then(|b| practice(b, key, amount))

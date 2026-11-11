@@ -433,6 +433,8 @@ pub(crate) trait Parties {
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn body(&mut self, who: Binding) -> Result<&mut Entity>;
+    /// The tick the act is done at.
+    fn tick(&self) -> Tick;
     /// The actor's body and the part the process binds in it.
     fn part(&mut self) -> Result<(&mut Entity, PartId)>;
     /// Moves a condition at the site.

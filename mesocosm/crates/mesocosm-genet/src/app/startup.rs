@@ -25,6 +25,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
         .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
     if rules.mass_law { founding.mass_law = Some(cosmograph::ecology::MassLaw::default()); }
+    if rules.dormancy { founding.dormancy = Some(cosmograph::rules::Dormancy::flat()); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     mesocosm_runtime::runtime::ecology::Setup::generated_classified(
@@ -387,6 +388,28 @@ mod tests {
         assert!(!serde_json::to_string(&off).unwrap().contains("mass_law"));
         assert!(super::super::config::WorldRules { mass_law: true, ..Default::default() }
             .apply(&mut off.clone()).is_err(), "a world founded without it refuses the late flag");
+    }
+
+    #[test]
+    fn dormancy_sets_the_founding_rule_and_default_flags_leave_the_genesis_alone() {
+        let setup = |dormancy| a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None,
+            super::super::config::WorldRules { dormancy, ..Default::default() }).unwrap().founded.genesis;
+        let (off, on) = (setup(false), setup(true));
+        assert!(off.founding.as_ref().unwrap().dormancy.is_none() && off.rules.dormancy.is_none());
+        assert_eq!(cosmograph::digest(&off), cosmograph::digest(&setup(false)));
+        assert_eq!(cosmograph::digest(&off), cosmograph::digest(&setup_plain()), "default flags found as they did");
+        let rule = on.rules.dormancy.clone().expect("the flag sets the rule through the A1 regeneration");
+        assert_eq!(on.founding.as_ref().unwrap().dormancy.as_ref().map(|d| d.season_ticks), Some(Some(40)));
+        assert!(!rule.seeds.is_empty(), "the producers' births seed");
+        assert_ne!(cosmograph::digest(&off), cosmograph::digest(&on));
+        let json = serde_json::to_string(&off).unwrap();
+        assert!(!json.contains("dormancy") && !json.contains("ecology:wake"), "an unset world never mentions it");
+        assert!(super::super::config::WorldRules { dormancy: true, ..Default::default() }
+            .apply(&mut off.clone()).is_err(), "a world founded without it refuses the late flag");
+    }
+
+    fn setup_plain() -> cosmograph::simulation::Genesis {
+        a1_setup(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None).unwrap().founded.genesis
     }
 
     #[test]

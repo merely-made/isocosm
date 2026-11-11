@@ -119,12 +119,15 @@ pub struct WorldRules {
     /// Rates scaled by adult body mass (case 1148): set in the founding, so
     /// it reaches only the A1 world that is generated from it.
     pub mass_law: bool,
+    /// Producers' young lie dormant (cases 1192 to 1197): set in the
+    /// founding, so it reaches only the A1 world that is generated from it.
+    pub dormancy: bool,
 }
 
 impl WorldRules {
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -135,6 +138,9 @@ impl WorldRules {
     pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) -> Result<(), String> {
         if self.mass_law && genesis.founding.as_ref().is_none_or(|f| f.mass_law.is_none()) {
             return Err("--mass-law is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.dormancy && genesis.founding.as_ref().is_none_or(|f| f.dormancy.is_none()) {
+            return Err("--dormancy is a founding rule: it needs the generated A1 world".into());
         }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {
@@ -173,7 +179,7 @@ impl HostConfig {
         let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::default();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law and --turn require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy and --turn require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 

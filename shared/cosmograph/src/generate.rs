@@ -590,7 +590,7 @@ impl Founding {
         if let Some(played) = self.played {
             crate::directing::found::found(self, &mut genesis, played)?;
         }
-        crate::ecology::mass_law::apply(self, &mut genesis)?;
+        crate::ecology::finish(self, &mut genesis)?;
         crate::spatial::Templates::declare(&mut genesis)?;
         genesis.validate()?;
         Ok(genesis)

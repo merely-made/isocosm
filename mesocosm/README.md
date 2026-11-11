@@ -68,7 +68,9 @@ makes chosen acts past a body's ease spend matter. `--hosting` seeds a microbe y
 holder of the world turn its temperature up to N degrees (needs `--climate`; 9 and 0 lower and raise the
 shift), `--learning` lets members learn (it founds each deciding lineage a policy that scores as the hand-written score does, so members choose by policy, and weighs each kind of act as well as each need), and `--mass-law`
 scales upkeep, meals, maturity, lifespan and birth spacing with a body's adult mass (the three-quarter and
-one-quarter powers, held to a quarter and four times the flat rate). D calls the
+one-quarter powers, held to a quarter and four times the flat rate), and `--dormancy`
+makes a producer's young lie dormant as seeds that cost a tenth of the upkeep and wake by season where
+the site is not crowded, so a line a lean spell empties can come back from its seed bank. D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,
 and at a loss Tab moves among the heirs.
 

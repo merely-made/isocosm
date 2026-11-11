@@ -7,6 +7,7 @@ use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
 use std::collections::BTreeMap;
 
 mod admission;
+mod dormant;
 mod joint;
 mod validate;
 mod evidence;
@@ -340,8 +341,16 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     if rates == Rates::WorldTime {
         world_time::configure(founding, g)?;
-    } else if founding.dormancy.is_some() {
-        return Err("dormancy is built for world-time ecologies only".into());
+    }
+    Ok(())
+}
+
+/// What lays over the configured and embodied ecology: the mass law, then
+/// the flat rate sets' dormancy, which copies the scaled active rates.
+pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
+    mass_law::apply(founding, g)?;
+    if founding.ecology_rates != Rates::WorldTime {
+        dormant::flat(founding, g)?;
     }
     Ok(())
 }

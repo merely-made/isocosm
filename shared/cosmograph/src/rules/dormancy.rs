@@ -16,6 +16,13 @@ use std::collections::BTreeMap;
 /// weight a waking light share is stated against (case 1195).
 pub const REFERENCE_SEED: u64 = 10;
 
+/// The flat rate sets' first cut of `Dormancy::crowd`.
+const CROWD: u64 = 12;
+
+fn crowd() -> u64 {
+    CROWD
+}
+
 /// How a producer's young lie dormant (cases 1192 to 1197).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Dormancy {
@@ -30,6 +37,21 @@ pub struct Dormancy {
     /// A season, in minutes, as world time counts them: the producers'
     /// seeding period. Read at the world's tick unit when processes are made.
     pub season: u64,
+    /// A season in ticks, where the flat rate sets run it: they have no day
+    /// to count, and a season of days outlasts any life they state. Unset,
+    /// the season is read from `season` at the world's tick unit.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub season_ticks: Option<u64>,
+    /// How many plants a site may hold, at the reference seed share, for a
+    /// seed there to wake under the flat rate sets, which have no light
+    /// share to sense; a heavier seed wakes at a greater count. World time
+    /// wakes on light and does not read it.
+    #[serde(default = "crowd")]
+    pub crowd: u64,
+    /// Whether waking starts the body's age afresh, so a flat lineage's
+    /// lifespan is lived awake. World time keeps its own ages.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub renew: bool,
     /// The range a lineage's seed share is drawn within, both ends included
     /// (case 1194).
     pub seed: [u64; 2],
@@ -51,6 +73,9 @@ impl Default for Dormancy {
             wake: [1, 4],
             // Ninety days, as a producer's seeding period counts a season.
             season: 90 * 1440,
+            season_ticks: None,
+            crowd: CROWD,
+            renew: false,
             // About the fixed ten, from half to twice.
             seed: [5, 20],
             seeds: BTreeMap::new(),
@@ -59,6 +84,22 @@ impl Default for Dormancy {
 }
 
 impl Dormancy {
+    /// The rule for a flat-rate ecology (stock or A1): the defaults, with a
+    /// season of forty ticks, which a lineage living a hundred and more
+    /// ticks sees about three times, and waking that renews the age.
+    #[must_use]
+    pub fn flat() -> Self {
+        Self { season_ticks: Some(40), renew: true, ..Self::default() }
+    }
+
+    /// The plants a site may hold for a seed of `share` matter to wake there
+    /// (the flat sets' stand-in for the light share of case 1195): rises
+    /// with the seed's weight, so heavier seeds wake where it is more crowded.
+    #[must_use]
+    pub fn crowding(&self, share: u64) -> u64 {
+        (self.crowd.saturating_mul(share) / REFERENCE_SEED).max(1)
+    }
+
     /// # Errors
     /// Fails if a share has no denominator or is more than whole or the
     /// upkeep share is nought, the season lasts no time, the seed range is
@@ -71,8 +112,11 @@ impl Dormancy {
         if self.upkeep[0] == 0 {
             return Err("dormancy's upkeep cannot be nought of the active rate".into());
         }
-        if self.season == 0 {
+        if self.season == 0 || self.season_ticks == Some(0) {
             return Err("dormancy's season must last some time".into());
+        }
+        if self.crowd == 0 {
+            return Err("dormancy's crowding count cannot be nought".into());
         }
         if self.seed[0] == 0 || self.seed[0] > self.seed[1] {
             return Err("dormancy's seed range must be a nonempty range above nought".into());

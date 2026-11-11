@@ -459,6 +459,13 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
 - **Delayed credit** (members' learning): one pending act per member, the
   first unpaid one, credited by the next act that betters the member
   within 12 ticks and marked down if none does.
+- **Flat dormancy's numbers and gate** (propagules): a season of 40 ticks;
+  a seed wakes where producers at its site number fewer than twelve
+  tenths of its share; waking renews its age in flat worlds, superseding
+  the earlier choice for them; dormant upkeep is a transition, not a
+  chosen act, so every seed pays it.
+- **Upkeep alignment** (finding): fixing it so every body pays moves the
+  A1 pins and every played world's course. Not done; yours to call.
 
 ## Questions for Mark
 
@@ -504,6 +511,33 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: propagules under the flat rate sets, and why the played world
+  dies. `Founding.dormancy` now works for bodied Stock and A1 worlds
+  (`ecology/dormant.rs`, shared with world time): a producer's birth lays
+  a seed of the lineage's drawn share on its parts, the parent's gate
+  moving with it; dormant upkeep is a transition at a tenth of the active
+  rate; a seed wakes by a keyed draw each season of 40 ticks where its
+  site is habitable and holds fewer producers than `12 * share / 10`,
+  and waking renews its age, since a flat body dies of age counted from
+  birth. Mesocosm takes `--dormancy`. Thirteen controls. Diagnosis, kept
+  as ignored tests in `tests/played_world_decay.rs`: the played A1 world
+  (two producers, the played grazer, a decomposer, no predator) dies of
+  grazer overshoot. Grazers go from 32 to about 190 in a hundred ticks
+  and eat producers faster than they grow; producers fall under their
+  birth gate and age out by tick 157 to 177, grazers by 246, on four
+  seeds of five, in both executions and in the piloted bench. Soil is
+  not short: 81% of matter ends as unused soil. A grazer fed a third as
+  often lasts to 431, a world without the grazer to 557; the mass law,
+  doubled upkeep periods and four times the soil change nothing. With
+  dormancy on, producers return from the bank and one lineage still
+  lives at tick 600, but the grazer and decomposer still die: dormancy
+  alone does not carry the world. A1 was qualified for 180 ticks only.
+  Findings: in a played world a body pays a chosen process only when
+  its own clock meets its lineage's decision clock, so about one
+  producer in five and one grazer in two ever pay upkeep; and
+  `--hosting` fails the A1 witness check in the real binary. Owed: a
+  limit on the grazer (1192's second step); the upkeep alignment; the
+  hosting fix; "seeds banked" in a view.
 - 2026-11-10: members' learning credits a delayed reward, and `--learning`
   runs on a generated world. A member's delta gains a weight per kind of
   act (by process), added to that act's score in the need terms' units, so
