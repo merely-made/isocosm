@@ -529,6 +529,20 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: why the second producer dies (diagnosis only,
+  `tests/producer_pair_diagnosis.rs`). Finding: it starves of soil, and
+  it is the second because of its process id. Both producers boom and
+  lock the soil in bodies; their growth passes share a period and a
+  priority, the scheduler breaks the tie by id, and each pass reads the
+  tick as it began, so `ecology:produce-0` takes the soil that returns
+  and L3 gets what is left. Nearly all L3 deaths are starvation; light
+  is never short. Arms on seeds 3, 9 and 11: L3's growth at priority -1
+  and nothing else flips it (L0 dies, L3 lives); swapping lifespans,
+  removing grazers, hazard or age changes nothing; either producer
+  alone survives its own boom and crash. Flat dormancy rescues both
+  because seeds wake only under a crowding limit, so no boom locks the
+  soil. Owed: a ruling on the fix (share the soil between producers of
+  a role, or make the crowding brake part of A1).
 - 2026-11-11: limits on consumers of the living, opt-in
   (`Founding.limits`, `ecology/limits.rs`, Mesocosm `--limits`). A
   consumer feeds only while it holds less than 12 and bears young only
