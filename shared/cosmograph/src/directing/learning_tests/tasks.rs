@@ -4,6 +4,7 @@
 use super::mechanics::{critter, slow};
 use super::*;
 use crate::directing::{Aim, Toward};
+use crate::rules::{Binding, Query};
 
 /// Where `c` stood, tick by tick: its place, its matter, its stored delta
 /// and the tick of the journey it was on, if any.
@@ -19,55 +20,72 @@ fn follow(s: &mut Session, c: Id, ticks: u32) -> Trail {
         .collect()
 }
 
-fn moves(t: &Trail) -> usize {
-    t.windows(2).filter(|w| w[0].0 != w[1].0).count()
+/// The delayed-reward world (M3.6): the consumer's home has no producers; the
+/// first route out of it leads to the site that has them all, and the other
+/// routes lead elsewhere. A move is a journey a few ticks long and pays
+/// only when the critter has arrived and eats. To make it choose again and
+/// again, feeding needs a hunger (fewer than 14 matter), so a fed critter
+/// has nothing to eat and moves off, and goes home to choose once more.
+/// Returns the home and the paying site.
+fn travel(g: &mut crate::simulation::Genesis) -> (Id, Id) {
+    for (id, p) in g.rules.processes.iter_mut() {
+        if id.starts_with("move:") {
+            p.priority = 500;
+            p.period = Some(3);
+        }
+    }
+    let hungry = Query::Below { who: Binding::Actor, key: "matter:1-0".into(), amount: 14 };
+    g.rules.processes.get_mut("ecology:feed-1").unwrap().requires.push(hungry);
+    let home = g.population.groups.values().find(|x| x.entity.method == Method::Deliberative).unwrap().entity.place;
+    let pay = g.sites[&home].routes[0].to;
+    for group in g.population.groups.values_mut().filter(|x| x.entity.lineage == "lineage:0") {
+        group.entity_mut().place = pay;
+    }
+    (home, pay)
 }
 
-/// The delayed-reward task (M3.6): the act that pays is a move to a site
-/// where producers feed it, and it pays only when the critter has arrived
-/// and eats. With the served reading as built, the move itself is never
-/// credited: the reading is taken as the act ends, the move feeds nothing
-/// so its terms name no need for the delta to move, and the meal that pays
-/// is credited to the meal. A move is a journey here, a few ticks long. So the learner goes no more often than its
-/// twin. This test states that limit; a credit that spans the delay is
-/// owed (see the report of this cut).
+/// How often `c` set out from its home for the paying site, and for any
+/// other, along a trail.
+fn departures(t: &Trail, home: Id, pay: Id) -> (usize, usize) {
+    let leaves = t.windows(2).filter(|w| w[0].0 == home && w[1].0 != home);
+    let (paid, other): (Vec<_>, Vec<_>) = leaves.partition(|w| w[1].0 == pay);
+    (paid.len(), other.len())
+}
+
+/// The delayed-reward task (M3.6): the act that pays is the move to the
+/// site where producers feed it, and it pays only after the journey, on
+/// arrival, when the critter eats. The served reading is taken as the move
+/// ends, when nothing is better, so the move's own reading never credits
+/// it; the pending credit does, when the meal that follows serves the
+/// critter inside the horizon, and the weight on the move scores it, where
+/// the move has no need term of its own to move. A twin that does not learn,
+/// and one that learns with a horizon of nought, take the paying route and
+/// the others as chance and the tie-break give them.
 #[test]
-fn a_delayed_reward_is_not_credited_to_the_act_that_earned_it() {
-    let travel = |g: &mut crate::simulation::Genesis| {
-        for (id, p) in g.rules.processes.iter_mut() {
-            if id.starts_with("move:") {
-                p.priority = 500;
-                p.period = Some(3);
-            }
-        }
-    };
+fn a_delayed_reward_is_credited_to_the_move_that_earned_it() {
     let run = |learning, seed| {
-        let mut s = build(seed, Setup::new(learning, 20), travel);
+        let mut ends = (0, 0);
+        let mut s = build(seed, Setup::new(learning, 20), |g| ends = travel(g));
         let c = critter(&s);
-        follow(&mut s, c, 60)
+        departures(&follow(&mut s, c, 200), ends.0, ends.1)
     };
-    let (mut travelled, mut departures) = (0, 0);
-    for seed in 1..8 {
-        let (learner, twin) = (run(Some(slow()), seed), run(None, seed));
-        assert_eq!(moves(&learner), moves(&twin), "seed {seed}: no more moves with learning on");
-        assert_eq!(
-            learner.iter().map(|t| (t.0, t.1)).collect::<Vec<_>>(),
-            twin.iter().map(|t| (t.0, t.1)).collect::<Vec<_>>(),
-            "seed {seed}: the same life"
-        );
-        // The tick it set out on a journey, its delta did not move.
-        let mut was = None;
-        for (k, now) in learner.iter().enumerate() {
-            if now.3 == Some(k as Tick + 1) {
-                assert_eq!(was, Some(now.2), "seed {seed}: a move was credited");
-                departures += 1;
-            }
-            was = Some(now.2);
+    let (mut learner, mut twin, mut nought) = ((0, 0), (0, 0), (0, 0));
+    for seed in 1..=12 {
+        for (total, learning) in [
+            (&mut learner, Some(slow())),
+            (&mut twin, None),
+            (&mut nought, Some(Learning { horizon: 0, ..slow() })),
+        ] {
+            let (paid, other) = run(learning, seed);
+            total.0 += paid;
+            total.1 += other;
         }
-        assert!(learner.last().unwrap().2.is_some(), "its meals were credited");
-        travelled += moves(&learner);
     }
-    assert!(travelled > 0 && departures > 0, "the fixture never sent a critter travelling");
+    let share = |(paid, other): (usize, usize)| paid as f64 / (paid + other).max(1) as f64;
+    let say = format!("paying moves of all, over twelve seeds: learner {learner:?}, twin {twin:?}, horizon nought {nought:?}");
+    assert!(learner.0 > twin.0 && learner.0 > nought.0, "the learner sets out for the paying site more often: {say}");
+    assert!(share(learner) > share(twin) && share(learner) > share(nought), "and more of its moves pay: {say}");
+    assert_eq!(twin, nought, "a horizon of nought credits no move: {say}");
 }
 
 fn nudge_toward_prey(s: &mut Session, c: Id) {
@@ -84,7 +102,7 @@ fn nudge_toward_prey(s: &mut Session, c: Id) {
 /// one toward feeding, which serves it; after the nudges end it feeds
 /// un-nudged, which a twin never nudged does not, and nor does one nudged
 /// as often but not learning. The act serves it at once here; a payoff that
-/// comes later is the delayed-reward task's limit.
+/// comes later is the delayed-reward task's.
 #[test]
 fn a_member_nudged_toward_an_act_that_serves_it_takes_it_up_unprompted() {
     let both = |g: &mut crate::simulation::Genesis| {

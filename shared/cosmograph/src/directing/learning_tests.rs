@@ -16,6 +16,7 @@ use crate::{
 };
 
 mod cohorts;
+mod credit;
 mod mechanics;
 mod tasks;
 

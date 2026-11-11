@@ -456,6 +456,9 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   producer's growth and the death hazard's rate scale too, which 1148
   does not name: without them heavy plants starve and long ceilings do
   not lengthen lives.
+- **Delayed credit** (members' learning): one pending act per member, the
+  first unpaid one, credited by the next act that betters the member
+  within 12 ticks and marked down if none does.
 
 ## Questions for Mark
 
@@ -501,6 +504,25 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-10: members' learning credits a delayed reward, and `--learning`
+  runs on a generated world. A member's delta gains a weight per kind of
+  act (by process), added to that act's score in the need terms' units, so
+  an act with no need term, a move, can be learned. An act that did not
+  better the member at once stays pending; an act that betters it within
+  `horizon` (12 ticks) credits the pending one, and a pending act whose
+  horizon passes is marked down. The first unpaid act holds the pending
+  place until it is credited or lapses: letting a later one replace it
+  gave the credit to the upkeep paid on arrival, never the move. In the
+  delayed-reward task over twelve seeds a learner left home for the
+  paying site 120 times and elsewhere 23, where a twin without learning,
+  and one with no horizon, went 69 and 34; the test asserts the gain. So
+  M3.6's two named tasks both pass. Rows do not grow with the rule on.
+  Mesocosm's `--learning` founds the unvaried policy for every lineage
+  that decides; a founded policy alone leaves a 200-tick run as it was,
+  and learning then changes it. Twenty-four controls. Owed: a route that
+  reaches food by luck inside the horizon is credited; a move's weight is
+  per route, not per kind of move; the boundary with one candidate
+  policy, untested; and what the first cut already owed.
 - 2026-11-10: the mass law built, first cut (D16's third fundament, second
   half; case 1148; the sim plan's S10.2 scaling slice). `Founding.mass_law`,
   unset by default, layers on the flat Stock and A1 rates at founding. A

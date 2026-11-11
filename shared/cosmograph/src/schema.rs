@@ -14,7 +14,7 @@ pub type Ledger = BTreeMap<Key, u64>;
 pub mod spread;
 
 mod learned;
-pub use learned::Learned;
+pub use learned::{Learned, Pending};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Storage {

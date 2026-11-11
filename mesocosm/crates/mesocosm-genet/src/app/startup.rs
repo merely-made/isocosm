@@ -333,6 +333,48 @@ mod tests {
     }
 
     #[test]
+    fn a_learning_world_founds_its_policies_runs_and_a_member_learns() {
+        // The A1 world, as the window founds it, run as a session for sixty
+        // ticks: the round's questions are the runtime's, and a member's
+        // learning is the sim's.
+        let run = |learning| {
+            let rules = super::super::config::WorldRules { learning, ..Default::default() };
+            let setup = a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None, rules).unwrap();
+            let mut session = cosmograph::Session::new(setup.founded.genesis, cosmograph::Execution::Individuals).unwrap();
+            session.advance(60).unwrap();
+            session
+        };
+        let (learning, plain) = (run(true), run(false));
+        let learned = |s: &cosmograph::Session| s.sim.state().population.groups.values()
+            .filter(|g| g.entity.alive && g.entity.learned.is_some()).count();
+        assert_eq!(learning.sim.state().tick, 60);
+        assert!(learned(&learning) > 0, "someone learned in sixty ticks");
+        assert_eq!(learned(&plain), 0, "no flag, no learning");
+        assert!(plain.sim.state().lineages.values().all(|l| l.policy.is_none()));
+        assert!(learning.sim.state().lineages.values().any(|l| l.policy.is_some()));
+    }
+
+    #[test]
+    fn founding_a_policy_alone_changes_how_nobody_chooses() {
+        // The founding policy scores as the hand-written score does, so
+        // with the learning rule taken off again the world runs as it did
+        // (measured the same over 200 ticks of seeds 9 and 3); learning is
+        // what makes the run differ.
+        let run = |learning: bool, keep: bool| {
+            let rules = super::super::config::WorldRules { learning, ..Default::default() };
+            let setup = a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None, rules).unwrap();
+            let mut genesis = setup.founded.genesis;
+            if !keep { genesis.rules.directing.as_mut().unwrap().learning = None; }
+            let mut session = cosmograph::Session::new(genesis, cosmograph::Execution::Individuals).unwrap();
+            session.advance(60).unwrap();
+            (session.sim.state().population.groups.clone(), session.sim.state().relations.clone())
+        };
+        let (plain, policy, full) = (run(false, false), run(true, false), run(true, true));
+        assert!(plain == policy, "a founded policy and no learning chooses as before");
+        assert!(plain != full, "learning changes the run");
+    }
+
+    #[test]
     fn mass_law_sets_the_founding_rule_and_default_flags_leave_the_genesis_alone() {
         let setup = |mass_law| a1_setup_with(mesocosm_runtime::Founded::generated(9, 256).unwrap(), None,
             super::super::config::WorldRules { mass_law, ..Default::default() }).unwrap().founded.genesis;

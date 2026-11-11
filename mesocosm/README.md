@@ -66,7 +66,7 @@ adds the lineages you come to know and their regard for you. `--exertion`
 makes chosen acts past a body's ease spend matter. `--hosting` seeds a microbe you can hold
 (it rots dead matter and enters bodies; 1 to 4 switch its rot, feed, leak and enter genes), `--turn N` lets a
 holder of the world turn its temperature up to N degrees (needs `--climate`; 9 and 0 lower and raise the
-shift), `--learning` lets members learn (it needs a world that founds a lineage policy), and `--mass-law`
+shift), `--learning` lets members learn (it founds each deciding lineage a policy that scores as the hand-written score does, so members choose by policy, and weighs each kind of act as well as each need), and `--mass-law`
 scales upkeep, meals, maturity, lifespan and birth spacing with a body's adult mass (the three-quarter and
 one-quarter powers, held to a quarter and four times the flat rate). D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,

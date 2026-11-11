@@ -17,6 +17,11 @@ pub struct Delta {
     /// the policy's 64ths, faded to `at`; never nought, none where it has
     /// learned nothing.
     pub weights: Vec<(usize, i32)>,
+    /// Each kind of act it weighs, by process, in the same 64ths, faded to
+    /// `at`, a lapsed pending act settled; never nought.
+    pub acts: Vec<(Key, i32)>,
+    /// The act it still waits on, and the tick that act ended.
+    pub pending: Option<(Key, Tick)>,
 }
 
 /// `member`'s delta now, or none where it is absent, or the world keeps no
@@ -24,9 +29,12 @@ pub struct Delta {
 pub fn learned(sim: &Simulation, member: Id) -> Option<Delta> {
     let e = sim.state().population.get(member)?;
     super::super::learn::rule(&sim.genesis().rules)?;
-    let weights = sim
-        .learned_of(e)
-        .map(|k| k.weights.into_iter().map(|(k, w)| (k as usize, w)).collect())
-        .unwrap_or_default();
-    Some(Delta { member, at: sim.state().tick, weights })
+    let k = sim.learned_of(e).unwrap_or_default();
+    Some(Delta {
+        member,
+        at: sim.state().tick,
+        weights: k.weights.into_iter().map(|(k, w)| (k as usize, w)).collect(),
+        acts: k.acts.into_iter().collect(),
+        pending: k.pending.map(|p| (p.act, p.since)),
+    })
 }

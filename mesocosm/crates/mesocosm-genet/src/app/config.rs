@@ -109,7 +109,10 @@ pub struct WorldRules {
     pub drift: bool, pub draft: bool, pub sheet: bool, pub climate: bool, pub regard: bool, pub exertion: bool,
     /// Hosting, and a microbe to hold (cases 1223, 1225, 1226).
     pub hosting: bool,
-    /// Members' learning (cases 1051, 1058); needs a world that founds a policy.
+    /// Members' learning (cases 1051, 1058). A generated world founds no
+    /// lineage policy, so this founds one: the smallest variation that
+    /// counts as set, and for each lineage that decides, a policy that
+    /// scores as the hand-written score does.
     pub learning: bool,
     /// The bound of the climate's turn, in degrees (case 1216); needs the climate.
     pub turn: Option<i32>,
@@ -127,8 +130,8 @@ impl WorldRules {
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
     ///
     /// # Errors
-    /// `--turn` without the climate, `--learning` in a world that founds no
-    /// policy, or `--hosting` in a world with no soil to seed from.
+    /// `--turn` without the climate, or `--hosting` in a world with no soil
+    /// to seed from.
     pub fn apply(&self, genesis: &mut cosmograph::simulation::Genesis) -> Result<(), String> {
         if self.mass_law && genesis.founding.as_ref().is_none_or(|f| f.mass_law.is_none()) {
             return Err("--mass-law is a founding rule: it needs the generated A1 world".into());
@@ -141,11 +144,17 @@ impl WorldRules {
         if self.exertion { genesis.rules.exertion = Some(cosmograph::rules::Exertion::default()); }
         if self.hosting { mesocosm_runtime::microbe::declare(genesis)?; }
         if self.learning {
+            let needs = genesis.rules.mind.as_ref().map_or(0, |m| m.needs.len());
             let directing = genesis.rules.directing.get_or_insert_with(Default::default);
+            // One candidate and no variation: the gate learning needs, and
+            // nothing drawn, so every policy is the founding one.
             if directing.policy == Default::default() {
-                return Err("--learning needs a world that founds a lineage policy, and this world founds none".into());
+                directing.policy = cosmograph::rules::PolicyVariation { founding: 0, expression: 0, candidates: 1 };
             }
             directing.learning = Some(cosmograph::rules::Learning::default());
+            for lineage in genesis.lineages.values_mut().filter(|l| l.decides.is_some() && l.policy.is_none()) {
+                lineage.policy = Some(cosmograph::directing::policy::LineagePolicy::founding(needs));
+            }
         }
         if !(self.drift || self.draft || self.sheet || self.regard) { return Ok(()); }
         let directing = genesis.rules.directing.get_or_insert_with(Default::default);
@@ -350,12 +359,24 @@ mod tests {
         WorldRules { climate: true, turn: Some(3), ..Default::default() }.apply(&mut genesis).unwrap();
         assert_eq!(genesis.rules.climate.as_ref().and_then(|c| c.turn), Some(3));
         let learning = WorldRules { learning: true, ..Default::default() };
-        assert!(learning.apply(&mut found()).unwrap_err().contains("founds none"), "no policy, no learning");
+        assert!(plain.rules.directing().policy == Default::default() && plain.lineages.values().all(|l| l.policy.is_none()));
+        let mut learned = found();
+        learning.apply(&mut learned).unwrap();
+        let d = learned.rules.directing();
+        assert_eq!(d.learning, Some(cosmograph::rules::Learning::default()));
+        assert_eq!(d.policy, cosmograph::rules::PolicyVariation { founding: 0, expression: 0, candidates: 1 });
+        let needs = learned.rules.mind.as_ref().unwrap().needs.len();
+        let deciding: Vec<_> = learned.lineages.values().filter(|l| l.decides.is_some()).collect();
+        assert!(!deciding.is_empty());
+        assert!(deciding.iter().all(|l| l.policy == Some(cosmograph::directing::policy::LineagePolicy::founding(needs))));
+        assert!(learned.lineages.values().filter(|l| l.decides.is_none()).all(|l| l.policy.is_none()));
+        learned.validate().unwrap();
+        // A world that already sets its gate keeps it.
         let mut gated = found();
         gated.rules.directing.get_or_insert_with(Default::default).policy =
-            cosmograph::rules::PolicyVariation { founding: 0, expression: 0, candidates: 1 };
+            cosmograph::rules::PolicyVariation { founding: 3, expression: 2, candidates: 4 };
         learning.apply(&mut gated).unwrap();
-        assert_eq!(gated.rules.directing().learning, Some(cosmograph::rules::Learning::default()));
+        assert_eq!(gated.rules.directing().policy.founding, 3);
     }
 
     #[test]

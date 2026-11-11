@@ -411,7 +411,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --regard        world rule: lineages you come to know, and their regard for you, which starts a bond
   --exertion      world rule: chosen acts past a body's ease in a span spend matter
   --hosting       world rule: a microbe lineage you can hold; it rots dead matter and enters bodies
-  --learning      world rule: members learn (needs a world that founds a lineage policy)
+  --learning      world rule: members learn (it founds each deciding lineage a policy)
   --mass-law      world rule: upkeep, meals, life and breeding scale with a body's adult mass (3/4 and 1/4 powers)
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)

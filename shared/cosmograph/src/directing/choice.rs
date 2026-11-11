@@ -36,9 +36,10 @@ impl Chosen {
         self.by.clear();
     }
 
-    /// Whether `actor`'s choice this tick named needs that were pressing (M3.6).
-    pub(crate) fn pressed(&self, actor: Id) -> bool {
-        self.by.get(&actor).is_some_and(|c| !c.pressed.is_empty())
+    /// Whether `actor`'s choice this tick was a policy's, under a world that
+    /// learns (M3.6).
+    pub(crate) fn learns(&self, actor: Id) -> bool {
+        self.by.get(&actor).is_some_and(|c| c.learns)
     }
 
     /// The needs, by place in the world's list, `actor`'s choice answered.
@@ -70,6 +71,8 @@ pub(crate) struct Choice {
     /// Where a lineage policy chose under a world that learns: the needs,
     /// by place in the world's list, the chosen act's terms scored (M3.6).
     pub pressed: Vec<usize>,
+    /// Whether a policy chose it under a world that learns (M3.6).
+    pub learns: bool,
 }
 
 /// What the methodology says of one actor's act in a pass.
@@ -424,6 +427,8 @@ impl Simulation {
         let waiting = self.foraging_wait_score(actor);
         // A lineage policy scores in the hand-written score's place (M3.5).
         let policy = self.expressed(actor, directing.policy.expression);
+        // What the member has learned of each kind of act scores it too (M3.6).
+        let learnt = if policy.is_some() && directing.learning.is_some() { self.act_bonuses(actor) } else { Default::default() };
         let mut written = BTreeMap::new();
         let mut best = Choice::default();
         let mut top = i64::MIN;
@@ -459,7 +464,7 @@ impl Simulation {
                 .sum();
             let hand = needs + sway + i64::from(p.priority);
             let score = match &policy {
-                Some(policy) => policy.score(&terms(rules, serves, p, mood, &pressing, target)) + sway,
+                Some(policy) => policy.score(&terms(rules, serves, p, mood, &pressing, target)) + sway + learnt.get(&p.id).copied().unwrap_or(0),
                 None => hand,
             };
             if policy.is_some() && !(waiting > 0 && movement_only(p) && hand < waiting) {
@@ -499,6 +504,7 @@ impl Simulation {
         }
         if policy.is_some() && directing.learning.is_some() {
             best.pressed = self.pressed_by(&best, mood, &pressing);
+            best.learns = true;
         }
         if policy.is_some() {
             let most = written.values().copied().max();

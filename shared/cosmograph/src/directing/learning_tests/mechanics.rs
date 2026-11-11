@@ -16,7 +16,7 @@ pub(super) fn slow() -> Learning {
 }
 
 fn learned(weight: i32, settled: Tick) -> Option<Learned> {
-    Some(Learned { settled, weights: BTreeMap::from([(HUNGER, weight)]) })
+    Some(Learned { settled, weights: BTreeMap::from([(HUNGER, weight)]), ..Default::default() })
 }
 
 fn give(s: &mut Session, c: Id, k: Option<Learned>) {
@@ -161,11 +161,11 @@ fn two_members_alike_but_for_their_deltas_choose_differently() {
 #[test]
 fn a_child_takes_a_third_of_its_parents_delta_toward_nought() {
     let l = Learning::default();
-    let parent = Learned { settled: 0, weights: BTreeMap::from([(0, -8), (1, 2), (2, 9)]) };
+    let parent = Learned { settled: 0, weights: BTreeMap::from([(0, -8), (1, 2), (2, 9)]), ..Default::default() };
     let child = l.handed(&parent, 5).unwrap();
     assert_eq!(child.weights, BTreeMap::from([(0, -2), (2, 3)]), "-8/3 and 9/3, 2/3 gone");
     assert_eq!(child.settled, 5);
-    assert_eq!(l.handed(&Learned { settled: 0, weights: BTreeMap::from([(0, 2)]) }, 1), None);
+    assert_eq!(l.handed(&Learned { settled: 0, weights: BTreeMap::from([(0, 2)]), ..Default::default() }, 1), None);
 
     let births = |g: &mut crate::simulation::Genesis| {
         for q in &mut g.rules.processes.get_mut("ecology:birth-1").unwrap().requires {

@@ -497,7 +497,8 @@ impl Simulation {
             // A member's own delta learns from every act its policy chose (M3.6).
             if let (true, Some(before)) = (learning, before) {
                 let served = self.served_by(actor, before, accepted);
-                self.learn_from(actor, multiplicity, served);
+                let bettered = self.bettered_by(actor, before, accepted);
+                self.learn_from(actor, multiplicity, id, served, bettered);
             }
             work.evaluations += 1;
             work.represented += multiplicity;
