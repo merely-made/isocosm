@@ -68,9 +68,13 @@ makes chosen acts past a body's ease spend matter. `--hosting` seeds a microbe y
 holder of the world turn its temperature up to N degrees (needs `--climate`; 9 and 0 lower and raise the
 shift), `--learning` lets members learn (it founds each deciding lineage a policy that scores as the hand-written score does, so members choose by policy, and weighs each kind of act as well as each need), and `--mass-law`
 scales upkeep, meals, maturity, lifespan and birth spacing with a body's adult mass (the three-quarter and
-one-quarter powers, held to a quarter and four times the flat rate), and `--dormancy`
-makes a producer's young lie dormant as seeds that cost a tenth of the upkeep and wake by season where
-the site is not crowded, so a line a lean spell empties can come back from its seed bank. `--limits`
+one-quarter powers, held to a quarter and four times the flat rate), and
+dormancy makes a producer's young lie dormant as seeds that cost a tenth of the upkeep and wake by season where
+the site is not crowded, so a line a lean spell empties can come back from its seed bank. It is the crowding
+brake a new generated A1 world founds with by default (since 2026-11-11, because without it one of the two
+producers always dies in its boom and crash): `--no-dormancy` founds the world without it, and `--dormancy`
+is still accepted as a no-op alias. Saves and candidate files made before keep the world they were made
+with, and `--no-dormancy`, like the other world rules, is refused on a resumed save, spread, candidate or witness. `--limits`
 limits the eaters of the living (grazers and the like): each feeds only while it holds less than a
 set fullness and bears young only where fewer than a ceiling of its line stand at its site, which stops
 the grazers outrunning their food. D calls the

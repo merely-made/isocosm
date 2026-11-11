@@ -29,6 +29,8 @@ pub struct WorldRules {
     pub mass_law: bool,
     /// Producers' young lie dormant (cases 1192 to 1197): set in the
     /// founding, so it reaches only the A1 world that is generated from it.
+    /// The field's absence, in a saved setup, means off, as it did when that
+    /// was saved; a newly founded world gets it from [`WorldRules::generated`].
     pub dormancy: bool,
     /// Limits on consumers of the living: they feed only while not full and
     /// bear young only below a per-site ceiling. Set in the founding, so it
@@ -40,6 +42,13 @@ pub struct WorldRules {
 impl WorldRules {
     /// No rule is chosen.
     pub fn is_off(&self) -> bool { *self == Self::default() }
+
+    /// The rules a new generated A1 world founds with unless the player asks
+    /// otherwise (2026-11-11): the crowding brake is on, and nothing else.
+    /// `default()` and `all()` stay "nothing chosen" because that is what an
+    /// absent field in a saved `Setup` meant when it was saved; the product
+    /// default lives only here, in the host's starting configuration.
+    pub fn generated() -> Self { Self { dormancy: true, ..Self::default() } }
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,

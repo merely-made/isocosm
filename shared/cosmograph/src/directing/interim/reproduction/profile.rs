@@ -84,6 +84,11 @@ pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
             _ => crate::ecology::Limits::default(),
         });
     }
+    // `COSMOGRAPH_REPRO_DORMANT=1` founds flat dormancy (the crowding brake
+    // Mesocosm's generated A1 world now founds with; 2026-11-11).
+    if std::env::var("COSMOGRAPH_REPRO_DORMANT").is_ok_and(|v| v == "1") {
+        founding.dormancy = Some(crate::rules::Dormancy::flat());
+    }
     world_from_founding(founding, original, std::env::var("COSMOGRAPH_REPRO_TWEAK").ok().as_deref())
 }
 
@@ -108,7 +113,10 @@ fn check(g: &Genesis, original: bool) {
         if original { (30, 30, 7, 5, 1, 20) } else { (12, 9, 14, 10, 3, 100) };
     for (i, want) in [(0, gate), (1, consumer_gate), (2, gate)] {
         let birth_process = &p[&format!("ecology:birth-{i}")];
-        assert!(birth_process.requires.iter().any(|q| matches!(q, Query::Account { at_least, .. } if *at_least == want)));
+        // Flat dormancy takes the producers' birth gate into its wake rule.
+        let dormant = g.founding.as_ref().is_some_and(|f| f.dormancy.is_some());
+        assert!(dormant && i != 1
+            || birth_process.requires.iter().any(|q| matches!(q, Query::Account { at_least, .. } if *at_least == want)));
         assert_eq!(birth_process.period, Some(if i == 1 { birth } else { 7 }));
         assert_eq!(p[&format!("ecology:upkeep-{i}")].period, Some(if i == 1 || (i == 2 && !original) { upkeep } else { 5 }));
         let ceiling = p[&format!("ecology:age-{i}")].requires.iter().find_map(|q| match q {

@@ -98,7 +98,8 @@ pub struct HostConfig {
     pub rounds: Rounds,
     /// Each epoch's par is what the played line left alone would hold (D8).
     pub condition: bool,
-    /// The world rules for lineage rounds, all off by default (D2, D9, D12).
+    /// The world rules for a new generated world: all off but the crowding
+    /// brake, which is on unless `--no-dormancy` (D2, D9, D12; 2026-11-11).
     pub world_rules: WorldRules,
 }
 
@@ -108,10 +109,10 @@ impl HostConfig {
     /// Why the round flags cannot apply to this startup, if they cannot: like
     /// `--start`, they are for an ordinary new generated world.
     pub fn round_flags_refused(&self, replay: bool, bench: bool) -> Option<&'static str> {
-        let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::default();
+        let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::generated();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --limits and --turn require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --no-dormancy, --limits and --turn require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 
@@ -199,7 +200,7 @@ impl Default for HostConfig {
             ecology_rates: None,
             rounds: Rounds::Capped,
             condition: false,
-            world_rules: WorldRules::default(),
+            world_rules: WorldRules::generated(),
         }
     }
 }
@@ -250,7 +251,7 @@ mod tests {
     fn round_flags_default_off_and_parse_their_words() {
         let config = HostConfig::default();
         assert_eq!((config.rounds, config.condition, config.world_rules),
-            (Rounds::Capped, false, WorldRules::default()));
+            (Rounds::Capped, false, WorldRules::generated()));
         assert_eq!(HostConfig::parse_rounds("waiting"), Some(Rounds::Waiting));
         assert_eq!(HostConfig::parse_rounds("continuous"), Some(Rounds::Continuous));
         assert_eq!(HostConfig::parse_rounds("capped"), Some(Rounds::Capped));

@@ -488,6 +488,12 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   also runs after ungrouped passes of its tick and priority. Consumer
   lineages of one role have the same id-order bias at their prey and
   were left.
+- **The crowding brake is Mesocosm's default** (built on Mark's word
+  2026-11-11): mine: made the default in the product's starting
+  configuration (`WorldRules::generated`, `--no-dormancy` turns it
+  off), not in the sim's A1 rate set, because changing what an absent
+  `Founding.dormancy` means would make every saved A1 world fail
+  admission. A saved setup without the field stays without it.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -537,6 +543,25 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: the crowding brake is the default. A new generated A1
+  world in Mesocosm founds with `Dormancy::flat()`; `--no-dormancy`
+  founds without it, to the digest the old default gave; `--dormancy`
+  is kept as an alias. `WorldRules::default()` still means nothing
+  chosen, so saved setups load as they were saved. No pin moved. The
+  founding witness passes on 120 of seeds 0 to 119 either way. Through
+  the binary's startup path, default flags, all four lines live at
+  tick 600 on seeds 3, 5, 9, 11 and 17. A1 battery under flat
+  dormancy: played 20/20; bodied 19/20 (seed 12 dies out at tick 140;
+  20/20 without); bare cannot found it. `startup.rs`'s tests moved to
+  `startup_tests.rs`. Owed: bodied seed 12.
+- 2026-11-11: Mark's direction, shared resource readings in the sim.
+  To build: the plant count and light and soil shares computed once a
+  site a pass, and the sun's intensity once a tick, with no state or
+  history hash moving; an edible-matter reading beside `FoodPerHead`,
+  set against demand over a feeding period, tried on a seeded run
+  where tissue runs down while plant counts stay high. Later
+  candidates, not started: light competition within a site; a scent
+  strength field, a shared CPU field compared with Burn.
 - 2026-11-11: producers that share ground take turns. `Process.turn`
   names a turn group (unset, hash-neutral); the schedule orders passes
   by due tick, priority, turn rank, identity, and a group's rank turns

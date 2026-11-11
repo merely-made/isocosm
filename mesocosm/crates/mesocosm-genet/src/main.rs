@@ -167,6 +167,7 @@ fn main() {
             "--learning" => config.world_rules.learning = true,
             "--mass-law" => config.world_rules.mass_law = true,
             "--dormancy" => config.world_rules.dormancy = true,
+            "--no-dormancy" => config.world_rules.dormancy = false,
             "--limits" => config.world_rules.limits = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
@@ -416,7 +417,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --hosting       world rule: a microbe lineage you can hold; it rots dead matter and enters bodies
   --learning      world rule: members learn (it founds each deciding lineage a policy)
   --mass-law      world rule: upkeep, meals, life and breeding scale with a body's adult mass (3/4 and 1/4 powers)
-  --dormancy      world rule: producers' young lie dormant as seeds, waking by season where the site is not crowded
+  --dormancy      the default for a new generated A1 world, accepted as a no-op alias: producers' young lie dormant as
+                  seeds, waking by season where the site is not crowded (a crowding brake)
+  --no-dormancy   found a new generated A1 world without the crowding brake
   --limits        world rule: grazers and other eaters of the living feed only while not full and breed only below a per-site ceiling
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
