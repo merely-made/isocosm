@@ -72,6 +72,28 @@ const SUN: &str = "sim:energy";
 const SOIL: &str = "world:soil";
 
 impl Simulation {
+    /// A plant's `[light, soil, crowding]` at `site` as the pass began: one
+    /// set of numbers per site, made once for the pass under a frame.
+    fn plant_readings(&self, site: Id) -> Option<[u64; 3]> {
+        let plants = || -> BTreeSet<Key> {
+            self.genesis.lineages.iter()
+                .filter(|(_, l)| l.kingdom == "kingdom:flora").map(|(k, _)| k.clone()).collect()
+        };
+        match self.frame.as_ref() {
+            Some(frame) => frame.plant_readings(site, || {
+                self.plant_readings_direct(site, &frame.plant_lineages(plants))
+            }),
+            None => self.plant_readings_direct(site, &plants()),
+        }
+    }
+
+    pub(crate) fn plant_readings_direct(&self, site: Id, plants: &BTreeSet<Key>) -> Option<[u64; 3]> {
+        let place = self.site_at_start(site)?;
+        let light = place.accounts.get(SUN).copied().unwrap_or(0);
+        let soil = place.accounts.get(SOIL).copied().unwrap_or(0);
+        Some([light, soil, self.members_at(site, plants).max(1)])
+    }
+
     /// The actor's smell radius, nought where it does not smell.
     pub fn smell_radius(&self, actor: Id) -> u64 {
         let Some(senses) = &self.genesis.rules.senses else { return 0 };
@@ -94,12 +116,7 @@ impl Simulation {
         match (form, reading) {
             (Form::Animal, "sense:smell") => Some(self.smell_radius(actor)),
             (Form::Plant, _) => {
-                let place = self.site_at_start(site)?;
-                let light = place.accounts.get(SUN).copied().unwrap_or(0);
-                let soil = place.accounts.get(SOIL).copied().unwrap_or(0);
-                let plants: BTreeSet<Key> = self.genesis.lineages.iter()
-                    .filter(|(_, l)| l.kingdom == "kingdom:flora").map(|(k, _)| k.clone()).collect();
-                let crowding = self.members_at(site, &plants).max(1);
+                let [light, soil, crowding] = self.plant_readings(site)?;
                 match reading {
                     "sense:light" => Some(light),
                     "sense:soil" => Some(soil),

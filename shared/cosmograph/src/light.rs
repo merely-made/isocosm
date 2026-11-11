@@ -143,3 +143,36 @@ pub fn at(rules: &Rules, tick: Tick, site: Option<&Site>) -> Light {
         ambient,
     }
 }
+
+/// The world-scale sun intensity (`at` with no site) at the last tick asked,
+/// kept with the rules it came from (the sun's rules and the tick length) so
+/// a world whose rules change never reads a stale value. Cloned as it is.
+#[derive(Debug, Default)]
+pub(crate) struct SunMemo(std::sync::Mutex<Option<Remembered>>);
+
+/// The tick, the tick length, the sun's rules, and the intensity they gave.
+type Remembered = (Tick, u64, Option<SunRules>, f64);
+
+impl Clone for SunMemo {
+    fn clone(&self) -> Self {
+        Self(std::sync::Mutex::new(self.0.lock().unwrap_or_else(|p| p.into_inner()).clone()))
+    }
+}
+
+impl SunMemo {
+    /// The same `f64` as `at(rules, tick, None)`'s sun intensity, or 0.0
+    /// under the horizon, worked once per tick.
+    pub(crate) fn intensity(&self, rules: &Rules, tick: Tick) -> f64 {
+        let work = || at(rules, tick, None).sun.map_or(0.0, |sun| f64::from(sun.intensity));
+        let micros = rules.tick_microseconds();
+        let mut memo = self.0.lock().unwrap_or_else(|p| p.into_inner());
+        if let Some((t, m, sun, value)) = &*memo
+            && *t == tick && *m == micros && *sun == rules.sun
+        {
+            return *value;
+        }
+        let value = work();
+        *memo = Some((tick, micros, rules.sun.clone(), value));
+        value
+    }
+}

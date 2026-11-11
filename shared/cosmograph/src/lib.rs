@@ -45,6 +45,8 @@ mod exertion_tests;
 #[cfg(test)]
 mod dormancy_tests;
 #[cfg(test)]
+mod senses_tests;
+#[cfg(test)]
 mod dormancy_flat_tests;
 pub mod flows;
 mod founding_events;

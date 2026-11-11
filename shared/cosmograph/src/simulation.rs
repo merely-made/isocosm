@@ -181,6 +181,8 @@ pub struct Simulation {
     pub(crate) pass: Option<crate::schedule::Pass>,
     /// What that pass reads: the world as it began (ruling 454).
     pub(crate) frame: Option<crate::schedule::Frame>,
+    /// The sun's intensity at the last tick asked, keyed by what it depends on.
+    pub(crate) sun: crate::light::SunMemo,
     /// Explicit command inputs, recorded in the command, never pending saved authority.
     pub(crate) project_inputs: Option<(Id, Vec<Key>)>,
     pub(crate) project_decision: Option<crate::projects::DecisionContext>,
@@ -252,6 +254,7 @@ impl Simulation {
             filed: None,
             pass: None,
             frame: None,
+            sun: Default::default(),
             project_inputs: None,
             project_decision: None,
             project_decision_stamp: None,

@@ -52,8 +52,29 @@ impl BooksCache {
     }
 }
 
+/// Derivative pass-local plant readings (light, soil, crowding) by site,
+/// and the plant lineages they count. Every act of a pass reads the world as
+/// the pass began, so a site's readings are one set of numbers for the whole
+/// pass. Reset when a frame is cloned, since a clone may become a candidate
+/// world.
+#[derive(Debug, Default)]
+struct PlantCache(Mutex<PlantReadings>);
+
+#[derive(Debug, Default)]
+struct PlantReadings {
+    lineages: Option<Arc<std::collections::BTreeSet<Key>>>,
+    sites: BTreeMap<Id, [u64; 3]>,
+}
+
+impl Clone for PlantCache {
+    fn clone(&self) -> Self {
+        Self::default()
+    }
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
+    plants: PlantCache,
     pub(crate) spatial_poses: BTreeMap<Id, Option<crate::spatial::foraging::Resident>>,
     books: BooksCache,
     notes_bound: Option<usize>,
@@ -131,6 +152,24 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    /// The plant lineages, made once for the pass.
+    pub(crate) fn plant_lineages(
+        &self,
+        make: impl FnOnce() -> std::collections::BTreeSet<Key>,
+    ) -> Arc<std::collections::BTreeSet<Key>> {
+        let mut cache = self.plants.0.lock().unwrap_or_else(|p| p.into_inner());
+        cache.lineages.get_or_insert_with(|| Arc::new(make())).clone()
+    }
+    /// A site's `[light, soil, crowding]` as the pass began, made once.
+    pub(crate) fn plant_readings(&self, site: Id, make: impl FnOnce() -> Option<[u64; 3]>) -> Option<[u64; 3]> {
+        if let Some(r) = self.plants.0.lock().unwrap_or_else(|p| p.into_inner()).sites.get(&site) {
+            return Some(*r);
+        }
+        // Made outside the lock; nothing it reads holds this cache.
+        let made = make()?;
+        let mut cache = self.plants.0.lock().unwrap_or_else(|p| p.into_inner());
+        Some(*cache.sites.entry(site).or_insert(made))
+    }
     pub(crate) fn books(&self, id: Id, body: &Entity) -> Arc<Ledger> {
         self.books.get_or_insert(id, || crate::anatomy::books(body))
     }

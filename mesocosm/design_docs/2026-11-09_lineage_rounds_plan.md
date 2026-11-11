@@ -543,6 +543,18 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: plant readings once a site a pass, the sun once a tick
+  (Mark's direction). `Frame` keeps a pass-local memo of a site's
+  light, soil and plant count (`PlantCache`, after `BooksCache`), and
+  `Simulation` keeps the tick's sun intensity keyed by the tick and the
+  sun's rules. Exact: `tests/exact_memo.rs` pins state and history
+  hashes taken with the memo off, for the seed-9 A1 world under flat
+  dormancy to tick 300 and a world-time sensing world to tick 5000, in
+  both executions. Gain: the producers' passes about halve (seed 9 to
+  300: produce-3 655 to 313 ms), 6 of 100 off the run's wall time;
+  nothing measurable in the world-time web or for sunlight, whose span
+  is its acts. Finding: the feeding plans (`feed-1`, `feed-2`, about
+  400 and 220 ms) are now the larger cost.
 - 2026-11-11: the crowding brake is the default. A new generated A1
   world in Mesocosm founds with `Dormancy::flat()`; `--no-dormancy`
   founds without it, to the digest the old default gave; `--dormancy`
