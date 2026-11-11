@@ -10,6 +10,13 @@ fn world(seed: u64) -> Session {
     regional(seed, 2)
 }
 
+/// `world` with lineage 1's upkeep authored as a chosen act, so a played
+/// member has an act to answer a nudge to stay put with (D16, case 1076).
+fn chosen_world(seed: u64) -> Session {
+    let g = crate::directing::tests::chosen_upkeep(regional(seed, 2).sim.genesis().clone());
+    Session::new(g, Execution::Individuals).unwrap()
+}
+
 fn regional(seed: u64, region_sites: u32) -> Session {
     let founding = Founding {
         seed,
@@ -85,7 +92,7 @@ fn a_region_with_a_level_gone_has_collapsed() {
 
 #[test]
 fn orders_grow_from_answered_nudges() {
-    let mut s = world(5);
+    let mut s = chosen_world(5);
     let (p, c) = played(&mut s);
     let home = s.sim.state().population.get(c).unwrap().place;
     for _ in 0..6 {

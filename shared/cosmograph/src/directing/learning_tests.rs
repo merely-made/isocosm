@@ -4,10 +4,11 @@
 //! Members' learning's controls (cases 1051, 1058; mesocosm-overlay M3.6).
 //! The fixture is the played ecology's consumer, lineage 1: always hungry,
 //! fed by `ecology:feed-1` where producers share its site, and otherwise
-//! taking `ecology:upkeep-1`, which serves no need.
+//! taking `ecology:upkeep-1`, which serves no need. Upkeep is a rate in the
+//! ecology (D16), so the fixture authors it as a chosen act.
 
 use super::policy;
-use super::tests::{founding, played};
+use super::tests::{chosen_upkeep, founding, played};
 use super::*;
 use crate::{
     Execution, Session,
@@ -46,7 +47,8 @@ impl Setup {
 /// says: always hungry, so no run has to take matter away, and long-lived,
 /// so no run ends in old age.
 pub(super) fn build(seed: u64, setup: Setup, tune: impl FnOnce(&mut crate::simulation::Genesis)) -> Session {
-    let mut g = founding(seed);
+    // The competing act is upkeep authored as a chosen act (D16, case 1076).
+    let mut g = chosen_upkeep(founding(seed));
     let d = g.rules.directing.as_mut().unwrap();
     d.policy = GATE;
     d.learning = setup.learning;

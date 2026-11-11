@@ -3,7 +3,7 @@
 
 //! The deliberative methodology's controls (D2) and the bond's (D1).
 
-use super::tests::{played, world};
+use super::tests::{played, world, world_chosen};
 use super::*;
 use crate::{Execution, Session, history::Command};
 
@@ -62,7 +62,7 @@ fn a_bodied_choice_reads_the_native_need_ceiling() {
 
 #[test]
 fn an_unnudged_critter_acts_on_its_own_needs() {
-    let mut s = world(3, Execution::Individuals);
+    let mut s = world_chosen(3, Execution::Individuals);
     let (_, c) = played(&mut s);
     // Tick 15 has both upkeep (every 5) and feeding (every 3) due.
     s.sim.state.tick = 15;
@@ -89,7 +89,7 @@ fn an_unnudged_critter_acts_on_its_own_needs() {
 fn a_nudge_moves_the_choice_by_the_bond_and_a_zero_bond_moves_nothing() {
     let mut ran = 0;
     for seed in 1..10 {
-        let mut s = world(seed, Execution::Individuals);
+        let mut s = world_chosen(seed, Execution::Individuals);
         let (p, c) = played(&mut s);
         let Some(thing) = prey(&s, c) else {
             continue;
@@ -139,7 +139,7 @@ fn choice_is_deterministic_under_the_seed() {
 fn outcomes_that_serve_raise_the_bond_and_those_that_harm_lower_it() {
     let mut ran = 0;
     for seed in 1..12 {
-        let mut s = world(seed, Execution::Individuals);
+        let mut s = world_chosen(seed, Execution::Individuals);
         let (p, c) = played(&mut s);
         let Some(thing) = prey(&s, c) else {
             continue;
@@ -186,8 +186,21 @@ fn a_reactive_critter_is_not_deliberated() {
         .find(|(_, g)| g.entity.method == Method::Reactive);
     let (r, _) = reactive.unwrap();
     let r = *r;
-    let feed = s.sim.genesis().rules.processes["ecology:upkeep-0"].clone();
+    let feed = s.sim.genesis().rules.processes["ecology:feed-1"].clone();
     assert!(matches!(s.sim.deliberate(r, &feed), Deliberated::Free));
+}
+
+/// Upkeep is a rate, not a choice (D16, case 1076): a played member does not
+/// deliberate it, and taking a choice for the tick never forgoes it.
+#[test]
+fn a_played_members_upkeep_is_no_choice_and_is_never_foregone() {
+    let mut s = world(3, Execution::Individuals);
+    let (_, c) = played(&mut s);
+    let upkeep = s.sim.genesis().rules.processes["ecology:upkeep-1"].clone();
+    assert_eq!(upkeep.causation, crate::rules::Causation::Transition);
+    s.sim.state.tick = 15;
+    assert!(matches!(s.sim.deliberate(c, &upkeep), Deliberated::Free));
+    assert!(s.sim.choose(c).options.keys().all(|id| id != "ecology:upkeep-1"), "not scored as an act");
 }
 
 /// The played line's choices and moves, every tick of `ticks`, when its

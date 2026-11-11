@@ -121,9 +121,13 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let body = format!("matter:{i}-0");
         let own = format!("ability:cycle-{i}");
         let lineage = format!("lineage:{i}");
+        // Upkeep and growth are rates, not choices (D16, case 1076): a played
+        // lineage's decision period paces what it chooses, while strain and
+        // growth run on the body's own clock for every body, so a body's
+        // birth tick and identity never decide whether it pays or grows.
         let mut upkeep = process(
             &format!("ecology:upkeep-{i}"),
-            Causation::Choice,
+            Causation::Transition,
             vec![
                 Effect::Transform {
                     who: Binding::Actor,
@@ -237,7 +241,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         if role == Role::Producer {
             let mut grow = process(
                 &format!("ecology:produce-{i}"),
-                Causation::Choice,
+                Causation::Transition,
                 vec![
                     // Capture (890): the producer takes the site's light, then
                     // spends it with the soil it synthesizes into tissue.

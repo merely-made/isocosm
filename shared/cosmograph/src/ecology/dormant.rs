@@ -23,6 +23,8 @@ pub(super) fn seeds(g: &mut Genesis, i: u32, rule: &Dormancy, season: Tick, gate
     let processes = &mut g.rules.processes;
     if let Some(active) = processes.get(&format!("ecology:upkeep-{i}")) {
         // The same payment, to the soil, as often as the share of the rate.
+        // It is a clone of the active upkeep, so a transition on the body's
+        // own clock as that is (D16, case 1076).
         let mut upkeep = active.clone();
         upkeep.id = format!("ecology:dormant-upkeep-{i}");
         upkeep.requires.push(dormant());
@@ -107,14 +109,6 @@ pub(super) fn flat(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let gate = vec![Query::Condition { key: "world:habitable".into(), at_least: 1 },
             Query::MembersBelow { among: among.clone(), amount: rule.crowding(share) }];
         seeds(g, i, &rule, season, gate);
-        // A paced lineage's choices run only for the members due by their
-        // identity (D15, D16), on top of a process's own clock: a choice's
-        // upkeep, on a clock of its own, reaches only some bodies. The seed's
-        // upkeep is its body's metabolism, a transition that falls due on its
-        // clock for every seed.
-        if let Some(upkeep) = g.rules.processes.get_mut(&format!("ecology:dormant-upkeep-{i}")) {
-            upkeep.causation = Causation::Transition;
-        }
     }
     g.rules.dormancy = Some(rule);
     Ok(())

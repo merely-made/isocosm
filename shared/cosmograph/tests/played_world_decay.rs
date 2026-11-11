@@ -8,7 +8,8 @@
 //!
 //! `cargo test --release --test played_world_decay -- --ignored --nocapture --test-threads=1`
 //!
-//! Knobs: `DECAY_TICKS` (600), `DECAY_SEED` (9), `DECAY_POP` (256).
+//! Knobs: `DECAY_TICKS` (600), `DECAY_SEED` (9), `DECAY_POP` (256),
+//! `DECAY_DORMANT` (0; 1 founds the flat rate set's dormancy, `Dormancy::flat()`).
 //! Observation only: a run advances a tick at a time with its matter moves
 //! handed over, which changes no outcome.
 
@@ -46,6 +47,7 @@ fn founding(seed: u64, population: u64) -> Founding {
             ..Bodies::default()
         }),
         played: Some(Played { lineage: 1, region_sites: 2 }),
+        dormancy: (env("DECAY_DORMANT", 0) == 1).then(cosmograph::rules::Dormancy::flat),
         ..Founding::default()
     }
 }

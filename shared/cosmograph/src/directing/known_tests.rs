@@ -5,7 +5,7 @@
 
 use super::interim::{Happening, Interim, Pace, Start, no_candidates, regard::{dealings, regarded}};
 use super::readings::{self, Mode, known};
-use super::tests::{founding, played};
+use super::tests::{chosen_upkeep, founding, played};
 use super::*;
 use crate::{
     rules::Directing,
@@ -233,9 +233,14 @@ fn matter_given_raises_regard_and_matter_taken_lowers_it_within_bounds() {
     assert_eq!(regard(&i), Some(0), "kept at nought");
     assert_eq!(readings::regard(&i.session.sim, p).get(&l), Some(&0));
     assert!(!met(&i.session, p).contains(&l), "dealing alone is not knowing");
-    let n = regards(&i.session);
+    let n = i.session.entries.len();
     round_with(&mut i, vec![flow(&own, &own, 99, 99), flow(&own, &l, 9, 1)]);
-    assert_eq!(regards(&i.session), n, "a move within a line, or below a unit, records nothing");
+    // The played member's own meals of other lines may be recorded now that
+    // upkeep no longer competes with feeding (D16); the planted ones may not.
+    let recorded = |i: &Interim| i.session.entries[n..].iter().any(|e| matches!(&e.command,
+        Command::Regard { regard, .. } if regard.iter().any(|(line, _)| *line == l)));
+    assert!(!recorded(&i), "a move within a line, or below a unit, records nothing");
+    assert_eq!(regard(&i), Some(0));
 }
 
 #[test]
@@ -287,7 +292,7 @@ fn a_critter_taken_at_no_regard_has_no_bond_to_sway_a_nudge() {
     let mut ran = 0;
     for seed in 1..10 {
         let swayed = |regard: Option<i64>| {
-            let mut s = Session::new(rule(founding(seed)), Execution::Individuals).unwrap();
+            let mut s = Session::new(rule(chosen_upkeep(founding(seed))), Execution::Individuals).unwrap();
             let p: Id = s.command(Command::Join).unwrap().strip_prefix("participant:").unwrap().parse().unwrap();
             let c = super::tests::critter(&s);
             let line = s.sim.state().population.get(c).unwrap().lineage.clone();

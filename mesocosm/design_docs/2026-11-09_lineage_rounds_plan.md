@@ -464,8 +464,11 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   tenths of its share; waking renews its age in flat worlds, superseding
   the earlier choice for them; dormant upkeep is a transition, not a
   chosen act, so every seed pays it.
-- **Upkeep alignment** (finding): fixing it so every body pays moves the
-  A1 pins and every played world's course. Not done; yours to call.
+- **Upkeep and growth are transitions** (done on Mark's word, 2026-11-11):
+  mine within it: world-time worlds changed with the flat ones, since
+  they share the configure; upkeep no longer earns bond, regard or
+  learning credit and no longer shows as an ability or an order; the
+  probe foundings' `probe:upkeep-*` are still choices and still paced.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -515,6 +518,27 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: upkeep and a producer's growth are rates. Both were chosen
+  acts, so in a played world they ran only for members due by
+  `(tick + id) % decides` on top of the body's clock: about a fifth of
+  producers paid, and they grew at a tenth of the design rate. Both are
+  now `Causation::Transition` (D16), and the mass-law copies, dormant
+  upkeep and world-time clones inherit it. A played member's upkeep is
+  free of its choice, so a fed member due to choose eats instead of
+  paying, and upkeep is no longer scored, credited or offered as an act.
+  Pins: the seed-9 genesis digest in `reproduction.rs` moved
+  (`7587614a…`); `golden_bodies` and Mesocosm's did not. Tests that
+  needed upkeep as a competing act author it as a choice
+  (`chosen_upkeep`). Control: `tests/upkeep_rate.rs`, every due body
+  pays and every due producer grows. A1 battery, seeds 0 to 19 to tick
+  180: played 20/20 as before, bodied 13 to 20, bare 1 to 8. Seed 9
+  played: all extinct at 356, was 246; producers now boom (L0 peaks
+  1,598 at tick 91) and crash, grazers follow. With `Dormancy::flat()`
+  both producers and the grazer live at 600. Finding: decomposers die
+  to the last body at tick 50 in both, where they lasted to about 200;
+  all 128 now pay and the litter does not keep them. Owed: the
+  decomposer's numbers; the matrix and the sensing and proportions
+  gates were not rerun.
 - 2026-11-11: the rule flags work in the real binary, and a held microbe
   shows. Finding: `--regard`, `--exertion`, `--drift`, `--draft`,
   `--sheet`, `--rounds-rules`, `--learning`, `--hosting` and `--climate`

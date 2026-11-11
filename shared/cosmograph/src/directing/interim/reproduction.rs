@@ -29,10 +29,13 @@ use profile::{Form, world};
 // animals draw smell radii and its plants grow on what they sense.
 // Rerecorded 2026-11-02 under case 1106: every generated world founds each
 // lineage with at least six.
+// Rerecorded 2026-11-11 under D16 (case 1076): upkeep and a producer's growth
+// became transitions, rates every body runs on its own clock, so the rules'
+// causation, and this digest, moved.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "3d2cf022f009b0d7e9c8e2dcc229630dcbe493f3495c9d72c07a4b265038e3df");
+    assert_eq!(crate::digest(&genesis), "7587614ad07b412e40c144ff3325e7dac1f6f956fd3da6677130b3052fb09905");
     genesis
 }
 

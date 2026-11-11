@@ -55,6 +55,9 @@ fn fixture() -> (Genesis, Id, Id) {
     for p in g.rules.processes.values_mut() {
         p.period = Some(1);
     }
+    // Upkeep is a rate in the ecology (D16, case 1076); the fixture authors
+    // it as the chosen act that feeding is scored against.
+    g = super::tests::chosen_upkeep(g);
     let mut early = crate::generate::process(
         "test:early",
         Causation::Choice,

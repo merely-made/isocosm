@@ -38,6 +38,19 @@ pub(crate) fn unpaced(mut g: crate::simulation::Genesis) -> crate::simulation::G
     g
 }
 
+/// The world with lineage 1's upkeep authored as a chosen act (D16, case
+/// 1076): upkeep is a rate every body pays, so a test of how a fed member
+/// chooses among acts is given this one that serves no need to choose among.
+pub(crate) fn chosen_upkeep(mut g: crate::simulation::Genesis) -> crate::simulation::Genesis {
+    g.rules.processes.get_mut("ecology:upkeep-1").unwrap().causation = crate::rules::Causation::Choice;
+    g
+}
+
+/// `world`, with its upkeep a chosen act.
+pub(crate) fn world_chosen(seed: u64, mode: Execution) -> Session {
+    Session::new(chosen_upkeep(founding(seed)), mode).unwrap()
+}
+
 pub(crate) fn critter(s: &Session) -> Id {
     let groups = &s.sim.state().population.groups;
     let played = groups
