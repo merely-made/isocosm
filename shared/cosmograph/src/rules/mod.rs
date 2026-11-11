@@ -180,6 +180,13 @@ pub struct Process {
     /// Explicit records for each accepted outcome; absent in unmarked saved grammar.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub goal_directives: Vec<crate::goals::Directive>,
+    /// A turn group (the principle that an identity never decides who eats
+    /// first): processes naming the same group, due on one tick at one
+    /// priority, take first place in rotation, by the occasion the group
+    /// falls due, instead of always by identity. Absent in processes that
+    /// name none, which serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub turn: Option<Key>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

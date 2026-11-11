@@ -114,7 +114,7 @@ fn practise(id: &str, reading: Reading) -> Process {
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     }
 }
 

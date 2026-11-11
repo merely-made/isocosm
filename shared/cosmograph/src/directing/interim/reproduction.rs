@@ -35,10 +35,12 @@ use profile::{Form, world};
 // Rerecorded 2026-11-11: A1's decomposers pay upkeep every 10 ticks, feed at
 // every decision and meal before moves (period 3 -> 1, priority 10 -> -1), so
 // the founded A1 rules' decomposer processes, and this digest, moved.
+// Rerecorded 2026-11-11: producers that share ground take turns, so the two
+// producers' growth processes of the founded A1 world name a turn group.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "ba2e401389f92cf667f107a100c9c46f4eb4e161f11363bf642b88cdea1a5b9b");
+    assert_eq!(crate::digest(&genesis), "1b1f7de7b5f811a6ae36f78e9d8cf5dc9e5706e7a60a691f0197c77fb4808255");
     genesis
 }
 

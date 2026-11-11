@@ -112,7 +112,7 @@ fn travel_host() -> (HostSession, u64, u64) {
     let from = genesis.population.get(actor).unwrap().place;
     let to = genesis.sites[&from].routes[0].to;
     genesis.rules.processes.insert("test:travel".into(), Process {
-        port_feeding: None, goal_directives: Vec::new(),
+        port_feeding: None, goal_directives: Vec::new(), turn: None,
         id: "test:travel".into(), causation: Causation::Choice, requires: Vec::new(),
         commitments: Vec::new(), effects: vec![Effect::Move { destination: to, via: None }],
         risk: None, target: None, period: None, priority: 0, need_account: None,

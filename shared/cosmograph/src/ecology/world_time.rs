@@ -280,6 +280,8 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     // exposed deficit, even while surplus fills the root.
                     regrow.effects = vec![Effect::Regrow { account: body.clone(), amount: 2.into() }];
                     regrow.requires = vec![Query::Alive(Binding::Actor), trait_of()];
+                    // It takes no soil, so it has no turn to take.
+                    regrow.turn = None;
                 } else {
                     regrow.requires.push(Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult });
                 }

@@ -480,6 +480,14 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   share per site, three times it (18 grazers a site in the played
   world), since twice drops the played battery to 18 of 20; it covers
   grazer, predator and omnivore, not decomposers; off by default.
+- **Producers take turns** (built on Mark's word 2026-11-11): mine:
+  rotation of first place by occasion, not a proportional split of the
+  tick's soil, which would need a planner over several processes; set
+  only where a founding has more than one producer; world-time's
+  soil-taking clones join the rotation. A grouped pass in second place
+  also runs after ungrouped passes of its tick and priority. Consumer
+  lineages of one role have the same id-order bias at their prey and
+  were left.
 - **The climate is lethal as numbered** (finding): `--climate` leaves three
   seeds in 120 that found, and none keeps its played line 120 steps. At a
   fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
@@ -529,6 +537,23 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-11: producers that share ground take turns. `Process.turn`
+  names a turn group (unset, hash-neutral); the schedule orders passes
+  by due tick, priority, turn rank, identity, and a group's rank turns
+  by the occasion it falls due (`schedule/turn.rs`). The ecology sets
+  it on every `ecology:produce-{i}` where a founding has more than one
+  producer. Pins: the seed-9 genesis digest moved (`1b1f7de7…`);
+  `golden_bodies` and Mesocosm's did not. `tests/upkeep_rate.rs`'s
+  growth floor went from 98 to 96 of 100: with both producers drawing,
+  soil runs short at some sites from about tick 8. Finding: taking
+  turns ends the privilege but not the exclusion. Without dormancy the
+  second producer now lives on four of five seeds and the first dies
+  instead by about tick 450 (seed 9 at 600: 0, 3, 222, 167; was 0, 0,
+  2, 0), with or without `--limits`; whoever is ahead when the soil
+  runs out keeps it. With flat dormancy both live at 600 on all five
+  seeds. Battery unchanged: played and bodied 20/20, bare 10/20.
+  Controls: `tests/turns.rs`, `tests/producer_turns.rs`. Next: the
+  crowding brake as A1's default.
 - 2026-11-11: why the second producer dies (diagnosis only,
   `tests/producer_pair_diagnosis.rs`). Finding: it starves of soil, and
   it is the second because of its process id. Both producers boom and

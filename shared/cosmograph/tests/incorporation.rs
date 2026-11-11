@@ -148,7 +148,7 @@ fn world(domain: u16, bite: u64, whole: bool) -> (Genesis, Id, Id) {
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     };
     graze.target = Some(Target {
         same_place: false,

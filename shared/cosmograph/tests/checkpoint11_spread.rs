@@ -100,7 +100,7 @@ fn direction_world(method: Method) -> World {
                 destinations: BTreeSet::from([destination]) }], risk: None, target: None,
             period: Some(1), priority: 0, need_account: None, need_below: 0,
             glyphs: BTreeSet::new(), invariants: BTreeSet::from(["sim:matter".into(), "sim:nonnegative".into()]),
-            note: true, port_feeding: None, goal_directives: Vec::new() };
+            note: true, port_feeding: None, goal_directives: Vec::new(), turn: None };
         w.genesis.rules.processes.insert(name.into(), process);
     }
     w.genesis.validate().unwrap();

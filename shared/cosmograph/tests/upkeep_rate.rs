@@ -134,12 +134,15 @@ fn every_living_body_pays_upkeep_and_every_producer_grows_at_its_period() {
         // Every body alive at the end of a tick its own clock fell due on paid.
         assert_eq!(t.short, 0, "lineage {i}: a tick with a due body unpaid");
     }
+    // 2026-11-11, producers that share ground take turns: the second producer
+    // is no longer starved, so soil runs short at some sites by about tick 8
+    // and 97% of due producers act (it was 99.9%); the floor is 96%, from 98%.
     // The designed rate: a producer takes two soil into tissue every second
     // tick, so one soil per member-tick where light and soil allow.
     let per = open_soil as f64 / open_ticks as f64;
     eprintln!("growth in the first {OPEN} ticks: {} due, {} acted, {per:.3} soil per producer member-tick", grew.due, grew.acted);
-    assert!(grew.due > 0 && grew.acted * 100 >= grew.due * 98, "every due producer grows: {} of {}", grew.acted, grew.due);
+    assert!(grew.due > 0 && grew.acted * 100 >= grew.due * 96, "every due producer grows: {} of {}", grew.acted, grew.due);
     assert!(grew.acted <= grew.due + grew.due / 50, "and no faster than its period");
     // Two soil an act: the designed matter made by the due members.
-    assert!(open_soil * 100 >= grew.due * 2 * 98, "matter made {open_soil} of the designed {}", grew.due * 2);
+    assert!(open_soil * 100 >= grew.due * 2 * 96, "matter made {open_soil} of the designed {}", grew.due * 2);
 }

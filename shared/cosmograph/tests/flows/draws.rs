@@ -30,7 +30,7 @@ fn process(id: &str, requires: Vec<Query>, effects: Vec<Effect>, period: Tick) -
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     }
 }
 

@@ -69,7 +69,7 @@ fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> Process {
         invariants: set(&["sim:matter", "sim:nonnegative"]),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     }
 }
 

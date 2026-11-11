@@ -83,7 +83,7 @@ fn rousing() -> Genesis {
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     };
     g.rules.processes.insert(rouse.id.clone(), rouse);
     g
@@ -259,7 +259,7 @@ fn due(id: &str, priority: i32, requires: Vec<Query>, effects: Vec<Effect>) -> P
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     }
 }
 

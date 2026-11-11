@@ -18,10 +18,12 @@
 mod filed;
 mod frame;
 mod pass;
+mod turn;
 
 pub(crate) use filed::{Changed, Filed, Gates, World};
 pub(crate) use frame::{Demands, Frame, MealSpec, Planned, Shares, edible, fits, merge, merge_site};
 pub(crate) use pass::Pass;
+use turn::Turns;
 
 use crate::{
     Result,
@@ -123,12 +125,13 @@ impl Simulation {
         self.refresh_attention();
         self.protect_attention();
         let prepare = crate::profile::Span::new("schedule.prepare");
+        let turns = Turns::of(self.genesis.rules.processes.values());
         let mut queue = BTreeSet::new();
         for p in self.genesis.rules.processes.values() {
             if let Some(due) = self.next_due(p, self.state.tick)
                 && due <= end
             {
-                queue.insert((due, p.priority, p.id.clone()));
+                queue.insert((due, p.priority, turns.rank(p, due), p.id.clone()));
             }
         }
         let targeted = self
@@ -152,7 +155,7 @@ impl Simulation {
         let mut work = Work::default();
         self.chosen.clear();
         drop(prepare);
-        let done = self.scheduled(queue, end, &mut work);
+        let done = self.scheduled(queue, &turns, end, &mut work);
         let settle = crate::profile::Span::new("schedule.settle");
         self.targets = None;
         self.far_food = None;
@@ -189,20 +192,21 @@ impl Simulation {
         Ok(work)
     }
 
-    /// Runs every due process in order of due tick, priority and identity.
+    /// Runs every due process in order of due tick, priority, turn and identity.
     fn scheduled(
         &mut self,
-        mut queue: BTreeSet<(Tick, i32, Key)>,
+        mut queue: BTreeSet<(Tick, i32, u64, Key)>,
+        turns: &Turns,
         end: Tick,
         work: &mut Work,
     ) -> Result<()> {
         loop {
-            let next = queue.first().map_or(end, |(tick, _, _)| *tick);
+            let next = queue.first().map_or(end, |(tick, ..)| *tick);
             {
                 let _s = crate::profile::Span::new("pass.arrivals");
                 self.arrive_all_until(next, work)?;
             }
-            let Some((due, priority, id)) = queue.pop_first() else { break; };
+            let Some((due, priority, _, id)) = queue.pop_first() else { break; };
             self.state.tick = due;
             let ripen = crate::profile::Span::new("pass.ripen");
             self.refresh_attention();
@@ -250,7 +254,7 @@ impl Simulation {
             self.pass = None;
             self.frame = None;
             if let Some(next) = self.next_due(process, due).filter(|next| *next <= end) {
-                queue.insert((next, priority, id));
+                queue.insert((next, priority, turns.rank(process, next), id));
             }
         }
         Ok(())

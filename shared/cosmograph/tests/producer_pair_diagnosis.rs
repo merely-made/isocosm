@@ -11,6 +11,9 @@
 //! process, bites, light/soil captured, reserves, sites, ages; knobs
 //! `PP_SEED`, `PP_TICKS`, `PP_ARM`), `arms` (counts of all four lineages at
 //! ticks 50/100/150/200/300 for every arm over `PP_SEEDS`).
+//! `settings`: counts of all four lineages at `PP_AT` (default
+//! 100,200,300,450,600) for no dormancy, no dormancy with the default
+//! `Limits`, and flat dormancy, over `PP_SEEDS`, for the producers' turns.
 //! Arms (`PP_ARM`): base, swap_lifespans, same_lifespan, no_grazers,
 //! l3_as_l0 (founded 32 like L0), l0_as_l3 (founded 64), stagger (founders
 //! born spread over a lifespan), no_hazard, no_age.
@@ -20,7 +23,7 @@ use cosmograph::{
     anatomy::books,
     bodied::Bodies,
     directing::Played,
-    ecology::Rates,
+    ecology::{Limits, Rates},
     flows::MadeBy,
     rules::{Dormancy, Effect, Query},
     simulation::Genesis,
@@ -245,4 +248,31 @@ fn arms() {
     });
     for ((seed, name), row) in out.lock().unwrap().iter() { eprintln!("seed {seed:>2} dormant={dormant} {name:<18} {row}"); }
     let _ = Effect::Death;
+}
+
+#[test]
+#[ignore = "measurement table"]
+fn settings() {
+    let seeds: Vec<u64> = envs("PP_SEEDS", "3,5,9,11,17").split(',').filter_map(|v| v.parse().ok()).collect();
+    let at: BTreeSet<u64> = envs("PP_AT", "100,200,300,450,600").split(',').filter_map(|v| v.parse().ok()).collect();
+    let end = *at.iter().max().unwrap();
+    let jobs: Vec<(u64, &str)> = seeds.iter().flat_map(|&s| ["plain", "limits", "dormant"].map(|k| (s, k))).collect();
+    let queue = std::sync::Mutex::new(jobs);
+    std::thread::scope(|sc| {
+        for _ in 0..8 {
+            sc.spawn(|| {
+                while let Some((seed, kind)) = queue.lock().unwrap().pop() {
+                    let mut f = founding(seed, kind == "dormant");
+                    if kind == "limits" { f.limits = Some(Limits::default()); }
+                    let mut s = Session::new(f.generate().unwrap(), Execution::Individuals).unwrap();
+                    let mut rows = vec![];
+                    for n in 1..=end {
+                        s.advance(1).unwrap();
+                        if at.contains(&n) { rows.push(format!("{n} {:?}", counts(&s))); }
+                    }
+                    println!("SETTINGS {kind:<8} seed {seed:>2}: {}", rows.join("  "));
+                }
+            });
+        }
+    });
 }

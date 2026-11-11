@@ -35,7 +35,7 @@ pub fn process(id: &str, requires: Vec<Query>, effects: Vec<Effect>) -> Process 
     Process { id: id.into(), causation: Causation::Choice, requires, commitments: vec![], effects,
         risk: None, target: None, period: None, priority: 0, need_account: None, need_below: 0,
         glyphs: BTreeSet::new(), invariants: BTreeSet::from(["sim:matter".into(), "sim:nonnegative".into()]),
-        note: true, port_feeding: None, goal_directives: Vec::new() }
+        note: true, port_feeding: None, goal_directives: Vec::new(), turn: None }
 }
 
 pub fn world(seed: u64) -> World {

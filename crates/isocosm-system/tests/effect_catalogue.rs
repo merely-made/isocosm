@@ -19,7 +19,7 @@ fn process(effects: Vec<Effect>) -> Process {
         invariants: Default::default(),
         note: false,
         port_feeding: None,
-        goal_directives: vec![],
+        goal_directives: vec![], turn: None,
     }
 }
 

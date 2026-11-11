@@ -359,7 +359,7 @@ fn a_sensing_territory_spreads_down_its_gradient() {
             commitments:vec![],effects:vec![Effect::DirectOverflow {from:w.from,destinations:BTreeSet::from([w.to[0],w.to[1]])}],
             risk:None,target:None,period:Some(1),priority:0,need_account:None,need_below:0,
             glyphs:BTreeSet::new(),invariants:BTreeSet::from(["sim:matter".into(),"sim:nonnegative".into()]),
-            note:true,port_feeding:None,goal_directives:Vec::new()});
+            note:true,port_feeding:None,goal_directives:Vec::new(),turn:None});
         g.sites.get_mut(&w.to[1]).unwrap().accounts.insert(w.territory.key(),150);
         if sensing {
             g.rules.senses = Some(Default::default());

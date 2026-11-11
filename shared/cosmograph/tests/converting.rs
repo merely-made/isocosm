@@ -83,7 +83,7 @@ fn process(id: &str, effects: Vec<Effect>) -> Process {
         invariants: BTreeSet::new(),
         note: false,
         port_feeding: None,
-        goal_directives: Vec::new(),
+        goal_directives: Vec::new(), turn: None,
     }
 }
 

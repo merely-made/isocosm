@@ -19,7 +19,7 @@ fn direction(id:&str, from:Id, destinations:BTreeSet<Id>, priority:i32, period:u
         commitments:vec![],effects:vec![Effect::DirectOverflow {from,destinations}],risk:None,target:None,
         period:Some(period),priority,need_account:None,need_below:0,glyphs:BTreeSet::new(),
         invariants:BTreeSet::from(["sim:matter".into(),"sim:nonnegative".into()]),
-        note:true,port_feeding:None,goal_directives:Vec::new()}
+        note:true,port_feeding:None,goal_directives:Vec::new(),turn:None}
 }
 
 /// One lifted territory with one to four drawn directions: destination sets

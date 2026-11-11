@@ -50,6 +50,8 @@ pub(crate) const LIGHT: u64 = 500;
 const STORE: u64 = 720 * LIGHT;
 /// The trophic levels and the kingdom each is generated in, by `Role::level`.
 const LEVELS: [&str; 3] = crate::directing::found::LEVELS;
+/// The turn group of the producers that draw on one soil.
+const SOIL_TURNS: &str = "turn:world:soil";
 const KINGDOMS: [&str; 3] = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"];
 
 /// The sun: each site gains light while it holds less than its store.
@@ -117,6 +119,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     // Life history is stated in minutes and read at the world's unit (1072).
     let unit = g.rules.tick_microseconds();
     let minutes = |m: u64| crate::rules::minutes_ticks(m, unit);
+    let producers = (0..founding.lineages).filter(|&i| Role::of(founding.web, i) == Role::Producer).count();
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
         let role = Role::of(founding.web, i);
@@ -298,6 +301,11 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             }
             grow.period = Some(minutes(2));
             grow.priority = 0;
+            // Producers that share ground take turns at it: no lineage's
+            // index decides who eats first. A lone producer has none to share with.
+            if producers > 1 {
+                grow.turn = Some(SOIL_TURNS.into());
+            }
             g.rules.processes.insert(grow.id.clone(), grow);
         } else {
             // One feeding process per consumer (ruling 287), choosing among
