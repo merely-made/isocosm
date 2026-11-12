@@ -398,6 +398,10 @@ mod scene_cache_tests;
 #[path = "app/founding_tests.rs"]
 mod founding_tests;
 
+#[cfg(test)]
+#[path = "app/climate_survival_tests.rs"]
+mod climate_survival_tests;
+
 #[path = "app/curve.rs"]
 mod curve_run;
 pub use curve_run::run as curve;

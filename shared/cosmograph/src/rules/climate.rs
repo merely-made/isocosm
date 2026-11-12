@@ -52,7 +52,12 @@ pub struct Climate {
 }
 
 impl Default for Climate {
-    /// A first cut, to be tuned.
+    /// Tuned to a survival target (lineage-rounds D26): with the crowding
+    /// brake and `Limits::default()` on, about nine seeds in ten found and keep
+    /// the played line alive 600 ticks. The three strain rates are the first
+    /// cut's divided by thirty. At the first cut's rates only 18 of 40 seeds
+    /// founded and 2 kept the played line; a tenth of them kept 31, a
+    /// fifteenth and a twentieth fell short on seeds 40 to 59, a thirtieth kept 38.
     fn default() -> Self {
         Self {
             // Warm at the equator, so the band's centre (20) is met mid-latitude.
@@ -74,17 +79,17 @@ impl Default for Climate {
             reference: 100,
             // Two degrees colder for each doubling of mass.
             doubling: 2,
-            // A tenth of a matter a tick for each degree outside.
-            strain: [1, 10],
+            // A three-hundredth of a matter a tick for each degree outside.
+            strain: [1, 300],
             // Dry below 40, and a body of store cells copes with 30 less.
             thirst: 40,
             buffer: 30,
-            drought: [1, 20],
+            drought: [1, 600],
             // Half of the full credit of 500; a body of fixing cells in the
-            // dark pays 250 a 5,000 (a twentieth of a matter) a tick, about
-            // 37 matter through a night.
+            // dark pays 250 a 150,000 (a six-hundredth of a matter) a tick,
+            // about 1.2 matter through a night.
             shade: 250,
-            dim: [1, 5_000],
+            dim: [1, 150_000],
             turn: None,
         }
     }

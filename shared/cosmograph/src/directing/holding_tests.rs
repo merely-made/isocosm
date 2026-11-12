@@ -206,9 +206,10 @@ fn a_turn_moves_the_strain_read_from_temperature() {
     let (state, rules) = (sim.state(), &sim.genesis().rules);
     let body = state.population.get(12).unwrap();
     let at = (body.place, &state.sites[&body.place]);
-    let owed = |turn: i64| (0..20).map(|t| crate::climate::owed_shifted(rules, 17,
+    // Long enough for a degree's slow strain to add up to a whole unit of matter.
+    let owed = |turn: i64| (0..600).map(|t| crate::climate::owed_shifted(rules, 17,
         &state.lineages, body, at, t, turn)).sum::<u64>();
-    assert_eq!(owed(0), (0..20).map(|t| crate::climate::owed(rules, 17, &state.lineages, body, at, t)).sum::<u64>());
+    assert_eq!(owed(0), (0..600).map(|t| crate::climate::owed(rules, 17, &state.lineages, body, at, t)).sum::<u64>());
     // The flat equator sits at the band's top edge: five degrees hotter is five outside it.
     assert!(owed(5) > owed(0), "{} against {}", owed(5), owed(0));
     turn(&mut s, p, 5).unwrap();

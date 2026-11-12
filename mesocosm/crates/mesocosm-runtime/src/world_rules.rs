@@ -41,6 +41,25 @@ pub struct WorldRules {
     pub limits: bool,
 }
 
+thread_local! {
+    static MEASURED: std::cell::RefCell<Option<cosmograph::rules::Climate>> = const { std::cell::RefCell::new(None) };
+}
+
+/// The climate a world gets: the default, unless a measurement on this thread
+/// has put another in place with [`with_climate`].
+fn measured_climate() -> cosmograph::rules::Climate {
+    MEASURED.with(|held| held.borrow().clone()).unwrap_or_default()
+}
+
+/// Runs `body` with `climate` standing in for the default on this thread, for
+/// measurements that search the climate's numbers; nothing else uses it.
+pub fn with_climate<R>(climate: cosmograph::rules::Climate, body: impl FnOnce() -> R) -> R {
+    let before = MEASURED.with(|held| held.replace(Some(climate)));
+    let out = body();
+    MEASURED.with(|held| *held.borrow_mut() = before);
+    out
+}
+
 impl WorldRules {
     /// No rule is chosen.
     pub fn is_off(&self) -> bool { *self == Self::default() }
@@ -75,7 +94,7 @@ impl WorldRules {
         }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {
-            let climate = cosmograph::rules::Climate { turn: self.turn, ..Default::default() };
+            let climate = cosmograph::rules::Climate { turn: self.turn, ..measured_climate() };
             genesis.rules.climate = Some(climate);
             // The sim adds each lineage's strain process on founding; adding
             // them here, which is idempotent, keeps the witness driver's

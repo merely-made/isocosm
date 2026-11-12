@@ -603,6 +603,16 @@ numbers and readings he has not ruled; within them, the grammar's drift
   shape. Not built; no neural net code or test files are in this
   repository.
 
+- **The climate is a thirtieth of the first cut, by one number** (D26,
+  mine): the three strain rates move together. A fifteenth and a
+  twentieth passed on seeds 0 to 39 and fell short on 40 to 59; a
+  twenty-fifth is untested. Water strain is still nothing on every seed,
+  since no site is drier than the thirst of 40, so the climate is in
+  effect heat alone until D19's offsets or drier worlds.
+- **`world_rules::with_climate` is a measurement hook** (mine): a
+  thread-local that swaps the default climate inside a closure, used
+  only by the survival test to sweep scales through real founding.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -651,6 +661,17 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- 2026-11-12: D26 built. The climate's three strain rates are a
+  thirtieth of the first cut (`strain` 1/300, `drought` 1/600, `dim`
+  1/150,000); the climate stays off by default and no pin moved. At the
+  first cut, seeds 0 to 39 with Mesocosm's defaults plus `--climate`:
+  18 founded and 2 kept the played line to tick 600; heat was 97% of
+  the matter charged and water charged nothing. At a thirtieth: 39
+  founded, 38 kept the played line (climate off: 39 and 37), and 19 of
+  20 on seeds 40 to 59 (off: 20). The played line runs lower with the
+  climate on (mean 61 against 70 at tick 600). Measured by the ignored
+  `climate_survival` test in `mesocosm-genet`, through the real
+  founding path. Sim 1192 and Mesocosm 310 pass.
 - 2026-11-12: D27 built. `limits::apply` gates decomposers too;
   `Limits.decomposer_ceiling` (default ten times the founding share) and
   `spare_decomposers` are new and absent from the wire when unset;

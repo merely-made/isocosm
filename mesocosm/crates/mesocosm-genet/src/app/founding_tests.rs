@@ -79,21 +79,24 @@ fn hosting_founds_with_its_microbe_and_runs() {
     assert!(runtime.sim().is_surface(mesocosm_runtime::microbe::KEY));
 }
 
-/// The default climate kills most A1 lineages inside the witness's 60 ticks,
-/// so few seeds found (3 of 120 at first, more since A1's decomposers were
-/// retuned on 2026-11-11), and the played line there dies
-/// out by about tick 80 to 120; the tests found and run it as far as it goes.
+/// The climate is tuned to a survival target (ruling D26): of seeds 0 to 39
+/// with the defaults on, 39 found and 38 keep the played line 600 ticks. The
+/// test founds through the real admission and runs the demo 120 steps past the
+/// witness, with and without the world's turn, and the played line is still there.
 #[test]
-fn the_climate_founds_where_its_witness_passes_and_runs_while_the_line_lives() {
-    for (turn, seed) in [(None, 95), (Some(5), 95)] {
-        let (runtime, tick) = found_and_run(WorldRules { climate: true, turn, ..WorldRules::generated() }, seed, 60);
-        assert!(tick > 60, "the admitted world runs on from the witness's tick");
+fn the_climate_founds_and_the_played_line_lives_on() {
+    for (turn, seed) in [(None, 9), (Some(5), 9)] {
+        let (runtime, tick) = found_and_run(WorldRules { climate: true, turn, ..WorldRules::generated() }, seed, 120);
+        assert!(tick >= 180, "the admitted world runs on from the witness's tick, stopped at {tick}");
         assert!(runtime.sim().genesis().rules.climate.is_some());
         assert_eq!(runtime.sim().genesis().rules.climate.as_ref().and_then(|c| c.turn), turn);
+        let played = runtime.sim().state().population.groups.values()
+            .filter(|g| g.entity.alive && g.entity.lineage == "lineage:1").map(|g| g.count).sum::<u64>();
+        assert!(played > 0, "the played line is alive at tick {tick}");
     }
 }
 
-/// Every rule but the climate, which kills the line too soon to run 120 steps.
+/// Every rule but the climate.
 fn all_rules() -> WorldRules {
     WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true,
         ..WorldRules::all() }
@@ -107,10 +110,10 @@ fn every_flag_but_the_climate_founds_and_runs() { runs_120(all_rules(), 5); }
 // run differently); seed 3 founds (as do 2, 7, 13, 14, 18, 19, 21, 22, 24 and
 // more).
 #[test]
-fn every_flag_with_the_climate_founds_and_runs_while_the_line_lives() {
+fn every_flag_with_the_climate_founds_and_runs() {
     let rules = WorldRules { climate: true, turn: Some(5), ..all_rules() };
-    let (_, tick) = found_and_run(rules, 3, 20);
-    assert!(tick > 60);
+    let (_, tick) = found_and_run(rules, 3, 120);
+    assert!(tick >= 180);
 }
 
 /// The admission still refuses a rule it was not told about: the check was
