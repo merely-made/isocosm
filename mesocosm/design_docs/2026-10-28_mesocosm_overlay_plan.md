@@ -200,6 +200,12 @@ measures), faster in youth (EB2) and fading as memory does (Record 3). Culture's
 - Rulings: 1051, 1053, D1
 - From: the creature minds brief §3.2, §3.6.
 
+### M3.7. Culture's mechanisms: imitation, teaching and notes that travel
+An accepted priority (`functional-generation` D11, Mark 2026-11-12). Today a member learns only from its own acts and a third of its delta passes to each child (M3.6, 1058); nothing passes between creatures otherwise. This adds imitation of the successful (1053), teaching as a chosen act between two creatures, and a note as something one mind can pass to another, which a magical tradition is made of (`functional-generation` F13).
+- Done when: a member near a more successful one moves its delta toward that one's without being its child; a teaching act moves a named part of the teacher's delta or a note to the learner at a cost to both; a note held by no living member is lost; each replays, and none bypasses feasibility.
+- Needs: M3.6
+- Rulings: 1053, 1058; `functional-generation` D9, D11
+
 ### M4i.1. The interim loop, headless (was D4)
 Certify founding from a seed, a start the player picks (179), rounds and epochs, a birth
 keeping the parent by default (183), death handing the next life from the cohort (61), the

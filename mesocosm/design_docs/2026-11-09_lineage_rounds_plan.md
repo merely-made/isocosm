@@ -490,6 +490,9 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 - Done when: not stated; owed, per kingdom
 - Needs: LR6, LR7; LR8 for crossings from microbe
 - Rulings: 1209, 1220, 1228 to 1231, 1236 to 1239; Bodies 17, Mesocosm 7
+- Planes (2026-11-12, `functional-generation` D9, D11): a plane is a
+  world-class entity reached as a crossing is; an accepted priority, to be
+  designed with crossings.
 
 ## Choices awaiting Mark's ruling
 
