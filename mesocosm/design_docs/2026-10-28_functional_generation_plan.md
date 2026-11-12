@@ -90,12 +90,12 @@ A typology sorts a world's magic into *roots* and relations between them (Mark's
 
 The world's side has three sources, all data (D4): an authored typology shipped as a mod pack or example world, its roots and relations stored (the well-known traditional and tabletop systems); a template, from which the generator derives a flavoured variant (a D&D-flavoured or Ars Magica-flavoured system); and step-by-step random generation, the template's limit case, whose laws the world's peoples then interpret. In every source the relations act as effects through the world's data, so a familiar effect may act differently in an unfamiliar context; the six axes (F1) say how it is channelled (source and gate) and paid for.
 
-A people's side is a tradition: notes on which effects combine and what they cost, held and passed as culture is (Schema 7, Processes 14), with working transmission paths and local variants and not only school names (founding record). What a tradition's typology does depends on its kind (D6): for a materialist typology, or a novel harnessing of nature's forces, it is what its holders can predict, and a wrong note wastes power or backfires while the laws stand; for a religious one, practice makes it truer, a divinity mattering more in a world of believers. Reading, mine: "believers" is counted as Organs 2 counts a domain, by the frequency of its process, so belief bends the world by what is done and not by what is held.
+A people's side is a tradition: notes on which effects combine and what they cost, held and passed as culture is (Schema 7, Processes 14), with working transmission paths and local variants and not only school names (founding record). What a tradition's typology does depends on its kind (D6): for a materialist typology, or a novel harnessing of nature's forces, it is what its holders can predict, and a wrong note wastes power or backfires while the laws stand; for a religious one, practice makes it truer, a divinity mattering more in a world of believers. Belief is counted in believers and their acts, not opinion (D7); which acts count for a god follows from its path to divinity and its domain (Organs 1). Faith and domain are distinct: a domain has its strength from the frequency of its process (Organs 2) and can exist with no god or avatar, while faith is acts directed at a god.
 
 Readings of mine, unruled: typologies of different kinds meet only through effects, never through a table across typologies; a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system is of processes or domains; a plane is a world-class entity (World 4, case 62) reached as a crossing is.
 - Done when: an authored pack (a four-root material typology and a five-root process one) and one generated typology found in the same world format; a tradition holds notes on a subset of the world's relations and a cast outside them fails as D6 says; a religious typology's strength follows its practice's frequency; each replays.
 - Needs: F1, F2 (the cost curve), F3; notes, teaching and imitation (`sim`, owed); cultures read up the ladder (World 10); a steady ecology under it
-- Rulings: 404, 1009, 101, 102, 49; D2 to D6
+- Rulings: 404, 1009, 101, 102, 49; D2 to D7
 - From: Mark, 2026-11-11 and 2026-11-12; `2026-08-29_elements_and_traits_memo.md` §7 items 6 to 8 (the naming of "element", answered by D3)
 
 ## Decisions
@@ -126,6 +126,10 @@ Readings of mine, unruled: typologies of different kinds meet only through effec
 
   Links: area Processes and rules · draws on 49, 1009 · plans functional-generation · summary A materialist tradition is what its holders can predict; a religious typology grows truer with its believers.
 
+- **D7, belief is believers and acts; faith is not domain (2026-11-12), refines D6:** Mark, of "Belief needs a bound": "yeah, believers, and acts, not opinion. what acts depends on the god, which depends on their path to divinity and their relevant domain. i distinguish faith from domains because a domain can exist without a god, avatar, etc." A religious typology is moved by counted believers performing acts; the acts that count for a god are set by its path to divinity and its domain. A domain stands without a god or avatar; faith needs one.
+
+  Links: area Organs: glyphs, impresa, hagiograph · draws on 44, 46, 47, 49, 107 · plans functional-generation · summary Belief is counted in believers and their acts, set by the god's path and domain; a domain can exist without a god, faith cannot.
+
 ## Deferred and parked
 
 - **F1 to F9** remain parked with magic (`wing-organs` D1). F10 to F12, the catalogue and edition procedures D1 approved, are `vtt-overlay`'s since 2026-10-30. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
@@ -140,7 +144,7 @@ Readings of mine, unruled: typologies of different kinds meet only through effec
 - **Ars Magica 5e as the native vocabulary (raised 2026-10-27)**: adopt its structural vocabulary (Technique x Form composition, level guidelines, casting methods formulaic, spontaneous and ritual, Arts and Realms) as the native grammar of the sim's magic, with the Hermetic tradition expressed as one preset over the six axes and not the baseline? This reverses or refines 522's "nothing copied", so it needs a ruling on what is structure (adoptable) versus content. It also sets the additive level arithmetic against 404's "a magnitude more energy" per level of combining (F2). From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:100-132`; design record ruling 522.
 - **Structurally different worlds**: the founding charter's question (`eponym-overlay` charter questions) whether worlds differ structurally touches world-dependent scripts (F3) and the axes (F1); recorded there, not restated here.
 - **Planes and dimensions (raised 2026-11-12)**: nothing rules them beyond the significant dead going to the planes (case 62) and a dead world's entity lying there (1008). F13 reads a plane as a world-class entity reached as a crossing is; unruled.
-- **What bounds belief (raised 2026-11-12)**: D6 lets a religious typology grow truer with its believers. F13 counts belief as practice, by Organs 2's frequency; whether that is the bound, and how fast the world moves, is open.
+- **How fast belief moves the world (raised 2026-11-12)**: D7 bounds belief by believers and their acts; the rate at which a religious typology grows truer, and its ceiling, are open.
 
 ## Findings
 

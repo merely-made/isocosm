@@ -6651,6 +6651,14 @@ summary = "A materialist tradition is what its holders can predict; a religious 
 draws_on = ["49", "1009"]
 plans = ["functional-generation"]
 
+[decisions."functional-generation D7"]
+title = "belief is believers and acts; faith is not domain (2026-11-12), refines D6"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "Belief is counted in believers and their acts, set by the god's path and domain; a domain can exist without a god, faith cannot."
+draws_on = ["44", "46", "47", "49", "107"]
+plans = ["functional-generation"]
+
 [decisions."lineage-rounds D1"]
 title = "the first slice (2026-11-09), applies Mesocosm 6"
 source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
