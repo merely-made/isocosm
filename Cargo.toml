@@ -282,26 +282,6 @@ genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch 
 [profile.dev.package.cosmograph]
 opt-level = 1
 
-# Root patches are not inherited from the imported Murm suppliers.
-[patch."https://github.com/merely-made/mere.git"]
-# Promoted sources shared with immutable older Mere suppliers.
-eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-luggage = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-murm = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-gemot = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
-insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
-mere-proofs = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-mere-transport = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-personae = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
-servitor = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-armillary = { git = "https://github.com/merely-made/armillary.git", branch = "main" }
-mien = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
-mooting = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
-
 # Compatibility source keys for immutable suppliers published before the
 # repository rename. Targets and current direct dependencies use Murm.
 

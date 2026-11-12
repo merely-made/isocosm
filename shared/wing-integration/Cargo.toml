@@ -63,19 +63,6 @@ muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main"
 personae = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
 stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 
-[patch."https://github.com/merely-made/mere.git"]
-# Promoted sources shared with immutable older Mere suppliers.
-eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-luggage = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
-mere-proofs = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-mere-transport = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-personae = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
-stickleback = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-
 # Compatibility source keys for immutable suppliers published before the
 # repository rename. Targets and current direct dependencies use Murm.
 

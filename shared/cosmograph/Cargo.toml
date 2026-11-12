@@ -46,9 +46,6 @@ rust-version = "1.97.1"
 # Promoted sources shared with immutable older Mere suppliers.
 hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 
-[patch."https://github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
-
 [workspace.lints.clippy]
 missing_errors_doc = "warn"
 missing_panics_doc = "warn"
