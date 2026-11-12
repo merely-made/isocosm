@@ -168,6 +168,66 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1220, 1221 · plans sim, mesocosm-overlay · summary Hosts, a playable handle, body-size rates with propagules, and members' learning are built before LR9 and LR10, which are parked.
 
+- **D17, being eaten feeds regard (2026-11-12):** "Keep as built (Recommended)". Matter another lineage's bodies take from the played line's bodies raises that lineage's regard for the player, so a predator comes to regard its prey's player. Offered against willing gifts only and against eating lowering regard.
+
+  Links: area Mesocosm · draws on 1214 · plans lineage-rounds · summary Matter taken from the played line's bodies counts as feeding and raises the eater lineage's regard for the player.
+
+- **D18, holding is regard-gated (2026-11-12):** "Regard-gated (Recommended)". A participant may hold a surface or world-class lineage only once it regards them above a threshold. Holding as built is open and is to change. Offered against open holding and against a matter cost per lever.
+
+  Links: area Mesocosm · draws on 1214, 1216 · plans lineage-rounds · summary A participant holds a surface or world-class lineage only once it regards them above a threshold.
+
+- **D19, the world-class levers (2026-11-12):** "Would 3 use 2? If so, 2 is fine. Otherwise, wanna do conditions?", of waiting for conditions (3) against adding water and light offsets (2). Read: conditions (floods, droughts, blooms) will be cast through bounded offsets on water and light as they are through temperature, so the two offsets are added now and conditions compose them later.
+
+  Links: area Mesocosm · draws on 1216 · plans lineage-rounds · summary A world-class holder gets bounded offsets on water and light beside temperature; conditions will be cast through them.
+
+- **D20, micro lineages are surfaces (2026-11-12):** "Yes, micro lineages are surfaces (Recommended)". Every `kingdom:micro` lineage of a generated world can enter and live in other bodies; the seeded microbe is the fallback where a world has none.
+
+  Links: area Mesocosm · draws on 1223, 1225 · plans lineage-rounds · summary A generated world's micro lineages are surfaces; the seeded microbe is only a fallback.
+
+- **D21, a seed ages by its mass while dormant (2026-11-12):** "3, but it draws on mass, so light, cheap seeds (still should live a pretty long time!) last less time than more substantial seeds with more mass (which could, in theory, last thousands-millions of years undisturbed. Like, seed half life ranges from years to millions of years, properly preserved." Of dormant time ageing a seed slowly. A dormant seed ages at a fraction of the active rate set by its mass: a bank has a half-life, from years for light seeds to millions of years for heavy ones. Supersedes both the kept laid age and the flat worlds' renewal on waking.
+
+  Links: area Ecology · draws on 1148 · plans lineage-rounds · summary A dormant seed ages slowly by its mass: a bank's half-life runs from years for light seeds to millions of years for heavy ones.
+
+- **D22, a rule edit carries drift over (2026-11-12):** "Keep, but carry drift over (Recommended)". Tagmata stay the stored truth; a grammar rule edit regenerates them and re-applies drifted offsets where the parts still match. Offered against overwriting drift and against the grammar as the stored truth. The proposed design of 2026-11-11 (LR6, "Grammar and drift") meets this another way, by letting drift move the grammar's own parameters so a later edit keeps them; which of the two is built is open.
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Tagmata stay the truth; a grammar rule edit regenerates them and re-applies drift where parts still match.
+
+- **D23, the persona does not wait (2026-11-12), applies 1227:** "What? Look in dramatis lol. That custodian exists, no? I think only the m4 and the intel imac aren't branched off O-PC's root". The choice to hold the persona back was wrong: dramatis has its custodian (`djinn-custodian`) and `personae`, which `cosmograph-host` already takes. Regard and bonds key to the player's dramatis persona, minted if absent (1227); Mesocosm does not yet link it.
+
+  Links: area Directing and play · draws on 1227, 1214 · plans lineage-rounds · summary The persona is built on dramatis now: regard and bonds key to the player's dramatis identity.
+
+- **D24, upkeep earns nothing; being kept well earns trust (2026-11-12):** "Well like, the stuff you need to do to make the upkeep possible should still earn ya stuff, right? But being well fed and cared for over time should breed trust. So i favor 1 on the credit and 3 on the interest." Asked first: "When we say upkeep, do you mean, like, the basic needs life requires?" (yes). Paying upkeep earns no credit and is hidden; the chosen acts that make it possible earn as they do; a body whose needs stay met over time gains trust (bond and regard).
+
+  Links: area Mesocosm · draws on 1214 · plans lineage-rounds · summary Upkeep itself earns nothing; chosen acts earn as before, and needs kept met over time build trust.
+
+- **D25, a creature weighs eating against moving (2026-11-12):** "Let the creature weigh it". No fixed order of meal and move at one decision: the choice scores eating here against moving, with hunger and food in view. Replaces the decomposers' meal-first priority once built. Offered against meals before moves for every body and against leaving grazers.
+
+  Links: area Directing and play · draws on 454 · plans lineage-rounds · summary At a decision a creature scores eating where it stands against moving; no fixed meal-first order.
+
+- **D26, the climate is tuned to a survival target (2026-11-12):** "Tune to a survival target (Recommended)". The strain scale is searched so about nine seeds in ten found and keep the played line 600 ticks with the crowding brake on.
+
+  Links: area Mesocosm · draws on lineage-rounds D13 · plans lineage-rounds · summary The climate's strain is tuned so about nine seeds in ten found and keep the played line 600 ticks.
+
+- **D27, consumers' limits are the default, for all consumers (2026-11-12):** "On by default, all consumers (Recommended)". Fullness and the breeding ceiling become Mesocosm defaults like the crowding brake, decomposers included.
+
+  Links: area Mesocosm · draws on lineage-rounds D16 · plans lineage-rounds · summary Fullness and the breeding ceiling are on by default for every consumer, decomposers included.
+
+- **D28, regard halves at a fork (2026-11-12):** "Half per fork (Recommended)". As built. Answers the Questions' regard item.
+
+  Links: area Mesocosm · draws on 1214 · plans lineage-rounds · summary A forked lineage starts with half its parent's regard for each player.
+
+- **D29, eight operators before crossings (2026-11-12):** "Build to eight first". The brief's set is built out before crossings: fuse, switch and accrete join repeat, branch, differentiate, symmetry and allocate, and symmetry gains radial and none. How a crossing unlocks another kingdom's operators stays open.
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary The grammar is built to the brief's eight operators (adding fuse, switch, accrete) before crossings.
+
+- **D30, a microbe's switches cost while on (2026-11-12):** "3, plasmids reset after a set number of generations per switch". The five ruled behaviours (decompose, infect, aid, join, disperse; 1225) are the switches; a switch costs upkeep only while it is on; a plasmid resets after a set number of generations, counted per switch. The numbers are owed.
+
+  Links: area Mesocosm · draws on 1223, 1224, 1225 · plans lineage-rounds · summary Five switches, each costing upkeep only while on; a plasmid resets after a set number of generations per switch.
+
+- **D31, duration and event conditions next (2026-11-12):** "Duration and event next (Recommended)". A duration condition and an event condition (an extinction, a first crossing, a climate shift) follow the threshold; the generator draws at most two a round, one always a duration, so every round ends.
+
+  Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Duration and event conditions follow the threshold; at most two a round, one always a duration.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -427,6 +487,10 @@ only (1220). Each kingdom is cut into its own phases when it starts.
 
 Made to keep building at his word ("no need to wait on me! let's build what
 we can and sort on wednesday", 2026-11-10); none is a decision of his.
+Ruled 2026-11-12 and moved to Decisions: D17 to D31. What stays below is
+numbers and readings he has not ruled; within them, the grammar's drift
+(D22), upkeep's credit (D24), meals and moves (D25) and the limits' scope
+(D27) are ruled.
 
 - **Efficiency is the share of cells that contract** (LR7), and exertion's
   numbers: four chosen acts at ease in 24 ticks, up to twelve for a body all
@@ -437,16 +501,9 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   allocate, and the existing bilateral symmetry); the plant preset's leaf is
   the broad plate, since fronds collide on side runs.
 - **Kingdom weights' numbers** (LR6): halves and doubles on a few functions.
-- **Being eaten feeds them** (LR5). Matter a lineage's bodies take from the
-  played line's bodies raises its regard for the player, case 1214's
-  "feeding it" read literally; a predator comes to regard its prey's player.
 - **Regard's numbers** (LR5): the bond's scale; one point gained per ten of
   matter given and two lost per ten taken; a fork starts with half its
   parent's regard.
-- **The persona waits** (LR5, 1227). A participant has no identity beyond its
-  entity in one world: joining carries no data, and a dramatis identity
-  needs its custodian running, which Mesocosm does not depend on. Regard is
-  keyed to the participant within a world.
 - **Absence odds need a record in the world** (LR2): the odds move only where
   some group has a recorded absence, so a world where nobody drew one never
   reaches zero.
@@ -461,22 +518,10 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
 - **Dormancy's numbers** (propagules): upkeep a tenth of the active rate, a
   quarter of a bank waking each season, a season of ninety days, seed
   shares drawn from 5 to 20. Dormant upkeep goes to soil, not detritus.
-- **A woken seed keeps the age it was laid at** (propagules): nothing resets
-  it, so a long-dormant seed wakes already old.
-- **A world-class player's lever is one temperature shift** (the handle):
-  a single bounded offset on the climate, set by the holder of a
-  world-class lineage. Floods, droughts and blooms cast through conditions
-  (brief §13) have nothing yet to be cast through.
-- **Holding is open** (the handle): any participant may hold any surface or
-  world-class lineage, with no bond, knowing or cost asked.
 - **The learning rule** (members' learning): the overlay plan leaves it
   proposed. As built, a served act raises and a failed act lowers the
   member's weight on the needs that pressed, by 4 of 64, doubled in youth,
   bounded at 32, a quarter fading each day.
-- **The seeded microbe** (wiring): `--hosting` gives every played world one
-  microbe, with rot and enter on, 24 of matter from the first site's soil.
-  A generated world has no surface lineage of its own; whether its
-  `kingdom:micro` lineages should be surfaces is unruled.
 - **The mass law's reference and bounds** (mass law): the median adult mass
   keeps today's rates; factors run from a quarter to four times. A
   producer's growth and the death hazard's rate scale too, which 1148
@@ -526,22 +571,15 @@ we can and sort on wednesday", 2026-11-10); none is a decision of his.
   feed with no feeding contract is weighed by what its plain `Eat` can
   take of the prey's matter accounts; that reading of "edible" for the
   flat world is mine.
-- **The climate is lethal as numbered** (finding): `--climate` leaves three
-  seeds in 120 that found, and none keeps its played line 120 steps. At a
-  fiftieth of the strain, seeds 9, 3 and 5 found. The numbers are a first
-  cut of mine (LR4.2) and need retuning.
 
 ## Questions for Mark
 
-From the brief's §8, each naming the phase it holds up.
+Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
+and the next conditions (D31) are answered. Left:
 
-- **Regard's bound** (LR5): how far regard is heritable.
-- **The operators** (LR6): whether eight is the set, and how a crossing
-  unlocks another kingdom's.
-- **The microbe's numbers** (LR8): which switches and plasmids exist and
-  what each costs to carry.
-- **Conditions** (LR1, later cuts): which kinds follow the first threshold
-  condition, and how the generator is bounded (EB3).
+- **Crossings** (LR10): how a crossing unlocks another kingdom's operators.
+- **The microbe's numbers** (LR8): a switch's upkeep while on, and the
+  generations a plasmid lasts.
 
 ## Findings
 
@@ -582,6 +620,15 @@ From the brief's §8, each naming the phase it holds up.
 
 ## Progress
 
+- 2026-11-12: Mark ruled the choices and questions (D17 to D31). Owed to
+  build from them, none started: regard-gated holding (D18); water and
+  light offsets for the world-class holder (D19); micro lineages as
+  surfaces (D20); dormant ageing by mass (D21); drift carried over a rule
+  edit (D22); the dramatis persona (D23); trust from needs kept met
+  (D24); eating weighed against moving (D25); the climate's survival
+  target (D26); limits on by default with decomposers (D27); fuse,
+  switch, accrete and radial symmetry (D29); switch costs and plasmid
+  resets (D30); duration and event conditions (D31).
 - 2026-11-11: edible matter per head, read and tried (Mark's
   direction). `Simulation::edible_matter` sums what a feed's admitted
   resident holders hold at the eater's site (`src/targets/edible.rs`),

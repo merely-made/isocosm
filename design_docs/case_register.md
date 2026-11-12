@@ -20,7 +20,7 @@ three design docs that cite it. The record holds the words.
 | 50 | A tenet is the relation that a process yields an effect, with an opinion of that and the trust people place in it. | none |
 | 51 | Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79) | none |
 | 56 | Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity. | none |
-| 62 | Significant dead go to the planes after life, and summoning them back is a possible, costly act. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 62 | Significant dead go to the planes after life, and summoning them back is a possible, costly act. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
 | 64 | A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 67 | Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 68 | A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive. | none |
@@ -561,7 +561,7 @@ three design docs that cite it. The record holds the words.
 | 1002 | Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules. | [DOC README](DOC_README.md) |
 | 1003 | A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first. | [DOC README](DOC_README.md) |
 | 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [DOC README](DOC_README.md) |
-| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md) |
+| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
 | 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [DOC README](DOC_README.md) |
 | 1015 | Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored. | none |
 | 1017 | The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds. | none |

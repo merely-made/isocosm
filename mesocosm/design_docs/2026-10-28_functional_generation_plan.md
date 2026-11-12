@@ -85,6 +85,19 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1915-1920`, `:2207-2214`, `:2305-2310`
 
+### F13. Typologies and traditions
+A typology sorts a world's magic into *roots* and relations between them (Mark's "4 root classical, 5 root qi, 12 root homestuck systems"). Root is the records' and the code's word; each tradition names its own roots as data (elements, phases, aspects, humours), so "element" is only ever one tradition's word and nis stays nis (D3). A typology declares what its roots sort (D5): materials (lineages and what things are made of, Ecology 6), processes (effects and how one turns into another), domains (time, place, mind, life, fate), divinity, planes, or another supernatural criterion; a world may hold several typologies of different kinds. It exists on both sides (D2): as the world's law and as a people's reading of it.
+
+The world's side has three sources, all data (D4): an authored typology shipped as a mod pack or example world, its roots and relations stored (the well-known traditional and tabletop systems); a template, from which the generator derives a flavoured variant (a D&D-flavoured or Ars Magica-flavoured system); and step-by-step random generation, the template's limit case, whose laws the world's peoples then interpret. In every source the relations act as effects through the world's data, so a familiar effect may act differently in an unfamiliar context; the six axes (F1) say how it is channelled (source and gate) and paid for.
+
+A people's side is a tradition: notes on which effects combine and what they cost, held and passed as culture is (Schema 7, Processes 14), with working transmission paths and local variants and not only school names (founding record). What a tradition's typology does depends on its kind (D6): for a materialist typology, or a novel harnessing of nature's forces, it is what its holders can predict, and a wrong note wastes power or backfires while the laws stand; for a religious one, practice makes it truer, a divinity mattering more in a world of believers. Reading, mine: "believers" is counted as Organs 2 counts a domain, by the frequency of its process, so belief bends the world by what is done and not by what is held.
+
+Readings of mine, unruled: typologies of different kinds meet only through effects, never through a table across typologies; a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system is of processes or domains; a plane is a world-class entity (World 4, case 62) reached as a crossing is.
+- Done when: an authored pack (a four-root material typology and a five-root process one) and one generated typology found in the same world format; a tradition holds notes on a subset of the world's relations and a cast outside them fails as D6 says; a religious typology's strength follows its practice's frequency; each replays.
+- Needs: F1, F2 (the cost curve), F3; notes, teaching and imitation (`sim`, owed); cultures read up the ladder (World 10); a steady ecology under it
+- Rulings: 404, 1009, 101, 102, 49; D2 to D6
+- From: Mark, 2026-11-11 and 2026-11-12; `2026-08-29_elements_and_traits_memo.md` §7 items 6 to 8 (the naming of "element", answered by D3)
+
 ## Decisions
 
 - **D1, effect catalogue (2026-10-28), applies Processes 3 and VTT 5:** Mark: "Ok! Agreed!" In response to the proposal: "I'd build the catalogue broadly, then make a small set work completely across the three rulesets. Body transformation, senses and persistent enchantment would expose useful differences immediately while giving world generation something substantial to grow around."
@@ -92,6 +105,26 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
   Outcome: applies to doctrine Processes 3 and VTT 5. F10a and F10b delivered catalogue and native controls only; Mark's follow-up requires the agreed executable examples, implemented in F11. The VTT lifecycle addresses F10c's temporary lasting effects; complete edition ports, native magic and permanent device creation stay explicit open work. Speculative metamorphoses remain optional candidates, not selected world laws.
 
   Links: area Processes and rules · draws on 539, 540, 541, 543 · plans functional-generation · summary Start a broad effect catalogue with explicit edition correspondences and a bounded executable tranche.
+
+- **D2, typologies are world law and peoples' readings (2026-11-12), refines Processes 17:** Mark: "Both, and i'm alright with elements, fundaments, primordial forces, etc. whatever works and doesn't cause cross scope contradictory confusion to adopt." Asked whether a typology is the world's own law, a people's reading of it, or both. He opened it: "Is it worth it to think about how to represent various magical typologies (elemental (choice of element sets, like 4 root classical, 5 root qi, 12 root homestuck systems, etc.), how it's channeled, dimensions, idk. ... Should we think about civilization, the eponym angle of it too?"
+
+  Links: area Processes and rules · draws on 404, 1009, processes.17 · plans functional-generation · summary A magical typology exists both as the world's law and as a people's reading of it.
+
+- **D3, root is the word (2026-11-12), refines Naming 3:** Mark: "'Root' inside, peoples name their own (Recommended)". Records and code say root; each generated tradition carries its own word for its roots as data. Offered against fundament and against lifting the bar on element.
+
+  Links: area Naming · draws on naming.3 · plans functional-generation · summary One member of a typology is a root in records and code; each tradition names its own roots as data.
+
+- **D4, the world's side is data, from three sources (2026-11-12), refines Ecology 6 and Processes 17:** Mark, pressed that a stored relation graph contradicts "never a table of pairs": "we'd just make the various explicitly defined typologies mod packs/example worlds, defined by data. indeed the point of the interactions as effects doctrine was to have effects and entities interact on a data defined basis such that even a familiar effect with familiar rules may act differently in an unfamiliar context. 3 seems the most straightforward way to define well known example magic typologies, including traditional and/or ttrpg typologies. 2 sounds like true randomness that the world then interprets, which appeals too. 1 sounds like 2 but randomly generated from templates, which is cool, since it allows for 2 (randomly choose each step and you have 2, basically) and derivations on 3 (e.g. a dnd magic-flavored system, or an ars magic flavored system)." Here 1 is a scaffold the generator turns into laws, 2 laws only with roots emerging, 3 a stored relation graph. All three stand: authored packs store their graph, templates derive variants, and stepwise generation is the template's limit.
+
+  Links: area Processes and rules · draws on 404, 1009, ecology.6, processes.17 · plans functional-generation · summary A typology's world side is data from an authored pack, a template or stepwise generation; its relations act as effects.
+
+- **D5, a typology declares what its roots sort (2026-11-12):** Mark: "good pushback! i guess i was hoping the effects, the interactions between the effects, and the external conditions, would suffice to make each more interesting than damage types. 1 is better, for delineating how these systems interact with the world. is it material, processes, domains, divinity, planes, or other supernatural criteria... typologies of different kinds, sounds good". Of the generator picking the kind, against effects only and materials only.
+
+  Links: area Processes and rules · draws on 404, 1009 · plans functional-generation · summary A typology declares what its roots sort (materials, processes, domains, divinity, planes or another criterion); a world may hold several kinds.
+
+- **D6, what a tradition's typology does depends on its kind (2026-11-12):** Mark: "seems like that depends on the kind of typology. i can imagine that divinity would be more important in a world of believers than nonbelievers; 2 holds true for religious typologies, 1 for materialist ones (but also novel harnessings of the supernatural forces of nature)." Here 1 is a tradition as what its holders can predict, 2 belief bending the world.
+
+  Links: area Processes and rules · draws on 49, 1009 · plans functional-generation · summary A materialist tradition is what its holders can predict; a religious typology grows truer with its believers.
 
 ## Deferred and parked
 
@@ -106,6 +139,8 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 - **A perception layer apart from truth (raised 2026-10-27)**: perception is per creature (rules 5 and 59) and "believing oneself unable" sits with belief and tenets (407), but magic has no axis for altering what a perceiver receives without altering the world. Does an illusion write to a perceiver's sensed or believed layer (a note on the knower) while the world fact stays true? Is that the manifestation axis of F1 or a separate layer? How does it meet the impresa belief reading (`wing-organs` G7) and Eponym survival mode, which "shows only what the creature knows" (`eponym-overlay` E3)? From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:118-132`; doctrine Organs 3.
 - **Ars Magica 5e as the native vocabulary (raised 2026-10-27)**: adopt its structural vocabulary (Technique x Form composition, level guidelines, casting methods formulaic, spontaneous and ritual, Arts and Realms) as the native grammar of the sim's magic, with the Hermetic tradition expressed as one preset over the six axes and not the baseline? This reverses or refines 522's "nothing copied", so it needs a ruling on what is structure (adoptable) versus content. It also sets the additive level arithmetic against 404's "a magnitude more energy" per level of combining (F2). From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:100-132`; design record ruling 522.
 - **Structurally different worlds**: the founding charter's question (`eponym-overlay` charter questions) whether worlds differ structurally touches world-dependent scripts (F3) and the axes (F1); recorded there, not restated here.
+- **Planes and dimensions (raised 2026-11-12)**: nothing rules them beyond the significant dead going to the planes (case 62) and a dead world's entity lying there (1008). F13 reads a plane as a world-class entity reached as a crossing is; unruled.
+- **What bounds belief (raised 2026-11-12)**: D6 lets a religious typology grow truer with its believers. F13 counts belief as practice, by Organs 2's frequency; whether that is the bound, and how fast the world moves, is open.
 
 ## Findings
 
@@ -116,5 +151,6 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Progress
 
+- 2026-11-12: F13, typologies and traditions, written from Mark's rulings D2 to D6; design only, parked with F1 to F9.
 - 2026-10-30: F10 to F12 moved to `vtt-overlay`.
 - 2026-10-28: cut from the functional generation plan and the presentation plan's effects remainders (pres.32); all phases parked.

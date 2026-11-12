@@ -6611,6 +6611,46 @@ summary = "Start a broad effect catalogue with explicit edition correspondences 
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
 
+[decisions."functional-generation D2"]
+title = "typologies are world law and peoples' readings (2026-11-12), refines Processes 17"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "A magical typology exists both as the world's law and as a people's reading of it."
+draws_on = ["404", "1009", "processes.17"]
+plans = ["functional-generation"]
+
+[decisions."functional-generation D3"]
+title = "root is the word (2026-11-12), refines Naming 3"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Naming"
+summary = "One member of a typology is a root in records and code; each tradition names its own roots as data."
+draws_on = ["naming.3"]
+plans = ["functional-generation"]
+
+[decisions."functional-generation D4"]
+title = "the world's side is data, from three sources (2026-11-12), refines Ecology 6 and Processes 17"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "A typology's world side is data from an authored pack, a template or stepwise generation; its relations act as effects."
+draws_on = ["404", "1009", "ecology.6", "processes.17"]
+plans = ["functional-generation"]
+
+[decisions."functional-generation D5"]
+title = "a typology declares what its roots sort (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "A typology declares what its roots sort (materials, processes, domains, divinity, planes or another criterion); a world may hold several kinds."
+draws_on = ["404", "1009"]
+plans = ["functional-generation"]
+
+[decisions."functional-generation D6"]
+title = "what a tradition's typology does depends on its kind (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "A materialist tradition is what its holders can predict; a religious typology grows truer with its believers."
+draws_on = ["49", "1009"]
+plans = ["functional-generation"]
+
 [decisions."lineage-rounds D1"]
 title = "the first slice (2026-11-09), applies Mesocosm 6"
 source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
@@ -6725,6 +6765,126 @@ area = "Mesocosm"
 summary = "Hosts, a playable handle, body-size rates with propagules, and members' learning are built before LR9 and LR10, which are parked."
 draws_on = ["1220", "1221"]
 plans = ["mesocosm-overlay", "sim"]
+
+[decisions."lineage-rounds D17"]
+title = "being eaten feeds regard (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Matter taken from the played line's bodies counts as feeding and raises the eater lineage's regard for the player."
+draws_on = ["1214"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D18"]
+title = "holding is regard-gated (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A participant holds a surface or world-class lineage only once it regards them above a threshold."
+draws_on = ["1214", "1216"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D19"]
+title = "the world-class levers (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A world-class holder gets bounded offsets on water and light beside temperature; conditions will be cast through them."
+draws_on = ["1216"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D20"]
+title = "micro lineages are surfaces (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A generated world's micro lineages are surfaces; the seeded microbe is only a fallback."
+draws_on = ["1223", "1225"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D21"]
+title = "a seed ages by its mass while dormant (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "A dormant seed ages slowly by its mass: a bank's half-life runs from years for light seeds to millions of years for heavy ones."
+draws_on = ["1148"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D22"]
+title = "a rule edit carries drift over (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Tagmata stay the truth; a grammar rule edit regenerates them and re-applies drift where parts still match."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D23"]
+title = "the persona does not wait (2026-11-12), applies 1227"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Directing and play"
+summary = "The persona is built on dramatis now: regard and bonds key to the player's dramatis identity."
+draws_on = ["1214", "1227"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D24"]
+title = "upkeep earns nothing; being kept well earns trust (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Upkeep itself earns nothing; chosen acts earn as before, and needs kept met over time build trust."
+draws_on = ["1214"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D25"]
+title = "a creature weighs eating against moving (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Directing and play"
+summary = "At a decision a creature scores eating where it stands against moving; no fixed meal-first order."
+draws_on = ["454"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D26"]
+title = "the climate is tuned to a survival target (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The climate's strain is tuned so about nine seeds in ten found and keep the played line 600 ticks."
+draws_on = ["lineage-rounds D13"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D27"]
+title = "consumers' limits are the default, for all consumers (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Fullness and the breeding ceiling are on by default for every consumer, decomposers included."
+draws_on = ["lineage-rounds D16"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D28"]
+title = "regard halves at a fork (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "A forked lineage starts with half its parent's regard for each player."
+draws_on = ["1214"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D29"]
+title = "eight operators before crossings (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "The grammar is built to the brief's eight operators (adding fuse, switch, accrete) before crossings."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D30"]
+title = "a microbe's switches cost while on (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Five switches, each costing upkeep only while on; a plasmid resets after a set number of generations per switch."
+draws_on = ["1223", "1224", "1225"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D31"]
+title = "duration and event conditions next (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Duration and event conditions follow the threshold; at most two a round, one always a duration."
+draws_on = ["1215"]
+plans = ["lineage-rounds"]
 
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
