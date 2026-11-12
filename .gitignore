@@ -16,3 +16,5 @@ Thumbs.db
 .cargo/config.toml
 .cargo/tabletop-local.toml
 /maps/
+# Not tracked: what cargo resolved is a git note on each commit (scripts/record-resolved.sh).
+Cargo.lock

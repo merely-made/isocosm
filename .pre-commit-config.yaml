@@ -1,4 +1,5 @@
 fail_fast: true
+default_install_hook_types: [pre-commit, post-commit, pre-push]
 # Checked at commit by prek (`prek install --allow-missing-config`), and over
 # the whole tree with `prek run --all-files`: the 600-line ceiling (ruling 592,
 # mere:stack.7), no hand-written JSON in a pack (ruling 624), and the decisions
@@ -35,7 +36,23 @@ repos:
         additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
       - id: clippy
         name: clippy
-        entry: cargo clippy --locked --all-targets
+        entry: cargo clippy --all-targets
         language: system
-        files: '(^|/)(Cargo\.(toml|lock)|[^/]+\.rs)$'
+        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
         pass_filenames: false
+      # No Cargo.lock is tracked; what cargo resolved rides on each commit as a
+      # git note (scripts/record-resolved.sh).
+      - id: record-resolved
+        name: record resolved versions
+        entry: bash scripts/record-resolved.sh record
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+      - id: push-resolved
+        name: push resolved versions
+        entry: bash scripts/record-resolved.sh push
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

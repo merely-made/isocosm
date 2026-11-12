@@ -1,5 +1,4 @@
 /target
 /target-contact/
 Cargo.lock
-!/Cargo.lock
 !/crates/probes/parry-ground/Cargo.lock

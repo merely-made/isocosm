@@ -2,5 +2,4 @@
 /target-contact/
 /target-contact-validation/
 Cargo.lock
-!/Cargo.lock
 /target-technique/
