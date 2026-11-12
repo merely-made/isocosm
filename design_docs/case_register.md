@@ -561,7 +561,7 @@ three design docs that cite it. The record holds the words.
 | 1002 | Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules. | [DOC README](DOC_README.md) |
 | 1003 | A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first. | [DOC README](DOC_README.md) |
 | 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [DOC README](DOC_README.md) |
-| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
+| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md) |
 | 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [DOC README](DOC_README.md) |
 | 1015 | Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored. | none |
 | 1017 | The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds. | none |

@@ -6667,6 +6667,22 @@ summary = "Typologies in one world meet only through effects; a material typolog
 draws_on = ["404", "ecology.6"]
 plans = ["functional-generation"]
 
+[decisions."functional-generation D9"]
+title = "order, planes and the cost curve (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "World generation"
+summary = "Typologies wait on teaching and imitation in the sim; a plane is a world-class entity reached as a crossing is; the cost curve gates a build."
+draws_on = ["62", "404", "1008", "1053", "1058"]
+plans = ["functional-generation"]
+
+[decisions."functional-generation D10"]
+title = "a domain is a cut of effects (2026-11-12), refines D7"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "A domain is a defined cut of mutually influencing effects, like a faction of effects."
+draws_on = ["49", "404"]
+plans = ["functional-generation"]
+
 [decisions."lineage-rounds D1"]
 title = "the first slice (2026-11-09), applies Mesocosm 6"
 source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"

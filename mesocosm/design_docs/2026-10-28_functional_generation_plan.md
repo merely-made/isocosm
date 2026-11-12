@@ -92,10 +92,12 @@ The world's side has three sources, all data (D4): an authored typology shipped 
 
 A people's side is a tradition: notes on which effects combine and what they cost, held and passed as culture is (Schema 7, Processes 14), with working transmission paths and local variants and not only school names (founding record). What a tradition's typology does depends on its kind (D6): for a materialist typology, or a novel harnessing of nature's forces, it is what its holders can predict, and a wrong note wastes power or backfires while the laws stand; for a religious one, practice makes it truer, a divinity mattering more in a world of believers. Belief is counted in believers and their acts, not opinion (D7); which acts count for a god follows from its path to divinity and its domain (Organs 1). Faith and domain are distinct: a domain has its strength from the frequency of its process (Organs 2) and can exist with no god or avatar, while faith is acts directed at a god.
 
-Typologies of different kinds meet only through effects, never through a table across typologies, and a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system sorts processes or domains (D8). Reading of mine, unruled: a plane is a world-class entity (World 4, case 62) reached as a crossing is.
+Typologies of different kinds meet only through effects, never through a table across typologies, and a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system sorts processes or domains (D8). A plane is a world-class entity (World 4, case 62) reached as a crossing is (D9).
+
+A domain is a defined cut of effects that mutually influence each other, "like a faction of effects" (D10). Reading, mine: influence is what F3's scripts already declare (one effect's script reading a characteristic another sets), so a domain can be authored as a cut or read off the world's laws as a cluster; its strength is its members' frequency (Organs 2); effects may sit in more than one domain, as members sit in more than one faction, while a typology of domains picks a partition from them; and as a faction with a methodology is a polity (Schema 2), a domain with an agent is a god, which is why a domain stands without one (D7).
 - Done when: an authored pack (a four-root material typology and a five-root process one) and one generated typology found in the same world format; a tradition holds notes on a subset of the world's relations and a cast outside them fails as D6 says; a religious typology's strength follows its practice's frequency; each replays.
 - Needs: F1, F2 (the cost curve), F3; notes, teaching and imitation (`sim`, owed); cultures read up the ladder (World 10); a steady ecology under it
-- Rulings: 404, 1009, 101, 102, 49; D2 to D8
+- Rulings: 404, 1009, 101, 102, 49; D2 to D10
 - From: Mark, 2026-11-11 and 2026-11-12; `2026-08-29_elements_and_traits_memo.md` §7 items 6 to 8 (the naming of "element", answered by D3)
 
 ## Decisions
@@ -134,6 +136,14 @@ Typologies of different kinds meet only through effects, never through a table a
 
   Links: area Processes and rules · draws on 404, ecology.6 · plans functional-generation · summary Typologies in one world meet only through effects; a material typology is bounded by the field budget, so twelve roots sort processes or domains.
 
+- **D9, order, planes and the cost curve (2026-11-12):** Mark: "order, planes, and the cost curve... yeah, sounds good." Of three points put to him: typologies wait behind teaching, imitation and travelling notes in the sim and a steady ecology; a plane is a world-class entity reached as a crossing is; the cost curve for combining (F2) stays open and gates any build. Asked first of teaching and imitation: "in the eponym or mesocosm or cosmograph sense? like, the sim, or the games?" (the sim: a member learns from its own acts and a third passes to a child, 1058; nothing passes between other creatures).
+
+  Links: area World generation · draws on 62, 1008, 1053, 1058, 404 · plans functional-generation · summary Typologies wait on teaching and imitation in the sim; a plane is a world-class entity reached as a crossing is; the cost curve gates a build.
+
+- **D10, a domain is a cut of effects (2026-11-12), refines D7:** Mark: "a domain could be a defined cut of effects who mutually influence each other, like a faction of effects?" Taken as the design; the details in F13 are a reading.
+
+  Links: area Organs: glyphs, impresa, hagiograph · draws on 49, 404 · plans functional-generation · summary A domain is a defined cut of mutually influencing effects, like a faction of effects.
+
 ## Deferred and parked
 
 - **F1 to F9** remain parked with magic (`wing-organs` D1). F10 to F12, the catalogue and edition procedures D1 approved, are `vtt-overlay`'s since 2026-10-30. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
@@ -147,7 +157,7 @@ Typologies of different kinds meet only through effects, never through a table a
 - **A perception layer apart from truth (raised 2026-10-27)**: perception is per creature (rules 5 and 59) and "believing oneself unable" sits with belief and tenets (407), but magic has no axis for altering what a perceiver receives without altering the world. Does an illusion write to a perceiver's sensed or believed layer (a note on the knower) while the world fact stays true? Is that the manifestation axis of F1 or a separate layer? How does it meet the impresa belief reading (`wing-organs` G7) and Eponym survival mode, which "shows only what the creature knows" (`eponym-overlay` E3)? From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:118-132`; doctrine Organs 3.
 - **Ars Magica 5e as the native vocabulary (raised 2026-10-27)**: adopt its structural vocabulary (Technique x Form composition, level guidelines, casting methods formulaic, spontaneous and ritual, Arts and Realms) as the native grammar of the sim's magic, with the Hermetic tradition expressed as one preset over the six axes and not the baseline? This reverses or refines 522's "nothing copied", so it needs a ruling on what is structure (adoptable) versus content. It also sets the additive level arithmetic against 404's "a magnitude more energy" per level of combining (F2). From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:100-132`; design record ruling 522.
 - **Structurally different worlds**: the founding charter's question (`eponym-overlay` charter questions) whether worlds differ structurally touches world-dependent scripts (F3) and the axes (F1); recorded there, not restated here.
-- **Planes and dimensions (raised 2026-11-12)**: nothing rules them beyond the significant dead going to the planes (case 62) and a dead world's entity lying there (1008). F13 reads a plane as a world-class entity reached as a crossing is; unruled.
+- **What influence between effects is (raised 2026-11-12)**: D10 makes a domain a cut of mutually influencing effects. F13 reads influence off effect scripts; whether a cut is authored, clustered or both, and whether domains may overlap, is open.
 - **How fast belief moves the world (raised 2026-11-12)**: D7 bounds belief by believers and their acts; the rate at which a religious typology grows truer, and its ceiling, are open.
 
 ## Findings
