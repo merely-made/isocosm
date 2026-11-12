@@ -188,7 +188,7 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Ecology · draws on 1148 · plans lineage-rounds · summary A dormant seed ages slowly by its mass: a bank's half-life runs from years for light seeds to millions of years for heavy ones.
 
-- **D22, a rule edit carries drift over (2026-11-12):** "Keep, but carry drift over (Recommended)". Tagmata stay the stored truth; a grammar rule edit regenerates them and re-applies drifted offsets where the parts still match. Offered against overwriting drift and against the grammar as the stored truth. The proposed design of 2026-11-11 (LR6, "Grammar and drift") meets this another way, by letting drift move the grammar's own parameters so a later edit keeps them; which of the two is built is open.
+- **D22, a rule edit carries drift over (2026-11-12):** "Keep, but carry drift over (Recommended)". Tagmata stay the stored truth; a grammar rule edit regenerates them and re-applies drifted offsets where the parts still match. Offered against overwriting drift and against the grammar as the stored truth. Built as the design of 2026-11-11 (LR6, "Grammar and drift") has it: drift moves the grammar's own parameters, so a later edit keeps them and no offsets need matching to parts that `Branch` and `Differentiate` have cut and renumbered. The tagmata stay stored and are what every reader reads.
 
   Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Tagmata stay the truth; a grammar rule edit regenerates them and re-applies drift where parts still match.
 
@@ -426,6 +426,14 @@ odds and policy weights retain their own drift outside the unfolding.
   accepted revision and ensuing bodies. Keep old histories replayable under
   their recorded semantics. Apply the coherence check to new structural revisions
   with the new behavior enabled. The existing golden bodies stay the control.
+- Two additions (2026-11-12, mine, unruled). A run no `Repeat` names
+  drifts through its seed tagma's `segments`, which is as much a grammar
+  parameter as `Repeat.by`; otherwise such a line cannot drift at all. A
+  live grammar line whose tagmata already differ from its unfolding (direct
+  drift taken before this) has the difference folded into the seed or a
+  `Repeat` once, at its next structural revision, where one step per run
+  expresses it; what cannot be expressed is dropped and recorded as a
+  finding.
 
 ### LR7. Abilities and their routes
 An active move exists where the body's functions and systems can perform it
