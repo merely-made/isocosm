@@ -341,6 +341,32 @@ the largest; when it starts it may be cut into the bodies plan.
 - Needs: `bodies`; World 8's founding draws; the Questions' operators item
 - Rulings: 1202, 1206, 1232; Bodies 1, Bodies 3, Bodies 6
 
+**Grammar and drift (2026-11-11, proposed design).** For a lineage with a
+grammar, the grammar owns heritable changes to body structure. Unfold it into
+`recipe.tagmata` whenever the lineage takes a new structural revision, then
+draw each child's `Soma` from that recipe as today. Direct tagma drift and
+direct bearing variants remain the path for recipes without a grammar. A
+grammar-backed draft offers structural changes through the grammar. Absence
+odds and policy weights retain their own drift outside the unfolding.
+
+- First automatic adjustment: use a fixture with one eligible `Repeat.by`
+  on an unsplit run where a one-step edit changes only that run's length in
+  the unfolded recipe. Use LR2's offspring-weighted segment reading from
+  members drawn under the current developmental revision. Record the source
+  revision of each draw. Compare the current value with the admitted one-step edits
+  and take a change only if it brings the unfolded count closer to the
+  observed mean. Keep the current value on a tie. Changes to branch spacing,
+  topology and run correspondence remain explicit review offers. With no
+  comparable draws or effective edit, keep the grammar as it stands.
+- Done when a grammar-backed revision from drift or review unfolds to its
+  stored tagmata, and a later edit to a different rule retains the drifted
+  parameter. A controlled draw with more offspring pulls the parameter in
+  the expected direction. A cap that absorbs the edit, a split run, or draws
+  from another revision leave it alone. Save/reopen and replay reproduce the
+  accepted revision and ensuing bodies. Keep old histories replayable under
+  their recorded semantics. Apply the coherence check to new structural revisions
+  with the new behavior enabled. The existing golden bodies stay the control.
+
 ### LR7. Abilities and their routes
 An active move exists where the body's functions and systems can perform it
 (1233). Ordinary activity is paid inside upkeep, and exertion past a
@@ -518,6 +544,13 @@ From the brief's §8, each naming the phase it holds up.
   condition, and how the generator is bounded (EB3).
 
 ## Findings
+
+- 2026-11-11, LR6 source review: `lineage/drift.rs::development` writes
+  segment counts directly into `recipe.tagmata`, and `lineage/revise.rs::borne`
+  offers direct attachment edits even for a line with a grammar.
+  `rules/grammar.rs::regrown` replaces those tagmata when the grammar is edited.
+  `validation/recipe.rs::development` validates both forms independently.
+  A subsequent grammar edit can therefore discard an accepted direct edit.
 
 - 2026-11-09: the interim boundary skips the played line, whose turn is the
   review (`lineage/boundary.rs`, `lineage/review.rs`); other lines commit at
