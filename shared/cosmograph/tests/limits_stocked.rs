@@ -162,11 +162,12 @@ fn stocked_trace() {
 
 /// The arms: a name and its limits, none for no limits at all.
 fn arms() -> Vec<(&'static str, Option<Limits>)> {
-    let off = |k| Limits { full: u64::MAX, ceiling: [u64::MAX / 2, 1], stocked: Some(k) };
-    let on = |k| Limits { stocked: Some(k), ..Limits::default() };
+    let off = |k| Limits { full: u64::MAX, ceiling: [u64::MAX / 2, 1], stocked: Some(k), spare_decomposers: true, ..Default::default() };
+    // Decomposers spared: these arms were measured before D27 laid limits on them.
+    let on = |k| Limits { stocked: Some(k), spare_decomposers: true, ..Limits::default() };
     vec![
         ("none", None),
-        ("ceiling", Some(Limits::default())),
+        ("ceiling", Some(Limits { spare_decomposers: true, ..Limits::default() })),
         ("stocked2", Some(on(2))),
         ("stocked4", Some(on(4))),
         ("stocked8", Some(on(8))),

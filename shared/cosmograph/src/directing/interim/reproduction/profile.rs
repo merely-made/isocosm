@@ -81,10 +81,19 @@ pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
     if let Ok(spec) = std::env::var("COSMOGRAPH_REPRO_LIMITS") {
         let n: Vec<u64> = spec.split(',').filter_map(|v| v.parse().ok()).collect();
         founding.limits = Some(match n[..] {
-            [full, n, d] => crate::ecology::Limits { full, ceiling: [n, d], stocked: None },
-            [full, n, d, k] => crate::ecology::Limits { full, ceiling: [n, d], stocked: Some(k) },
+            [full, n, d] => crate::ecology::Limits { full, ceiling: [n, d], stocked: None, ..Default::default() },
+            [full, n, d, k] => crate::ecology::Limits { full, ceiling: [n, d], stocked: Some(k), ..Default::default() },
             _ => crate::ecology::Limits::default(),
         });
+    }
+    // `COSMOGRAPH_REPRO_DECOMPOSERS=spare` leaves decomposers unlimited; `n,d`
+    // gives them a ceiling of their own (ruling D27).
+    if let (Some(limits), Ok(spec)) = (founding.limits.as_mut(), std::env::var("COSMOGRAPH_REPRO_DECOMPOSERS")) {
+        if spec == "spare" {
+            limits.spare_decomposers = true;
+        } else if let Some((n, d)) = spec.split_once(',').and_then(|(n, d)| Some((n.parse().ok()?, d.parse().ok()?))) {
+            limits.decomposer_ceiling = Some([n, d]);
+        }
     }
     // `COSMOGRAPH_REPRO_DORMANT=1` founds flat dormancy (the crowding brake
     // Mesocosm's generated A1 world now founds with; 2026-11-11).

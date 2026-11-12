@@ -1,11 +1,15 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Limits on the consumers of the living. A consumer that eats whatever it
-//! finds and bears young wherever it stands outruns its food: the A1 played
-//! world's grazers overshoot and the world crashes with them. With the
-//! founding's limits set, two requires are laid on each consumer of the
-//! living (grazer, predator, omnivore; not producers, not decomposers):
+//! Limits on consumers. A consumer that eats whatever it finds and bears
+//! young wherever it stands outruns its food: the A1 played world's grazers
+//! overshoot and the world crashes with them. With the founding's limits set,
+//! two requires are laid on each consumer (grazer, predator, omnivore and,
+//! since ruling D27, the decomposer, whose feed and birth are named like the
+//! rest and whose body is the same `matter:{i}-0`; never a producer, which
+//! does not feed or breed on others). A founding with limits set before D27
+//! now also limits its decomposers (with a ceiling of their own, see
+//! [`DECOMPOSER_CEILING`]): set `spare_decomposers` to found as it did.
 //!
 //! - fullness: its `ecology:feed-{i}` holds only while it holds less than
 //!   `full` of its own tissue, so a full body does not eat;
@@ -44,11 +48,22 @@ pub struct Limits {
     /// after the holders are. Unset, the birth carries no such requirement.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub stocked: Option<u64>,
+    /// A ceiling for decomposers alone, as `ceiling` is for the rest; the
+    /// default is [`DECOMPOSER_CEILING`]. Unset, decomposers take `ceiling`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub decomposer_ceiling: Option<[u64; 2]>,
+    /// Leaves decomposers without either gate, as limits stood before D27.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub spare_decomposers: bool,
+}
+
+fn is_false(b: &bool) -> bool {
+    !*b
 }
 
 impl Default for Limits {
     fn default() -> Self {
-        Self { full: FULL, ceiling: CEILING, stocked: None }
+        Self { full: FULL, ceiling: CEILING, stocked: None, decomposer_ceiling: Some(DECOMPOSER_CEILING), spare_decomposers: false }
     }
 }
 
@@ -64,11 +79,30 @@ pub const FULL: u64 = 12;
 /// the A1 reproduction battery (played) qualifying, seeds 10 and 13 failing;
 /// three times keeps all 20 and still cuts the peak by about half.
 pub const CEILING: [u64; 2] = [3, 1];
+/// The default ceiling for decomposers, ten times the founding share per site
+/// (ruling D27). Measured on the same world with flat dormancy and the
+/// default fullness (`tests/limits_decomposers.rs`, seeds 3, 5, 9, 11, 17,
+/// 600 ticks; battery seeds 0 to 19 all qualify at 3/1, 4/1, 6/1 and 10/1):
+/// the decomposer line's swing after tick 100 is cut from peaks of 434, 373
+/// and 241 (seeds 11, 3, 17) to 342, 251 and 208 at 10/1, to 133, 98 and
+/// 106 at 3/1. At 10/1 no line is gone at tick 600; at 3/1, 4/1 and 6/1 seed
+/// 3's producer line ends at 0 where with decomposers spared it ends at 5
+/// (and at 0 by tick 900), a knife edge not a cause: 10/1 leaves it at 5 and
+/// 20/1 at 0.
+pub const DECOMPOSER_CEILING: [u64; 2] = [10, 1];
 
 impl Limits {
     /// The ceiling for a lineage founded with `share` members per site.
     pub fn most(&self, share: u64) -> u64 {
-        let [n, d] = self.ceiling;
+        Self::ratio(self.ceiling, share)
+    }
+
+    /// The ceiling for a decomposer lineage founded with `share` per site.
+    pub fn decomposer_most(&self, share: u64) -> u64 {
+        Self::ratio(self.decomposer_ceiling.unwrap_or(self.ceiling), share)
+    }
+
+    fn ratio([n, d]: [u64; 2], share: u64) -> u64 {
         (u128::from(share) * u128::from(n)).div_ceil(u128::from(d.max(1))).try_into().unwrap_or(u64::MAX)
     }
 }
@@ -90,20 +124,23 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     if limits.full == 0 {
         return Err("the limits' fullness is nought".into());
     }
-    if limits.ceiling[0] == 0 || limits.ceiling[1] == 0 {
+    if [Some(limits.ceiling), limits.decomposer_ceiling].into_iter().flatten().any(|c| c[0] == 0 || c[1] == 0) {
         return Err("the limits' ceiling must be a ratio of two numbers above nought".into());
     }
     if limits.stocked == Some(0) {
         return Err("the limits' stocking is nought feeding periods".into());
     }
     let sites = (g.sites.len() as u64).max(1);
-    for i in (0..founding.lineages).filter(|&i| Role::of(founding.web, i).consumer()) {
+    let limited = |role: Role| role.consumer() || (role == Role::Decomposer && !limits.spare_decomposers);
+    for i in (0..founding.lineages).filter(|&i| limited(Role::of(founding.web, i))) {
+        let decomposer = Role::of(founding.web, i) == Role::Decomposer;
         let lineage: Key = format!("lineage:{i}");
         let founded: u64 = g.population.groups.values()
             .filter(|c| c.entity.alive && c.entity.lineage == lineage)
             .map(|c| c.count)
             .sum();
-        let most = limits.most(founded.div_ceil(sites).max(1));
+        let share = founded.div_ceil(sites).max(1);
+        let most = if decomposer { limits.decomposer_most(share) } else { limits.most(share) };
         // Matter one member asks over `k` feeding periods, read before the
         // fullness gate lands on the feed (it changes no amount).
         let stocked = match limits.stocked {

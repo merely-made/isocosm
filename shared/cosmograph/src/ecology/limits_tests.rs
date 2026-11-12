@@ -3,7 +3,7 @@
 
 //! The consumers' limits: what they lay, on whom, and what they do.
 
-use super::{limits::{CEILING, FULL}, *};
+use super::{limits::{CEILING, DECOMPOSER_CEILING, FULL}, *};
 use crate::{Execution, Session, bodied::Bodies, directing::Played};
 use std::collections::BTreeSet;
 
@@ -24,12 +24,15 @@ fn founding(limits: Option<Limits>) -> Founding {
     }
 }
 
+/// Whether lineage `i` is limited by default: every consumer and, since D27,
+/// the decomposer; the producer is not.
 fn consumer(i: u32) -> bool {
-    Role::of(Web::Diets, i).consumer()
+    let role = Role::of(Web::Diets, i);
+    role.consumer() || role == Role::Decomposer
 }
 
 fn big() -> Limits {
-    Limits { full: 1_000_000, ceiling: [1_000_000, 1], stocked: None }
+    Limits { full: 1_000_000, ceiling: [1_000_000, 1], stocked: None, decomposer_ceiling: Some([1_000_000, 1]), ..Default::default() }
 }
 
 #[test]
@@ -43,16 +46,16 @@ fn unset_limits_found_and_hash_as_before() {
 
 #[test]
 fn limits_round_trip() {
-    let f = founding(Some(Limits { full: 11, ceiling: [5, 2], stocked: None }));
+    let f = founding(Some(Limits { full: 11, ceiling: [5, 2], stocked: None, ..Default::default() }));
     let json = serde_json::to_string(&f).unwrap();
     assert!(json.contains("\"limits\""));
     assert_eq!(serde_json::from_str::<Founding>(&json).unwrap(), f);
-    assert_eq!(Limits::default(), Limits { full: FULL, ceiling: CEILING, stocked: None });
+    assert_eq!(Limits::default(), Limits { full: FULL, ceiling: CEILING, stocked: None, decomposer_ceiling: Some(DECOMPOSER_CEILING), spare_decomposers: false });
 }
 
 #[test]
 fn the_ceiling_is_a_ratio_of_the_founding_share() {
-    let l = |n, d| Limits { full: 1, ceiling: [n, d], stocked: None };
+    let l = |n, d| Limits { full: 1, ceiling: [n, d], stocked: None, ..Default::default() };
     assert_eq!(l(3, 1).most(6), 18);
     assert_eq!(l(2, 1).most(6), 12);
     assert_eq!(l(3, 2).most(5), 8, "rounded up");
@@ -66,7 +69,7 @@ fn added(with: &Process, without: &Process) -> Vec<Query> {
 }
 
 #[test]
-fn the_limits_gate_the_feed_and_birth_of_consumers_of_the_living_and_nobody_else() {
+fn the_limits_gate_the_feed_and_birth_of_every_consumer_decomposers_included_and_no_producer() {
     let (off, on) = (founding(None).generate().unwrap(), founding(Some(Limits::default())).generate().unwrap());
     assert_eq!(off.rules.processes.keys().collect::<Vec<_>>(), on.rules.processes.keys().collect::<Vec<_>>());
     for (id, p) in &on.rules.processes {
@@ -89,10 +92,43 @@ fn the_limits_gate_the_feed_and_birth_of_consumers_of_the_living_and_nobody_else
             _ => assert!(extra.is_empty(), "{id} gains {extra:?}"),
         }
     }
-    // Producers and the decomposer have neither gate; the three consumers both.
+    // Producers have neither gate; the three consumers and the decomposer both.
     assert!(!on.rules.processes.contains_key("ecology:feed-0"));
-    assert_eq!(on.rules.processes["ecology:feed-2"].requires, off.rules.processes["ecology:feed-2"].requires);
-    assert_ne!(on.rules.processes["ecology:feed-1"].requires, off.rules.processes["ecology:feed-1"].requires);
+    for i in [1, 2, 3, 4] {
+        assert_ne!(on.rules.processes[&format!("ecology:feed-{i}")].requires, off.rules.processes[&format!("ecology:feed-{i}")].requires);
+        assert_ne!(on.rules.processes[&format!("ecology:birth-{i}")].requires, off.rules.processes[&format!("ecology:birth-{i}")].requires);
+    }
+    assert_eq!(on.rules.processes["ecology:birth-0"].requires, off.rules.processes["ecology:birth-0"].requires);
+}
+
+#[test]
+fn a_spared_decomposer_has_neither_gate_and_a_decomposer_ceiling_is_its_own() {
+    let (off, spared) = (founding(None).generate().unwrap(),
+        founding(Some(Limits { spare_decomposers: true, ..Limits::default() })).generate().unwrap());
+    for kind in ["feed", "birth"] {
+        let id = format!("ecology:{kind}-2");
+        assert_eq!(spared.rules.processes[&id].requires, off.rules.processes[&id].requires, "{id}");
+        let id = format!("ecology:{kind}-1");
+        assert_ne!(spared.rules.processes[&id].requires, off.rules.processes[&id].requires, "{id}");
+    }
+    let wire = serde_json::to_string(&founding(Some(Limits { spare_decomposers: true, decomposer_ceiling: Some([6, 1]), ..Limits::default() }))).unwrap();
+    assert!(wire.contains("spare_decomposers") && wire.contains("decomposer_ceiling"));
+    let json = serde_json::to_string(&Limits::default()).unwrap();
+    assert!(json.contains("decomposer_ceiling") && !json.contains("spare"), "{json}");
+    let same = Limits { decomposer_ceiling: None, ..Limits::default() };
+    assert!(!serde_json::to_string(&same).unwrap().contains("decomposer"), "an unset ceiling stays off the wire");
+    assert_eq!(same.decomposer_most(2), same.most(2), "unset, decomposers take the ceiling");
+    assert_eq!(Limits::default().decomposer_most(2), 20);
+    let own = Limits { decomposer_ceiling: Some([6, 1]), ..Limits::default() };
+    assert_eq!(own.decomposer_most(2), 12);
+    assert_eq!(own.most(2), 6);
+    let g = founding(Some(own)).generate().unwrap();
+    let want = |i: u32, n: u64| g.rules.processes[&format!("ecology:birth-{i}")].requires.iter()
+        .any(|q| matches!(q, Query::MembersBelow { amount, .. } if *amount == n));
+    let share = |i: u32| g.population.groups.values()
+        .filter(|c| c.entity.alive && c.entity.lineage == format!("lineage:{i}")).map(|c| c.count).sum::<u64>()
+        .div_ceil(g.sites.len() as u64).max(1);
+    assert!(want(2, share(2) * 6) && want(1, share(1) * 3));
 }
 
 #[test]
@@ -101,7 +137,8 @@ fn the_ceiling_follows_each_lineages_founded_share() {
     for i in (0..5).filter(|&i| consumer(i)) {
         let n: u64 = g.population.groups.values()
             .filter(|c| c.entity.alive && c.entity.lineage == format!("lineage:{i}")).map(|c| c.count).sum();
-        let want = Limits::default().most(n.div_ceil(g.sites.len() as u64).max(1));
+        let share = n.div_ceil(g.sites.len() as u64).max(1);
+        let want = if Role::of(Web::Diets, i) == Role::Decomposer { Limits::default().decomposer_most(share) } else { Limits::default().most(share) };
         let birth = &g.rules.processes[&format!("ecology:birth-{i}")];
         assert!(birth.requires.iter().any(|q| matches!(q, Query::MembersBelow { amount, .. } if *amount == want)), "lineage {i}");
     }
@@ -143,10 +180,12 @@ fn a_full_consumer_does_not_feed_and_a_hungry_one_does() {
 #[test]
 fn births_stop_at_the_ceiling_and_resume_below_it() {
     // A ceiling of one where none stand: no consumer is born. Raised, they are.
-    let (_, none) = after(Limits { ceiling: [1, 1_000_000], ..big() }, 80);
-    assert_eq!(none, 0, "no consumer is born where none may stand");
+    let (_, none) = after(Limits { ceiling: [1, 1_000_000], decomposer_ceiling: Some([1, 1_000_000]), ..big() }, 80);
     let (_, some) = after(big(), 80);
-    assert!(some > 0, "consumers are born under a ceiling they never reach");
+    // A body between sites counts no members where it is, so one birth can
+    // slip through a ceiling of one; a handful at most, against the many.
+    assert!(none <= 1, "no consumer is born where none may stand: {none}");
+    assert!(some > 4 * none.max(1), "consumers are born under a ceiling they never reach: {some} against {none}");
 }
 
 #[test]

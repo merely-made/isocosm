@@ -87,10 +87,13 @@ fn limits_over_seeds_and_settings() {
         for _ in 0..workers {
             scope.spawn(|| {
                 while let Some((dormant, full, ceil, seed)) = queue.lock().unwrap().pop() {
+                    let ceiling = [if ceil > 0 { ceil } else { u64::MAX / 2 }, 1];
                     let limits = (full > 0 || ceil > 0).then_some(Limits {
                         full: if full > 0 { full } else { u64::MAX },
-                        ceiling: [if ceil > 0 { ceil } else { u64::MAX / 2 }, 1],
+                        ceiling,
+                        decomposer_ceiling: Some(ceiling),
                         stocked: None,
+                        ..Limits::default()
                     });
                     let (seen, peak) = run(founding(seed, limits, dormant), ticks);
                     println!("LIMITS dorm={} full={full} ceil={ceil} seed={seed} peak={peak} at100/300/end={seen:?}",

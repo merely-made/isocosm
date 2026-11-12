@@ -48,15 +48,29 @@ fn runs_120(rules: WorldRules, seed: u64) -> Runtime {
 #[test] fn dormancy_founds_and_runs() { runs_120(WorldRules { dormancy: true, ..WorldRules::generated() }, 9); }
 
 /// A founding rule, so it passes native admission with no declared rules; the
-/// flag alone lays the gates on the founded world's consumers.
+/// flag alone lays the gates on the founded world's consumers, decomposers
+/// included (D27). It is on in the generated rules, so this is the default world.
 #[test]
 fn limits_found_and_run() {
     let runtime = runs_120(WorldRules { limits: true, ..WorldRules::generated() }, 9);
     let sim = runtime.sim();
     let g = sim.genesis();
     assert!(g.founding.as_ref().unwrap().limits.is_some());
-    assert!(g.rules.processes["ecology:feed-1"].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::Below { .. })));
-    assert!(g.rules.processes["ecology:birth-1"].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::MembersBelow { .. })));
+    // The generated world founds producer, grazer and decomposer lineages.
+    for i in 1..=2 {
+        assert!(g.rules.processes[&format!("ecology:feed-{i}")].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::Below { .. })), "feed-{i}");
+        assert!(g.rules.processes[&format!("ecology:birth-{i}")].requires.iter().any(|q| matches!(q, cosmograph::rules::Query::MembersBelow { .. })), "birth-{i}");
+    }
+}
+
+#[test]
+fn the_generated_rules_turn_limits_on_and_no_limits_turns_them_off_and_default_stays_nothing() {
+    assert!(WorldRules::generated().limits && WorldRules::generated().dormancy);
+    assert!(HostConfig::default().world_rules.limits);
+    assert!(!WorldRules::default().limits && !WorldRules::all().limits);
+    assert!(WorldRules::default().is_off());
+    // An older saved rules object, with no `limits`, means off.
+    assert!(!serde_json::from_str::<WorldRules>(r#"{"dormancy":true}"#).unwrap().limits);
 }
 
 #[test]
@@ -139,7 +153,7 @@ fn a_new_generated_world_founds_with_the_crowding_brake_by_default() {
 #[test]
 #[cfg_attr(debug_assertions, ignore = "founds dormant worlds through the 60-tick witness; slow in debug, run with --release")]
 fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_default() {
-    let off = found_default(WorldRules { dormancy: false, ..HostConfig::default().world_rules }, 9);
+    let off = found_default(WorldRules { dormancy: false, limits: false, ..HostConfig::default().world_rules }, 9);
     let genesis = &off.founded().genesis;
     assert!(genesis.founding.as_ref().unwrap().dormancy.is_none() && genesis.rules.dormancy.is_none());
     let json = serde_json::to_string(genesis).unwrap();
@@ -150,10 +164,14 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
         authored.affinity().cloned()).unwrap();
     let before = startup::a1_setup_with_for_tests(founded, WorldRules::default()).unwrap();
     assert_eq!(digest_of(&off), cosmograph::digest(&before.founded.genesis));
-    // `--dormancy` is the default spelled out.
-    let on = found_default(WorldRules { dormancy: true, ..Default::default() }, 9);
+    // `--dormancy` and `--limits` are the default spelled out.
+    let on = found_default(WorldRules { dormancy: true, limits: true, ..Default::default() }, 9);
     assert_eq!(digest_of(&on), digest_of(&found_default(HostConfig::default().world_rules, 9)));
     assert_ne!(digest_of(&on), digest_of(&off));
+    // `--no-limits` alone is the world the brake default founded (2026-11-11).
+    let braked = found_default(WorldRules { limits: false, ..HostConfig::default().world_rules }, 9);
+    assert!(braked.founded().genesis.founding.as_ref().unwrap().limits.is_none());
+    assert_ne!(digest_of(&braked), digest_of(&on));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older
@@ -221,7 +239,7 @@ fn witness_census() {
         found.into_inner()
     };
     let (on, off) = (count(WorldRules::generated()), count(WorldRules::default()));
-    eprintln!("CENSUS founded of 120: default (brake) {on}, --no-dormancy {off}");
+    eprintln!("CENSUS founded of 120: default (brake, limits) {on}, --no-dormancy --no-limits {off}");
 }
 
 /// The played line through the real startup path with default flags, as far

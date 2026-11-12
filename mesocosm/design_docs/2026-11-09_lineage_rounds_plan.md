@@ -582,6 +582,10 @@ numbers and readings he has not ruled; within them, the grammar's drift
   feed with no feeding contract is weighed by what its plain `Eat` can
   take of the prey's matter accounts; that reading of "edible" for the
   flat world is mine.
+- **The decomposers' ceiling is ten times their share** (D27, mine): at
+  the grazers' three times, two more seeds in twenty lose a producer; at
+  ten, none more than with decomposers spared, and their median peak
+  falls from 227 to 200. A weak brake, chosen to do no harm.
 
 ## Questions for Mark
 
@@ -631,6 +635,18 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- 2026-11-12: D27 built. `limits::apply` gates decomposers too;
+  `Limits.decomposer_ceiling` (default ten times the founding share) and
+  `spare_decomposers` are new and absent from the wire when unset;
+  `WorldRules::generated` turns limits on and `--no-limits` turns them
+  off. No pin moved. Measured on the played A1 world with the crowding
+  brake, seeds 0 to 19 to tick 600, seeds losing a line: no limits 2 (12,
+  14); limits with decomposers spared 3 (10, 12, 14); decomposers at ten
+  times 3 (the same); at three times 4 (3, 10, 12, 19, and 14 lives).
+  Median peaks without and with limits: grazers 299 and 145, decomposers
+  300 and 200, producers 292 and 378. Finding: limits halve the grazers'
+  peaks and cost one seed a producer (10); every line lost but seed 14's
+  grazers is a producer. Played battery 20 of 20 in every arm.
 - 2026-11-12: Mark ruled the choices and questions (D17 to D31). Owed to
   build from them, none started: regard-gated holding (D18); water and
   light offsets for the world-class holder (D19); micro lineages as

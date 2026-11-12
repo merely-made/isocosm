@@ -32,9 +32,11 @@ pub struct WorldRules {
     /// The field's absence, in a saved setup, means off, as it did when that
     /// was saved; a newly founded world gets it from [`WorldRules::generated`].
     pub dormancy: bool,
-    /// Limits on consumers of the living: they feed only while not full and
-    /// bear young only below a per-site ceiling. Set in the founding, so it
-    /// reaches only the A1 world that is generated from it.
+    /// Limits on consumers: they feed only while not full and bear young only
+    /// below a per-site ceiling. Set in the founding, so it reaches only the A1
+    /// world that is generated from it. Like dormancy, an absent field in a
+    /// saved setup means off; a newly founded world gets it from
+    /// [`WorldRules::generated`] (ruling D27).
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub limits: bool,
 }
@@ -44,11 +46,12 @@ impl WorldRules {
     pub fn is_off(&self) -> bool { *self == Self::default() }
 
     /// The rules a new generated A1 world founds with unless the player asks
-    /// otherwise (2026-11-11): the crowding brake is on, and nothing else.
+    /// otherwise: the crowding brake (2026-11-11) and the consumers' limits
+    /// (D27) are on, and nothing else.
     /// `default()` and `all()` stay "nothing chosen" because that is what an
     /// absent field in a saved `Setup` meant when it was saved; the product
     /// default lives only here, in the host's starting configuration.
-    pub fn generated() -> Self { Self { dormancy: true, ..Self::default() } }
+    pub fn generated() -> Self { Self { dormancy: true, limits: true, ..Self::default() } }
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,

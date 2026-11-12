@@ -169,6 +169,7 @@ fn main() {
             "--dormancy" => config.world_rules.dormancy = true,
             "--no-dormancy" => config.world_rules.dormancy = false,
             "--limits" => config.world_rules.limits = true,
+            "--no-limits" => config.world_rules.limits = false,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -420,7 +421,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --dormancy      the default for a new generated A1 world, accepted as a no-op alias: producers' young lie dormant as
                   seeds, waking by season where the site is not crowded (a crowding brake)
   --no-dormancy   found a new generated A1 world without the crowding brake
-  --limits        world rule: grazers and other eaters of the living feed only while not full and breed only below a per-site ceiling
+  --limits        the default for a new generated A1 world, accepted as a no-op alias: consumers (grazers, predators,
+                  omnivores and decomposers) feed only while not full and breed only below a per-site ceiling
+  --no-limits     found a new generated A1 world without the consumers' limits
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view
