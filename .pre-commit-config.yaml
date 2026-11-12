@@ -1,57 +1,58 @@
+# house hooks --regen --local hooks.local.yaml
+# Written by `house hooks` (eidetic, crates/house); `house hooks --check` fails when this file drifts from it.
+# `house` is on the PATH: cargo install --git https://github.com/merely-made/eidetic house
 fail_fast: true
 default_install_hook_types: [pre-commit, post-commit, pre-push]
-# Checked at commit by prek (`prek install --allow-missing-config`), and over
-# the whole tree with `prek run --all-files`: the 600-line ceiling (ruling 592,
-# mere:stack.7), no hand-written JSON in a pack (ruling 624), and the decisions
-# manifest regenerated and staged. Rulings: eidetic's line-ceiling plan.
+# Hooks without stages run at pre-commit only, so the notes push inside
+# `house resolved push` reruns nothing but that hook.
+default_stages: [pre-commit]
 repos:
   - repo: local
     hooks:
       - id: line-ceiling
         name: line ceiling
-        entry: line-ceiling
-        language: rust
+        entry: house line-ceiling
+        language: system
         types: [text]
         always_run: true
-        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:line-ceiling-v0.0.2:line-ceiling"]
-      - id: pack-json
-        name: no hand-written JSON in a pack
-        entry: "Pack files people write are TOML (data formats brief F1, ruling 624); JSON in a pack belongs under fixtures/:"
-        language: fail
-        files: '(^|/)packs/.*\.json$'
-        exclude: '(^|/)fixtures/'
-      - id: responsa-regen
-        name: responsa regen
-        entry: responsa regen --stage
-        language: rust
-        pass_filenames: false
-        files: '(design_docs/.*\.md|\.rs)$'
-        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
-      - id: responsa-check
-        name: responsa check
-        entry: responsa check
-        language: rust
+      - id: decisions-regen
+        name: decisions regen
+        entry: house decisions regen --stage
+        language: system
         pass_filenames: false
         always_run: true
-        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
+      - id: decisions
+        name: decisions check
+        entry: house decisions check
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: clippy
         name: clippy
         entry: cargo clippy --all-targets
         language: system
         files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
         pass_filenames: false
+      # From hooks.local.yaml:
+      # This repository's own hooks; `house hooks --local hooks.local.yaml` appends them.
+      - id: pack-json
+        name: no hand-written JSON in a pack
+        entry: "Pack files people write are TOML (data formats brief F1, ruling 624); JSON in a pack belongs under fixtures/:"
+        language: fail
+        files: '(^|/)packs/.*\.json$'
+        exclude: '(^|/)fixtures/'
       # No Cargo.lock is tracked; what cargo resolved rides on each commit as a
-      # git note (scripts/record-resolved.sh).
+      # git note under refs/notes/resolved (`house resolved show <commit>`).
       - id: record-resolved
         name: record resolved versions
-        entry: bash scripts/record-resolved.sh record
+        entry: house resolved record
         language: system
         pass_filenames: false
         always_run: true
         stages: [post-commit]
       - id: push-resolved
         name: push resolved versions
-        entry: bash scripts/record-resolved.sh push
+        entry: house resolved push
         language: system
         pass_filenames: false
         always_run: true

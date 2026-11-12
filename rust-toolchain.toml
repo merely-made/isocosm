@@ -5,4 +5,4 @@
 # isocosm-core / isocosm-system still build on far less, but there is no
 # reason to hold the workspace behind their MSRV.
 [toolchain]
-channel = "1.99.1"
+channel = "stable"

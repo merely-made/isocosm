@@ -1,0 +1,7 @@
+# This repository's own hooks; `house hooks --local hooks.local.yaml` appends them.
+- id: pack-json
+  name: no hand-written JSON in a pack
+  entry: "Pack files people write are TOML (data formats brief F1, ruling 624); JSON in a pack belongs under fixtures/:"
+  language: fail
+  files: '(^|/)packs/.*\.json$'
+  exclude: '(^|/)fixtures/'
