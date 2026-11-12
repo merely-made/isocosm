@@ -320,6 +320,7 @@ parked (`wing-organs` D1).
   locally 2026-07-11" but cite Moot, Murm and Personae pieces; the plan itself
   says Tier 1 still needs live transfer.
 - 2026-10-28: the "no CRDTs" line is gone from the three CLAUDE.md files (D1).
+- 2026-11-12: `shared/wing-integration/tests/family_network/mesocosm.rs:38` does not compile under `cargo check --locked --all-targets` in that lock root: `LoopSettings` (Isocosm's own `continuation` crate) is missing the fields `condition` and `rounds`, so the test predates a change to that struct. Seen during the engine split's P4 relock (`89c2e207`); a lock cannot change a path crate, so it predates the relock, but it was read, not baselined at the earlier commit. The libraries check clean.
 
 ## Progress
 - 2026-10-31, working table steps 1-2: GM grants per participant, any number
