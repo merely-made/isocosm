@@ -92,10 +92,10 @@ The world's side has three sources, all data (D4): an authored typology shipped 
 
 A people's side is a tradition: notes on which effects combine and what they cost, held and passed as culture is (Schema 7, Processes 14), with working transmission paths and local variants and not only school names (founding record). What a tradition's typology does depends on its kind (D6): for a materialist typology, or a novel harnessing of nature's forces, it is what its holders can predict, and a wrong note wastes power or backfires while the laws stand; for a religious one, practice makes it truer, a divinity mattering more in a world of believers. Belief is counted in believers and their acts, not opinion (D7); which acts count for a god follows from its path to divinity and its domain (Organs 1). Faith and domain are distinct: a domain has its strength from the frequency of its process (Organs 2) and can exist with no god or avatar, while faith is acts directed at a god.
 
-Readings of mine, unruled: typologies of different kinds meet only through effects, never through a table across typologies; a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system is of processes or domains; a plane is a world-class entity (World 4, case 62) reached as a crossing is.
+Typologies of different kinds meet only through effects, never through a table across typologies, and a material typology's roots are bounded by the field budget (four to eight dense fields, elements memo §4), so a twelve-root system sorts processes or domains (D8). Reading of mine, unruled: a plane is a world-class entity (World 4, case 62) reached as a crossing is.
 - Done when: an authored pack (a four-root material typology and a five-root process one) and one generated typology found in the same world format; a tradition holds notes on a subset of the world's relations and a cast outside them fails as D6 says; a religious typology's strength follows its practice's frequency; each replays.
 - Needs: F1, F2 (the cost curve), F3; notes, teaching and imitation (`sim`, owed); cultures read up the ladder (World 10); a steady ecology under it
-- Rulings: 404, 1009, 101, 102, 49; D2 to D7
+- Rulings: 404, 1009, 101, 102, 49; D2 to D8
 - From: Mark, 2026-11-11 and 2026-11-12; `2026-08-29_elements_and_traits_memo.md` §7 items 6 to 8 (the naming of "element", answered by D3)
 
 ## Decisions
@@ -129,6 +129,10 @@ Readings of mine, unruled: typologies of different kinds meet only through effec
 - **D7, belief is believers and acts; faith is not domain (2026-11-12), refines D6:** Mark, of "Belief needs a bound": "yeah, believers, and acts, not opinion. what acts depends on the god, which depends on their path to divinity and their relevant domain. i distinguish faith from domains because a domain can exist without a god, avatar, etc." A religious typology is moved by counted believers performing acts; the acts that count for a god are set by its path to divinity and its domain. A domain stands without a god or avatar; faith needs one.
 
   Links: area Organs: glyphs, impresa, hagiograph · draws on 44, 46, 47, 49, 107 · plans functional-generation · summary Belief is counted in believers and their acts, set by the god's path and domain; a domain can exist without a god, faith cannot.
+
+- **D8, typologies meet through effects; twelve roots are not materials (2026-11-12):** Mark: "absolutely. 100%", of "typology has to sort processes or domains" (a twelve-root one, the field budget being four to eight dense fields) and "Several typologies in one world should meet only through effects, or the cross-table problem comes back."
+
+  Links: area Processes and rules · draws on 404, ecology.6 · plans functional-generation · summary Typologies in one world meet only through effects; a material typology is bounded by the field budget, so twelve roots sort processes or domains.
 
 ## Deferred and parked
 

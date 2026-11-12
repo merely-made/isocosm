@@ -6659,6 +6659,14 @@ summary = "Belief is counted in believers and their acts, set by the god's path 
 draws_on = ["44", "46", "47", "49", "107"]
 plans = ["functional-generation"]
 
+[decisions."functional-generation D8"]
+title = "typologies meet through effects; twelve roots are not materials (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "Typologies in one world meet only through effects; a material typology is bounded by the field budget, so twelve roots sort processes or domains."
+draws_on = ["404", "ecology.6"]
+plans = ["functional-generation"]
+
 [decisions."lineage-rounds D1"]
 title = "the first slice (2026-11-09), applies Mesocosm 6"
 source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
