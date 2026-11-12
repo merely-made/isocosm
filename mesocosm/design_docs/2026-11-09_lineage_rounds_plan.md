@@ -228,6 +228,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Duration and event conditions follow the threshold; at most two a round, one always a duration.
 
+- **D32, growth cell by cell and breeding as the body's act, after the eight operators (2026-11-12):** "We could definitely do growth on a granular basis. And breeding can also be something the body does." and "Yes, both, after the eight operators". A body builds over time, each cell paid for as it is laid down, where today the grammar unfolds whole; bearing young becomes something a body does with a part that builds, where today it is a rule the sim provides. Both wait for D29, so the grammar is complete first. Raised by comparison with ALIEN (chrxh/alien), whose bodies are built this way.
+
+  Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Bodies grow cell by cell at a cost and breeding is an act of the body, both after the eight operators.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -586,6 +590,18 @@ numbers and readings he has not ruled; within them, the grammar's drift
   the grazers' three times, two more seeds in twenty lose a producer; at
   ten, none more than with decomposers spared, and their median peak
   falls from 227 to 200. A weak brake, chosen to do no harm.
+
+- **The policy is one system whose shape is data** (mine, answering
+  Mark's "Why can't those compose into one system", 2026-11-12): today's
+  weights on drives and acts are a network with no hidden layer. A
+  lineage's policy keeps that form and may gain hidden units as its
+  shape drifts (the creature minds brief already names policy size and
+  shape as what changes slowly), in whole numbers, so replay stays
+  exact. One code path; a lineage with no hidden units computes exactly
+  what it does now. Members' deltas, the fold back into the lineage,
+  imitation and learning from play (M3.7, case 1056) work on either
+  shape. Not built; no neural net code or test files are in this
+  repository.
 
 ## Questions for Mark
 

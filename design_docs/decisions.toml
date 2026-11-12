@@ -6926,6 +6926,14 @@ summary = "Duration and event conditions follow the threshold; at most two a rou
 draws_on = ["1215"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D32"]
+title = "growth cell by cell and breeding as the body's act, after the eight operators (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Bodies grow cell by cell at a cost and breeding is an act of the body, both after the eight operators."
+draws_on = ["1215"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
