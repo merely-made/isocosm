@@ -7,6 +7,7 @@ use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
 use std::collections::BTreeMap;
 
 mod admission;
+mod budget;
 mod dormant;
 mod joint;
 mod limits;
@@ -29,6 +30,7 @@ pub use independence::*;
 pub use rates::Rates;
 pub use mass_law::MassLaw;
 pub use limits::Limits;
+pub use budget::Budget;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};
 pub use validated_run::{AdmittedJointRun, ValidatedJointRun};

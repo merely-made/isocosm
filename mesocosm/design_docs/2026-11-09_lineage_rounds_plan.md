@@ -613,6 +613,10 @@ numbers and readings he has not ruled; within them, the grammar's drift
   thread-local that swaps the default climate inside a closure, used
   only by the survival test to sweep scales through real founding.
 
+- **The total is named `Budget`, under `ecology/`** (mine):
+  `schema::Ledger` already means an account map. The accounting is
+  general to the simulator and could sit beside `Simulation::matter`.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -661,6 +665,19 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- 2026-11-12: the matter budget read. `Simulation::budget()`
+  (`ecology/budget.rs`) totals matter by reservoir without changing
+  state; the ignored `tests/ledger_budget.rs` samples it every 50 ticks
+  and attributes each change from the existing flow record. On the
+  played A1 world, seeds 0 to 9 to tick 600, with the brake and limits:
+  the grand total is the same at every sample on every seed (about
+  20,100 to 20,300), nothing issued and nothing lost. Matter is closed,
+  as Mark said; light credits energy, not matter. What moves is where it
+  sits: soil falls from 82% to between 1% and 47%, and dead bodies hold
+  28% to 68% by tick 600. A dead body keeps its matter until a
+  decomposer eats it; no law declares rot. The climate's strain was not
+  in this founding, so whether it destroys matter is unmeasured. Sim
+  1193 and Mesocosm 310 pass; no pin moved.
 - 2026-11-12: D26 built. The climate's three strain rates are a
   thirtieth of the first cut (`strain` 1/300, `drought` 1/600, `dim`
   1/150,000); the climate stays off by default and no pin moved. At the
