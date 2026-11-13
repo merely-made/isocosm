@@ -21,6 +21,7 @@ pub mod drift;
 pub mod grammar;
 pub mod program;
 pub mod reckon;
+pub mod repertoire;
 pub mod review;
 pub mod revise;
 pub mod sheet;

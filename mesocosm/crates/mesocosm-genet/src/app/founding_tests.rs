@@ -191,6 +191,14 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(spoiled.founded().genesis.founding.as_ref().unwrap().spoilage.is_some());
     assert_ne!(digest_of(&spoiled), digest_of(&on));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("spoilage"));
+    // `--repertoire` is off unless asked (D37): the default world has none, and asking adds it.
+    assert!(!WorldRules::generated().repertoire && !WorldRules::all().repertoire);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().repertoire.is_none());
+    let reached = found_default(WorldRules { repertoire: true, ..HostConfig::default().world_rules }, 9);
+    let founded = reached.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().repertoire.is_some());
+    assert!(founded.genesis.rules.repertoire.as_ref().is_some_and(|r| !r.kinds.is_empty()));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("repertoire"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

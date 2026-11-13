@@ -20,6 +20,7 @@ impl Doing<'_> {
         for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
             std::sync::Arc::make_mut(part).matter.clear();
         }
+        crate::repertoire::rebody(self.rules, self.lineages.and_then(|l| l.get(&child.lineage)), &mut child)?;
         child.born = self.tick;
         child.arrived = self.tick;
         child.visits.clear();

@@ -85,6 +85,7 @@ pub mod quickstart;
 pub mod party;
 mod queries;
 pub mod reach;
+pub mod repertoire;
 pub mod rng;
 pub mod rules;
 mod schedule;

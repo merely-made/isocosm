@@ -57,7 +57,8 @@ fn generated_specification(genesis: &cosmograph::simulation::Genesis) -> Result<
         let Some(feed) = genesis.rules.processes.get(&format!("ecology:feed-{consumer}")) else {
             continue;
         };
-        let Some(target) = feed.target.as_ref().filter(|target| target.alive == Some(true)) else {
+        // Living or either: the repertoire's feeds take both.
+        let Some(target) = feed.target.as_ref().filter(|target| target.alive != Some(false)) else {
             continue;
         };
         for &producer in &producers {

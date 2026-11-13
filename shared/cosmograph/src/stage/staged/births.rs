@@ -67,6 +67,7 @@ impl Staged<'_> {
         for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
             std::sync::Arc::make_mut(part).matter.clear();
         }
+        crate::repertoire::rebody(rules, self.sim.state.lineages.get(&child.lineage), &mut child)?;
         child.born = tick;
         child.arrived = tick;
         child.visits.clear();

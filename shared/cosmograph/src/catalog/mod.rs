@@ -5,14 +5,16 @@
 //! half of "trait x kingdom x effect" (mesocosm
 //! `design_docs/2026-11-09_lineage_rounds_plan.md`, D37 and D38).
 //!
-//! **A prototype, and read only.** D37 ruled that "the game part is the
+//! **A prototype, and read only** (the repertoire reads it, nothing writes it). D37 ruled that "the game part is the
 //! variety of the catalog of parts" and that a catalog of traits, one of
 //! effects and one of the parts that result can simply be made; D38 lifted
 //! the process code's stop rule against catalogs (`process/mod.rs`, header)
 //! and kept the memo's check that variety is real
 //! (`2026-08-29_elements_and_traits_memo.md` section 2) as a measurement.
-//! Nothing here is wired into founding, generation or the tick, so no
-//! world's behaviour or hash moves.
+//! Nothing here is wired into founding, generation or the tick unless a
+//! founding sets the repertoire (`crate::repertoire`), which lowers the parts
+//! that act at the meal into kinds lines reach by editing and drift; unset,
+//! no world's behaviour or hash moves.
 //!
 //! # What a row is
 //!

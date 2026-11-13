@@ -372,6 +372,10 @@ pub struct Rules {
     /// port does not admit and worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub spoilage: Option<crate::ecology::Spoilage>,
+    /// The catalog parts a repertoire lowered to kinds, which lines may reach
+    /// by edit and drift (D37); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub repertoire: Option<crate::repertoire::Lowered>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -433,6 +437,7 @@ impl Rules {
         if let Some(hosting) = &self.hosting { hosting.validate(self)?; }
         if let Some(dormancy) = &self.dormancy { dormancy.validate(self)?; }
         if let Some(spoilage) = &self.spoilage { spoilage.validate()?; }
+        if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }
 }

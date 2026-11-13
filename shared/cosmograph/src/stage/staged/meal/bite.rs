@@ -46,6 +46,9 @@ impl Staged<'_> {
         };
         let intake = feeding.intake(&self.stage.bodies[&self.stage.actor], id)?;
         let Some(port) = crate::mosaic::ports::active(intake) else { return Ok(None) };
+        // What the body's other organs tolerate counts too (a repertoire's
+        // tolerance organ, D37); in a founded body only the mouth has any.
+        let port = port.with_tolerance_bits(crate::mosaic::ports::ports(&self.stage.bodies[&self.stage.actor]).tolerance_bits());
         let prey = self.body(from)?;
         let flesh = rule.of(prey, sim.state.tick);
         for key in keys {

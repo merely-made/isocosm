@@ -178,7 +178,7 @@ three design docs that cite it. The record holds the words.
 | 605 | When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 817 | Migration departs and arrives after the traversed route's authored travel time; no next route before arrival. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 820 | Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 821 | A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 821 | A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
 | 822 | An event during travel names the journey as its native location and gains no site reach until a later native telling. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 823 | A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 829 | Port feeding applies to processes that declare it, migrated with their founding ports; unmarked saved grammars are preserved. | none |

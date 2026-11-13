@@ -54,6 +54,13 @@ pub struct WorldRules {
     /// means off, and an off rule is not written.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub spoilage: bool,
+    /// Catalog parts that act at the meal are lowered to kinds the world
+    /// declares, which lines reach by editing and drift; none is founded on a
+    /// line (lineage-rounds D37). Set in the founding, so it reaches only the
+    /// A1 world that is generated from it. Off unless asked: an absent field
+    /// in a saved setup means off, and an off rule is not written.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub repertoire: bool,
 }
 
 thread_local! {
@@ -89,7 +96,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -112,6 +119,9 @@ impl WorldRules {
         }
         if self.spoilage && genesis.founding.as_ref().is_none_or(|f| f.spoilage.is_none()) {
             return Err("--spoilage is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.repertoire && genesis.founding.as_ref().is_none_or(|f| f.repertoire.is_none()) {
+            return Err("--repertoire is a founding rule: it needs the generated A1 world".into());
         }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {

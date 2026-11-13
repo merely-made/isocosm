@@ -377,7 +377,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// the flat rate sets' dormancy, which copies the scaled active rates, then
 /// the consumers' limits, which gate the feed and birth processes as scaled,
 /// then rot, whose processes gate nothing and copy nothing, then spoilage,
-/// which reads the mouths the rest founded.
+/// which reads the mouths the rest founded, then the repertoire, which
+/// lowers catalog parts into kinds beside them.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
     if founding.ecology_rates != Rates::WorldTime {
@@ -386,5 +387,6 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     limits::apply(founding, g)?;
     rot::apply(founding, g)?;
     spoilage::apply(founding, g)?;
+    crate::repertoire::apply(founding, g)?;
     Ok(())
 }

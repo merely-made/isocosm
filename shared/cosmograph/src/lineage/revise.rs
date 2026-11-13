@@ -117,6 +117,7 @@ pub(super) fn offered_borne(
         .filter(|(_, v)| session.sim.revisable(lineage, v).is_ok())
         .take(most);
     out.extend(edits.map(|(name, v)| (name, v, true)));
+    out.extend(super::repertoire::offers(session, lineage, d, most).into_iter().map(|(name, v)| (name, v, true)));
     out
 }
 
@@ -196,6 +197,13 @@ fn folds(session: &Session, lineage: &str, d: &Development) -> Vec<(Key, Develop
 }
 
 impl Simulation {
+    /// Whether `now` is `had` and kinds the world's repertoire lowered that a
+    /// line of `kingdom` may reach (D37).
+    fn lowers_only(&self, kingdom: &str, had: &BTreeSet<Key>, now: &BTreeSet<Key>) -> bool {
+        self.genesis.rules.repertoire.as_ref()
+            .is_some_and(|r| had.is_subset(now) && now.difference(had).all(|k| r.reaches(kingdom, k)))
+    }
+
     /// Whether `lineage` may develop from `d`: its own lexicon, unchanged,
     /// and a recipe the world admits.
     pub(crate) fn revisable(&self, lineage: &str, d: &Development) -> Result<Lineage> {
@@ -204,7 +212,7 @@ impl Simulation {
             .development
             .as_ref()
             .ok_or("the lineage develops from nothing")?;
-        if had.lexicon != d.lexicon {
+        if had.lexicon != d.lexicon && !self.lowers_only(&l.kingdom, &had.lexicon, &d.lexicon) {
             return Err("a revision draws only on what the lineage has learned".into());
         }
         let revised = Lineage {

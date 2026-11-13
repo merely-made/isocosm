@@ -76,6 +76,9 @@ pub struct Founding {
     /// being refused (`ecology::spoilage`). Absent, it hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub spoilage: Option<crate::ecology::Spoilage>,
+    /// Catalog parts lowered to kinds lines reach by edit and drift (D37), `repertoire`. Absent, it hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub repertoire: Option<crate::repertoire::Repertoire>,
 }
 
 impl Default for Founding {
@@ -104,33 +107,14 @@ impl Default for Founding {
             limits: None,
             rot: None,
             spoilage: None,
+            repertoire: None,
         }
     }
 }
 
-fn set(values: &[&str]) -> BTreeSet<Key> {
-    values.iter().map(|s| s.to_string()).collect()
-}
-pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> Process {
-    Process {
-        id: id.into(),
-        causation,
-        requires: vec![Query::Alive(Binding::Actor)],
-        commitments: vec![],
-        effects,
-        risk: None,
-        target: None,
-        period: None,
-        priority: 0,
-        need_account: None,
-        need_below: 0,
-        glyphs: BTreeSet::new(),
-        invariants: set(&["sim:matter", "sim:nonnegative"]),
-        note: false,
-        port_feeding: None,
-        goal_directives: Vec::new(), turn: None,
-    }
-}
+mod helpers;
+pub(crate) use helpers::process;
+use helpers::set;
 
 impl Founding {
     pub fn generate(&self) -> Result<Genesis> {
@@ -326,6 +310,7 @@ impl Founding {
             hosting: None,
             dormancy: None,
             spoilage: None,
+            repertoire: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

@@ -319,6 +319,7 @@ impl ProbeFounding {
             hosting: None,
             dormancy: None,
             spoilage: None,
+            repertoire: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,

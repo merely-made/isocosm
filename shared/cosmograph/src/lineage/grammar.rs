@@ -42,6 +42,18 @@ pub(super) fn candidates(d: &Development, only: Option<&BTreeSet<Key>>) -> Vec<(
             }
         }
     }
+    out.extend(differentiations(d, d.lexicon.iter().filter(|k| only.is_none_or(|o| o.contains(*k)))));
+    out.into_iter()
+        .filter_map(|(name, v)| regrown(&v).ok().filter(|r| r != d).map(|r| (name, r)))
+        .collect()
+}
+
+/// The edits differentiating the last run of `d`'s grammar to each of `kinds`
+/// its body does not name, a kind outside the lexicon joining it (the
+/// repertoire's, D37); not yet held to the world's rules.
+pub(super) fn differentiations<'k>(d: &Development, kinds: impl Iterator<Item = &'k Key>) -> Vec<(Key, Development)> {
+    let mut out = vec![];
+    let Some(grammar) = &d.grammar else { return out };
     if let Ok(body) = unfold(grammar)
         && let Some(last) = body.last()
         && last.segments >= 2
@@ -51,8 +63,9 @@ pub(super) fn candidates(d: &Development, only: Option<&BTreeSet<Key>>) -> Vec<(
             .chain(body.iter().filter_map(|t| t.bears.clone()))
             .chain(body.iter().flat_map(|t| t.chain.iter().map(|l| l.kind.clone())))
             .collect();
-        for kind in d.lexicon.iter().filter(|k| !named.contains(*k) && only.is_none_or(|o| o.contains(*k))) {
+        for kind in kinds.filter(|k| !named.contains(*k)) {
             let mut edited = d.clone();
+            edited.lexicon.insert(kind.clone());
             if let Some(g) = edited.grammar.as_mut() {
                 g.rules.push(Rule::Differentiate { tagma, at, kind: kind.clone() });
             }

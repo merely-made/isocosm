@@ -680,6 +680,16 @@ numbers and readings he has not ruled; within them, the grammar's drift
   dead before the rule, or with no death tick, reads fresh; the harm
   record sits on `Simulation::harms()`, outside state and hash.
 
+- **Repertoire choices** (the implementer's and mine): a line reaches
+  only its own kingdom's parts unless `across_kingdoms`; a new mouth
+  replaces the founding one and is offered only on the function the
+  line's feed binds; any other organ is added as a tail; four offers at
+  a time from a window the seed rotates; young of a line that took a
+  part grow the recipe's own segments, with no draw; kind keys
+  `kind:catalog-<part>` are working words. An unexplained 182 units of
+  decomposer matter eaten in the four-line world with no carrier is
+  not chased.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -751,6 +761,29 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: catalog parts reach lines by editing and drift (D37), as
+  an optional rule, off by default (`Founding.repertoire`,
+  `repertoire.rs`, `lineage/repertoire.rs`; Mesocosm `--repertoire`).
+  The world lowers runnable catalog parts that act at the meal (about
+  18: jaws, broad mouths, dead-stock mouths, a digestive enzyme, grip
+  and contract limbs, a detox gut) into kinds with a box, cells and a
+  port; a line of the same kingdom is offered them at the review and
+  takes them at a boundary, scored by the same forked copy as every
+  other candidate. No line is founded with one. Three changes beyond
+  the brief make it work, all only under the rule: founded feeds
+  admit whatever their mouth admits; a tolerance organ elsewhere on the
+  body spares the mouth; and young grow from the line's recipe, because
+  **an A1 birth clones its parent (821), so no revision, the existing
+  ones included, has ever reached A1 young**. Measured, seeds 0 to 19,
+  four boundaries 100 ticks apart, rot, 12 decomposer bites and
+  spoilage: in the five-lineage web, 7 lines end carrying a part (11 of
+  69 boundary turns took one), bites harm 223 times, and other lines
+  eat 0.171 units of decomposer matter per site per tick (nought
+  without the rule). In the played four-line world nothing changes:
+  no unplayed animal line drifts. Armour, glands, parasites and roots
+  are not lowered (no defence law, gland process or infect rule yet).
+  Suites: sim 1233, Mesocosm 310, Eponym and root checks pass.
 
 - 2026-11-13: D36 and D37's bite, as an optional rule, off by default
   (`Founding.spoilage`, `ecology/spoilage.rs`; Mesocosm `--spoilage`).
