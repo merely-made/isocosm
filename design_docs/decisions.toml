@@ -6974,6 +6974,14 @@ summary = "Living decomposer matter is refused by ordinary mouths and admitted o
 draws_on = ["718", "832"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D37"]
+title = "food categories harm rather than refuse; dead flesh degrades into toxin; the game is the catalog of parts (2026-11-13), refines D36"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "A mouth that eats a category it does not tolerate is harmed, dead flesh ages into toxin, tough plant matter needs its own mouth, and variety comes from a generated catalog of parts (trait by kingdom by effect), not from founding one line per role."
+draws_on = ["718", "832"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
