@@ -6966,6 +6966,14 @@ summary = "In Mesocosm the player directs critters and drives only a sapient one
 draws_on = ["59", "60", "175", "671"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D36"]
+title = "decomposer flesh is toxic to ordinary mouths; a specialist can eat it (2026-11-13), refines D33"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "Living decomposer matter is refused by ordinary mouths and admitted only by a specialist intake port; the wider categorical food rules are open."
+draws_on = ["718", "832"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

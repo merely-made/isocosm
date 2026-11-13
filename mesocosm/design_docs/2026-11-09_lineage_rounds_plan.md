@@ -244,6 +244,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Directing and play · draws on 59, 60, 175, 671 · plans lineage-rounds · summary In Mesocosm the player directs critters and drives only a sapient one; the project description's first-person line is out of date.
 
+- **D36, decomposer flesh is toxic to ordinary mouths; a specialist can eat it (2026-11-13), refines D33:** "idk, their flesh might be toxic or something, thus allowing a specific ecological role for processing their toxic matter"; asked whether that is the ruling, "sure. probably we need to consider some categorical rules along those lines". The sim already has the category: an intake port admits living matter by kind (producer, consumer, decomposer, by kingdom) and the dead separately (`process::IntakePort`, `mosaic/ports/admission.rs`), and no founded mouth carries the decomposer kind (bulk mouth: producer; jaw: consumer; root: the dead). Owed: a part whose port admits living decomposer matter, a line that bears it in the played world, and the wider categorical rules, which are not yet ruled.
+
+  Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary Living decomposer matter is refused by ordinary mouths and admitted only by a specialist intake port; the wider categorical food rules are open.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
