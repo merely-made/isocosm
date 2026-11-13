@@ -192,7 +192,7 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Tagmata stay the truth; a grammar rule edit regenerates them and re-applies drift where parts still match.
 
-- **D23, the persona does not wait (2026-11-12), applies 1227:** "What? Look in dramatis lol. That custodian exists, no? I think only the m4 and the intel imac aren't branched off O-PC's root". The choice to hold the persona back was wrong: dramatis has its custodian (`djinn-custodian`) and `personae`, which `cosmograph-host` already takes. Regard and bonds key to the player's dramatis persona, minted if absent (1227); Mesocosm does not yet link it.
+- **D23, the persona does not wait (2026-11-12), applies 1227:** "What? Look in dramatis lol. That custodian exists, no? I think only the m4 and the intel imac aren't branched off O-PC's root". The choice to hold the persona back was wrong: dramatis has its custodian (`djinn-custodian`) and `personae`, which `isocosm-genet`, `isonetry` and `wing-integration` already take (corrected 2026-11-12: `cosmograph-host` does not). Regard and bonds key to the player's dramatis persona, minted if absent (1227); Mesocosm does not yet link it.
 
   Links: area Directing and play · draws on 1227, 1214 · plans lineage-rounds · summary The persona is built on dramatis now: regard and bonds key to the player's dramatis identity.
 
