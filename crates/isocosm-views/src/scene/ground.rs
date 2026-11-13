@@ -17,7 +17,8 @@
 //! any card whose edge reaches 512 texels. The host chooses the headroom, one
 //! spare brick layer above the board's tallest tile by default, so an edit
 //! that lifts it one layer retargets rather than rebuilding. The one layer is
-//! provisional, with what each costs in `testing/scene-board-paging/`.
+//! provisional; what each costs was recorded in `testing/scene-board-paging/`,
+//! removed on 2026-11-13 (git keeps it, isocosm `d955c11c`).
 //! Retargeting, refreshing and rebuilding are isometer's [`Residency`].
 //! Rulings 368/369 (2026-09-27) retain the existing centre-first selection
 //! with a current omitted count and allow a device-bounded local budget.

@@ -14,8 +14,10 @@
 //! `paging_receipts_at_256` is the cost receipt the lane's summary is built
 //! from, and `paging_receipts_headroom` what each spare layer costs. Both are
 //! ignored by default, because the first's baseline raises a 256 by 256 ground
-//! the old way, which is a minute in the debug build; the script in
-//! `testing/scene-board-paging/` runs them in both builds.
+//! the old way, which is a minute in the debug build. Run them with
+//! `--ignored`. The headed runner that ran them in both builds,
+//! `testing/scene-board-paging/`, was removed on 2026-11-13 (git keeps it,
+//! isocosm `d955c11c`).
 
 use std::collections::BTreeSet;
 use std::time::Instant;
