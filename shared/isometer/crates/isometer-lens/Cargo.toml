@@ -37,7 +37,7 @@ wgpu = { version = "30", default-features = false, features = [
     "webgpu",
 ] }
 bytemuck = { version = "1", features = ["derive"] }
-pollster = "0.4"
+pollster = "1"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
 burn = { version = "=0.22.1", default-features = false, features = ["std", "wgpu", "cubecl"], optional = true }

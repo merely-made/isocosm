@@ -116,7 +116,10 @@ pub type Result<T> = std::result::Result<T, String>;
 pub fn digest(value: &impl serde::Serialize) -> String {
     use sha2::{Digest, Sha256};
     let bytes = serde_json::to_vec(value).expect("sim schema serializes");
-    format!("{:x}", Sha256::digest(bytes))
+    Sha256::digest(bytes)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect()
 }
 
 /// Domain-separated deterministic draws, independent of visitation order.

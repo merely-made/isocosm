@@ -166,7 +166,11 @@ fn content_hash(manifest_text: &str, files: &BTreeMap<String, String>) -> String
         part(path.as_bytes());
         part(text.as_bytes());
     }
-    format!("{:x}", hasher.finalize())
+    hasher
+        .finalize()
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect()
 }
 
 /// The bundled `packs/` folder: beside the executable when shipped, else the
