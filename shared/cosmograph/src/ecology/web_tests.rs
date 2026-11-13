@@ -43,8 +43,8 @@ fn a_web_of_diets_feeds_each_role_on_its_prey() {
         t.among.into_iter().collect()
     };
     assert_eq!(among(1), vec!["lineage:0"], "the grazer eats producers");
-    assert_eq!(among(3), vec!["lineage:1", "lineage:4"], "the predator eats grazers and omnivores");
-    assert_eq!(among(4), vec!["lineage:0", "lineage:1"], "the omnivore eats producers and grazers");
+    assert_eq!(among(3), vec!["lineage:1", "lineage:2", "lineage:4"], "the predator eats grazers, decomposers and omnivores");
+    assert_eq!(among(4), vec!["lineage:0", "lineage:1", "lineage:2"], "the omnivore eats producers, grazers and decomposers");
     assert_eq!(among(2).len(), 4, "the decomposer eats the dead of all others");
     assert!(!g.rules.processes.contains_key("ecology:feed-0"), "producers do not feed");
     for i in [1, 3, 4] {

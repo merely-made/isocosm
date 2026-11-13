@@ -67,7 +67,7 @@ fn arm(text: &str) -> Option<Rot> {
         return None;
     }
     let (n, d) = text.split_once(',').expect("none or n,d");
-    Some(Rot { rate: [n.parse().unwrap(), d.parse().unwrap()] })
+    Some(Rot { rate: [n.parse().unwrap(), d.parse().unwrap()], ..Rot::default() })
 }
 
 /// Members alive of each lineage, seeds included.

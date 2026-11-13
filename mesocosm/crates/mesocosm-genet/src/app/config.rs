@@ -99,8 +99,8 @@ pub struct HostConfig {
     /// Each epoch's par is what the played line left alone would hold (D8).
     pub condition: bool,
     /// The world rules for a new generated world: all off but the crowding
-    /// brake and the consumers' limits, which are on unless `--no-dormancy` or
-    /// `--no-limits` (D2, D9, D12, D27; 2026-11-11).
+    /// brake, the consumers' limits and rot, which are on unless `--no-dormancy`,
+    /// `--no-limits` or `--no-rot` (D2, D9, D12, D27; 2026-11-11, 2026-11-12).
     pub world_rules: WorldRules,
 }
 
@@ -113,7 +113,7 @@ impl HostConfig {
         let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::generated();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --no-dormancy, --limits, --no-limits, --rot and --turn require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --no-dormancy, --limits, --no-limits, --rot, --no-rot and --turn require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 

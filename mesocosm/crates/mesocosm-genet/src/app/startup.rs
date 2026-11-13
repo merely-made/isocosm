@@ -27,7 +27,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     if rules.mass_law { founding.mass_law = Some(cosmograph::ecology::MassLaw::default()); }
     if rules.dormancy { founding.dormancy = Some(cosmograph::rules::Dormancy::flat()); }
     if rules.limits { founding.limits = Some(cosmograph::ecology::Limits::default()); }
-    if rules.rot { founding.rot = Some(cosmograph::ecology::Rot::default()); }
+    if rules.rot { founding.rot = Some(cosmograph::ecology::Rot { decomposer_bites: Some(cosmograph::ecology::DECOMPOSER_BITES), ..Default::default() }); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     let mut setup = mesocosm_runtime::runtime::ecology::Setup::generated_classified(

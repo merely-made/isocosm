@@ -642,6 +642,13 @@ numbers and readings he has not ruled; within them, the grammar's drift
   that account; the existing effect credited the lineage's own account
   at the site, which nothing draws.
 
+- **Faster decomposers are more feedings, not a bigger meal** (mine):
+  a bite takes one part of a corpse and parts are small, so a bigger
+  meal moved nothing; 12 feedings was the measured knee. The tick cost
+  of 12 feed processes per decomposer is not measured.
+- **The faster feeding rides on `Rot`** (mine): `decomposer_bites` is a
+  field of the rot rule, so it exists only where rot does.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -713,6 +720,24 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: D33, two parts of three. Rot is on for a new generated
+  world (`WorldRules::generated`, `--no-rot`; an older save without the
+  field reads as off). Decomposers are faster: `Rot.decomposer_bites`
+  copies a decomposer's feeding, and Mesocosm founds with 12
+  (`DECOMPOSER_BITES`). Seeds 0 to 7, 600 ticks: the decomposers' share
+  of dead matter goes from 50 to 64 percent, their median from 72 to
+  112, no line lost. **Decomposers as prey is not delivered.**
+  `Role::eats` now lets predators and omnivores eat decomposers, but a
+  bodied founding clears that list (`bodied/feeding.rs`): a mouth eats
+  what its intake port admits, and no port admits decomposer matter.
+  Measured decomposer matter eaten is nought in every arm
+  (`tests/corpse_share.rs`); the played world has no predator, and in
+  the five-lineage web the predator and omnivore die out in all 8
+  seeds. Mark's direction (2026-11-13): their flesh may be toxic, with
+  a specific role that can process it; not yet ruled. Also fixed a
+  test helper's digest formatting broken by a dependency update.
+  Suites: sim 1201, Mesocosm 310, Eponym and root checks pass.
 
 - 2026-11-12: rot built as an optional rule, unset by default.
   `Founding.rot` (`ecology/rot.rs`, default rate 1/50 with a floor of

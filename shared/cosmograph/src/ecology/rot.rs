@@ -22,15 +22,33 @@
 //! more dead lie at its site. A dead body keeps its matter in place for the
 //! decomposers: rot takes a part and the meal is of what remains.
 //!
+//! A decomposer does the same work faster: `decomposer_bites` multiplies the
+//! decomposers' feedings, so more of a corpse's matter goes to their bodies
+//! before rot returns it to the soil. In a bodied world nothing eats a
+//! decomposer yet: a mouth eats what its intake port admits, and no port
+//! admits their matter.
+//!
 //! Unset, no process is added and a world founds and hashes as before.
 
-use super::Rates;
+use super::{Rates, Role};
 use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 /// The soil account producers draw.
 const SOIL: &str = "world:soil";
+
+/// The decomposer bites a world that wants decomposers faster than rot
+/// founds with (Mesocosm's default). Measured on the played A1 world
+/// (`tests/corpse_share.rs`, seeds 0 to 19, 600 ticks, flat dormancy, default
+/// limits, rot a fiftieth): with rot and one bite the decomposers took 52
+/// percent of the dead matter that left corpses and ended at a median of 72;
+/// 2, 3, 5 and 8 bites took 61, 63, 65 and 66 percent and a median of 82,
+/// 94, 86 and 100; 12 took 66.5 percent, a median of 112 (101 with no rot),
+/// and 2 seeds losing a line (3 with rot alone, 3 with no rot). A bigger
+/// meal, a higher decomposer ceiling or none at all moved nothing: a bite
+/// takes one part of a corpse and the parts are small.
+pub const DECOMPOSER_BITES: u64 = 12;
 
 /// How a dead body rots, set on a founding.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -39,12 +57,21 @@ pub struct Rot {
     /// to its site each time it rots, and never less than one unit, so small
     /// corpses finish.
     pub rate: [u64; 2],
+    /// When set to `k`, a decomposer feeds `k` times where it fed once, each
+    /// feeding drawing its own bite of the corpse. A bite is one part of a
+    /// body and a part holds a unit or two, so a bigger meal takes no more
+    /// than the part it bites; more bites take more. With rot as the
+    /// baseline the decomposers do the same work faster, and what they eat
+    /// is held in their bodies, not returned to the
+    /// soil. Unset, a decomposer feeds as it did.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub decomposer_bites: Option<u64>,
 }
 
 impl Default for Rot {
     /// A fiftieth of what remains.
     fn default() -> Self {
-        Self { rate: [1, 50] }
+        Self { rate: [1, 50], decomposer_bites: None }
     }
 }
 
@@ -87,7 +114,20 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     if rot.rate[0] == 0 || rot.rate[1] == 0 {
         return Err("rot's rate must be a ratio of two numbers above nought".into());
     }
+    if rot.decomposer_bites == Some(0) {
+        return Err("rot's decomposer bites are nought feedings".into());
+    }
     for i in 0..founding.lineages {
+        if let Some(k) = rot.decomposer_bites
+            && Role::of(founding.web, i) == Role::Decomposer
+            && let Some(feed) = g.rules.processes.get(&format!("ecology:feed-{i}")).cloned()
+        {
+            for n in 1..k {
+                let mut more = feed.clone();
+                more.id = format!("ecology:feed-{i}-{n}");
+                g.rules.processes.insert(more.id.clone(), more);
+            }
+        }
         let mut p = process(
             &format!("ecology:rot-{i}"),
             Causation::Agentless,

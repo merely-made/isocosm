@@ -41,8 +41,10 @@ pub struct WorldRules {
     pub limits: bool,
     /// Dead bodies give their matter back to the site's soil at a slow rate
     /// without a decomposer. Set in the founding, so it reaches only the A1
-    /// world that is generated from it. Off unless asked for; an absent field
-    /// in a saved setup means off, and an off rule is not written.
+    /// world that is generated from it. Like limits, an absent field in a
+    /// saved setup means off, and an off rule is not written; a newly founded
+    /// world gets it from [`WorldRules::generated`] (owner's ruling,
+    /// 2026-11-12).
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub rot: bool,
 }
@@ -71,12 +73,12 @@ impl WorldRules {
     pub fn is_off(&self) -> bool { *self == Self::default() }
 
     /// The rules a new generated A1 world founds with unless the player asks
-    /// otherwise: the crowding brake (2026-11-11) and the consumers' limits
-    /// (D27) are on, and nothing else.
+    /// otherwise: the crowding brake (2026-11-11), the consumers' limits
+    /// (D27) and rot (2026-11-12) are on, and nothing else.
     /// `default()` and `all()` stay "nothing chosen" because that is what an
     /// absent field in a saved `Setup` meant when it was saved; the product
     /// default lives only here, in the host's starting configuration.
-    pub fn generated() -> Self { Self { dormancy: true, limits: true, ..Self::default() } }
+    pub fn generated() -> Self { Self { dormancy: true, limits: true, rot: true, ..Self::default() } }
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,

@@ -171,6 +171,7 @@ fn main() {
             "--limits" => config.world_rules.limits = true,
             "--no-limits" => config.world_rules.limits = false,
             "--rot" => config.world_rules.rot = true,
+            "--no-rot" => config.world_rules.rot = false,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -425,8 +426,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --limits        the default for a new generated A1 world, accepted as a no-op alias: consumers (grazers, predators,
                   omnivores and decomposers) feed only while not full and breed only below a per-site ceiling
   --no-limits     found a new generated A1 world without the consumers' limits
-  --rot           world rule: dead bodies give a slow share of their matter to the site's soil, without a decomposer
-                  (off by default; founds a new generated A1 world with it)
+  --rot           the default for a new generated A1 world, accepted as a no-op alias: dead bodies give a slow
+                  share of their matter to the site's soil, without a decomposer
+  --no-rot        found a new generated A1 world without rot
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

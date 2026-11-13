@@ -65,7 +65,11 @@ fn limits_found_and_run() {
 
 #[test]
 fn the_generated_rules_turn_limits_on_and_no_limits_turns_them_off_and_default_stays_nothing() {
-    assert!(WorldRules::generated().limits && WorldRules::generated().dormancy);
+    assert!(WorldRules::generated().limits && WorldRules::generated().dormancy && WorldRules::generated().rot);
+    assert!(HostConfig::default().world_rules.rot);
+    assert!(!WorldRules::default().rot && !WorldRules::all().rot);
+    // An older saved rules object, with no `rot`, means off.
+    assert!(!serde_json::from_str::<WorldRules>(r#"{"dormancy":true,"limits":true}"#).unwrap().rot);
     assert!(HostConfig::default().world_rules.limits);
     assert!(!WorldRules::default().limits && !WorldRules::all().limits);
     assert!(WorldRules::default().is_off());
@@ -156,7 +160,7 @@ fn a_new_generated_world_founds_with_the_crowding_brake_by_default() {
 #[test]
 #[cfg_attr(debug_assertions, ignore = "founds dormant worlds through the 60-tick witness; slow in debug, run with --release")]
 fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_default() {
-    let off = found_default(WorldRules { dormancy: false, limits: false, ..HostConfig::default().world_rules }, 9);
+    let off = found_default(WorldRules { dormancy: false, limits: false, rot: false, ..HostConfig::default().world_rules }, 9);
     let genesis = &off.founded().genesis;
     assert!(genesis.founding.as_ref().unwrap().dormancy.is_none() && genesis.rules.dormancy.is_none());
     let json = serde_json::to_string(genesis).unwrap();
@@ -167,14 +171,19 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
         authored.affinity().cloned()).unwrap();
     let before = startup::a1_setup_with_for_tests(founded, WorldRules::default()).unwrap();
     assert_eq!(digest_of(&off), cosmograph::digest(&before.founded.genesis));
-    // `--dormancy` and `--limits` are the default spelled out.
-    let on = found_default(WorldRules { dormancy: true, limits: true, ..Default::default() }, 9);
+    // `--dormancy`, `--limits` and `--rot` are the default spelled out.
+    let on = found_default(WorldRules { dormancy: true, limits: true, rot: true, ..Default::default() }, 9);
     assert_eq!(digest_of(&on), digest_of(&found_default(HostConfig::default().world_rules, 9)));
     assert_ne!(digest_of(&on), digest_of(&off));
     // `--no-limits` alone is the world the brake default founded (2026-11-11).
-    let braked = found_default(WorldRules { limits: false, ..HostConfig::default().world_rules }, 9);
+    let braked = found_default(WorldRules { limits: false, rot: false, ..HostConfig::default().world_rules }, 9);
     assert!(braked.founded().genesis.founding.as_ref().unwrap().limits.is_none());
     assert_ne!(digest_of(&braked), digest_of(&on));
+    // `--no-rot` alone is the world the limits default founded (2026-11-12).
+    let rotless = found_default(WorldRules { rot: false, ..HostConfig::default().world_rules }, 9);
+    assert!(rotless.founded().genesis.founding.as_ref().unwrap().rot.is_none());
+    assert!(on.founded().genesis.founding.as_ref().unwrap().rot.is_some());
+    assert_ne!(digest_of(&rotless), digest_of(&on));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

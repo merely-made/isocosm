@@ -104,8 +104,8 @@ impl Role {
         match self {
             Producer => false,
             Grazer => other == Producer,
-            Predator => matches!(other, Grazer | Omnivore),
-            Omnivore => matches!(other, Producer | Grazer),
+            Predator => matches!(other, Grazer | Omnivore | Decomposer),
+            Omnivore => matches!(other, Producer | Grazer | Decomposer),
             Decomposer => true,
         }
     }

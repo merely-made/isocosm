@@ -78,9 +78,10 @@ with, and `--no-dormancy` and `--no-limits`, like the other world rules, are ref
 consumers are the second default (D27): each consumer, grazers, predators, omnivores and decomposers
 alike, feeds only while it holds less than a set fullness and bears young only where fewer than a
 ceiling of its line stand at its site, which stops a line outrunning its food. `--no-limits` founds the
-world without them, and `--limits` is accepted as a no-op alias. `--rot` is off unless asked for: dead
+world without them, and `--limits` is accepted as a no-op alias. Rot is the third default (owner's ruling, 2026-11-12): dead
 bodies give a slow share of their matter (a fiftieth of what remains, at least one unit) to the site's soil, where producers draw it,
-without waiting for a decomposer to eat them (it is refused on a resumed save, spread, candidate or witness, like the other world rules). D calls the
+without waiting for a decomposer to eat them; it is the baseline, and decomposers do the same work faster (a decomposer feeds twelve times where it fed once, so they take about two thirds of the dead matter and rot the rest). `--no-rot` founds the world
+without it and `--rot` is accepted as a no-op alias (like the other world rules, `--no-rot` is refused on a resumed save, spread, candidate or witness). D calls the
 round, A extends a capped one, H forfeits when no body of the line is left,
 and at a loss Tab moves among the heirs.
 

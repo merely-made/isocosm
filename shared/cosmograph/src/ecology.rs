@@ -33,7 +33,7 @@ pub use independence::*;
 pub use rates::Rates;
 pub use mass_law::MassLaw;
 pub use limits::Limits;
-pub use rot::Rot;
+pub use rot::{DECOMPOSER_BITES, Rot};
 pub use budget::Budget;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};

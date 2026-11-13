@@ -44,7 +44,7 @@ fn unset_rot_founds_and_hashes_as_before() {
 
 #[test]
 fn rot_round_trips_and_lays_one_process_per_lineage() {
-    let f = founding(Some(Rot { rate: [1, 20] }));
+    let f = founding(Some(Rot { rate: [1, 20], ..Rot::default() }));
     let json = serde_json::to_string(&f).unwrap();
     assert!(json.contains("\"rot\""));
     assert_eq!(serde_json::from_str::<Founding>(&json).unwrap(), f);
@@ -60,14 +60,38 @@ fn rot_round_trips_and_lays_one_process_per_lineage() {
 
 #[test]
 fn a_rotting_share_is_at_least_one_unit() {
-    let rot = Rot { rate: [1, 50] };
+    let rot = Rot { rate: [1, 50], ..Rot::default() };
     assert_eq!((rot.gives(1), rot.gives(10), rot.gives(49), rot.gives(100), rot.gives(1000)), (1, 1, 1, 2, 20));
 }
 
 #[test]
+fn decomposer_bites_lay_more_feedings_for_decomposers_alone() {
+    let f = founding(Some(Rot { decomposer_bites: Some(3), ..Rot::default() }));
+    let json = serde_json::to_string(&f).unwrap();
+    assert!(json.contains("decomposer_bites"));
+    assert_eq!(serde_json::from_str::<Founding>(&json).unwrap(), f);
+    let g = f.generate().unwrap();
+    let plain = founding(Some(Rot::default())).generate().unwrap();
+    assert!(!serde_json::to_string(&Rot::default()).unwrap().contains("bites"), "unset is absent from the wire");
+    // Lineage 2 is the decomposer of the three levels: it gets two more feedings, copies of its first.
+    for n in 1..3 {
+        let more = &g.rules.processes[&format!("ecology:feed-2-{n}")];
+        let first = &g.rules.processes["ecology:feed-2"];
+        assert_eq!(more.effects, first.effects);
+        assert_eq!(more.target, first.target);
+    }
+    let added: Vec<_> = g.rules.processes.keys().filter(|id| !plain.rules.processes.contains_key(*id)).collect();
+    assert_eq!(added, ["ecology:feed-2-1", "ecology:feed-2-2"]);
+    for (id, p) in &plain.rules.processes {
+        assert_eq!(g.rules.processes.get(id), Some(p), "{id} unchanged");
+    }
+    assert!(founding(Some(Rot { decomposer_bites: Some(0), ..Rot::default() })).generate().is_err());
+}
+
+#[test]
 fn rot_names_what_it_cannot_found() {
-    assert!(founding(Some(Rot { rate: [0, 5] })).generate().is_err());
-    assert!(founding(Some(Rot { rate: [1, 0] })).generate().is_err());
+    assert!(founding(Some(Rot { rate: [0, 5], ..Rot::default() })).generate().is_err());
+    assert!(founding(Some(Rot { rate: [1, 0], ..Rot::default() })).generate().is_err());
     let world_time = Founding { ecology_rates: Rates::WorldTime, ..founding(Some(Rot::default())) };
     assert!(world_time.generate().is_err());
     let no_ecology = Founding { ecology: false, ..founding(Some(Rot::default())) };
@@ -76,7 +100,7 @@ fn rot_names_what_it_cannot_found() {
 
 #[test]
 fn a_dead_bodys_matter_reaches_the_soil_and_the_budget_stays_closed() {
-    let mut s = corpses(Some(Rot { rate: [1, 2] }));
+    let mut s = corpses(Some(Rot { rate: [1, 2], ..Rot::default() }));
     let before = s.sim.budget();
     assert!(before.dead["lineage:0"] > 0);
     let (mut rotted, mut soil_in) = (0u64, 0u64);
@@ -101,7 +125,7 @@ fn a_dead_bodys_matter_reaches_the_soil_and_the_budget_stays_closed() {
 
 #[test]
 fn a_decomposer_still_eats_a_rotting_body() {
-    let mut s = corpses(Some(Rot { rate: [1, 5] }));
+    let mut s = corpses(Some(Rot { rate: [1, 5], ..Rot::default() }));
     let (mut eaten, mut rotted) = (0u64, 0u64);
     for _ in 0..20 {
         for f in s.advance_tick_with_flows().unwrap().flows {
@@ -120,7 +144,7 @@ fn a_decomposer_still_eats_a_rotting_body() {
 #[test]
 fn rot_in_both_executions_is_the_same() {
     let hash = |mode| {
-        let mut g = founding(Some(Rot { rate: [1, 5] })).generate().unwrap();
+        let mut g = founding(Some(Rot { rate: [1, 5], ..Rot::default() })).generate().unwrap();
         for group in g.population.groups.values_mut().filter(|c| c.entity.lineage == "lineage:0") {
             group.entity_mut().alive = false;
         }

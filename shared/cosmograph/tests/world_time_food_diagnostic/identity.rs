@@ -38,7 +38,7 @@ impl FileIdentity {
         }
         Self {
             path,
-            sha256: format!("{:x}", sha.finalize()),
+            sha256: sha.finalize().iter().map(|b| format!("{b:02x}")).collect::<String>(),
             bytes,
         }
     }
