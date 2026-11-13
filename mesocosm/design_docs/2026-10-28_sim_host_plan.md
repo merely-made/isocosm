@@ -21,6 +21,14 @@ Not here: H7, the family session layer (`isonetry` remade), is `session-network 
 
   Links: area Directing and play · draws on 1051, 1053, 1056, 1227 · plans sim-host · summary A creature's learning travels with its lineage across worlds and with the player's persona as a portable record.
 
+- **D4, replicated worlds need the significant facts to agree, not every byte (2026-11-12):** "i wouldn't tear off my leg for this. just seems nice to have. if replicated worlds didn't resolve byte for byte identically, then i wouldn't be bothered as long as the significant facts/entities/events don't diverge." Byte-identical replay across machines is wanted, not required. What must hold between replicas is the significant record: which entities exist, the facts about them, and the events that happened. Pinned hashes stay as each machine's own regression check. This lifts the bar that kept float and GPU work (Burn, Rapier, fields) out of anything a replica sees; what counts as significant is not yet defined.
+
+  Links: area Host and network · draws on 381 · plans sim-host · summary Replicas must agree on significant facts, entities and events; byte-identical replay is wanted but not required.
+
+- **D5, the family owns audio, physics, fields, models and transport (2026-11-12):** Mark, naming the owner of each thing listed as missing: audio "firewheel"; physics "seiche"; "rapier, nexus (things to harvest perhaps), kiss2d/3d as a tenant renderer if needed"; models "distillery, esp, burn, athanor"; peer-to-peer "p2mere", with iroh "a carrier"; and on animation, "css animation is available if it comes down to that ... but procedurally solving animation/rendering in the cheapest, most modular, most reactive way we can would be pretty cool. i don't care about visual fidelity; i care more about performance, interactivity". The games take these from the family repositories and do not build their own.
+
+  Links: area Host and network · draws on 381 · plans sim-host · summary Audio is firewheel, physics and fields are seiche, models are distillery and esp, transport is p2mere over a carrier; animation is procedural and cheap, fidelity second to performance.
+
 ## Constraints
 
 - The core is a library in `cosmograph-host` with no product crate in its graph; products depend on it, not the reverse (884, 892).

@@ -7436,6 +7436,22 @@ summary = "A creature's learning travels with its lineage across worlds and with
 draws_on = ["1051", "1053", "1056", "1227"]
 plans = ["sim-host"]
 
+[decisions."sim-host D4"]
+title = "replicated worlds need the significant facts to agree, not every byte (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Host and network"
+summary = "Replicas must agree on significant facts, entities and events; byte-identical replay is wanted but not required."
+draws_on = ["381"]
+plans = ["sim-host"]
+
+[decisions."sim-host D5"]
+title = "the family owns audio, physics, fields, models and transport (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Host and network"
+summary = "Audio is firewheel, physics and fields are seiche, models are distillery and esp, transport is p2mere over a carrier; animation is procedural and cheap, fidelity second to performance."
+draws_on = ["381"]
+plans = ["sim-host"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
