@@ -194,6 +194,37 @@ pub struct IntakePort {
     /// survives rearrangement, while a port goes dormant when its tissue does.
     #[serde(default)]
     support: Option<ProcessRef>,
+    /// What this mouth eats without harm under the world's spoilage rule
+    /// (`crate::ecology::Spoilage`), beside what it admits: bits of
+    /// [`Tolerance`]. None unless set, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "is_none_tolerated")]
+    tolerance: u8,
+}
+
+fn is_none_tolerated(bits: &u8) -> bool {
+    *bits == 0
+}
+
+/// Matter a mouth can be made to eat without harm, under the spoilage rule
+/// (`mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md` D36, D37).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub enum Tolerance {
+    /// The flesh of the dead once it has aged.
+    AgedFlesh,
+    /// The flesh of the dead once it is toxic.
+    ToxicFlesh,
+    /// The living flesh of a decomposer, which is toxic to ordinary mouths.
+    DecomposerFlesh,
+}
+
+impl Tolerance {
+    const fn bit(self) -> u8 {
+        match self {
+            Self::AgedFlesh => 1,
+            Self::ToxicFlesh => 2,
+            Self::DecomposerFlesh => 4,
+        }
+    }
 }
 
 impl IntakePort {
@@ -206,6 +237,7 @@ impl IntakePort {
             kinds: 0,
             deadstock: false,
             support: None,
+            tolerance: 0,
         }
     }
 
@@ -218,6 +250,7 @@ impl IntakePort {
             kinds: 0,
             deadstock: true,
             support: None,
+            tolerance: 0,
         }
     }
 
@@ -232,6 +265,26 @@ impl IntakePort {
 
     pub const fn with_deadstock(mut self) -> Self {
         self.deadstock = true;
+        self
+    }
+
+    /// This mouth, eating `what` without harm.
+    pub const fn tolerating(mut self, what: Tolerance) -> Self {
+        self.tolerance |= what.bit();
+        self
+    }
+
+    pub const fn tolerates(self, what: Tolerance) -> bool {
+        self.tolerance & what.bit() != 0
+    }
+
+    /// Whether the mouth tolerates anything: the merge of ports reads this.
+    pub const fn tolerance_bits(self) -> u8 {
+        self.tolerance
+    }
+
+    pub const fn with_tolerance_bits(mut self, bits: u8) -> Self {
+        self.tolerance |= bits & 7;
         self
     }
 

@@ -5,7 +5,12 @@
 //! No caller receives a no-port fallback or an implicit source selector.
 
 use super::active;
-use crate::{process::NisKind, rules::{AccountKind, Rules}, schema::*};
+use crate::{
+    ecology::{Flesh, Spoilage},
+    process::{IntakePort, NisKind, Tolerance},
+    rules::{AccountKind, Rules},
+    schema::*,
+};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// A declaration explicitly admits every source line or only the named ones.
@@ -22,6 +27,9 @@ pub struct Source<'a> {
     lineage: &'a str,
     kind: Option<NisKind>,
     alive: bool,
+    /// The world's spoilage rule, which widens what a mouth admits and
+    /// lets it harm instead of refuse.
+    spoilage: Option<Spoilage>,
 }
 
 impl<'a> Source<'a> {
@@ -43,7 +51,7 @@ impl<'a> Source<'a> {
             "kingdom:myco" => Some(NisKind::Decomposer),
             _ => None,
         };
-        Ok(Self { lineage, kind, alive })
+        Ok(Self { lineage, kind, alive, spoilage: rules.spoilage })
     }
 
     pub fn lineage(self) -> &'a str {
@@ -52,15 +60,65 @@ impl<'a> Source<'a> {
 
     /// Declared foods, independent of whether an organ currently holds its
     /// supporting cells. Runtime admission checks readiness separately.
-    pub(crate) fn admitted_by(self, port: crate::process::IntakePort) -> Result<(), Refusal> {
+    ///
+    /// Under the spoilage rule a mouth that admits living animal or
+    /// decomposer matter is a flesh mouth, and also bites dead flesh and
+    /// (where decomposer flesh is toxic) decomposer flesh; whether the bite
+    /// harms is [`Source::harms`], not a refusal (D36, D37).
+    pub(crate) fn admitted_by(self, port: IntakePort) -> Result<(), Refusal> {
+        let flesh_mouth = port.admits_live(NisKind::Consumer) || port.admits_live(NisKind::Decomposer);
+        let bites_decomposer = self.spoilage.is_some_and(|s| s.decomposer_flesh_toxic)
+            && self.kind == Some(NisKind::Decomposer)
+            && flesh_mouth;
         if self.alive {
-            if !self.kind.is_some_and(|kind| port.admits_live(kind)) {
+            let admitted = self.kind.is_some_and(|kind| port.admits_live(kind));
+            if !admitted && !bites_decomposer {
                 return Err(Refusal::LivingKind);
             }
         } else if !port.admits_deadstock() {
-            return Err(Refusal::Deadstock);
+            let carrion = self.spoilage.is_some()
+                && flesh_mouth
+                && match self.kind {
+                    Some(NisKind::Consumer) => true,
+                    Some(NisKind::Decomposer) => bites_decomposer || port.admits_live(NisKind::Decomposer),
+                    _ => false,
+                };
+            if !carrion {
+                return Err(Refusal::Deadstock);
+            }
         }
         Ok(())
+    }
+
+    /// Whether eating this matter at `class` harms a mouth with `port`: it
+    /// is admitted, and it is decomposer flesh the mouth neither admits as
+    /// living food nor tolerates, or it is dead animal or decomposer flesh
+    /// older than the mouth tolerates. Always false where no rule is set.
+    pub(crate) fn harms(self, port: IntakePort, class: Flesh) -> bool {
+        let Some(rule) = self.spoilage else { return false };
+        // A mouth gained after founding (by an edit, drift or arrival) has
+        // the tolerance its kind founds with, read here rather than stored.
+        let port = rule.founded(port);
+        if self.admitted_by(port).is_err() {
+            return false;
+        }
+        let decomposer = self.kind == Some(NisKind::Decomposer);
+        if decomposer
+            && rule.decomposer_flesh_toxic
+            && !port.admits_live(NisKind::Decomposer)
+            && !port.tolerates(Tolerance::DecomposerFlesh)
+        {
+            return true;
+        }
+        let flesh = matches!(self.kind, Some(NisKind::Consumer | NisKind::Decomposer));
+        if self.alive || !flesh {
+            return false;
+        }
+        match class {
+            Flesh::Fresh => false,
+            Flesh::Aged => !port.tolerates(Tolerance::AgedFlesh),
+            Flesh::Toxic => !port.tolerates(Tolerance::ToxicFlesh),
+        }
     }
 }
 
@@ -124,7 +182,7 @@ mod tests {
     use crate::process::{IntakePort, Process, Registry};
 
     fn source(line: &str, kind: NisKind, alive: bool) -> Source<'_> {
-        Source { lineage: line, kind: Some(kind), alive }
+        Source { lineage: line, kind: Some(kind), alive, spoilage: None }
     }
 
     #[test]

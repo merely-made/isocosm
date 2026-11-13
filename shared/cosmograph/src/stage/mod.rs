@@ -83,6 +83,8 @@ pub(crate) struct Stage {
     event: Option<(Event, Reach)>,
     /// The act's matter moves, for the flow record (ruling 345).
     legs: Vec<Leg>,
+    /// The bites of the act that harmed their eater, for the flow record.
+    harms: Vec<crate::flows::Harm>,
     /// Where its takes and gives of a body's own matter went among the
     /// body's parts (ruling 504), which split those legs.
     pub(crate) routed: Vec<crate::flows::Routed>,
@@ -158,6 +160,7 @@ impl Simulation {
             highs: BTreeMap::new(),
             event: None,
             legs: vec![],
+            harms: vec![],
             routed: vec![],
             act,
             demands: None,
@@ -359,8 +362,10 @@ impl Simulation {
                 j.event(&event.id);
             }
         }
+        let harms = std::mem::take(&mut stage.harms);
         self.write(stage, next_action);
         self.flowed(MadeBy::Process(process.into()), legs, count);
+        self.harmed(harms);
         if let Some(t) = &mut self.targets {
             t.touch(&self.state.population, reached.iter().copied());
         }

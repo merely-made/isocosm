@@ -674,6 +674,12 @@ numbers and readings he has not ruled; within them, the grammar's drift
   effect, and some odd pairings remain; costs and strengths are
   placeholder numbers; copyleft sources are used for shape only.
 
+- **Spoilage choices** (the implementer's and mine): a flesh mouth
+  under the rule also eats the newly dead of animal lines; one wound
+  per bite whatever it took; dead plant matter does not age; a body
+  dead before the rule, or with no death tick, reads fresh; the harm
+  record sits on `Simulation::harms()`, outside state and hash.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -745,6 +751,26 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: D36 and D37's bite, as an optional rule, off by default
+  (`Founding.spoilage`, `ecology/spoilage.rs`; Mesocosm `--spoilage`).
+  A body records the tick it died; its flesh reads fresh, aged (30
+  ticks) or toxic (100). A mouth that bites flesh it does not tolerate
+  still eats, so matter moves and the budget stays closed, and takes a
+  wound of 2 cells through the existing `harm::hurt`; living
+  decomposer flesh is toxic to mouths without the tolerance. A jaw
+  tolerates aged flesh (Mark's cats and scavengers), the dead-matter
+  root tolerates everything; tolerance is read from the mouth's kind at
+  the bite, so a mouth gained later by an edit or drift has it too.
+  Unset, a mouth refuses as before. Numbers are placeholders. Catalog:
+  15 more parts run (116 of 272). **It never fires in a founded
+  world:** every founded consumer, the five-lineage web's predator and
+  omnivore included, has a plant-matter mouth only, and the decomposer
+  a dead-matter root (`mosaic::ports::seed` gives a jaw only to a long
+  part under the head); seeds 0 to 19, harm events nought in every arm.
+  So decomposers as prey waits on parts reaching lines by editing and
+  drift (D37), next. Suites: sim 1222, Mesocosm 310, Eponym and root
+  checks pass.
 
 - 2026-11-13: the three catalogs as data (D37, D38), a prototype. In
   `shared/cosmograph/src/catalog/` with TOML datasheets under

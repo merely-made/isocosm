@@ -201,6 +201,9 @@ pub(crate) fn hurt(
     if anatomy::living_cells(half, p) == 0 {
         if e.parent_of(part).is_none() {
             e.alive = false;
+            if rules.spoilage.is_some() {
+                e.died = Some(tick);
+            }
             wounded.died = true;
         } else {
             let detached = detach(e, part, tick, regrows)?;

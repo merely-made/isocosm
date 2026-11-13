@@ -303,7 +303,7 @@ kingdoms = ["kingdom:myco", "kingdom:micro", "kingdom:fauna"]
 emits = ["toxin"]
 cost_mg = 5
 analogue = "decomposer flesh to an ordinary mouth"
-needs = "harm-on-bite"
+via = ["rule:spoilage"]
 gates = [{ affected = "eater", requires = "trait:detox-tolerance", inverted = true }, { affected = "eater", requires = "trait:decomposer-eating", inverted = true }]
 timing = { onset = 2, intensity = 4, duration = 60, decay = 1, stacking = "strongest" }
 

@@ -107,6 +107,7 @@ pub fn of(
         settled: None,
         spent: None,
         learned: None,
+        died: None,
     };
     e.embody(body);
     let carried = match d.systems.is_empty() {

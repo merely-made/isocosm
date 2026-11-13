@@ -135,8 +135,12 @@ impl Session {
 
     fn with_flows<T>(&mut self, run: impl FnOnce(&mut Self) -> Result<T>) -> Result<FlowResult<T>> {
         self.sim.flows.keeping = true;
+        self.sim.flows.harms.clear();
         let result = run(self);
-        let flows = std::mem::take(&mut self.sim.flows).flows;
+        let taken = std::mem::take(&mut self.sim.flows);
+        // The harms stay readable, by `Simulation::harms`, until the next record.
+        self.sim.flows.harms = taken.harms;
+        let flows = taken.flows;
         result.map(|result| FlowResult {
             tick: self.sim.state.tick,
             result,
@@ -235,17 +239,53 @@ pub(crate) fn split(legs: Vec<Leg>, routed: Vec<Routed>) -> Vec<Leg> {
     out
 }
 
+/// A bite that harmed its eater (the spoilage rule, lineage-rounds D37):
+/// the meal happened and its matter moved, and the eater lost `cells` to a
+/// wound as a hazard's hit takes them. Handed over beside the flows, and
+/// like them outside the world's state, hash and save.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Harm {
+    pub tick: Tick,
+    /// The process whose meal it was.
+    pub made_by: Key,
+    pub eater: Id,
+    pub prey: Id,
+    /// The age of the prey's flesh when it was dead; fresh while it lived.
+    pub flesh: crate::ecology::Flesh,
+    /// The matter that harmed, the prey's lineage.
+    pub lineage: Key,
+    pub cells: u32,
+    /// The place it was eaten at.
+    pub place: Id,
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Flows {
     keeping: bool,
     flows: Vec<Flow>,
     /// The flows kept when the advance under way began.
     kept: usize,
+    harms: Vec<Harm>,
+    kept_harms: usize,
 }
 
 impl Simulation {
     pub(crate) fn flowing(&self) -> bool {
         self.flows.keeping
+    }
+
+    /// The bites that harmed their eaters in the last recorded tick or
+    /// command (`advance_tick_with_flows`, `command_with_flows`).
+    #[must_use]
+    pub fn harms(&self) -> &[Harm] {
+        &self.flows.harms
+    }
+
+    /// Records an accepted act's harms.
+    pub(crate) fn harmed(&mut self, harms: Vec<Harm>) {
+        if self.flows.keeping {
+            self.flows.harms.extend(harms);
+        }
     }
 
     /// Records an accepted act's moves, standing for `count` members.
@@ -298,10 +338,12 @@ impl Simulation {
     /// Marks where an advance begins, to put its moves back if it is refused.
     pub(crate) fn flows_from(&mut self) {
         self.flows.kept = self.flows.flows.len();
+        self.flows.kept_harms = self.flows.harms.len();
     }
 
     pub(crate) fn unflow(&mut self) {
         self.flows.flows.truncate(self.flows.kept);
+        self.flows.harms.truncate(self.flows.kept_harms);
     }
 }
 

@@ -12,6 +12,7 @@ mod dormant;
 mod joint;
 mod limits;
 mod rot;
+mod spoilage;
 mod validate;
 mod evidence;
 mod run;
@@ -27,6 +28,10 @@ mod web_tests;
 mod limits_tests;
 #[cfg(test)]
 mod rot_tests;
+#[cfg(test)]
+mod spoilage_tests;
+#[cfg(test)]
+mod spoilage_meal_tests;
 pub(crate) use web::Role;
 pub use web::Web;
 pub use independence::*;
@@ -34,6 +39,7 @@ pub use rates::Rates;
 pub use mass_law::MassLaw;
 pub use limits::Limits;
 pub use rot::{DECOMPOSER_BITES, Rot};
+pub use spoilage::{Flesh, Spoilage};
 pub use budget::Budget;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};
@@ -370,7 +376,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// What lays over the configured and embodied ecology: the mass law, then
 /// the flat rate sets' dormancy, which copies the scaled active rates, then
 /// the consumers' limits, which gate the feed and birth processes as scaled,
-/// then rot, whose processes gate nothing and copy nothing.
+/// then rot, whose processes gate nothing and copy nothing, then spoilage,
+/// which reads the mouths the rest founded.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
     if founding.ecology_rates != Rates::WorldTime {
@@ -378,5 +385,6 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     limits::apply(founding, g)?;
     rot::apply(founding, g)?;
+    spoilage::apply(founding, g)?;
     Ok(())
 }

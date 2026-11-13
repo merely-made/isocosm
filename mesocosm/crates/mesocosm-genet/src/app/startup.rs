@@ -28,6 +28,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     if rules.dormancy { founding.dormancy = Some(cosmograph::rules::Dormancy::flat()); }
     if rules.limits { founding.limits = Some(cosmograph::ecology::Limits::default()); }
     if rules.rot { founding.rot = Some(cosmograph::ecology::Rot { decomposer_bites: Some(cosmograph::ecology::DECOMPOSER_BITES), ..Default::default() }); }
+    if rules.spoilage { founding.spoilage = Some(cosmograph::ecology::Spoilage::default()); }
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     let mut setup = mesocosm_runtime::runtime::ecology::Setup::generated_classified(
@@ -117,7 +118,7 @@ fn generated_world(config: &HostConfig, affinity: Option<cosmograph::rules::Affi
         if let Some(mode) = config.mode { founded.mode = mode; }
         // The bench founding is no A1 world, so the default brake and limits have no
         // founding to set; only the other rules are laid over it.
-        mesocosm_runtime::world_rules::WorldRules { dormancy: false, limits: false, rot: false, ..config.world_rules }.apply(&mut founded.genesis)?;
+        mesocosm_runtime::world_rules::WorldRules { dormancy: false, limits: false, rot: false, spoilage: false, ..config.world_rules }.apply(&mut founded.genesis)?;
         return Runtime::bench(founded, config.ticks_per_second);
     }
     if let Some(path) = &config.ecology_candidate {

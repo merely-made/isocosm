@@ -33,7 +33,7 @@ kingdoms = ["kingdom:fauna", "kingdom:micro"]
 admits = ["dead:aged", "dead:toxic"]
 cost_mg = 3
 analogue = "a carcass in the sun"
-needs = "flesh-ageing"
+via = ["rule:spoilage"]
 timing = { onset = 30, intensity = 1, duration = 200, decay = 0, stacking = "strongest" }
 
 [[effect]]
@@ -351,7 +351,7 @@ only = ["trait:detox-tolerance", "trait:digestive-enzyme"]
 kingdoms = ["kingdom:fauna", "kingdom:myco"]
 cost_mg = 3
 analogue = "a koala on eucalyptus"
-needs = "harm-on-bite"
+via = ["rule:spoilage"]
 
 [[effect]]
 key = "effect:digest-wood"
@@ -412,7 +412,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco"]
 admits = ["dead:aged"]
 cost_mg = 3
 analogue = "a hyena on an old carcass"
-needs = "flesh-ageing"
+via = ["rule:spoilage"]
 gates = [{ affected = "eater", requires = "dead:aged", inverted = true }]
 timing = { onset = 4, intensity = 2, duration = 30, decay = 1, stacking = "refresh" }
 

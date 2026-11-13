@@ -64,6 +64,7 @@ pub const RULES: &[(&str, &str)] = &[
     ("senses", "senses.rs"),
     ("light", "light.rs"),
     ("rot", "ecology/rot.rs"),
+    ("spoilage", "ecology/spoilage.rs"),
     ("web", "ecology/web.rs"),
     ("limits", "ecology/limits.rs"),
     ("port-admission", "mosaic/ports/admission.rs"),

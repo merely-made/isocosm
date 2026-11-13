@@ -6,6 +6,7 @@
 
 use super::*;
 
+mod bite;
 mod partition;
 
 impl Staged<'_> {
@@ -36,14 +37,16 @@ impl Staged<'_> {
             .ok_or_else(|| "a meal overflows".into())
     }
 
-    pub(super) fn meal(
+    /// The meal itself: what its eater's mouth does not tolerate of what it
+    /// took, for `bite` to charge.
+    fn eat(
         &mut self,
         from: Binding,
         amount: &Amount,
         into: &Key,
         of: &[Key],
         whole: bool,
-    ) -> Result<()> {
+    ) -> Result<Option<(crate::ecology::Flesh, Key)>> {
         self.sim.diagnostic_stage("meal.request");
         if self.body(from)?.journey.is_some() {
             return Err("travelling prey has no resident site".into());
@@ -237,7 +240,7 @@ impl Staged<'_> {
             if asked >= all && self.incorporate(from, part)? {
                 sim.diagnostic_meal_update(None, None, Some(&holdings));
                 sim.diagnostic_given(&holdings);
-                return Ok(());
+                return self.untolerated(from, offered.keys());
             }
         }
         let taken: Ledger = match portion {
@@ -252,6 +255,7 @@ impl Staged<'_> {
                 .collect(),
             None => meaning::share(&offered, rules, asked_amount),
         };
+        let harmed = self.untolerated(from, taken.keys())?;
         sim.diagnostic_stage("meal.transfer");
         let prey = self.holder(from);
         let mut total = 0u64;
@@ -287,7 +291,8 @@ impl Staged<'_> {
                         }));
                 }
             }
-            return self.partition_meal(&meal, into, total);
+            self.partition_meal(&meal, into, total)?;
+            return Ok(harmed);
         }
         self.give(Binding::Actor, into, total)?;
         sim.diagnostic_given(&Ledger::from([(into.clone(), total)]));
@@ -300,6 +305,6 @@ impl Staged<'_> {
                     amount,
                 }));
         }
-        Ok(())
+        Ok(harmed)
     }
 }

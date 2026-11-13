@@ -250,5 +250,6 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         settled: None,
         spent: None,
         learned: None,
+        died: None,
     }
 }

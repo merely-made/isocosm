@@ -160,6 +160,11 @@ pub struct Entity {
     /// serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub learned: Option<Learned>,
+    /// The tick it died, kept only where the world's spoilage rule is set
+    /// (`crate::ecology::Spoilage`), from which its flesh's age is read;
+    /// absent elsewhere, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub died: Option<Tick>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the

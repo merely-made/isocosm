@@ -43,6 +43,7 @@ pub fn ports(e: &Entity) -> IntakePort {
             if port.admits_deadstock() {
                 merged = merged.with_deadstock();
             }
+            merged = merged.with_tolerance_bits(port.tolerance_bits());
             merged
         })
 }

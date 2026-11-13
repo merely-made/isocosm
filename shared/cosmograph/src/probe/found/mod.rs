@@ -318,6 +318,7 @@ impl ProbeFounding {
             exertion: None,
             hosting: None,
             dormancy: None,
+            spoilage: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
@@ -524,6 +525,7 @@ pub(super) fn member(
         settled: None,
         spent: None,
         learned: None,
+        died: None,
     }
 }
 

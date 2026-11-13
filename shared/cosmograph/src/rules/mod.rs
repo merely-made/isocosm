@@ -367,6 +367,11 @@ pub struct Rules {
     /// no body is dormant and worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dormancy: Option<Dormancy>,
+    /// Whether dead flesh ages and a mouth eats what it does not tolerate to
+    /// its harm (lineage-rounds D36, D37); absent, a mouth refuses what its
+    /// port does not admit and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spoilage: Option<crate::ecology::Spoilage>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -427,6 +432,7 @@ impl Rules {
         if let Some(exertion) = &self.exertion { exertion.validate()?; }
         if let Some(hosting) = &self.hosting { hosting.validate(self)?; }
         if let Some(dormancy) = &self.dormancy { dormancy.validate(self)?; }
+        if let Some(spoilage) = &self.spoilage { spoilage.validate()?; }
         Ok(())
     }
 }

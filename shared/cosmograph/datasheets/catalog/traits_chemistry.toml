@@ -132,7 +132,7 @@ emits = ["toxin"]
 cost_mg = 9
 reads = ["harm", "meal", "decay"]
 analogue = "a poisonous mushroom, a blister beetle"
-needs = "harm-on-bite"
+via = ["rule:spoilage"]
 strengths = [{ kind = "toxin", role = "attack", amount = 4 }]
 
 [[trait]]
@@ -197,7 +197,7 @@ sites = ["eating"]
 cost_mg = 11
 reads = ["harm", "meal", "upkeep"]
 analogue = "koala liver, a beetle on milkweed"
-needs = "harm-on-bite"
+via = ["rule:spoilage"]
 unlocks = ["dead:toxic", "live:decomposer"]
 strengths = [{ kind = "toxin", role = "defend", amount = 6 }]
 

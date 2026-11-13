@@ -184,6 +184,13 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(rotless.founded().genesis.founding.as_ref().unwrap().rot.is_none());
     assert!(on.founded().genesis.founding.as_ref().unwrap().rot.is_some());
     assert_ne!(digest_of(&rotless), digest_of(&on));
+    // `--spoilage` is off unless asked (D36, D37): the default world has none, and asking adds it.
+    assert!(!WorldRules::generated().spoilage && !WorldRules::all().spoilage);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().spoilage.is_none());
+    let spoiled = found_default(WorldRules { spoilage: true, ..HostConfig::default().world_rules }, 9);
+    assert!(spoiled.founded().genesis.founding.as_ref().unwrap().spoilage.is_some());
+    assert_ne!(digest_of(&spoiled), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("spoilage"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

@@ -172,6 +172,7 @@ fn main() {
             "--no-limits" => config.world_rules.limits = false,
             "--rot" => config.world_rules.rot = true,
             "--no-rot" => config.world_rules.rot = false,
+            "--spoilage" => config.world_rules.spoilage = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -429,6 +430,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --rot           the default for a new generated A1 world, accepted as a no-op alias: dead bodies give a slow
                   share of their matter to the site's soil, without a decomposer
   --no-rot        found a new generated A1 world without rot
+  --spoilage      world rule (off unless asked): a dead body's flesh is fresh, then aged, then toxic with time since
+                  death, and a mouth that eats what it does not tolerate (toxic flesh, decomposer flesh) takes harm
+                  instead of being refused
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

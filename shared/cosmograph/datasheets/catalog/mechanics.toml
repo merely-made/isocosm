@@ -10,19 +10,9 @@ consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
 status = "provisional"
 
 [[mechanic]]
-key = "harm-on-bite"
-summary = "A bite of a category the mouth does not tolerate harms the eater instead of being refused; tolerance is a mouth's own trait."
-cites = ["lineage-rounds D36", "lineage-rounds D37"]
-
-[[mechanic]]
 key = "harm-on-contact"
 summary = "A body that is touched or struck (spine, sting, nettle hair) wounds or costs the one touching it, with no meal."
 cites = ["lineage-rounds D39 model 2"]
-
-[[mechanic]]
-key = "flesh-ageing"
-summary = "A corpse's flesh moves from fresh to aged to toxic with time, so a scavenger's food is good, poor, then a harm."
-cites = ["lineage-rounds D37"]
 
 [[mechanic]]
 key = "dead-matter-classes"

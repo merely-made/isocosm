@@ -72,6 +72,10 @@ pub struct Founding {
     /// serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rot: Option<crate::ecology::Rot>,
+    /// Dead flesh ages to toxic and an untolerated bite harms instead of
+    /// being refused (`ecology::spoilage`). Absent, it hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spoilage: Option<crate::ecology::Spoilage>,
 }
 
 impl Default for Founding {
@@ -99,6 +103,7 @@ impl Default for Founding {
             mass_law: None,
             limits: None,
             rot: None,
+            spoilage: None,
         }
     }
 }
@@ -320,6 +325,7 @@ impl Founding {
             exertion: None,
             hosting: None,
             dormancy: None,
+            spoilage: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),
@@ -468,6 +474,7 @@ impl Founding {
                     settled: None,
                     spent: None,
                     learned: None,
+                    died: None,
                 },
                 1,
             )?;
@@ -530,6 +537,7 @@ impl Founding {
                     settled: None,
                     spent: None,
                     learned: None,
+                    died: None,
                 },
                 count,
             )?;

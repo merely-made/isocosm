@@ -45,7 +45,14 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             p.body(Binding::Actor)
                 .and_then(|b| practice(b, key, amount))
         }),
-        Effect::Death => p.body(Binding::Actor).map(|b| b.alive = false),
+        Effect::Death => {
+            // Where the world's flesh spoils, the body remembers when it died.
+            let died = rules.spoilage.is_some().then(|| p.tick());
+            p.body(Binding::Actor).map(|b| {
+                b.alive = false;
+                b.died = died;
+            })
+        },
         Effect::Ease { who, key, amount } => amount
             .resolved()
             .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
