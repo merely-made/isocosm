@@ -94,7 +94,10 @@ fn decode(format: Format, text: &str) -> Result<ContentPackManifest, String> {
     Ok(manifest)
 }
 fn fingerprint(bytes: &[u8]) -> String {
-    format!("{:x}", Sha256::digest(bytes))
+    Sha256::digest(bytes)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect()
 }
 fn edit_error(error: EditError) -> String {
     match error {

@@ -43,7 +43,7 @@ wgpu = { version = "30", default-features = false, features = [
     "gles",
     "webgpu",
 ] }
-pollster = "0.4"
+pollster = "1"
 
 [lints]
 workspace = true

@@ -44,7 +44,7 @@ serde = { version = "1", features = ["derive"] }
 
 [dev-dependencies]
 serde_json = "1"
-pollster = "0.4"
+pollster = "1"
 # The host render core a `ProducerContext` carries, at the sources
 # cambium-rootstock resolves, so the test's core is the host's own type.
 genet-presenter = { git = "https://github.com/merely-made/genet.git", branch = "main" }

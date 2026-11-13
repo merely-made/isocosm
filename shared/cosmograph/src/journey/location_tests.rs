@@ -315,7 +315,8 @@ fn authentic_v3_movement_archive_is_authenticated_before_kept_replay() {
     let path = std::env::var("COSMOGRAPH_JOURNEY_V3_ARCHIVE").unwrap();
     let expected = std::env::var("COSMOGRAPH_JOURNEY_V3_ARCHIVE_SHA256").unwrap();
     let bytes = std::fs::read(path).unwrap();
-    assert_eq!(format!("{:x}",Sha256::digest(&bytes)),expected);
+    let actual: String = Sha256::digest(&bytes).iter().map(|b| format!("{b:02x}")).collect();
+    assert_eq!(actual,expected);
     let saved: crate::history::Saved = serde_json::from_slice(&bytes).unwrap();
     assert_eq!(saved.version,3);
     assert_eq!(saved.movement,None);

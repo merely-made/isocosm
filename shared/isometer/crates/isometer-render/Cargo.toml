@@ -26,8 +26,8 @@ wgpu = { version = "30", default-features = false, features = [
     "webgpu",
 ] }
 bytemuck = { version = "1", features = ["derive"] }
-glam = "0.30"
-pollster = "0.4"
+glam = "0.33"
+pollster = "1"
 
 [dev-dependencies]
 serde_json = "1"

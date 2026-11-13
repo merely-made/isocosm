@@ -1,4 +1,4 @@
-# house hooks --regen --local hooks.local.yaml
+# house hooks --regen --deny --local hooks.local.yaml
 # Written by `house hooks` (eidetic, crates/house); `house hooks --check` fails when this file drifts from it.
 # `house` is on the PATH: cargo install --git https://github.com/merely-made/eidetic house
 fail_fast: true
@@ -31,8 +31,14 @@ repos:
         name: clippy
         entry: cargo clippy --all-targets
         language: system
-        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
+        files: '(^|/)(Cargo\.toml|rust-toolchain\.toml|[^/]+\.rs)$'
         pass_filenames: false
+      - id: dependency-bans
+        name: dependency bans
+        entry: cargo deny check bans
+        language: system
+        pass_filenames: false
+        always_run: true
       # From hooks.local.yaml:
       # This repository's own hooks; `house hooks --local hooks.local.yaml` appends them.
       - id: pack-json

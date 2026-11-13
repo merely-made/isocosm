@@ -17,7 +17,7 @@ isocosm-core = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 # Edition pack manifests and their content hashes (cases 1064, 1067).
-sha2 = "0.10.9"
+sha2 = "0.11"
 toml = "1"
 wing-formats = { path = "../../shared/wing-formats" }
 wing-functions = { path = "../../shared/wing-functions" }

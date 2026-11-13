@@ -57,7 +57,7 @@ serde_json = { workspace = true }
 serde = { workspace = true }
 muniment = { workspace = true, features = ["redb"] }
 armillary = { workspace = true }
-pollster = "0.4"
+pollster = "1"
 ab_glyph = "0.2"
 
 [dev-dependencies]
