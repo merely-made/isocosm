@@ -1,0 +1,291 @@
+# Parts, kingdom myco: hand-written rows.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[part]]
+key = "part:hyphal-mat"
+kingdom = "kingdom:myco"
+process = "mesocosm:conduct"
+shape = "part-shape:branch"
+traits = ["trait:hyphal-net"]
+effects = { soil = ["effect:nutrient-handout", "effect:root-turnover"], death = ["effect:rot-to-soil"] }
+admits = ["dead:litter", "soil:nutrient"]
+emits = ["soil:nutrient"]
+models = ["detritus", "competition", "mutualism"]
+analogue = "a mould's mycelium through litter"
+
+[[part]]
+key = "part:white-rot"
+kingdom = "kingdom:myco"
+process = "mesocosm:conduct"
+shape = "part-shape:branch"
+traits = ["trait:lignin-breaker"]
+effects = { eating = ["effect:digest-wood"], soil = ["effect:root-turnover"] }
+admits = ["dead:wood"]
+emits = ["soil:nutrient"]
+models = ["detritus"]
+analogue = "white-rot fungus on a log"
+
+[[part]]
+key = "part:yeast-mouth"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:dead-stock-mouth"]
+effects = { eating = ["effect:scavenge-fresh", "effect:scavenge-aged"] }
+admits = ["dead:fresh", "dead:aged"]
+models = ["detritus"]
+analogue = "a yeast on rotting fruit"
+
+[[part]]
+key = "part:enzyme-film"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:digestive-enzyme"]
+effects = { eating = ["effect:scavenge-aged", "effect:digest-wood"], soil = ["effect:root-turnover"] }
+admits = ["dead:aged", "dead:litter", "dead:wood"]
+emits = ["soil:nutrient"]
+models = ["detritus"]
+analogue = "a mould's exoenzymes"
+
+[[part]]
+key = "part:mycorrhizal-hypha"
+kingdom = "kingdom:myco"
+process = "mesocosm:adhesion"
+shape = "part-shape:sheet"
+traits = ["trait:mycorrhizal-sheath"]
+effects = { contact = ["effect:nutrient-for-sugar-swap"], soil = ["effect:nutrient-handout"] }
+admits = ["sugar"]
+emits = ["soil:nutrient"]
+models = ["mutualism", "competition"]
+analogue = "the fungal half of a mycorrhiza"
+
+[[part]]
+key = "part:scarce-hypha"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:scarce-nutrient-uptake"]
+effects = { soil = ["effect:scarce-draw", "effect:nutrient-handout"] }
+admits = ["soil:scarce"]
+emits = ["soil:nutrient"]
+models = ["competition", "mutualism"]
+analogue = "hyphae that find phosphate for a host"
+
+[[part]]
+key = "part:antibiotic-edge"
+kingdom = "kingdom:myco"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:antibiotic"]
+effects = { soil = ["effect:allelopathic-inhibit"], contact = ["effect:resist-infection"] }
+emits = ["toxin", "exudate"]
+models = ["competition", "parasite"]
+analogue = "a Penicillium colony's margin"
+
+[[part]]
+key = "part:toxic-fruiting-body"
+kingdom = "kingdom:myco"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:decomposer-toxin"]
+effects = { eaten = ["effect:category-harm", "effect:toxin-bite"], death = ["effect:toxic-litter"] }
+emits = ["toxin"]
+models = ["defence", "detritus"]
+analogue = "a poisonous mushroom: decomposer flesh toxic to ordinary mouths"
+
+[[part]]
+key = "part:ergot"
+kingdom = "kingdom:myco"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:alkaloid"]
+effects = { eaten = ["effect:toxin-bite"], death = ["effect:toxic-litter"], soil = ["effect:allelopathic-inhibit"] }
+emits = ["toxin"]
+models = ["competition", "defence"]
+analogue = "ergot on rye"
+
+[[part]]
+key = "part:rind"
+kingdom = "kingdom:myco"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+traits = ["trait:chitin-shell"]
+effects = { eaten = ["effect:armour-threshold", "effect:tough-matter"] }
+emits = ["dead:litter"]
+models = ["defence", "detritus"]
+analogue = "a bracket fungus's rind"
+
+[[part]]
+key = "part:fibre-bracket"
+kingdom = "kingdom:myco"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+traits = ["trait:cell-wall-fibre"]
+effects = { eaten = ["effect:tough-matter"], death = ["effect:slow-litter"] }
+emits = ["dead:litter"]
+models = ["defence", "detritus"]
+analogue = "a woody bracket fungus"
+
+[[part]]
+key = "part:puffball"
+kingdom = "kingdom:myco"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:spore-cloud"]
+effects = { death = ["effect:spore-burst"], soil = ["effect:scatter-propagule"] }
+emits = ["spore"]
+models = ["succession", "parasite"]
+analogue = "a puffball"
+
+[[part]]
+key = "part:wind-spore"
+kingdom = "kingdom:myco"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:wind-seed"]
+effects = { death = ["effect:spore-burst"] }
+emits = ["spore", "seed"]
+models = ["succession"]
+analogue = "a mushroom's spore fall"
+
+[[part]]
+key = "part:spore-store"
+kingdom = "kingdom:myco"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:seed-bank", "trait:dormant"]
+effects = { soil = ["effect:scatter-propagule"], death = ["effect:spore-burst"] }
+emits = ["spore"]
+models = ["succession"]
+analogue = "spores waiting in the soil"
+
+[[part]]
+key = "part:fast-mould"
+kingdom = "kingdom:myco"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:fast-growth", "trait:high-fecundity"]
+effects = { death = ["effect:spore-burst"], soil = ["effect:scatter-propagule"] }
+emits = ["spore"]
+models = ["succession", "parasite"]
+analogue = "a bread mould, the first to a fresh food"
+
+[[part]]
+key = "part:rhizomorph"
+kingdom = "kingdom:myco"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:runner"]
+effects = { soil = ["effect:scatter-propagule"] }
+models = ["succession", "competition"]
+analogue = "a honey fungus's boot-lace cord"
+
+[[part]]
+key = "part:sclerotium"
+kingdom = "kingdom:myco"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:storage-body", "trait:drought-tolerance", "trait:dormant"]
+effects = { eaten = ["effect:nutrient-rich-flesh"], soil = ["effect:scatter-propagule"] }
+admits = ["water"]
+emits = ["sugar"]
+models = ["predator_prey", "succession", "competition"]
+analogue = "a fungal sclerotium that waits out a dry year"
+
+[[part]]
+key = "part:lichen-partner"
+kingdom = "kingdom:myco"
+process = "mesocosm:conduct"
+shape = "part-shape:tube"
+traits = ["trait:host-aid"]
+effects = { contact = ["effect:host-aid-gift"] }
+emits = ["host:matter"]
+models = ["mutualism"]
+analogue = "a fungus that gives its host matter"
+
+[[part]]
+key = "part:rust-haustorium"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:host-feeding"]
+effects = { eating = ["effect:host-feed"] }
+admits = ["host:tissue"]
+models = ["parasite"]
+analogue = "a rust fungus feeding on a leaf"
+
+[[part]]
+key = "part:fungal-entry"
+kingdom = "kingdom:myco"
+process = "mesocosm:adhesion"
+shape = "part-shape:point"
+traits = ["trait:host-entry"]
+effects = { contact = ["effect:enter-host"] }
+admits = ["host:tissue"]
+models = ["parasite"]
+analogue = "a fungal germ tube entering a host"
+
+[[part]]
+key = "part:dung-fungus"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:coprophagy"]
+effects = { eating = ["effect:eat-dung"], soil = ["effect:scatter-propagule"] }
+admits = ["dead:dung"]
+emits = ["spore"]
+models = ["detritus", "succession"]
+analogue = "a Pilobolus on dung"
+
+[[part]]
+key = "part:stinkhorn-lure"
+kingdom = "kingdom:myco"
+process = "proposed:lure"
+shape = "part-shape:sheet"
+traits = ["trait:lure"]
+effects = { contact = ["effect:lure-bait"] }
+emits = ["signal"]
+models = ["predator_prey", "mutualism"]
+analogue = "a stinkhorn's smell that calls flies to carry its spores"
+
+[[part]]
+key = "part:litter-fungus"
+kingdom = "kingdom:myco"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:litter-feeding"]
+effects = { eating = ["effect:eat-litter"] }
+admits = ["dead:litter"]
+models = ["detritus"]
+analogue = "a litter-rotting mould"
+
+[[part]]
+key = "part:conduit-cord"
+kingdom = "kingdom:myco"
+process = "mesocosm:conduct"
+shape = "part-shape:tube"
+traits = ["trait:hollow-conduit"]
+effects = { soil = ["effect:root-turnover"] }
+admits = ["water", "soil:nutrient"]
+emits = ["soil:nutrient"]
+models = ["competition"]
+analogue = "a fungal cord that carries water to a far patch"
+
+[[part]]
+key = "part:regrowing-mycelium"
+kingdom = "kingdom:myco"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:resprouting"]
+effects = { eaten = ["effect:regrow-after-bite"] }
+models = ["defence", "succession"]
+analogue = "a mycelium that regrows after being grazed"

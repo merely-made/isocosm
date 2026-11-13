@@ -1,0 +1,164 @@
+# Parts, kingdom micro: hand-written rows.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[part]]
+key = "part:virus-coat"
+kingdom = "kingdom:micro"
+process = "mesocosm:adhesion"
+shape = "part-shape:point"
+traits = ["trait:host-entry"]
+effects = { contact = ["effect:enter-host"] }
+admits = ["host:tissue"]
+models = ["parasite"]
+analogue = "a virus's coat protein"
+
+[[part]]
+key = "part:pathogen-cargo"
+kingdom = "kingdom:micro"
+process = "proposed:infect"
+shape = "part-shape:lump"
+traits = ["trait:pathogen-load"]
+effects = { contact = ["effect:transmit-pathogen"], death = ["effect:release-pathogen"], eaten = ["effect:trophic-transmission"] }
+emits = ["pathogen"]
+models = ["parasite"]
+analogue = "an anthrax or a tapeworm cyst"
+
+[[part]]
+key = "part:blight-spore"
+kingdom = "kingdom:micro"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:spore-cloud", "trait:pathogen-load"]
+effects = { death = ["effect:spore-burst"] }
+emits = ["spore", "pathogen"]
+models = ["parasite", "succession"]
+analogue = "a late-blight spore"
+
+[[part]]
+key = "part:gut-bacterium"
+kingdom = "kingdom:micro"
+process = "mesocosm:conduct"
+shape = "part-shape:tube"
+traits = ["trait:host-aid"]
+effects = { contact = ["effect:host-aid-gift"] }
+emits = ["host:matter"]
+models = ["mutualism"]
+analogue = "a gut bacterium"
+
+[[part]]
+key = "part:nodule-bacterium"
+kingdom = "kingdom:micro"
+process = "proposed:fix-nutrient"
+shape = "part-shape:lump"
+traits = ["trait:nitrogen-fixation"]
+effects = { soil = ["effect:nitrogen-deposit"] }
+emits = ["soil:scarce"]
+models = ["competition", "mutualism"]
+analogue = "Rhizobium"
+
+[[part]]
+key = "part:antibiotic-microbe"
+kingdom = "kingdom:micro"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:antibiotic"]
+effects = { soil = ["effect:allelopathic-inhibit"] }
+emits = ["toxin", "exudate"]
+models = ["competition", "parasite"]
+analogue = "Streptomyces"
+
+[[part]]
+key = "part:enzyme-microbe"
+kingdom = "kingdom:micro"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:digestive-enzyme"]
+effects = { eating = ["effect:digest-wood"] }
+admits = ["dead:aged", "dead:litter"]
+emits = ["soil:nutrient"]
+models = ["detritus"]
+analogue = "a soil bacterium that rots litter"
+
+[[part]]
+key = "part:cellulose-microbe"
+kingdom = "kingdom:micro"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:cellulase"]
+effects = { eating = ["effect:digest-wood"] }
+admits = ["dead:wood"]
+models = ["detritus", "mutualism"]
+analogue = "a cellulose-digesting bacterium"
+
+[[part]]
+key = "part:pioneer-microbe"
+kingdom = "kingdom:micro"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:fast-growth", "trait:high-fecundity"]
+effects = { death = ["effect:spore-burst"] }
+emits = ["spore"]
+models = ["succession"]
+analogue = "a bloom in a new pool"
+
+[[part]]
+key = "part:dormant-cyst"
+kingdom = "kingdom:micro"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:dormant"]
+effects = { soil = ["effect:scatter-propagule"] }
+models = ["succession"]
+analogue = "a cyst that outlasts a drought"
+
+[[part]]
+key = "part:parasitic-feeder"
+kingdom = "kingdom:micro"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:host-feeding"]
+effects = { eating = ["effect:host-feed"] }
+admits = ["host:tissue"]
+models = ["parasite"]
+analogue = "a bacterium that lives on a host's cells"
+
+[[part]]
+key = "part:floating-spore"
+kingdom = "kingdom:micro"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:floating-seed"]
+effects = { soil = ["effect:scatter-propagule"] }
+emits = ["spore"]
+models = ["succession"]
+analogue = "a spore carried on a jet stream"
+
+[[part]]
+key = "part:mayfly-bloom"
+kingdom = "kingdom:micro"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:semelparous-burst"]
+effects = { death = ["effect:spore-burst"] }
+emits = ["spore"]
+models = ["succession"]
+analogue = "a one-shot bloom of cyanobacteria"
+
+[[part]]
+key = "part:toxic-microbe"
+kingdom = "kingdom:micro"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:decomposer-toxin"]
+effects = { eaten = ["effect:category-harm"] }
+emits = ["toxin"]
+models = ["defence", "detritus"]
+analogue = "a microbe whose body is toxic to what eats it"

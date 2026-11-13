@@ -1,0 +1,264 @@
+# Traits, part two: chemistry (what a part makes).
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[trait]]
+key = "trait:alkaloid"
+summary = "A bitter poison that sickens an ordinary mouth that eats it."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["defence"]
+sites = ["eaten", "death", "soil"]
+emits = ["toxin"]
+cost_mg = 10
+reads = ["harm", "upkeep", "decay", "meal"]
+analogue = "nightshade, ergot"
+via = ["function:secrete"]
+strengths = [{ kind = "toxin", role = "attack", amount = 3 }]
+
+[[trait]]
+key = "trait:tannin"
+summary = "Astringent chemistry that makes tissue hard to digest and slow to rot."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["defence", "detritus"]
+sites = ["eaten", "death"]
+emits = ["toxin"]
+cost_mg = 8
+reads = ["harm", "decay", "meal", "upkeep"]
+analogue = "oak tannin, tea leaf"
+via = ["function:secrete"]
+strengths = [{ kind = "toxin", role = "attack", amount = 2 }]
+
+[[trait]]
+key = "trait:cyanogenic"
+summary = "Tissue that releases cyanide when crushed."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["defence"]
+sites = ["eaten"]
+emits = ["toxin"]
+cost_mg = 9
+reads = ["harm", "meal", "upkeep"]
+analogue = "cassava, bitter almond"
+via = ["function:secrete"]
+strengths = [{ kind = "toxin", role = "attack", amount = 5 }]
+
+[[trait]]
+key = "trait:venom"
+summary = "A toxin delivered into prey or an attacker by a strike."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey"]
+sites = ["contact", "eating"]
+emits = ["toxin"]
+cost_mg = 14
+reads = ["harm", "upkeep", "movement", "meal"]
+analogue = "viper, spider, cone snail"
+via = ["function:secrete"]
+strengths = [{ kind = "inject", role = "attack", amount = 5 }, { kind = "toxin", role = "attack", amount = 4 }]
+
+[[trait]]
+key = "trait:sting-cell"
+summary = "A cell that fires a toxin on touch."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna", "kingdom:flora"]
+models = ["defence"]
+sites = ["contact"]
+emits = ["toxin"]
+cost_mg = 10
+reads = ["harm", "upkeep"]
+analogue = "jellyfish, stinging nettle"
+via = ["function:secrete"]
+strengths = [{ kind = "inject", role = "attack", amount = 3 }]
+
+[[trait]]
+key = "trait:allelochemical"
+summary = "A chemical leached into the soil that slows the roots and seedlings of neighbours."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["competition"]
+sites = ["soil"]
+emits = ["exudate"]
+cost_mg = 11
+reads = ["soil", "income", "decay"]
+analogue = "black walnut"
+needs = "allelopathy"
+
+[[trait]]
+key = "trait:antibiotic"
+summary = "A compound that kills or halts rival microbes and fungi nearby."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:myco", "kingdom:micro"]
+models = ["competition", "parasite"]
+sites = ["soil", "contact"]
+emits = ["toxin"]
+cost_mg = 10
+reads = ["soil", "harm", "upkeep"]
+analogue = "Penicillium, Streptomyces"
+needs = "allelopathy"
+
+[[trait]]
+key = "trait:decomposer-toxin"
+summary = "Flesh that is poison to an ordinary mouth because it is full of what the dead left in it."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:myco", "kingdom:micro", "kingdom:fauna"]
+models = ["defence", "detritus"]
+sites = ["eaten"]
+emits = ["toxin"]
+cost_mg = 9
+reads = ["harm", "meal", "decay"]
+analogue = "a poisonous mushroom, a blister beetle"
+needs = "harm-on-bite"
+strengths = [{ kind = "toxin", role = "attack", amount = 4 }]
+
+[[trait]]
+key = "trait:digestive-enzyme"
+summary = "Enzymes that break dead matter down so it can be absorbed."
+category = "chemistry"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:myco", "kingdom:micro", "kingdom:fauna"]
+models = ["detritus"]
+sites = ["eating", "death"]
+admits = ["dead:fresh", "dead:aged", "dead:litter"]
+emits = ["soil:nutrient"]
+cost_mg = 12
+reads = ["meal", "decay", "return", "income"]
+analogue = "fungal exoenzymes, a carrion-fly larva"
+via = ["function:intake", "rule:rot", "rule:hosting"]
+unlocks = ["dead:aged", "dead:litter"]
+
+[[trait]]
+key = "trait:cellulase"
+summary = "An enzyme set that opens tough plant matter."
+category = "chemistry"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:fauna", "kingdom:myco", "kingdom:micro"]
+models = ["detritus", "mutualism"]
+sites = ["eating"]
+admits = ["live:tough", "dead:wood"]
+cost_mg = 15
+reads = ["meal", "decay", "income"]
+analogue = "termite gut, a shelf fungus"
+needs = "tough-matter-mouth"
+unlocks = ["live:tough", "dead:wood"]
+
+[[trait]]
+key = "trait:lignin-breaker"
+summary = "A hyphal enzyme set that rots wood where nothing else can."
+category = "chemistry"
+process = "mesocosm:conduct"
+shape = "part-shape:branch"
+kingdoms = ["kingdom:myco"]
+models = ["detritus"]
+sites = ["eating", "death"]
+admits = ["dead:wood"]
+emits = ["soil:nutrient"]
+cost_mg = 17
+reads = ["decay", "meal", "return"]
+analogue = "white-rot fungus"
+needs = "tough-matter-mouth"
+unlocks = ["dead:wood"]
+
+[[trait]]
+key = "trait:detox-tolerance"
+summary = "Tissue that takes a toxin without harm and clears it."
+category = "chemistry"
+process = "mesocosm:excrete"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+models = ["defence", "detritus"]
+sites = ["eating"]
+cost_mg = 11
+reads = ["harm", "meal", "upkeep"]
+analogue = "koala liver, a beetle on milkweed"
+needs = "harm-on-bite"
+unlocks = ["dead:toxic", "live:decomposer"]
+strengths = [{ kind = "toxin", role = "defend", amount = 6 }]
+
+[[trait]]
+key = "trait:nectar-gland"
+summary = "A gland that pays a visitor in sugar."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["mutualism"]
+sites = ["contact", "eaten"]
+emits = ["nectar"]
+cost_mg = 8
+reads = ["income", "upkeep", "reproduction"]
+analogue = "flower nectary, extrafloral nectary"
+needs = "pollination"
+
+[[trait]]
+key = "trait:exudate-gland"
+summary = "A root or hyphal gland that gives sugar to the soil partner it trades with."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["mutualism", "competition"]
+sites = ["soil"]
+admits = ["sugar"]
+emits = ["exudate", "sugar"]
+cost_mg = 9
+reads = ["soil", "income", "upkeep"]
+analogue = "root exudate, a lichen's sugar"
+needs = "nutrient-sugar-trade"
+
+[[trait]]
+key = "trait:alarm-signal"
+summary = "A volatile that warns kin and calls others to the attacker."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna", "kingdom:flora"]
+models = ["defence", "predator_prey"]
+sites = ["contact"]
+emits = ["signal"]
+cost_mg = 7
+reads = ["perception", "harm", "upkeep"]
+analogue = "alarm pheromone, a plant volatile"
+needs = "signal-reading"
+
+[[trait]]
+key = "trait:anti-parasite-chemistry"
+summary = "A skin or leaf secretion that holds infection off."
+category = "chemistry"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"]
+models = ["parasite", "defence"]
+sites = ["contact"]
+emits = ["toxin"]
+cost_mg = 9
+reads = ["harm", "upkeep"]
+analogue = "phytoalexin, frog skin peptides"
+needs = "host-immunity"
+strengths = [{ kind = "inject", role = "defend", amount = 3 }]

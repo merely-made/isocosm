@@ -1,0 +1,564 @@
+# Effects, part two: what a body does in death, in the soil and when it eats.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[effect]]
+key = "effect:fresh-carrion"
+summary = "A newly dead body is good food for scavengers."
+site = "death"
+class = "nourish"
+models = ["detritus", "predator_prey"]
+accepts = ["structure", "metabolism", "lifehistory", "behaviour"]
+kingdoms = ["kingdom:fauna"]
+admits = ["dead:fresh"]
+cost_mg = 2
+analogue = "a fresh kill left by a hunter"
+via = ["rule:port-admission"]
+
+[[effect]]
+key = "effect:flesh-ageing"
+summary = "Dead flesh moves from good to poor to toxic with time."
+site = "death"
+class = "harm"
+models = ["detritus"]
+accepts = ["structure", "metabolism", "lifehistory", "behaviour"]
+kingdoms = ["kingdom:fauna", "kingdom:micro"]
+admits = ["dead:aged", "dead:toxic"]
+cost_mg = 3
+analogue = "a carcass in the sun"
+needs = "flesh-ageing"
+timing = { onset = 30, intensity = 1, duration = 200, decay = 0, stacking = "strongest" }
+
+[[effect]]
+key = "effect:toxic-litter"
+summary = "The toxin outlasts the body, so the litter poisons its eaters too."
+site = "death"
+class = "harm"
+models = ["defence", "detritus"]
+accepts = ["chemistry"]
+processes = ["secrete"]
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+admits = ["dead:toxic"]
+emits = ["toxin"]
+cost_mg = 3
+analogue = "walnut litter, ergot sclerotia"
+needs = "dead-matter-classes"
+gates = [{ affected = "eater", requires = "trait:detox-tolerance", inverted = true }]
+timing = { onset = 2, intensity = 2, duration = 50, decay = 1, stacking = "stack" }
+
+[[effect]]
+key = "effect:slow-litter"
+summary = "Leaves litter that lasts, locking matter away for years."
+site = "death"
+class = "resource"
+models = ["detritus", "competition", "succession"]
+accepts = ["structure"]
+processes = ["support"]
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+admits = ["dead:litter"]
+emits = ["dead:litter"]
+cost_mg = 3
+analogue = "pine litter, a woody log"
+needs = "dead-matter-classes"
+
+[[effect]]
+key = "effect:rot-to-soil"
+summary = "Rots back to the site as soil nutrient."
+site = "death"
+class = "resource"
+models = ["detritus", "succession"]
+accepts = ["structure", "metabolism"]
+processes = ["fix", "intake", "store", "respire"]
+emits = ["soil:nutrient"]
+cost_mg = 2
+analogue = "a fallen leaf, a mat of roots"
+via = ["kind:rot"]
+
+[[effect]]
+key = "effect:spore-burst"
+summary = "Dies in a burst of spores that land on neighbouring sites."
+site = "death"
+class = "transport"
+models = ["succession", "parasite"]
+accepts = ["lifehistory"]
+processes = ["reproduce"]
+kingdoms = ["kingdom:myco", "kingdom:micro"]
+emits = ["spore"]
+cost_mg = 3
+analogue = "a puffball, a mould fruiting"
+via = ["kind:birth"]
+
+[[effect]]
+key = "effect:seed-release"
+summary = "Dies and leaves seed round it."
+site = "death"
+class = "transport"
+models = ["succession"]
+accepts = ["lifehistory"]
+processes = ["reproduce", "store"]
+kingdoms = ["kingdom:flora"]
+emits = ["seed"]
+cost_mg = 3
+analogue = "an agave's one flowering"
+via = ["kind:bud"]
+
+[[effect]]
+key = "effect:fire-seed-release"
+summary = "Opens its seed only after a burn."
+site = "death"
+class = "transport"
+models = ["succession"]
+accepts = ["lifehistory"]
+processes = ["reproduce", "store"]
+only = ["trait:seed-bank", "trait:resprouting"]
+kingdoms = ["kingdom:flora"]
+emits = ["seed"]
+cost_mg = 3
+analogue = "serotinous cones"
+needs = "disturbance-event"
+
+[[effect]]
+key = "effect:release-pathogen"
+summary = "A dead host sheds its parasites onto the site."
+site = "death"
+class = "harm"
+models = ["parasite"]
+accepts = ["symbiosis"]
+processes = ["infect"]
+kingdoms = ["kingdom:micro"]
+emits = ["pathogen"]
+cost_mg = 3
+analogue = "a carcass seeding an anthrax spore"
+needs = "host-transmission"
+timing = { onset = 0, intensity = 2, duration = 150, decay = 1, stacking = "strongest" }
+
+[[effect]]
+key = "effect:soil-draw"
+summary = "Takes soil nutrient and water from under its patch."
+site = "soil"
+class = "resource"
+models = ["competition"]
+accepts = ["structure"]
+processes = ["intake"]
+kingdoms = ["kingdom:flora"]
+admits = ["soil:nutrient", "water"]
+cost_mg = 3
+analogue = "grass roots"
+via = ["function:intake"]
+
+[[effect]]
+key = "effect:deep-draw"
+summary = "Takes water from below where shallow roots reach."
+site = "soil"
+class = "resource"
+models = ["competition"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:deep-root"]
+kingdoms = ["kingdom:flora"]
+admits = ["water"]
+cost_mg = 4
+analogue = "a mesquite taproot"
+needs = "soil-depth-layers"
+
+[[effect]]
+key = "effect:scarce-draw"
+summary = "Takes the one nutrient that is short, leaving the rest of the soil untouched."
+site = "soil"
+class = "resource"
+models = ["competition"]
+accepts = ["metabolism"]
+processes = ["intake"]
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+admits = ["soil:scarce"]
+cost_mg = 4
+analogue = "a cluster root taking phosphate"
+needs = "nutrient-axes"
+
+[[effect]]
+key = "effect:nitrogen-deposit"
+summary = "Puts a scarce nutrient into the soil for all that grow there."
+site = "soil"
+class = "resource"
+models = ["mutualism", "competition"]
+accepts = ["metabolism"]
+processes = ["fix-nutrient"]
+kingdoms = ["kingdom:flora", "kingdom:micro"]
+emits = ["soil:scarce"]
+cost_mg = 4
+analogue = "legume nodules enriching a field"
+needs = "nutrient-axes"
+
+[[effect]]
+key = "effect:exudate-trade"
+summary = "Pays sugar into the soil to the partner that feeds it."
+site = "soil"
+class = "resource"
+models = ["mutualism"]
+accepts = ["chemistry", "symbiosis"]
+processes = ["secrete", "adhesion"]
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+admits = ["sugar"]
+emits = ["exudate", "sugar"]
+cost_mg = 3
+analogue = "root exudate to a fungus"
+needs = "nutrient-sugar-trade"
+
+[[effect]]
+key = "effect:nutrient-handout"
+summary = "Hands soil nutrient to the partner that feeds it."
+site = "soil"
+class = "resource"
+models = ["mutualism"]
+accepts = ["structure", "symbiosis"]
+processes = ["conduct", "adhesion"]
+kingdoms = ["kingdom:myco"]
+emits = ["soil:nutrient"]
+cost_mg = 3
+analogue = "a mycorrhizal network"
+needs = "nutrient-sugar-trade"
+
+[[effect]]
+key = "effect:allelopathic-inhibit"
+summary = "Slows the draws and seedlings of neighbours at its site."
+site = "soil"
+class = "harm"
+models = ["competition"]
+accepts = ["chemistry"]
+processes = ["secrete"]
+kingdoms = ["kingdom:flora", "kingdom:myco", "kingdom:micro"]
+emits = ["exudate"]
+cost_mg = 4
+analogue = "walnut juglone, a mould's antibiotic"
+needs = "allelopathy"
+timing = { onset = 5, intensity = 1, duration = 100, decay = 1, stacking = "strongest" }
+
+[[effect]]
+key = "effect:root-turnover"
+summary = "Sheds root and hypha that rot back into the soil."
+site = "soil"
+class = "resource"
+models = ["detritus", "succession"]
+accepts = ["structure"]
+processes = ["intake", "conduct"]
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+emits = ["soil:nutrient"]
+cost_mg = 2
+analogue = "fine roots dying back"
+via = ["kind:rot"]
+
+[[effect]]
+key = "effect:dung-deposit"
+summary = "Leaves dung on the site, a food only some mouths take."
+site = "soil"
+class = "nourish"
+models = ["detritus"]
+accepts = ["structure", "behaviour"]
+processes = ["intake"]
+kingdoms = ["kingdom:fauna"]
+emits = ["dead:dung"]
+cost_mg = 2
+analogue = "a herd's dung"
+needs = "dead-matter-classes"
+
+[[effect]]
+key = "effect:scatter-propagule"
+summary = "Sets seed or spore on a neighbouring site."
+site = "soil"
+class = "transport"
+models = ["succession"]
+accepts = ["lifehistory"]
+processes = ["reproduce"]
+emits = ["seed", "spore"]
+cost_mg = 3
+analogue = "a dandelion clock, a runner rooting"
+via = ["kind:birth"]
+
+[[effect]]
+key = "effect:bank-germination"
+summary = "Wakes from a buried bank when a gap opens."
+site = "soil"
+class = "transport"
+models = ["succession"]
+accepts = ["lifehistory", "metabolism"]
+processes = ["store"]
+kingdoms = ["kingdom:flora"]
+emits = ["seed"]
+cost_mg = 3
+analogue = "pioneers after a treefall"
+via = ["rule:dormancy"]
+
+[[effect]]
+key = "effect:aerate-soil"
+summary = "Opens the soil, so water and roots go deeper."
+site = "soil"
+class = "resource"
+models = ["predator_prey", "competition"]
+accepts = ["behaviour"]
+processes = ["dig"]
+kingdoms = ["kingdom:fauna"]
+emits = ["water"]
+cost_mg = 3
+analogue = "earthworm or mole workings"
+needs = "soil-depth-layers"
+
+[[effect]]
+key = "effect:grind-tough"
+summary = "Crushes tough matter so a gut can use it."
+site = "eating"
+class = "nourish"
+models = ["defence", "detritus"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:jaw", "trait:grinding", "trait:broad-mouth", "trait:litter-feeding"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+admits = ["live:tough", "dead:wood"]
+cost_mg = 4
+analogue = "molars on grass"
+needs = "tough-matter-mouth"
+
+[[effect]]
+key = "effect:pierce-armour"
+summary = "Goes through a hide or rind that a plain bite would not."
+site = "eating"
+class = "harm"
+models = ["defence", "predator_prey"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:jaw", "trait:piercing"]
+kingdoms = ["kingdom:fauna"]
+cost_mg = 4
+analogue = "a beak through a shell"
+needs = "bite-mode"
+gates = [{ affected = "prey", requires = "trait:plated-armour" }]
+
+[[effect]]
+key = "effect:detoxify"
+summary = "Takes in a toxic food and clears it."
+site = "eating"
+class = "nourish"
+models = ["defence", "detritus"]
+accepts = ["chemistry"]
+processes = ["excrete", "intake"]
+only = ["trait:detox-tolerance", "trait:digestive-enzyme"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+cost_mg = 3
+analogue = "a koala on eucalyptus"
+needs = "harm-on-bite"
+
+[[effect]]
+key = "effect:digest-wood"
+summary = "Opens wood and fibre for food."
+site = "eating"
+class = "nourish"
+models = ["detritus", "mutualism"]
+accepts = ["chemistry"]
+processes = ["intake", "conduct"]
+kingdoms = ["kingdom:fauna", "kingdom:myco", "kingdom:micro"]
+admits = ["dead:wood"]
+cost_mg = 4
+analogue = "a termite colony, rot fungus"
+needs = "tough-matter-mouth"
+gates = [{ affected = "eater", requires = "dead:wood" }]
+
+[[effect]]
+key = "effect:gut-unlock"
+summary = "A gut partner opens food the body could not."
+site = "eating"
+class = "nourish"
+models = ["mutualism", "detritus"]
+accepts = ["symbiosis"]
+processes = ["circulate"]
+kingdoms = ["kingdom:fauna"]
+admits = ["live:tough"]
+emits = ["sugar"]
+cost_mg = 4
+analogue = "a cow's rumen"
+needs = "gut-symbiont"
+gates = [{ affected = "eater", requires = "live:tough" }]
+
+[[effect]]
+key = "effect:scavenge-fresh"
+summary = "Eats the newly dead at the full return."
+site = "eating"
+class = "nourish"
+models = ["detritus", "predator_prey"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:jaw", "trait:scavenging", "trait:dead-stock-mouth"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+admits = ["dead:fresh"]
+cost_mg = 3
+analogue = "a vulture on a fresh kill"
+via = ["rule:port-admission"]
+
+[[effect]]
+key = "effect:scavenge-aged"
+summary = "Eats dead flesh gone off, at a poorer return and a risk."
+site = "eating"
+class = "nourish"
+models = ["detritus"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:scavenging", "trait:dead-stock-mouth"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+admits = ["dead:aged"]
+cost_mg = 3
+analogue = "a hyena on an old carcass"
+needs = "flesh-ageing"
+gates = [{ affected = "eater", requires = "dead:aged", inverted = true }]
+timing = { onset = 4, intensity = 2, duration = 30, decay = 1, stacking = "refresh" }
+
+[[effect]]
+key = "effect:eat-decomposer"
+summary = "Eats living decomposers, taking back what the dead gave them."
+site = "eating"
+class = "nourish"
+models = ["detritus", "defence"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:decomposer-eating", "trait:jaw", "trait:piercing", "trait:broad-mouth"]
+kingdoms = ["kingdom:fauna"]
+admits = ["live:decomposer"]
+cost_mg = 3
+analogue = "a beetle eating a mould"
+via = ["rule:port-admission"]
+
+[[effect]]
+key = "effect:graze-producer"
+summary = "Crops living plant matter."
+site = "eating"
+class = "nourish"
+models = ["defence", "predator_prey"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:broad-mouth", "trait:grinding", "trait:piercing"]
+kingdoms = ["kingdom:fauna"]
+admits = ["live:producer"]
+cost_mg = 3
+analogue = "a deer in a meadow"
+via = ["rule:port-admission"]
+
+[[effect]]
+key = "effect:take-prey"
+summary = "Takes live animal prey in the mouth."
+site = "eating"
+class = "nourish"
+models = ["predator_prey"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:jaw"]
+kingdoms = ["kingdom:fauna"]
+admits = ["live:consumer"]
+cost_mg = 3
+analogue = "a cat's bite"
+via = ["rule:port-admission"]
+
+[[effect]]
+key = "effect:eat-dung"
+summary = "Eats dung, a food other mouths pass over."
+site = "eating"
+class = "nourish"
+models = ["detritus"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:coprophagy"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+admits = ["dead:dung"]
+cost_mg = 3
+analogue = "a dung beetle"
+needs = "dead-matter-classes"
+
+[[effect]]
+key = "effect:eat-litter"
+summary = "Eats leaf litter, a food other mouths pass over."
+site = "eating"
+class = "nourish"
+models = ["detritus"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:litter-feeding"]
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+admits = ["dead:litter"]
+cost_mg = 3
+analogue = "a woodlouse in leaf litter"
+needs = "dead-matter-classes"
+
+[[effect]]
+key = "effect:ambush-strike"
+summary = "Strikes from stillness and holds."
+site = "eating"
+class = "harm"
+models = ["predator_prey"]
+accepts = ["behaviour"]
+processes = ["contract", "grip"]
+kingdoms = ["kingdom:fauna"]
+admits = ["live:consumer"]
+cost_mg = 4
+analogue = "a trapdoor spider"
+via = ["function:contract", "rule:exertion"]
+
+[[effect]]
+key = "effect:track-prey"
+summary = "Follows a scent or sight to what it will eat."
+site = "eating"
+class = "signal"
+models = ["predator_prey", "detritus"]
+accepts = ["behaviour"]
+processes = ["sense"]
+kingdoms = ["kingdom:fauna"]
+cost_mg = 3
+analogue = "a wolf on a trail"
+via = ["rule:senses"]
+
+[[effect]]
+key = "effect:inject-venom"
+summary = "Puts a toxin into what it bites or holds."
+site = "eating"
+class = "harm"
+models = ["predator_prey", "defence"]
+accepts = ["chemistry"]
+processes = ["secrete"]
+only = ["trait:venom"]
+kingdoms = ["kingdom:fauna"]
+emits = ["toxin"]
+cost_mg = 4
+analogue = "a viper's strike"
+needs = "harm-on-contact"
+timing = { onset = 1, intensity = 4, duration = 30, decay = 2, stacking = "stack" }
+
+[[effect]]
+key = "effect:host-feed"
+summary = "Lives on a host's tissue from inside it."
+site = "eating"
+class = "nourish"
+models = ["parasite"]
+accepts = ["symbiosis"]
+processes = ["intake"]
+kingdoms = ["kingdom:micro", "kingdom:myco", "kingdom:fauna"]
+admits = ["host:tissue"]
+cost_mg = 3
+analogue = "a tick on its host"
+via = ["rule:hosting"]
+
+[[effect]]
+key = "effect:suck-sap"
+summary = "Takes fluid through a pierced surface."
+site = "eating"
+class = "nourish"
+models = ["parasite", "defence"]
+accepts = ["structure"]
+processes = ["intake"]
+only = ["trait:piercing"]
+kingdoms = ["kingdom:fauna"]
+admits = ["host:tissue", "live:producer"]
+cost_mg = 3
+analogue = "an aphid on a stem"
+needs = "bite-mode"

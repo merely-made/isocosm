@@ -1,0 +1,336 @@
+# Traits, part one: structure (what a part is made to be).
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[trait]]
+key = "trait:broad-leaf"
+summary = "A wide leaf that wins light and shades what grows under it."
+category = "structure"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["competition", "succession"]
+sites = ["contact", "death"]
+admits = ["light"]
+emits = ["shade"]
+cost_mg = 14
+reads = ["income", "light-share", "upkeep", "decay"]
+analogue = "oak or maple leaf, a broad frond"
+via = ["function:fix", "rule:light"]
+
+[[trait]]
+key = "trait:needle-leaf"
+summary = "A narrow tough leaf: little light taken, little lost to cold, drought or grazers."
+category = "structure"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["competition", "succession"]
+sites = ["contact", "death"]
+admits = ["light"]
+cost_mg = 9
+reads = ["income", "upkeep", "decay", "climate"]
+analogue = "pine needle, a scale leaf"
+via = ["function:fix", "rule:climate"]
+
+[[trait]]
+key = "trait:deep-root"
+summary = "A root that goes below where others reach, for water and nutrient they cannot get."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:flora"]
+models = ["competition", "succession"]
+sites = ["soil", "death"]
+admits = ["water", "soil:nutrient"]
+cost_mg = 20
+reads = ["soil", "upkeep", "income", "ceiling"]
+analogue = "mesquite or alfalfa taproot"
+needs = "soil-depth-layers"
+
+[[trait]]
+key = "trait:broad-root"
+summary = "A shallow root mat that takes the soil under a wide patch first."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:flora"]
+models = ["competition", "succession"]
+sites = ["soil", "death"]
+admits = ["soil:nutrient", "water"]
+cost_mg = 11
+reads = ["soil", "upkeep", "income", "decay"]
+analogue = "grass roots, a fibrous mat"
+via = ["function:intake"]
+
+[[trait]]
+key = "trait:storage-body"
+summary = "A swollen part holding water or sugar to be spent in a dry or dark spell."
+category = "structure"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"]
+models = ["competition", "succession"]
+sites = ["eaten", "death"]
+admits = ["water", "sugar"]
+cost_mg = 16
+reads = ["rent", "ceiling", "climate", "meal", "decay"]
+analogue = "tuber, camel hump, a fungal sclerotium"
+via = ["function:store", "rule:climate"]
+
+[[trait]]
+key = "trait:rigid-stem"
+summary = "A stiff axis that lifts leaves above neighbours, paid for in mass."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:flora"]
+models = ["competition"]
+sites = ["contact", "death"]
+emits = ["shade"]
+cost_mg = 18
+reads = ["ceiling", "upkeep", "decay", "light-share"]
+analogue = "tree trunk, a reed"
+via = ["function:support"]
+
+[[trait]]
+key = "trait:woody-tissue"
+summary = "Dense lignified tissue: it outlasts grazing and fire, and few mouths can take it."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+kingdoms = ["kingdom:flora"]
+models = ["defence", "succession", "detritus"]
+sites = ["eaten", "death"]
+emits = ["dead:wood"]
+cost_mg = 24
+reads = ["ceiling", "decay", "meal", "upkeep"]
+analogue = "heartwood, bamboo"
+needs = "tough-matter-mouth"
+strengths = [{ kind = "crush", role = "defend", amount = 5 }]
+
+[[trait]]
+key = "trait:plated-armour"
+summary = "Hard plates over the body that a bite must get through."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey"]
+sites = ["contact", "eaten", "death"]
+cost_mg = 22
+reads = ["ceiling", "harm", "upkeep", "movement"]
+analogue = "beetle wing-cases, armadillo scutes"
+via = ["function:support", "rule:defence"]
+strengths = [{ kind = "crush", role = "defend", amount = 6 }, { kind = "pierce", role = "defend", amount = 5 }]
+
+[[trait]]
+key = "trait:thick-hide"
+summary = "A heavy skin that turns a small bite aside."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey"]
+sites = ["eaten", "contact"]
+cost_mg = 17
+reads = ["harm", "upkeep", "movement", "ceiling"]
+analogue = "rhinoceros hide"
+via = ["function:support", "rule:defence"]
+strengths = [{ kind = "crush", role = "defend", amount = 4 }, { kind = "pierce", role = "defend", amount = 3 }]
+
+[[trait]]
+key = "trait:chitin-shell"
+summary = "A shell that is light for its strength and rots slowly when its owner is dead."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+models = ["defence", "detritus"]
+sites = ["eaten", "death"]
+emits = ["dead:litter"]
+cost_mg = 16
+reads = ["harm", "decay", "upkeep", "ceiling"]
+analogue = "crab carapace, a bracket-fungus rind"
+via = ["function:support", "rule:defence"]
+strengths = [{ kind = "crush", role = "defend", amount = 4 }, { kind = "pierce", role = "defend", amount = 4 }]
+
+[[trait]]
+key = "trait:spine"
+summary = "A sharp point that costs whatever touches it."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:flora", "kingdom:fauna"]
+models = ["defence"]
+sites = ["contact"]
+cost_mg = 8
+reads = ["harm", "upkeep", "ceiling"]
+analogue = "thorn, hedgehog quill, cactus spine"
+needs = "harm-on-contact"
+
+[[trait]]
+key = "trait:cell-wall-fibre"
+summary = "Fibrous walls that make the tissue tough to chew and slow to rot."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["defence", "detritus"]
+sites = ["eaten", "death"]
+emits = ["dead:litter"]
+cost_mg = 12
+reads = ["ceiling", "decay", "meal", "upkeep"]
+analogue = "grass blade, bracket-fungus flesh"
+needs = "tough-matter-mouth"
+strengths = [{ kind = "crush", role = "defend", amount = 3 }]
+
+[[trait]]
+key = "trait:silica-grit"
+summary = "Glass-hard grains in the tissue that wear the teeth of whatever chews it."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+kingdoms = ["kingdom:flora"]
+models = ["defence"]
+sites = ["eaten"]
+cost_mg = 9
+reads = ["meal", "harm", "decay"]
+analogue = "grass phytoliths, horsetail"
+needs = "bite-mode"
+strengths = [{ kind = "crush", role = "defend", amount = 3 }]
+
+[[trait]]
+key = "trait:hollow-conduit"
+summary = "A tube that carries water and dissolved matter far from where it was taken."
+category = "structure"
+process = "mesocosm:conduct"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["competition"]
+sites = ["soil"]
+admits = ["water", "soil:nutrient"]
+cost_mg = 10
+reads = ["ceiling", "income", "upkeep", "soil"]
+analogue = "xylem, a fungal cord"
+via = ["function:conduct"]
+
+[[trait]]
+key = "trait:hyphal-net"
+summary = "A fine branching net through litter and soil that digests outside the body and absorbs."
+category = "structure"
+process = "mesocosm:conduct"
+shape = "part-shape:branch"
+kingdoms = ["kingdom:myco"]
+models = ["competition", "detritus", "mutualism"]
+sites = ["soil", "eaten", "death"]
+admits = ["dead:litter", "soil:nutrient"]
+emits = ["soil:nutrient"]
+cost_mg = 13
+reads = ["soil", "decay", "income", "return"]
+analogue = "mould or mycorrhizal mycelium"
+via = ["function:conduct", "rule:hosting"]
+
+[[trait]]
+key = "trait:gripping-limb"
+summary = "A limb that holds what it has caught while the mouth works."
+category = "behaviour"
+process = "mesocosm:grip"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey"]
+sites = ["contact", "eating"]
+cost_mg = 10
+reads = ["movement", "meal", "harm"]
+analogue = "mantis foreleg, a hand"
+via = ["function:grip"]
+
+[[trait]]
+key = "trait:jaw"
+summary = "A hinged mouth that takes living animal matter."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey"]
+sites = ["eating", "soil"]
+admits = ["live:consumer"]
+emits = ["dead:dung"]
+cost_mg = 18
+reads = ["meal", "harm", "income", "ceiling"]
+analogue = "a cat's carnassial teeth"
+via = ["function:intake", "rule:port-admission"]
+strengths = [{ kind = "crush", role = "attack", amount = 6 }]
+
+[[trait]]
+key = "trait:grinding"
+summary = "A mouth that crushes tough matter before it goes down."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "detritus"]
+sites = ["eating", "soil"]
+admits = ["live:tough", "dead:wood", "dead:litter"]
+emits = ["dead:dung"]
+cost_mg = 20
+reads = ["meal", "upkeep", "decay", "income"]
+analogue = "molar teeth, a bird's gizzard"
+needs = "tough-matter-mouth"
+unlocks = ["live:tough", "dead:litter"]
+strengths = [{ kind = "crush", role = "attack", amount = 5 }]
+
+[[trait]]
+key = "trait:piercing"
+summary = "A needle mouthpart that goes through a hide or a rind to the fluid under it."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey", "parasite"]
+sites = ["eating", "contact"]
+admits = ["live:producer", "host:tissue"]
+cost_mg = 14
+reads = ["meal", "harm", "income"]
+analogue = "mosquito proboscis, an aphid stylet"
+needs = "bite-mode"
+strengths = [{ kind = "pierce", role = "attack", amount = 5 }]
+
+[[trait]]
+key = "trait:broad-mouth"
+summary = "A wide soft mouth that crops living plant matter."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["defence", "predator_prey"]
+sites = ["eating", "soil"]
+admits = ["live:producer"]
+emits = ["dead:dung"]
+cost_mg = 12
+reads = ["meal", "income", "upkeep"]
+analogue = "a grazer's lips, a snail's radula"
+via = ["function:intake", "rule:port-admission"]
+strengths = [{ kind = "crush", role = "attack", amount = 2 }]
+
+[[trait]]
+key = "trait:dead-stock-mouth"
+summary = "A mouth for what has died, taking the dead as one stock."
+category = "structure"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+models = ["detritus"]
+sites = ["eating", "soil"]
+admits = ["dead:fresh", "dead:aged"]
+cost_mg = 13
+reads = ["meal", "decay", "return", "income"]
+analogue = "a root-mouth of a rotter, a carrion beetle"
+via = ["function:intake", "rule:port-admission"]

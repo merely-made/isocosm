@@ -1,0 +1,351 @@
+# Traits, part three: metabolism and behaviour.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[trait]]
+key = "trait:c4-fixation"
+summary = "A way of fixing carbon that wins in strong light and heat."
+category = "metabolism"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["competition"]
+sites = ["contact", "death"]
+admits = ["light", "water"]
+cost_mg = 11
+reads = ["income", "climate", "upkeep"]
+analogue = "maize, sugar cane"
+via = ["function:fix", "rule:climate"]
+
+[[trait]]
+key = "trait:shade-tolerance"
+summary = "A leaf that makes do where others starve of light."
+category = "metabolism"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["competition", "succession"]
+sites = ["contact", "death"]
+admits = ["light"]
+cost_mg = 9
+reads = ["income", "climate", "light-share", "upkeep"]
+analogue = "forest-floor fern, a beech seedling"
+via = ["function:fix", "rule:climate"]
+
+[[trait]]
+key = "trait:drought-tolerance"
+summary = "Stores and thrift that carry a body through a dry spell."
+category = "metabolism"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"]
+models = ["competition"]
+sites = ["eaten", "death"]
+admits = ["water"]
+cost_mg = 12
+reads = ["climate", "upkeep", "rent", "ceiling"]
+analogue = "cactus, a desert frog"
+via = ["function:store", "rule:climate"]
+
+[[trait]]
+key = "trait:cold-tolerance"
+summary = "Tissue and habit that keep a body working below its comfort."
+category = "metabolism"
+process = "mesocosm:respire"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"]
+models = ["succession", "competition"]
+sites = ["contact", "death"]
+cost_mg = 10
+reads = ["climate", "upkeep", "income"]
+analogue = "alpine cushion plant, arctic hare"
+via = ["function:respire", "rule:climate"]
+
+[[trait]]
+key = "trait:nitrogen-fixation"
+summary = "Makes a scarce soil nutrient out of air and gives it to the soil."
+category = "metabolism"
+process = "proposed:fix-nutrient"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:micro"]
+models = ["competition", "mutualism"]
+sites = ["soil"]
+emits = ["soil:scarce"]
+cost_mg = 15
+reads = ["soil", "income", "upkeep"]
+analogue = "legume nodule, Rhizobium"
+needs = "nutrient-axes"
+
+[[trait]]
+key = "trait:scarce-nutrient-uptake"
+summary = "A root or hypha tuned to take the one nutrient that runs short."
+category = "metabolism"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["competition"]
+sites = ["soil"]
+admits = ["soil:scarce"]
+cost_mg = 14
+reads = ["soil", "income", "upkeep"]
+analogue = "cluster root, a pitcher-plant trap"
+needs = "nutrient-axes"
+
+[[trait]]
+key = "trait:dormant"
+summary = "Goes quiet at a fraction of its upkeep until conditions return."
+category = "metabolism"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco", "kingdom:micro"]
+models = ["succession", "competition"]
+sites = ["death", "soil"]
+cost_mg = 8
+reads = ["upkeep", "rent", "climate", "reproduction"]
+analogue = "seed, hibernation, a spore"
+via = ["function:store", "rule:dormancy"]
+
+[[trait]]
+key = "trait:fast-growth"
+summary = "Spends on growth and young first and defence last."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco", "kingdom:micro"]
+models = ["succession"]
+sites = ["death"]
+cost_mg = 10
+reads = ["reproduction", "upkeep", "income", "ceiling"]
+analogue = "annual weed, bread mould"
+via = ["function:reproduce", "rule:pace"]
+
+[[trait]]
+key = "trait:high-fecundity"
+summary = "Many young cheaply made, few of them lasting."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:myco", "kingdom:micro"]
+models = ["succession", "parasite"]
+sites = ["death"]
+cost_mg = 9
+reads = ["reproduction", "upkeep"]
+analogue = "dandelion, a mouse, a puffball"
+via = ["function:reproduce"]
+
+[[trait]]
+key = "trait:fast-legs"
+summary = "Long limbs for a sprint, bought with upkeep."
+category = "behaviour"
+process = "mesocosm:contract"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey"]
+sites = ["contact", "eating"]
+cost_mg = 14
+reads = ["movement", "upkeep", "income", "harm"]
+analogue = "gazelle, a hare"
+via = ["function:contract", "rule:exertion"]
+
+[[trait]]
+key = "trait:ambush"
+summary = "Stillness then a strike, cheap to keep and costly in the moment."
+category = "behaviour"
+process = "mesocosm:contract"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey"]
+sites = ["eating", "contact"]
+cost_mg = 12
+reads = ["movement", "perception", "harm"]
+analogue = "trapdoor spider, a crocodile"
+via = ["function:contract", "rule:exertion", "rule:senses"]
+
+[[trait]]
+key = "trait:keen-sense"
+summary = "A sense that reads far, so food and enemies are met sooner."
+category = "behaviour"
+process = "mesocosm:sense"
+shape = "part-shape:point"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey", "defence"]
+sites = ["contact"]
+cost_mg = 8
+reads = ["perception", "movement", "meal"]
+analogue = "owl hearing, a shark's nose"
+via = ["function:sense", "rule:senses"]
+
+[[trait]]
+key = "trait:scent-tracking"
+summary = "A nose that follows a trail across a site."
+category = "behaviour"
+process = "mesocosm:sense"
+shape = "part-shape:point"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey", "detritus"]
+sites = ["eating", "contact"]
+cost_mg = 8
+reads = ["perception", "meal", "movement"]
+analogue = "wolf, vulture, a burying beetle"
+via = ["function:sense", "rule:senses"]
+
+[[trait]]
+key = "trait:burrowing"
+summary = "Digs a hole to rest or hide in."
+category = "behaviour"
+process = "proposed:dig"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey", "defence"]
+sites = ["contact", "soil"]
+cost_mg = 13
+reads = ["movement", "upkeep", "soil"]
+analogue = "rabbit, mole, an ant"
+needs = "refuge"
+
+[[trait]]
+key = "trait:camouflage"
+summary = "Matches its site so sensors read little of it."
+category = "behaviour"
+process = "proposed:conceal"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna", "kingdom:flora"]
+models = ["predator_prey", "defence"]
+sites = ["contact"]
+cost_mg = 9
+reads = ["perception", "upkeep"]
+analogue = "stick insect, a stone plant"
+needs = "concealment"
+
+[[trait]]
+key = "trait:warning-colour"
+summary = "Shows what it can do so that attackers learn to leave it."
+category = "behaviour"
+process = "proposed:display"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna", "kingdom:flora"]
+models = ["defence"]
+sites = ["contact"]
+emits = ["signal"]
+cost_mg = 8
+reads = ["perception", "harm"]
+analogue = "poison frog, a wasp"
+needs = "signal-reading"
+
+[[trait]]
+key = "trait:large-body"
+summary = "Size beyond what most mouths can take."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+kingdoms = ["kingdom:fauna", "kingdom:flora"]
+models = ["predator_prey", "defence"]
+sites = ["contact", "eaten"]
+cost_mg = 25
+reads = ["ceiling", "upkeep", "meal", "movement"]
+analogue = "elephant, a baobab"
+needs = "refuge"
+
+[[trait]]
+key = "trait:breakaway-limb"
+summary = "A part that comes off in an attacker's grip and leaves the rest alive."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:joint"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey", "defence"]
+sites = ["eaten", "contact"]
+cost_mg = 9
+reads = ["harm", "movement", "upkeep"]
+analogue = "lizard tail, a crab's claw"
+via = ["function:support", "kind:wound"]
+
+[[trait]]
+key = "trait:scavenging"
+summary = "Seeks and eats the newly dead."
+category = "behaviour"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["detritus"]
+sites = ["eating", "soil"]
+admits = ["dead:fresh", "dead:aged"]
+emits = ["dead:dung"]
+cost_mg = 14
+reads = ["meal", "decay", "return", "income"]
+analogue = "vulture, hyena, a burying beetle"
+via = ["function:intake", "rule:port-admission"]
+unlocks = ["dead:aged"]
+
+[[trait]]
+key = "trait:coprophagy"
+summary = "Eats dung as its own food."
+category = "behaviour"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+models = ["detritus"]
+sites = ["eating", "soil"]
+admits = ["dead:dung"]
+emits = ["dead:dung"]
+cost_mg = 12
+reads = ["meal", "decay", "return"]
+analogue = "dung beetle, Pilobolus"
+needs = "dead-matter-classes"
+unlocks = ["dead:dung"]
+
+[[trait]]
+key = "trait:litter-feeding"
+summary = "Eats leaf litter as its own food."
+category = "behaviour"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna", "kingdom:myco"]
+models = ["detritus"]
+sites = ["eating", "soil"]
+admits = ["dead:litter"]
+emits = ["dead:dung"]
+cost_mg = 12
+reads = ["meal", "decay", "return", "income"]
+analogue = "woodlouse, a litter mould"
+needs = "dead-matter-classes"
+unlocks = ["dead:litter"]
+
+[[trait]]
+key = "trait:decomposer-eating"
+summary = "Takes living decomposers as food, the matter the dead gave them going on to the living."
+category = "behaviour"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["detritus", "defence"]
+sites = ["eating", "soil"]
+admits = ["live:decomposer"]
+emits = ["dead:dung"]
+cost_mg = 16
+reads = ["meal", "harm", "income"]
+analogue = "a mycophagous beetle, a shrew"
+via = ["function:intake", "rule:port-admission"]
+unlocks = ["live:decomposer"]
+
+[[trait]]
+key = "trait:lure"
+summary = "Draws prey or visitors with a reward or a false signal."
+category = "behaviour"
+process = "proposed:lure"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:fauna", "kingdom:flora", "kingdom:myco"]
+models = ["predator_prey", "mutualism"]
+sites = ["contact"]
+emits = ["signal"]
+cost_mg = 9
+reads = ["perception", "income", "meal"]
+analogue = "anglerfish, a pitcher plant, a stinkhorn"
+needs = "signal-reading"

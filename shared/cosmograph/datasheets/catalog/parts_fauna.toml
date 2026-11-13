@@ -1,0 +1,403 @@
+# Parts, kingdom fauna: hand-written rows.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[part]]
+key = "part:grazer-lips"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:broad-mouth"]
+effects = { eating = ["effect:graze-producer"], soil = ["effect:dung-deposit"] }
+admits = ["live:producer"]
+emits = ["dead:dung"]
+models = ["defence", "predator_prey"]
+analogue = "a deer's lips"
+
+[[part]]
+key = "part:grinding-molars"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:grinding"]
+effects = { eating = ["effect:grind-tough", "effect:graze-producer"], soil = ["effect:dung-deposit"] }
+admits = ["live:tough", "dead:wood", "dead:litter", "live:producer"]
+emits = ["dead:dung"]
+models = ["defence", "detritus"]
+analogue = "a horse's molars on grass"
+
+[[part]]
+key = "part:carnassial-jaw"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:jaw"]
+effects = { eating = ["effect:take-prey", "effect:scavenge-fresh"], soil = ["effect:dung-deposit"] }
+admits = ["live:consumer", "dead:fresh"]
+emits = ["dead:dung"]
+models = ["predator_prey", "detritus"]
+analogue = "a cat's jaw"
+
+[[part]]
+key = "part:shell-cracker-beak"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:jaw"]
+effects = { eating = ["effect:pierce-armour", "effect:take-prey"] }
+admits = ["live:consumer"]
+models = ["defence", "predator_prey"]
+analogue = "a beak that opens shells"
+
+[[part]]
+key = "part:sap-stylet"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:piercing"]
+effects = { eating = ["effect:suck-sap"] }
+admits = ["live:producer", "host:tissue"]
+models = ["parasite", "defence"]
+analogue = "an aphid on a stem"
+
+[[part]]
+key = "part:blood-proboscis"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:vector-bite"]
+effects = { eating = ["effect:host-feed"], contact = ["effect:transmit-pathogen"] }
+admits = ["host:tissue"]
+emits = ["pathogen"]
+models = ["parasite"]
+analogue = "a mosquito carrying malaria"
+
+[[part]]
+key = "part:tick-mouthpart"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:host-feeding"]
+effects = { eating = ["effect:host-feed"] }
+admits = ["host:tissue"]
+models = ["parasite"]
+analogue = "a tick's mouthparts"
+
+[[part]]
+key = "part:carrion-mouth"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:scavenging"]
+effects = { eating = ["effect:scavenge-fresh", "effect:scavenge-aged"], soil = ["effect:dung-deposit"] }
+admits = ["dead:fresh", "dead:aged"]
+emits = ["dead:dung"]
+models = ["detritus"]
+analogue = "a vulture's beak"
+
+[[part]]
+key = "part:dung-mouth"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:coprophagy"]
+effects = { eating = ["effect:eat-dung"] }
+admits = ["dead:dung"]
+emits = ["dead:dung"]
+models = ["detritus"]
+analogue = "a dung beetle"
+
+[[part]]
+key = "part:litter-mouth"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:litter-feeding"]
+effects = { eating = ["effect:eat-litter"], soil = ["effect:dung-deposit"] }
+admits = ["dead:litter"]
+emits = ["dead:dung"]
+models = ["detritus"]
+analogue = "a woodlouse"
+
+[[part]]
+key = "part:decomposer-eater"
+kingdom = "kingdom:fauna"
+process = "mesocosm:intake"
+shape = "part-shape:lump"
+traits = ["trait:decomposer-eating"]
+effects = { eating = ["effect:eat-decomposer"], soil = ["effect:dung-deposit"] }
+admits = ["live:decomposer"]
+emits = ["dead:dung"]
+models = ["detritus", "defence"]
+analogue = "a beetle that eats moulds, the specialist D36 asks for"
+
+[[part]]
+key = "part:detox-gut"
+kingdom = "kingdom:fauna"
+process = "mesocosm:excrete"
+shape = "part-shape:tube"
+traits = ["trait:detox-tolerance"]
+effects = { eating = ["effect:detoxify"] }
+models = ["defence", "detritus"]
+analogue = "a koala's liver on eucalyptus"
+
+[[part]]
+key = "part:plated-shell"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+traits = ["trait:plated-armour"]
+effects = { eaten = ["effect:armour-threshold"], contact = ["effect:spine-prick"] }
+models = ["defence", "predator_prey"]
+analogue = "a beetle's wing-cases"
+
+[[part]]
+key = "part:hide"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+traits = ["trait:thick-hide"]
+effects = { eaten = ["effect:armour-threshold"] }
+models = ["defence"]
+analogue = "a rhinoceros hide"
+
+[[part]]
+key = "part:carapace"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+traits = ["trait:chitin-shell"]
+effects = { eaten = ["effect:armour-threshold"], death = ["effect:fresh-carrion"] }
+emits = ["dead:litter"]
+models = ["defence", "detritus"]
+analogue = "a crab's carapace"
+
+[[part]]
+key = "part:quill"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+traits = ["trait:spine"]
+effects = { contact = ["effect:spine-prick"] }
+models = ["defence"]
+analogue = "a hedgehog's quills"
+
+[[part]]
+key = "part:venom-gland"
+kingdom = "kingdom:fauna"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:venom"]
+effects = { contact = ["effect:sting"], eating = ["effect:inject-venom"], eaten = ["effect:toxin-bite"] }
+emits = ["toxin"]
+models = ["defence", "predator_prey"]
+analogue = "a viper's gland"
+
+[[part]]
+key = "part:warning-skin"
+kingdom = "kingdom:fauna"
+process = "proposed:display"
+shape = "part-shape:sheet"
+traits = ["trait:warning-colour"]
+effects = { contact = ["effect:warning-display"] }
+emits = ["signal"]
+models = ["defence"]
+analogue = "a poison frog's colours"
+
+[[part]]
+key = "part:wasp-sting"
+kingdom = "kingdom:fauna"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:venom", "trait:warning-colour"]
+effects = { contact = ["effect:sting", "effect:warning-display"], eating = ["effect:inject-venom"] }
+emits = ["toxin", "signal"]
+models = ["defence"]
+analogue = "a wasp: a sting and the stripes that advertise it"
+
+[[part]]
+key = "part:camouflage-skin"
+kingdom = "kingdom:fauna"
+process = "proposed:conceal"
+shape = "part-shape:sheet"
+traits = ["trait:camouflage"]
+effects = { contact = ["effect:camouflage-hide"] }
+models = ["defence", "predator_prey"]
+analogue = "a stick insect on a twig"
+
+[[part]]
+key = "part:digging-forelimb"
+kingdom = "kingdom:fauna"
+process = "proposed:dig"
+shape = "part-shape:rod"
+traits = ["trait:burrowing"]
+effects = { contact = ["effect:burrow-refuge"], soil = ["effect:aerate-soil"] }
+models = ["predator_prey", "competition"]
+analogue = "a mole's forelimb"
+
+[[part]]
+key = "part:sprint-legs"
+kingdom = "kingdom:fauna"
+process = "mesocosm:contract"
+shape = "part-shape:rod"
+traits = ["trait:fast-legs"]
+effects = { contact = ["effect:flee-burst"] }
+models = ["predator_prey"]
+analogue = "a hare's legs"
+
+[[part]]
+key = "part:ambush-limb"
+kingdom = "kingdom:fauna"
+process = "mesocosm:contract"
+shape = "part-shape:rod"
+traits = ["trait:ambush", "trait:gripping-limb"]
+effects = { contact = ["effect:grip-hold"], eating = ["effect:ambush-strike"] }
+admits = ["live:consumer"]
+models = ["predator_prey"]
+analogue = "a mantis's foreleg"
+
+[[part]]
+key = "part:keen-eye"
+kingdom = "kingdom:fauna"
+process = "mesocosm:sense"
+shape = "part-shape:point"
+traits = ["trait:keen-sense"]
+effects = { eating = ["effect:track-prey"] }
+models = ["predator_prey", "defence"]
+analogue = "an owl's ear"
+
+[[part]]
+key = "part:trail-nose"
+kingdom = "kingdom:fauna"
+process = "mesocosm:sense"
+shape = "part-shape:point"
+traits = ["trait:scent-tracking"]
+effects = { eating = ["effect:track-prey"] }
+models = ["predator_prey", "detritus"]
+analogue = "a wolf's nose"
+
+[[part]]
+key = "part:breakaway-tail"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:joint"
+traits = ["trait:breakaway-limb"]
+effects = { eaten = ["effect:shed-part"] }
+models = ["predator_prey", "defence"]
+analogue = "a lizard's tail"
+
+[[part]]
+key = "part:big-frame"
+kingdom = "kingdom:fauna"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+traits = ["trait:large-body"]
+effects = { eaten = ["effect:bulk-immunity"], contact = ["effect:spine-prick"] }
+models = ["predator_prey", "defence"]
+analogue = "an elephant's frame, too large for most mouths"
+
+[[part]]
+key = "part:rumen"
+kingdom = "kingdom:fauna"
+process = "mesocosm:circulate"
+shape = "part-shape:lump"
+traits = ["trait:gut-symbiont-chamber"]
+effects = { eating = ["effect:gut-unlock"], eaten = ["effect:nutrient-rich-flesh"] }
+admits = ["live:tough"]
+emits = ["sugar"]
+models = ["mutualism", "detritus"]
+analogue = "a cow's rumen"
+
+[[part]]
+key = "part:pollen-fur"
+kingdom = "kingdom:fauna"
+process = "mesocosm:adhesion"
+shape = "part-shape:point"
+traits = ["trait:pollen-load"]
+effects = { contact = ["effect:pollen-pickup"] }
+admits = ["nectar"]
+emits = ["pollen"]
+models = ["mutualism"]
+analogue = "a bee's hairs"
+
+[[part]]
+key = "part:brood-pouch"
+kingdom = "kingdom:fauna"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:brood-care"]
+effects = { contact = ["effect:nurse-young"] }
+models = ["predator_prey", "succession"]
+analogue = "a nesting bird's care of young"
+
+[[part]]
+key = "part:spawning-run"
+kingdom = "kingdom:fauna"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:semelparous-burst"]
+effects = { death = ["effect:fresh-carrion"] }
+models = ["succession", "detritus"]
+analogue = "a salmon that breeds once and dies, feeding scavengers"
+
+[[part]]
+key = "part:antibody-tissue"
+kingdom = "kingdom:fauna"
+process = "mesocosm:gate"
+shape = "part-shape:tube"
+traits = ["trait:immune-response"]
+effects = { contact = ["effect:resist-infection"] }
+models = ["parasite", "defence"]
+analogue = "antibodies"
+
+[[part]]
+key = "part:lure-organ"
+kingdom = "kingdom:fauna"
+process = "proposed:lure"
+shape = "part-shape:sheet"
+traits = ["trait:lure"]
+effects = { contact = ["effect:lure-bait"] }
+emits = ["signal"]
+models = ["predator_prey", "mutualism"]
+analogue = "an anglerfish's lure"
+
+[[part]]
+key = "part:alarm-gland"
+kingdom = "kingdom:fauna"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:alarm-signal"]
+effects = { contact = ["effect:alarm-signal"] }
+emits = ["signal"]
+models = ["defence", "predator_prey"]
+analogue = "an aphid's alarm pheromone"
+
+[[part]]
+key = "part:fat-store"
+kingdom = "kingdom:fauna"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:storage-body", "trait:dormant", "trait:drought-tolerance"]
+effects = { eaten = ["effect:nutrient-rich-flesh"], death = ["effect:fresh-carrion"] }
+admits = ["water"]
+emits = ["sugar"]
+models = ["predator_prey", "detritus", "succession"]
+analogue = "a hibernator's fat"
+
+[[part]]
+key = "part:anti-parasite-skin"
+kingdom = "kingdom:fauna"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:anti-parasite-chemistry"]
+effects = { contact = ["effect:resist-infection"] }
+emits = ["toxin"]
+models = ["parasite", "defence"]
+analogue = "a frog's skin peptides"

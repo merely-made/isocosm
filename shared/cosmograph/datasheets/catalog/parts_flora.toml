@@ -1,0 +1,290 @@
+# Parts, kingdom flora: hand-written rows. (The generator adds trait x effect rows.)
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[part]]
+key = "part:tannin-leaf"
+kingdom = "kingdom:flora"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+traits = ["trait:broad-leaf", "trait:tannin"]
+effects = { contact = ["effect:shade-cast"], eaten = ["effect:toxin-bite"], death = ["effect:toxic-litter"] }
+admits = ["light"]
+emits = ["shade", "toxin"]
+models = ["competition", "defence", "detritus"]
+analogue = "an oak leaf: wide, bitter, slow to rot"
+
+[[part]]
+key = "part:thorn-stem"
+kingdom = "kingdom:flora"
+process = "mesocosm:support"
+shape = "part-shape:rod"
+traits = ["trait:spine", "trait:rigid-stem"]
+effects = { contact = ["effect:spine-prick"], death = ["effect:rot-to-soil"] }
+models = ["competition", "defence"]
+analogue = "an acacia's thorned stem"
+
+[[part]]
+key = "part:trunk"
+kingdom = "kingdom:flora"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+traits = ["trait:woody-tissue", "trait:rigid-stem"]
+effects = { eaten = ["effect:tough-matter"], death = ["effect:slow-litter"] }
+emits = ["dead:wood", "dead:litter"]
+models = ["competition", "defence", "detritus", "succession"]
+analogue = "a tree trunk: height that wins light, wood few mouths can take"
+
+[[part]]
+key = "part:resprouting-tuber"
+kingdom = "kingdom:flora"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:storage-body", "trait:resprouting", "trait:drought-tolerance"]
+effects = { eaten = ["effect:regrow-after-bite"], death = ["effect:rot-to-soil"] }
+admits = ["water", "sugar"]
+models = ["competition", "defence", "succession"]
+analogue = "a yam or a lignotuber that regrows after grazing and fire"
+
+[[part]]
+key = "part:taproot"
+kingdom = "kingdom:flora"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:deep-root"]
+effects = { soil = ["effect:deep-draw", "effect:soil-draw"], death = ["effect:rot-to-soil"] }
+admits = ["water", "soil:nutrient"]
+emits = ["soil:nutrient"]
+models = ["competition", "succession"]
+analogue = "a mesquite's taproot, reaching the water below the grass roots"
+
+[[part]]
+key = "part:nutrient-root-mat"
+kingdom = "kingdom:flora"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+traits = ["trait:broad-root", "trait:scarce-nutrient-uptake"]
+effects = { soil = ["effect:soil-draw", "effect:scarce-draw"] }
+admits = ["soil:nutrient", "soil:scarce", "water"]
+models = ["competition"]
+analogue = "a proteaceous shrub's cluster roots on poor soil"
+
+[[part]]
+key = "part:nodule"
+kingdom = "kingdom:flora"
+process = "proposed:fix-nutrient"
+shape = "part-shape:lump"
+traits = ["trait:nitrogen-fixation"]
+effects = { soil = ["effect:nitrogen-deposit"], death = ["effect:rot-to-soil"] }
+admits = ["sugar"]
+emits = ["soil:scarce"]
+models = ["competition", "mutualism", "succession"]
+analogue = "a legume's root nodule"
+
+[[part]]
+key = "part:mycorrhizal-root"
+kingdom = "kingdom:flora"
+process = "mesocosm:adhesion"
+shape = "part-shape:sheet"
+traits = ["trait:mycorrhizal-sheath", "trait:exudate-gland"]
+effects = { contact = ["effect:nutrient-for-sugar-swap"], soil = ["effect:exudate-trade"] }
+admits = ["sugar", "soil:nutrient"]
+emits = ["soil:nutrient", "exudate", "sugar"]
+models = ["mutualism", "competition"]
+analogue = "a pine root sheathed in fungus, paying sugar for phosphate"
+
+[[part]]
+key = "part:nectary"
+kingdom = "kingdom:flora"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:nectar-gland"]
+effects = { eaten = ["effect:nectar-reward"] }
+emits = ["nectar"]
+models = ["mutualism"]
+analogue = "a flower's nectary"
+
+[[part]]
+key = "part:berry"
+kingdom = "kingdom:flora"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:fleshy-fruit"]
+effects = { eaten = ["effect:sugar-reward"], death = ["effect:seed-release"], soil = ["effect:scatter-propagule"] }
+admits = ["sugar"]
+emits = ["sugar", "seed"]
+models = ["mutualism", "succession"]
+analogue = "a berry that pays a bird to carry its seed"
+
+[[part]]
+key = "part:burr-head"
+kingdom = "kingdom:flora"
+process = "mesocosm:adhesion"
+shape = "part-shape:sheet"
+traits = ["trait:burr-seed"]
+effects = { contact = ["effect:seed-attach"], death = ["effect:seed-release"] }
+emits = ["seed"]
+models = ["mutualism", "succession"]
+analogue = "burdock, seed that rides in fur"
+
+[[part]]
+key = "part:wind-pod"
+kingdom = "kingdom:flora"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:wind-seed", "trait:fast-growth"]
+effects = { death = ["effect:seed-release"], soil = ["effect:scatter-propagule"] }
+emits = ["seed"]
+models = ["succession"]
+analogue = "a dandelion head, quick and light and spread by wind"
+
+[[part]]
+key = "part:seed-bank-store"
+kingdom = "kingdom:flora"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:seed-bank", "trait:dormant"]
+effects = { soil = ["effect:bank-germination"], death = ["effect:fire-seed-release"] }
+emits = ["seed"]
+models = ["succession"]
+analogue = "pioneer seeds waiting in the soil for a gap"
+
+[[part]]
+key = "part:floating-seed-pod"
+kingdom = "kingdom:flora"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:floating-seed"]
+effects = { soil = ["effect:scatter-propagule"] }
+emits = ["seed"]
+models = ["succession"]
+analogue = "a coconut or a light seed carried by water to bare ground"
+
+[[part]]
+key = "part:needle-sheet"
+kingdom = "kingdom:flora"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+traits = ["trait:needle-leaf", "trait:cold-tolerance"]
+effects = { contact = ["effect:smother-mat"], death = ["effect:slow-litter"] }
+admits = ["light"]
+emits = ["dead:litter"]
+models = ["succession", "competition"]
+analogue = "a pine needle: thrifty in cold and poor soil, litter that nothing eats"
+
+[[part]]
+key = "part:understory-leaf"
+kingdom = "kingdom:flora"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+traits = ["trait:shade-tolerance"]
+effects = { death = ["effect:rot-to-soil"] }
+admits = ["light"]
+models = ["competition", "succession"]
+analogue = "a beech seedling's leaf, slow in the shade and ready for a gap"
+
+[[part]]
+key = "part:prairie-blade"
+kingdom = "kingdom:flora"
+process = "mesocosm:fix"
+shape = "part-shape:sheet"
+traits = ["trait:c4-fixation"]
+effects = { contact = ["effect:smother-mat"], death = ["effect:rot-to-soil"] }
+admits = ["light", "water"]
+models = ["competition", "succession"]
+analogue = "a prairie grass that out-grows others in strong light"
+
+[[part]]
+key = "part:grit-blade"
+kingdom = "kingdom:flora"
+process = "mesocosm:support"
+shape = "part-shape:branch"
+traits = ["trait:silica-grit", "trait:cell-wall-fibre"]
+effects = { eaten = ["effect:tough-matter"] }
+emits = ["dead:litter"]
+models = ["defence"]
+analogue = "a grass defended by glass grains and fibre"
+
+[[part]]
+key = "part:fire-bark"
+kingdom = "kingdom:flora"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+traits = ["trait:fire-resistant-bark"]
+effects = { death = ["effect:slow-litter"], eaten = ["effect:tough-matter"] }
+emits = ["dead:litter"]
+models = ["succession", "defence"]
+analogue = "a cork oak's bark that lives through a burn"
+
+[[part]]
+key = "part:water-pad"
+kingdom = "kingdom:flora"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+traits = ["trait:storage-body", "trait:drought-tolerance"]
+effects = { eaten = ["effect:nutrient-rich-flesh"], death = ["effect:rot-to-soil"] }
+admits = ["water"]
+emits = ["sugar"]
+models = ["competition", "predator_prey"]
+analogue = "a cactus pad that holds water through a drought"
+
+[[part]]
+key = "part:nettle-hair"
+kingdom = "kingdom:flora"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:sting-cell"]
+effects = { contact = ["effect:sting"], eaten = ["effect:toxin-bite"] }
+emits = ["toxin"]
+models = ["defence"]
+analogue = "a nettle's stinging hair"
+
+[[part]]
+key = "part:cyanide-leaf"
+kingdom = "kingdom:flora"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:cyanogenic", "trait:broad-leaf"]
+effects = { eaten = ["effect:toxin-bite"], contact = ["effect:shade-cast"] }
+admits = ["light"]
+emits = ["shade", "toxin"]
+models = ["defence", "competition"]
+analogue = "a cassava leaf that poisons the one that chews it"
+
+[[part]]
+key = "part:walnut-bark"
+kingdom = "kingdom:flora"
+process = "mesocosm:secrete"
+shape = "part-shape:sheet"
+traits = ["trait:allelochemical", "trait:alkaloid"]
+effects = { soil = ["effect:allelopathic-inhibit"], death = ["effect:toxic-litter"] }
+emits = ["exudate", "toxin"]
+models = ["competition", "defence", "detritus"]
+analogue = "a walnut that keeps its patch clear"
+
+[[part]]
+key = "part:stolon"
+kingdom = "kingdom:flora"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+traits = ["trait:runner"]
+effects = { contact = ["effect:smother-mat"], soil = ["effect:scatter-propagule"] }
+models = ["succession", "competition"]
+analogue = "a strawberry's runner"
+
+[[part]]
+key = "part:hardy-immune-leaf"
+kingdom = "kingdom:flora"
+process = "mesocosm:gate"
+shape = "part-shape:tube"
+traits = ["trait:immune-response"]
+effects = { contact = ["effect:resist-infection"] }
+models = ["parasite", "defence"]
+analogue = "a plant's sealing of a lesion"

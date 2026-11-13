@@ -1,0 +1,312 @@
+# Traits, part four: life history and partnership.
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[trait]]
+key = "trait:wind-seed"
+summary = "Seeds or spores that ride air to a neighbouring site."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["succession"]
+sites = ["death", "soil"]
+emits = ["seed"]
+cost_mg = 8
+reads = ["reproduction", "upkeep", "ceiling"]
+analogue = "maple samara, dandelion, a puffball"
+via = ["function:reproduce", "kind:birth"]
+
+[[trait]]
+key = "trait:floating-seed"
+summary = "Propagules that travel far on wind or water and land in a cleared place."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco", "kingdom:micro"]
+models = ["succession"]
+sites = ["death", "soil"]
+emits = ["seed", "spore"]
+cost_mg = 9
+reads = ["reproduction", "upkeep"]
+analogue = "coconut, a spore on the jet stream"
+needs = "long-range-dispersal"
+
+[[trait]]
+key = "trait:burr-seed"
+summary = "A seed that grips fur and feathers."
+category = "lifehistory"
+process = "mesocosm:adhesion"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora"]
+models = ["mutualism", "succession"]
+sites = ["contact"]
+emits = ["seed"]
+cost_mg = 7
+reads = ["reproduction", "upkeep"]
+analogue = "burdock, cleavers"
+needs = "seed-carriage"
+
+[[trait]]
+key = "trait:fleshy-fruit"
+summary = "Sugar wrapped round the seed to pay the animal that carries it."
+category = "lifehistory"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora"]
+models = ["mutualism"]
+sites = ["eaten"]
+admits = ["sugar"]
+emits = ["seed", "sugar"]
+cost_mg = 15
+reads = ["reproduction", "meal", "income", "upkeep"]
+analogue = "berry, a fig"
+needs = "seed-carriage"
+
+[[trait]]
+key = "trait:seed-bank"
+summary = "Buried seeds that wait years and sprout when a gap opens."
+category = "lifehistory"
+process = "mesocosm:store"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["succession"]
+sites = ["death", "soil"]
+emits = ["seed"]
+cost_mg = 10
+reads = ["reproduction", "upkeep", "climate"]
+analogue = "pioneer seed, a hard-coated seed"
+via = ["function:store", "rule:dormancy"]
+
+[[trait]]
+key = "trait:fire-resistant-bark"
+summary = "A thick bark that lives through a burn."
+category = "structure"
+process = "mesocosm:support"
+shape = "part-shape:shell"
+kingdoms = ["kingdom:flora"]
+models = ["succession", "defence"]
+sites = ["contact", "death"]
+cost_mg = 14
+reads = ["ceiling", "upkeep", "harm"]
+analogue = "cork oak, giant sequoia"
+needs = "disturbance-event"
+
+[[trait]]
+key = "trait:resprouting"
+summary = "Regrows from what is left after a bite, a cut or a burn."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["succession", "defence"]
+sites = ["eaten", "death"]
+cost_mg = 13
+reads = ["reproduction", "upkeep", "ceiling"]
+analogue = "coppiced willow, a grazed grass"
+via = ["function:reproduce", "kind:regrow"]
+
+[[trait]]
+key = "trait:runner"
+summary = "Sends out a running stem that roots and becomes another body."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["succession", "competition"]
+sites = ["contact", "soil"]
+cost_mg = 12
+reads = ["reproduction", "upkeep", "ceiling"]
+analogue = "strawberry runner, a rhizomorph"
+via = ["function:reproduce", "kind:bud"]
+
+[[trait]]
+key = "trait:semelparous-burst"
+summary = "Puts everything into one breeding and dies of it."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:flora", "kingdom:fauna", "kingdom:micro"]
+models = ["succession"]
+sites = ["death"]
+emits = ["seed"]
+cost_mg = 11
+reads = ["reproduction", "upkeep", "decay"]
+analogue = "agave, salmon, a mayfly"
+via = ["function:reproduce", "kind:bud"]
+
+[[trait]]
+key = "trait:brood-care"
+summary = "Keeps young close and feeds them until they are weaned."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["predator_prey", "succession"]
+sites = ["contact", "death"]
+cost_mg = 14
+reads = ["reproduction", "upkeep", "meal", "movement"]
+analogue = "a nesting bird, a marsupial pouch"
+via = ["function:reproduce", "kind:bear"]
+
+[[trait]]
+key = "trait:spore-cloud"
+summary = "Puts out very many spores at once."
+category = "lifehistory"
+process = "mesocosm:reproduce"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:myco", "kingdom:micro"]
+models = ["succession", "parasite"]
+sites = ["death", "contact"]
+emits = ["spore"]
+cost_mg = 8
+reads = ["reproduction", "upkeep"]
+analogue = "puffball, mould sporangia"
+via = ["function:reproduce", "kind:birth"]
+
+[[trait]]
+key = "trait:pollen-load"
+summary = "Hairs that pick up pollen and carry it between flowers."
+category = "symbiosis"
+process = "mesocosm:adhesion"
+shape = "part-shape:point"
+kingdoms = ["kingdom:fauna"]
+models = ["mutualism"]
+sites = ["contact"]
+admits = ["nectar"]
+emits = ["pollen"]
+cost_mg = 8
+reads = ["reproduction", "movement", "upkeep"]
+analogue = "bee scopa, a moth's hairs"
+needs = "pollination"
+
+[[trait]]
+key = "trait:mycorrhizal-sheath"
+summary = "A fungal sleeve on a root that trades soil nutrient for the plant's sugar."
+category = "symbiosis"
+process = "mesocosm:adhesion"
+shape = "part-shape:sheet"
+kingdoms = ["kingdom:flora", "kingdom:myco"]
+models = ["mutualism", "competition"]
+sites = ["soil", "contact"]
+admits = ["sugar"]
+emits = ["soil:nutrient"]
+cost_mg = 12
+reads = ["soil", "income", "upkeep"]
+analogue = "pine ectomycorrhiza"
+needs = "nutrient-sugar-trade"
+
+[[trait]]
+key = "trait:gut-symbiont-chamber"
+summary = "A gut chamber that keeps microbes that open tough food, and feeds them."
+category = "symbiosis"
+process = "mesocosm:circulate"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:fauna"]
+models = ["mutualism", "detritus"]
+sites = ["eating"]
+admits = ["live:tough"]
+cost_mg = 18
+reads = ["meal", "income", "upkeep", "decay"]
+analogue = "termite hindgut, a cow's rumen"
+needs = "gut-symbiont"
+unlocks = ["live:tough"]
+
+[[trait]]
+key = "trait:host-entry"
+summary = "Gets into a host body, where its own matter comes from."
+category = "symbiosis"
+process = "mesocosm:adhesion"
+shape = "part-shape:point"
+kingdoms = ["kingdom:micro", "kingdom:myco"]
+models = ["parasite"]
+sites = ["contact"]
+admits = ["host:tissue"]
+cost_mg = 6
+reads = ["harm", "upkeep", "reproduction"]
+analogue = "a virus coat, a hookworm larva"
+via = ["rule:hosting"]
+strengths = [{ kind = "inject", role = "attack", amount = 3 }]
+
+[[trait]]
+key = "trait:host-feeding"
+summary = "Takes a host's tissue from inside it."
+category = "symbiosis"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:micro", "kingdom:myco", "kingdom:fauna"]
+models = ["parasite"]
+sites = ["eating"]
+admits = ["host:tissue"]
+cost_mg = 11
+reads = ["meal", "harm", "income"]
+analogue = "a tick, a rust-fungus haustorium"
+via = ["rule:hosting", "function:intake"]
+
+[[trait]]
+key = "trait:host-aid"
+summary = "Gives its host matter from inside it, as a partner rather than a feeder."
+category = "symbiosis"
+process = "mesocosm:conduct"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:micro", "kingdom:myco"]
+models = ["mutualism"]
+sites = ["contact"]
+emits = ["host:matter"]
+cost_mg = 10
+reads = ["income", "upkeep"]
+analogue = "gut bacteria, an endophyte"
+via = ["rule:hosting", "function:conduct"]
+
+[[trait]]
+key = "trait:vector-bite"
+summary = "A bite that carries a pathogen from one host to the next."
+category = "symbiosis"
+process = "mesocosm:intake"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:fauna"]
+models = ["parasite"]
+sites = ["contact", "eating"]
+admits = ["host:tissue"]
+emits = ["pathogen"]
+cost_mg = 12
+reads = ["meal", "harm", "reproduction"]
+analogue = "mosquito, tsetse fly"
+needs = "host-transmission"
+
+[[trait]]
+key = "trait:immune-response"
+summary = "A reaction that holds infection off, at a cost."
+category = "symbiosis"
+process = "mesocosm:gate"
+shape = "part-shape:tube"
+kingdoms = ["kingdom:flora", "kingdom:fauna"]
+models = ["parasite", "defence"]
+sites = ["contact", "eaten"]
+cost_mg = 11
+reads = ["harm", "upkeep", "meal"]
+analogue = "plant hypersensitive response, antibodies"
+needs = "host-immunity"
+strengths = [{ kind = "inject", role = "defend", amount = 4 }]
+
+[[trait]]
+key = "trait:pathogen-load"
+summary = "A living burden carried in a body that can pass to another."
+category = "symbiosis"
+process = "proposed:infect"
+shape = "part-shape:lump"
+kingdoms = ["kingdom:micro"]
+models = ["parasite"]
+sites = ["contact", "death"]
+emits = ["pathogen"]
+cost_mg = 12
+reads = ["reproduction", "harm"]
+analogue = "a virus, a bacterium, a blight"
+needs = "host-transmission"

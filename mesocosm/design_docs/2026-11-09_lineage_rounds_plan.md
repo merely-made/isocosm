@@ -665,6 +665,15 @@ numbers and readings he has not ruled; within them, the grammar's drift
 - **The faster feeding rides on `Rot`** (mine): `decomposer_bites` is a
   field of the rot rule, so it exists only where rot does.
 
+- **Catalog choices** (the implementer's and mine, for ruling): a
+  fourth kingdom, `kingdom:micro`, carries the parasite and disease
+  rows; five effect sites (contact, eaten, death, soil, eating), one per
+  effect; the 21 missing-rule names, six proposed process names and the
+  dead-matter words (fresh, aged, toxic, litter, dung, wood) are
+  working words, not names; a generated part has one trait and one
+  effect, and some odd pairings remain; costs and strengths are
+  placeholder numbers; copyleft sources are used for shape only.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -736,6 +745,27 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: the three catalogs as data (D37, D38), a prototype. In
+  `shared/cosmograph/src/catalog/` with TOML datasheets under
+  `datasheets/catalog/`: 80 traits, 68 effects, 272 parts (100 written,
+  172 generated from trait by kingdom by effect and filtered), over
+  the plant, animal, fungus and micro kingdoms. Nothing reads it in
+  founding, generation or the tick, so no world changes. A part's
+  status is derived: 101 run on rules the sim has, 155 wait on a named
+  missing rule, 16 on a process the registry lacks. Parts waiting, by
+  rule (overlapping): dead matter in classes 32, a mouth for tough
+  matter 31, nutrient-for-sugar trade 15, harm on contact 13, harm on a
+  bite (D36, D37) 12, reading a signal 11, poisoning the soil 10, bite
+  mode 8, long-range dispersal 8, refuge 8, host immunity 7, host
+  transmission 7, a scarce nutrient 7, soil depth 7, flesh ageing 6,
+  disturbance 5, seed carrying 4, concealment 2, gut symbiont 2,
+  pollination 2, flight 1. Proposed processes: dig, fix-nutrient,
+  infect, lure, conceal, display. Data shapes follow
+  `2026-11-13_effects_prior_art_brief.md` (gates with an inverted
+  tolerance condition, integer timing, unlocks, attack and defence
+  strengths); no row or value is copied. All values are placeholders.
+  Sim suite 1210 passing; Mesocosm, Eponym and root checks pass.
 
 - 2026-11-13: D33, two parts of three. Rot is on for a new generated
   world (`WorldRules::generated`, `--no-rot`; an older save without the

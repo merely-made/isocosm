@@ -1,0 +1,144 @@
+# The mechanics the sim lacks: the build list the catalog's rows wait on, and the verbs it proposes (D38 lifts the stop rule on new processes).
+#
+# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
+# here is a plain working word, not a player-facing name; a naming round is
+# the owner's. Not read by founding, generation or the tick.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+status = "provisional"
+
+[[mechanic]]
+key = "harm-on-bite"
+summary = "A bite of a category the mouth does not tolerate harms the eater instead of being refused; tolerance is a mouth's own trait."
+cites = ["lineage-rounds D36", "lineage-rounds D37"]
+
+[[mechanic]]
+key = "harm-on-contact"
+summary = "A body that is touched or struck (spine, sting, nettle hair) wounds or costs the one touching it, with no meal."
+cites = ["lineage-rounds D39 model 2"]
+
+[[mechanic]]
+key = "flesh-ageing"
+summary = "A corpse's flesh moves from fresh to aged to toxic with time, so a scavenger's food is good, poor, then a harm."
+cites = ["lineage-rounds D37"]
+
+[[mechanic]]
+key = "dead-matter-classes"
+summary = "Carrion, dung and litter are distinct dead stocks, each admitted by its own mouths and each with its own decay rate."
+cites = ["lineage-rounds D37", "lineage-rounds D39 model 4"]
+
+[[mechanic]]
+key = "tough-matter-mouth"
+summary = "Tough plant matter (wood, fibre, grit-laden leaf) is a food category only a mouth built for it can take; others get little or are worn."
+cites = ["lineage-rounds D37"]
+
+[[mechanic]]
+key = "bite-mode"
+summary = "A mouth bites by a mode (grind, pierce, tear, suck) and a defence law answers each mode differently."
+cites = ["lineage-rounds D39 model 2", "rules/defence.rs"]
+
+[[mechanic]]
+key = "refuge"
+summary = "A place or state (burrow, cover, bulk beyond a mouth) in which a body cannot be taken, so predation leaves a remnant."
+cites = ["lineage-rounds D39 model 3"]
+
+[[mechanic]]
+key = "flight"
+summary = "A threatened body spends exertion to leave a site before a predator closes, a chase with a result."
+cites = ["lineage-rounds D39 model 3"]
+
+[[mechanic]]
+key = "concealment"
+summary = "A body lowers what a predator's senses read of it, at a cost, so detection range falls."
+cites = ["lineage-rounds D39 model 3", "senses.rs"]
+
+[[mechanic]]
+key = "signal-reading"
+summary = "A display (warning colour, mimicry, a lure) is read by a sense and changes what the reader attempts."
+cites = ["lineage-rounds D39 model 2", "senses.rs"]
+
+[[mechanic]]
+key = "nutrient-axes"
+summary = "Soil holds more than one nutrient and one can be scarce, so a draw is for a named nutrient and a deposit can supply it."
+cites = ["lineage-rounds D39 model 1", "elements_and_traits_memo section 7"]
+
+[[mechanic]]
+key = "soil-depth-layers"
+summary = "Soil has depths, so a deep root reaches water and nutrient a shallow one cannot, at a cost in mass."
+cites = ["lineage-rounds D39 model 1"]
+
+[[mechanic]]
+key = "allelopathy"
+summary = "A body's soil deposit slows or poisons other bodies' draws or germination at its site."
+cites = ["lineage-rounds D39 model 1"]
+
+[[mechanic]]
+key = "nutrient-sugar-trade"
+summary = "Two bodies each give what the other lacks (soil nutrient for sugar) and each pays only while the other does."
+cites = ["lineage-rounds D39 model 5", "rules/hosting.rs (leak gives one way only)"]
+
+[[mechanic]]
+key = "gut-symbiont"
+summary = "A body hosts microbes that unlock a food category it could not digest, the microbe fed in return."
+cites = ["lineage-rounds D39 model 5", "lineage-rounds D20"]
+
+[[mechanic]]
+key = "pollination"
+summary = "A visitor is paid (nectar, pollen) and carries pollen between bodies of a lineage, which raises the plant's seeding."
+cites = ["lineage-rounds D39 model 5"]
+
+[[mechanic]]
+key = "seed-carriage"
+summary = "A seed or spore travels on or in a mobile body (burr, fruit) and lands where that body goes."
+cites = ["lineage-rounds D39 model 5"]
+
+[[mechanic]]
+key = "host-transmission"
+summary = "A pathogen or parasite passes between hosts by contact or a vector, rather than only by entering bodies at its own site."
+cites = ["lineage-rounds D39 model 6", "rules/hosting.rs (enter is site-bound)"]
+
+[[mechanic]]
+key = "host-immunity"
+summary = "A host resists, tolerates or clears an infection, at a cost, so infection is a contest and not a certainty."
+cites = ["lineage-rounds D39 model 6"]
+
+[[mechanic]]
+key = "host-manipulation"
+summary = "A parasite changes its host's behaviour or reproduction toward the parasite's spread."
+cites = ["lineage-rounds D39 model 6"]
+
+[[mechanic]]
+key = "disturbance-event"
+summary = "A fire, flood or collapse clears bodies from a site and resets what may colonise it."
+cites = ["lineage-rounds D39 model 7", "lineage-rounds D31 (event conditions)"]
+
+[[mechanic]]
+key = "long-range-dispersal"
+summary = "A propagule travels more than one route away, by wind or water, so a distant cleared site can be reached."
+cites = ["lineage-rounds D39 model 7", "rules/effect.rs (Birth scatter goes one route)"]
+
+[[proposed_process]]
+key = "dig"
+summary = "Opens soil to make a burrow; a limb's work on the ground, not on a body."
+
+[[proposed_process]]
+key = "conceal"
+summary = "Matches or hides against the site's surface so sensors read less of the body."
+
+[[proposed_process]]
+key = "display"
+summary = "Shows a signal (colour, scent, sound) for another body's sense to read."
+
+[[proposed_process]]
+key = "fix-nutrient"
+summary = "Makes a soil nutrient out of the air or the water, as root nodules and cyanobacteria do."
+
+[[proposed_process]]
+key = "lure"
+summary = "Draws a visitor or a prey to the body by reward or false signal."
+
+[[proposed_process]]
+key = "infect"
+summary = "Establishes a living body inside a host and draws on it (D30's switch, not a part today)."
