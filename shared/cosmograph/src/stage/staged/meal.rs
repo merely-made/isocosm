@@ -7,6 +7,7 @@
 use super::*;
 
 mod bite;
+mod guard;
 mod partition;
 
 impl Staged<'_> {
@@ -46,7 +47,7 @@ impl Staged<'_> {
         into: &Key,
         of: &[Key],
         whole: bool,
-    ) -> Result<Option<bite::Harmed>> {
+    ) -> Result<bite::Harms> {
         self.sim.diagnostic_stage("meal.request");
         if self.body(from)?.journey.is_some() {
             return Err("travelling prey has no resident site".into());
@@ -230,8 +231,14 @@ impl Staged<'_> {
                 ));
             }
         }
+        // The guard rule reads the bite before it changes anything: armour
+        // resists the whole of a part's bite too, so a resisted one is not
+        // taken whole.
+        sim.diagnostic_stage("meal.guard");
+        let guarded = self.guarded(from)?;
+        let resisted = guarded.map_or(0, |g| g.resisted);
         sim.diagnostic_stage("meal.whole");
-        if let (true, Some(part)) = (whole && whole_admitted, bitten) {
+        if let (true, Some(part)) = (whole && whole_admitted && resisted == 0, bitten) {
             let asked: u64 = match &portion {
                 Some(p) => p.values().sum(),
                 None => asked_amount,
@@ -240,10 +247,11 @@ impl Staged<'_> {
             if asked >= all && self.incorporate(from, part)? {
                 sim.diagnostic_meal_update(None, None, Some(&holdings));
                 sim.diagnostic_given(&holdings);
-                return self.untolerated(from, offered.keys());
+                let eater = self.untolerated(from, offered.keys())?;
+                return Ok(bite::Harms { eater, wards: Self::wards(guarded, 0) });
             }
         }
-        let taken: Ledger = match portion {
+        let mut taken: Ledger = match portion {
             // Do not redistribute rejected account quotas to other accounts.
             Some(portion) => portion
                 .into_iter()
@@ -255,7 +263,8 @@ impl Staged<'_> {
                 .collect(),
             None => meaning::share(&offered, rules, asked_amount),
         };
-        let harmed = self.untolerated(from, taken.keys())?;
+        let withheld = crate::ecology::Guard::withhold(&mut taken, resisted, draw);
+        let harmed = bite::Harms { eater: self.untolerated(from, taken.keys())?, wards: Self::wards(guarded, withheld) };
         sim.diagnostic_stage("meal.transfer");
         let prey = self.holder(from);
         let mut total = 0u64;

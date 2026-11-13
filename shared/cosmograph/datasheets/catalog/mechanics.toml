@@ -10,9 +10,9 @@ consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
 status = "provisional"
 
 [[mechanic]]
-key = "harm-on-contact"
-summary = "A body that is touched or struck (spine, sting, nettle hair) wounds or costs the one touching it, with no meal."
-cites = ["lineage-rounds D39 model 2"]
+key = "venom-injection"
+summary = "A bite puts its eater's toxin into the prey, so the eater's secreting tissue wounds what it eats: an attack, where the guard rule's glands are a defence."
+cites = ["lineage-rounds D39 model 2", "ecology/guard.rs (glands charge their eater only)"]
 
 [[mechanic]]
 key = "dung-stock"

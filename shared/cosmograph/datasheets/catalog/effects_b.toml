@@ -336,7 +336,7 @@ only = ["trait:jaw", "trait:piercing"]
 kingdoms = ["kingdom:fauna"]
 cost_mg = 4
 analogue = "a beak through a shell"
-needs = "bite-mode"
+via = ["rule:guard"]
 gates = [{ affected = "prey", requires = "trait:plated-armour" }]
 
 [[effect]]
@@ -531,7 +531,7 @@ kingdoms = ["kingdom:fauna"]
 emits = ["toxin"]
 cost_mg = 4
 analogue = "a viper's strike"
-needs = "harm-on-contact"
+needs = "venom-injection"
 timing = { onset = 1, intensity = 4, duration = 30, decay = 2, stacking = "stack" }
 
 [[effect]]

@@ -258,6 +258,11 @@ pub struct Harm {
     /// Whether the bite was of tough plant matter the mouth cannot grind
     /// (the categories rule); else of flesh it did not tolerate.
     pub tough: bool,
+    /// The guard rule's ward that did it (`ecology::guard`), else none: spines
+    /// or toxin wounded the eater, or armour withheld part of the bite.
+    pub ward: Option<crate::ecology::Ward>,
+    /// The matter armour left in the prey, nought unless `ward` is armour.
+    pub withheld: u64,
     /// The place it was eaten at.
     pub place: Id,
 }

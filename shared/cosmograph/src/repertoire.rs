@@ -24,6 +24,9 @@
 //! what it admits. A generic birth keeps its parent's form, so a revision
 //! never reached the young of an A1 line; under the rule the young of a line
 //! that has taken a lowered kind are grown from its recipe ([`crate::inherit::rebody`]).
+//! With the guard rule (`crate::ecology::Guard`) the armour, spine and gland
+//! parts lower too, as organs behind the body, and a mouth carries the
+//! catalog's attack by kind.
 //! Unset, the world founds, hashes and runs as before.
 
 use crate::{
@@ -37,7 +40,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod lower;
-pub use lower::{Lowering, lowering, lowering_with, needs_categories};
+pub use lower::{Lowering, lowering, lowering_for, lowering_with, needs_categories, needs_guard};
 
 /// The founding rule. Working names.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -117,16 +120,16 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         return Err("repertoire layers on the stock and A1 rates, not world time".into());
     }
     let catalog = crate::catalog::catalog();
-    let cats = founding.categories.is_some();
+    let (cats, guard) = (founding.categories.is_some(), founding.guard.is_some());
     for key in &rule.only {
         let part = catalog.part_by_key(key).ok_or_else(|| format!("repertoire names {key}, which the catalog lacks"))?;
-        if let Err(why) = lowering_with(part, cats) {
+        if let Err(why) = lowering_for(part, cats, guard) {
             return Err(format!("repertoire cannot lower {key}: {why}"));
         }
     }
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
-        let Ok(Lowering { template, root }) = lowering_with(part, cats) else { continue };
+        let Ok(Lowering { template, root }) = lowering_for(part, cats, guard) else { continue };
         let key = kind_key(&part.key);
         let function = lower::function_of(&template).ok_or("a lowered kind has no function")?;
         let root_key = root.as_ref().map(|_| format!("{key}-root"));

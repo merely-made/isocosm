@@ -709,6 +709,22 @@ numbers and readings he has not ruled; within them, the grammar's drift
   the rule covers every generic birth, world-time and stock worlds
   included; `inherit` is a working word.
 
+- **Defence choices** (the implementer's and mine): `Guard` and `Ward`
+  are working words (`defence` is already the pack-authored
+  protected-part law); armour acts only on a bite of the part it is on,
+  resisting in tenths (the part's armour of the mouth's stronger attack
+  kind, less that attack, at most nine, so nothing is proof), rounded
+  by the bite's own draw; a mouth beats spines with pierce at least the
+  spine's; a gland's toxin harms an eater of any part of the body,
+  scaled by all its secreting cells; the strengths ride on the port,
+  not a new part field; rent is charged on all support and secrete
+  cells, so every wooded plant pays it too, not only armoured parts
+  (categories already reads support as tough tissue, itself a
+  defence); numbers are placeholders (bite 2, gland 2, spine harm 2,
+  dose 16, cap 4, one matter of rent per 8 cells); no lowered part
+  grants spine tolerance; venom injection, an attack, waits as its own
+  mechanic.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -780,6 +796,26 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: defence and counter-defence (D39 model 2), as an optional
+  rule, off by default (`Founding.guard`, `ecology/guard.rs`; Mesocosm
+  `--guard`). Armour withholds part of a bite against a mouth's attack
+  and the withheld matter stays in the prey; spines wound the biter
+  unless it tolerates them or pierces as hard; a secreting body
+  wounds whatever eats it unless the eater clears toxin; every guard
+  cell pays rent beside upkeep. With the repertoire, armour, spine and
+  gland parts and attack mouths lower into kinds; a detox organ grants
+  toxin tolerance. Catalog: 164 of 272 expressible (from 150); contact
+  harm waits on nothing. Measured over seeds 0–19, defences planted at
+  tick 0 (`tests/defence_share.rs`): a toxic plant alone takes its
+  grazer's median from 79 to 0; with a detox organ on the grazer it
+  persists at 46 (D39's test passes for toxin); a spined plant barely
+  matters (the spine holds little matter, so it is rarely bitten); a
+  shelled grazer falls to 7.5, paying rent with no predator to resist.
+  Unplanted, no line takes a defence at a boundary (0 of 154 turns): a
+  boundary weighs a short span over which a defence only costs rent.
+  No pin moved. Suites: sim 1284, Mesocosm 310, Eponym and root checks
+  pass.
 
 - 2026-11-13: D40 built, on in a new generated world (`Founding.inherit`,
   `inherit.rs`; Mesocosm `--no-inherit`). An A1 birth is the generic

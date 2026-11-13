@@ -68,6 +68,13 @@ pub struct WorldRules {
     /// off rule is not written.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub categories: bool,
+    /// Armour, spines and glands (contact harm and toxin on being eaten), each
+    /// at a cost, against mouths' attacks and tolerances (lineage-rounds D39,
+    /// defence and counter-defence). Set in the founding, so it reaches only
+    /// the A1 world that is generated from it. Off unless asked: an absent
+    /// field in a saved setup means off, and an off rule is not written.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub guard: bool,
     /// Young grow from their line's current recipe, so revisions and drift
     /// pass down, instead of copying their parent (lineage-rounds D40). Set in
     /// the founding, so it reaches only the A1 world that is generated from
@@ -112,7 +119,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, inherit: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, inherit: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -141,6 +148,9 @@ impl WorldRules {
         }
         if self.categories && genesis.founding.as_ref().is_none_or(|f| f.categories.is_none()) {
             return Err("--categories is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.guard && genesis.founding.as_ref().is_none_or(|f| f.guard.is_none()) {
+            return Err("--guard is a founding rule: it needs the generated A1 world".into());
         }
         if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
             return Err("--inherit is a founding rule: it needs the generated A1 world".into());

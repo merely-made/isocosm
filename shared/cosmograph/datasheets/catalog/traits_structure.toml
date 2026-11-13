@@ -128,7 +128,7 @@ sites = ["contact", "eaten", "death"]
 cost_mg = 22
 reads = ["ceiling", "harm", "upkeep", "movement"]
 analogue = "beetle wing-cases, armadillo scutes"
-via = ["function:support", "rule:defence"]
+via = ["function:support", "rule:defence", "rule:guard"]
 strengths = [{ kind = "crush", role = "defend", amount = 6 }, { kind = "pierce", role = "defend", amount = 5 }]
 
 [[trait]]
@@ -143,7 +143,7 @@ sites = ["eaten", "contact"]
 cost_mg = 17
 reads = ["harm", "upkeep", "movement", "ceiling"]
 analogue = "rhinoceros hide"
-via = ["function:support", "rule:defence"]
+via = ["function:support", "rule:defence", "rule:guard"]
 strengths = [{ kind = "crush", role = "defend", amount = 4 }, { kind = "pierce", role = "defend", amount = 3 }]
 
 [[trait]]
@@ -159,7 +159,7 @@ emits = ["dead:litter"]
 cost_mg = 16
 reads = ["harm", "decay", "upkeep", "ceiling"]
 analogue = "crab carapace, a bracket-fungus rind"
-via = ["function:support", "rule:defence"]
+via = ["function:support", "rule:defence", "rule:guard"]
 strengths = [{ kind = "crush", role = "defend", amount = 4 }, { kind = "pierce", role = "defend", amount = 4 }]
 
 [[trait]]
@@ -174,7 +174,8 @@ sites = ["contact"]
 cost_mg = 8
 reads = ["harm", "upkeep", "ceiling"]
 analogue = "thorn, hedgehog quill, cactus spine"
-needs = "harm-on-contact"
+via = ["function:support", "rule:guard"]
+strengths = [{ kind = "pierce", role = "attack", amount = 4 }]
 
 [[trait]]
 key = "trait:cell-wall-fibre"
@@ -300,7 +301,7 @@ admits = ["live:producer", "host:tissue"]
 cost_mg = 14
 reads = ["meal", "harm", "income"]
 analogue = "mosquito proboscis, an aphid stylet"
-needs = "bite-mode"
+via = ["function:intake", "rule:port-admission", "rule:guard"]
 strengths = [{ kind = "pierce", role = "attack", amount = 5 }]
 
 [[trait]]

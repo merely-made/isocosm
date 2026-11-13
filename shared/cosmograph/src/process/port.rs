@@ -44,6 +44,50 @@ pub struct IntakePort {
     /// as before.
     #[serde(default, skip_serializing_if = "is_none_tolerated")]
     classes: u8,
+    /// What the organ's tissue does under the guard rule
+    /// (`crate::ecology::Guard`): see [`Strength`]. None unless set, which
+    /// serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Strength::is_none")]
+    strength: Strength,
+}
+
+/// The strengths a part carries under the guard rule (`crate::ecology::
+/// Guard`; lineage-rounds D39 model 2), each on the catalog's nought to ten
+/// scale (`catalog::Strength`). **On a mouth** they are its attack by kind
+/// (crush, pierce). **On any other organ** they are what it gives the part
+/// it is on: the armour that resists a bite of that kind, the wound its
+/// contact deals the biter (`spine`), and the toxin its secretion charges the
+/// eater (`toxin`). Which one is read is decided by whether the port is a
+/// mouth, so one small record serves both sides of a bite.
+#[derive(
+    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
+pub struct Strength {
+    pub crush: u8,
+    pub pierce: u8,
+    pub spine: u8,
+    pub toxin: u8,
+}
+
+impl Strength {
+    /// The strength of nothing.
+    pub const NONE: Self = Self { crush: 0, pierce: 0, spine: 0, toxin: 0 };
+
+    #[must_use]
+    pub const fn is_none(&self) -> bool {
+        self.crush == 0 && self.pierce == 0 && self.spine == 0 && self.toxin == 0
+    }
+
+    /// The larger of each strength of the two.
+    #[must_use]
+    pub fn max(self, other: Self) -> Self {
+        Self {
+            crush: self.crush.max(other.crush),
+            pierce: self.pierce.max(other.pierce),
+            spine: self.spine.max(other.spine),
+            toxin: self.toxin.max(other.toxin),
+        }
+    }
 }
 
 fn is_none_tolerated(bits: &u8) -> bool {
@@ -63,6 +107,12 @@ pub enum Tolerance {
     /// Tough plant matter, living or dead (the categories rule): a mouth
     /// with a grinding capability eats it unharmed.
     ToughPlant,
+    /// The contact harm of spines and stings (the guard rule): a mouth
+    /// that tolerates it is not wounded for biting a spined part.
+    Spines,
+    /// The toxin of a gland (the guard rule): a mouth, or an organ elsewhere
+    /// on the body, that clears it is not harmed by eating a secreting body.
+    Toxin,
 }
 
 /// What dead matter came from, as the categories rule classes it
@@ -100,6 +150,8 @@ impl Tolerance {
             Self::ToxicFlesh => 2,
             Self::DecomposerFlesh => 4,
             Self::ToughPlant => 8,
+            Self::Spines => 16,
+            Self::Toxin => 32,
         }
     }
 }
@@ -116,6 +168,7 @@ impl IntakePort {
             support: None,
             tolerance: 0,
             classes: 0,
+            strength: Strength::NONE,
         }
     }
 
@@ -130,6 +183,7 @@ impl IntakePort {
             support: None,
             tolerance: 0,
             classes: 0,
+            strength: Strength::NONE,
         }
     }
 
@@ -163,8 +217,23 @@ impl IntakePort {
     }
 
     pub const fn with_tolerance_bits(mut self, bits: u8) -> Self {
-        self.tolerance |= bits & 15;
+        self.tolerance |= bits & 63;
         self
+    }
+
+    /// This organ, with `strength` (the guard rule).
+    pub const fn with_strength(mut self, strength: Strength) -> Self {
+        self.strength = strength;
+        self
+    }
+
+    pub const fn strength(self) -> Strength {
+        self.strength
+    }
+
+    /// Whether this port is a mouth: it admits living or dead matter.
+    pub const fn is_mouth(self) -> bool {
+        self.kinds != 0 || self.deadstock
     }
 
     /// This dead-stock mouth, limited also to dead matter of `class`: the

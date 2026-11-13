@@ -221,6 +221,16 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(founded.genesis.rules.categories.is_some());
     assert_ne!(digest_of(&classed), digest_of(&on));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("categories"));
+    // `--guard` is off unless asked (D39): the default world has none, and asking adds it.
+    assert!(!WorldRules::generated().guard && !WorldRules::all().guard);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().guard.is_none());
+    let guarded = found_default(WorldRules { guard: true, ..HostConfig::default().world_rules }, 9);
+    let founded = guarded.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().guard.is_some());
+    assert!(founded.genesis.rules.guard.is_some());
+    assert!(founded.genesis.rules.processes.keys().any(|k| k.starts_with("guard:rent-")));
+    assert_ne!(digest_of(&guarded), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("guard"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

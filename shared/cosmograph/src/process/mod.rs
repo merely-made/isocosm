@@ -59,7 +59,7 @@ use isometer_core::{BodyDocument, PartId, Role, classify};
 mod port;
 mod registry;
 
-pub use port::{DeadClass, IntakePort, NisKind, Tolerance};
+pub use port::{DeadClass, IntakePort, NisKind, Strength, Tolerance};
 pub use registry::{NATIVE_ABI, Registry, RulesetDigest};
 
 /// What a part contributes.
@@ -90,6 +90,11 @@ pub enum Process {
     /// seeds one, so the tissue has to be taken off whatever the plate was
     /// already doing. What it costs is standing rent; what it buys is a bite
     /// that the thing eating this body pays.
+    ///
+    /// Under the world's guard rule (`crate::ecology::Guard`, lineage-rounds
+    /// D39) this is what it does: a body with secreting cells charges toxin
+    /// to what eats it, scaled by the tissue and cleared by `Tolerance::Toxin`,
+    /// and the body pays `guard:rent-<i>` for its cells at every upkeep.
     ///
     /// **The word is provisional**, as [`Process::Fix`]'s is. `Secrete` is the
     /// plain working verb; the in-product name is a naming round Mark owns.

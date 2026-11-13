@@ -380,6 +380,9 @@ pub struct Rules {
     /// is classed (`ecology::categories`); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub categories: Option<crate::ecology::Categories>,
+    /// Armour, contact harm and glands (`ecology::guard`); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub guard: Option<crate::ecology::Guard>,
     /// Whether young grow from their line's current recipe, not a copy of
     /// their parent (D40, `crate::inherit`); false, worlds hash as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
@@ -446,6 +449,7 @@ impl Rules {
         if let Some(dormancy) = &self.dormancy { dormancy.validate(self)?; }
         if let Some(spoilage) = &self.spoilage { spoilage.validate()?; }
         if let Some(categories) = &self.categories { categories.validate()?; }
+        if let Some(guard) = &self.guard { guard.validate()?; }
         if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }

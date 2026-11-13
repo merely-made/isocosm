@@ -177,6 +177,7 @@ fn main() {
             "--spoilage" => config.world_rules.spoilage = true,
             "--repertoire" => config.world_rules.repertoire = true,
             "--categories" => config.world_rules.categories = true,
+            "--guard" => config.world_rules.guard = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -445,6 +446,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --categories    world rule (off unless asked): tough plant matter (stalk, trunk, root) harms a mouth with no grinding
                   instead of being refused, and dead matter is classed litter, wood or carrion, each taken by the
                   mouths that take it; wood rots as fast as the rest
+  --guard         world rule (off unless asked): defence and counter-defence. A part's armour resists a bite by the
+                  mouth's attack, a spined part wounds its eater, a body with glands harms what eats it, unless the
+                  eater tolerates it; each costs cells and a standing rent of matter. Lowered catalog parts carry them
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

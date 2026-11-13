@@ -31,6 +31,7 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     if rules.spoilage { founding.spoilage = Some(cosmograph::ecology::Spoilage::default()); }
     if rules.repertoire { founding.repertoire = Some(cosmograph::repertoire::Repertoire::default()); }
     if rules.categories { founding.categories = Some(cosmograph::ecology::Categories::default()); }
+    if rules.guard { founding.guard = Some(cosmograph::ecology::Guard::default()); }
     founding.inherit = rules.inherit;
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
@@ -121,7 +122,7 @@ fn generated_world(config: &HostConfig, affinity: Option<cosmograph::rules::Affi
         if let Some(mode) = config.mode { founded.mode = mode; }
         // The bench founding is no A1 world, so the default brake and limits have no
         // founding to set; only the other rules are laid over it.
-        mesocosm_runtime::world_rules::WorldRules { dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, inherit: false, ..config.world_rules }.apply(&mut founded.genesis)?;
+        mesocosm_runtime::world_rules::WorldRules { dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, inherit: false, ..config.world_rules }.apply(&mut founded.genesis)?;
         return Runtime::bench(founded, config.ticks_per_second);
     }
     if let Some(path) = &config.ecology_candidate {

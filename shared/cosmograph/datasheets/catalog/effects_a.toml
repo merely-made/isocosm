@@ -48,7 +48,7 @@ only = ["trait:spine", "trait:plated-armour"]
 kingdoms = ["kingdom:flora", "kingdom:fauna"]
 cost_mg = 2
 analogue = "thorns scratching a browser"
-needs = "harm-on-contact"
+via = ["rule:guard"]
 
 [[effect]]
 key = "effect:sting"
@@ -63,7 +63,7 @@ kingdoms = ["kingdom:fauna", "kingdom:flora"]
 emits = ["toxin"]
 cost_mg = 4
 analogue = "nettle, jellyfish"
-needs = "harm-on-contact"
+via = ["rule:guard"]
 timing = { onset = 0, intensity = 2, duration = 12, decay = 1, stacking = "stack" }
 
 [[effect]]
@@ -287,7 +287,7 @@ only = ["trait:alkaloid", "trait:tannin", "trait:cyanogenic", "trait:decomposer-
 emits = ["toxin"]
 cost_mg = 5
 analogue = "alkaloid in a leaf eaten"
-via = ["function:secrete"]
+via = ["function:secrete", "rule:guard"]
 gates = [{ affected = "eater", requires = "trait:detox-tolerance", inverted = true }]
 timing = { onset = 1, intensity = 3, duration = 40, decay = 2, stacking = "stack" }
 
@@ -334,7 +334,7 @@ only = ["trait:plated-armour", "trait:thick-hide", "trait:chitin-shell"]
 kingdoms = ["kingdom:fauna", "kingdom:myco"]
 cost_mg = 4
 analogue = "a crab shell against a bird"
-via = ["rule:defence"]
+via = ["rule:defence", "rule:guard"]
 
 [[effect]]
 key = "effect:nutrient-rich-flesh"
