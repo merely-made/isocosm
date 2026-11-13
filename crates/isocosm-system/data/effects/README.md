@@ -102,7 +102,7 @@ body/lighting projections, live multiplayer admission and cross-map migration
 remain integration work. The API does not install a second native simulator
 or authorize peer-side adjudication.
 
-Sources and licences:
+Sources and licenses:
 
 - [D&D SRD 5.1](https://media.wizards.com/2023/downloads/dnd/SRD_CC_v5.1.pdf).
   Based on the System Reference Document 5.1 by Wizards of the Coast LLC,
@@ -114,10 +114,10 @@ Sources and licences:
   Character creation records in `packs/pf2e-srd/` (ancestries, heritages,
   backgrounds, classes, feats) follow the same rule (case 1016): each was
   checked against a foundryvtt/pf2e record whose publication is a Remaster
-  book under the ORC licence, and the loader refuses any record that does
+  book under the ORC license, and the loader refuses any record that does
   not say so. Their summaries are original; nothing is vendored.
   Pathfinder is a trademark of Paizo Inc. No art or other reserved material is
-  included. See the [ORC licence](https://azoralaw.com/orclicense/).
+  included. See the [ORC license](https://azoralaw.com/orclicense/).
 - [Atlas's open Ars Magica text](https://www.atlas-games.com/arsmagica/openars):
   reviewed Definitive core, Git blob `41860c6a10eedc246c730ca485bed6927060ced9`
   in [OriginalMadman/Ars-Magica-Open-License](https://github.com/OriginalMadman/Ars-Magica-Open-License).

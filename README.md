@@ -82,8 +82,8 @@ cargo test --workspace --all-features        # default features skip the campaig
 MIT OR Apache-2.0 for the tabletop crates in this workspace. The voxel bake
 that was `crates/isometry-voxel` was relicensed MPL-2.0 on 2026-09-14 and
 folded into the MPL-2.0 `isometer-mesh` on 2026-09-15, so the exception is
-now simply the wing's own licence. Mesocosm, Eponym and the shared wing
-crates carry their own licence files.
+now simply the wing's own license. Mesocosm, Eponym and the shared wing
+crates carry their own license files.
 
 ---
 

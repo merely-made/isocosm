@@ -29,7 +29,7 @@ not prohibit shared libraries or atomic changes across products.
 | `design_docs/DOC_README.md` and each product's | Indexes, working principles |
 | `design_docs/DOC_POLICY.md` | How docs and decisions are kept (one policy for all three) |
 | each product's `design_docs/PROJECT_DESCRIPTION.md` | Goals and pillars (maintainer-owned) |
-| each product's `LICENSES.md` | The licence grants (doctrine, Licensing 3) |
+| each product's `LICENSES.md` | The license grants (doctrine, Licensing 3) |
 
 `responsa` (eidetic's decisions tool; install it with `cargo install --locked
 --git https://github.com/merely-made/eidetic --tag responsa-v0.0.2 responsa`)
@@ -59,7 +59,7 @@ register current, and checks the 600-line ceiling and pack formats.
 - Surface a scope change before adding features beyond the active plan's
   target.
 - The three pipeline laws (founding record §3) bind every product.
-- Licences: doctrine, Licensing 3; content that may ship: Licensing 1.
+- Licenses: doctrine, Licensing 3; content that may ship: Licensing 1.
 
 ## The VTT
 

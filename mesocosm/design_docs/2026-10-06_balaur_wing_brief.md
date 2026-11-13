@@ -8,7 +8,7 @@ beside this read, and the forks in §4 go to Mark (ruling 603).
 `de0df794eee4eea223ed7efd31461044c71999f0`, MIT, "Copyright (c) 2026 Sébastien
 Crozet, Dragos Daian". Read-only: `ARCHITECTURE.md`, the workspace
 `Cargo.toml` and `Cargo.lock`, and four source files, fetched as pages. No
-code copied; any port is its own decision with a licence row. Mere's brief
+code copied; any port is its own decision with a license row. Mere's brief
 (`mere/design_docs/mere_docs/research/2026-10-06_balaur_review_brief.md`,
 `ed8b67e8`) reads the same commit for Scenograph's editor and seiche's G8; this
 one reads it against the wing's rulings.

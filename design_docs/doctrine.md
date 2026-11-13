@@ -1846,7 +1846,7 @@ over the traced colour; palette colours reach kiss3d as a texture by UV.
 Raster shaders are WGSL/WESL, compute is CubeCL; vello draws documents,
 kiss3d's 2D only lit 2D games. Isometer calls modulus's exact CPU walk, its
 start clamped into the box, rather than copying it. Other engines (scenevm)
-are donors of techniques, taken by name with a licence row.
+are donors of techniques, taken by name with a license row.
 
 Links: draws on 361, 362, 471, 472, 473, 476, 606, 622, 735, 736, 749 · stack · summary Bodies are lit by the reshaped kiss3d under mere's tenant crate; one light block for tracer and rasteriser; WGSL raster, CubeCL compute.
 
@@ -2426,8 +2426,8 @@ the readings".*
 
 ### Licensing 1. Rulesets
 
-A ruleset ships when its licence lets the wing use it without legal or
-community objection, checked per product: a licence may admit the VTT and
+A ruleset ships when its license lets the wing use it without legal or
+community objection, checked per product: a license may admit the VTT and
 exclude the games, as the Year Zero Engine's admits VTT modules and excludes
 video games. Qualifying: the 5e SRD (CC BY 4.0), Pathfinder 2e (ORC),
 Lancer (with attribution), and Ars Magica 5th Edition's open text (CC BY-SA
@@ -2435,14 +2435,14 @@ Lancer (with attribution), and Ars Magica 5th Edition's open text (CC BY-SA
 share-alike). Daggerheart does not qualify. An open text that informs the
 sim's design is a reference: nothing is copied into the sim.
 
-Links: draws on 40, 522, 541 · summary A ruleset ships, per product, when its licence draws no objection; an open text informing the sim is a reference, never copied in.
+Links: draws on 40, 522, 541 · summary A ruleset ships, per product, when its license draws no objection; an open text informing the sim is a reference, never copied in.
 
 *Refined 2026-10-22 in the VTT review: checked per product (Mark: "Named
 profile, licence per product").*
 
 ### Licensing 2. Publication
 
-The wing's crates aim to be published. Licences, metadata and dependencies
+The wing's crates aim to be published. Licenses, metadata and dependencies
 are kept publishable, and each release is its own decision. A release in
 mere is mere's to decide and is asked there.
 
@@ -2450,21 +2450,21 @@ Links: draws on 914, 917 · summary The crates aim to be published; each release
 
 *Reviewed 2026-10-21, new. Mark: "As drafted".*
 
-### Licensing 3. Licences follow the layer
+### Licensing 3. Licenses follow the layer
 
 The VTT's crates, `isocosm-native` included, are MIT OR Apache-2.0. Mesocosm,
 Eponym, the shared wing crates and their promoted library crates are
 MPL-2.0; the only exception route is the fork/vendor criterion in mere's
 license posture brief (`mere/design_docs/2026-08-22_license_posture_brief.md`).
 Original assets are CC BY-SA 4.0 with an attribution entry; imported assets
-keep their own licences and are recorded. An edition's records ship as a
-runtime pack declaring its own licence and credit, the rules code reading
+keep their own licenses and are recorded. An edition's records ship as a
+runtime pack declaring its own license and credit, the rules code reading
 them staying original. Code that moves between layers
-takes the destination's licence, relicensed by its author. Each product's
+takes the destination's license, relicensed by its author. Each product's
 `LICENSES.md` is the grant itself (`../mesocosm/LICENSES.md`,
 `../eponym/LICENSES.md`, the 2026-09-03 ruling recorded in Mesocosm's).
 
-Links: draws on 919, 1064 · summary Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own.
+Links: draws on 919, 1064 · summary Licenses follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own.
 
 *Reviewed 2026-10-21, new. Mark, asked whether to cite CLAUDE.md here:
 "claude.md should be derived, not authoritative. idk, if there's important

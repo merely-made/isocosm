@@ -5,7 +5,7 @@
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
 
-Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wing-organs`); the body contract and conditions (`wing-phenotype-contract`); capability, repertoire and proficiency (`sim`); any speed or tick-cost bar, including the cost of bounding script work (`sim-execution`); licences of rulesets that may ship (`content-packs`); the VTT's effect catalogue and edition procedures, F10 to F12 (`vtt-overlay`).
+Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wing-organs`); the body contract and conditions (`wing-phenotype-contract`); capability, repertoire and proficiency (`sim`); any speed or tick-cost bar, including the cost of bounding script work (`sim-execution`); licenses of rulesets that may ship (`content-packs`); the VTT's effect catalogue and edition procedures, F10 to F12 (`vtt-overlay`).
 
 ## Constraints
 

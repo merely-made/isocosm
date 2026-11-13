@@ -18,4 +18,4 @@ item. See the [supported loop and boundaries](../isocosm-system/data/effects/REA
 
 The host, views and session layer remain in the `isocosm-*` and `isonetry`
 crates of <https://github.com/merely-made/isocosm>. The crate carries the
-VTT's MIT OR Apache-2.0 licence.
+VTT's MIT OR Apache-2.0 license.

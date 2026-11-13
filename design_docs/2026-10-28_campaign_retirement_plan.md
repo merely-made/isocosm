@@ -7,11 +7,11 @@ Not here: the VTT's V2 phases that replace the campaign's world with the sim's, 
 
 ## Constraints
 
-- **F1 (919).** `isocosm-native` carries MIT OR Apache-2.0, the VTT's licence; its MPL endpoint was relicensed by its author. Code that moves between layers takes the destination's licence (doctrine Licensing 3).
+- **F1 (919).** `isocosm-native` carries MIT OR Apache-2.0, the VTT's license; its MPL endpoint was relicensed by its author. Code that moves between layers takes the destination's license (doctrine Licensing 3).
 - **F2 (920).** `isocosm-native`'s endpoint sits behind an `endpoint` feature, so the session lane and the host take the game layer alone.
 - **F3 (921).** `isonetry` holds the GM store and the proposal lifecycle until V2 replaces them with the sim's intent log and branches.
 - **F4 (922).** Publishing is R4 of this plan.
-- **Publishable all the way (917).** Every crate on the way stays publishable: versioned path dependencies, no git dependencies, licence and metadata in order. Each release is its own decision (doctrine Licensing 2); each publish is Mark's word, crate by crate; releases in mere are mere's to decide and are asked there.
+- **Publishable all the way (917).** Every crate on the way stays publishable: versioned path dependencies, no git dependencies, license and metadata in order. Each release is its own decision (doctrine Licensing 2); each publish is Mark's word, crate by crate; releases in mere are mere's to decide and are asked there.
 - **Owning homes, no new crates (915).** The split is one-way: `content/`, `store.rs` and `collaboration.rs` name nothing in `native/`, `founding/` or `contract.rs`.
 - Every family that moves is decomposed under the 600-line ceiling as it goes, along seams the code already has.
 - Crate-naming house rule: at most one hyphen; every new name goes through the naming ledger. A `denizen` crate only once it has a reason of its own (ruling 201); the publish that was once owed for it was struck on 2026-09-25 and is not a task.
@@ -53,7 +53,7 @@ V2 and `eponym-overlay` E3 (cases 798, 794, 795) are what retire the campaign co
 
 ### R4. Publishing
 Every crate in `isocosm-native`'s normal-dependency closure reaches crates.io in dependency order. Measured 2026-10-15 (dated facts, re-measure before use): the closure's path crates included nine marked `publish = false` (`isocosm`, `cosmograph-host`, `cosmograph-overlay`, `isometer-core`, `isometer-space`, `wing-formats`, `wing-functions`, `wing-glyphs`, `wing-impresa`) and ten mere crates taken by git revision (`chirograph`, `graphshell-endpoint`, `hagiograph`, `mere-curation`, `mere-framing`, `sceno`, `scenograph`, `scenomise`, `scenotime`, `state-witness`). On crates.io `isocosm` was our reservation, nine of mere's ten had earlier versions out, and `state-witness`, the `isocosm-*`, `isometer-*` and `wing-*` names and `isocosm-core` were free.
-- Done when: "Done when every path dependency carries a version; no git dependency is left in the closure, mere's crates released at the pinned revision (asked in mere); each crate's licence, description, repository and readme are set; each new name has gone through the naming ledger; and `cargo publish --dry-run` passes for each crate in order. Each publish is Mark's word, crate by crate."
+- Done when: "Done when every path dependency carries a version; no git dependency is left in the closure, mere's crates released at the pinned revision (asked in mere); each crate's license, description, repository and readme are set; each new name has gone through the naming ledger; and `cargo publish --dry-run` passes for each crate in order. Each publish is Mark's word, crate by crate."
 - Needs: mere releasing its ten crates at the pinned revision; the naming ledger; the crate-naming house rule for any new name. R3 changes the closure (the retired crate and its dependents), so the final order is set after it.
 - Rulings: 917, 922
 - From: `archive_docs/2026-10-28/2026-10-15_campaign_retirement_plan.md:59-63,100-116`
@@ -64,7 +64,7 @@ Every crate in `isocosm-native`'s normal-dependency closure reaches crates.io in
 
 ## Questions for Mark
 
-- **Where the pack manifest lands**: `ContentPackManifest`, its validator and the new optional `license` and `credit` live in `content/pack.rs`, which R3 moves. Ruling 247's table sends "generator and packs" to the sim's declared space and "packs as authored content", but the manifest schema is also the real schema the private `pack-author` tool (`isocosm-system`) and `GeneratorPack::load` decode, and the desktop host loads packs through it. Candidates, none decided: the Cosmograph sim (with packs as authored content), `isocosm-native`, `isocosm-system`, or a small shared crate. The answer fixes where licence and credit are validated and where `pack-author` imports the schema from. `content-packs` waits on it. Rulings 89, 190, 247. From: `crates/isocosm-campaign/src/content/pack.rs:30,34,132`; `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:213`.
+- **Where the pack manifest lands**: `ContentPackManifest`, its validator and the new optional `license` and `credit` live in `content/pack.rs`, which R3 moves. Ruling 247's table sends "generator and packs" to the sim's declared space and "packs as authored content", but the manifest schema is also the real schema the private `pack-author` tool (`isocosm-system`) and `GeneratorPack::load` decode, and the desktop host loads packs through it. Candidates, none decided: the Cosmograph sim (with packs as authored content), `isocosm-native`, `isocosm-system`, or a small shared crate. The answer fixes where license and credit are validated and where `pack-author` imports the schema from. `content-packs` waits on it. Rulings 89, 190, 247. From: `crates/isocosm-campaign/src/content/pack.rs:30,34,132`; `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:213`.
 
 ## Findings
 

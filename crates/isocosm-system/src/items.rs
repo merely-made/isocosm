@@ -2,7 +2,7 @@
 //!
 //! The pack's `items` records are the SRD 5.1 equipment list, in TOML, transformed from
 //! 5e-database (P2b), used under CC-BY-4.0 with attribution (bootstrap
-//! decision #7); the pack declares the licence and credit (case 1064).
+//! decision #7); the pack declares the license and credit (case 1064).
 
 use serde::{Deserialize, Serialize};
 

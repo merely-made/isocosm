@@ -1,6 +1,6 @@
 //! Player Core Remaster records for character creation. Each record names its
 //! source; the loader refuses any record that is not from a Remaster book
-//! under the ORC licence (case 1016). Summaries are original; the fields are
+//! under the ORC license (case 1016). Summaries are original; the fields are
 //! what the draft executes.
 
 use serde::Deserialize;
@@ -394,7 +394,7 @@ pub fn builtin() -> &'static Records {
 fn source_ok(name: &str, source: &Source) -> Result<(), String> {
     if source.license != "ORC" || !source.remaster {
         return Err(format!(
-            "{name}: only Remaster records under the ORC licence are kept ({}, {}, remaster {})",
+            "{name}: only Remaster records under the ORC license are kept ({}, {}, remaster {})",
             source.book, source.license, source.remaster
         ));
     }

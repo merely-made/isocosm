@@ -232,9 +232,17 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Bodies grow cell by cell at a cost and breeding is an act of the body, both after the eight operators.
 
-- **D33, rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12):** "on by default and make decomposers faster, not rot slower. rot's the baseline, decomposers basically do that process more efficiently to obtain the nutrients that would otherwise go to the soil. but decomposers are thus, like scavengers, great prey; some may evolve defensive strategies, but their way of life means they're gonna be full of nutrients from the dead, making it available to other forms of life. it's like rats and cats, no?" Rot is on in Mesocosm's worlds. A decomposer takes the dead faster than rot does, so it wins the matter that would otherwise reach the soil. Something eats decomposers, which carries the matter of the dead back to the living. Today no role eats a decomposer (`ecology/web.rs`: a predator eats grazers and omnivores, an omnivore eats producers and grazers), so that part is to build.
+- **D33, rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12), applies 718:** "on by default and make decomposers faster, not rot slower. rot's the baseline, decomposers basically do that process more efficiently to obtain the nutrients that would otherwise go to the soil. but decomposers are thus, like scavengers, great prey; some may evolve defensive strategies, but their way of life means they're gonna be full of nutrients from the dead, making it available to other forms of life. it's like rats and cats, no?" Rot is on in Mesocosm's worlds. A decomposer takes the dead faster than rot does, so it wins the matter that would otherwise reach the soil. Something eats decomposers, which carries the matter of the dead back to the living. Today no role eats a decomposer (`ecology/web.rs`: a predator eats grazers and omnivores, an omnivore eats producers and grazers), so that part is to build. Rot itself was ruled on 2026-10-08 (case 718, Ecology 4: "a dead body rots back to its site"; carrion later) and its effect built then; the generated ecology never declared a process that used it, which is what `ecology/rot.rs` adds.
 
-  Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Rot is on by default, decomposers outpace it, and decomposers are prey that return the dead's matter to the living.
+  Links: area Mesocosm · draws on 718, 1215 · plans lineage-rounds · summary Rot is on by default, decomposers outpace it, and decomposers are prey that return the dead's matter to the living.
+
+- **D34, the round's checkpoint links to separate screens; the editor is one of them (2026-11-12):** asked how a creature editor sits beside the recorded rule that the checkpoint panel is "four facts, two answers" and never an editor, Mark: "four facts and two answers? that sounds like some prescriptive nonsense. what is that for? i imagine an editor would be a separate screen linked from the checkpoint screen (idk, with options like roster (adaptation order and world time to next creature's adaptation, most biomass -> least?), history/stats, lineage resources/traits, and editor (spend resources/acquisitions, adjust genotype, generate new creature template that adaptation/individuation happens from (and the extent of the aggregate adaptations, like subclades/ecological branches paid down to help the lineage survive across multiple environments)), and i guess a play/birth screen where you can spend resources to make a new individual or pick an existing, generated one; all of those aren't supposed to, like, be partitions of the checkpoint screen, but just screens linked to from it along with, like, a round overview or whatever), but i don't agree with why as written in the suggestions." So the checkpoint is a hub with a round overview, and it links to a roster (lineages in adaptation order, most biomass first, with the world time to each one's next adaptation), history and statistics, the lineage's resources and traits, the editor (spend resources and acquisitions, adjust the genotype, generate the template that adaptation and individuation start from, and pay for sub-lines suited to several environments), and a play or birth screen (spend resources on a new individual or pick a generated one). The "four facts, two answers" wording is the implementer's, from the archived playable ecology plan's PE1 (2026-08-31), where it covered the prompt at a birth or death of the critter in hand ("siblings persist without becoming menu inventory"); Mark does not accept its reasoning as a rule on the review. The earlier suggestion in his words, same day: "picking traits, adjusting a body map, generating a template, seeing variations/mutations in accordance with regional ecological pressures (e.g. desert/arctic/jungle/temperate adaptations arising through a branching lineage adopting traits that let them compete in the local ecologies)".
+
+  Links: area Mesocosm · draws on 1200, 1202, 1215 · plans lineage-rounds · summary The round's checkpoint is a hub linking to separate screens: overview, roster, history, lineage resources, the editor, and play or birth.
+
+- **D35, in Mesocosm you direct, and you drive the sapient (2026-11-12), applies 59, 60, 175, 671:** "You direct; you drive the sapient". Mesocosm's project description still says "You are this body ... experienced directly"; that file is Mark's to change and is not edited here.
+
+  Links: area Directing and play · draws on 59, 60, 175, 671 · plans lineage-rounds · summary In Mesocosm the player directs critters and drives only a sapient one; the project description's first-person line is out of date.
 
 ## Constraints
 
@@ -645,6 +653,30 @@ and the next conditions (D31) are answered. Left:
 
 ## Findings
 
+- 2026-11-12, from ALIEN (chrxh/alien), read from general knowledge and
+  not from its source: its bodies are connected cells with a function
+  each, built by a genome, as ours are. It keeps several kinds alive
+  with an authored who-eats-whom matrix and with zones of differing
+  parameters, and counters drift toward the smallest replicator with a
+  bonus for genome complexity. Both are predictions for this sim: two
+  producers on one soil account need to differ in what or where they
+  draw, and grammar-backed drift (D22) will want something that pays for
+  elaboration.
+- 2026-11-12, regional adaptation has no phase: a line has one template
+  for the whole world (`lineage/drift.rs` averages over all its
+  members), and a line splits only by command (`lineage/speciate.rs`).
+  D34's sub-lines for several environments need drift taken per region
+  and a split when a regional template has moved far enough; regions
+  differ only by heat and light until D19's offsets (water charges
+  nothing in the played world).
+- 2026-11-12, what the earlier records already say that this plan's
+  entries of the same day missed: the lineage policy is a net (case
+  1051, M3.5); rot was ruled (718); the trait board on Mere's graph
+  canvas is a "plausible substrate" not yet proven (engine ecology
+  review §2.7); "Flora should not be forced through the same
+  controller", a developmental grammar being the source of form (§2.6);
+  and matter balance and energy budgets have named prior art (Ecopath,
+  Kooijman's Dynamic Energy Budget; sim prior art brief §1).
 - 2026-11-11, LR6 source review: `lineage/drift.rs::development` writes
   segment counts directly into `recipe.tagmata`, and `lineage/revise.rs::borne`
   offers direct attachment edits even for a line with a grammar.

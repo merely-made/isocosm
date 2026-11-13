@@ -3,7 +3,7 @@
 
 //! Edition packs (cases 1064, 1067). An edition's records ship as a runtime
 //! pack: a section of the ordinary pack manifest naming record files by kind
-//! and the subsystems the pack declares, under the pack's own licence and
+//! and the subsystems the pack declares, under the pack's own license and
 //! credit. The rules code reading those records stays compiled.
 //!
 //! Bundled packs live in the top-level `packs/` folder, found beside the

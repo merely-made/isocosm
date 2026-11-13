@@ -192,7 +192,7 @@ area = "Bodies and anatomy"
 summary = "Kingdom is class and scale is orthogonal to it; micro (germs) and macro (huge creatures) are playable alongside plant, animal, fungus."
 
 [cases."40"]
-title = "The licence rule for rulesets"
+title = "The license rule for rulesets"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "Include a ruleset if nobody will sue or object: Daggerheart no, Lancer yes with attribution, ICON and CAIN need a question to Massif Press."
@@ -3186,7 +3186,7 @@ draws_on = ["612"]
 title = "scenevm is a donor of techniques only"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
-summary = "scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row."
+summary = "scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a license row."
 draws_on = ["471", "606"]
 
 [cases."623"]
@@ -4480,7 +4480,7 @@ plans = ["campaign-retirement"]
 title = "The crates stay publishable in principle"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
-summary = "The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)"
+summary = "The crates stay publishable in principle: licenses, metadata and dependencies in order; publishing any is its own decision. (amended by 917)"
 draws_on = ["913"]
 
 [cases."915"]
@@ -4499,10 +4499,10 @@ summary = "The crates aim to be published, not only publishable in principle."
 amends = ["914"]
 
 [cases."919"]
-title = "`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0"
+title = "`isocosm-vtt` carries the VTT's license, MIT OR Apache-2.0"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
-summary = "isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author."
+summary = "isocosm-vtt carries the VTT's license, MIT OR Apache-2.0, its MPL endpoint relicensed by its author."
 draws_on = ["902"]
 
 [cases."920"]
@@ -6935,11 +6935,27 @@ draws_on = ["1215"]
 plans = ["lineage-rounds"]
 
 [decisions."lineage-rounds D33"]
-title = "rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12)"
+title = "rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12), applies 718"
 source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
 area = "Mesocosm"
 summary = "Rot is on by default, decomposers outpace it, and decomposers are prey that return the dead's matter to the living."
-draws_on = ["1215"]
+draws_on = ["718", "1215"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D34"]
+title = "the round's checkpoint links to separate screens; the editor is one of them (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "The round's checkpoint is a hub linking to separate screens: overview, roster, history, lineage resources, the editor, and play or birth."
+draws_on = ["1200", "1202", "1215"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D35"]
+title = "in Mesocosm you direct, and you drive the sapient (2026-11-12), applies 59, 60, 175, 671"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Directing and play"
+summary = "In Mesocosm the player directs critters and drives only a sapient one; the project description's first-person line is out of date."
+draws_on = ["59", "60", "175", "671"]
 plans = ["lineage-rounds"]
 
 [decisions."mesocosm-overlay D1"]
@@ -7744,7 +7760,7 @@ draws_on = ["923", "924", "959", "960", "962", "record.1"]
 title = "Rulesets"
 source = "design_docs/doctrine.md"
 area = "Licensing and sources"
-summary = "A ruleset ships, per product, when its licence draws no objection; an open text informing the sim is a reference, never copied in."
+summary = "A ruleset ships, per product, when its license draws no objection; an open text informing the sim is a reference, never copied in."
 draws_on = ["40", "522", "541"]
 
 [statements."licensing.2"]
@@ -7755,10 +7771,10 @@ summary = "The crates aim to be published; each release is its own decision, mer
 draws_on = ["914", "917"]
 
 [statements."licensing.3"]
-title = "Licences follow the layer"
+title = "Licenses follow the layer"
 source = "design_docs/doctrine.md"
 area = "Licensing and sources"
-summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own."
+summary = "Licenses follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own."
 draws_on = ["919", "1064"]
 
 [statements."mesocosm.1"]

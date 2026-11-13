@@ -1,7 +1,8 @@
 # One host for the three games: the idea against what is ruled and built
 
-**Status:** 2026-11-12: brief, for Mark to rule on. It changes no code and no
-record. Its questions (§7) are open. Its main finding is that most of the idea
+**Status:** 2026-11-12: brief. Mark answered Q1, Q2 and Q7 the same day
+(sim host plan D1 to D3) and added D4 and D5; Q9's D23 line is fixed. Q3 to Q6
+and Q8 are open (§8). Its main finding is that most of the idea
 is already ruled (cases 381, 442 to 445) and part of it is built; what is open
 is narrower than the idea, and §3 and §7 say where.
 
@@ -58,7 +59,7 @@ quality.
 | Flags | `ISOCOSM_*` environment hooks, `--campaign` | `--replay`, `--watch`, `--scenario`, `--bench` (`main.rs`) | its own bins, several behind proof features (`eponym-client/Cargo.toml`) |
 | World founding | campaign founding in `isocosm-native`; in-app founding from a seeded draw is owed (sim host H8) | `runtime/founding.rs`, behind the A1 witness | `eponym-play/src/founding.rs` |
 | Rule choices | a system plugin per campaign (schema plus Lua), loaded from packs | `WorldRules` in `HostConfig`; the `mesocosm` pack (`mesocosm/packs/mesocosm/mesocosm-pack.toml`) | native recipes; crafts are keys a rules pack declares (Eponym 3) |
-| Licence | MIT OR Apache-2.0 (root `Cargo.toml` `workspace.package`) | MPL-2.0 (`mesocosm/LICENSES.md`) | MPL-2.0 (`eponym/Cargo.toml`) |
+| License | MIT OR Apache-2.0 (root `Cargo.toml` `workspace.package`) | MPL-2.0 (`mesocosm/LICENSES.md`) | MPL-2.0 (`eponym/Cargo.toml`) |
 
 What is shared already:
 
@@ -122,7 +123,7 @@ overlays run on the sim (a reading, not ruled).
 | Doctrine Stack 14, Stack 3 | Rungs: data, piccolo (rulesets and world packs), components, native crates; piccolo is the wing's one authoring language | Option C |
 | Founding §4 | "A game's presence in a moot is pack-shaped: schema plus scripts plus a capability manifest, which is what Isocosm's system plugins already are" | Option C |
 | Founding §1, "Facts cross; verbs never do" | Kinematics, tile-and-turn adjudication, renderers and control schemes do not cross | Option C |
-| Licensing 1, 3; Eponym and Mesocosm `LICENSES.md` | The VTT is MIT OR Apache-2.0, the games, shared crates and promoted libraries MPL-2.0, assets CC BY-SA 4.0; code that changes layer takes the destination's licence; a ruleset ships when its licence allows, checked per product | Licences |
+| Licensing 1, 3; Eponym and Mesocosm `LICENSES.md` | The VTT is MIT OR Apache-2.0, the games, shared crates and promoted libraries MPL-2.0, assets CC BY-SA 4.0; code that changes layer takes the destination's license; a ruleset ships when its license allows, checked per product | Licenses |
 | Content packs plan; functional generation D4 | A pack is the unit content ships in, declaring `license` and `credit`; a world's magic typologies are data in packs, templates or stepwise generation | Packs |
 | Naming 3 | One word, one sense; naming rounds are deliberate | No coined names |
 | Method 8, 9 | Refuse, never invent; offer a thing only once it works | A game meeting a foreign world |
@@ -157,7 +158,7 @@ Findings in the records that cut against, or around, the idea:
    `personae` and `djinn-custodian` crates (its READMEs describe a persona
    register and the custodian that holds the vault), but no `cosmograph-host`
    crate: that lives in this repository.
-6. **No ruling was found on** a combined binary's licence, build time, how a
+6. **No ruling was found on** a combined binary's license, build time, how a
    per-mode section's own version is checked when another build opens the
    world (the envelope has `format: u32`; a section's version is the mode's
    own), how a learned policy moves between worlds, or hosting worlds for
@@ -222,7 +223,7 @@ The costs below are from the records and the manifests; none was measured.
 | What moves | Eponym and the VTT onto the core's founding and save (H8); Mesocosm's chrome off (I1) | Product host code becomes crates the host links; a mode selector and window lifecycle (I3) | The verbs, camera and controls of each game would have to become scripts | The viewer's founding and save handling grows into a world list; products take a world path |
 | What breaks | Nothing new; the cross-game round trip must still be tested | The host workspace needs the union of three patch policies (442); one build graph carries all games | See below: Lua returns integers only; real-time motion and voxel tracing are native; the founding record says verbs never cross | A second program to keep in step with three products |
 | Workspaces | Stay as they are | Stay, plus the host's (442 A) | Collapse toward one | Stay |
-| Licences | Unchanged | A binary linking MIT OR Apache crates with MPL crates; no ruling found (Q5). `isocosm-genet` already links MPL crates (`cosmograph-host`, `isomere`) in its own build | A ruleset's licence still checked per product (Licensing 1) | Launcher and products ship separately |
+| Licenses | Unchanged | A binary linking MIT OR Apache crates with MPL crates; no ruling found (Q5). `isocosm-genet` already links MPL crates (`cosmograph-host`, `isomere`) in its own build | A ruleset's license still checked per product (Licensing 1) | Launcher and products ship separately |
 | Patch policy | Per product, as now | Union in one place; 442 says Eponym's renderling had to retire first and no `renderling` or `spirv` entry is in `eponym/Cargo.toml` now | One graph | Per product |
 | Build time, features | No change | Larger graph in one link; features must gate operations only (Schema 10); the VTT's campaign features are `default = []` and were once found uncompilable behind the default build (root `CLAUDE.md`); no build-time figure found | Smaller binary, a heavier script surface | No change |
 | Player sees | Three apps; a world file opens in each | One app; a mode switch in place keeps world and subject (443) | One app; games are things you install | One home screen, three apps |
@@ -279,7 +280,7 @@ modes' sections, and each game's reader opens it and returns the others'
 sections byte for byte; and a deliberately wrong section version in one
 section is refused by its game and carried by the others (the negative
 control). That tests levels 1 and 2 of §4 without a new binary, a new name, or
-a licence question. This brief names no code change; it would be a plan under
+a license question. This brief names no code change; it would be a plan under
 DOC_POLICY §8 if Mark rules for it.
 
 ## 7. Questions for Mark
@@ -314,10 +315,10 @@ Each can be answered with a letter.
 - C. The in-window mode switch only (443).
 
 **Q5. A binary that links the VTT's MIT OR Apache crates with the games' MPL
-crates: which ruling?** No record or ruling found; mere's licence posture brief
+crates: which ruling?** No record or ruling found; mere's license posture brief
 (`mere/design_docs/2026-08-22_license_posture_brief.md`) is cited by Licensing 3
 and was not read here.
-- A. The host binary is MPL-2.0, each crate keeps its layer's licence.
+- A. The host binary is MPL-2.0, each crate keeps its layer's license.
 - B. The VTT stays out of the all-modes binary.
 - C. Ask in mere first, since Licensing 2 leaves such releases to mere.
 
@@ -342,3 +343,24 @@ and was not read here.
   the lineage rounds plan.
 - B. Only D23.
 - C. Neither.
+
+## 8. Answered
+
+Mark, 2026-11-12; each is a decision in the
+[sim host plan](../mesocosm/design_docs/2026-10-28_sim_host_plan.md).
+
+| Question | Answer | Decision |
+| --- | --- | --- |
+| Q1, the shape | The games stay separate; what is shared first is one swappable piece that reads any game's world, as a host or a library | D1 |
+| Q2, linking | One world opened by games in turn | D2 |
+| Q7, learning | With the lineage when it crosses worlds, and with the player's persona as a portable record | D3 |
+| Replication (not asked here) | Significant facts, entities and events must agree; what "significant" costs is owed | D4 |
+| Owners (not asked here) | Audio, physics, fields, models and transport are the family's | D5 |
+| Q9, repairs | D23's `personae` line is corrected; case 385 is still undeclared | - |
+
+Asked about Option C, Mark named didgeridoo, the family's fork of piccolo
+that the workspace already uses: rules and content are data plus Lua, the
+sim's tick stays native behind the contract (Stack 13), and the three
+programs keep their windows, input and rendering. Open: Q3 (a game meeting a
+world it did not found), Q4 (a front door), Q5 (the license of a binary
+linking both layers), Q6 (names) and Q8 (hosted worlds).

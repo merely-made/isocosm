@@ -396,11 +396,11 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     notion of the lion turtles from Avatar." Consequences in §3.2.1.
 
     Links: area Bodies and anatomy · summary Kingdom is class and scale is orthogonal to it; micro (germs) and macro (huge creatures) are playable alongside plant, animal, fungus.
-40. **The licence rule for rulesets:** "As long as someone won't sue me or
+40. **The license rule for rulesets:** "As long as someone won't sue me or
     hate on me for putting the ruleset in my game, I'm happy to include
-    it." Ruled 2026-09-18. Applied the same day by reading the licences
+    it." Ruled 2026-09-18. Applied the same day by reading the licenses
     (§5.1): Daggerheart's is a no, Lancer's is a yes with attribution,
-    ICON and CAIN have no licence for implementation and are a question to
+    ICON and CAIN have no license for implementation and are a question to
     Massif Press.
 
     Links: area Licensing and sources · summary Include a ruleset if nobody will sue or object: Daggerheart no, Lancer yes with attribution, ICON and CAIN need a question to Massif Press.
@@ -6128,7 +6128,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it." (C) "Noted for later: recorded as a candidate, with no work until
      the magic family or the VTT's next system." Mark chose A, "VTT ruleset
      and magic reference". So the VTT gains an Ars Magica 5th Edition
-     system pack under CC BY-SA 4.0, credited as Atlas Games' licence asks
+     system pack under CC BY-SA 4.0, credited as Atlas Games' license asks
      ("Based on the material for Ars Magica, ©1993–2024, licensed by
      Trident, Inc. d/b/a Atlas Games®, under Creative Commons
      Attribution-ShareAlike 4.0 International license 4.0"), and the VTT's
@@ -6140,7 +6140,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (https://www.atlas-games.com/arsmagica/openars), the community
      conversion a convenience to check against it; no pack is opened or
      scheduled by this ruling; and any lane that reads the prior art's code
-     checks each project's licence first, none having been checked here.
+     checks each project's license first, none having been checked here.
 
      Links: area Licensing and sources · draws on 40, 404 · summary The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design.
 
@@ -6523,7 +6523,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      has games submit intents and take back events. The VTT adjudicates at
      a table. Eponym's embodied control and contact resolution are
      mechanics of its own. Mesocosm's ecology, directing and epochs are
-     too. The Year Zero Engine licence admits VTT modules but excludes
+     too. The Year Zero Engine license admits VTT modules but excludes
      video games." Options, recommended first: (A) "VTT faithful, others
      native: the VTT hosts faithful editions. Eponym and Mesocosm keep
      native mechanics, sharing the toolkit's effects and procedures, and a
@@ -7738,11 +7738,11 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Donor of techniques only". So kiss3d stays the lit body tenant
      (471, 606), and scenevm is read, not depended on. Its techniques (the
      probe grid, progressive accumulation, its environment block's fields)
-     are taken by name under MIT, with a licence row, when a lane needs them.
+     are taken by name under MIT, with a license row, when a lane needs them.
      Asked whether to record the read, Mark chose "Write a brief, like
      Balaur's".
 
-     Links: area Stack and engine · draws on 471, 606 · summary scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row.
+     Links: area Stack and engine · draws on 471, 606 · summary scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a license row.
 623. **Rosters and rulesets move into datasheets, through a plan.**
      2026-10-06. Mark asked whether the TOML used for generated datasheets
      suits Isocosm's entity rosters and rulesets. Evidence:
@@ -10076,13 +10076,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Given 2026-10-15 after 911 and 913, unasked. Mark: "If the rest of the
      crates are able to be published in principle, i don't mind that."
      *Reading, not ruled:* `isocosm-vtt` may depend on unpublished crates
-     so long as nothing makes them unpublishable in principle: licences and
+     so long as nothing makes them unpublishable in principle: licenses and
      metadata in order, and dependencies that could themselves be published.
      The components 913 makes are built the same way; publishing any of
      them stays its own decision. This reading goes back to Mark with 913's
      assessment. *Amended by 917.*
 
-     Links: area Licensing and sources · draws on 913 · summary The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)
+     Links: area Licensing and sources · draws on 913 · summary The crates stay publishable in principle: licenses, metadata and dependencies in order; publishing any is its own decision. (amended by 917)
 
 915. **913's "components" are owning homes.**
      Asked 2026-10-15 by card. Evidence: `isometry-campaign` is 10,764 lines
@@ -10109,16 +10109,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Licensing and sources · amends 914 · summary The crates aim to be published, not only publishable in principle.
 
-919. **`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0.**
+919. **`isocosm-vtt` carries the VTT's license, MIT OR Apache-2.0.**
      Asked 2026-10-15 by card (the retirement plan's F1). Evidence: the
      game layer moving in (6,400 lines) is MIT OR Apache-2.0, the VTT's
-     licence by the root `CLAUDE.md`; `isocosm-vtt` was MPL-2.0 because its
+     license by the root `CLAUDE.md`; `isocosm-vtt` was MPL-2.0 because its
      endpoint came from the retired shell's MPL panels (902). Options: (1)
      "MIT OR Apache-2.0 (Recommended)", its MPL endpoint relicensed by its
      author; (2) "MPL-2.0"; (3) "Per-file licences".
      Mark: "MIT OR Apache-2.0 (Recommended)"
 
-     Links: area Licensing and sources · draws on 902 · summary isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author.
+     Links: area Licensing and sources · draws on 902 · summary isocosm-vtt carries the VTT's license, MIT OR Apache-2.0, its MPL endpoint relicensed by its author.
 
 920. **`isocosm-vtt`'s endpoint sits behind a feature.**
      Asked 2026-10-15 by card (F2). Options: (1) "Endpoint behind a feature
@@ -11031,7 +11031,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       his own Player Core copy as the authority and both. The reading: as the
       effects README already did for spells, a lane reads the foundryvtt/pf2e
       repository's records as a check, never vendoring them, keeps only those
-      whose source is a Remaster book under the ORC licence, and writes
+      whose source is a Remaster book under the ORC license, and writes
       original summaries and executable fields. Legacy OGL records are not
       used.
 
@@ -11719,7 +11719,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       rules code stays"), replacing his answer for Ars a moment earlier
       ("CC BY-SA data, crate licence says so"). The reading: each edition's
       records (ancestries, Arts, Virtues, items, spells, effects) leave the
-      compiled crate for a bundled runtime pack declaring its licence and
+      compiled crate for a bundled runtime pack declaring its license and
       credit, which the founding edition field selects; the adapters'
       legality and derivation stay compiled as original MIT code reading
       their numbers from the pack (1026); homebrew and modded editions are
@@ -12063,7 +12063,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       separate kind that never mixes with knowledge ("Share the machinery,
       separate kinds"). Bodies without nerves join their systems by slower
       signalling of their form, by degree and with a lag ("Yes, slow
-      signalling by form"). The two licences were checked: only Ironsworn's
+      signalling by form"). The two licenses were checked: only Ironsworn's
       SRD and asset texts are CC BY 4.0, its rulebooks being non-commercial
       and out; USGS-authored material is US public domain, credited, its
       third-party images excluded.

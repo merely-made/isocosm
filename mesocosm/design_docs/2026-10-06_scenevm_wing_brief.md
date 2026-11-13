@@ -91,7 +91,7 @@ skinning and morphs, SSAO, OIT, transmission. So 471 stands.
 
 ## 4. What is worth learning
 
-Each item is a technique, taken by name under the MIT licence, with a licence
+Each item is a technique, taken by name under the MIT license, with a license
 row, when a lane needs it.
 
 1. **A small, capped probe grid for indirect light.**

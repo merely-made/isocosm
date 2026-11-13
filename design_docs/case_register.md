@@ -247,7 +247,7 @@ three design docs that cite it. The record holds the words.
 | 684 | The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 687 | At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls. | none |
 | 689 | Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity. | none |
-| 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
 | 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | none |
 | 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 764 | Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
@@ -741,7 +741,7 @@ three design docs that cite it. The record holds the words.
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 622 | scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 622 | scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a license row. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 643 | The repo shares a cargo build-dir, not a target-dir; intermediates are shared per checkout and binaries stay per workspace. | none |
 | 644 | The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan. | none |
 | 648 | Every workspace manifest that builds isocosm carries a committed profile.dev.package.isocosm opt-level of 1. | none |
@@ -1015,9 +1015,9 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 40 | Include a ruleset if nobody will sue or object: Daggerheart no, Lancer yes with attribution, ICON and CAIN need a question to Massif Press. | none |
 | 522 | The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design. | [vtt overlay](2026-11-02_vtt_overlay_plan.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
-| 914 | The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917) | none |
+| 914 | The crates stay publishable in principle: licenses, metadata and dependencies in order; publishing any is its own decision. (amended by 917) | none |
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
-| 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
+| 919 | isocosm-vtt carries the VTT's license, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
 | 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
 | 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md), [DOC README](DOC_README.md) |
