@@ -70,7 +70,10 @@ rust-version = "1.97.1"
 document-session-api = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 light-file-dialog = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 armillary = { version = "0.1.1", git = "https://github.com/merely-made/armillary.git", branch = "main" }
-chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+fieldbook = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+hodograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+portolan = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+quadstore = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 esp = { git = "https://github.com/merely-made/distillery.git", branch = "main" }
 netrender_device = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
