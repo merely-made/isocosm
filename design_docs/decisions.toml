@@ -7484,6 +7484,14 @@ summary = "The world reader is a lens on a game's own data, proven when a second
 draws_on = ["381"]
 plans = ["sim-host"]
 
+[decisions."sim-host D8"]
+title = "physics may run on the GPU: it proposes, the sim checks and records; whole-number kernels where natural (2026-11-12), narrows 604, settles D4"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Stack and engine"
+summary = "Physics may run on the GPU and proposes outcomes; the sim admits and records what is possible, whole-number kernels serve voxel and crowd effects, the host is trusted, and 604 narrows to the CPU fallback."
+draws_on = ["597", "604"]
+plans = ["sim-host"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

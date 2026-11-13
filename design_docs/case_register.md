@@ -873,7 +873,7 @@ three design docs that cite it. The record holds the words.
 | 235 | How a first Eponym life begins is the player's call among a new outsider, a birth into a lineage, or a named drawn denizen. | none |
 | 238 | At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world. | [denizen](2026-11-02_denizen_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 239 | Isocosm absorbs Eponym's simulation in the plan's order, and driving is built only on Isocosm with no prototype over Session. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 597 | Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier. | none |
+| 597 | Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 767 | Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 771 | Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 776 | Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
