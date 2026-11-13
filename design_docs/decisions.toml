@@ -7468,6 +7468,22 @@ summary = "Audio is firewheel, physics and fields are seiche, models are distill
 draws_on = ["381"]
 plans = ["sim-host"]
 
+[decisions."sim-host D6"]
+title = "the licenses coexist; MPL is favoured (2026-11-12), answers the brief's Q5"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Licensing and sources"
+summary = "MPL-2.0, Apache-2.0 and MIT crates may be linked together, each keeping its license; MPL is preferred where the choice is open."
+draws_on = ["919"]
+plans = ["sim-host"]
+
+[decisions."sim-host D7"]
+title = "the reader is the family thesis's lens, proven by a second game (2026-11-12), refines D1"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Host and network"
+summary = "The world reader is a lens on a game's own data, proven when a second game opens a world."
+draws_on = ["381"]
+plans = ["sim-host"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

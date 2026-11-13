@@ -29,6 +29,14 @@ Not here: H7, the family session layer (`isonetry` remade), is `session-network 
 
   Links: area Host and network · draws on 381 · plans sim-host · summary Audio is firewheel, physics and fields are seiche, models are distillery and esp, transport is p2mere over a carrier; animation is procedural and cheap, fidelity second to performance.
 
+- **D6, the licenses coexist; MPL is favoured (2026-11-12), answers the brief's Q5:** on the posture brief's "everything is MPL-2.0" beside the VTT's MIT OR Apache-2.0 (case 919): "mpl 2, apache 2, and mit are all able to coexist, so idk what the problem is in any case. but i do favor mpl, especially for crates that might otherwise be made closed source and monopolized in some manner". So a binary may link crates of both layers, each keeping its own license, and nothing needs reconciling; where a choice is open, MPL-2.0 is preferred, most of all for crates that could otherwise be closed and monopolized.
+
+  Links: area Licensing and sources · draws on 919 · plans sim-host · summary MPL-2.0, Apache-2.0 and MIT crates may be linked together, each keeping its license; MPL is preferred where the choice is open.
+
+- **D7, the reader is the family thesis's lens, proven by a second game (2026-11-12), refines D1:** to the finding that D1's reader of any game's world is the composition thesis's lens (each data domain its own authority, a persona across, other hosts holding a lens and returning intents) and is proven when a second game opens a world: "agreed".
+
+  Links: area Host and network · draws on 381 · plans sim-host · summary The world reader is a lens on a game's own data, proven when a second game opens a world.
+
 ## Constraints
 
 - The core is a library in `cosmograph-host` with no product crate in its graph; products depend on it, not the reverse (884, 892).

@@ -356,11 +356,11 @@ Mark, 2026-11-12; each is a decision in the
 | Q7, learning | With the lineage when it crosses worlds, and with the player's persona as a portable record | D3 |
 | Replication (not asked here) | Significant facts, entities and events must agree; what "significant" costs is owed | D4 |
 | Owners (not asked here) | Audio, physics, fields, models and transport are the family's | D5 |
+| Q5, licenses | They coexist: a binary may link both layers, each crate keeping its license; MPL preferred where open | D6 |
 | Q9, repairs | D23's `personae` line is corrected; case 385 is still undeclared | - |
 
 Asked about Option C, Mark named didgeridoo, the family's fork of piccolo
 that the workspace already uses: rules and content are data plus Lua, the
 sim's tick stays native behind the contract (Stack 13), and the three
 programs keep their windows, input and rendering. Open: Q3 (a game meeting a
-world it did not found), Q4 (a front door), Q5 (the license of a binary
-linking both layers), Q6 (names) and Q8 (hosted worlds).
+world it did not found), Q4 (a front door), Q6 (names) and Q8 (hosted worlds).
