@@ -68,6 +68,14 @@ pub struct WorldRules {
     /// off rule is not written.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub categories: bool,
+    /// Young grow from their line's current recipe, so revisions and drift
+    /// pass down, instead of copying their parent (lineage-rounds D40). Set in
+    /// the founding, so it reaches only the A1 world that is generated from
+    /// it. Like rot, an absent field in a saved setup means off (the young
+    /// keep copying), and an off rule is not written; a newly founded world
+    /// gets it from [`WorldRules::generated`] (owner's ruling, 2026-11-13).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub inherit: bool,
 }
 
 thread_local! {
@@ -95,15 +103,16 @@ impl WorldRules {
 
     /// The rules a new generated A1 world founds with unless the player asks
     /// otherwise: the crowding brake (2026-11-11), the consumers' limits
-    /// (D27) and rot (2026-11-12) are on, and nothing else.
+    /// (D27), rot (2026-11-12) and young growing from the recipe (D40,
+    /// 2026-11-13) are on, and nothing else.
     /// `default()` and `all()` stay "nothing chosen" because that is what an
     /// absent field in a saved `Setup` meant when it was saved; the product
     /// default lives only here, in the host's starting configuration.
-    pub fn generated() -> Self { Self { dormancy: true, limits: true, rot: true, ..Self::default() } }
+    pub fn generated() -> Self { Self { dormancy: true, limits: true, rot: true, inherit: true, ..Self::default() } }
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, inherit: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -132,6 +141,9 @@ impl WorldRules {
         }
         if self.categories && genesis.founding.as_ref().is_none_or(|f| f.categories.is_none()) {
             return Err("--categories is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
+            return Err("--inherit is a founding rule: it needs the generated A1 world".into());
         }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {

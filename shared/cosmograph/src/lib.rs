@@ -85,6 +85,9 @@ pub mod quickstart;
 pub mod party;
 mod queries;
 pub mod reach;
+mod inherit;
+#[cfg(test)]
+mod inherit_tests;
 pub mod repertoire;
 pub mod rng;
 pub mod rules;

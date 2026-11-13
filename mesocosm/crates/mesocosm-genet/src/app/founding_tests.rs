@@ -67,6 +67,12 @@ fn limits_found_and_run() {
 fn the_generated_rules_turn_limits_on_and_no_limits_turns_them_off_and_default_stays_nothing() {
     assert!(WorldRules::generated().limits && WorldRules::generated().dormancy && WorldRules::generated().rot);
     assert!(HostConfig::default().world_rules.rot);
+    // Young grow from the recipe in a new generated world (D40, 2026-11-13).
+    assert!(WorldRules::generated().inherit && HostConfig::default().world_rules.inherit);
+    assert!(!WorldRules::default().inherit && !WorldRules::all().inherit);
+    // An older saved rules object, with no `inherit`, means off: its young keep copying.
+    assert!(!serde_json::from_str::<WorldRules>(r#"{"dormancy":true,"limits":true,"rot":true}"#).unwrap().inherit);
+    assert!(!serde_json::to_string(&WorldRules { inherit: false, ..WorldRules::generated() }).unwrap().contains("inherit"));
     assert!(!WorldRules::default().rot && !WorldRules::all().rot);
     // An older saved rules object, with no `rot`, means off.
     assert!(!serde_json::from_str::<WorldRules>(r#"{"dormancy":true,"limits":true}"#).unwrap().rot);
@@ -102,7 +108,7 @@ fn the_climate_founds_and_the_played_line_lives_on() {
 
 /// Every rule but the climate.
 fn all_rules() -> WorldRules {
-    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true, rot: true,
+    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true, rot: true, inherit: true,
         ..WorldRules::all() }
 }
 
@@ -160,7 +166,7 @@ fn a_new_generated_world_founds_with_the_crowding_brake_by_default() {
 #[test]
 #[cfg_attr(debug_assertions, ignore = "founds dormant worlds through the 60-tick witness; slow in debug, run with --release")]
 fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_default() {
-    let off = found_default(WorldRules { dormancy: false, limits: false, rot: false, ..HostConfig::default().world_rules }, 9);
+    let off = found_default(WorldRules { dormancy: false, limits: false, rot: false, inherit: false, ..HostConfig::default().world_rules }, 9);
     let genesis = &off.founded().genesis;
     assert!(genesis.founding.as_ref().unwrap().dormancy.is_none() && genesis.rules.dormancy.is_none());
     let json = serde_json::to_string(genesis).unwrap();
@@ -172,7 +178,7 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     let before = startup::a1_setup_with_for_tests(founded, WorldRules::default()).unwrap();
     assert_eq!(digest_of(&off), cosmograph::digest(&before.founded.genesis));
     // `--dormancy`, `--limits` and `--rot` are the default spelled out.
-    let on = found_default(WorldRules { dormancy: true, limits: true, rot: true, ..Default::default() }, 9);
+    let on = found_default(WorldRules { dormancy: true, limits: true, rot: true, inherit: true, ..Default::default() }, 9);
     assert_eq!(digest_of(&on), digest_of(&found_default(HostConfig::default().world_rules, 9)));
     assert_ne!(digest_of(&on), digest_of(&off));
     // `--no-limits` alone is the world the brake default founded (2026-11-11).
@@ -184,6 +190,13 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(rotless.founded().genesis.founding.as_ref().unwrap().rot.is_none());
     assert!(on.founded().genesis.founding.as_ref().unwrap().rot.is_some());
     assert_ne!(digest_of(&rotless), digest_of(&on));
+    // `--no-inherit` alone is the world the rot default founded (D40, 2026-11-13): the young copy.
+    let copying = found_default(WorldRules { inherit: false, ..HostConfig::default().world_rules }, 9);
+    assert!(!copying.founded().genesis.founding.as_ref().unwrap().inherit && !copying.founded().genesis.rules.inherit);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().inherit && on.founded().genesis.rules.inherit);
+    assert_ne!(digest_of(&copying), digest_of(&on));
+    let rotted = found_default(WorldRules { dormancy: true, limits: true, rot: true, ..Default::default() }, 9);
+    assert_eq!(digest_of(&copying), digest_of(&rotted));
     // `--spoilage` is off unless asked (D36, D37): the default world has none, and asking adds it.
     assert!(!WorldRules::generated().spoilage && !WorldRules::all().spoilage);
     assert!(on.founded().genesis.founding.as_ref().unwrap().spoilage.is_none());

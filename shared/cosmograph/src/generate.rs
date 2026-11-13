@@ -82,6 +82,9 @@ pub struct Founding {
     /// Tough plant matter and dead matter in classes (`ecology::categories`). Absent, it hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub categories: Option<crate::ecology::Categories>,
+    /// Young grow from the line's current recipe (D40, `inherit`). Unset, they copy their parent and it hashes as before.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub inherit: bool,
 }
 
 impl Default for Founding {
@@ -112,6 +115,7 @@ impl Default for Founding {
             spoilage: None,
             repertoire: None,
             categories: None,
+            inherit: false,
         }
     }
 }
@@ -316,6 +320,7 @@ impl Founding {
             spoilage: None,
             repertoire: None,
             categories: None,
+            inherit: false,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

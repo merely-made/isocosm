@@ -172,6 +172,8 @@ fn main() {
             "--no-limits" => config.world_rules.limits = false,
             "--rot" => config.world_rules.rot = true,
             "--no-rot" => config.world_rules.rot = false,
+            "--inherit" => config.world_rules.inherit = true,
+            "--no-inherit" => config.world_rules.inherit = false,
             "--spoilage" => config.world_rules.spoilage = true,
             "--repertoire" => config.world_rules.repertoire = true,
             "--categories" => config.world_rules.categories = true,
@@ -432,6 +434,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --rot           the default for a new generated A1 world, accepted as a no-op alias: dead bodies give a slow
                   share of their matter to the site's soil, without a decomposer
   --no-rot        found a new generated A1 world without rot
+  --inherit       the default for a new generated A1 world, accepted as a no-op alias: young grow from their line's
+                  current recipe, so a revision or drift the line took passes down to its young
+  --no-inherit    found a new generated A1 world whose young copy their parent, as before
   --spoilage      world rule (off unless asked): a dead body's flesh is fresh, then aged, then toxic with time since
                   death, and a mouth that eats what it does not tolerate (toxic flesh, decomposer flesh) takes harm
                   instead of being refused

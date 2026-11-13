@@ -703,6 +703,12 @@ numbers and readings he has not ruled; within them, the grammar's drift
   only because their rows also deposit dung; Mesocosm's flag uses the
   default wood rot, so no slow wood.
 
+- **Inheritance choices** (mine): young keep the parent's variation
+  where it fits (not recipe alone, which ended drift); "fits" is the
+  recipe's draw range, since a line's earlier recipe is not recorded;
+  the rule covers every generic birth, world-time and stock worlds
+  included; `inherit` is a working word.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -774,6 +780,23 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: D40 built, on in a new generated world (`Founding.inherit`,
+  `inherit.rs`; Mesocosm `--no-inherit`). An A1 birth is the generic
+  birth (`Effect::Birth`), which copies the parent; under the rule the
+  child grows from the line's current recipe and keeps its parent's
+  segment counts and absences wherever they still fit the recipe's
+  range, matched by tagma position; a count outside the range takes
+  the recipe's own. No draw, so both executions agree; the child's
+  matter is still only the parent's provision. Repertoire's narrower
+  regrowth now goes through the same function. A first build grew
+  young from the recipe alone: every child identical, and drift, which
+  averages members' bodies, stopped (recipes moved in 0 of 80 lines
+  against 38). With the parent's variation kept, recipes move in 37 of
+  80 and the spread of segment counts matches copying. A revision
+  within a line's range is not inherited at once; drift moves it. No
+  pin moved. Suites: sim 1262, Mesocosm 310, Eponym and root checks
+  pass.
 
 - 2026-11-13: food categories (D37), as an optional rule, off by
   default (`Founding.categories`, `ecology/categories.rs`; Mesocosm

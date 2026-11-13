@@ -23,7 +23,7 @@
 //! (`FeedingSources::All`, living or dead), so a mouth gained later bites
 //! what it admits. A generic birth keeps its parent's form, so a revision
 //! never reached the young of an A1 line; under the rule the young of a line
-//! that has taken a lowered kind are grown from its recipe ([`rebody`]).
+//! that has taken a lowered kind are grown from its recipe ([`crate::inherit::rebody`]).
 //! Unset, the world founds, hashes and runs as before.
 
 use crate::{
@@ -93,25 +93,6 @@ impl Lowered {
         }
         Ok(())
     }
-}
-
-/// Grows `child` anew from its line's recipe where the line has taken a
-/// lowered kind, so a generic birth, which keeps its parent's form, carries
-/// the part and its port to the young: the recipe's own segments, drawn by
-/// nothing, so both executions hatch the same body. A line that has taken
-/// none, and any world without the rule, keeps its parent's form as before.
-///
-/// # Errors
-/// Fails if the line's development cannot grow a body.
-pub(crate) fn rebody(rules: &Rules, line: Option<&crate::schema::Lineage>, child: &mut crate::schema::Entity) -> Result<()> {
-    let Some(lowered) = &rules.repertoire else { return Ok(()) };
-    let Some(d) = line.and_then(|l| l.development.as_ref())
-        .filter(|d| d.recipe.kinds().iter().any(|k| lowered.kinds.contains_key(k))) else { return Ok(()) };
-    let soma = crate::development::Soma { segments: d.recipe.tagmata.iter().map(|t| t.segments).collect(), absent: vec![], seed: 0 };
-    child.embody(crate::development::develop(rules, d, &soma)?);
-    child.soma = soma.segments;
-    child.absent = vec![];
-    Ok(())
 }
 
 /// The kind key a part lowers to.

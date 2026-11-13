@@ -380,6 +380,10 @@ pub struct Rules {
     /// is classed (`ecology::categories`); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub categories: Option<crate::ecology::Categories>,
+    /// Whether young grow from their line's current recipe, not a copy of
+    /// their parent (D40, `crate::inherit`); false, worlds hash as before.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub inherit: bool,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
