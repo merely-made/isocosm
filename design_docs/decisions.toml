@@ -7412,6 +7412,30 @@ area = "Method and documents"
 summary = "physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed."
 draws_on = ["1057", "sim-execution D18", "sim-execution D43"]
 
+[decisions."sim-host D1"]
+title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Host and network"
+summary = "The three programs stay separate; the shared base is one swappable piece that reads any game's world, as host or library."
+draws_on = ["381", "442"]
+plans = ["sim-host"]
+
+[decisions."sim-host D2"]
+title = "one world opened by games in turn comes first (2026-11-12)"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Host and network"
+summary = "The first linking between games is one world opened by different games in turn."
+draws_on = ["381"]
+plans = ["sim-host"]
+
+[decisions."sim-host D3"]
+title = "learning carries with the lineage across worlds and with the persona (2026-11-12), refines 1056"
+source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
+area = "Directing and play"
+summary = "A creature's learning travels with its lineage across worlds and with the player's persona as a portable record."
+draws_on = ["1051", "1053", "1056", "1227"]
+plans = ["sim-host"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

@@ -7,6 +7,20 @@
 
 Not here: H7, the family session layer (`isonetry` remade), is `session-network H7`. Every tick, frame or search-time bar, including case 966's 1.5 s, the 976 bar, the head's tempo (978) and TD2's aspiration, is `sim-execution` (its Speed bars). The host's lighting and launch-capture findings (964 to 969) are `orthographic-voxel-presentation`. The headed run of directing (old D5) is `mesocosm-overlay M4i.2`; the full in-site play is `mesocosm-overlay M4`.
 
+## Decisions
+
+- **D1, the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381:** "i'm ok with keeping them separate! for a cosmograph producer in a frame, i guess it would be important to be able to read any of the games' saves/worlds, most of all. that to me felt like an intuitive base for the rest of the games' code, if we could isolate and hotswap that bit, like wit or lua or a data format, whatever. as a host, i guess that's possible; as a lib or producer/supplier for the games, also possible". The three programs stay. The base every game stands on is one piece that opens any game's world or save, isolated behind a boundary that can be swapped (Stack 13's contract shape, a script, or a data format), whether it runs as a host or is linked as a library. Raised by the brief `design_docs/2026-11-12_sim_host_brief.md`.
+
+  Links: area Host and network · draws on 381, 442 · plans sim-host · summary The three programs stay separate; the shared base is one swappable piece that reads any game's world, as host or library.
+
+- **D2, one world opened by games in turn comes first (2026-11-12):** "One world opened by games in turn (Recommended)". Of the four kinds of linking in the brief (one format, one world in turn, one world at once, identity across worlds), the second is first: a world grown in one game is opened by another.
+
+  Links: area Host and network · draws on 381 · plans sim-host · summary The first linking between games is one world opened by different games in turn.
+
+- **D3, learning carries with the lineage across worlds and with the persona (2026-11-12), refines 1056:** "1 + 3 (you deserve a cosmodex!)", choosing "With its lineage when it crosses worlds" and "With your persona". A lineage that founds a fork or crosses into another world brings what it learned; what creatures learned from a player's play also travels with that player's persona as a portable record. "Cosmodex" is Mark's word for that record; it is not yet a settled name (Naming 3).
+
+  Links: area Directing and play · draws on 1051, 1053, 1056, 1227 · plans sim-host · summary A creature's learning travels with its lineage across worlds and with the player's persona as a portable record.
+
 ## Constraints
 
 - The core is a library in `cosmograph-host` with no product crate in its graph; products depend on it, not the reverse (884, 892).
