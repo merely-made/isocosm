@@ -6982,6 +6982,14 @@ summary = "A mouth that eats a category it does not tolerate is harmed, dead fle
 draws_on = ["718", "832"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D38"]
+title = "the catalog stop rule is lifted: catalogs of traits, of effects and of the parts that result (2026-11-13), refines D37"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Ecology"
+summary = "Three catalogs are wanted (traits, effects, and the parts that result by kingdom); the rule against a process catalog ahead of a played path is lifted, and the memo's distinctness check stays as a measurement."
+draws_on = ["718", "832"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

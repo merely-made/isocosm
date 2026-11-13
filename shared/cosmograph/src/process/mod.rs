@@ -20,6 +20,11 @@
 //! the default creatures plan's DC1.5 needed a producer to be readable from
 //! anatomy rather than from symmetry.
 //!
+//! **Lifted 2026-11-13** (`lineage-rounds` D38): the stop rule above was for
+//! a sim with no ecology to ask for processes. The ecology is now the
+//! consumer, and catalogs of traits, effects and resultant parts are wanted;
+//! a new process no longer waits for one played path.
+//!
 //! # Grown and acquired are different (PD2)
 //!
 //! The first four are all things a shape simply *does*: grow the shape and the

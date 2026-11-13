@@ -252,6 +252,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary A mouth that eats a category it does not tolerate is harmed, dead flesh ages into toxin, tough plant matter needs its own mouth, and variety comes from a generated catalog of parts (trait by kingdom by effect), not from founding one line per role.
 
+- **D38, the catalog stop rule is lifted: catalogs of traits, of effects and of the parts that result (2026-11-13), refines D37:** told that the process code's header forbids "a broad process catalog before one path is played" as "the Spore failure at a smaller scale", and that the August traits memo keeps verbs few and generates only nouns: "i think we can do a catalog of traits, a catalog of effects, a catalog of resultant parts w/rt kingdoms, traits, and effects, and i wouldn't mind it. so what's the problem? call it a prototype, i don't care. talk about a counterproductive rule; explain how an ecology is intended to function with a deliberately restricted set of things you can do. talk about a circular economy. we're not doing what spore did. we have ecological models to implement requiring diversity of entities. did spore even prioritize a functioning ecology at any of its stages?" The stop rule no longer binds: new processes (verbs) may be added for the catalog, and the ecology is their consumer. What stays from the memo is its check that variety is real (§2: a property with fewer than three readers, or two entries with one fingerprint, is one thing with two names), as a measurement and not a limit on count.
+
+  Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary Three catalogs are wanted (traits, effects, and the parts that result by kingdom); the rule against a process catalog ahead of a played path is lifted, and the memo's distinctness check stays as a measurement.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
