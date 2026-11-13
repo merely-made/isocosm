@@ -82,6 +82,13 @@ pub struct WorldRules {
     /// is not written.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub mutualism: bool,
+    /// An animal's meal leaves a share of what it took at its site as dung, which
+    /// dung mouths and rot return to the soil (lineage-rounds D39 model 4, the
+    /// detritus web); it needs `categories`. Set in the founding, so it reaches
+    /// only the A1 world generated from it. Off unless asked: an absent field in
+    /// a saved setup means off, and an off rule is not written.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub detritus: bool,
     /// Young grow from their line's current recipe, so revisions and drift
     /// pass down, instead of copying their parent (lineage-rounds D40). Set in
     /// the founding, so it reaches only the A1 world that is generated from
@@ -126,7 +133,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, inherit: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, inherit: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -161,6 +168,9 @@ impl WorldRules {
         }
         if self.mutualism && genesis.founding.as_ref().is_none_or(|f| f.mutualism.is_none()) {
             return Err("--mutualism is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.detritus && genesis.founding.as_ref().is_none_or(|f| f.detritus.is_none()) {
+            return Err("--detritus is a founding rule: it needs the generated A1 world".into());
         }
         if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
             return Err("--inherit is a founding rule: it needs the generated A1 world".into());

@@ -391,6 +391,9 @@ pub struct Rules {
     /// (`ecology::mutualism`); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mutualism: Option<crate::ecology::Mutualism>,
+    /// Dung left by meals and taken by dung mouths (`ecology::detritus`); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub detritus: Option<crate::ecology::Detritus>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -455,6 +458,10 @@ impl Rules {
         if let Some(categories) = &self.categories { categories.validate()?; }
         if let Some(guard) = &self.guard { guard.validate()?; }
         if let Some(m) = &self.mutualism { m.validate()?; }
+        if let Some(d) = &self.detritus {
+            d.validate()?;
+            if self.categories.is_none() { return Err("detritus needs the categories rule".into()); }
+        }
         if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }

@@ -91,6 +91,9 @@ pub struct Founding {
     /// Producer and decomposer trade soil for tissue, each paying while the other does (`ecology::mutualism`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mutualism: Option<crate::ecology::Mutualism>,
+    /// Animals leave dung that dung mouths and rot return (`ecology::detritus`, D39 model 4).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub detritus: Option<crate::ecology::Detritus>,
 }
 
 impl Default for Founding {
@@ -124,6 +127,7 @@ impl Default for Founding {
             guard: None,
             inherit: false,
             mutualism: None,
+            detritus: None,
         }
     }
 }
@@ -264,6 +268,7 @@ impl Founding {
             guard: None,
             inherit: false,
             mutualism: None,
+            detritus: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

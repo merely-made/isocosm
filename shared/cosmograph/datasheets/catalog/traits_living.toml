@@ -298,7 +298,7 @@ emits = ["dead:dung"]
 cost_mg = 12
 reads = ["meal", "decay", "return"]
 analogue = "dung beetle, Pilobolus"
-needs = "dung-stock"
+via = ["rule:categories", "rule:detritus"]
 unlocks = ["dead:dung"]
 
 [[trait]]

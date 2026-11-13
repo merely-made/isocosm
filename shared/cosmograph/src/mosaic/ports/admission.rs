@@ -155,7 +155,7 @@ impl<'a> Source<'a> {
             (false, class) => *class == DeadClass::Carrion,
             (true, DeadClass::Litter) => self.tough != Some(true),
             (true, DeadClass::Wood) => self.tough != Some(false),
-            (true, DeadClass::Carrion) => false,
+            (true, DeadClass::Carrion) | (_, DeadClass::Dung) => false,
         })
     }
 
@@ -314,6 +314,17 @@ mod tests {
         // Without the rule a limit is not read: the mouth takes all dead stock as before.
         let unruled = Source { categories: None, ..plant(Some(true)) };
         assert!(unruled.admitted_by(litter).is_ok());
+    }
+
+    #[test]
+    fn a_dung_mouth_admits_no_body_and_a_root_still_admits_every_dead_one() {
+        let dung = IntakePort::deadstock().taking(DeadClass::Dung);
+        for tough in [Some(false), Some(true), None] {
+            assert!(kind_of(Some(NisKind::Producer), false, tough).admitted_by(dung).is_err(), "dung is a site's, not a body's");
+            assert!(kind_of(Some(NisKind::Producer), false, tough).admitted_by(IntakePort::deadstock()).is_ok());
+        }
+        assert!(kind_of(Some(NisKind::Consumer), false, Some(false)).admitted_by(dung).is_err());
+        assert!(dung.takes(DeadClass::Dung) && !dung.takes(DeadClass::Carrion));
     }
 
     #[test]

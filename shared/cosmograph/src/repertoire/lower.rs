@@ -18,8 +18,10 @@
 //! be inert.
 //!
 //! Parts that run through the categories rule lower only in a world that sets
-//! it, with their dead classes and grinding on the port ([`port`]); the sim
-//! keeps no dung stock, so parts that need dung wait.
+//! it, with their dead classes and grinding on the port ([`port`]); parts
+//! that deposit or eat dung lower only where the world also sets the detritus
+//! rule (`ecology::detritus`), a dung mouth being a dead-stock port limited to
+//! the dung class.
 
 use crate::{
     catalog::{Catalog, Part, Role, Site, Status, Kind, refs},
@@ -82,7 +84,7 @@ fn port(part: &Part, c: &Catalog, cats: bool, guard: bool) -> Result<Option<Inta
             "dead:fresh" | "dead:aged" | "dead:toxic" if cats => {
                 matter = matter.with_deadstock().taking(DeadClass::Carrion);
             },
-            "dead:dung" if cats => return Err("the sim keeps no dung stock".into()),
+            "dead:dung" if cats => matter = matter.with_deadstock().taking(DeadClass::Dung),
             "live:producer" => matter = matter.with_live(NisKind::Producer),
             "live:consumer" => matter = matter.with_live(NisKind::Consumer),
             "live:decomposer" => matter = matter.with_live(NisKind::Decomposer),
@@ -213,6 +215,18 @@ pub fn lowering_for(part: &Part, cats: bool, guard: bool) -> Result<Lowering, St
 /// As [`lowering_for`], and a part that runs only through the mutualism
 /// rule where the world sets none.
 pub fn lowering_in(part: &Part, cats: bool, guard: bool, mutual: bool) -> Result<Lowering, String> {
+    lowering_all(part, cats, guard, mutual, false)
+}
+
+/// As [`lowering_in`], for a world with the detritus rule if `dung`.
+///
+/// # Errors
+/// As [`lowering_in`], and a part that runs only through the detritus rule
+/// where the world sets none.
+pub fn lowering_all(part: &Part, cats: bool, guard: bool, mutual: bool, dung: bool) -> Result<Lowering, String> {
+    if needs_detritus(part) && !dung {
+        return Err("it needs the detritus rule".into());
+    }
     if needs_guard(part) && !guard {
         return Err("it needs the guard rule".into());
     }
@@ -220,6 +234,12 @@ pub fn lowering_in(part: &Part, cats: bool, guard: bool, mutual: bool) -> Result
         return Err("it needs the mutualism rule".into());
     }
     lowered(part, cats, guard)
+}
+
+/// Whether `part` runs only through the detritus rule.
+#[must_use]
+pub fn needs_detritus(part: &Part) -> bool {
+    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:detritus"))
 }
 
 /// Lowers `part`; with `cats`, as a world with the categories rule has it.

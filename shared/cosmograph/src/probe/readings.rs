@@ -357,6 +357,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             | Query::Wounded { .. }
             | Query::Expresses { .. }
             | Query::Trades { .. }
+            | Query::Takes { .. }
             | Query::Routes { .. } => "parts".into(),
             Query::Computed(_) => "computed".into(),
             Query::Alive(_) => "alive".into(),

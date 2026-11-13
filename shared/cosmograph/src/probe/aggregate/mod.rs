@@ -162,6 +162,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Holds { who, .. }
                 | Query::Wounded { who, .. }
                 | Query::Trades { who, .. }
+        | Query::Takes { who, .. }
                 | Query::Routes { who, .. } => target(who),
                 Query::Age { .. }
                 | Query::Condition { .. }
@@ -187,6 +188,7 @@ pub(super) fn binds_target(q: &Query) -> bool {
         | Query::Holds { who, .. }
         | Query::Wounded { who, .. }
         | Query::Trades { who, .. }
+        | Query::Takes { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         _ => false,

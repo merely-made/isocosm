@@ -149,4 +149,10 @@ pub enum Query {
         who: Binding,
         what: crate::process::Trade,
     },
+    /// A body has a living dead-stock mouth, its tissue held, that takes
+    /// dead matter of `class` (`ecology::detritus`, D39 model 4).
+    Takes {
+        who: Binding,
+        class: crate::process::DeadClass,
+    },
 }

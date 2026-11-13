@@ -739,6 +739,20 @@ numbers and readings he has not ruled; within them, the grammar's drift
   every 4 minutes, 4 soil for 3 tissue, a fee of 1, credit 1);
   `Mutualism`, `trust` and `owed` are working words.
 
+- **Detritus choices** (the implementer's and mine): dung is a site
+  account (`world:dung`), not a body, and a fourth dead class no body's
+  matter can be; only animals deposit it, at every meal of a body,
+  living or dead (a whole-body meal deposits none); a third of each
+  meal is left (a placeholder, and the likely cause of the grazer's
+  fall), rounded by a draw of seed, tick, site and bite so both
+  executions agree; a dung meal deposits no further dung; a fungus body
+  with no port at all is read as having the founding root, so the
+  founded decomposer already eats dung; the rule requires categories
+  and Mesocosm refuses `--detritus` without `--categories` rather than
+  implying it; numbers are placeholders (a third left, a bite of 3
+  keeping 2, a turn every 3 minutes, rot of 1 a site a tick);
+  `Detritus` is a working word.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -810,6 +824,24 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: dung (D39 model 4, the detritus web), as an optional
+  rule, off by default and requiring categories (`Founding.detritus`,
+  `ecology/detritus.rs`; Mesocosm `--detritus`). An animal's meal
+  leaves a share at its site as dung; mouths that take dung (the
+  decomposer's root, or a lowered dung mouth) eat it, and rot returns
+  the rest to soil. Catalog: 190 of 272 expressible (from 176); the
+  four authored mouths held back by categories now lower. Measured over
+  seeds 0–19 (`tests/detritus_share.rs`), against the rule-set noise
+  floor of about 80: the grazer falls from 77 to 7, since it keeps a
+  third less of each meal, and the plants roughly double (269.5 to
+  538); dung is deposited at 0.70 a site a tick, eaten at 0.27 and
+  rotted at 0.38, so it stands on the ground and soil falls (6624 to
+  4977). D39's test is not informative yet: the founded decomposer
+  already eats dung, so a planted feeder changes nothing, and the
+  diets world's omnivore, the one fauna line a dung mouth could be
+  planted on, dies out even without the rule. No pin moved. Suites:
+  sim 1306, Mesocosm 310, Eponym and root checks pass.
 
 - 2026-11-13: mutualism (D39 model 5), as an optional rule, off by
   default (`Founding.mutualism`, `ecology/mutualism.rs`; Mesocosm

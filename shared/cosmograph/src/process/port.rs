@@ -142,10 +142,10 @@ pub enum Tolerance {
 
 /// What dead matter came from, as the categories rule classes it
 /// (`mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md` D37). Derived
-/// from the body and the part bitten, never stored. There is no dung: the
-/// stock and A1 ecologies deposit no unkept remainder of a meal (a meal is
-/// kept whole; only world time's partitioned meal returns a waste, and the
-/// rule does not layer on world time).
+/// from the body and the part bitten, never stored. Dung (the detritus rule,
+/// `crate::ecology::Detritus`) is the fourth class, and is held not on a body
+/// but on the site, so it is not one of [`DeadClass::ALL`], which are the
+/// classes a body's dead matter can be.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub enum DeadClass {
     /// Dead soft plant matter: leaf, frond, blade.
@@ -154,9 +154,13 @@ pub enum DeadClass {
     Wood,
     /// The dead flesh of anything not a plant.
     Carrion,
+    /// An eater's unkept remainder, deposited at its site (the detritus
+    /// rule, D39 model 4; the catalog's mechanic `dung-stock`).
+    Dung,
 }
 
 impl DeadClass {
+    /// The classes a body's dead matter can be; dung is a site's.
     pub const ALL: [Self; 3] = [Self::Litter, Self::Wood, Self::Carrion];
 
     const fn bit(self) -> u8 {
@@ -164,6 +168,7 @@ impl DeadClass {
             Self::Litter => 1,
             Self::Wood => 2,
             Self::Carrion => 4,
+            Self::Dung => 8,
         }
     }
 }
@@ -303,7 +308,7 @@ impl IntakePort {
     }
 
     pub const fn with_class_bits(mut self, bits: u8) -> Self {
-        self.classes |= bits & 7;
+        self.classes |= bits & 15;
         self
     }
 

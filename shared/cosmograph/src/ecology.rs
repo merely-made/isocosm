@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 mod admission;
 mod budget;
 mod categories;
+mod detritus;
 mod dormant;
 mod guard;
 mod joint;
@@ -40,6 +41,8 @@ mod categories_tests;
 #[cfg(test)]
 mod categories_meal_tests;
 #[cfg(test)]
+mod detritus_tests;
+#[cfg(test)]
 mod mutualism_tests;
 #[cfg(test)]
 mod mutualism_flow_tests;
@@ -55,6 +58,7 @@ pub use mass_law::MassLaw;
 pub use limits::Limits;
 pub use rot::{DECOMPOSER_BITES, Rot};
 pub use categories::{Categories, tough};
+pub use detritus::{DUNG, Detritus, left_by, takes};
 pub use guard::{Guard, Ward};
 pub use mutualism::{Mutualism, trades};
 pub use spoilage::{Flesh, Spoilage};
@@ -397,7 +401,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// then rot, whose processes gate nothing and copy nothing, then spoilage,
 /// which reads the mouths the rest founded, then the categories, which read
 /// the parts a body has, then the guard, whose rent rides beside upkeep, then mutualism, whose turns read
-/// the organs the repertoire lowers, then the repertoire, which
+/// the organs the repertoire lowers, then the detritus web, whose dung turns read mouths, then the repertoire, which
 /// lowers catalog parts into kinds beside them.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
@@ -410,6 +414,7 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     categories::apply(founding, g)?;
     guard::apply(founding, g)?;
     mutualism::apply(founding, g)?;
+    detritus::apply(founding, g)?;
     crate::repertoire::apply(founding, g)?;
     crate::inherit::apply(founding, g)?;
     Ok(())

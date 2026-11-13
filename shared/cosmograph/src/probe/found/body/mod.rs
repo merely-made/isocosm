@@ -296,7 +296,7 @@ impl BodyFounding {
             dormancy: None,
             spoilage: None,
             repertoire: None,
-            categories: None, guard: None, mutualism: None,
+            categories: None, guard: None, mutualism: None, detritus: None,
             inherit: false,
             body: None,
             kinds: self.kinds(),

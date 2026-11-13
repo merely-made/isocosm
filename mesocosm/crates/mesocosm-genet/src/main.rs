@@ -179,6 +179,7 @@ fn main() {
             "--categories" => config.world_rules.categories = true,
             "--guard" => config.world_rules.guard = true,
             "--mutualism" => config.world_rules.mutualism = true,
+            "--detritus" => config.world_rules.detritus = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -453,6 +454,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --mutualism     world rule (off unless asked): a producer line and a decomposer line at one site trade soil for
                   tissue, each paying only while the other does; a line that stops giving stops receiving. Lowered
                   catalog exchange parts carry it (a decomposer line has no recipe to edit yet, so only plants take one)
+  --detritus      world rule (off unless asked; needs --categories): an animal's meal leaves a share of what it took at
+                  its site as dung, a dead stock of its own that a dead-stock mouth not limited to other classes (a
+                  decomposer's root, a lowered dung mouth) takes and that rot returns to the soil
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

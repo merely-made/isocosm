@@ -42,6 +42,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Holds { who, .. }
         | Query::Wounded { who, .. }
         | Query::Trades { who, .. }
+        | Query::Takes { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Age { .. } | Query::Condition { .. } | Query::Mood { .. } | Query::MoodBelow { .. }
         | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }

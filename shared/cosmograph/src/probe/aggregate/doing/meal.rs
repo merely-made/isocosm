@@ -48,7 +48,13 @@ impl Doing<'_> {
             debit(held, key, *value)?;
             total = total.checked_add(*value).ok_or("meal overflow")?;
         }
-        credit(&mut self.member.accounts, into, total)?;
+        // The detritus rule, as the core's meal leaves it: a share of the bite is dung at the site.
+        let resident = self.member.resident_site() == Some(self.site_id);
+        let dung = if resident { crate::ecology::left_by(self.rules.detritus, &self.member, total, self.seed, self.tick, self.site_id) } else { 0 };
+        credit(&mut self.member.accounts, into, total - dung)?;
+        if dung > 0 {
+            self.give(Binding::Place, crate::ecology::DUNG, dung)?;
+        }
         self.took = Some(Took::Bite(taken));
         Ok(true)
     }

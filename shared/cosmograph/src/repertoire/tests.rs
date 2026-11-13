@@ -327,5 +327,6 @@ fn the_young_of_a_line_that_took_a_part_carry_it_and_both_executions_agree() {
 }
 
 mod categories;
+mod detritus;
 mod guard;
 mod mutualism;

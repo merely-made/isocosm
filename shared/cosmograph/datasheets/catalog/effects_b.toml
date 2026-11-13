@@ -266,7 +266,7 @@ kingdoms = ["kingdom:fauna"]
 emits = ["dead:dung"]
 cost_mg = 2
 analogue = "a herd's dung"
-needs = "dung-stock"
+via = ["rule:categories", "rule:detritus"]
 
 [[effect]]
 key = "effect:scatter-propagule"
@@ -474,7 +474,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco"]
 admits = ["dead:dung"]
 cost_mg = 3
 analogue = "a dung beetle"
-needs = "dung-stock"
+via = ["rule:categories", "rule:detritus"]
 
 [[effect]]
 key = "effect:eat-litter"

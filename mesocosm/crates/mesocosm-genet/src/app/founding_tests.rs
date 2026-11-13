@@ -241,6 +241,19 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(founded.genesis.rules.processes.keys().any(|k| k.starts_with("mutualism:nutrient-")));
     assert_ne!(digest_of(&trading), digest_of(&on));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("mutualism"));
+    // `--detritus` is off unless asked (D39 model 4) and leans on `--categories`: the default world has none.
+    assert!(!WorldRules::generated().detritus && !WorldRules::all().detritus);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().detritus.is_none());
+    let authored = mesocosm_runtime::Authored::load(&pack_root()).unwrap();
+    let alone = HostConfig { seed: 9, world_rules: WorldRules { detritus: true, ..HostConfig::default().world_rules }, ..Default::default() };
+    assert!(startup::configured(&alone, &authored).is_err(), "dung needs the classes");
+    let leaving = found_default(WorldRules { detritus: true, categories: true, ..HostConfig::default().world_rules }, 9);
+    let founded = leaving.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().detritus.is_some());
+    assert!(founded.genesis.rules.detritus.is_some() && founded.genesis.rules.accounts.contains_key("world:dung"));
+    assert!(founded.genesis.rules.processes.contains_key("detritus:rot"));
+    assert_ne!(digest_of(&leaving), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("detritus"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

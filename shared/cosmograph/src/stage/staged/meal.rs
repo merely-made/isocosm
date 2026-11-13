@@ -303,16 +303,32 @@ impl Staged<'_> {
             self.partition_meal(&meal, into, total)?;
             return Ok(harmed);
         }
-        self.give(Binding::Actor, into, total)?;
-        sim.diagnostic_given(&Ledger::from([(into.clone(), total)]));
+        // The detritus rule: an animal leaves part of what it took at its site as dung.
+        let resident = self.stage.bodies[&actor].resident_site() == Some(self.stage.place);
+        let dung = if resident {
+            crate::ecology::left_by(rules.detritus, &self.stage.bodies[&actor], total, Some(sim.genesis.seed), sim.state.tick, self.stage.place)
+        } else {
+            0
+        };
+        self.give(Binding::Actor, into, total - dung)?;
+        if dung > 0 {
+            self.give(Binding::Place, crate::ecology::DUNG, dung)?;
+        }
+        sim.diagnostic_given(&Ledger::from([(into.clone(), total - dung)]));
         if let Some(prey) = self.holder(from).filter(|_| sim.flowing()) {
-            self.stage
-                .legs
-                .extend(taken.into_iter().map(|(key, amount)| Leg {
-                    from: (prey, key),
-                    to: (Holder::Entity(actor), into.clone()),
-                    amount,
-                }));
+            let mut left = dung;
+            for (key, amount) in taken {
+                let deposited = amount.min(left);
+                left -= deposited;
+                for (to, give, n) in [
+                    (Holder::Site(self.stage.place), crate::ecology::DUNG.to_owned(), deposited),
+                    (Holder::Entity(actor), into.clone(), amount - deposited),
+                ] {
+                    if n > 0 {
+                        self.stage.legs.push(Leg { from: (prey, key.clone()), to: (to, give), amount: n });
+                    }
+                }
+            }
         }
         Ok(harmed)
     }
