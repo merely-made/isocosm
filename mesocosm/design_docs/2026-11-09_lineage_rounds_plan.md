@@ -595,17 +595,22 @@ numbers and readings he has not ruled; within them, the grammar's drift
   ten, none more than with decomposers spared, and their median peak
   falls from 227 to 200. A weak brake, chosen to do no harm.
 
-- **The policy is one system whose shape is data** (mine, answering
-  Mark's "Why can't those compose into one system", 2026-11-12): today's
-  weights on drives and acts are a network with no hidden layer. A
-  lineage's policy keeps that form and may gain hidden units as its
-  shape drifts (the creature minds brief already names policy size and
-  shape as what changes slowly), in whole numbers, so replay stays
-  exact. One code path; a lineage with no hidden units computes exactly
-  what it does now. Members' deltas, the fold back into the lineage,
-  imitation and learning from play (M3.7, case 1056) work on either
-  shape. Not built; no neural net code or test files are in this
-  repository.
+- **The policy is already one system, and already a net** (mine,
+  correcting my own entry of 2026-11-12, which said there was no net):
+  a lineage's policy is a small integer net (`directing/policy.rs`,
+  case 1051, built as M3.5, after B1 of 2026-08-21): a direct path
+  that carries the hand-written score, plus a hidden layer of eight
+  units over the same terms and the process's shape. A founding policy
+  has the hidden layer at nought and so chooses as the hand-written
+  score does; each member draws a variation, and the boundary weighs
+  what prospered. So Mark's "Why can't those compose into one system"
+  is answered by what is built. What is open: recurrent state (M3.5
+  left it for M3.6), a member's delta reaching the hidden weights
+  (`directing/learn.rs` moves drives and acts only), the fold of
+  deltas back into the lineage, imitation, teaching and learning from
+  play (M3.7, cases 1053 and 1056), and the offline Burn proposer the
+  creature minds brief lists (§10; "Burn proposes, the record
+  disposes").
 
 - **The climate is a thirtieth of the first cut, by one number** (D26,
   mine): the three strain rates move together. A fifteenth and a
