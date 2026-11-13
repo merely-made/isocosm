@@ -256,6 +256,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary Three catalogs are wanted (traits, effects, and the parts that result by kingdom); the rule against a process catalog ahead of a played path is lifted, and the memo's distinctness check stays as a measurement.
 
+- **D39, the ecological models the catalogs serve (2026-11-13), refines D38:** on "circular economy": "i meant that derisively, to refer to the current situation, not as a goal ... a circular economy is a consumer eating a producer who eats the soil from dead consumers". Asked "what ecological models would you suggest", and of the list offered: "sure, go for it". The target is five: competition for limiting resources; defence and counter-defence; predator and prey with refuges; the detritus web; mutualism. Then parasites and disease (after D20), keystone predation (expected to emerge), and succession with disturbance. Later, once regions differ: niche partitioning along gradients, and bodies that change their site for all. The list is mine, accepted by Mark; the catalogs' rows are owed against it.
+
+  Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary The catalogs target five ecological models (resource competition, defence and counter-defence, predation with refuges, the detritus web, mutualism), then parasites, keystone predation and succession; a closed loop is not the goal.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
