@@ -20,6 +20,20 @@ view-selection and other speed bars (`sim-execution`); the resident surface, atl
 atlas-slot work (`place-graph-engine`); glyph canon and journeys (`wing-organs`); the hagiograph's
 promotion test (`wing-organs`); the VTT (`vtt-overlay`).
 
+## Decisions
+
+- **D1, combat is one system: what the player does by hand becomes what the character does alone (2026-11-12), applies 1056:** Mark's ruling, given as five points:
+
+  1. "Manual and automatic are one system. Directional combat the player does generates the techniques and styles the character then uses on its own (applies case 1056: a driven creature learns from its player)."
+  2. "Techniques are a vocabulary that expands as combat gets more complicated. Techniques and abilities available to the player expand and can be modified as you get better at combat. Not a fixed list, not freeform capture."
+  3. "The number of techniques you can keep is limited. To purposefully revisit one you must record it (journal, paper, pencil) or teach it to a companion."
+  4. "A character that is auto-fighting may instinctually remember bits of older moves where they are part of its newer techniques. So developing and generating new techniques recycles the old, and what to keep is a meaningful choice."
+  5. "Hits resolve at step grain in the sim (which technique, when); the GPU animates and blends. Co-op carries technique choices, not swing geometry."
+
+  How it sits with the records. A technique dropped from the kept set fades as any memory does unless a physical note or another mind holds it (Record 3: "physical notes (journals, diaries) do not fade"); recording and teaching are the notes and teaching of `mesocosm-overlay` M3.7. Point 5 is `sim-host` D8 applied to a fight: the sim decides which technique lands and when, in whole steps, and physics on the GPU is how it looks between them; peers receive the choices. Owed, and placed in E3.8 below: a technique vocabulary built from parts; intentions that persist across steps; imitation of the player; and the kept-set limit. *Reading, not ruled:* B3's comparison of strike policies names a contact-driven one, which lets swing geometry decide a hit; under point 5 geometry no longer decides, so B3's three policies want re-reading before that comparison runs.
+
+  Links: area Eponym · draws on 1053, 1056, record.3 · plans eponym-overlay · summary Manual and automatic combat are one system: directional play generates a limited, expanding vocabulary of techniques the character then uses alone; hits resolve at step grain and the GPU animates.
+
 ## Constraints
 
 - **E3 is built only on Cosmograph, with no prototype over `Session`** (ruling 239). E3 opened
@@ -219,6 +233,12 @@ acceptance remains open."
 - Needs: ruling 826's deferral lifted
 - Rulings: 826, 846, 849, 850
 - From: `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:540`.
+
+### E3.8. Techniques: one combat, by hand and alone (D1)
+The four things D1 leaves owed. A technique is composed from parts (a direction, a limb or held thing, a timing, a follow-on), so the vocabulary grows by combination as fights grow more complicated and a technique can be modified; it is neither a fixed list nor a recording of raw input. An intention persists across steps, so a technique of several steps is one choice the sim carries through (the creature minds brief's "persist intentions through their constituent actions"). The character imitates its player: directional combat by hand yields the techniques it then chooses alone (1056). A character keeps a limited set; one it drops fades (Record 3), surviving only as the parts newer techniques share, unless it was written down or taught (`mesocosm-overlay` M3.7).
+- Done when: over seeded fights nobody chose, a technique performed by hand appears in the character's own choices when it next fights alone, and not before; two techniques sharing a part are both recalled more readily than one sharing none; a set at its limit refuses a new technique until one is dropped, and the dropped one is gone after its fade unless a note or a companion holds it, from which it can be relearned; a technique of several steps resolves as one recorded choice with a hit at a named step; two peers given the same technique choices record the same hits while their drawn motion may differ (`sim-host` D8); every run replays.
+- Needs: `mesocosm-overlay` M3.6 (built) and M3.7; E3.2's native harm; `sim-host` D8's admission of outcomes
+- Rulings: D1; 1053, 1056; Record 3; `sim-host` D8
 
 ### E3. Driving on Cosmograph (whole)
 - Done when: "a played sophont is driven on Cosmograph, its acts resolved by what its body affords;

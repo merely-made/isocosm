@@ -6603,6 +6603,14 @@ area = "Ecology"
 summary = "Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching."
 draws_on = ["1058", "1240"]
 
+[decisions."eponym-overlay D1"]
+title = "combat is one system: what the player does by hand becomes what the character does alone (2026-11-12), applies 1056"
+source = "eponym/design_docs/2026-10-28_eponym_overlay_plan.md"
+area = "Eponym"
+summary = "Manual and automatic combat are one system: directional play generates a limited, expanding vocabulary of techniques the character then uses alone; hits resolve at step grain and the GPU animates."
+draws_on = ["1053", "1056", "record.3"]
+plans = ["eponym-overlay"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
