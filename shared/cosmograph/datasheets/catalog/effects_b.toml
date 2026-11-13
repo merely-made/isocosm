@@ -209,7 +209,7 @@ admits = ["sugar"]
 emits = ["exudate", "sugar"]
 cost_mg = 3
 analogue = "root exudate to a fungus"
-needs = "nutrient-sugar-trade"
+via = ["rule:mutualism"]
 
 [[effect]]
 key = "effect:nutrient-handout"
@@ -223,7 +223,7 @@ kingdoms = ["kingdom:myco"]
 emits = ["soil:nutrient"]
 cost_mg = 3
 analogue = "a mycorrhizal network"
-needs = "nutrient-sugar-trade"
+via = ["rule:mutualism"]
 
 [[effect]]
 key = "effect:allelopathic-inhibit"

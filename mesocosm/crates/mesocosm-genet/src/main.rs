@@ -178,6 +178,7 @@ fn main() {
             "--repertoire" => config.world_rules.repertoire = true,
             "--categories" => config.world_rules.categories = true,
             "--guard" => config.world_rules.guard = true,
+            "--mutualism" => config.world_rules.mutualism = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -449,6 +450,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --guard         world rule (off unless asked): defence and counter-defence. A part's armour resists a bite by the
                   mouth's attack, a spined part wounds its eater, a body with glands harms what eats it, unless the
                   eater tolerates it; each costs cells and a standing rent of matter. Lowered catalog parts carry them
+  --mutualism     world rule (off unless asked): a producer line and a decomposer line at one site trade soil for
+                  tissue, each paying only while the other does; a line that stops giving stops receiving. Lowered
+                  catalog exchange parts carry it (a decomposer line has no recipe to edit yet, so only plants take one)
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

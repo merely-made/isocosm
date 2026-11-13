@@ -59,7 +59,7 @@ use isometer_core::{BodyDocument, PartId, Role, classify};
 mod port;
 mod registry;
 
-pub use port::{DeadClass, IntakePort, NisKind, Strength, Tolerance};
+pub use port::{DeadClass, IntakePort, NisKind, Strength, Tolerance, Trade};
 pub use registry::{NATIVE_ABI, Registry, RulesetDigest};
 
 /// What a part contributes.

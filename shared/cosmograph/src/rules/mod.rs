@@ -387,6 +387,10 @@ pub struct Rules {
     /// their parent (D40, `crate::inherit`); false, worlds hash as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub inherit: bool,
+    /// The trade of soil for tissue between producer and decomposer lines
+    /// (`ecology::mutualism`); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mutualism: Option<crate::ecology::Mutualism>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -450,6 +454,7 @@ impl Rules {
         if let Some(spoilage) = &self.spoilage { spoilage.validate()?; }
         if let Some(categories) = &self.categories { categories.validate()?; }
         if let Some(guard) = &self.guard { guard.validate()?; }
+        if let Some(m) = &self.mutualism { m.validate()?; }
         if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }

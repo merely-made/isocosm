@@ -725,6 +725,20 @@ numbers and readings he has not ruled; within them, the grammar's drift
   grants spine tolerance; venom injection, an attack, waits as its own
   mechanic.
 
+- **Mutualism choices** (the implementer's and mine): the two goods are
+  the producer's tissue (sugar, which only a fixer makes) and soil the
+  decomposer carries from the pool (nutrient), so no new matter key;
+  which side gives which is read from the trophic role, not the kingdom
+  or the part's rows; partners need only share a site and each hold a
+  living exchange organ; the exchange is kept as two counts per line
+  pair per site (a cheating line takes one gift per site it reaches,
+  not one in all); sugar arrives as the plant's matter on the fungus
+  and is digested on the fungus's next turn, since a direct move into
+  its own tissue would be mineralization; an exchange organ under the
+  guard rule is not a toxin gland; numbers are placeholders (a turn
+  every 4 minutes, 4 soil for 3 tissue, a fee of 1, credit 1);
+  `Mutualism`, `trust` and `owed` are working words.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -796,6 +810,27 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: mutualism (D39 model 5), as an optional rule, off by
+  default (`Founding.mutualism`, `ecology/mutualism.rs`; Mesocosm
+  `--mutualism`). A decomposer carries soil to a plant partner at its
+  site and the plant pays it tissue; each gives only while the other
+  settled the last exchange, so a cheater gets one gift and no more.
+  Catalog: 176 of 272 expressible (from 164); nothing waits on the
+  trade now (three of its rows wait on other mechanics as well).
+  Measured over seeds 0–19, organs planted at tick 0
+  (`tests/mutualism_share.rs`): the fungus gains (median 140 with a
+  working partner, 98 to 110 without one or against a cheater), but
+  the plant loses (231.5 with its partner against 349.5 with the rule
+  and no organs), because the played world's plants are not short of
+  soil, so the soil they are given does not repay the tissue they pay.
+  D39's test fails for the plant side, untuned. Findings: a decomposer
+  line has no recipe, so it cannot take a part at a boundary or by
+  drift, and the fungus organ was planted by editing bodies; a rule
+  set with nothing using it still moves a line's median by up to 80
+  (base 269.5, guard 325.5, mutualism unplanted 349.5), a shifted draw
+  stream, which is the measurements' noise floor. No pin moved.
+  Suites: sim 1296, Mesocosm 310, Eponym and root checks pass.
 
 - 2026-11-13: defence and counter-defence (D39 model 2), as an optional
   rule, off by default (`Founding.guard`, `ecology/guard.rs`; Mesocosm

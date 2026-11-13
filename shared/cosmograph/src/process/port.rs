@@ -49,6 +49,31 @@ pub struct IntakePort {
     /// serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Strength::is_none")]
     strength: Strength,
+    /// What the organ's tissue does under the mutualism rule
+    /// (`crate::ecology::Mutualism`): bits of [`Trade`], that its body gives
+    /// the partner what it has and takes what the partner gives. None unless
+    /// set, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "is_none_tolerated")]
+    trade: u8,
+}
+
+/// What an organ does in a trade under the mutualism rule (lineage-rounds
+/// D39 model 5, the catalog's `nutrient-sugar-trade`). Working names.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub enum Trade {
+    /// Its body hands over what it has, when the partner has handed over.
+    Gives,
+    /// Its body takes what the partner hands over.
+    Takes,
+}
+
+impl Trade {
+    const fn bit(self) -> u8 {
+        match self {
+            Self::Gives => 1,
+            Self::Takes => 2,
+        }
+    }
 }
 
 /// The strengths a part carries under the guard rule (`crate::ecology::
@@ -169,6 +194,7 @@ impl IntakePort {
             tolerance: 0,
             classes: 0,
             strength: Strength::NONE,
+            trade: 0,
         }
     }
 
@@ -184,6 +210,7 @@ impl IntakePort {
             tolerance: 0,
             classes: 0,
             strength: Strength::NONE,
+            trade: 0,
         }
     }
 
@@ -229,6 +256,27 @@ impl IntakePort {
 
     pub const fn strength(self) -> Strength {
         self.strength
+    }
+
+    /// This organ, also doing `what` in a trade (the mutualism rule).
+    pub const fn trading(mut self, what: Trade) -> Self {
+        self.trade |= what.bit();
+        self
+    }
+
+    /// Whether the organ does `what` in a trade.
+    pub const fn trades(self, what: Trade) -> bool {
+        self.trade & what.bit() != 0
+    }
+
+    /// The organ's trade, as bits; nought for none.
+    pub const fn trade_bits(self) -> u8 {
+        self.trade
+    }
+
+    pub const fn with_trade_bits(mut self, bits: u8) -> Self {
+        self.trade |= bits & 3;
+        self
     }
 
     /// Whether this port is a mouth: it admits living or dead matter.

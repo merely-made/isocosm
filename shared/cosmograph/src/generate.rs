@@ -88,6 +88,9 @@ pub struct Founding {
     /// Young grow from the line's current recipe (D40, `inherit`). Unset, they copy their parent and it hashes as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub inherit: bool,
+    /// Producer and decomposer trade soil for tissue, each paying while the other does (`ecology::mutualism`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mutualism: Option<crate::ecology::Mutualism>,
 }
 
 impl Default for Founding {
@@ -120,6 +123,7 @@ impl Default for Founding {
             categories: None,
             guard: None,
             inherit: false,
+            mutualism: None,
         }
     }
 }
@@ -246,74 +250,7 @@ impl Founding {
                 processes.insert(id, p);
             }
         }
-        let mut mark = process(
-            "sim:remember",
-            Causation::Choice,
-            vec![Effect::Note {
-                kind: "sim:observed".into(),
-                text: "Observed at the specimen bench.".into(),
-                lifetime: None,
-            }],
-        );
-        mark.note = true;
-        processes.insert(mark.id.clone(), mark);
-        let mut donate = process(
-            "sim:give",
-            Causation::Choice,
-            vec![Effect::Transfer {
-                from: Binding::Actor,
-                to: Binding::Target,
-                account: "world:soil".into(),
-                amount: 1.into(),
-            }],
-        );
-        donate.note = true;
-        processes.insert(donate.id.clone(), donate);
-        let mut birth = process(
-            "sim:birth",
-            Causation::Transition,
-            vec![Effect::Birth {
-                provision: BTreeMap::from([("world:soil".into(), 2)]),
-                scatter: None,
-            }],
-        );
-        birth.note = true;
-        processes.insert(birth.id.clone(), birth);
-        let mut death = process("sim:death", Causation::Transition, vec![Effect::Death]);
-        death.note = true;
-        processes.insert(death.id.clone(), death);
-        let polity = process(
-            "sim:found-polity",
-            Causation::Transition,
-            vec![Effect::FoundPolity {
-                governance: "governance:consent".into(),
-                focus: set(&["sim:give"]),
-                support: "world:soil".into(),
-            }],
-        );
-        processes.insert(polity.id.clone(), polity);
-        let mut reckon = process(
-            "sim:reckon",
-            Causation::Transition,
-            vec![Effect::Record {
-                axis: "feat:reserve".into(),
-                account: "world:soil".into(),
-            }],
-        );
-        reckon.note = true;
-        processes.insert(reckon.id.clone(), reckon);
-        let mut weather = process(
-            "world:weather",
-            Causation::Agentless,
-            vec![Effect::Condition {
-                key: "world:weather".into(),
-                delta: 1,
-            }],
-        );
-        weather.requires.clear();
-        weather.period = Some(3);
-        weather.priority = -1;
-        processes.insert(weather.id.clone(), weather);
+        helpers::world_processes(&mut processes);
         let mut rules = Rules {
             root_stores: BTreeMap::new(),
             climate: None,
@@ -326,6 +263,7 @@ impl Founding {
             categories: None,
             guard: None,
             inherit: false,
+            mutualism: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

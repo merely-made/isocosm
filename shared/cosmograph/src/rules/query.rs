@@ -143,4 +143,10 @@ pub enum Query {
         at_least: u64,
         per_members: u64,
     },
+    /// A body has a living organ, its tissue held, whose port does `what` in
+    /// a trade (`ecology::mutualism`, D39 model 5).
+    Trades {
+        who: Binding,
+        what: crate::process::Trade,
+    },
 }

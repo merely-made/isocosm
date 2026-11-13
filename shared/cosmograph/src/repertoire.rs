@@ -26,7 +26,8 @@
 //! that has taken a lowered kind are grown from its recipe ([`crate::inherit::rebody`]).
 //! With the guard rule (`crate::ecology::Guard`) the armour, spine and gland
 //! parts lower too, as organs behind the body, and a mouth carries the
-//! catalog's attack by kind.
+//! catalog's attack by kind. With the mutualism rule (`crate::ecology::Mutualism`)
+//! the exchange parts lower as organs whose port gives and takes in a trade.
 //! Unset, the world founds, hashes and runs as before.
 
 use crate::{
@@ -40,7 +41,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod lower;
-pub use lower::{Lowering, lowering, lowering_for, lowering_with, needs_categories, needs_guard};
+pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, needs_categories, needs_guard, needs_mutualism};
 
 /// The founding rule. Working names.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -120,16 +121,16 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         return Err("repertoire layers on the stock and A1 rates, not world time".into());
     }
     let catalog = crate::catalog::catalog();
-    let (cats, guard) = (founding.categories.is_some(), founding.guard.is_some());
+    let (cats, guard, mutual) = (founding.categories.is_some(), founding.guard.is_some(), founding.mutualism.is_some());
     for key in &rule.only {
         let part = catalog.part_by_key(key).ok_or_else(|| format!("repertoire names {key}, which the catalog lacks"))?;
-        if let Err(why) = lowering_for(part, cats, guard) {
+        if let Err(why) = lowering_in(part, cats, guard, mutual) {
             return Err(format!("repertoire cannot lower {key}: {why}"));
         }
     }
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
-        let Ok(Lowering { template, root }) = lowering_for(part, cats, guard) else { continue };
+        let Ok(Lowering { template, root }) = lowering_in(part, cats, guard, mutual) else { continue };
         let key = kind_key(&part.key);
         let function = lower::function_of(&template).ok_or("a lowered kind has no function")?;
         let root_key = root.as_ref().map(|_| format!("{key}-root"));

@@ -13,6 +13,7 @@ mod dormant;
 mod guard;
 mod joint;
 mod limits;
+mod mutualism;
 mod rot;
 mod spoilage;
 mod validate;
@@ -39,6 +40,10 @@ mod categories_tests;
 #[cfg(test)]
 mod categories_meal_tests;
 #[cfg(test)]
+mod mutualism_tests;
+#[cfg(test)]
+mod mutualism_flow_tests;
+#[cfg(test)]
 mod guard_tests;
 #[cfg(test)]
 mod guard_meal_tests;
@@ -51,6 +56,7 @@ pub use limits::Limits;
 pub use rot::{DECOMPOSER_BITES, Rot};
 pub use categories::{Categories, tough};
 pub use guard::{Guard, Ward};
+pub use mutualism::{Mutualism, trades};
 pub use spoilage::{Flesh, Spoilage};
 pub use budget::Budget;
 pub use joint::*;
@@ -390,7 +396,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// the consumers' limits, which gate the feed and birth processes as scaled,
 /// then rot, whose processes gate nothing and copy nothing, then spoilage,
 /// which reads the mouths the rest founded, then the categories, which read
-/// the parts a body has, then the guard, whose rent rides beside upkeep, then the repertoire, which
+/// the parts a body has, then the guard, whose rent rides beside upkeep, then mutualism, whose turns read
+/// the organs the repertoire lowers, then the repertoire, which
 /// lowers catalog parts into kinds beside them.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
@@ -402,6 +409,7 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     spoilage::apply(founding, g)?;
     categories::apply(founding, g)?;
     guard::apply(founding, g)?;
+    mutualism::apply(founding, g)?;
     crate::repertoire::apply(founding, g)?;
     crate::inherit::apply(founding, g)?;
     Ok(())

@@ -201,7 +201,7 @@ emits = ["soil:nutrient"]
 cost_mg = 12
 reads = ["soil", "income", "upkeep"]
 analogue = "pine ectomycorrhiza"
-needs = "nutrient-sugar-trade"
+via = ["rule:mutualism"]
 
 [[trait]]
 key = "trait:gut-symbiont-chamber"

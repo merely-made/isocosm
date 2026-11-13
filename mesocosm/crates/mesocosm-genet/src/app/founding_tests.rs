@@ -231,6 +231,16 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(founded.genesis.rules.processes.keys().any(|k| k.starts_with("guard:rent-")));
     assert_ne!(digest_of(&guarded), digest_of(&on));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("guard"));
+    // `--mutualism` is off unless asked (D39 model 5): the default world has none, and asking adds it.
+    assert!(!WorldRules::generated().mutualism && !WorldRules::all().mutualism);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().mutualism.is_none());
+    let trading = found_default(WorldRules { mutualism: true, ..HostConfig::default().world_rules }, 9);
+    let founded = trading.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().mutualism.is_some());
+    assert!(founded.genesis.rules.mutualism.is_some());
+    assert!(founded.genesis.rules.processes.keys().any(|k| k.starts_with("mutualism:nutrient-")));
+    assert_ne!(digest_of(&trading), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("mutualism"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

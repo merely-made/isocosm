@@ -216,7 +216,7 @@ admits = ["sugar"]
 emits = ["soil:nutrient"]
 cost_mg = 4
 analogue = "mycorrhizal exchange"
-needs = "nutrient-sugar-trade"
+via = ["rule:mutualism"]
 
 [[effect]]
 key = "effect:alarm-signal"

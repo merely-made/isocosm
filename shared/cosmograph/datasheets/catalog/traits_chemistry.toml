@@ -230,7 +230,7 @@ emits = ["exudate", "sugar"]
 cost_mg = 9
 reads = ["soil", "income", "upkeep"]
 analogue = "root exudate, a lichen's sugar"
-needs = "nutrient-sugar-trade"
+via = ["rule:mutualism"]
 
 [[trait]]
 key = "trait:alarm-signal"

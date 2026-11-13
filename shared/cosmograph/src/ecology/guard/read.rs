@@ -87,6 +87,10 @@ impl Guard {
         let load: u64 = prey
             .living()
             .map(|(_, p)| {
+                // An exchange organ (the mutualism rule) secretes sugar, not toxin.
+                if p.port.is_some_and(|port| port.trade_bits() != 0 && port.strength().toxin == 0) {
+                    return 0;
+                }
                 let cells = u64::from(p.cells.get(SECRETE).copied().unwrap_or(0));
                 let strength = p.port.map(|port| port.strength().toxin).filter(|s| *s > 0).unwrap_or(self.gland);
                 cells * u64::from(strength)

@@ -332,6 +332,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = crate::systems::routes(s.body(*who)?, function, *role);
             (v, v.to_string())
         },
+        Query::Trades { who, what } => {
+            let v = crate::ecology::trades(s.body(*who)?, *what);
+            (v, v.to_string())
+        },
         // The address a receipt carries: which part, at which revision.
         Query::Expresses { function } => {
             let actor = s.body(Binding::Actor)?;

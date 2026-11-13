@@ -23,7 +23,7 @@
 
 use crate::{
     catalog::{Catalog, Part, Role, Site, Status, Kind, refs},
-    process::{DeadClass, IntakePort, NisKind, ProcessDef, ProcessId, Registry, Strength, Tolerance},
+    process::{DeadClass, IntakePort, NisKind, ProcessDef, ProcessId, Registry, Strength, Tolerance, Trade},
     rules::Template,
     schema::Key,
 };
@@ -65,6 +65,9 @@ fn def(process: &str) -> Result<&'static ProcessDef, String> {
 /// dead-stock mouth to those classes (`ecology::categories`); without it
 /// every dead flow is a mouth for all dead stock, as before.
 fn port(part: &Part, c: &Catalog, cats: bool, guard: bool) -> Result<Option<IntakePort>, String> {
+    if needs_mutualism(part) {
+        return Ok(Some(exchange(part).supported_by(def(&part.process)?.reference())));
+    }
     let name = refs::process_name(&part.process);
     if guard && let Some(organ) = guard_organ(part, c) {
         return Ok(Some(organ.supported_by(def(&part.process)?.reference())));
@@ -158,6 +161,21 @@ fn guard_organ(part: &Part, c: &Catalog) -> Option<IntakePort> {
     (!s.is_none()).then(|| IntakePort::none().with_strength(s))
 }
 
+/// The port of an exchange organ (the mutualism rule): it gives what the
+/// part emits and takes what it admits, of sugar and soil nutrient.
+fn exchange(part: &Part) -> IntakePort {
+    let goods = |flows: &[String]| flows.iter().any(|f| matches!(f.as_str(), "sugar" | "exudate" | "soil:nutrient" | "host:matter"));
+    let port = IntakePort::none();
+    let port = if goods(&part.emits) { port.trading(Trade::Gives) } else { port };
+    if goods(&part.admits) { port.trading(Trade::Takes) } else { port }
+}
+
+/// Whether `part` runs only through the mutualism rule.
+#[must_use]
+pub fn needs_mutualism(part: &Part) -> bool {
+    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:mutualism"))
+}
+
 /// Whether `part` runs only through the guard rule.
 #[must_use]
 pub fn needs_guard(part: &Part) -> bool {
@@ -186,8 +204,20 @@ pub fn lowering(part: &Part) -> Result<Lowering, String> {
 /// As [`lowering_with`], and a part that runs only through the guard rule
 /// where the world sets none.
 pub fn lowering_for(part: &Part, cats: bool, guard: bool) -> Result<Lowering, String> {
+    lowering_in(part, cats, guard, false)
+}
+
+/// As [`lowering_for`], for a world with the mutualism rule if `mutual`.
+///
+/// # Errors
+/// As [`lowering_for`], and a part that runs only through the mutualism
+/// rule where the world sets none.
+pub fn lowering_in(part: &Part, cats: bool, guard: bool, mutual: bool) -> Result<Lowering, String> {
     if needs_guard(part) && !guard {
         return Err("it needs the guard rule".into());
+    }
+    if needs_mutualism(part) && !mutual {
+        return Err("it needs the mutualism rule".into());
     }
     lowered(part, cats, guard)
 }
