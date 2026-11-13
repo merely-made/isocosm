@@ -232,6 +232,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Bodies grow cell by cell at a cost and breeding is an act of the body, both after the eight operators.
 
+- **D33, rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12):** "on by default and make decomposers faster, not rot slower. rot's the baseline, decomposers basically do that process more efficiently to obtain the nutrients that would otherwise go to the soil. but decomposers are thus, like scavengers, great prey; some may evolve defensive strategies, but their way of life means they're gonna be full of nutrients from the dead, making it available to other forms of life. it's like rats and cats, no?" Rot is on in Mesocosm's worlds. A decomposer takes the dead faster than rot does, so it wins the matter that would otherwise reach the soil. Something eats decomposers, which carries the matter of the dead back to the living. Today no role eats a decomposer (`ecology/web.rs`: a predator eats grazers and omnivores, an omnivore eats producers and grazers), so that part is to build.
+
+  Links: area Mesocosm · draws on 1215 · plans lineage-rounds · summary Rot is on by default, decomposers outpace it, and decomposers are prey that return the dead's matter to the living.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -617,10 +621,6 @@ numbers and readings he has not ruled; within them, the grammar's drift
   `schema::Ledger` already means an account map. The accounting is
   general to the simulator and could sit beside `Simulation::matter`.
 
-- **Rot is off by default until ruled** (mine): it roughly doubles the
-  lines alive at tick 2000 and costs the decomposers about a quarter of
-  their numbers; at tick 600 it changes which seeds lose a line, not how
-  many.
 - **Rot takes one body per lineage per site a tick, with a floor of one
   unit** (mine): dead bodies cannot act, so a process picks one; the
   ratio hardly matters in this world. A rate per body would need the

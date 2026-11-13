@@ -6934,6 +6934,14 @@ summary = "Bodies grow cell by cell at a cost and breeding is an act of the body
 draws_on = ["1215"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D33"]
+title = "rot is the baseline and decomposers do it faster; decomposers are prey (2026-11-12)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Mesocosm"
+summary = "Rot is on by default, decomposers outpace it, and decomposers are prey that return the dead's matter to the living."
+draws_on = ["1215"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
