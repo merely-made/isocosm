@@ -53,7 +53,10 @@ rust-version = "1.97.1"
 piccolo = { git = "https://github.com/merely-made/didgeridoo", branch = "main" }
 # Promoted sources shared with immutable older Mere suppliers.
 # Canonical promoted families; keep registry and Git consumers type-identical.
-chartulary = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+fieldbook = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+hodograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+portolan = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
+quadstore = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 eidetic = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 hagiograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 luggage = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }

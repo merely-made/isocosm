@@ -35,7 +35,7 @@ skip = [
   { crate = "ghash@0.5.1", reason = "aes-gcm 0.10.3 requires it; aes-gcm 0.10 in noq-proto 1.4.0 under iroh 1.4.1; goes with aes-gcm 0.11" },
   { crate = "hash32@0.2.1", reason = "heapless 0.7.17 requires it; heapless 0.7 under postcard 1.1.3 (cosmograph) holds it; goes when postcard moves to heapless 0.8+" },
   { crate = "hashbrown@0.14.5", reason = "dashmap 6.2.1, gc-arena 0.5.3 (kyren/gc-arena), piccolo 0.3.3 (didgeridoo), rowan 0.17.0 require it; dashmap 6.2.1 (latest release; under ractor via p2mere-net, isonetry), gc-arena 0.5.3 and piccolo 0.3.3 (didgeridoo) and rowan 0.17 (merely-made/taplo) hold it; goes when they move to hashbrown 0.17" },
-  { crate = "hashbrown@0.15.5", reason = "petgraph 0.8.3 requires it; goes when petgraph 0.8.3 (latest, under eidetic's chartulary) moves to hashbrown 0.17" },
+  { crate = "hashbrown@0.15.5", reason = "petgraph 0.8.3 requires it; goes when petgraph 0.8.3 (latest, under eidetic's portolan) moves to hashbrown 0.17" },
   { crate = "hashbrown@0.16.1", reason = "gpu-allocator 0.28.0, regress 0.11.1 (genet) require it; gpu-allocator 0.28 and genet's regress hold it; goes when they move to hashbrown 0.17" },
   { crate = "hax-lib@0.3.7", reason = "core-models 0.0.7 requires it; core-models 0.0.7 (latest) under hpke-rs 0.8 under p2mere-encryption; goes when core-models moves to hax-lib 0.4" },
   { crate = "hax-lib-macros@0.3.7", reason = "hax-lib 0.3.7 requires it; hax-lib 0.3.7 under core-models 0.0.7; goes with hax-lib 0.4" },
