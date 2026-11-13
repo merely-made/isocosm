@@ -260,6 +260,10 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Ecology · draws on 718, 832 · plans lineage-rounds · summary The catalogs target five ecological models (resource competition, defence and counter-defence, predation with refuges, the detritus web, mutualism), then parasites, keystone predation and succession; a closed loop is not the goal.
 
+- **D40, young grow the line's recipe in new generated worlds (2026-11-13):** asked, after the repertoire build found that an A1 birth copies its parent's body (the generic birth in `stage/staged/births.rs`; 821 has the copy keep the parent's journey), so no revision taken at a boundary had ever reached a line's young: "Young grow the recipe (Recommended)". In every new generated world, young grow from the line's current recipe, so revisions and drift pass down; an existing save keeps copying. Offered against keeping it only under the repertoire rule and against keeping the copy everywhere.
+
+  Links: area Processes and rules · draws on 447, 518, 821 · plans lineage-rounds · summary In new generated worlds a newborn grows from its line's current recipe, so revisions pass down; existing saves keep copying the parent.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -690,6 +694,15 @@ numbers and readings he has not ruled; within them, the grammar's drift
   decomposer matter eaten in the four-line world with no carrier is
   not chased.
 
+- **Category choices** (the implementer's and mine): tough is read
+  from cells, not from a catalog flag; founded grazers have no grinding
+  and pay for stalk bites (2 cells, a placeholder); any dead non-plant
+  is carrion, decomposer flesh included; a lowered scavenger mouth
+  under the rule eats carrion only; four authored mouths (grinding
+  molars, carnassial jaw, carrion mouth, litter mouth) stay waiting
+  only because their rows also deposit dung; Mesocosm's flag uses the
+  default wood rot, so no slow wood.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -761,6 +774,26 @@ and the next conditions (D31) are answered. Left:
   the line is left". No dormant or propagule state exists in code.
 
 ## Progress
+
+- 2026-11-13: food categories (D37), as an optional rule, off by
+  default (`Founding.categories`, `ecology/categories.rs`; Mesocosm
+  `--categories`). A plant part with no fixing cell (stalk, trunk,
+  root) is tough; a mouth without grinding that bites it still eats and
+  takes a wound (harm, not a smaller yield, so no matter is left
+  without a stock). Dead matter is classed from what it came from:
+  litter (soft plant), wood (tough plant), carrion (any other body,
+  with spoilage's ages where both rules are set); a dead-matter mouth
+  with no class limit eats all, and wood can rot every k-th tick. No
+  class is stored. Dung is not built: A1 and stock meals keep the whole
+  bite, so there is no remainder to class; 14 parts wait on a new
+  `dung-stock` row. Port types moved to `process/port.rs`. Catalog:
+  150 of 272 parts run (was 116). Measured, seeds 0 to 19, with rot,
+  12 decomposer bites, spoilage and repertoire: tough tissue is about 3
+  percent of plant matter eaten; bites on it harm 0.08 times per site
+  per tick in the played world, which keeps 78 of 80 lines (79
+  without); in the five-lineage web 5 lines end carrying a part,
+  among them a grinding jaw. Suites: sim 1257, Mesocosm 310, Eponym
+  and root checks pass.
 
 - 2026-11-13: catalog parts reach lines by editing and drift (D37), as
   an optional rule, off by default (`Founding.repertoire`,

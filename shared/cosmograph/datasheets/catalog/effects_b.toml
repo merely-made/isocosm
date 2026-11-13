@@ -49,7 +49,7 @@ admits = ["dead:toxic"]
 emits = ["toxin"]
 cost_mg = 3
 analogue = "walnut litter, ergot sclerotia"
-needs = "dead-matter-classes"
+via = ["rule:categories"]
 gates = [{ affected = "eater", requires = "trait:detox-tolerance", inverted = true }]
 timing = { onset = 2, intensity = 2, duration = 50, decay = 1, stacking = "stack" }
 
@@ -66,7 +66,7 @@ admits = ["dead:litter"]
 emits = ["dead:litter"]
 cost_mg = 3
 analogue = "pine litter, a woody log"
-needs = "dead-matter-classes"
+via = ["rule:categories"]
 
 [[effect]]
 key = "effect:rot-to-soil"
@@ -266,7 +266,7 @@ kingdoms = ["kingdom:fauna"]
 emits = ["dead:dung"]
 cost_mg = 2
 analogue = "a herd's dung"
-needs = "dead-matter-classes"
+needs = "dung-stock"
 
 [[effect]]
 key = "effect:scatter-propagule"
@@ -322,7 +322,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco"]
 admits = ["live:tough", "dead:wood"]
 cost_mg = 4
 analogue = "molars on grass"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 
 [[effect]]
 key = "effect:pierce-armour"
@@ -365,7 +365,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco", "kingdom:micro"]
 admits = ["dead:wood"]
 cost_mg = 4
 analogue = "a termite colony, rot fungus"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 gates = [{ affected = "eater", requires = "dead:wood" }]
 
 [[effect]]
@@ -474,7 +474,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco"]
 admits = ["dead:dung"]
 cost_mg = 3
 analogue = "a dung beetle"
-needs = "dead-matter-classes"
+needs = "dung-stock"
 
 [[effect]]
 key = "effect:eat-litter"
@@ -489,7 +489,7 @@ kingdoms = ["kingdom:fauna", "kingdom:myco"]
 admits = ["dead:litter"]
 cost_mg = 3
 analogue = "a woodlouse in leaf litter"
-needs = "dead-matter-classes"
+via = ["rule:categories"]
 
 [[effect]]
 key = "effect:ambush-strike"

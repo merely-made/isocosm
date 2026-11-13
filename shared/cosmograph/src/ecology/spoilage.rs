@@ -32,7 +32,7 @@
 use super::Rates;
 use crate::{
     Founding, Result,
-    mosaic::ports::admission::Source,
+    mosaic::ports::admission::{Eaten, Source},
     process::{IntakePort, Tolerance},
     rules::{FeedingSources, Rules},
     schema::{Entity, Tick},
@@ -219,7 +219,7 @@ fn admitted(
             continue;
         }
         for (slot, living) in [true, false].into_iter().enumerate() {
-            let source = Source::of(account, living, rules, lineages)?;
+            let source = Source::of(account, Eaten::any(living), rules, lineages)?;
             if source.admitted_by(port).is_ok() {
                 sources.insert(source.lineage().to_owned());
                 seen[slot] = true;

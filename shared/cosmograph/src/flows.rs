@@ -255,6 +255,9 @@ pub struct Harm {
     /// The matter that harmed, the prey's lineage.
     pub lineage: Key,
     pub cells: u32,
+    /// Whether the bite was of tough plant matter the mouth cannot grind
+    /// (the categories rule); else of flesh it did not tolerate.
+    pub tough: bool,
     /// The place it was eaten at.
     pub place: Id,
 }

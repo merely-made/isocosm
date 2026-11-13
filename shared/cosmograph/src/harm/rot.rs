@@ -1,6 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use std::collections::BTreeSet;
+
 use crate::{
     Result,
     meaning::{credit, debit},
@@ -12,11 +14,26 @@ pub(crate) fn rot(
     e: &mut Entity,
     rules: &Rules,
     amount: u64,
+    tick: Tick,
 ) -> Result<Vec<(Option<PartId>, Ledger)>> {
     if e.alive {
         return Err("rot requires a dead body".into());
     }
-    let taken = crate::meaning::share(&crate::anatomy::books(e), rules, amount);
+    // Under the categories rule a dead plant's tough parts (wood) rot only
+    // on some ticks (`Categories::wood_rot_every`); on the rest they rest.
+    let resting: BTreeSet<PartId> = match rules.categories.filter(|c| c.rests(tick)) {
+        Some(_) => e.parts.keys().copied().filter(|id| crate::ecology::tough(e, *id)).collect(),
+        None => BTreeSet::new(),
+    };
+    let mut books = e.accounts.clone();
+    for (id, p) in e.parts.iter().filter(|(id, _)| !resting.contains(id)) {
+        let _ = id;
+        for (k, v) in &p.matter {
+            let slot = books.entry(k.clone()).or_default();
+            *slot = slot.saturating_add(*v);
+        }
+    }
+    let taken = crate::meaning::share(&books, rules, amount);
     let mut moved = vec![];
     for (key, mut left) in taken {
         let own = e.accounts.get(&key).copied().unwrap_or(0).min(left);
@@ -25,7 +42,7 @@ pub(crate) fn rot(
             moved.push((None, Ledger::from([(key.clone(), own)])));
             left -= own;
         }
-        for (id, p) in &mut e.parts {
+        for (id, p) in e.parts.iter_mut().filter(|(id, _)| !resting.contains(id)) {
             let n = p.matter.get(&key).copied().unwrap_or(0).min(left);
             if n > 0 {
                 debit(&mut std::sync::Arc::make_mut(p).matter, &key, n)?;

@@ -319,7 +319,7 @@ kingdoms = ["kingdom:flora", "kingdom:myco"]
 emits = ["dead:wood"]
 cost_mg = 4
 analogue = "wood, grass fibre"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 gates = [{ affected = "eater", requires = "live:tough", inverted = true }]
 
 [[effect]]

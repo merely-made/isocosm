@@ -165,7 +165,7 @@ admits = ["live:tough", "dead:wood"]
 cost_mg = 15
 reads = ["meal", "decay", "income"]
 analogue = "termite gut, a shelf fungus"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 unlocks = ["live:tough", "dead:wood"]
 
 [[trait]]
@@ -182,7 +182,7 @@ emits = ["soil:nutrient"]
 cost_mg = 17
 reads = ["decay", "meal", "return"]
 analogue = "white-rot fungus"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 unlocks = ["dead:wood"]
 
 [[trait]]

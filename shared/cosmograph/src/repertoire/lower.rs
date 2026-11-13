@@ -13,10 +13,14 @@
 //! box cannot show (joint, branch). Armour and toxin parts are left too:
 //! the world's defence law and gland process are not part of the A1 ecology,
 //! so a lowered kind would be inert there.
+//!
+//! Parts that run through the categories rule lower only in a world that sets
+//! it, with their dead classes and grinding on the port ([`port`]); the sim
+//! keeps no dung stock, so parts that need dung wait.
 
 use crate::{
     catalog::{Catalog, Part, Site, Status, refs},
-    process::{IntakePort, NisKind, ProcessDef, ProcessId, Registry, Tolerance},
+    process::{DeadClass, IntakePort, NisKind, ProcessDef, ProcessId, Registry, Tolerance},
     rules::Template,
     schema::Key,
 };
@@ -52,13 +56,24 @@ fn def(process: &str) -> Result<&'static ProcessDef, String> {
 }
 
 /// The port the part's flows give, none if it names no matter and no
-/// tolerance a port can carry.
-fn port(part: &Part, c: &Catalog) -> Result<Option<IntakePort>, String> {
+/// tolerance a port can carry. Under the categories rule (`cats`) the
+/// flows `live:tough` and `dead:wood` give a mouth for tough plant matter
+/// that grinds it, and the dead flows (litter, wood, the flesh ages) limit a
+/// dead-stock mouth to those classes (`ecology::categories`); without it
+/// every dead flow is a mouth for all dead stock, as before.
+fn port(part: &Part, c: &Catalog, cats: bool) -> Result<Option<IntakePort>, String> {
     let name = refs::process_name(&part.process);
     let mut matter = IntakePort::none();
     let mut eats = false;
     for flow in &part.admits {
         match flow.as_str() {
+            "live:tough" if cats => matter = matter.with_live(NisKind::Producer),
+            "dead:litter" if cats => matter = matter.with_deadstock().taking(DeadClass::Litter),
+            "dead:wood" if cats => matter = matter.with_deadstock().taking(DeadClass::Wood),
+            "dead:fresh" | "dead:aged" | "dead:toxic" if cats => {
+                matter = matter.with_deadstock().taking(DeadClass::Carrion);
+            },
+            "dead:dung" if cats => return Err("the sim keeps no dung stock".into()),
             "live:producer" => matter = matter.with_live(NisKind::Producer),
             "live:consumer" => matter = matter.with_live(NisKind::Consumer),
             "live:decomposer" => matter = matter.with_live(NisKind::Decomposer),
@@ -78,6 +93,7 @@ fn port(part: &Part, c: &Catalog) -> Result<Option<IntakePort>, String> {
             "dead:aged" => tolerant.tolerating(Tolerance::AgedFlesh),
             "dead:toxic" => tolerant.tolerating(Tolerance::ToxicFlesh),
             "live:decomposer" => tolerant.tolerating(Tolerance::DecomposerFlesh),
+            "live:tough" | "dead:wood" if cats => tolerant.tolerating(Tolerance::ToughPlant),
             _ => tolerant,
         };
     }
@@ -89,12 +105,30 @@ fn port(part: &Part, c: &Catalog) -> Result<Option<IntakePort>, String> {
     Ok(Some(base.with_tolerance_bits(bits).supported_by(def(&part.process)?.reference())))
 }
 
-/// Lowers `part`.
+/// Whether `part` runs only through the categories rule.
+#[must_use]
+pub fn needs_categories(part: &Part) -> bool {
+    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:categories"))
+}
+
+/// Lowers `part` for a world without the categories rule.
 ///
 /// # Errors
-/// Names why it cannot: not runnable, a shape no box can show or the process
-/// cannot be held on, or nothing a port can carry.
+/// As [`lowering_with`].
 pub fn lowering(part: &Part) -> Result<Lowering, String> {
+    lowering_with(part, false)
+}
+
+/// Lowers `part`; with `cats`, as a world with the categories rule has it.
+///
+/// # Errors
+/// Names why it cannot: not runnable, a part that runs only through the
+/// categories rule where the world sets none, a shape no box can show or the
+/// process cannot be held on, or nothing a port can carry.
+pub fn lowering_with(part: &Part, cats: bool) -> Result<Lowering, String> {
+    if needs_categories(part) && !cats {
+        return Err("it needs the categories rule".into());
+    }
     if !matches!(part.status, Status::Expressible { .. }) {
         return Err(format!("it is not runnable ({})", part.status.word()));
     }
@@ -103,7 +137,7 @@ pub fn lowering(part: &Part) -> Result<Lowering, String> {
     if !d.admits(classify(half_extent)) || !refs::fits(&part.process, &part.shape) {
         return Err(format!("{} cannot hold {}", part.shape, part.process));
     }
-    let Some(port) = port(part, crate::catalog::catalog())? else {
+    let Some(port) = port(part, crate::catalog::catalog(), cats)? else {
         return Err("it names no matter or tolerance an intake port can carry".into());
     };
     let function = format!("function:{}", d.id.name);

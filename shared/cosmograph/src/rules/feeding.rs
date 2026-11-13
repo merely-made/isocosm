@@ -72,7 +72,7 @@ impl PortFeeding {
         &self,
         intake: &Part,
         holdings: &Ledger,
-        alive: bool,
+        alive: impl Into<ports::admission::Eaten>,
         rules: &Rules,
         lineages: &std::collections::BTreeMap<Key, Lineage>,
     ) -> Result<Ledger> {
@@ -248,7 +248,7 @@ impl Process {
             } => {
                 let offered = crate::schedule::edible(holdings.as_ref(), of);
                 feeding
-                    .offered(intake, &offered, prey.alive, rules, lineages)
+                    .offered(intake, &offered, ports::admission::Eaten::body(prey), rules, lineages)
                     .is_ok_and(|held| !held.is_empty())
             },
             _ => false,

@@ -4,7 +4,7 @@
 use super::*;
 
 impl Doing<'_> {
-    fn admitted(&self, holdings: &Ledger, alive: bool) -> Result<Ledger> {
+    fn admitted(&self, holdings: &Ledger, alive: crate::mosaic::ports::admission::Eaten) -> Result<Ledger> {
         let Some(feeding) = &self.port_feeding else { return Ok(holdings.clone()) };
         let intake = feeding.intake(&self.member, self.intake.ok_or("no intake is bound")?)?;
         feeding.offered(intake, holdings, alive, self.rules,
@@ -20,13 +20,14 @@ impl Doing<'_> {
             Some(part) => &part.matter,
             None => &prey.accounts,
         };
-        let offered = match self.admitted(&edible(holdings, of), prey.alive) {
+        let eaten = crate::mosaic::ports::admission::Eaten::part(prey, self.bitten, self.rules);
+        let offered = match self.admitted(&edible(holdings, of), eaten) {
             Ok(offered) => offered,
             Err(_) => return Ok(false),
         };
         if self.port_feeding.is_some() && offered.is_empty() { return Ok(false); }
         let whole_admitted = if whole && self.port_feeding.is_some() {
-            let all = match self.admitted(holdings, prey.alive) {
+            let all = match self.admitted(holdings, eaten) {
                 Ok(all) => all,
                 Err(_) => return Ok(false),
             };

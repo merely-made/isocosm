@@ -113,7 +113,7 @@ emits = ["dead:wood"]
 cost_mg = 24
 reads = ["ceiling", "decay", "meal", "upkeep"]
 analogue = "heartwood, bamboo"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 strengths = [{ kind = "crush", role = "defend", amount = 5 }]
 
 [[trait]]
@@ -189,7 +189,7 @@ emits = ["dead:litter"]
 cost_mg = 12
 reads = ["ceiling", "decay", "meal", "upkeep"]
 analogue = "grass blade, bracket-fungus flesh"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 strengths = [{ kind = "crush", role = "defend", amount = 3 }]
 
 [[trait]]
@@ -283,7 +283,7 @@ emits = ["dead:dung"]
 cost_mg = 20
 reads = ["meal", "upkeep", "decay", "income"]
 analogue = "molar teeth, a bird's gizzard"
-needs = "tough-matter-mouth"
+via = ["rule:categories"]
 unlocks = ["live:tough", "dead:litter"]
 strengths = [{ kind = "crush", role = "attack", amount = 5 }]
 

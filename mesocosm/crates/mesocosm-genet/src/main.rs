@@ -174,6 +174,7 @@ fn main() {
             "--no-rot" => config.world_rules.rot = false,
             "--spoilage" => config.world_rules.spoilage = true,
             "--repertoire" => config.world_rules.repertoire = true,
+            "--categories" => config.world_rules.categories = true,
             "--turn" => config.world_rules.turn = Some(args.next().and_then(|v| v.parse::<i32>().ok())
                 .filter(|bound| *bound >= 0)
                 .unwrap_or_else(|| fail("--turn wants a bound in degrees, from 0 up"))),
@@ -436,6 +437,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
                   instead of being refused
   --repertoire    world rule (off unless asked): runnable catalog parts that act at the meal (mouths, tolerance organs)
                   become kinds the world declares, which lines reach by editing and drift; no line is founded with one
+  --categories    world rule (off unless asked): tough plant matter (stalk, trunk, root) harms a mouth with no grinding
+                  instead of being refused, and dead matter is classed litter, wood or carrion, each taken by the
+                  mouths that take it; wood rots as fast as the rest
   --turn N        let a holder of the world turn its temperature up to N degrees (needs --climate)
                   (the round flags apply to an ordinary new generated world, like --start)
   --mode MODE     survival or creative, using the native view

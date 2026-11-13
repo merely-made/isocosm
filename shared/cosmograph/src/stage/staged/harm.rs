@@ -52,7 +52,7 @@ impl Staged<'_> {
         let sim = self.sim;
         if self.body(who)?.resident_site().is_none() { return Err("a corpse outside any site".into()); }
         let before = crate::anatomy::books(self.body(who)?);
-        let moved = harm::rot::rot(self.body(who)?, &sim.genesis.rules, amount)?;
+        let moved = harm::rot::rot(self.body(who)?, &sim.genesis.rules, amount, sim.state.tick)?;
         self.guard_owned_body_change(who,&before)?;
         harm::rot::deposit(&mut self.site()?.accounts, &moved, into)?;
         if sim.flowing() {

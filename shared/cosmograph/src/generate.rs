@@ -79,6 +79,9 @@ pub struct Founding {
     /// Catalog parts lowered to kinds lines reach by edit and drift (D37), `repertoire`. Absent, it hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub repertoire: Option<crate::repertoire::Repertoire>,
+    /// Tough plant matter and dead matter in classes (`ecology::categories`). Absent, it hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub categories: Option<crate::ecology::Categories>,
 }
 
 impl Default for Founding {
@@ -108,6 +111,7 @@ impl Default for Founding {
             rot: None,
             spoilage: None,
             repertoire: None,
+            categories: None,
         }
     }
 }
@@ -311,6 +315,7 @@ impl Founding {
             dormancy: None,
             spoilage: None,
             repertoire: None,
+            categories: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

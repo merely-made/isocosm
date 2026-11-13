@@ -6998,6 +6998,14 @@ summary = "The catalogs target five ecological models (resource competition, def
 draws_on = ["718", "832"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D40"]
+title = "young grow the line's recipe in new generated worlds (2026-11-13)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Processes and rules"
+summary = "In new generated worlds a newborn grows from its line's current recipe, so revisions pass down; existing saves keep copying the parent."
+draws_on = ["447", "518", "821"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"

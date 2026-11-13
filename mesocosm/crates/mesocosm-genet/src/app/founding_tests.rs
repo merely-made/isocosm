@@ -199,6 +199,15 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(founded.genesis.founding.as_ref().unwrap().repertoire.is_some());
     assert!(founded.genesis.rules.repertoire.as_ref().is_some_and(|r| !r.kinds.is_empty()));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("repertoire"));
+    // `--categories` is off unless asked (D37): the default world has none, and asking adds it.
+    assert!(!WorldRules::generated().categories && !WorldRules::all().categories);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().categories.is_none());
+    let classed = found_default(WorldRules { categories: true, ..HostConfig::default().world_rules }, 9);
+    let founded = classed.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().categories.is_some());
+    assert!(founded.genesis.rules.categories.is_some());
+    assert_ne!(digest_of(&classed), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("categories"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

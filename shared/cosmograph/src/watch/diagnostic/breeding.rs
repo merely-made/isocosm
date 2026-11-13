@@ -229,7 +229,7 @@ impl Simulation {
                                             .offered(
                                                 intake,
                                                 &crate::schedule::edible(&books, of),
-                                                body.alive,
+                                                crate::mosaic::ports::admission::Eaten::body(body),
                                                 rules,
                                                 &self.state.lineages,
                                             )

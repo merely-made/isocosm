@@ -46,7 +46,7 @@ impl Staged<'_> {
         into: &Key,
         of: &[Key],
         whole: bool,
-    ) -> Result<Option<(crate::ecology::Flesh, Key)>> {
+    ) -> Result<Option<bite::Harmed>> {
         self.sim.diagnostic_stage("meal.request");
         if self.body(from)?.journey.is_some() {
             return Err("travelling prey has no resident site".into());
@@ -115,7 +115,7 @@ impl Staged<'_> {
                 Some(part) => &prey.parts.get(&part).ok_or("bitten part missing")?.matter,
                 None => &prey.accounts,
             };
-            (held.clone(), prey.alive)
+            (held.clone(), crate::mosaic::ports::admission::Eaten::part(prey, bitten, rules))
         };
         if sim.diagnostic_active() {
             sim.diagnostic_meal(crate::watch::diagnostic::MealObservation {

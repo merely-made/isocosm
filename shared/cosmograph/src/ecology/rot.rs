@@ -28,6 +28,9 @@
 //! decomposer yet: a mouth eats what its intake port admits, and no port
 //! admits their matter.
 //!
+//! With the categories rule (`super::categories`), a dead plant's tough parts
+//! rot only once in `wood_rot_every` ticks; the default is this single rate.
+//!
 //! Unset, no process is added and a world founds and hashes as before.
 
 use super::{Rates, Role};

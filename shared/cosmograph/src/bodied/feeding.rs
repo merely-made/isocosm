@@ -6,7 +6,7 @@
 
 use crate::{
     Result,
-    mosaic::ports::admission::Source,
+    mosaic::ports::admission::{Eaten, Source},
     process::{IntakePort, NisKind, Process as Native, Registry},
     rules::*,
     schema::{Key, Lineage},
@@ -92,7 +92,7 @@ pub(super) fn configure(
             if alive.is_some_and(|wanted| wanted != living) {
                 continue;
             }
-            let source = Source::of(account, living, rules, lineages)?;
+            let source = Source::of(account, Eaten::any(living), rules, lineages)?;
             if source.admitted_by(intake.port).is_ok() {
                 sources.insert(source.lineage().to_owned());
             }

@@ -7,7 +7,13 @@
 //! a mouth refuses what it does not admit.
 
 use super::*;
-use crate::{ecology::Flesh, mosaic::ports::admission::Source};
+use crate::{
+    ecology::Flesh,
+    mosaic::ports::admission::{Cause, Eaten, Source},
+};
+
+/// What a harming bite was of: the age of its flesh, its lineage, and why.
+pub(super) type Harmed = (Flesh, Key, Cause);
 
 /// The draw slot of the wound a bite deals its eater, apart from the slots
 /// an authored `Wound` names.
@@ -23,25 +29,27 @@ impl Staged<'_> {
         of: &[Key],
         whole: bool,
     ) -> Result<()> {
-        if let Some((flesh, lineage)) = self.eat(from, amount, into, of, whole)? {
-            self.hurt_eater(from, flesh, lineage)?;
+        if let Some(harmed) = self.eat(from, amount, into, of, whole)? {
+            self.hurt_eater(from, harmed)?;
         }
         Ok(())
     }
 
-    /// The class and lineage of the first of `keys` (matter the meal took)
-    /// that harms the eater's mouth; none where the rule is unset, the meal
-    /// has no declared mouth, or the mouth tolerates all of it.
+    /// The class, lineage and cause of the first of `keys` (matter the meal
+    /// took) that harms the eater's mouth; none where no rule is set, the
+    /// meal has no declared mouth, or the mouth tolerates all of it.
     pub(super) fn untolerated<'k>(
         &mut self,
         from: Binding,
         keys: impl IntoIterator<Item = &'k Key>,
-    ) -> Result<Option<(Flesh, Key)>> {
+    ) -> Result<Option<Harmed>> {
         let sim = self.sim;
         let rules = &sim.genesis.rules;
-        let (Some(rule), Some(feeding), Some(id)) =
-            (rules.spoilage, self.stage.port_feeding.as_ref(), self.stage.intake)
-        else {
+        let (true, Some(feeding), Some(id)) = (
+            rules.spoilage.is_some() || rules.categories.is_some(),
+            self.stage.port_feeding.as_ref(),
+            self.stage.intake,
+        ) else {
             return Ok(None);
         };
         let intake = feeding.intake(&self.stage.bodies[&self.stage.actor], id)?;
@@ -49,27 +57,34 @@ impl Staged<'_> {
         // What the body's other organs tolerate counts too (a repertoire's
         // tolerance organ, D37); in a founded body only the mouth has any.
         let port = port.with_tolerance_bits(crate::mosaic::ports::ports(&self.stage.bodies[&self.stage.actor]).tolerance_bits());
+        let bitten = self.stage.bitten;
         let prey = self.body(from)?;
-        let flesh = rule.of(prey, sim.state.tick);
+        let flesh = rules.spoilage.map_or(Flesh::Fresh, |rule| rule.of(prey, sim.state.tick));
+        let eaten = Eaten::part(prey, bitten, rules);
         for key in keys {
-            let source = Source::of(key, prey.alive, rules, &sim.state.lineages)?;
-            if source.harms(port, flesh) {
-                return Ok(Some((flesh, source.lineage().to_owned())));
+            let source = Source::of(key, eaten, rules, &sim.state.lineages)?;
+            if let Some(cause) = source.harms(port, flesh) {
+                return Ok(Some((flesh, source.lineage().to_owned(), cause)));
             }
         }
         Ok(None)
     }
 
-    fn hurt_eater(&mut self, from: Binding, flesh: Flesh, lineage: Key) -> Result<()> {
+    fn hurt_eater(&mut self, from: Binding, (flesh, lineage, cause): Harmed) -> Result<()> {
         let sim = self.sim;
+        let rules = &sim.genesis.rules;
+        let cells = match cause {
+            Cause::Flesh => rules.spoilage.map(|rule| rule.harm),
+            Cause::Tough => rules.categories.map(|rule| rule.harm),
+        };
         // A planning pass only counts what a meal would take.
-        let Some(rule) = sim.genesis.rules.spoilage.filter(|_| self.stage.demands.is_none()) else {
+        let Some(cells) = cells.filter(|_| self.stage.demands.is_none()) else {
             return Ok(());
         };
         if crate::harm::cells(self.body(Binding::Actor)?) == 0 {
             return Ok(());
         }
-        self.wound(Binding::Actor, u64::from(rule.harm), WOUND_SLOT)?;
+        self.wound(Binding::Actor, u64::from(cells), WOUND_SLOT)?;
         let prey = sim.bound(self.stage.actor, self.stage.target, from)?;
         self.stage.harms.push(crate::flows::Harm {
             tick: sim.state.tick,
@@ -78,7 +93,8 @@ impl Staged<'_> {
             prey,
             flesh,
             lineage,
-            cells: rule.harm,
+            cells,
+            tough: cause == Cause::Tough,
             place: self.stage.place,
         });
         Ok(())

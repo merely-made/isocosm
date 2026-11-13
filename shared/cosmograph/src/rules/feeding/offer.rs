@@ -49,7 +49,7 @@ impl Process {
         };
         let offered = |part: Option<PartId>, ledger: &Ledger| -> Result<Option<FoodOffering>> {
             let raw = crate::schedule::edible(ledger, of);
-            let mut food = feeding.offered(intake, &raw, prey.alive, rules, lineages)?;
+            let mut food = feeding.offered(intake, &raw, ports::admission::Eaten::part(prey, part, rules), rules, lineages)?;
             food.retain(|key, n| {
                 *n > 0
                     && matches!(

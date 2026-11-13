@@ -15,14 +15,9 @@ summary = "A body that is touched or struck (spine, sting, nettle hair) wounds o
 cites = ["lineage-rounds D39 model 2"]
 
 [[mechanic]]
-key = "dead-matter-classes"
-summary = "Carrion, dung and litter are distinct dead stocks, each admitted by its own mouths and each with its own decay rate."
-cites = ["lineage-rounds D37", "lineage-rounds D39 model 4"]
-
-[[mechanic]]
-key = "tough-matter-mouth"
-summary = "Tough plant matter (wood, fibre, grit-laden leaf) is a food category only a mouth built for it can take; others get little or are worn."
-cites = ["lineage-rounds D37"]
+key = "dung-stock"
+summary = "A meal leaves an unkept remainder as dung, a dead stock of its own that dung mouths take; the stock and A1 ecologies keep a meal whole and deposit none."
+cites = ["lineage-rounds D37", "lineage-rounds D39 model 4", "ecology/categories.rs"]
 
 [[mechanic]]
 key = "bite-mode"

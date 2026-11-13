@@ -6,8 +6,8 @@
 
 use super::active;
 use crate::{
-    ecology::{Flesh, Spoilage},
-    process::{IntakePort, NisKind, Tolerance},
+    ecology::{Categories, Flesh, Spoilage},
+    process::{DeadClass, IntakePort, NisKind, Tolerance},
     rules::{AccountKind, Rules},
     schema::*,
 };
@@ -21,6 +21,55 @@ pub enum Sources<'a> {
     Only(&'a BTreeSet<Key>),
 }
 
+/// What is eaten beyond its provenance: living or dead, and, under the
+/// categories rule, whether it is tough plant tissue. A bare `bool` is the
+/// body's life with soft tissue, which is every meal before the rule.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Eaten {
+    pub alive: bool,
+    /// Whether the part bitten is tough; none where the whole body is meant
+    /// and either may be (a feed's reach is judged by either).
+    pub tough: Option<bool>,
+}
+
+impl From<bool> for Eaten {
+    fn from(alive: bool) -> Self {
+        Self { alive, tough: Some(false) }
+    }
+}
+
+impl Eaten {
+    /// What a bite of `part` of `prey` is: soft where the world sets no
+    /// categories rule or the bite is of the body's ledger.
+    #[must_use]
+    pub fn part(prey: &Entity, part: Option<PartId>, rules: &Rules) -> Self {
+        let tough = rules.categories.is_some() && part.is_some_and(|id| crate::ecology::tough(prey, id));
+        Self { alive: prey.alive, tough: Some(tough) }
+    }
+
+    /// Living or dead matter of any part, for judging what a mouth could
+    /// ever reach (founding a feed's sources).
+    #[must_use]
+    pub fn any(alive: bool) -> Self {
+        Self { alive, tough: None }
+    }
+
+    /// The whole of `prey`, any part of it.
+    #[must_use]
+    pub fn body(prey: &Entity) -> Self {
+        Self { alive: prey.alive, tough: None }
+    }
+}
+
+/// Why a bite harms its eater.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Cause {
+    /// Flesh the mouth does not tolerate (spoilage).
+    Flesh,
+    /// Tough plant matter the mouth cannot grind (categories).
+    Tough,
+}
+
 /// Provenance resolved through the world's native account and lineage tables.
 #[derive(Clone, Copy, Debug)]
 pub struct Source<'a> {
@@ -30,16 +79,21 @@ pub struct Source<'a> {
     /// The world's spoilage rule, which widens what a mouth admits and
     /// lets it harm instead of refuse.
     spoilage: Option<Spoilage>,
+    /// The world's categories rule, which classes dead matter and makes
+    /// tough plant matter harm a mouth that cannot grind it.
+    categories: Option<Categories>,
+    tough: Option<bool>,
 }
 
 impl<'a> Source<'a> {
     /// Death is a state of the body offering this account, not a new nis kind.
     pub fn of(
         account: &str,
-        alive: bool,
+        eaten: impl Into<Eaten>,
         rules: &'a Rules,
         lineages: &'a BTreeMap<Key, Lineage>,
     ) -> crate::Result<Self> {
+        let Eaten { alive, tough } = eaten.into();
         let Some(AccountKind::Matter { lineage, .. }) = rules.accounts.get(account) else {
             return Err(format!("intake source {account} is not declared matter"));
         };
@@ -51,7 +105,7 @@ impl<'a> Source<'a> {
             "kingdom:myco" => Some(NisKind::Decomposer),
             _ => None,
         };
-        Ok(Self { lineage, kind, alive, spoilage: rules.spoilage })
+        Ok(Self { lineage, kind, alive, spoilage: rules.spoilage, categories: rules.categories, tough })
     }
 
     pub fn lineage(self) -> &'a str {
@@ -86,22 +140,50 @@ impl<'a> Source<'a> {
             if !carrion {
                 return Err(Refusal::Deadstock);
             }
+        } else if self.categories.is_some() && !self.classes().any(|class| port.takes(class)) {
+            return Err(Refusal::Deadstock);
         }
         Ok(())
+    }
+
+    /// The classes this dead matter may be, by its kingdom and the part
+    /// bitten: a plant's soft part is litter and its tough wood, either where
+    /// the part is not known, and the flesh of anything else carrion.
+    fn classes(self) -> impl Iterator<Item = DeadClass> {
+        let plant = self.kind == Some(NisKind::Producer);
+        DeadClass::ALL.into_iter().filter(move |class| match (plant, class) {
+            (false, class) => *class == DeadClass::Carrion,
+            (true, DeadClass::Litter) => self.tough != Some(true),
+            (true, DeadClass::Wood) => self.tough != Some(false),
+            (true, DeadClass::Carrion) => false,
+        })
     }
 
     /// Whether eating this matter at `class` harms a mouth with `port`: it
     /// is admitted, and it is decomposer flesh the mouth neither admits as
     /// living food nor tolerates, or it is dead animal or decomposer flesh
-    /// older than the mouth tolerates. Always false where no rule is set.
-    pub(crate) fn harms(self, port: IntakePort, class: Flesh) -> bool {
-        let Some(rule) = self.spoilage else { return false };
+    /// older than the mouth tolerates, or it is tough plant matter the mouth
+    /// cannot grind. None where no rule is set.
+    pub(crate) fn harms(self, port: IntakePort, class: Flesh) -> Option<Cause> {
         // A mouth gained after founding (by an edit, drift or arrival) has
         // the tolerance its kind founds with, read here rather than stored.
-        let port = rule.founded(port);
+        let port = self.spoilage.map_or(port, |rule| rule.founded(port));
+        let port = self.categories.map_or(port, |rule| rule.founded(port));
         if self.admitted_by(port).is_err() {
-            return false;
+            return None;
         }
+        if self.categories.is_some()
+            && self.kind == Some(NisKind::Producer)
+            && self.tough == Some(true)
+            && !port.tolerates(Tolerance::ToughPlant)
+        {
+            return Some(Cause::Tough);
+        }
+        self.flesh_harms(port, class).then_some(Cause::Flesh)
+    }
+
+    fn flesh_harms(self, port: IntakePort, class: Flesh) -> bool {
+        let Some(rule) = self.spoilage else { return false };
         let decomposer = self.kind == Some(NisKind::Decomposer);
         if decomposer
             && rule.decomposer_flesh_toxic
@@ -156,11 +238,12 @@ pub fn offered(
     intake: &Part,
     sources: Sources<'_>,
     holdings: &Ledger,
-    alive: bool,
+    alive: impl Into<Eaten>,
     rules: &Rules,
     lineages: &BTreeMap<Key, Lineage>,
 ) -> crate::Result<Ledger> {
     ready(intake).map_err(|why| format!("intake port refused: {why:?}"))?;
+    let eaten: Eaten = alive.into();
     let mut admitted = Ledger::new();
     for (account, &mg) in holdings.iter().filter(|(_, mg)| **mg > 0) {
         match rules.accounts.get(account) {
@@ -168,7 +251,7 @@ pub fn offered(
             Some(AccountKind::Matter { .. }) => {},
             Some(_) => continue,
         }
-        let source = Source::of(account, alive, rules, lineages)?;
+        let source = Source::of(account, eaten, rules, lineages)?;
         if check(intake, sources, source).is_ok() {
             admitted.insert(account.clone(), mg);
         }
@@ -182,7 +265,70 @@ mod tests {
     use crate::process::{IntakePort, Process, Registry};
 
     fn source(line: &str, kind: NisKind, alive: bool) -> Source<'_> {
-        Source { lineage: line, kind: Some(kind), alive, spoilage: None }
+        Source { lineage: line, kind: Some(kind), alive, spoilage: None, categories: None, tough: Some(false) }
+    }
+
+    fn kind_of(kind: Option<NisKind>, alive: bool, tough: Option<bool>) -> Source<'static> {
+        Source {
+            lineage: "lineage:a",
+            kind,
+            alive,
+            spoilage: None,
+            categories: Some(Categories::default()),
+            tough,
+        }
+    }
+
+    fn classes(source: Source<'_>) -> Vec<DeadClass> {
+        source.classes().collect()
+    }
+
+    #[test]
+    fn dead_matter_reads_its_class_from_what_it_came_from() {
+        let plant = |tough| kind_of(Some(NisKind::Producer), false, tough);
+        assert_eq!(classes(plant(Some(false))), [DeadClass::Litter]);
+        assert_eq!(classes(plant(Some(true))), [DeadClass::Wood]);
+        assert_eq!(classes(plant(None)), [DeadClass::Litter, DeadClass::Wood], "either, where the part is not known");
+        for kind in [Some(NisKind::Consumer), Some(NisKind::Decomposer), None] {
+            for tough in [Some(false), Some(true), None] {
+                assert_eq!(classes(kind_of(kind, false, tough)), [DeadClass::Carrion], "{kind:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn a_class_limited_mouth_takes_only_its_classes_and_a_root_takes_all() {
+        let root = IntakePort::deadstock();
+        let litter = root.taking(DeadClass::Litter);
+        let wood = root.taking(DeadClass::Wood);
+        let carrion = root.taking(DeadClass::Carrion);
+        let plant = |tough| kind_of(Some(NisKind::Producer), false, tough);
+        let animal = kind_of(Some(NisKind::Consumer), false, Some(false));
+        for (port, soft, hard, flesh) in [(root, true, true, true), (litter, true, false, false), (wood, false, true, false), (carrion, false, false, true)] {
+            assert_eq!(plant(Some(false)).admitted_by(port).is_ok(), soft);
+            assert_eq!(plant(Some(true)).admitted_by(port).is_ok(), hard);
+            assert_eq!(animal.admitted_by(port).is_ok(), flesh);
+            // A feed that reaches the whole body can use a mouth for either.
+            assert_eq!(plant(None).admitted_by(port).is_ok(), soft || hard);
+        }
+        // Without the rule a limit is not read: the mouth takes all dead stock as before.
+        let unruled = Source { categories: None, ..plant(Some(true)) };
+        assert!(unruled.admitted_by(litter).is_ok());
+    }
+
+    #[test]
+    fn tough_plant_matter_harms_a_mouth_without_grinding_and_nothing_else_does() {
+        let bulk = IntakePort::live(NisKind::Producer);
+        let tough = kind_of(Some(NisKind::Producer), true, Some(true));
+        assert_eq!(tough.harms(bulk, Flesh::Fresh), Some(Cause::Tough));
+        assert_eq!(tough.harms(bulk.tolerating(Tolerance::ToughPlant), Flesh::Fresh), None);
+        assert_eq!(kind_of(Some(NisKind::Producer), true, Some(false)).harms(bulk, Flesh::Fresh), None, "soft tissue is not harmful");
+        assert_eq!(kind_of(Some(NisKind::Producer), true, None).harms(bulk, Flesh::Fresh), None, "an unknown part is not judged");
+        // Dead wood to the root, which grinds by founding.
+        let wood = kind_of(Some(NisKind::Producer), false, Some(true));
+        assert_eq!(wood.harms(IntakePort::deadstock(), Flesh::Fresh), None);
+        // The rule unset, nothing harms.
+        assert_eq!(Source { categories: None, ..tough }.harms(bulk, Flesh::Fresh), None);
     }
 
     #[test]

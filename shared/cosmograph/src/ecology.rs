@@ -8,6 +8,7 @@ use std::collections::BTreeMap;
 
 mod admission;
 mod budget;
+mod categories;
 mod dormant;
 mod joint;
 mod limits;
@@ -32,6 +33,10 @@ mod rot_tests;
 mod spoilage_tests;
 #[cfg(test)]
 mod spoilage_meal_tests;
+#[cfg(test)]
+mod categories_tests;
+#[cfg(test)]
+mod categories_meal_tests;
 pub(crate) use web::Role;
 pub use web::Web;
 pub use independence::*;
@@ -39,6 +44,7 @@ pub use rates::Rates;
 pub use mass_law::MassLaw;
 pub use limits::Limits;
 pub use rot::{DECOMPOSER_BITES, Rot};
+pub use categories::{Categories, tough};
 pub use spoilage::{Flesh, Spoilage};
 pub use budget::Budget;
 pub use joint::*;
@@ -377,7 +383,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 /// the flat rate sets' dormancy, which copies the scaled active rates, then
 /// the consumers' limits, which gate the feed and birth processes as scaled,
 /// then rot, whose processes gate nothing and copy nothing, then spoilage,
-/// which reads the mouths the rest founded, then the repertoire, which
+/// which reads the mouths the rest founded, then the categories, which read
+/// the parts a body has, then the repertoire, which
 /// lowers catalog parts into kinds beside them.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
@@ -387,6 +394,7 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     limits::apply(founding, g)?;
     rot::apply(founding, g)?;
     spoilage::apply(founding, g)?;
+    categories::apply(founding, g)?;
     crate::repertoire::apply(founding, g)?;
     Ok(())
 }

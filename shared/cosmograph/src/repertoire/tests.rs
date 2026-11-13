@@ -73,7 +73,7 @@ fn it_round_trips_and_bad_values_are_named() {
     assert!(bad("part:no-such-part").contains("catalog lacks"));
     let waiting = catalog().parts().iter().find(|p| !matches!(p.status, crate::catalog::Status::Expressible { .. })).unwrap();
     assert!(bad(&waiting.key).contains("not runnable"));
-    let leaf = catalog().parts().iter().find(|p| p.process == "mesocosm:fix" && matches!(p.status, crate::catalog::Status::Expressible { .. })).unwrap();
+    let leaf = catalog().parts().iter().find(|p| p.process == "mesocosm:fix" && matches!(p.status, crate::catalog::Status::Expressible { .. }) && !needs_categories(p)).unwrap();
     assert!(bad(&leaf.key).contains("intake port can carry"));
     let world_time = Founding { ecology_rates: Rates::WorldTime, ..founding(all(), false) };
     assert!(world_time.generate().unwrap_err().contains("world time"));
@@ -325,3 +325,5 @@ fn the_young_of_a_line_that_took_a_part_carry_it_and_both_executions_agree() {
     assert!(young.iter().all(|g| g.entity.parts.values().any(|p| p.port == Some(port))), "each carries the part's port");
     assert_eq!(revised(Execution::Individuals, 60).sim.state_hash(), revised(Execution::Grouped, 60).sim.state_hash());
 }
+
+mod categories;

@@ -376,6 +376,10 @@ pub struct Rules {
     /// by edit and drift (D37); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub repertoire: Option<crate::repertoire::Lowered>,
+    /// Whether tough plant matter harms an untolerating mouth and dead matter
+    /// is classed (`ecology::categories`); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub categories: Option<crate::ecology::Categories>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -437,6 +441,7 @@ impl Rules {
         if let Some(hosting) = &self.hosting { hosting.validate(self)?; }
         if let Some(dormancy) = &self.dormancy { dormancy.validate(self)?; }
         if let Some(spoilage) = &self.spoilage { spoilage.validate()?; }
+        if let Some(categories) = &self.categories { categories.validate()?; }
         if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }
