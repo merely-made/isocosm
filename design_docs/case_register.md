@@ -163,7 +163,7 @@ three design docs that cite it. The record holds the words.
 | 416 | Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md) |
 | 427 | Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations. | none |
 | 428 | An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430) | none |
-| 429 | Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 429 | Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [effects prior art](../mesocosm/design_docs/2026-11-13_effects_prior_art_brief.md) |
 | 430 | Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 431 | Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 433 | A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset. | none |
