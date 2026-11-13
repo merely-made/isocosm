@@ -363,9 +363,9 @@ impl Doing<'_> {
                 let resolved = self.compute(|r, d, p| cells.resolve(r, d, p))?;
                 self.wound(*who, resolved.resolved()?, *slot)
             },
-            Effect::Rot { who, amount } => {
+            Effect::Rot { who, amount, into } => {
                 let resolved = self.compute(|r, d, p| amount.resolve(r, d, p))?;
-                self.rot(*who, resolved.resolved()?)
+                self.rot(*who, resolved.resolved()?, into.as_ref())
             },
             Effect::Keep { name, value } => {
                 let Ok(v) = self.compute(|r, d, p| value.eval_in(r, d, p)) else {

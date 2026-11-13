@@ -40,10 +40,11 @@ pub(crate) fn rot(
     Ok(moved)
 }
 
-pub(crate) fn deposit(accounts: &mut Ledger, moved: &[(Option<PartId>, Ledger)]) -> Result<()> {
+/// Credits the site what rotted, each account as itself or all as `into`.
+pub(crate) fn deposit(accounts: &mut Ledger, moved: &[(Option<PartId>, Ledger)], into: Option<&Key>) -> Result<()> {
     for (_, ledger) in moved {
         for (key, n) in ledger {
-            credit(accounts, key, *n)?;
+            credit(accounts, into.unwrap_or(key), *n)?;
         }
     }
     Ok(())
@@ -53,6 +54,7 @@ pub(crate) fn legs(
     entity: Id,
     site: Id,
     moved: &[(Option<PartId>, Ledger)],
+    into: Option<&Key>,
 ) -> Vec<crate::flows::Leg> {
     use crate::flows::{Holder, Leg};
     moved
@@ -61,7 +63,7 @@ pub(crate) fn legs(
             let from = part.map_or(Holder::Entity(entity), |p| Holder::Part(entity, p));
             l.iter().map(move |(key, n)| Leg {
                 from: (from, key.clone()),
-                to: (Holder::Site(site), key.clone()),
+                to: (Holder::Site(site), into.unwrap_or(key).clone()),
                 amount: *n,
             })
         })

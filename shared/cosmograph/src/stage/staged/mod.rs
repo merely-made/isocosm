@@ -373,8 +373,8 @@ impl Staged<'_> {
                 self.wound(*who, cells.resolved()?, *slot)?;
                 return Ok(false);
             },
-            Effect::Rot { who, amount } => {
-                self.rot(*who, amount.resolved()?)?;
+            Effect::Rot { who, amount, into } => {
+                self.rot(*who, amount.resolved()?, into.as_ref())?;
                 return Ok(false);
             },
             Effect::Spend {

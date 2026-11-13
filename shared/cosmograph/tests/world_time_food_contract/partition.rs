@@ -106,6 +106,7 @@ fn death_and_native_rot_recover_the_pending_matter_without_spawning_or_losing_it
             vec![Effect::Rot {
                 who: Binding::Actor,
                 amount: u64::MAX.into(),
+                into: None,
             }],
         );
         let mut s = Session::new(g, mode).unwrap();

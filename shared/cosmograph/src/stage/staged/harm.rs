@@ -48,18 +48,18 @@ impl Staged<'_> {
         Ok(())
     }
 
-    pub(super) fn rot(&mut self, who: Binding, amount: u64) -> Result<()> {
+    pub(super) fn rot(&mut self, who: Binding, amount: u64, into: Option<&Key>) -> Result<()> {
         let sim = self.sim;
         if self.body(who)?.resident_site().is_none() { return Err("a corpse outside any site".into()); }
         let before = crate::anatomy::books(self.body(who)?);
         let moved = harm::rot::rot(self.body(who)?, &sim.genesis.rules, amount)?;
         self.guard_owned_body_change(who,&before)?;
-        harm::rot::deposit(&mut self.site()?.accounts, &moved)?;
+        harm::rot::deposit(&mut self.site()?.accounts, &moved, into)?;
         if sim.flowing() {
             let entity = sim.bound(self.stage.actor, self.stage.target, who)?;
             self.stage
                 .legs
-                .extend(harm::rot::legs(entity, self.stage.place, &moved));
+                .extend(harm::rot::legs(entity, self.stage.place, &moved, into));
         }
         Ok(())
     }

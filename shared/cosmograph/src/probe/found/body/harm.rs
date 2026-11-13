@@ -45,6 +45,7 @@ impl HarmFounding {
         let effect = Effect::Rot {
             who: Binding::Target,
             amount: f.pick("body-rot", 0, self.rot).into(),
+            into: None,
         };
         let mut rot = due("body:rot", Causation::Agentless, vec![effect], 7);
         rot.target = Some(Target {

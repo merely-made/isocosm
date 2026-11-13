@@ -617,6 +617,18 @@ numbers and readings he has not ruled; within them, the grammar's drift
   `schema::Ledger` already means an account map. The accounting is
   general to the simulator and could sit beside `Simulation::matter`.
 
+- **Rot is off by default until ruled** (mine): it roughly doubles the
+  lines alive at tick 2000 and costs the decomposers about a quarter of
+  their numbers; at tick 600 it changes which seeds lose a line, not how
+  many.
+- **Rot takes one body per lineage per site a tick, with a floor of one
+  unit** (mine): dead bodies cannot act, so a process picks one; the
+  ratio hardly matters in this world. A rate per body would need the
+  engine to let the dead act.
+- **Rotted matter lands in `world:soil`** (mine): producers draw only
+  that account; the existing effect credited the lineage's own account
+  at the site, which nothing draws.
+
 ## Questions for Mark
 
 Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
@@ -665,6 +677,21 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- 2026-11-12: rot built as an optional rule, unset by default.
+  `Founding.rot` (`ecology/rot.rs`, default rate 1/50 with a floor of
+  one unit) adds a process per lineage that moves a dead body's matter
+  to the site's `world:soil`, after the meals, so a decomposer eats
+  first; `Effect::Rot` gained an optional `into`. Mesocosm has `--rot`,
+  off by default. No pin moved; the budget stays closed. Measured on
+  the played A1 world with the brake and limits. To tick 600, seeds 0
+  to 19: three seeds lose a line with or without rot (14 saved, 15
+  lost); dead matter falls from 41% to 19% of the total and soil rises
+  from 24% to 33%; the decomposers' median count falls from 101 to 72.
+  To tick 2000, seeds 0 to 9: without rot 17 of 40 lines live, the
+  median counts are 1.5, 0, 3.5 and 6.5, and 75% of matter is dead;
+  with rot 30 of 40 live, at 21, 43, 37.5 and 121, with 31% dead. Rates
+  of 1/200, 1/50 and 1/20 are the same rule here, since a body holds
+  about ten units and the floor decides. Sim 1200 and Mesocosm 310 pass.
 - 2026-11-12: the matter budget read. `Simulation::budget()`
   (`ecology/budget.rs`) totals matter by reservoir without changing
   state; the ignored `tests/ledger_budget.rs` samples it every 50 ticks

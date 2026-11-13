@@ -276,7 +276,7 @@ fn bodily_wounds_and_rot_cannot_spill_a_traveller_at_the_actor_site() {
     let hunter = neighbour(&mut g,prey,1);
     for (name,effect) in [("test:wound",Effect::Wound { who:Binding::Target,
         cells:Amount::Fixed(1),slot:0 }), ("test:rot",Effect::Rot { who:Binding::Target,
-        amount:Amount::Fixed(1) })] {
+        amount:Amount::Fixed(1), into:None })] {
         let mut p = crate::generate::process(name,Causation::Transition,vec![effect]);
         p.target = Some(Target { same_place:false,alive:None,lineage:None,
             among:Default::default(),weighted:false });

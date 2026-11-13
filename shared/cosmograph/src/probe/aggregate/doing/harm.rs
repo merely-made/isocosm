@@ -33,13 +33,13 @@ impl Doing<'_> {
         Ok(true)
     }
 
-    pub(super) fn rot(&mut self, who: Binding, amount: u64) -> Result<bool> {
+    pub(super) fn rot(&mut self, who: Binding, amount: u64, into: Option<&Key>) -> Result<bool> {
         if self.body(who)?.resident_site().is_none() { return Ok(false); }
         let rules = self.rules;
         let moved = harm::rot::rot(self.body(who)?, rules, amount)?;
         for (_, ledger) in moved {
             for (key, n) in ledger {
-                self.give(Binding::Place, &key, n)?;
+                self.give(Binding::Place, into.unwrap_or(&key), n)?;
             }
         }
         Ok(true)

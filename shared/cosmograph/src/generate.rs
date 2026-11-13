@@ -67,6 +67,11 @@ pub struct Founding {
     /// as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub limits: Option<crate::ecology::Limits>,
+    /// Dead bodies give their matter to the site's soil at a slow rate,
+    /// without a decomposer, in a stock or A1 ecology. Absent, which
+    /// serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rot: Option<crate::ecology::Rot>,
 }
 
 impl Default for Founding {
@@ -93,6 +98,7 @@ impl Default for Founding {
             dormancy: None,
             mass_law: None,
             limits: None,
+            rot: None,
         }
     }
 }

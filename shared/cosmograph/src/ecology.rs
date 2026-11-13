@@ -11,6 +11,7 @@ mod budget;
 mod dormant;
 mod joint;
 mod limits;
+mod rot;
 mod validate;
 mod evidence;
 mod run;
@@ -24,12 +25,15 @@ pub mod world_time;
 mod web_tests;
 #[cfg(test)]
 mod limits_tests;
+#[cfg(test)]
+mod rot_tests;
 pub(crate) use web::Role;
 pub use web::Web;
 pub use independence::*;
 pub use rates::Rates;
 pub use mass_law::MassLaw;
 pub use limits::Limits;
+pub use rot::Rot;
 pub use budget::Budget;
 pub use joint::*;
 pub use run::{run_joint, run_joint_validated};
@@ -365,12 +369,14 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
 
 /// What lays over the configured and embodied ecology: the mass law, then
 /// the flat rate sets' dormancy, which copies the scaled active rates, then
-/// the consumers' limits, which gate the feed and birth processes as scaled.
+/// the consumers' limits, which gate the feed and birth processes as scaled,
+/// then rot, whose processes gate nothing and copy nothing.
 pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mass_law::apply(founding, g)?;
     if founding.ecology_rates != Rates::WorldTime {
         dormant::flat(founding, g)?;
     }
     limits::apply(founding, g)?;
+    rot::apply(founding, g)?;
     Ok(())
 }

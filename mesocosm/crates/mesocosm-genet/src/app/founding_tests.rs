@@ -98,7 +98,7 @@ fn the_climate_founds_and_the_played_line_lives_on() {
 
 /// Every rule but the climate.
 fn all_rules() -> WorldRules {
-    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true,
+    WorldRules { regard: true, exertion: true, hosting: true, learning: true, mass_law: true, dormancy: true, limits: true, rot: true,
         ..WorldRules::all() }
 }
 

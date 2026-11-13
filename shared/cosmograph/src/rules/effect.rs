@@ -107,6 +107,11 @@ pub enum Effect {
     Rot {
         who: Binding,
         amount: Amount,
+        /// The site account the matter arrives as, in place of the account it
+        /// left (a corpse's litter returned as soil); unset, each account
+        /// arrives as itself.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        into: Option<Key>,
     },
     Tell {
         event: Key,
