@@ -70,7 +70,6 @@ skip = [
   { crate = "rand_chacha@0.9.0", reason = "p2mere-encryption 0.10.0 requires it; goes when p2mere-encryption moves to rand_chacha 0.10" },
   { crate = "rand_core@0.6.4", reason = "graphshell-host 0.0.2 (graphshell), ostiary 0.0.1 (armillary), rand 0.8.8, rand_chacha 0.3.1 require it; rand 0.8 (p2mere-core, piccolo), graphshell-host (graphshell) and ostiary (armillary) hold it; goes when all move to rand_core 0.10" },
   { crate = "rand_core@0.9.5", reason = "rand_chacha 0.9.0 requires it; rand_chacha 0.9 under p2mere-encryption holds it; goes with rand_chacha 0.10" },
-  { crate = "redb@2.6.4", reason = "gemot 0.1.1 (gemot), muniment 0.2.1 (eidetic) require it; gemot 0.1.1 (gemot) and muniment (eidetic) hold it; goes when both move to redb 4" },
   { crate = "redox_syscall@0.4.1", reason = "winit 0.30.13 requires it; winit 0.30.13 (cambium-desktop, graphshell) holds it; goes with winit 0.31" },
   { crate = "redox_syscall@0.5.18", reason = "parking_lot_core 0.9.12 requires it; parking_lot_core 0.9.12 (latest) holds it; goes when parking_lot_core moves on" },
   { crate = "regex-syntax@0.6.29", reason = "logos-derive 0.12.1 requires it; logos-derive 0.12.1: taplo 0.14 (merely-made/taplo) derives its SyntaxKind lexer with logos 0.12, and isocosm-system names logos =0.12.1 to drive it; goes when the taplo fork moves to logos 0.16" },
