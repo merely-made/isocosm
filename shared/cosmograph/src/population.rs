@@ -20,6 +20,10 @@ pub struct Cohort {
     /// empty for any other cohort, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub pool: Pool,
+    /// Counted births to members of this row, by tick of birth. Exact
+    /// family relationships are recorded separately.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) offspring: Option<crate::lineage::offspring::Counts>,
 }
 
 /// A band's signed ledger (D28).
@@ -77,7 +81,7 @@ impl Population {
         }
         let first = self.next_id;
         self.next_id = first.checked_add(count).ok_or("identity exhausted")?;
-        self.groups.insert(first, Cohort { count, entity: entity.into(), pool: Pool::new() });
+        self.groups.insert(first, Cohort { count, entity: entity.into(), pool: Pool::new(), offspring: None });
         Ok(first)
     }
     pub fn lift(&mut self, id: Id) -> Result<&mut Entity> {
@@ -94,6 +98,9 @@ impl Population {
         if id - first >= group.count {
             return Err("unknown entity".into());
         }
+        if group.count == 1 {
+            return Ok(self.groups.get_mut(&id).unwrap());
+        }
         let group = group.clone();
         let end = first + group.count;
         self.groups.remove(&first);
@@ -103,6 +110,8 @@ impl Population {
         let pools = [share(&group.pool, before, group.count), share(&group.pool, after, group.count)];
         let own = less(&group.pool, &[&pools[0], &pools[1]]);
         let [pool_before, pool_after] = pools;
+        let [births_before, births_own, births_after] =
+            crate::lineage::offspring::split(group.offspring.as_ref(), before, after, group.count);
         if id > first {
             self.groups.insert(
                 first,
@@ -110,6 +119,7 @@ impl Population {
                     count: before,
                     entity: group.entity.clone(),
                     pool: pool_before,
+                    offspring: births_before,
                 },
             );
         }
@@ -120,6 +130,7 @@ impl Population {
                     count: after,
                     entity: group.entity.clone(),
                     pool: pool_after,
+                    offspring: births_after,
                 },
             );
         }
@@ -129,6 +140,7 @@ impl Population {
                 count: 1,
                 entity: group.entity,
                 pool: own,
+                offspring: births_own,
             },
         );
         Ok(self.groups.get_mut(&id).unwrap())
@@ -163,7 +175,9 @@ impl Population {
             {
                 log(previous, Some(last));
                 log(first, Some(&group));
-                merged.get_mut(&previous).unwrap().count += group.count;
+                let last = merged.get_mut(&previous).unwrap();
+                last.count += group.count;
+                crate::lineage::offspring::merge(&mut last.offspring, group.offspring.as_ref());
                 continue;
             }
             merged.insert(first, group);

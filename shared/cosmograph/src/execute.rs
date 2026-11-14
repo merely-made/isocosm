@@ -274,6 +274,8 @@ impl Simulation {
         };
         let planning = matches!(run, Run::Plan);
         stage.scheduled = matches!(run, Run::Scheduled(_));
+        stage.cohort_birth = !matches!(run, Run::Act) && cause.is_none() && target.is_none()
+            && count == 1 && self.counts_birth(actor, entity);
         stage.process = process.into();
         stage.action = id.clone();
         stage.intake = intake;
@@ -357,7 +359,7 @@ impl Simulation {
                 Outcome::Refused("action sequence exhausted".into()),
             );
         };
-        if definition.note {
+        if definition.note && !stage.cohort_birth {
             if self.state.events.len() >= genesis.rules.limits.history {
                 return refused(receipt, Outcome::Refused("event budget exhausted".into()));
             }

@@ -20,7 +20,7 @@ use crate::{
 use std::collections::BTreeMap;
 
 /// Each living group of `lineage`, by its first id: its count plus the
-/// offspring its first member bore at or after `since`.
+/// offspring its members bore at or after `since`.
 pub fn weights(sim: &Simulation, lineage: &str, since: Tick) -> BTreeMap<Id, u64> {
     let state = sim.state();
     let mut out: BTreeMap<Id, u64> = state
@@ -28,7 +28,10 @@ pub fn weights(sim: &Simulation, lineage: &str, since: Tick) -> BTreeMap<Id, u64
         .groups
         .iter()
         .filter(|(_, g)| g.entity.alive && g.entity.lineage == lineage)
-        .map(|(&first, g)| (first, g.count))
+        .map(|(&first, g)| {
+            let newborns = super::offspring::since(g.offspring.as_ref(), since);
+            (first, g.count + newborns)
+        })
         .collect();
     for r in state.relations.iter().filter(|r| r.kind == "sim:child") {
         let young = state.population.get(r.object).is_some_and(|e| e.born >= since);

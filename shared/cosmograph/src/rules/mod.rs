@@ -277,6 +277,9 @@ pub struct Rules {
     /// it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub banding: Option<crate::band::Banding>,
+    /// Whether generated A1 births can publish as counted reproduction.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub cohort_births: bool,
     /// How fast bodies walk (doctrine Bodies 16, case 1112): set, a member
     /// out of view travels to its meal in its route's time instead of a
     /// step a tick (case 1084); absent, worlds step and hash as before.

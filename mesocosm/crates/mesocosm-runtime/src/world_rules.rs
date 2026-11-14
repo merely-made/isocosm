@@ -111,6 +111,9 @@ pub struct WorldRules {
     /// Width in ticks of the age bands used by the far population.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub population_band: Option<u64>,
+    /// Publish routine far births as counted reproduction.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub cohort_births: bool,
 }
 
 fn is_zero(value: &u8) -> bool { *value == 0 }
@@ -149,7 +152,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false, inherited_variation: 0, population_band: None }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false, inherited_variation: 0, population_band: None, cohort_births: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -195,6 +198,9 @@ impl WorldRules {
             && genesis.rules.banding != Some(cosmograph::band::Banding { age_band })
         {
             return Err("--population-band requires a generated A1 world founded with that band width".into());
+        }
+        if self.cohort_births && !genesis.rules.cohort_births {
+            return Err("--cohort-births is a founding rule: it needs generated A1 and --population-band".into());
         }
         if self.inherited_variation != 0
             && genesis.founding.as_ref().is_none_or(|f| f.inherited_variation != self.inherited_variation)

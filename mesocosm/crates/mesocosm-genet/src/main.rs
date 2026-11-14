@@ -179,6 +179,7 @@ fn main() {
                     .and_then(|v| v.parse::<u8>().ok()).filter(|n| *n <= 100)
                     .unwrap_or_else(|| fail("--inherited-variation wants a percent from 0 to 100"));
             }
+            "--cohort-births" => config.world_rules.cohort_births = true,
             "--population-band" => {
                 config.world_rules.population_band = Some(args.next()
                     .and_then(|v| v.parse::<u64>().ok()).filter(|&n| n > 0)
@@ -451,6 +452,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --inherit       the default for a new generated A1 world, accepted as a no-op alias: young grow from their line's
                   current recipe, so a revision or drift the line took passes down to its young
   --inherited-variation PERCENT   vary inherited body regions in a new generated A1 world
+  --cohort-births                count routine far births in their cohorts (requires --population-band)
   --population-band TICKS        fold the far population by age bands in a new generated A1 world
   --no-inherit    found a new generated A1 world whose young copy their parent, as before
   --spoilage      world rule (off unless asked): a dead body's flesh is fresh, then aged, then toxic with time since

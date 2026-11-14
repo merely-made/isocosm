@@ -94,6 +94,9 @@ pub struct Founding {
     /// Cohort folding policy at founding.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub population_bands: Option<crate::band::Banding>,
+    /// Count routine far births in their parents' cohorts.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub cohort_births: bool,
     /// Producer and decomposer trade soil for tissue, each paying while the other does (`ecology::mutualism`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mutualism: Option<crate::ecology::Mutualism>,
@@ -137,6 +140,7 @@ impl Default for Founding {
             inherit: false,
             inherited_variation: 0,
             population_bands: None,
+            cohort_births: false,
             mutualism: None,
             detritus: None,
             nutrients: None,
@@ -169,6 +173,12 @@ impl Founding {
         }
         if self.population_bands.is_some_and(|bands| bands.age_band == 0) {
             return Err("population bands require a positive age width".into());
+        }
+        if self.cohort_births
+            && (!self.ecology || self.ecology_rates != crate::ecology::Rates::A1
+                || self.population_bands.is_none())
+        {
+            return Err("cohort births require A1 ecology and population bands".into());
         }
         if self.inherited_variation > 100
             || (self.inherited_variation != 0 && (!self.ecology || !self.inherit || self.bodies.is_none()))
@@ -300,6 +310,7 @@ impl Founding {
             directing: None,
             telling: None,
             banding: self.population_bands,
+            cohort_births: self.cohort_births,
             speed: None,
             social: None,
             spread_capacity: None,

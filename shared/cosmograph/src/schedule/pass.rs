@@ -6,16 +6,24 @@
 //! visits it whole, as a scan over the groups it began with would.
 
 use crate::{population::Population, schema::*};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Debug)]
 pub(crate) struct Pass {
     /// Identities from here on were born during the pass.
     pub(super) bound: Id,
     split: BTreeMap<Id, u64>,
+    pub(crate) births: Option<BirthPass>,
     /// Debug builds keep every span, to check each one the pass reads.
     #[cfg(debug_assertions)]
     began: BTreeMap<Id, u64>,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct BirthPass {
+    pub protected: BTreeSet<Id>,
+    pub population: u64,
+    pub counted: bool,
 }
 
 impl Pass {
@@ -23,6 +31,7 @@ impl Pass {
         Self {
             bound: population.next_id,
             split: BTreeMap::new(),
+            births: None,
             #[cfg(debug_assertions)]
             began: population
                 .groups

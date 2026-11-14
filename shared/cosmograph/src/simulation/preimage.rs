@@ -171,15 +171,18 @@ struct Cohort<'a> {
     entity: Entity<'a>,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     pool: &'a population::Pool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    offspring: Option<&'a crate::lineage::offspring::Counts>,
 }
 
 impl<'a> From<&'a population::Cohort> for Cohort<'a> {
     fn from(value: &'a population::Cohort) -> Self {
-        let population::Cohort { count, entity, pool } = value;
+        let population::Cohort { count, entity, pool, offspring } = value;
         Self {
             count: *count,
             entity: entity.as_ref().into(),
             pool,
+            offspring: offspring.as_ref(),
         }
     }
 }

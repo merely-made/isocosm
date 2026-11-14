@@ -34,6 +34,7 @@ struct Band<'a> {
     born: Option<Tick>,
     felt: Vec<bool>,
     form: Option<Form<'a>>,
+    exact: Option<&'a Entity>,
 }
 
 /// A view of one anatomical and trait combination, excluding pooled matter.
@@ -88,22 +89,22 @@ pub(crate) fn pooled(state: &crate::simulation::State, rules: &crate::rules::Rul
 impl Simulation {
     /// Folds the far members of each band into one cohort, conserving every
     /// account through its pool.
-    pub(crate) fn fold_far(&mut self) {
-        if let Some(banding) = self.genesis.rules.banding {
+    pub(crate) fn fold_far(&mut self, counted_births: bool) {
+        if let Some(banding) = self.genesis.rules.banding
+            && (!self.genesis.rules.cohort_births || counted_births)
+        {
             self.fold_bands(banding);
         }
     }
 
-    /// The same under `banding`.
-    pub(crate) fn fold_bands(&mut self, banding: Banding) {
-        let width = banding.age_band.max(1);
+    /// Identities that cannot be reassigned by population compaction.
+    pub(crate) fn band_identities(&self, preserve_history: bool) -> BTreeSet<Id> {
         let s = &self.state;
-        let varied = self.genesis.rules.inherited_variation != 0;
-        let mut pointed = if varied { self.kept() } else { s.roots.clone() };
+        let mut pointed = if preserve_history { self.kept() } else { s.roots.clone() };
         pointed.extend(s.relations.iter().flat_map(|r| [r.subject, r.object]));
         pointed.extend(s.released.keys());
         pointed.extend(s.nudges.iter().map(|n| n.critter));
-        if varied {
+        if preserve_history {
             for axis in s.record.axes() {
                 if let Some(mark) = s.record.standing(axis) {
                     pointed.extend(&mark.holders);
@@ -114,12 +115,22 @@ impl Simulation {
                 pointed.extend(event.object);
             }
         }
+        pointed
+    }
+
+    /// The same under `banding`.
+    pub(crate) fn fold_bands(&mut self, banding: Banding) {
+        let width = banding.age_band.max(1);
+        let s = &self.state;
+        let exact = self.genesis.rules.cohort_births;
+        let varied = self.genesis.rules.inherited_variation != 0;
+        let pointed = self.band_identities(varied || exact);
         let mut bands: BTreeMap<Band<'_>, Vec<Id>> = BTreeMap::new();
         for (&first, g) in &s.population.groups {
             let e = &g.entity;
             let held = e.journey.is_some() || e.authored.is_some() || e.patch.is_some();
             if !e.alive || held || e.method == Method::Deliberative
-                || (varied && e.method == Method::Inert)
+                || ((varied || exact) && e.method == Method::Inert)
             {
                 continue;
             }
@@ -131,10 +142,12 @@ impl Simulation {
                 continue;
             };
             let age = s.tick.saturating_sub(e.born) / width;
-            let felt = self.felt(e, site);
-            let form = varied.then_some(Form(e));
-            bands.entry(Band { site, lineage: &e.lineage, age, born: varied.then_some(e.born), felt, form })
-                .or_default().push(first);
+            let felt = if exact { vec![] } else { self.felt(e, site) };
+            let form = (varied && !exact).then_some(Form(e));
+            bands.entry(Band {
+                site, lineage: &e.lineage, age, born: varied.then_some(e.born), felt, form,
+                exact: exact.then_some(e),
+            }).or_default().push(first);
         }
         let batches: Vec<_> = bands.into_values().filter(|f| f.len() > 1).collect();
         for firsts in batches {
@@ -171,10 +184,12 @@ impl Simulation {
         let representative = population.groups[&firsts[0]].entity.clone();
         let own = books(&representative);
         let mut pool = Pool::new();
+        let mut offspring = None;
         let mut count = 0;
         for first in firsts {
             let g = &population.groups[first];
             count += g.count;
+            crate::lineage::offspring::merge(&mut offspring, g.offspring.as_ref());
             let theirs = books(&g.entity);
             let keys: BTreeSet<&Key> = theirs.keys().chain(own.keys()).collect();
             for key in keys {
@@ -187,6 +202,9 @@ impl Simulation {
         }
         pool.retain(|_, v| *v != 0);
         let next = population.next_id;
+        if next.checked_add(count).is_none() {
+            return;
+        }
         if let Some(j) = &mut self.journal {
             for first in firsts {
                 j.group(*first, self.state.population.groups.get(first));
@@ -198,7 +216,9 @@ impl Simulation {
             population.groups.remove(first);
         }
         let band = population.insert(representative, count).expect("the band's members existed");
-        population.groups.get_mut(&band).expect("inserted above").pool = pool;
+        let group = population.groups.get_mut(&band).expect("inserted above");
+        group.pool = pool;
+        group.offspring = offspring;
     }
 }
 

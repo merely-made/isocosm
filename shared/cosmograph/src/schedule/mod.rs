@@ -17,6 +17,7 @@
 
 mod filed;
 mod frame;
+mod births;
 mod pass;
 mod turn;
 
@@ -108,8 +109,12 @@ impl Simulation {
         // A paced cohort chooses by its first identity (E8) and cohorts
         // regroup at an advance's end, so a Grouped span with a paced lineage
         // runs a tick at a time: the same ticks group and choose alike
-        // however an advance cuts them (D41).
-        if self.mode == Execution::Grouped && end > self.state.tick.saturating_add(1) && self.paced() {
+        // however an advance cuts them (D41). Counted births also compact at
+        // a tick boundary, where newly born members may change the due queue.
+        let counted = self.genesis.rules.cohort_births;
+        if end > self.state.tick.saturating_add(1)
+            && (counted || (self.mode == Execution::Grouped && self.paced()))
+        {
             let mut work = Work::default();
             while self.state.tick < end {
                 let next = self.advance_to(self.state.tick + 1)?;
@@ -118,6 +123,9 @@ impl Simulation {
                 work.accepted += next.accepted;
                 work.blocked += next.blocked;
                 work.arrivals += next.arrivals;
+                if counted && work.represented > self.genesis.rules.limits.events_per_advance as u64 {
+                    return Err("advance exceeds configured operation budget; use shorter advances".into());
+                }
             }
             return Ok(work);
         }
@@ -161,13 +169,13 @@ impl Simulation {
         self.far_food = None;
         self.journeys = None;
         match (&done, &mut self.filed) {
-            (Ok(()), Some(f)) => f.settle(&self.state),
+            (Ok(_), Some(f)) => f.settle(&self.state),
             _ => self.filed = None,
         }
         self.pass = None;
         self.frame = None;
         self.chosen.clear();
-        done?;
+        let counted_births = done?;
         self.state.tick = end;
         self.refresh_attention();
         if self.mode == Execution::Grouped {
@@ -188,7 +196,7 @@ impl Simulation {
         self.unplace_far();
         { let _s = crate::profile::Span::new("spatial.draw"); self.draw_into_frames(); }
         { let _s = crate::profile::Span::new("spatial.settle"); self.settle_drifted(); }
-        self.fold_far();
+        self.fold_far(counted_births);
         Ok(work)
     }
 
@@ -199,7 +207,8 @@ impl Simulation {
         turns: &Turns,
         end: Tick,
         work: &mut Work,
-    ) -> Result<()> {
+    ) -> Result<bool> {
+        let mut counted_births = false;
         loop {
             let next = queue.first().map_or(end, |(tick, ..)| *tick);
             {
@@ -219,7 +228,8 @@ impl Simulation {
             let process = &genesis.rules.processes[&id];
             let _process_span = crate::profile::Span::new(&process.id);
             let gates = self.filed.as_ref().and_then(|f| f.gates(&id)).cloned();
-            let pass = Pass::new(&self.state.population);
+            let mut pass = Pass::new(&self.state.population);
+            pass.births = self.birth_pass(process);
             let bound = pass.bound;
             self.pass = Some(pass);
             // A pass keeps its start only where one act could read what
@@ -251,13 +261,14 @@ impl Simulation {
                 crate::profile::tally(&format!("{id} #evaluated"), work.evaluations - evaluations);
                 crate::profile::tally(&format!("{id} #accepted"), work.accepted - accepted);
             }
-            self.pass = None;
+            counted_births |= self.pass.take().and_then(|pass| pass.births)
+                .is_some_and(|pass| pass.counted);
             self.frame = None;
             if let Some(next) = self.next_due(process, due).filter(|next| *next <= end) {
                 queue.insert((next, priority, turns.rank(process, next), id));
             }
         }
-        Ok(())
+        Ok(counted_births)
     }
 
     /// Plans every act of the pass against the world as it began, nothing
