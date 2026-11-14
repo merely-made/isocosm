@@ -394,6 +394,10 @@ pub struct Rules {
     /// Dung left by meals and taken by dung mouths (`ecology::detritus`); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub detritus: Option<crate::ecology::Detritus>,
+    /// The ground's nutrients and the proportion a producer needs them in
+    /// (`ecology::nutrients`); absent, worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub nutrients: Option<crate::ecology::Nutrients>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -462,6 +466,7 @@ impl Rules {
             d.validate()?;
             if self.categories.is_none() { return Err("detritus needs the categories rule".into()); }
         }
+        if let Some(n) = &self.nutrients { n.validate()?; }
         if let Some(repertoire) = &self.repertoire { repertoire.validate(self)?; }
         Ok(())
     }

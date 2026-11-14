@@ -18,7 +18,7 @@ fn exchange_parts_lower_only_where_the_rule_is_set() {
     let (a, b) = (kinds(&founding(all(), false).generate().unwrap()), kinds(&mutual().generate().unwrap()));
     assert!(a.is_subset(&b) && b.len() > a.len(), "{} without, {} with", a.len(), b.len());
     let wanting: Vec<_> = catalog().parts().iter().filter(|p| needs_mutualism(p)).collect();
-    assert_eq!(wanting.len(), 12, "twelve parts wait on the rule alone; three more wait on another mechanic as well");
+    assert_eq!(wanting.len(), 13, "twelve parts wait on the rule alone, and the scarce hypha, which also waits on the nutrient rule, lowers where both are set; three more wait on another mechanic as well");
     let mut lowered = 0;
     for part in wanting {
         assert!(!a.contains(&kind_key(&part.key)), "{}", part.key);

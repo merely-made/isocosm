@@ -114,7 +114,7 @@ impl HostConfig {
         let set = self.rounds != Rounds::Capped || self.condition || self.world_rules != WorldRules::generated();
         (set && (self.watch.is_some() || self.spread.is_some() || self.ecology_candidate.is_some()
             || self.ecology_witness.is_some() || replay || bench)).then_some(
-            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --no-dormancy, --limits, --no-limits, --rot, --no-rot, --inherit, --no-inherit, --spoilage, --repertoire, --categories, --guard, --mutualism, --detritus and --turn require an ordinary new generated world; \
+            "--rounds, --condition, --drift, --draft, --sheet, --climate, --regard, --exertion, --hosting, --learning, --mass-law, --dormancy, --no-dormancy, --limits, --no-limits, --rot, --no-rot, --inherit, --no-inherit, --spoilage, --repertoire, --categories, --guard, --mutualism, --detritus, --nutrients and --turn require an ordinary new generated world; \
 a resumed save, authored spread, candidate, witness, replay or bench declares its own")
     }
 

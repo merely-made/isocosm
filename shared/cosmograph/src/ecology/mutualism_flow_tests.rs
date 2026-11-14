@@ -19,7 +19,7 @@ use crate::{
 
 /// `line`'s every body, its first part with a living function given a port
 /// that does `trades` (keeping any port it has).
-fn equip(mut g: Genesis, line: &str, trades: &[Trade]) -> Genesis {
+pub(super) fn equip(mut g: Genesis, line: &str, trades: &[Trade]) -> Genesis {
     for group in g.population.groups.values_mut().filter(|g| g.entity.lineage == line) {
         let e: &mut Entity = group.entity_mut();
         let id = *e.parts.iter().find(|(_, p)| p.cells.is_empty() || p.cells.values().any(|n| *n > 1)).map(|(id, _)| id).unwrap();
@@ -38,7 +38,7 @@ fn equip(mut g: Genesis, line: &str, trades: &[Trade]) -> Genesis {
     g
 }
 
-fn together(mut g: Genesis) -> Genesis {
+pub(super) fn together(mut g: Genesis) -> Genesis {
     let site = *g.sites.keys().next().unwrap();
     for group in g.population.groups.values_mut().filter(|g| ["lineage:0", "lineage:2"].contains(&g.entity.lineage.as_str())) {
         group.entity_mut().place = site;
@@ -46,7 +46,7 @@ fn together(mut g: Genesis) -> Genesis {
     g
 }
 
-const BOTH: [Trade; 2] = [Trade::Gives, Trade::Takes];
+pub(super) const BOTH: [Trade; 2] = [Trade::Gives, Trade::Takes];
 
 fn world(rule: Option<Mutualism>, plants: &[Trade], fungi: &[Trade]) -> Genesis {
     together(equip(equip(founding(rule).generate().unwrap(), "lineage:0", plants), "lineage:2", fungi))

@@ -752,6 +752,20 @@ numbers and readings he has not ruled; within them, the grammar's drift
   implying it; numbers are placeholders (a third left, a bite of 3
   keeping 2, a turn every 3 minutes, rot of 1 a site a tick);
   `Detritus` is a working word.
+- **Nutrient choices** (the implementer's and mine): the other
+  nutrients are site accounts `world:soil-1` to `-3`, working keys that
+  name nothing of the Earth's; a line leads on nutrient `line % axes`;
+  an act makes as much tissue as it takes, so the default (two of one,
+  one of the other) makes three where the base act made fewer, which
+  confounds the measurement; tissue holds no nutrient shares, and
+  return is in the proportion drawn, by a count on the site
+  (`nutrients:owed-<a>`) sorted from soil in chunks of 64, 8 and 1;
+  consumers and decomposers draw none; the scarce-uptake organ is a
+  third trade bit (`Trade::Draws`) on a port, read like a trade though
+  it needs no partner; `lowering_full` takes the detritus and nutrient
+  flags as a pair; numbers are placeholders (two axes, base 1, tilt 1,
+  spread 30 to 170 percent of soil, uptake 1 every 4 minutes);
+  `Nutrients` is a working word.
 
 ## Questions for Mark
 
@@ -825,6 +839,31 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- 2026-11-14: nutrient axes (D39 model 1, competition for limiting
+  resources; case 38), as an optional rule, off by default
+  (`Founding.nutrients`, `ecology/nutrients.rs`; Mesocosm
+  `--nutrients`). A site holds two to four nutrients, `world:soil` the
+  first; a producer's act takes them in a proportion fixed by its line
+  and needs every one, so the scarcest limits it; a producer that
+  cannot fix declines by the existing upkeep and death; what returns to
+  soil is sorted back in the proportion drawn; under mutualism the
+  decomposer carries its partner's nutrients. Catalog: 192 of 272
+  expressible (from 190). The implementing agent stopped on an expired
+  token before measuring; I reviewed the diff, ran the suites and the
+  measurement. Measured over seeds 0-19 (`tests/nutrient_share.rs`):
+  D39's test tells nothing, since both producer lines are alive in 18
+  or 19 of 20 seeds whether their needs are the same, different, or the
+  rule is off. Scarcity never bites: no site ends short of the second
+  nutrient, which ends at 1.4 to 5 times the soil, and only about half
+  of what is drawn is sorted back (519056 of 1091140), so soil stays
+  the limit. The rule itself moves the plants (line 3's median 572.5 to
+  918), because an act now makes three tissue. Mutualism's plant side
+  still gains nothing: the plant with a working partner 253.5 against
+  261 unplanted, and 260 against 262 under the scarcer ground; the
+  fungus gains (125.5 to 156.5 under scarcity) and the grazer with it
+  (76 to 97.5). No arm plants the tuned organ, so it drew nothing.
+  Suites: sim 1323, Mesocosm 310, Eponym and the root workspace
+  compile.
 - 2026-11-13: dung (D39 model 4, the detritus web), as an optional
   rule, off by default and requiring categories (`Founding.detritus`,
   `ecology/detritus.rs`; Mesocosm `--detritus`). An animal's meal

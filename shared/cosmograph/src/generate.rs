@@ -94,6 +94,9 @@ pub struct Founding {
     /// Animals leave dung that dung mouths and rot return (`ecology::detritus`, D39 model 4).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub detritus: Option<crate::ecology::Detritus>,
+    /// The ground holds several nutrients and a producer needs them in proportion (`ecology::nutrients`, D39 model 1).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub nutrients: Option<crate::ecology::Nutrients>,
 }
 
 impl Default for Founding {
@@ -128,6 +131,7 @@ impl Default for Founding {
             inherit: false,
             mutualism: None,
             detritus: None,
+            nutrients: None,
         }
     }
 }
@@ -269,6 +273,7 @@ impl Founding {
             inherit: false,
             mutualism: None,
             detritus: None,
+            nutrients: None,
             body: None,
             kinds: BTreeMap::new(),
             affinity: self.affinity.clone(),

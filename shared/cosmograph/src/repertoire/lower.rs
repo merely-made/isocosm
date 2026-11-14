@@ -21,7 +21,9 @@
 //! it, with their dead classes and grinding on the port ([`port`]); parts
 //! that deposit or eat dung lower only where the world also sets the detritus
 //! rule (`ecology::detritus`), a dung mouth being a dead-stock port limited to
-//! the dung class.
+//! the dung class. Parts that take the nutrient the ground is scarcest in lower
+//! only where the world sets the nutrient rule (`ecology::nutrients`), as an
+//! organ whose port draws.
 
 use crate::{
     catalog::{Catalog, Part, Role, Site, Status, Kind, refs},
@@ -68,7 +70,12 @@ fn def(process: &str) -> Result<&'static ProcessDef, String> {
 /// every dead flow is a mouth for all dead stock, as before.
 fn port(part: &Part, c: &Catalog, cats: bool, guard: bool) -> Result<Option<IntakePort>, String> {
     if needs_mutualism(part) {
-        return Ok(Some(exchange(part).supported_by(def(&part.process)?.reference())));
+        let organ = exchange(part);
+        let organ = if needs_nutrients(part) { organ.trading(Trade::Draws) } else { organ };
+        return Ok(Some(organ.supported_by(def(&part.process)?.reference())));
+    }
+    if needs_nutrients(part) {
+        return Ok(Some(IntakePort::none().trading(Trade::Draws).supported_by(def(&part.process)?.reference())));
     }
     let name = refs::process_name(&part.process);
     if guard && let Some(organ) = guard_organ(part, c) {
@@ -224,6 +231,17 @@ pub fn lowering_in(part: &Part, cats: bool, guard: bool, mutual: bool) -> Result
 /// As [`lowering_in`], and a part that runs only through the detritus rule
 /// where the world sets none.
 pub fn lowering_all(part: &Part, cats: bool, guard: bool, mutual: bool, dung: bool) -> Result<Lowering, String> {
+    lowering_full(part, cats, guard, mutual, (dung, false))
+}
+
+/// As [`lowering_all`], for a world with the nutrient rule if `rules.1`; the
+/// detritus rule is `rules.0`.
+///
+/// # Errors
+/// As [`lowering_all`], and a part that runs only through the nutrient rule
+/// where the world sets none.
+pub fn lowering_full(part: &Part, cats: bool, guard: bool, mutual: bool, rules: (bool, bool)) -> Result<Lowering, String> {
+    let (dung, soil) = rules;
     if needs_detritus(part) && !dung {
         return Err("it needs the detritus rule".into());
     }
@@ -233,7 +251,16 @@ pub fn lowering_all(part: &Part, cats: bool, guard: bool, mutual: bool, dung: bo
     if needs_mutualism(part) && !mutual {
         return Err("it needs the mutualism rule".into());
     }
+    if needs_nutrients(part) && !soil {
+        return Err("it needs the nutrients rule".into());
+    }
     lowered(part, cats, guard)
+}
+
+/// Whether `part` runs only through the nutrient rule.
+#[must_use]
+pub fn needs_nutrients(part: &Part) -> bool {
+    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:nutrients"))
 }
 
 /// Whether `part` runs only through the detritus rule.

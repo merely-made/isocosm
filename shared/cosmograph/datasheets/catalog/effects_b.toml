@@ -180,7 +180,7 @@ kingdoms = ["kingdom:flora", "kingdom:myco"]
 admits = ["soil:scarce"]
 cost_mg = 4
 analogue = "a cluster root taking phosphate"
-needs = "nutrient-axes"
+via = ["rule:nutrients"]
 
 [[effect]]
 key = "effect:nitrogen-deposit"

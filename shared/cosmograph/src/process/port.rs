@@ -65,6 +65,10 @@ pub enum Trade {
     Gives,
     /// Its body takes what the partner hands over.
     Takes,
+    /// Its body draws the nutrient its site holds least of, for its own
+    /// tissue (the nutrient rule, `crate::ecology::Nutrients`): no partner
+    /// is needed, so it is no trade, but it is read where one is.
+    Draws,
 }
 
 impl Trade {
@@ -72,6 +76,7 @@ impl Trade {
         match self {
             Self::Gives => 1,
             Self::Takes => 2,
+            Self::Draws => 4,
         }
     }
 }
@@ -280,7 +285,7 @@ impl IntakePort {
     }
 
     pub const fn with_trade_bits(mut self, bits: u8) -> Self {
-        self.trade |= bits & 3;
+        self.trade |= bits & 7;
         self
     }
 

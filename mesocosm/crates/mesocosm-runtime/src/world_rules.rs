@@ -89,6 +89,14 @@ pub struct WorldRules {
     /// a saved setup means off, and an off rule is not written.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub detritus: bool,
+    /// The ground holds several nutrients, and a producer needs them in a fixed
+    /// proportion that differs by line and fixes only as far as its scarcest
+    /// allows (lineage-rounds D39 model 1, competition for limiting resources).
+    /// Set in the founding, so it reaches only the A1 world generated from it.
+    /// Off unless asked: an absent field in a saved setup means off, and an off
+    /// rule is not written.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub nutrients: bool,
     /// Young grow from their line's current recipe, so revisions and drift
     /// pass down, instead of copying their parent (lineage-rounds D40). Set in
     /// the founding, so it reaches only the A1 world that is generated from
@@ -133,7 +141,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, inherit: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -171,6 +179,9 @@ impl WorldRules {
         }
         if self.detritus && genesis.founding.as_ref().is_none_or(|f| f.detritus.is_none()) {
             return Err("--detritus is a founding rule: it needs the generated A1 world".into());
+        }
+        if self.nutrients && genesis.founding.as_ref().is_none_or(|f| f.nutrients.is_none()) {
+            return Err("--nutrients is a founding rule: it needs the generated A1 world".into());
         }
         if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
             return Err("--inherit is a founding rule: it needs the generated A1 world".into());

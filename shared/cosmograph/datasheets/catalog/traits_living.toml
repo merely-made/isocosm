@@ -96,7 +96,7 @@ admits = ["soil:scarce"]
 cost_mg = 14
 reads = ["soil", "income", "upkeep"]
 analogue = "cluster root, a pitcher-plant trap"
-needs = "nutrient-axes"
+via = ["rule:nutrients"]
 
 [[trait]]
 key = "trait:dormant"

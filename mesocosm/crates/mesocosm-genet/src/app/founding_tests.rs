@@ -254,6 +254,16 @@ fn no_dormancy_founds_the_world_the_old_default_founded_and_dormancy_is_the_defa
     assert!(founded.genesis.rules.processes.contains_key("detritus:rot"));
     assert_ne!(digest_of(&leaving), digest_of(&on));
     assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("detritus"));
+    // `--nutrients` is off unless asked (D39 model 1): the ground holds one soil, as before.
+    assert!(!WorldRules::generated().nutrients && !WorldRules::all().nutrients);
+    assert!(on.founded().genesis.founding.as_ref().unwrap().nutrients.is_none());
+    assert!(!on.founded().genesis.rules.accounts.contains_key("world:soil-1"));
+    let scarce = found_default(WorldRules { nutrients: true, ..HostConfig::default().world_rules }, 9);
+    let founded = scarce.founded();
+    assert!(founded.genesis.founding.as_ref().unwrap().nutrients.is_some() && founded.genesis.rules.nutrients.is_some());
+    assert!(founded.genesis.rules.accounts.contains_key("world:soil-1") && founded.genesis.rules.processes.contains_key("nutrients:sort-1-1"));
+    assert_ne!(digest_of(&scarce), digest_of(&on));
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("nutrients"));
 }
 
 /// The cheap half of the compatibility pin, which runs in debug too: an older

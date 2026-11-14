@@ -41,7 +41,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod lower;
-pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, lowering_all, needs_categories, needs_detritus, needs_guard, needs_mutualism};
+pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, lowering_all, lowering_full, needs_categories, needs_detritus, needs_guard, needs_mutualism, needs_nutrients};
 
 /// The founding rule. Working names.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -122,16 +122,16 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     let catalog = crate::catalog::catalog();
     let (cats, guard, mutual) = (founding.categories.is_some(), founding.guard.is_some(), founding.mutualism.is_some());
-    let dung = founding.detritus.is_some();
+    let rules = (founding.detritus.is_some(), founding.nutrients.is_some());
     for key in &rule.only {
         let part = catalog.part_by_key(key).ok_or_else(|| format!("repertoire names {key}, which the catalog lacks"))?;
-        if let Err(why) = lowering_all(part, cats, guard, mutual, dung) {
+        if let Err(why) = lowering_full(part, cats, guard, mutual, rules) {
             return Err(format!("repertoire cannot lower {key}: {why}"));
         }
     }
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
-        let Ok(Lowering { template, root }) = lowering_all(part, cats, guard, mutual, dung) else { continue };
+        let Ok(Lowering { template, root }) = lowering_full(part, cats, guard, mutual, rules) else { continue };
         let key = kind_key(&part.key);
         let function = lower::function_of(&template).ok_or("a lowered kind has no function")?;
         let root_key = root.as_ref().map(|_| format!("{key}-root"));
