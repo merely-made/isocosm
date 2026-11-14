@@ -387,6 +387,9 @@ pub struct Rules {
     /// their parent (D40, `crate::inherit`); false, worlds hash as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub inherit: bool,
+    /// Percent chance of a bounded heritable change in each variable body region.
+    #[serde(default, skip_serializing_if = "crate::schema::is_zero_u8")]
+    pub inherited_variation: u8,
     /// The trade of soil for tissue between producer and decomposer lines
     /// (`ecology::mutualism`); absent, worlds hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -448,6 +451,9 @@ impl Rules {
         deep_time_ceiling(self.epoch, self.epoch_ticks, self.deep_time)
     }
     pub fn validate(&self) -> crate::Result<()> {
+        if self.inherited_variation > 100 || (self.inherited_variation != 0 && !self.inherit) {
+            return Err("inherited variation requires inheritance, at 0 to 100 percent".into());
+        }
         crate::validation::rules(self)?;
         if let Some(defence) = &self.defence { defence.validate(self)?; }
         if let Some(telling) = &self.telling { telling.validate(self)?; }

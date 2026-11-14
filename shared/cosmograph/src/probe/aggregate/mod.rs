@@ -307,7 +307,12 @@ pub(super) fn act(
     if p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some()) {
         return Err("partitioned intake requires the native individual/grouped runner".into());
     }
-    if identity_bound(p, a.meal.is_some()) {
+    // This exact evaluator has no individual child IDs for drawing morphology.
+    let varied_birth = |e: &Effect| matches!(e, Effect::Birth { .. });
+    if identity_bound(p, a.meal.is_some())
+        || (a.rules.inherited_variation != 0 && p.commitments.iter().chain(&p.effects)
+            .any(|e| varied_birth(e) || e.branches().any(varied_birth)))
+    {
         return Err(format!(
             "{} depends on identity; it runs individually",
             p.id

@@ -156,3 +156,96 @@ fn the_budget_stays_closed_and_both_executions_agree() {
     };
     assert_eq!(hash(Execution::Individuals), hash(Execution::Grouped));
 }
+
+
+#[test]
+fn generated_descendants_vary_and_replay() {
+    let mut f = founding(true);
+    f.inherited_variation = 65;
+    f.map = None;
+    let g = f.generate().unwrap();
+    assert!(g.lineages.values().any(|line| line.development.as_ref().is_some_and(|d| {
+        d.grammar.as_ref().is_some_and(|grammar| {
+            !grammar.rules.is_empty() && crate::rules::unfold(grammar).unwrap() == d.recipe.tagmata
+        })
+    })));
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    let total = s.sim.budget().total();
+    s.advance(75).unwrap();
+    let state = s.sim.state();
+    let changed = state.relations.iter().filter(|r| r.kind == "sim:parent").any(|r| {
+        state.population.get(r.object).zip(state.population.get(r.subject))
+            .is_some_and(|(parent, child)| !parent.soma.is_empty() && parent.soma != child.soma)
+    });
+    assert!(changed, "the ordinary birth path introduces variation");
+    assert_eq!(s.sim.budget().total(), total);
+    let replayed = Session::load(s.save(), Execution::Grouped).unwrap();
+    assert_eq!(replayed.sim.state_hash(), s.sim.state_hash());
+}
+
+
+#[test]
+fn a_subclade_carries_its_own_edited_recipe_into_birth() {
+    use crate::{rules::{Rule, regrown}, schema::Id};
+
+    let mut f = founding(true);
+    f.inherited_variation = 30;
+    let g = f.generate().unwrap();
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    let (&id, group) = s.sim.state().population.groups.iter()
+        .find(|(_, group)| group.entity.soma.len() > 1)
+        .expect("a founder with a developed body");
+    let root = group.entity.lineage.clone();
+    let original = group.entity.soma[1];
+    let branch = s.command(Command::Speciate { founder: id, name: "ridge".into() }).unwrap();
+    let mut development = s.sim.state().lineages[&branch].development.clone().unwrap();
+    let grammar = development.grammar.as_mut().unwrap();
+    grammar.seed[1].variance = Some(0);
+    grammar.rules.push(Rule::Repeat { tagma: 1, by: 1 });
+    let development = regrown(&development).unwrap();
+    let next = development.recipe.tagmata[1].segments;
+    s.command(Command::Revise { lineage: branch.clone(), development }).unwrap();
+    assert_eq!(s.sim.state().lineages[&branch].parent.as_deref(), Some(root.as_str()));
+    assert_eq!(s.sim.state().population.get(id).unwrap().soma[1], original);
+    let born: Id = s.sim.state().population.next_id;
+    let mut child = s.sim.state().population.get(id).unwrap().clone();
+    crate::inherit::rebody_child(&s.sim, born, &mut child).unwrap();
+    assert_eq!(child.soma[1], next);
+    assert_eq!(Session::load(s.save(), Execution::Grouped).unwrap().sim.state_hash(), s.sim.state_hash());
+}
+
+#[test]
+#[ignore = "release measurement of inherited anatomy"]
+fn measure_shared_birth_anatomy() {
+    use std::{hint::black_box, time::Instant};
+
+    for population in [256, 2048, 16384] {
+        let mut f = founding(true);
+        f.played = None;
+        f.map = None;
+        f.population = population;
+        f.inherited_variation = 60;
+        let sim = crate::Simulation::new(f.generate().unwrap(), Execution::Grouped).unwrap();
+        let births = sim.state().population.groups.iter().flat_map(|(&first, group)| {
+            (first..first + group.count).map(move |id| (id, &group.entity))
+        }).filter(|(_, parent)| !parent.soma.is_empty()).collect::<Vec<_>>();
+        let take = |cached| {
+            let mut witness = 0u64;
+            let mut forms = std::collections::BTreeSet::new();
+            let start = Instant::now();
+            for &(id, parent) in &births {
+                let mut child = (**parent).clone();
+                let grow = if cached { crate::inherit::rebody_child } else { crate::inherit::rebody_uncached };
+                grow(&sim, id, &mut child).unwrap();
+                witness = witness.wrapping_add(child.parts.len() as u64);
+                forms.insert((child.lineage.clone(), child.soma.clone(), child.absent.clone()));
+                black_box(child);
+            }
+            (forms.len(), witness, start.elapsed().as_secs_f64() * 1000.0)
+        };
+        let (forms, uncached, baseline) = take(false);
+        let (cached_forms, cached, shared) = take(true);
+        assert_eq!((forms, uncached), (cached_forms, cached));
+        eprintln!("founders={population} children={} forms={forms} uncached_ms={baseline:.2} cached_ms={shared:.2}", births.len());
+    }
+}

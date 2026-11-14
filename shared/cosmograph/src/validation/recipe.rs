@@ -112,6 +112,9 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
                 return Err(format!("{id}'s grammar seed {why}"));
             }
             let unfolded = unfold(grammar).map_err(|why| format!("{id}'s grammar: {why}"))?;
+            if rules.inherited_variation != 0 && unfolded != recipe.tagmata {
+                return refuse("has a body map that differs from its growth grammar");
+            }
             if let Some(why) = tagmata(&unfolded) {
                 return Err(format!("{id}'s grammar unfolds to tagmata that {why}"));
             }

@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use serde::{Deserialize, Serialize};
+
 use std::collections::{BTreeMap, BTreeSet};
+
+pub(crate) fn is_zero_u8(n: &u8) -> bool { *n == 0 }
 
 pub use isometer_core::{BodyDocument, PartId};
 

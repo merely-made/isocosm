@@ -423,6 +423,5 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     detritus::apply(founding, g)?;
     nutrients::apply(founding, g)?;
     crate::repertoire::apply(founding, g)?;
-    crate::inherit::apply(founding, g)?;
     Ok(())
 }

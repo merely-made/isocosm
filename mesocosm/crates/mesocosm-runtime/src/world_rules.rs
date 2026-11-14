@@ -105,7 +105,15 @@ pub struct WorldRules {
     /// gets it from [`WorldRules::generated`] (owner's ruling, 2026-11-13).
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub inherit: bool,
+    /// Chance of a heritable change in a variable body region at birth.
+    #[serde(skip_serializing_if = "is_zero")]
+    pub inherited_variation: u8,
+    /// Width in ticks of the age bands used by the far population.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub population_band: Option<u64>,
 }
+
+fn is_zero(value: &u8) -> bool { *value == 0 }
 
 thread_local! {
     static MEASURED: std::cell::RefCell<Option<cosmograph::rules::Climate>> = const { std::cell::RefCell::new(None) };
@@ -141,7 +149,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false, inherited_variation: 0, population_band: None }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -182,6 +190,16 @@ impl WorldRules {
         }
         if self.nutrients && genesis.founding.as_ref().is_none_or(|f| f.nutrients.is_none()) {
             return Err("--nutrients is a founding rule: it needs the generated A1 world".into());
+        }
+        if let Some(age_band) = self.population_band
+            && genesis.rules.banding != Some(cosmograph::band::Banding { age_band })
+        {
+            return Err("--population-band requires a generated A1 world founded with that band width".into());
+        }
+        if self.inherited_variation != 0
+            && genesis.founding.as_ref().is_none_or(|f| f.inherited_variation != self.inherited_variation)
+        {
+            return Err("--inherited-variation requires a generated A1 world founded with that rate".into());
         }
         if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
             return Err("--inherit is a founding rule: it needs the generated A1 world".into());

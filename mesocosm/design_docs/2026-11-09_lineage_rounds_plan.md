@@ -839,6 +839,19 @@ and the next conditions (D31) are answered. Left:
 
 ## Progress
 
+- Generated A1 worlds can set `--inherited-variation PERCENT`. The body
+  map is generated from the lineage's growth grammar and checked together
+  with its declared kinds and functions. Birth retains bounded parental
+  variation and can vary each eligible region by one segment using the
+  child's identity. Founders and births reuse immutable anatomy for the
+  same resolved form. A deliberate split can centre the new branch's
+  repeat-based template on its founder. Legacy saves keep their birth rule.
+  `--population-band TICKS` enables far grouping and keeps distinct anatomy
+  and traits in separate counted rows when inherited variation is enabled.
+  Members with different birth clocks also stay separate.
+  This uses the existing exact birth, provision and recorded identity paths.
+  The coarse demographic step remains in the coarse-step brief.
+
 - 2026-11-14: nutrient axes (D39 model 1, competition for limiting
   resources; case 38), as an optional rule, off by default
   (`Founding.nutrients`, `ecology/nutrients.rs`; Mesocosm
