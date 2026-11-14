@@ -225,6 +225,14 @@ muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main"
 # revision as mere's Cambium consumes, necessarily.
 layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.1" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.2" }
+# house patches --from https://github.com/merely-made/mere.git
+# Written by `house patches` (eidetic, crates/house) from the upstream's [patch.crates-io]; `house patches --check` fails when they drift.
+oxjsonld = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
+oxrdf = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
+oxrdfio = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
+oxrdfxml = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
+oxttl = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
+# end house patches
 # There is deliberately no `cambium` or `sprigging` entry here. Both are
 # published, but nothing in this graph reaches them through the registry —
 # mere's members take them by path inside mere's own checkout — so an entry
