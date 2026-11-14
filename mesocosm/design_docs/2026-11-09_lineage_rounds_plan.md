@@ -847,8 +847,10 @@ and the next conditions (D31) are answered. Left:
   and needs every one, so the scarcest limits it; a producer that
   cannot fix declines by the existing upkeep and death; what returns to
   soil is sorted back in the proportion drawn; under mutualism the
-  decomposer carries its partner's nutrients. Catalog: 192 of 272
-  expressible (from 190). The implementing agent stopped on an expired
+  decomposer carries its partner's nutrients. Catalog: 194 of 272
+  expressible by the catalog's own count; three parts that make a
+  nutrient (`proposed:fix-nutrient`) still wait, since the rule moves
+  nutrients and makes none. The implementing agent stopped on an expired
   token before measuring; I reviewed the diff, ran the suites and the
   measurement. Measured over seeds 0-19 (`tests/nutrient_share.rs`):
   D39's test tells nothing, since both producer lines are alive in 18

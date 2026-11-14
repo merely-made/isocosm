@@ -441,9 +441,9 @@ three design docs that cite it. The record holds the words.
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
-| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md) |
-| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md), [DOC README](DOC_README.md) |
+| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md) |
+| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md), [DOC README](DOC_README.md) |
 | 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
 | 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1201 | A class bounds a recipe's operators and parts; a role is read from what members did, never chosen. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
@@ -666,8 +666,8 @@ three design docs that cite it. The record holds the words.
 | 870 | Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping. | none |
 | 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | none |
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
-| 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
-| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md), [DOC README](DOC_README.md) |
+| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md), [DOC README](DOC_README.md) |
 | 1136 | The layered look resolution moves into isometer-mesh for every product. | [denizen](2026-11-02_denizen_plan.md) |
 | 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
 | 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
@@ -907,7 +907,7 @@ three design docs that cite it. The record holds the words.
 | 1125 | The standalone client gets 1x, 2x, 4x and 8x keys and a readout. | none |
 | 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
 | 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | [denizen](2026-11-02_denizen_plan.md) |
-| 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md) |
+| 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md), [DOC README](DOC_README.md) |
 | 1132 | Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it. | none |
 | 1135 | The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides. | [denizen](2026-11-02_denizen_plan.md) |
 
@@ -978,7 +978,7 @@ three design docs that cite it. The record holds the words.
 | 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
-| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
+| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md) |
 | 1157 | Isocosm's first person uses the selected token, else the seat's own; its eye is the top of the root. | [denizen](2026-11-02_denizen_plan.md) |
 | 1158 | Isocosm's close views face the token's grid facing; V cycles them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1190 | The VTT adopts isometer-core's style table now, a baseline tag on every class. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
