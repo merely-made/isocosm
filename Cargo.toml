@@ -100,7 +100,7 @@ gemot = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
 # override in .cargo/tabletop-local.toml must say so.
 transport = { package = "mere-transport", git = "https://github.com/merely-made/murm.git", branch = "main" }
 murm = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-p2panda-core = { package = "p2mere-core", version = "0.10" }
+p2panda-core = { package = "p2mere-core", version = "0.11" }
 # The net crate is `mere-p2panda-net =0.7.4`, taken exactly as
 # `mere-transport` and `stickleback` take it: same package, same exact
 # version, same features. It is no longer a registry edge: mere moved the
@@ -111,7 +111,7 @@ p2panda-core = { package = "p2mere-core", version = "0.10" }
 # second net crate and the endpoint types stop matching. Every feature except
 # `sqlite`: the address book runs on stickleback's muniment-backed store, and
 # feature unification means every consumer has to opt out, not just one.
-p2panda-net = { package = "p2mere-net", version = "0.10", default-features = false, features = [
+p2panda-net = { package = "p2mere-net", version = "0.11", default-features = false, features = [
     "address_book",
     "iroh_endpoint",
     "iroh_mdns",
@@ -119,8 +119,8 @@ p2panda-net = { package = "p2mere-net", version = "0.10", default-features = fal
     "gossip",
     "sync",
 ] }
-p2panda-store = { package = "p2mere-store", version = "0.10", default-features = false }
-p2panda-sync = { package = "p2mere-sync", version = "0.10" }
+p2panda-store = { package = "p2mere-store", version = "0.11", default-features = false }
+p2panda-sync = { package = "p2mere-sync", version = "0.11" }
 thiserror = "2"
 
 # Product-free projection score and analytic solvers. Isocosm owns the

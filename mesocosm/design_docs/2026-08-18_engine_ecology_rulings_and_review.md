@@ -543,8 +543,9 @@ expected queries, revision mismatch is refused, and replay produces the same
 collision answers. Only then test a learned field through propose, constrain,
 commit, and collision projection.
 
-**Receipt, 2026-08-21.** The standalone `crates/probes/parry-ground` receipt
-consumes only public `Ground` revision, dirty-brick, key, material, and
+**Receipt, 2026-08-21.** The standalone `crates/probes/parry-ground` probe
+(removed 2026-11-13; git history keeps it, and the figures below are its
+recorded result) wrote a receipt that consumes only public `Ground` revision, dirty-brick, key, material, and
 occupancy APIs. It projected 136 stored Ground bricks into Parry 0.29
 `Voxels`: 69,632 cells compared and 41,763 occupied voxels. Parry's internal
 3D chunks are also 8 cubed, so they align with Ground's brick grid.

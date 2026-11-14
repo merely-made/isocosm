@@ -1,7 +1,8 @@
 //! Where one spare layer of headroom moves pixels: a probe of the headed 256
 //! by 256 frame (2026-09-26), run by hand with `--ignored --nocapture`, its
-//! raw output kept out of tree. `testing/scene-board-paging/bands.md` has
-//! what it found.
+//! raw output kept out of tree. What it found was
+//! `testing/scene-board-paging/bands.md`, removed on 2026-11-13 with that
+//! lane's headed runner; git keeps both (isocosm `d955c11c`).
 //!
 //! It rebuilds the headed session's exact frame (the host's pixel grid, pane,
 //! pan and 890 by 752 scene texture), builds the brick map at headroom 0 and
