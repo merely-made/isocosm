@@ -1,6 +1,9 @@
 # A baseline of creatures: one authored set the three games seed from
 
-**Status:** 2026-11-14: brief for Mark to rule on. No code. Questions open (§8).
+**Status:** 2026-11-14: brief for Mark to rule on. No code. Mark answered the
+same day (§9): the VTT is the first release target and the foundation stays
+the three games'; the sort by what a table sees is withdrawn. Questions open
+(§8).
 
 **For:** Mark's 2026-11-13 idea that the VTT, with optional generative aspects
 that prompt a table as a GM might, could be the wing's commitment, and that a
@@ -115,80 +118,94 @@ costly parts, and an authored decomposer has a recipe. D39's tests become
 "does this authored set hold together over N seeds", which a measurement
 can answer.
 
-**It gives the remaining mechanics a sort order.** 78 parts wait, on
-sixteen mechanics and six proposed processes (a part may wait on more than
-one, so the counts below overlap). Sorted by whether a baseline creature at
-a table needs it:
+**It does not sort the remaining mechanics.** 78 parts wait, on sixteen
+mechanics and six proposed processes. The first draft of this brief sorted
+them by whether a table would see them and proposed stopping the unseen
+half. Mark withdrew that (§9): unseen things matter to a table (a plague is
+host transmission, a fire is a disturbance), and cutting the sim to what one
+product shows is the tailoring he does not want. The list stays whole. What
+the baseline changes is its order, by what the foundation's own measurements
+need next (§7).
 
-| Needed by baseline creatures | Parts waiting | Why |
-| --- | --- | --- |
-| venom injection, bite mode | 3, 3 | 13 SRD beasts poison, 48 bite |
-| flight | 1 | birds and bats (speeds dropped from the pack; to restore) |
-| refuge, concealment | 8, 2 | burrowers, ambushers; D39 model 3 |
-| signal reading | 11 | senses a GM describes; warning colours |
+## 6. Keeping the other two open
 
-| Not visible at a table | Parts waiting |
-| --- | --- |
-| allelopathy | 10 |
-| long-range dispersal, seed carriage | 8, 4 |
-| host immunity, host transmission | 7, 7 |
-| soil depth, disturbance | 7, 5 |
-| gut symbiont, pollination | 2, 2 |
-| nutrient fixing (the nutrient rule moves nutrients and makes none) | 3 |
+Mark's worry, in §9: a sim built toward the VTT's release becomes a sim
+tailored to the VTT. What already holds against that, and what could be
+added, so it rests on the structure and not on anyone's judgment in a
+session:
 
-The second table is where scope would come off. It is the larger half of
-what waits, and most of the ecological depth of D37 to D39.
-
-## 6. Options
-
-**A. Baseline first, VTT as the commitment.** Write the sheet format and a
-first set; re-measure the five rules on it; the VTT reads it for prompts.
-The mechanics in the second table stop. Mesocosm and Eponym take the
-baseline and otherwise wait.
-
-**B. Baseline as a Mesocosm phase only.** The sheet and set are built as
-the fix for the two findings, the catalog list goes on in full, and the
-VTT's use of it is left for later. Smallest change of direction; no scope
-comes off.
-
-**C. Keep building the list, review after.** As ruled on 2026-11-13. The
-baseline waits on the review.
-
-**D. VTT without the sim.** Prompts from tables and the packs alone, the
-sim off. Fastest to a table; the three games stop sharing their hardest
-part, which is the reason for the wing.
+- **Already so:** `shared/cosmograph` depends on no product crate. A game
+  reaches the sim only by the overlay contract (case 154: "a game submits
+  intents, the sim returns events and a read-only per-tick view, and settled
+  outcomes return through the handoff"). The VTT's side of it is in
+  `shared/cosmograph-overlay/src/vtt/`, outside the sim.
+- **Already so:** the sim's measurements run in Mesocosm's shape (the played
+  four-line world), and Mesocosm's suite runs on every sim change.
+- **Proposed, for a ruling:** a sim change cites a sim case, a doctrine
+  statement or a measurement as its reason. "The VTT needs it" is a reason
+  to build something in the overlay or the VTT, and a reason to order sim
+  work, never a reason to shape it.
+- **Proposed:** the release target moves order only. Nothing leaves the
+  catalog or a plan because the VTT does not use it; a thing may be parked
+  with its reason, as plans already do.
+- **Proposed:** what the VTT reads from the sim (a place's creatures and
+  their links, as prompts) is a reading over the per-tick view, in the
+  overlay. If it needs a fact the view lacks, the fact is added to the view
+  for every game.
+- **Proposed:** a baseline set is content in a pack, and a world without it
+  founds and hashes as before, as every optional rule does.
 
 ## 7. A recommendation
 
-A, in this order, each step a place to stop:
+In this order, each step a place to stop:
 
 1. The sheet format, and five sheets by hand (two producers, a grazer, a
    predator, a decomposer) to find what the format lacks.
 2. Found a world from them and re-run the existing measurements. If the
    authored set holds together where the drawn one did not, the approach is
-   proven on what is already built.
-3. Fill to a first set from the SRD's beasts, and restore the dropped
-   speeds and senses in the pack.
-4. The VTT reads a place's creatures and their links as prompts.
-
-It reduces scope only if the second table in §5 really stops. Adding the
-baseline while keeping the full list is a fourth project.
+   proven on what is already built. This step serves all three games and
+   needs nothing of the VTT.
+3. Fill to a first set, and restore the dropped speeds and senses in the
+   pack.
+4. The VTT reads a place's creatures and their links as prompts, through
+   the overlay.
+5. The waiting mechanics, in the order steps 2 and 3 show a need for them.
 
 ## 8. Questions for Mark
 
-1. **Which option?** A is recommended.
-2. **Does the second table in §5 stop, park, or go on?** This is the scope
-   question itself.
-3. **Does a sheet declare what a creature eats?** Bodies 1 says a role is
+1. **Are §6's four proposed constraints right, and is one missing?** They
+   are the answer to the worry in §9, and they are yours to state.
+2. **Does a sheet declare what a creature eats?** Bodies 1 says a role is
    read from what members did, never chosen. A sheet naming a jaw and its
    `admits` words fixes what the creature can eat without naming a role; is
    that within Bodies 1, or does it need refining?
-4. **May the sim carry a baseline of its own?** Licensing 1 keeps SRD text
+3. **May the sim carry a baseline of its own?** Licensing 1 keeps SRD text
    out of the sim. Sheets in a pack are clean. A set written fresh (no SRD
    names or text) could live in the sim's datasheets as the default
    founders; should it?
-5. **Humanoids:** the denizen plan's templates (P2) are the body side. Does
+4. **Humanoids:** the denizen plan's templates (P2) are the body side. Does
    the baseline wait on P2, or carry humanoids as plain stat blocks until
    then?
-6. **Is "the VTT is the commitment" a ruling?** It would reorder the three
-   products' plans, and is yours to state in the doctrine's words.
+5. **Does step 1 start?** Five sheets by hand and a measurement, before
+   anything is built for the VTT.
+
+## 9. Answered
+
+Mark, 2026-11-14, on the first draft:
+
+> "A visible versus not visible distinction is not where it's at. There are
+> plenty of invisible things that would be important for the VTT. I do think
+> that the VTT is the product that is most likely to be released soonest, so
+> we can make that the target. But I don't want to make it the target in a
+> way that precludes the possibility of doing the other wings, which is why
+> I was working on the other wings, because I felt that was the foundation
+> for doing all of them, right? So if we can make that foundation and
+> release the VTT first, I'd rather do that. But I also don't necessarily
+> have confidence in your ability to keep the possibility open by designing
+> in a manner that can leverage a SIM that would then be tailored to the
+> VTT, in effect."
+
+Read as: the VTT is the first release target; the foundation is built for
+all three games; the sort of mechanics by what a table sees, and the options
+that stopped the unseen half or made the VTT the sole commitment, are
+withdrawn. Whether this is a case for the design record is Mark's to say.

@@ -703,7 +703,7 @@ three design docs that cite it. The record holds the words.
 | 77 | Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web. | none |
 | 78 | Favor a clean boundary between componentized parts either way, since lack of one would bite later and performance improves with hardware. | none |
 | 92 | The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim. | none |
-| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 154 | D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff. | [content packs](2026-10-28_content_packs_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [creature baseline](2026-11-14_creature_baseline_brief.md) |
 | 192 | Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591) | none |
 | 197 | The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
 | 203 | The tick stamp is a newtype over the sim's u64 count. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
