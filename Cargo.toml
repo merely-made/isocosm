@@ -42,7 +42,7 @@ repository = "https://github.com/merely-made/isocosm"
 rust-version = "1.97.1"
 
 [workspace.dependencies]
-murm-sync = { version = "0.0.1", git = "https://github.com/merely-made/murm.git", branch = "main" }
+murm-sync = { version = ">=0.0.1", git = "https://github.com/merely-made/murm.git", branch = "main" }
 # Internal crates
 isocosm-core = { path = "crates/isocosm-core", version = "0.1.0" }
 isocosm-campaign = { path = "crates/isocosm-campaign", version = "0.1.0" }
