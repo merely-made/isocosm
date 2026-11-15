@@ -206,6 +206,7 @@ pub struct Simulation {
     pub(crate) spatial_resolutions: crate::spatial::Resolutions,
     pub(crate) spatial_geometry: crate::spatial::GeometryCache,
     pub(crate) foraging_routes: crate::spatial::foraging::RouteCache,
+    pub(crate) birth_bodies: crate::inherit::Cache,
 }
 
 impl Simulation {
@@ -272,6 +273,7 @@ impl Simulation {
             spatial_resolutions: Default::default(),
             spatial_geometry: Default::default(),
             foraging_routes: Default::default(),
+            birth_bodies: Default::default(),
         })
     }
     pub fn state(&self) -> &State {

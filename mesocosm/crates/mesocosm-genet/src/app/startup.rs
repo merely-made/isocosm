@@ -36,6 +36,9 @@ fn a1_setup_with(mut founded: mesocosm_runtime::Founded,
     if rules.detritus { founding.detritus = Some(cosmograph::ecology::Detritus::default()); }
     if rules.nutrients { founding.nutrients = Some(cosmograph::ecology::Nutrients::default()); }
     founding.inherit = rules.inherit;
+    founding.inherited_variation = rules.inherited_variation;
+    founding.cohort_births = rules.cohort_births;
+    founding.population_bands = rules.population_band.map(|age_band| cosmograph::band::Banding { age_band });
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     rules.apply(&mut founded.genesis).map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     let mut setup = mesocosm_runtime::runtime::ecology::Setup::generated_classified(

@@ -20,6 +20,12 @@ impl Genesis {
             spec.validate_genesis(self)?;
         }
         crate::ecology::validate_material_provenance(self)?;
+        if self.rules.cohort_births && (self.rules.banding.is_none()
+            || self.founding.as_ref().is_none_or(|f| !f.cohort_births
+                || !f.ecology || f.ecology_rates != crate::ecology::Rates::A1))
+        {
+            return Err("cohort births require a generated A1 founding with population bands".into());
+        }
         self.population.validate(self.rules.limits.entities)?;
         crate::spread::validate(&self.spreads, &self.rules, &self.population,
             &self.sites, &self.lineages)?;

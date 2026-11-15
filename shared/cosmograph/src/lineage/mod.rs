@@ -18,6 +18,7 @@ pub mod boundary;
 pub mod chronicle;
 pub mod draft;
 pub mod drift;
+pub(crate) mod offspring;
 pub mod grammar;
 pub mod program;
 pub mod reckon;

@@ -26,12 +26,48 @@ pub struct Banding {
 }
 
 /// What puts members in one band.
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-struct Band {
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
+struct Band<'a> {
     site: Id,
-    lineage: Key,
+    lineage: &'a str,
     age: Tick,
+    born: Option<Tick>,
     felt: Vec<bool>,
+    form: Option<Form<'a>>,
+    exact: Option<&'a Entity>,
+}
+
+/// A view of one anatomical and trait combination, excluding pooled matter.
+struct Form<'a>(&'a Entity);
+
+fn part_form(p: &Part) -> impl Ord + '_ {
+    (&p.traits, &p.functions, &p.cells, &p.tracts, &p.lost, &p.losses, &p.port, &p.graft_origin)
+}
+
+impl Eq for Form<'_> {}
+
+impl PartialEq for Form<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        self.cmp(other).is_eq()
+    }
+}
+
+impl PartialOrd for Form<'_> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Form<'_> {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        let (a, b) = (self.0, other.0);
+        (&a.soma, &a.absent, &a.traits, &a.body, &a.varied, &a.systems, a.drawn, a.disposition)
+            .cmp(&(&b.soma, &b.absent, &b.traits, &b.body, &b.varied, &b.systems, b.drawn, b.disposition))
+            .then_with(|| {
+                a.parts.iter().map(|(id, p)| (id, part_form(p)))
+                    .cmp(b.parts.iter().map(|(id, p)| (id, part_form(p))))
+            })
+    }
 }
 
 /// What the population model's bands hold in their pools (E4, D28): each
@@ -53,25 +89,49 @@ pub(crate) fn pooled(state: &crate::simulation::State, rules: &crate::rules::Rul
 impl Simulation {
     /// Folds the far members of each band into one cohort, conserving every
     /// account through its pool.
-    pub(crate) fn fold_far(&mut self) {
-        if let Some(banding) = self.genesis.rules.banding {
+    pub(crate) fn fold_far(&mut self, counted_births: bool) {
+        if let Some(banding) = self.genesis.rules.banding
+            && (!self.genesis.rules.cohort_births || counted_births)
+        {
             self.fold_bands(banding);
         }
+    }
+
+    /// Identities that cannot be reassigned by population compaction.
+    pub(crate) fn band_identities(&self, preserve_history: bool) -> BTreeSet<Id> {
+        let s = &self.state;
+        let mut pointed = if preserve_history { self.kept() } else { s.roots.clone() };
+        pointed.extend(s.relations.iter().flat_map(|r| [r.subject, r.object]));
+        pointed.extend(s.released.keys());
+        pointed.extend(s.nudges.iter().map(|n| n.critter));
+        if preserve_history {
+            for axis in s.record.axes() {
+                if let Some(mark) = s.record.standing(axis) {
+                    pointed.extend(&mark.holders);
+                }
+            }
+            for event in s.events.values().filter(|event| event.legend || event.authored.is_some()) {
+                pointed.insert(event.subject);
+                pointed.extend(event.object);
+            }
+        }
+        pointed
     }
 
     /// The same under `banding`.
     pub(crate) fn fold_bands(&mut self, banding: Banding) {
         let width = banding.age_band.max(1);
         let s = &self.state;
-        let mut pointed: BTreeSet<Id> = s.roots.iter().copied().collect();
-        pointed.extend(s.released.keys());
-        pointed.extend(s.nudges.iter().map(|n| n.critter));
-        pointed.extend(s.relations.iter().flat_map(|r| [r.subject, r.object]));
-        let mut bands: BTreeMap<Band, Vec<Id>> = BTreeMap::new();
+        let exact = self.genesis.rules.cohort_births;
+        let varied = self.genesis.rules.inherited_variation != 0;
+        let pointed = self.band_identities(varied || exact);
+        let mut bands: BTreeMap<Band<'_>, Vec<Id>> = BTreeMap::new();
         for (&first, g) in &s.population.groups {
             let e = &g.entity;
             let held = e.journey.is_some() || e.authored.is_some() || e.patch.is_some();
-            if !e.alive || held || e.method == Method::Deliberative {
+            if !e.alive || held || e.method == Method::Deliberative
+                || ((varied || exact) && e.method == Method::Inert)
+            {
                 continue;
             }
             let posed = s.spatial_poses.range(first..first + g.count).next().is_some();
@@ -82,10 +142,15 @@ impl Simulation {
                 continue;
             };
             let age = s.tick.saturating_sub(e.born) / width;
-            let felt = self.felt(e, site);
-            bands.entry(Band { site, lineage: e.lineage.clone(), age, felt }).or_default().push(first);
+            let felt = if exact { vec![] } else { self.felt(e, site) };
+            let form = (varied && !exact).then_some(Form(e));
+            bands.entry(Band {
+                site, lineage: &e.lineage, age, born: varied.then_some(e.born), felt, form,
+                exact: exact.then_some(e),
+            }).or_default().push(first);
         }
-        for firsts in bands.into_values().filter(|f| f.len() > 1) {
+        let batches: Vec<_> = bands.into_values().filter(|f| f.len() > 1).collect();
+        for firsts in batches {
             self.fold(&firsts);
         }
     }
@@ -119,10 +184,12 @@ impl Simulation {
         let representative = population.groups[&firsts[0]].entity.clone();
         let own = books(&representative);
         let mut pool = Pool::new();
+        let mut offspring = None;
         let mut count = 0;
         for first in firsts {
             let g = &population.groups[first];
             count += g.count;
+            crate::lineage::offspring::merge(&mut offspring, g.offspring.as_ref());
             let theirs = books(&g.entity);
             let keys: BTreeSet<&Key> = theirs.keys().chain(own.keys()).collect();
             for key in keys {
@@ -135,6 +202,9 @@ impl Simulation {
         }
         pool.retain(|_, v| *v != 0);
         let next = population.next_id;
+        if next.checked_add(count).is_none() {
+            return;
+        }
         if let Some(j) = &mut self.journal {
             for first in firsts {
                 j.group(*first, self.state.population.groups.get(first));
@@ -146,7 +216,9 @@ impl Simulation {
             population.groups.remove(first);
         }
         let band = population.insert(representative, count).expect("the band's members existed");
-        population.groups.get_mut(&band).expect("inserted above").pool = pool;
+        let group = population.groups.get_mut(&band).expect("inserted above");
+        group.pool = pool;
+        group.offspring = offspring;
     }
 }
 
@@ -184,5 +256,37 @@ mod tests {
         assert!(band.count > 1);
         s.sim.state.population.lift_shared(first + 1).unwrap();
         assert_eq!(state(&s), before, "lifting a band's member keeps the totals");
+    }
+
+    #[test]
+    fn a_far_fold_counts_each_form_and_retains_notable_identity() {
+        use std::sync::Arc;
+
+        let mut g = Founding {
+            seed: 5, ecology: true, inherit: true, sites: 3, population: 36,
+            inherited_variation: 50, bodies: Some(crate::bodied::Bodies::default()),
+            ..Default::default()
+        }.generate().unwrap();
+        let e = g.population.groups.values().find(|g| !g.entity.soma.is_empty()).unwrap().entity.clone();
+        let mut variant = Arc::clone(&e);
+        let anatomical = Arc::make_mut(&mut variant);
+        anatomical.soma[0] = anatomical.soma[0].saturating_add(1);
+        let expected = anatomical.soma.clone();
+        g.population = Default::default();
+        let kept = g.population.insert(e.clone(), 1).unwrap();
+        g.population.insert(e.clone(), 3000).unwrap();
+        g.population.insert(e, 5000).unwrap();
+        g.population.insert(variant.clone(), 1000).unwrap();
+        g.population.insert(variant, 2000).unwrap();
+        let mut s = Session::new(g, Execution::Grouped).unwrap();
+        s.sim.state.record.note("mark:example".into(), 1, kept);
+        let before = s.sim.state.population.totals().unwrap();
+        s.sim.fold_bands(Banding { age_band: 1 });
+        let p = &s.sim.state.population;
+        assert_eq!(p.groups.len(), 3);
+        assert!(p.get(kept).is_some());
+        assert_eq!(p.groups.values().find(|g| g.count == 3000).unwrap().entity.soma, expected);
+        assert!(p.groups.values().any(|g| g.count == 8000));
+        assert_eq!(p.totals().unwrap(), before);
     }
 }

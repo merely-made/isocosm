@@ -142,7 +142,7 @@ pub struct LegacyGenesis {
 impl LegacyGenesis {
     pub(super) fn native(&self) -> Result<Genesis> {
         let groups = self.population.groups.iter().map(|(&first,g)| {
-            Ok((first,population::Cohort { count:g.count, entity:std::sync::Arc::new(g.entity.native()?), pool:Default::default() }))
+            Ok((first,population::Cohort { count:g.count, entity:std::sync::Arc::new(g.entity.native()?), pool:Default::default(), offspring:None }))
         }).collect::<Result<_>>()?;
         Ok(Genesis { started: 0, version:self.version, seed:self.seed, dynamics:self.dynamics,
             founding:self.founding.clone(), world:self.world.clone(), rules:self.rules.clone(),

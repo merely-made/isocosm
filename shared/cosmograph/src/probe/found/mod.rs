@@ -322,6 +322,8 @@ impl ProbeFounding {
             repertoire: None,
             categories: None, guard: None, mutualism: None, detritus: None, nutrients: None,
             inherit: false,
+            inherited_variation: 0,
+            cohort_births: false,
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,

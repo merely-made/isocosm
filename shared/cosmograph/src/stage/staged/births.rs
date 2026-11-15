@@ -28,10 +28,12 @@ impl Staged<'_> {
     /// The next child's identity.
     pub(super) fn next_child(&mut self) -> Result<Id> {
         let (sim, born) = (self.sim, self.stage.births.len() as u64);
-        if sim.state.population.count() + born >= sim.genesis.rules.limits.entities {
+        let population = sim.pass.as_ref().and_then(|pass| pass.births.as_ref())
+            .map_or_else(|| sim.state.population.count(), |pass| pass.population);
+        if population.saturating_add(born) >= sim.genesis.rules.limits.entities {
             return Err("population limit".into());
         }
-        let id = sim.state.population.next_id + born;
+        let id = sim.state.population.next_id.checked_add(born).ok_or("identity exhausted")?;
         id.checked_add(1).ok_or("identity exhausted")?;
         Ok(id)
     }
@@ -64,10 +66,11 @@ impl Staged<'_> {
         // 821: cloning also retains the exact remaining journey.
         let mut child = self.actor().clone();
         child.accounts.clear();
-        for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
-            std::sync::Arc::make_mut(part).matter.clear();
+        if !crate::inherit::rebody_child(self.sim, id, &mut child)? {
+            for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
+                std::sync::Arc::make_mut(part).matter.clear();
+            }
         }
-        crate::inherit::rebody(rules, self.sim.state.lineages.get(&child.lineage), &mut child)?;
         child.born = tick;
         child.arrived = tick;
         child.visits.clear();
@@ -114,8 +117,10 @@ impl Staged<'_> {
             child.place = to;
             child.patch = None;
         }
-        self.relate(id);
-        self.spatial_birth(id);
+        if !self.stage.cohort_birth {
+            self.relate(id);
+            self.spatial_birth(id);
+        }
         self.stage.births.push(child);
         Ok(())
     }

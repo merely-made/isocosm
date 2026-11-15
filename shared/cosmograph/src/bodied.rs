@@ -450,6 +450,13 @@ pub(crate) fn embody_within(
         lineage.traits.extend(traits.iter().cloned());
         added.insert(key.clone(), traits);
         let domain = (crate::draw(g.seed, "domain", &[index]) % u64::from(affinity.domains)) as u16;
+        let grammar = if g.rules.inherited_variation != 0 {
+            let grammar = crate::inherit::grammar(&recipe);
+            recipe.tagmata = crate::rules::unfold(&grammar)?;
+            Some(grammar)
+        } else {
+            None
+        };
         lineage.development = Some(Development {
             lexicon: recipe.kinds(),
             recipe,
@@ -460,7 +467,7 @@ pub(crate) fn embody_within(
             tracts: vec![],
             systems: Default::default(),
             comfort: 0,
-            grammar: None,
+            grammar,
         });
         let provision = AccountKind::Matter {
             lineage: key.clone(),
@@ -494,10 +501,11 @@ pub(crate) fn embody_within(
     }
     let rules = g.rules.clone();
     let seed = g.seed;
+    let bodies = crate::inherit::Cache::default();
     for (first, group) in g.population.groups.iter_mut() {
         let e = group.entity_mut();
         let lineage = g.lineages.get(&e.lineage);
-        let Some(d) = lineage.and_then(|l| l.development.clone()) else {
+        let Some((line, d)) = lineage.and_then(|l| l.development.as_ref().map(|d| (l, d))) else {
             continue;
         };
         e.traits.extend(added[&e.lineage].iter().cloned());
@@ -506,7 +514,11 @@ pub(crate) fn embody_within(
             &d.recipe,
             crate::draw(seed, "founder-soma", &[*first]),
         );
-        e.embody(develop(&rules, &d, &drawn)?);
+        if rules.inherited_variation == 0 {
+            e.embody(develop(&rules, d, &drawn)?);
+        } else {
+            bodies.embody(&rules, (line.revision, d), &drawn, e)?;
+        }
         e.absent = crate::development::recorded(&rules, &drawn);
         e.soma = drawn.segments;
         let own: Vec<Key> = e

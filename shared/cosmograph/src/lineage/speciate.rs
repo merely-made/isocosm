@@ -54,6 +54,22 @@ impl Simulation {
                 fork.ate.clear();
             },
         }
+        if self.genesis.rules.inherited_variation != 0
+            && let Some(development) = &mut fork.development
+            && development.recipe.tagmata.len() == e.soma.len()
+            && development.grammar.as_ref().is_some_and(|grammar| {
+                grammar.rules.iter().all(|rule| matches!(rule, crate::rules::Rule::Repeat { .. }))
+            })
+        {
+            for (region, &segments) in development.recipe.tagmata.iter_mut().zip(&e.soma) {
+                region.segments = segments;
+            }
+            development.grammar = Some(crate::inherit::grammar(&development.recipe));
+            crate::validation::development(
+                &self.genesis.rules,
+                &std::collections::BTreeMap::from([(made.clone(), fork.clone())]),
+            )?;
+        }
         self.state.population.lift(founder)?.lineage = made.clone();
         self.state.lineages.insert(made.clone(), fork);
         Ok(made)

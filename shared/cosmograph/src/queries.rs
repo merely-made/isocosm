@@ -152,6 +152,12 @@ impl Simulation {
         let Some(b) = self.body_at_start(target) else {
             return false;
         };
+        self.target_bodies_match(a, b, target, selector, p)
+    }
+
+    pub(crate) fn target_bodies_match(
+        &self, a: &Entity, b: &Entity, target: Id, selector: &crate::rules::Target, p: &Process,
+    ) -> bool {
         // A participant is no body to act on (ruling 688).
         if crate::directing::is_participant(b) {
             return false;

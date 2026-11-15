@@ -77,6 +77,9 @@ impl Simulation {
         if !s.movement.immediate() { put(&mut w, "movement", &s.movement); }
         put(&mut w, "next_id", &s.population.next_id);
         for (&first, cohort) in &s.population.groups {
+            if let Some(offspring) = &cohort.offspring {
+                put(&mut w, label("offspring", [first]), offspring);
+            }
             let digest =
                 hash_value(&preimage::Entity::from(cohort.entity.as_ref())).expect("sim schema encodes");
             for id in first..first + cohort.count {

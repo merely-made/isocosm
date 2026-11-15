@@ -43,6 +43,14 @@ pub(super) fn borne(
             t.bears = Some(kind.clone());
             t.chain.clear();
             t.per_segment = t.per_segment.max(1);
+            if let Some(grammar) = &mut v.grammar
+                && grammar.rules.iter().all(|r| matches!(r, crate::rules::Rule::Repeat { .. }))
+                && let Some(region) = grammar.seed.get_mut(i)
+            {
+                region.bears.clone_from(&t.bears);
+                region.chain.clear();
+                region.per_segment = t.per_segment;
+            }
             out.push((format!("revision:{i}-bears-{kind}"), v, kind.clone()));
         }
     }

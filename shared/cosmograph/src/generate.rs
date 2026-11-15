@@ -88,6 +88,15 @@ pub struct Founding {
     /// Young grow from the line's current recipe (D40, `inherit`). Unset, they copy their parent and it hashes as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub inherit: bool,
+    /// Percent chance of a bounded heritable change at each variable body region.
+    #[serde(default, skip_serializing_if = "crate::schema::is_zero_u8")]
+    pub inherited_variation: u8,
+    /// Cohort folding policy at founding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub population_bands: Option<crate::band::Banding>,
+    /// Count routine far births in their parents' cohorts.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub cohort_births: bool,
     /// Producer and decomposer trade soil for tissue, each paying while the other does (`ecology::mutualism`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mutualism: Option<crate::ecology::Mutualism>,
@@ -129,6 +138,9 @@ impl Default for Founding {
             categories: None,
             guard: None,
             inherit: false,
+            inherited_variation: 0,
+            population_bands: None,
+            cohort_births: false,
             mutualism: None,
             detritus: None,
             nutrients: None,
@@ -146,7 +158,7 @@ impl Founding {
         if self.sites == 0
             || self.sites > 256
             || self.lineages == 0
-            || self.lineages > 32
+            || self.lineages > 256
             || self.population == 0
             || self.population > 1_000_000
             || self.cohort_size == 0
@@ -158,6 +170,20 @@ impl Founding {
             || self.base_unit_micrometres == 0
         {
             return Err("founding parameters outside declared generator domain".into());
+        }
+        if self.population_bands.is_some_and(|bands| bands.age_band == 0) {
+            return Err("population bands require a positive age width".into());
+        }
+        if self.cohort_births
+            && (!self.ecology || self.ecology_rates != crate::ecology::Rates::A1
+                || self.population_bands.is_none())
+        {
+            return Err("cohort births require A1 ecology and population bands".into());
+        }
+        if self.inherited_variation > 100
+            || (self.inherited_variation != 0 && (!self.ecology || !self.inherit || self.bodies.is_none()))
+        {
+            return Err("inherited variation requires ecological body recipes and inheritance, at 0 to 100 percent".into());
         }
         if let Some(bodies) = &self.bodies {
             bodies.check()?;
@@ -271,6 +297,7 @@ impl Founding {
             categories: None,
             guard: None,
             inherit: false,
+            inherited_variation: 0,
             mutualism: None,
             detritus: None,
             nutrients: None,
@@ -282,7 +309,8 @@ impl Founding {
             carriage: None,
             directing: None,
             telling: None,
-            banding: None,
+            banding: self.population_bands,
+            cohort_births: self.cohort_births,
             speed: None,
             social: None,
             spread_capacity: None,
@@ -531,6 +559,7 @@ impl Founding {
         if self.ecology {
             crate::ecology::configure(self, &mut genesis)?;
         }
+        crate::inherit::apply(self, &mut genesis)?;
         if let Some(bodies) = &self.bodies {
             match self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime && !self.experimental_food_contract {
                 true => crate::bodied::embody_within(&mut genesis, bodies, Some(crate::ecology::world_time::Plants::default()))?,

@@ -38,6 +38,8 @@ pub(crate) struct Stage {
     pub(crate) effect_at: Vec<usize>,
     pub(crate) action: Key,
     pub(crate) scheduled: bool,
+    /// This scheduled single-birth stage does not publish a family identity.
+    pub(crate) cohort_birth: bool,
     ecology_credits: Vec<crate::ecology::Credit>,
     ecology_debits: BTreeMap<(Holder, Key), u128>,
     pub(crate) birth_places: Vec<crate::spatial::BirthMark>,
@@ -129,6 +131,7 @@ impl Simulation {
             effect_at: Vec::new(),
             action: String::new(),
             scheduled: false,
+            cohort_birth: false,
             ecology_credits: Vec::new(),
             ecology_debits: BTreeMap::new(),
             birth_places: Vec::new(),
@@ -310,6 +313,10 @@ impl Simulation {
         let legs = std::mem::take(&mut stage.legs);
         let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
         let count = stage.count;
+        if let Some(pass) = self.pass.as_mut().and_then(|pass| pass.births.as_mut()) {
+            pass.population += stage.births.len() as u64;
+            pass.counted |= stage.cohort_birth;
+        }
         // A site whose conditions the act shifts has its residents filed
         // again where a gate reads a condition it shifted (EX4).
         let place = stage.place;
@@ -456,6 +463,10 @@ impl Simulation {
                     live.entity = body;
                 },
             }
+        }
+        if stage.cohort_birth {
+            let parent = s.population.groups.get_mut(&stage.actor).expect("staged parent exists");
+            crate::lineage::offspring::record(&mut parent.offspring, s.tick);
         }
         for child in stage.births {
             s.population
