@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The sun, the simulator's first light field (rulings 971 to 973): a pure
-//! function of the world's rules, the tick and the site. Nothing is stored,
-//! so it moves neither replay nor the state hash. Presentation reads it as
-//! one light block for terrain and bodies; the ecology scales its sunlight
-//! credit by `Sun::intensity` (972, not yet wired).
+//! function of the world's rules, the tick and the site. Presentation reads
+//! a light block for terrain and bodies. Ecology and climate compute credit
+//! under the world's recorded [`CreditRule`].
 //!
 //! Frame: x east, y up, z south. A day is 24 hours of world time and a year
 //! the rules' year, both counted in the world's tick unit, so a minute tick
@@ -17,6 +16,10 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::f64::consts::TAU;
+
+mod credit;
+pub use credit::CreditRule;
+pub(crate) use credit::{SunMemo, sunlight_credit};
 
 /// A day in microseconds of world time.
 pub const DAY_MICROSECONDS: u64 = 86_400_000_000;
@@ -127,7 +130,10 @@ pub fn at(rules: &Rules, tick: Tick, site: Option<&Site>) -> Light {
         return Light { sun: None, ambient: NIGHT_AMBIENT };
     }
     let rise = if sun_rules.tidal_lock { 1.0 } else { smoothstep(0.0, 0.2, up) };
-    let intensity = (rise * strength).clamp(0.0, 1.0) as f32;
+    let intensity = match rules.sunlight_credit {
+        CreditRule::Legacy => (rise * strength).clamp(0.0, 1.0) as f32,
+        CreditRule::FixedV1 => credit::rendered_intensity(rules, tick, site),
+    };
     let ambient = if sun_rules.tidal_lock {
         ambient_by_day
     } else {
@@ -141,38 +147,5 @@ pub fn at(rules: &Rules, tick: Tick, site: Option<&Site>) -> Light {
             colour,
         }),
         ambient,
-    }
-}
-
-/// The world-scale sun intensity (`at` with no site) at the last tick asked,
-/// kept with the rules it came from (the sun's rules and the tick length) so
-/// a world whose rules change never reads a stale value. Cloned as it is.
-#[derive(Debug, Default)]
-pub(crate) struct SunMemo(std::sync::Mutex<Option<Remembered>>);
-
-/// The tick, the tick length, the sun's rules, and the intensity they gave.
-type Remembered = (Tick, u64, Option<SunRules>, f64);
-
-impl Clone for SunMemo {
-    fn clone(&self) -> Self {
-        Self(std::sync::Mutex::new(self.0.lock().unwrap_or_else(|p| p.into_inner()).clone()))
-    }
-}
-
-impl SunMemo {
-    /// The same `f64` as `at(rules, tick, None)`'s sun intensity, or 0.0
-    /// under the horizon, worked once per tick.
-    pub(crate) fn intensity(&self, rules: &Rules, tick: Tick) -> f64 {
-        let work = || at(rules, tick, None).sun.map_or(0.0, |sun| f64::from(sun.intensity));
-        let micros = rules.tick_microseconds();
-        let mut memo = self.0.lock().unwrap_or_else(|p| p.into_inner());
-        if let Some((t, m, sun, value)) = &*memo
-            && *t == tick && *m == micros && *sun == rules.sun
-        {
-            return *value;
-        }
-        let value = work();
-        *memo = Some((tick, micros, rules.sun.clone(), value));
-        value
     }
 }

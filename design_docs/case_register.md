@@ -1006,7 +1006,7 @@ three design docs that cite it. The record holds the words.
 | 1091 | The site account of dead matter awaiting decomposers is world:detritus. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1156 | The per-head member comparison is named MembersPer. | none |
 | 1218 | The five kingdoms are named plant, animal, fungus, microbe and world-class; the sim's keys are unchanged. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
-| 1219 | Kingdom is the word for a lineage's playstyle; the producer, consumer or decomposer reading gives the word up. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1219 | Kingdom is the word for a lineage's playstyle; the producer, consumer or decomposer reading gives the word up. | [mordial](2026-11-15_mordial_brief.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1222 | A body's producer, consumer or decomposer reading is its trophic reading; the kingdom type and colour are renamed trophic. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
 
 ## Licensing and sources

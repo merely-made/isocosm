@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Headless ordinary runtime steps, with resumable native growth observations.
 use super::*;
-use cosmograph::{anatomy, spatial::embodiment::Balance};
+use cosmograph::{anatomy, profile_totals, spatial::embodiment::Balance};
 use serde_json::{Value, json};
+use std::time::Instant;
 
 fn reading(runtime: &Runtime) -> Value {
     let sim = runtime.sim();
@@ -49,9 +50,21 @@ pub fn run(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
     let mut observations = vec![reading(&runtime)];
     persist(config, &runtime, &observations)?;
     let mut stalled = 0;
+    let profile = std::env::var("COSMOGRAPH_PROFILE_ACTIVE").as_deref() == Ok("sum");
+    let initial_totals: std::collections::BTreeMap<_, _> = if profile {
+        profile_totals().into_iter().collect()
+    } else {
+        Default::default()
+    };
+    let mut elapsed = std::time::Duration::ZERO;
+    let start_tick = runtime.tick();
     for step in 0..ticks {
         let before = runtime.sim().state().tick;
+        let start = profile.then(Instant::now);
         crate::played::demo_step(&mut runtime, step);
+        if let Some(start) = start {
+            elapsed += start.elapsed();
+        }
         // The demo answers a question once; one it cannot answer (a lost
         // line with no heir, say) holds the clock, and stepping on only
         // repeats the same tick, so the run stops and says why.
@@ -82,6 +95,17 @@ pub fn run(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
             );
             observations.push(sample);
             persist(config, &runtime, &observations)?;
+        }
+    }
+    if profile {
+        eprintln!("[curve-profile] ticks={} step_micros={}", runtime.tick() - start_tick, elapsed.as_micros());
+        for (label, [ns, calls, count]) in profile_totals() {
+            let [before_ns, before_calls, before_count] = initial_totals.get(&label).copied().unwrap_or_default();
+            let (ns, calls, count) = (ns - before_ns, calls - before_calls, count - before_count);
+            if [ns, calls, count] == [0; 3] {
+                continue;
+            }
+            eprintln!("[cosmograph-profile] {label} ns={ns} calls={calls} count={count}");
         }
     }
     Ok(())

@@ -4,8 +4,8 @@
 //! The sun (971 to 973): periodic, locked when told, dark at night, and a
 //! pure function of its inputs.
 
-use cosmograph::light::{self, DAY_AMBIENT, NIGHT_AMBIENT, SunRules};
-use cosmograph::{Founding, preset::Preset};
+use cosmograph::light::{self, CreditRule, DAY_AMBIENT, NIGHT_AMBIENT, SunRules};
+use cosmograph::{Execution, Founding, Session, preset::Preset};
 use cosmograph::rules::{DEFAULT_TICK_MICROSECONDS, Rules, year_ticks};
 
 const DAY: u64 = 1_440;
@@ -98,4 +98,32 @@ fn the_default_sun_is_not_stored_and_presets_state_theirs() {
     assert!(deep.sun.as_ref().is_some_and(|s| s.intensity_percent < 100));
     let year = founding(Some(Preset::LongYear)).generate().unwrap().rules;
     assert!(year.sun.as_ref().is_some_and(|s| s.tilt > SunRules::default().tilt));
+}
+
+#[test]
+fn a_save_replays_under_its_own_credit_rule() {
+    let mut spec = founding(None);
+    spec.ecology = true;
+    spec.cohort_size = 1;
+    let mut genesis = spec.generate().unwrap();
+    assert_eq!(genesis.rules.sunlight_credit, CreditRule::FixedV1);
+    genesis.rules.processes.retain(|id, _| id == "ecology:sunlight");
+    genesis.rules.sun = Some(SunRules { start_hour: 5, ..SunRules::default() });
+    for site in genesis.sites.values_mut() {
+        site.accounts.insert("sim:energy".into(), 0);
+    }
+    for rule in [CreditRule::FixedV1, CreditRule::Legacy] {
+        genesis.rules.sunlight_credit = rule;
+        let mut original = Session::new(genesis.clone(), Execution::Individuals).unwrap();
+        original.advance(120).unwrap();
+        let json = serde_json::to_string(&original.save()).unwrap();
+        assert_eq!(json.contains("\"sunlight_credit\":\"fixed_v1\""), rule == CreditRule::FixedV1);
+        let mut restored = Session::load(serde_json::from_str(&json).unwrap(), Execution::Grouped).unwrap();
+        assert_eq!(restored.sim.genesis().rules.sunlight_credit, rule);
+        assert_eq!(restored.sim.witness(), original.sim.witness());
+        original.advance(60).unwrap();
+        restored.advance(60).unwrap();
+        assert_eq!(restored.sim.witness(), original.sim.witness());
+        assert!(restored.sim.state().sites.values().all(|site| site.accounts["sim:energy"] > 0));
+    }
 }

@@ -79,10 +79,10 @@ pub(crate) use admission::validate_material_provenance;
 /// is never relabelled as fuel.
 const SUN: &str = "sim:energy";
 /// A site's light credit per tick at full sun, and the most it holds (rulings
-/// 982 and 983). The credit is scaled by the sun's intensity at the tick
-/// (`light::at`), so it is nothing at night; the store holds a night's light,
-/// half a day of full credit, so producers draw a reserve down while it is
-/// dark. 500 is about the burst the seed-9 A1 producers drew at one site in
+/// 982 and 983). The world's sunlight credit rule scales the credit by the
+/// sun's intensity at the tick. The store holds half a day of full credit,
+/// so producers can draw down a reserve at night. 500 is about the burst
+/// the seed-9 A1 producers drew at one site in
 /// one tick, so light limits when they crowd and not otherwise. In bodied
 /// ecologies the sun process's presence reseeds which part receives new
 /// tissue, so their trajectories differ (wing ruling 929).

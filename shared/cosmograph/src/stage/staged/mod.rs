@@ -186,8 +186,7 @@ impl Staged<'_> {
     /// The effect with its amounts resolved against the stage as it stands.
     fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Cow<'e, Effect>> {
         if let Effect::Sunlight { who, account, full } = e {
-            let intensity = self.sim.sun.intensity(&self.sim.genesis.rules, self.sim.state().tick);
-            let credit = (*full as f64 * intensity).round() as u64;
+            let credit = self.sim.sun.credit(&self.sim.genesis.rules, self.sim.state().tick, *full);
             return Ok(Cow::Owned(Effect::Transform {
                 who: *who,
                 take: Default::default(),

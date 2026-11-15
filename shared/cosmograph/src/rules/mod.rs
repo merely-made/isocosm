@@ -331,6 +331,9 @@ pub struct Rules {
     /// sun, and worlds without it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sun: Option<crate::light::SunRules>,
+    /// How sunlight is credited to the simulation. Absent in historical worlds.
+    #[serde(default, skip_serializing_if = "crate::light::CreditRule::is_legacy")]
+    pub sunlight_credit: crate::light::CreditRule,
     /// Whether what enters by the founding door (an arrival, an assertion,
     /// a location) leaves a world event, so every product reads why a place
     /// exists from the record (case 1032); absent in older worlds, which

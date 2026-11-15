@@ -252,3 +252,33 @@ World test (`tests/death_drawn.rs`, debug): the bar's founding at 120
 founders with every hazard's year set to a day; 96 hazard deaths in two days,
 each on its drawn tick; matter constant; Individuals and Grouped alike; a
 save loaded in either mode replays and goes on alike.
+
+## 2026-11-12 played tick profile
+
+Base `3e453728`, with the fixed-point sunlight and curve profiling changes.
+Windows release `mesocosm-genet`, `COSMOGRAPH_PROFILE_ACTIVE=sum`,
+`COSMOGRAPH_PROFILE_LIMIT=0`, `--play --curve 20 --seed 18181373014846284518`.
+Startup and the curve's observation sampling are outside the step clock.
+The host reported 67 living at tick 1 and 151 at tick 20. This run shared
+the machine with builds and tests.
+
+| Measurement | First run (s) | Repeat (s) | Corrected sunlight (s) | Calls per run |
+| --- | ---: | ---: | ---: | ---: |
+| Played steps | 157.82 | 108.75 | 125.74 | 20 |
+| Food route search | 142.39 | 100.22 | 112.45 | 33 |
+| Walking plan | 131.11 | 92.52 | 103.29 | 2,315 |
+| Smell read | 5.45 | 3.09 | 4.31 | 605 |
+
+Spans nest, so their totals overlap. This is a profile of the current
+workload and a lead for locating cost, with a different live population
+from the older E10 timing. It does not establish a timing regression. The
+third run includes the corrected fixed-point cosine coefficient.
+
+## 2026-11-12 sunlight replay
+
+`cargo test --manifest-path shared/cosmograph/Cargo.toml --test light
+--test ecology_capture_890 --test epoch --test witness` passed 34 tests.
+The `sunlight_platform_check` example, built for native Windows and
+`wasm32-unknown-unknown`, matched `e2a1a91c24a0622f`. WebAssembly ran in a
+Node worker. The digest covers 24 seasonal dawn and dusk cases, with each
+case resumed in Grouped and compared with uninterrupted Individuals.

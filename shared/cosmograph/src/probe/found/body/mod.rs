@@ -328,6 +328,7 @@ impl BodyFounding {
             founding_events: false,
             companions: None,
             sun: None,
+            sunlight_credit: crate::light::CreditRule::FixedV1,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

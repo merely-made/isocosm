@@ -9,7 +9,7 @@ param(
     [string] $ManifestPath,
 
     # A metadata file is preferred for reproducible receipts.  With no file,
-    # cargo metadata is run read-only for each selected manifest.
+    # cargo metadata resolves each selected manifest.
     [string[]] $MetadataPath,
 
     # Make this an enforcing gate when desired. Cross-product differences
@@ -22,10 +22,7 @@ param(
     [string[]] $CargoConfig,
 
     # Include optional dependencies when resolving a fresh metadata graph.
-    [switch] $AllFeatures,
-
-    # Metadata is locked by default so an audit cannot refresh resolution.
-    [switch] $Unlocked
+    [switch] $AllFeatures
 )
 
 Set-StrictMode -Version Latest
@@ -84,8 +81,8 @@ function Read-Metadata {
     }
 
     # Cargo metadata only resolves and describes the graph. It does not
-    # compile or modify the selected workspace source; resolution may fetch
-    # missing registry or git sources.
+    # compile workspace source. Resolution may update an ignored lockfile
+    # and fetch missing registry or git sources.
     $cargoArguments = @()
     if ($CargoConfig) {
         foreach ($config in $CargoConfig) {
@@ -93,7 +90,6 @@ function Read-Metadata {
         }
     }
     $cargoArguments += @('metadata', '--format-version', '1')
-    if (-not $Unlocked) { $cargoArguments += '--locked' }
     if ($AllFeatures) { $cargoArguments += '--all-features' }
     $cargoArguments += @('--manifest-path', $Manifest)
     $manifestDirectory = Split-Path -Parent $Manifest

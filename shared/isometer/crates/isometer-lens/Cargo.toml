@@ -40,7 +40,7 @@ bytemuck = { version = "1", features = ["derive"] }
 pollster = "1"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
-burn = { version = "=0.22.1", default-features = false, features = ["std", "wgpu", "cubecl"], optional = true }
+burn = { version = "0.22.1", default-features = false, features = ["std", "wgpu", "cubecl"], optional = true }
 conatus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

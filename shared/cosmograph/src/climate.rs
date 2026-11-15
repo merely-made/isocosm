@@ -211,12 +211,9 @@ pub fn needs(
 }
 
 /// The light at `site` on `tick` in the units the ecology stages sunlight
-/// in: its full credit scaled by the sun's intensity, rounded as the staging
-/// of `Effect::Sunlight` rounds it, only with the site's latitude.
+/// in: both use the world's sunlight credit rule. Climate uses site latitude.
 fn lit(rules: &Rules, site: &Site, tick: Tick) -> i64 {
-    let sky = light::at(rules, tick, Some(site));
-    let intensity = sky.sun.map_or(0.0, |sun| f64::from(sun.intensity));
-    i64::try_from((LIGHT as f64 * intensity).round() as u64).unwrap_or(i64::MAX)
+    i64::try_from(light::sunlight_credit(rules, tick, Some(site), LIGHT)).unwrap_or(i64::MAX)
 }
 
 /// The matter `e`, resident at site `place`, owes on `tick` for being
