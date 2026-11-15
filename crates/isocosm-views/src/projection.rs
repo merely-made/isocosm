@@ -38,7 +38,9 @@ pub fn tile_board_score(map: &MapDocument) -> Score {
             footprint: Footprint::Rect {
                 size: Size2::new(32.0, 32.0),
             },
-            representation: Representation::Sprite,
+            representation: Representation::Open {
+                kind: "sprite".into(),
+            },
             placement: Placement::Cell {
                 column: column as i32,
                 row: row as i32,
