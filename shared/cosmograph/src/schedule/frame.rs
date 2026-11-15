@@ -16,7 +16,7 @@ use crate::{
     schema::*,
 };
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     sync::{Arc, Mutex},
 };
 
@@ -86,10 +86,23 @@ impl Clone for EdibleCache {
     }
 }
 
+/// The memberships a gate can read, by site and set of lineages, as the
+/// pass began. Reset on clone like the other derived readings.
+#[derive(Debug, Default)]
+struct MembersCache(Mutex<BTreeMap<Id, BTreeMap<BTreeSet<Key>, u64>>>);
+
+impl Clone for MembersCache {
+    fn clone(&self) -> Self {
+        Self::default()
+    }
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
     plants: PlantCache,
     edible: EdibleCache,
+    members: MembersCache,
+    pub(crate) weighted_targets: crate::targets::weighted::Cache,
     pub(crate) spatial_poses: BTreeMap<Id, Option<crate::spatial::foraging::Resident>>,
     books: BooksCache,
     notes_bound: Option<usize>,
@@ -197,6 +210,19 @@ impl Frame {
     #[cfg(test)]
     pub(crate) fn edible_len(&self) -> usize {
         self.edible.0.lock().unwrap_or_else(|p| p.into_inner()).len()
+    }
+    pub(crate) fn members(
+        &self, site: Id, among: &BTreeSet<Key>, make: impl FnOnce() -> u64,
+    ) -> u64 {
+        let cache = &self.members.0;
+        if let Some(&count) = cache.lock().unwrap_or_else(|p| p.into_inner())
+            .get(&site).and_then(|counts| counts.get(among))
+        {
+            return count;
+        }
+        let count = make();
+        *cache.lock().unwrap_or_else(|p| p.into_inner())
+            .entry(site).or_default().entry(among.clone()).or_insert(count)
     }
     pub(crate) fn books(&self, id: Id, body: &Entity) -> Arc<Ledger> {
         self.books.get_or_insert(id, || crate::anatomy::books(body))

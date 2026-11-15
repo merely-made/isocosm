@@ -45,3 +45,28 @@ passed. In a new generated A1 world, enable the path with
 body states after birth ticks. Birth evaluation and development still run
 per parent and newborn. The fixture leaves multi-lineage ecology,
 corpse retention, and headed play performance unmeasured.
+
+## 2026-11-15 shared feeding searches in a bodied ecology
+
+Seed 9, four sites, five A1 diet roles, bodies, 60% inherited variation,
+limits and rot. Both arms used counted births and Individuals execution.
+Windows release build with `CARGO_PROFILE_RELEASE_OPT_LEVEL=1` and
+`COSMOGRAPH_PROFILE_ACTIVE=sum`. The baseline was commit `2b822962`.
+Paired serial runs on a shared workstation.
+
+| Founders | Ticks | Baseline seconds | Shared searches seconds | Grazer planning seconds, baseline to shared | Evaluations | Live members | Anatomical draws | Retained rows |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 256 | 60 | 8.972 | 5.216 | 3.720 to 0.701 | 45,054 | 1,744 | 135 | 1,814 |
+| 1,024 | 36 | 31.889 | 17.479 | 15.416 to 1.980 | 62,617 | 6,518 | 149 | 4,719 |
+
+Final state hashes matched for both pairs (`5d34379927ffaf1a` and
+`4fef0fcfea8d4e11`). Matter was conserved. The anatomical draw counts
+use lineage, region sizes and absence; retained rows include bodies with
+different stores or histories. Lineage 2 was absent from the living
+population at both endpoints. The tests exercise the native scheduler
+headlessly.
+
+Reproduce with `cargo test --release --manifest-path shared/cosmograph/Cargo.toml --test cohort_ecology -- --ignored --nocapture`.
+Set `COSMOGRAPH_MEASURE_POPULATION` and `COSMOGRAPH_MEASURE_TICKS` to
+the corresponding row. `COSMOGRAPH_MEASURE_SEED` defaults to 9 and
+`COSMOGRAPH_MEASURE_COUNTED` defaults to 1.

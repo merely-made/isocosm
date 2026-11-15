@@ -33,7 +33,7 @@ use crate::{
     schema::*,
     simulation::{Execution, Simulation, Work},
 };
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// Whether an act of `p`'s pass could read what another act of it writes:
 /// a target, a take of shared ground, or a site it both reads and writes.
@@ -135,10 +135,29 @@ impl Simulation {
         let prepare = crate::profile::Span::new("schedule.prepare");
         let turns = Turns::of(self.genesis.rules.processes.values());
         let mut queue = BTreeSet::new();
+        let mut body_clocks = BTreeMap::new();
+        let now = self.state.tick;
         for p in self.genesis.rules.processes.values() {
-            if let Some(due) = self.next_due(p, self.state.tick)
-                && due <= end
-            {
+            let Some(period) = p.period.filter(|_| now < end).map(|period| period.max(1)) else {
+                continue;
+            };
+            let due = if period == 1 || p.causation == Causation::Agentless {
+                self.next_due(p, now)
+            } else {
+                // Body clocks with the same period have the same first due
+                // tick. The actor gates are applied later, inside each pass.
+                *body_clocks.entry(period).or_insert_with(|| {
+                    if end - now == 1 {
+                        let phase = end % period;
+                        self.state.population.groups.values()
+                            .any(|g| g.entity.alive && g.entity.born % period == phase)
+                            .then_some(end)
+                    } else {
+                        self.next_due(p, now)
+                    }
+                })
+            };
+            if let Some(due) = due.filter(|due| *due <= end) {
                 queue.insert((due, p.priority, turns.rank(p, due), p.id.clone()));
             }
         }
@@ -264,7 +283,9 @@ impl Simulation {
             counted_births |= self.pass.take().and_then(|pass| pass.births)
                 .is_some_and(|pass| pass.counted);
             self.frame = None;
-            if let Some(next) = self.next_due(process, due).filter(|next| *next <= end) {
+            if due < end
+                && let Some(next) = self.next_due(process, due).filter(|next| *next <= end)
+            {
                 queue.insert((next, priority, turns.rank(process, next), id));
             }
         }

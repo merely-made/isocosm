@@ -17,6 +17,7 @@ use crate::{meaning::mass, population::Population, rules::*, schema::*, simulati
 use std::collections::{BTreeMap, BTreeSet};
 
 mod edible;
+pub(crate) mod weighted;
 
 /// Where a group is filed: its place (none while travelling), its lineage,
 /// and whether it lives.
@@ -165,6 +166,14 @@ impl Simulation {
     /// The live members of `among` resident at `site` as the pass began,
     /// each group counted whole as `weighed` counts it.
     pub(crate) fn members_at(&self, site: Id, among: &BTreeSet<Key>) -> u64 {
+        if let (Some(_), Some(frame)) = (&self.pass, &self.frame) {
+            return frame.members(site, among, || self.count_members_at(site, among));
+        }
+        self.count_members_at(site, among)
+    }
+
+    fn count_members_at(&self, site: Id, among: &BTreeSet<Key>) -> u64 {
+        let _span = crate::profile::Span::new("population.members_scan");
         let selector = Target { same_place: true, alive: Some(true), lineage: None, among: among.clone(), weighted: false };
         let here = |first: &Id| self.body_at_start(*first)
             .is_some_and(|b| b.alive && among.contains(&b.lineage) && b.resident_site() == Some(site) && !self.genesis.rules.dormant(b));
@@ -202,6 +211,12 @@ impl Simulation {
         if let Some(target) = self.foraging_target(actor, p) { return target; }
         let selector = p.target.as_ref()?;
         let (place, offered) = self.offering(actor, p)?;
+        if let Some(index) = self.weighted_targets(actor, p, place) {
+            let selected = index.pick(actor, self.target_draw(actor, p));
+            debug_assert_eq!(selected, self.drawn(actor, p, self.searched(selector, place)
+                .into_iter().filter(|first| offered(*first).is_some())));
+            return selected;
+        }
         let accepting = |first: &Id| offered(*first).is_some();
         let found = |firsts: Vec<Id>| {
             if selector.weighted {
@@ -288,7 +303,7 @@ impl Simulation {
     /// each member but the actor by the matter it holds, so the same member
     /// is drawn however its equals are grouped; and their total.
     fn weighed(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> (Vec<(Id, bool, u128, u128)>, u128) {
-        let rules = &self.genesis.rules;
+        let body = self.body_at_start(actor).expect("actor exists");
         let mut eligible = Vec::new();
         let mut total = 0u128;
         for first in firsts {
@@ -297,15 +312,23 @@ impl Simulation {
             let members = u128::from(count - u64::from(within));
             // A group's members began the pass alike: an act lifts out the
             // member it changes, or writes a cohort whole.
-            let held = if p.port_feeding.as_ref().is_some_and(|f| f.meal.is_some()) {
-                p.food_weight(self.body_at_start(actor).expect("actor exists"), self.body_at_start(first).expect("prey exists"), rules, &self.state.lineages)
-            } else { mass(&self.books_at_start(first).expect("filed groups exist"), rules) };
+            let held = self.prey_weight(body, first, p);
             if members > 0 && held > 0 {
                 total += members * held;
                 eligible.push((first, within, members, held));
             }
         }
         (eligible, total)
+    }
+
+    fn prey_weight(&self, body: &Entity, first: Id, p: &Process) -> u128 {
+        let rules = &self.genesis.rules;
+        if p.port_feeding.as_ref().is_some_and(|feeding| feeding.meal.is_some()) {
+            let prey = self.body_at_start(first).expect("prey exists");
+            p.food_weight(body, prey, rules, &self.state.lineages)
+        } else {
+            mass(&self.books_at_start(first).expect("filed groups exist"), rules)
+        }
     }
 
     /// The member drawn among the accepting groups `firsts`, each member
@@ -315,13 +338,7 @@ impl Simulation {
         if total == 0 {
             return None;
         }
-        let key = format!("target:{}", p.id);
-        let x = crate::draw(
-            self.genesis.dynamics_seed(),
-            &key,
-            &[self.state.tick, actor],
-        );
-        let mut pick = (u128::from(x) * total) >> 64;
+        let mut pick = (u128::from(self.target_draw(actor, p)) * total) >> 64;
         for (first, within, members, held) in eligible {
             let weight = members * held;
             if pick < weight {
@@ -334,6 +351,11 @@ impl Simulation {
             pick -= weight;
         }
         unreachable!("the draw falls within the total weight")
+    }
+
+    fn target_draw(&self, actor: Id, p: &Process) -> u64 {
+        crate::draw(self.genesis.dynamics_seed(), &format!("target:{}", p.id),
+            &[self.state.tick, actor])
     }
 }
 
