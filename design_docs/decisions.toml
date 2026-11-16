@@ -7644,6 +7644,38 @@ summary = "The part tree stays the simulator's truth and gains remembered per-pa
 draws_on = ["633", "649", "652"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D50"]
+title = "the shared stepper lives in cosmograph-host (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Stack and ownership"
+summary = "The foreground stepper (path, strides, handback) lives in cosmograph-host beside round pacing, shared by both games. Not yet built."
+draws_on = ["1084"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D51"]
+title = "headless play runs the same stepper (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Headless runs step the foreground set and hand back as a window would. Not yet built."
+draws_on = ["1080", "1081"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D52"]
+title = "a world rule says the foreground walks in-view bodies; an accepted handback clears the journey (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A world rule marks foreground-walked worlds; accepting a handback ends that body's pending journey. Not yet built."
+draws_on = ["1080", "1084"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D53"]
+title = "the baseline is measured on today's main first (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "Today's played step is measured (searches, cache hits, in-view bodies, cost per search) before E10's remaining steps are built."
+draws_on = ["976", "978"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"

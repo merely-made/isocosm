@@ -501,6 +501,22 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 633, 649, 652 · plans sim-execution · summary The part tree stays the simulator's truth and gains remembered per-part hashes; the nested voxel tree stays derived. Not yet built.
 
+- **D50, the shared stepper lives in cosmograph-host (2026-11-16):** "In cosmograph-host, beside the pacing (Recommended)". The code that walks a foreground body along a route with strides and builds its handback sits beside `drive/round.rs`, calling the simulator's route and foot code, for both games. Eponym steps only the steered player and has no path or foot code; conatus has neither. Path and feet may move to conatus later, as case 1084 intends. Offered against conatus now and a new shared crate.
+
+  Links: area Stack and ownership · draws on 1084 · plans sim-execution · summary The foreground stepper (path, strides, handback) lives in cosmograph-host beside round pacing, shared by both games. Not yet built.
+
+- **D51, headless play runs the same stepper (2026-11-16):** "Run the same stepper without a renderer (Recommended)". With no window, the foreground set is still stepped sixty times a world minute and handed back, so headless and windowed runs reach the same hashes. Offered against everyone travelling and against a handback straight to the goal.
+
+  Links: area Processes and rules · draws on 1080, 1081 · plans sim-execution · summary Headless runs step the foreground set and hand back as a window would. Not yet built.
+
+- **D52, a world rule says the foreground walks in-view bodies; an accepted handback clears the journey (2026-11-16):** "A world rule; an accepted handback clears the journey (Recommended)". A world without the rule behaves as today, so older saves keep their bytes and hashes. Found by reading: `spatial/handback.rs` never touches a body's pending travel, and `arrive_travellers` would land the body again at its due tick.
+
+  Links: area Processes and rules · draws on 1080, 1084 · plans sim-execution · summary A world rule marks foreground-walked worlds; accepting a handback ends that body's pending journey. Not yet built.
+
+- **D53, the baseline is measured on today's main first (2026-11-16):** "Measure today's main first (Recommended)". Before E10's remaining steps are built, one release run counts route searches, cache hits and misses, which bodies were in view and the cost of each search. A search cost about 98 ms on 2026-11-02 and 3.0 to 4.3 s on 2026-11-12 for the same command and seed. With "A new bar after the measurement", the speed bar is set from this and from E10's re-measurement.
+
+  Links: area Method and documents · draws on 976, 978 · plans sim-execution · summary Today's played step is measured (searches, cache hits, in-view bodies, cost per search) before E10's remaining steps are built.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -681,6 +697,32 @@ contract.
   phase's own re-measurement. Unexplained and not rerun: the 2026-11-12
   profile's 109 to 158 s for 20 steps against 14.0 s on 2026-11-02 for the
   same command and seed.
+- **Remaining steps, 2026-11-16** (from a read-only assessment; D50 to
+  D53). In view means in some participant's foreground, cut at
+  `Limits::foreground` (16), so at most 16 bodies search for routes; walking
+  plans are a search's inner work, about 70 a search.
+  0. Baseline on today's main (D53). Done when the receipts give searches
+     and cache hits a tick, the in-view bodies, and the cost of a search.
+  1. The world rule (D52). Done when an older Mesocosm save loads, replays
+     and hashes to its stored value.
+  2. `mesocosm-runtime` carries handbacks: passed to the clock
+     (`spatial/driver.rs`), kept in the record, accepted in replay. Done
+     when a round with a handback replays to its hash and a refused one
+     leaves the source unchanged.
+  3. The shared stepper in `cosmograph-host` (D50). Done when foreground
+     and native displacement agree in distribution over a set of seeds.
+  4. The sim stops route search and walking plans for in-view bodies under
+     the rule (`foraging/food.rs`, `stage/staged/step.rs`), and an accepted
+     handback clears the journey (D52). Done when a played tick shows none
+     for foreground bodies, against step 0.
+  5. Headless stepping (D51). Done when a round at 1, 2, 4 and 8 times
+     replays to its hash with no window.
+  6. A foreground step with path and feet is timed and the cap brought to
+     Mark (case 1082).
+  7. The window drives the pacer and draws foreground poses. Done when a
+     capture shows walking without a jump each minute.
+  Unruled: the reach a body covers in sixty world seconds, which turns on
+  the world's cell size.
 - Needs: PG7's Places (landed); conatus for paths and foot placement
 - Rulings: 1080, 1081, 1082, 1083, 1084, D30
 
