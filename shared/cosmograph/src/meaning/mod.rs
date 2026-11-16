@@ -372,8 +372,7 @@ fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
     };
     let mut parts = |who: Binding| -> Result<(Vec<(Half, Part)>, BodyRules)> {
         let body = s.body(who)?;
-        let living = body.living().map(|(id, p)| (body.extent(id), p.clone()));
-        Ok((living.collect(), s.rules.body()))
+        Ok((body.sized(), s.rules.body()))
     };
     let mut draw = |_: u64, _: u8| -> Result<u64> { Err("a requirement draws nothing".into()) };
     x.eval_in(&mut read, &mut draw, &mut parts)

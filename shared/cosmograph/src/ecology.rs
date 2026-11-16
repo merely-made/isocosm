@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 mod admission;
 mod budget;
 mod categories;
+mod deposit;
 mod detritus;
 mod dormant;
 mod guard;
@@ -41,6 +42,8 @@ mod spoilage_meal_tests;
 mod categories_tests;
 #[cfg(test)]
 mod categories_meal_tests;
+#[cfg(test)]
+mod deposit_tests;
 #[cfg(test)]
 mod detritus_tests;
 #[cfg(test)]

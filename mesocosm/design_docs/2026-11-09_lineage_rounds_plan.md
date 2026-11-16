@@ -917,6 +917,31 @@ and the next conditions (D31) are answered. Left:
   This uses the existing exact birth, provision and recorded identity paths.
   The coarse demographic step remains in the coarse-step brief.
 
+- 2026-11-15: dead matter (D46), whole-run radial (D45) and deposit (D47,
+  D48). `Entity::sized` (`geometry.rs`) is the parts a sum over parts reads:
+  the living ones less a boxed part with no function and no cell, which holds
+  materials in `Part.matter` and is no part of the body's size; the three
+  providers of `Expr::Parts` (`stage/staged/mod.rs`, `meaning/mod.rs`,
+  `probe/aggregate/doing.rs`) read it, so `ceiling_of`, and so upkeep, leave
+  it out. An unboxed or cell-bearing part reads as before, and no pin moved
+  (`exact_memo`, `golden_bodies`, `growth`, `incorporation`, `anatomy`,
+  `births`, `recipes` unchanged). `Rule::Radiate { tagma, arms }` copies a
+  run that joins a parent and runs level round the vertical, the socket
+  turned with it: two arms opposite, three the next two quarters, four and
+  more fill the ring, and the count is stored in the rule while the lattice
+  shows four. `Rule::Deposit { account, rate, decay }` unfolds to nothing and
+  is lowered by `ecology/deposit.rs::install` to two processes, as rot and
+  detritus are: the body pays `rate` a tick from the account named into the
+  place's `account` (`Effect::Spend`), and the place turns `decay` a tick of it
+  to soil (an agentless `Transform`); validation holds the account to a
+  matter account of the world, a switch may not hold one. Controls:
+  `rules/grammar/tests.rs`, `tests/grammar.rs`, and
+  `ecology/deposit_tests.rs`, which runs 30 ticks of the A1 world with
+  lineage 3 paying: the budget total never moves and what is paid equals what
+  the places hold plus what decayed. Owed: reading a lineage's grammar to
+  found its deposit processes (the test installs them by hand), no default
+  rate for any world, and a reserve account for the A1 world (its lineages
+  hold `matter:i-0` and `matter:i-1`, neither a reserve).
 - 2026-11-15: symmetry as a grammar rule (D29, D41). `Rule::Symmetry`
   sets `Tagma.symmetry` (`Option<Symmetry>`: `Bilateral`, `Radial { arms }`,
   `None`), which `development::develop` reads through

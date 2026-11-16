@@ -239,11 +239,7 @@ impl Doing<'_> {
         &mut self,
         f: impl FnOnce(&mut Read, &mut Draw, &mut PartsOf) -> Result<T>,
     ) -> Result<T> {
-        let living = |e: &Entity| -> Vec<(crate::anatomy::Half, Part)> {
-            e.living()
-                .map(|(id, p)| (e.extent(id), p.clone()))
-                .collect()
-        };
+        let living = |e: &Entity| e.sized();
         let (mine, theirs) = (living(&self.member), self.prey.as_ref().map(living));
         let (rules, b, lineages) = (self.rules, self.rules.body(), self.lineages);
         let mut parts = |who: Binding| -> Result<(Vec<(crate::anatomy::Half, Part)>, BodyRules)> {

@@ -48,7 +48,7 @@ pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect, EffectKind};
 pub use feeding::{FeedingSources, FoodOffering, MealPartition, PortFeeding};
 pub(crate) use feeding::{gcd, retained_tissue};
-pub use grammar::{Accretion, Condition, Grammar, Rule, Situation, regrown, switched_on, switches, unfold, unfold_on};
+pub use grammar::{Accretion, Condition, Grammar, Rule, Situation, deposits, regrown, switched_on, switches, unfold, unfold_on};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{
     DeepTimeSpan, EpochRule, MINUTE_MICROSECONDS, YEAR_MICROSECONDS, deep_time_ceiling, minutes_ticks,

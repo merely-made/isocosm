@@ -211,6 +211,17 @@ impl Entity {
             .map(|(id, p)| (*id, &**p))
     }
 
+    /// The parts a sum over parts reads, each with its box: the living
+    /// ones, less dead matter (D46), a boxed part whose kind gives no cell a
+    /// function, which holds materials and is no part of the body's size.
+    pub fn sized(&self) -> Vec<(crate::anatomy::Half, Part)> {
+        let dead = |id: PartId, p: &Part| {
+            self.bodied(id) && p.functions.is_empty() && p.cells.values().all(|n| *n == 0)
+        };
+        let living = self.living().filter(|(id, p)| !dead(*id, p));
+        living.map(|(id, p)| (self.extent(id), p.clone())).collect()
+    }
+
     /// The living parts attached directly to `id`.
     pub fn children_of(&self, id: PartId) -> Vec<PartId> {
         self.body

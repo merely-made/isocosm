@@ -98,11 +98,7 @@ impl Staged<'_> {
         let (seed, act) = (self.sim.genesis.seed, self.stage.act);
         let sim = self.sim;
         let b = sim.genesis.rules.body();
-        let living = |e: &Entity| -> Vec<(crate::anatomy::Half, Part)> {
-            e.living()
-                .map(|(id, p)| (e.extent(id), p.clone()))
-                .collect()
-        };
+        let living = |e: &Entity| e.sized();
         let mine = living(self.body(Binding::Actor)?);
         let theirs = match self.stage.target {
             Some(_) => Some(living(self.body(Binding::Target)?)),

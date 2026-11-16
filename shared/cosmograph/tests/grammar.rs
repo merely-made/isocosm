@@ -229,3 +229,57 @@ fn accreted_segments_and_coverings_develop_as_parts_that_do_nothing() {
         assert_eq!(does_nothing(part), slot > 0 || s < 2, "{:?}", situs(*id));
     }
 }
+
+fn entity_of(body: &Body) -> Entity {
+    let mut e = cosmograph::probe::BodyFounding::default().generate().unwrap().genesis.population.groups.values().next().unwrap().entity.as_ref().clone();
+    e.embody(body.clone());
+    e
+}
+
+/// A stem of four with its oldest two wood and bark on each, as above.
+fn accreted(r: &mut Rules) -> Development {
+    let block = r.kinds["kind:block"].clone();
+    for kind in ["kind:wood", "kind:bark"] {
+        r.kinds.insert(kind.into(), Template { cells: Default::default(), ..block.clone() });
+    }
+    let mut d = plain();
+    d.recipe.tagmata = vec![Tagma { facing: Facing::Above, ..run(4) }];
+    let how = [
+        Accretion::Harden { oldest: 2, kind: "kind:wood".into() },
+        Accretion::Cover { kind: "kind:bark".into(), socket: Facing::Right },
+    ];
+    let rules = how.into_iter().map(|how| Rule::Accrete { tagma: 0, how }).collect();
+    d.grammar = Some(cosmograph::rules::Grammar { seed: d.recipe.tagmata.clone(), rules });
+    d.lexicon = ["kind:block", "kind:wood", "kind:bark"].map(String::from).into();
+    regrown(&d).unwrap()
+}
+
+#[test]
+fn dead_matter_is_left_out_of_the_size_a_sum_over_parts_reads() {
+    let mut r = rules();
+    let d = accreted(&mut r);
+    let e = entity_of(&grown(&r, &d));
+    // Four segments and a bark each: the two live segments are the size.
+    assert_eq!(e.living().count(), 4 + 4 * 2);
+    let sized = e.sized();
+    assert_eq!(sized.len(), 2);
+    assert!(sized.iter().all(|(_, p)| !p.cells.is_empty()));
+    // The same body with nothing accreted is all sized, as it was.
+    let plain_body = entity_of(&grown(&r, &stem(None, true)));
+    assert_eq!(plain_body.sized().len(), plain_body.living().count());
+}
+
+#[test]
+fn arms_copied_round_a_vertical_stem_grow_clear_of_one_another() {
+    let r = rules();
+    let spine = Tagma { facing: Facing::Above, ..run(3) };
+    let arm = Tagma { parent: Some(0), facing: Facing::Right, ..run(2) };
+    let mut d = plain();
+    d.lexicon = ["kind:block"].map(String::from).into();
+    d.grammar = Some(cosmograph::rules::Grammar { seed: vec![spine, arm], rules: vec![Rule::Radiate { tagma: 1, arms: 4 }] });
+    let d = regrown(&d).unwrap();
+    assert_eq!(d.recipe.tagmata.len(), 5);
+    let body = grown(&r, &d);
+    assert_eq!(body.parts.len(), 3 + 4 * 2);
+    assert!(crossings(&body).is_empty(), "{:?}", crossings(&body));
+}

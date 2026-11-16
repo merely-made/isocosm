@@ -200,6 +200,22 @@ pub enum Symmetry {
 /// The horizontal facings in order round the vertical.
 const RING: [Facing; 4] = [Facing::Right, Facing::Back, Facing::Left, Facing::Front];
 
+impl Facing {
+    /// This facing turned `places` round the vertical, a quarter each;
+    /// above and below stay.
+    pub fn turned(self, places: usize) -> Facing {
+        match RING.iter().position(|f| *f == self) {
+            Some(at) => RING[(at + places) % RING.len()],
+            None => self,
+        }
+    }
+
+    /// Whether it lies in the horizontal plane.
+    pub fn horizontal(self) -> bool {
+        RING.contains(&self)
+    }
+}
+
 impl Symmetry {
     /// The sockets a kind borne at `socket` takes on a run along axis `run`,
     /// `policy` deciding where the run names no symmetry.

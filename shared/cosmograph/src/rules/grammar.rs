@@ -44,6 +44,15 @@ pub enum Rule {
     Differentiate { tagma: u8, at: u8, kind: Key },
     /// Run `tagma` lays down dead matter (D42): see [`Accretion`].
     Accrete { tagma: u8, how: Accretion },
+    /// Run `tagma` is copied round the vertical, `arms` of it in all (D45):
+    /// arms round a centre, petals. The count is stored here; the lattice
+    /// shows at most four, spread as evenly as it can.
+    Radiate { tagma: u8, arms: u8 },
+    /// The body lays down `account` at its place (D47): each tick it pays
+    /// `rate` from its reserve into the place's `account`, which decays at
+    /// the place by `decay` a tick (D48). Unfolds to nothing; the world's
+    /// processes carry it out (`ecology::deposit`).
+    Deposit { account: Key, rate: u64, decay: u64 },
     /// Run `tagma` places what it bears by `symmetry` (D41).
     Symmetry { tagma: u8, symmetry: Symmetry },
     /// The rules in `rules` apply only while `when` holds of the body or its
@@ -94,6 +103,12 @@ impl Condition {
     }
 }
 
+/// The deposits of `grammar`: each one's account, rate and decay.
+pub fn deposits(grammar: &Grammar) -> Vec<(&Key, u64, u64)> {
+    let found = grammar.rules.iter();
+    found.filter_map(|r| if let Rule::Deposit { account, rate, decay } = r { Some((account, *rate, *decay)) } else { None }).collect()
+}
+
 /// The switches of `grammar`: each one's index among its rules, with its
 /// condition.
 pub fn switches(grammar: &Grammar) -> Vec<(usize, Condition)> {
@@ -131,8 +146,8 @@ pub fn unfold_on(grammar: &Grammar, on: &[usize]) -> Result<Vec<Tagma>> {
     for (i, rule) in grammar.rules.iter().enumerate() {
         match rule {
             Rule::Switch { rules, .. } => {
-                if rules.iter().any(|r| matches!(r, Rule::Switch { .. })) {
-                    return Err("a switch that holds a switch".into());
+                if rules.iter().any(|r| matches!(r, Rule::Switch { .. } | Rule::Deposit { .. })) {
+                    return Err("a switch that holds a switch or a deposit".into());
                 }
                 if on.contains(&i) {
                     for rule in rules {
@@ -165,6 +180,11 @@ fn apply(t: &mut Vec<Tagma>, rule: &Rule) -> Result<()> {
             }
             named(t, *tagma)?.symmetry = Some(*symmetry);
         },
+        Rule::Radiate { tagma, arms } => radiate(t, *tagma, *arms)?,
+        Rule::Deposit { rate, decay, .. } if *rate == 0 || *decay == 0 => {
+            return Err("a deposit that pays or decays nothing".into());
+        },
+        Rule::Deposit { .. } => {},
         Rule::Allocate { total } => allocate(t, usize::from(*total)),
     }
     Ok(())
@@ -281,6 +301,32 @@ fn branch(t: &mut Vec<Tagma>, [tagma, every, depth, taper]: [u8; 4], anchor: Anc
             }
         }
         runs = made;
+    }
+    Ok(())
+}
+
+/// The quarters round the vertical between the arms of a whole-run radial
+/// the lattice shows: all of two, three or four, none beyond four.
+const QUARTERS: usize = 4;
+
+/// Copies run `tagma` round the vertical, `arms` in all (D45), each at the
+/// joint the run joins, turned a quarter or two or three from it with its
+/// socket. Two arms are opposite; three take the next two quarters; four
+/// and more fill the ring, and a fifth arm is stored, not shown. A run
+/// that joins nothing or runs up or down has no ring to be copied round.
+fn radiate(t: &mut Vec<Tagma>, tagma: u8, arms: u8) -> Result<()> {
+    if arms < 2 {
+        return Err("a radial run of fewer than two arms".into());
+    }
+    let run = named(t, tagma)?.clone();
+    if run.parent.is_none() || !run.facing.horizontal() {
+        return Err("a run copied round the vertical must join a parent and run level".into());
+    }
+    let shown = usize::from(arms).min(QUARTERS);
+    for arm in 1..shown {
+        let places = arm * (QUARTERS / shown);
+        let copy = Tagma { facing: run.facing.turned(places), socket: run.socket.turned(places), ..run.clone() };
+        push(t, copy)?;
     }
     Ok(())
 }

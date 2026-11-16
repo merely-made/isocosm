@@ -385,6 +385,53 @@ fn a_switch_reads_the_body_and_its_place() {
     assert_eq!(switched_on(&g, &Situation { reserves_full: true, crowd: 9, ..now }), [1, 2, 3]);
 }
 
+fn arms(n: u8) -> Rule {
+    Rule::Radiate { tagma: 1, arms: n }
+}
+
+#[test]
+fn a_whole_run_copied_round_the_vertical_shows_up_to_four_arms() {
+    let seed = vec![run(2), joined(3, 0, Facing::Right)];
+    let round = |n| unfold(&grammar(seed.clone(), vec![arms(n)])).unwrap();
+    let facings = |t: &[Tagma]| t.iter().skip(1).map(|t| t.facing).collect::<Vec<_>>();
+    assert_eq!(facings(&round(4)), [Facing::Right, Facing::Back, Facing::Left, Facing::Front]);
+    assert_eq!(facings(&round(2)), [Facing::Right, Facing::Left]);
+    assert_eq!(facings(&round(3)), [Facing::Right, Facing::Back, Facing::Left]);
+    // A fifth arm is stored in the rule, and not shown.
+    assert_eq!(round(5), round(4));
+    // A copy is its run: the same joint, length and kind, its socket turned.
+    let t = round(4);
+    assert!(t[2..].iter().all(|c| c.parent == Some(0) && c.segments == 3 && c.segment == "kind:a"));
+    let bearing = Tagma { bears: Some("kind:f".into()), per_segment: 1, ..joined(3, 0, Facing::Right) };
+    let t = unfold(&grammar(vec![run(2), bearing], vec![arms(2)])).unwrap();
+    assert_eq!((t[1].socket, t[2].socket), (Facing::Right, Facing::Left));
+}
+
+#[test]
+fn a_run_with_no_joint_or_no_level_cannot_be_copied_round_the_vertical() {
+    let bad = |seed: Vec<Tagma>, rule| unfold(&grammar(seed, vec![rule])).unwrap_err();
+    bad(vec![run(2), joined(3, 0, Facing::Right)], arms(1));
+    bad(vec![run(2), joined(3, 0, Facing::Above)], arms(3));
+    bad(vec![run(2)], Rule::Radiate { tagma: 0, arms: 3 });
+    bad(vec![run(2)], Rule::Radiate { tagma: 5, arms: 3 });
+}
+
+#[test]
+fn a_deposit_unfolds_to_nothing_and_needs_rates_and_an_account_the_world_holds() {
+    let dep = |rate, decay| Rule::Deposit { account: "deposit:slime".into(), rate, decay };
+    let g = grammar(vec![run(2)], vec![dep(3, 1)]);
+    assert_eq!(unfold(&g).unwrap(), vec![run(2)]);
+    assert_eq!(deposits(&g), [(&"deposit:slime".to_string(), 3, 1)]);
+    unfold(&grammar(vec![run(2)], vec![dep(0, 1)])).unwrap_err();
+    unfold(&grammar(vec![run(2)], vec![dep(1, 0)])).unwrap_err();
+    // A switch does not hold one: a deposit is not a stage.
+    unfold(&grammar(vec![run(2)], vec![switch(Condition::FullReserves, vec![dep(1, 1)])])).unwrap_err();
+    let (rules, mut d) = tips_world();
+    d.grammar.as_mut().unwrap().rules.push(dep(3, 1));
+    let e = crate::validation::development(&rules, &lines(&d)).unwrap_err();
+    assert!(e.contains("no matter account"), "{e}");
+}
+
 fn tips_world() -> (Rules, Development) {
     let mut rules = crate::probe::BodyFounding::default().generate().unwrap().genesis.rules;
     rules.kinds = crate::bodied::default_kinds();

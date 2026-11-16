@@ -141,6 +141,11 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
                     return refuse(&why);
                 }
             }
+            for (account, ..) in deposits(grammar) {
+                if !matches!(rules.accounts.get(account), Some(AccountKind::Matter { .. })) {
+                    return refuse(&format!("deposits {account}, which is no matter account of the world"));
+                }
+            }
             let unfolded = unfold(grammar).map_err(|why| format!("{id}'s grammar: {why}"))?;
             if rules.inherited_variation != 0 && unfolded != recipe.tagmata {
                 return refuse("has a body map that differs from its growth grammar");
