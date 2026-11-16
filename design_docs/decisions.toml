@@ -7676,6 +7676,30 @@ summary = "Today's played step is measured (searches, cache hits, in-view bodies
 draws_on = ["976", "978"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D54"]
+title = "a remembered route search is valid against the bodies it consulted (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The route cache keys on what a search read of other bodies, not on every body's boxes; outcomes unchanged. Not yet built."
+draws_on = ["sim-execution D53"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D55"]
+title = "the step check is made cheaper before any limit on refusals (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The full-body step check is profiled and made cheaper with outcomes unchanged; no refusal limit is ruled. Not yet built."
+draws_on = ["sim-execution D53"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D56"]
+title = "a body that found no route retries as now (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "No back-off after a failed route search; D54's cache makes an unchanged retry cheap."
+draws_on = ["sim-execution D54"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"

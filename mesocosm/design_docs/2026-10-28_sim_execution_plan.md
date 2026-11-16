@@ -517,6 +517,18 @@ each title names its outcome against the doctrine.
 
   Links: area Method and documents · draws on 976, 978 · plans sim-execution · summary Today's played step is measured (searches, cache hits, in-view bodies, cost per search) before E10's remaining steps are built.
 
+- **D54, a remembered route search is valid against the bodies it consulted (2026-11-16):** "Only the bodies the search actually consulted (Recommended)". Today the route cache's key holds every other posed body's boxes in the window (`spatial/foraging/route/cache.rs`), so a standing body's search is redone whenever anyone moves: 22.1 s of 32.6 s in the measured run, 18 of 22 repeats reproducing the earlier result. A search is to record what of the other bodies its step checks read and stay valid until that changes. Outcomes and hashes must not move. Offered against ignoring other bodies and rechecking the path, and against leaving it.
+
+  Links: area Processes and rules · draws on sim-execution D53 · plans sim-execution · summary The route cache keys on what a search read of other bodies, not on every body's boxes; outcomes unchanged. Not yet built.
+
+- **D55, the step check is made cheaper before any limit on refusals (2026-11-16):** "Make the check cheaper first; outcomes unchanged (Recommended)". A refused step costs about 18 ms and restarts the search, with no limit on restarts. The untimed half of the check is profiled and repeated work cut without changing what the check accepts. Stopping at the first refusal took 20 steps from 36 s to 3.4 s and changed the outcome (148 living at tick 20 for 150), so a limit on refusals stays unruled.
+
+  Links: area Processes and rules · draws on sim-execution D53 · plans sim-execution · summary The full-body step check is profiled and made cheaper with outcomes unchanged; no refusal limit is ruled. Not yet built.
+
+- **D56, a body that found no route retries as now (2026-11-16):** "Leave retries as they are (Recommended)". With D54, a retry that would give the same answer costs almost nothing. Offered against a back-off after failure.
+
+  Links: area Processes and rules · draws on sim-execution D54 · plans sim-execution · summary No back-off after a failed route search; D54's cache makes an unchanged retry cheap.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
