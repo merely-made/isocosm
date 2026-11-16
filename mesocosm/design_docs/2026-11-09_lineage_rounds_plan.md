@@ -280,6 +280,34 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Fuse joins a body's own runs into a store-sharing network, or keeps an incorporated partner's part working as its own kind.
 
+- **D45, radial has two forms (2026-11-15), refines D41:** "Keep it, and add whole-run copies (Recommended)". What a run bears is repeated round it, as built; a second form copies a whole run round the vertical (arms round a centre, petals). The lane found that on a horizontal run only 2 of the 4 directions are free.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D41 · plans lineage-rounds · summary Radial repeats what a run bears round it, and a second form copies a whole run round the vertical.
+
+- **D46, a part with no cells is dead matter (2026-11-15), refines D42:** "If parts per 1 can still be made of materials, sure. If we need to express materials in terms of cells, 2". They can: a part's matter is its own ledger keyed by material (`schema.rs`, `Part.matter`), apart from its cells, which only say what it does. So a part whose kind gives no cell a function is left out of upkeep and of the living-size reading, with no flag. No pinned value may move for it.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D42 · plans lineage-rounds · summary A part with no functional cells is dead matter: it holds materials in its ledger and is left out of upkeep and living size.
+
+- **D47, a deposit is its own account at the place, paid from reserve (2026-11-15), refines D42:** "Its own account at the place, paid from reserve (Recommended)". Each kind of deposit is an account the place holds, so slime and a wall are different things; the body pays from its reserve at a rate the rule names. The rate is a rule parameter, not yet a ruled number.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D42 · plans lineage-rounds · summary A deposit is a per-kind account held by the place, paid from the body's reserve at the rule's rate.
+
+- **D48, accreted matter rots with its owner; deposits rot on their own (2026-11-15), refines D42:** "Rots only when the body dies; deposits rot on their own (Recommended)". A shell or hardened stalk lasts as long as its body and rots with the corpse; a deposit decays at its place at a rate set per kind. The rates are owed.
+
+  Links: area Bodies and anatomy · draws on 718, lineage-rounds D42 · plans lineage-rounds · summary Accreted body matter rots only with the corpse; deposits decay at their place at a per-kind rate.
+
+- **D49, switches are read at growth steps and season is a phase of the year (2026-11-15), refines D43:** "At growth steps; season as a phase of the year (Recommended)". A body re-reads its conditions when it would next grow. Season is a fraction of the world's year, read from the wave climate uses.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D43 · plans lineage-rounds · summary A body re-reads its switches at growth steps; a season condition is a phase range of the world's year.
+
+- **D50, self-fusion is named in the grammar and pools one reserve (2026-11-15), refines D44:** "Two parts joined with a symmetry? 1". Option 1 was: the rule names the runs it joins, with no geometry search, and joined parts draw on and fill a single shared reserve. His question is read (the implementer's reading, to confirm) as: a fuse may also name one run and join its symmetric copies, the mirrored pair or the radial arms.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D44, lineage-rounds D45 · plans lineage-rounds · summary Self-fusion joins runs the grammar names, or a run's symmetric copies, into one pooled reserve.
+
+- **D51, a partner is taken by incorporation into a fuse slot (2026-11-15), refines D44:** "By incorporation into a fuse slot (Recommended)". The grammar reserves a slot on a run; a whole part taken in while the slot is free lands there keeping all its functions and its own kind, and the lineage's recipe records it, so young grow it.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D44 · plans lineage-rounds · summary A fuse slot on a run takes an incorporated whole part that keeps its functions and kind; the recipe records it for descendants.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
