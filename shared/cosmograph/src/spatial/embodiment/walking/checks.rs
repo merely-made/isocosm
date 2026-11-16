@@ -8,6 +8,13 @@ use std::cell::RefCell;
 const CAPACITY: usize = 8192;
 type Key = (Yaw, [i64; 3], i64, Vec<(PartId, [i64; 3])>, Vec<PartId>);
 type Evaluation = Result<(Result<u64>, Result<()>)>;
+/// Slots of `times`: the posture work above, then the planners' own.
+const LAPS: usize = 12;
+pub(super) const ADMIT: usize = 7;
+pub(super) const FOOTHOLDS: usize = 8;
+pub(super) const BALANCED: usize = 9;
+pub(super) const PIVOT_FRAMES: usize = 10;
+pub(super) const POLYGONS: usize = 11;
 type Stand = ([i64; 3], Yaw, Vec<(PartId, [i64; 3])>);
 
 pub(crate) struct Checks<'a> {
@@ -27,7 +34,7 @@ pub(crate) struct Checks<'a> {
     admission_misses: usize,
     pub(super) reads: usize,
     pub(super) misses: usize,
-    times: [usize; 7],
+    times: [usize; LAPS],
 }
 struct Body {
     balance: Option<Balance>,
@@ -94,6 +101,10 @@ impl<'a> Checks<'a> {
     /// The other bodies as this check reads them, watched or not.
     pub(crate) fn blockers(&self) -> Blockers<'a> {
         self.blocked
+    }
+    /// Adds the time since `since` to planner slot `slot`.
+    pub(super) fn lap(&mut self, slot: usize, since: Clock) {
+        self.times[slot] += since.ns();
     }
     pub(crate) fn with_balance(mut self, balance: Option<Balance>) -> Self {
         self.entries.clear();
@@ -194,7 +205,7 @@ impl<'a> Checks<'a> {
             admission_misses: 0,
             reads: 0,
             misses: 0,
-            times: [0; 7],
+            times: [0; LAPS],
         }
     }
     pub(crate) fn step(
@@ -229,6 +240,12 @@ impl<'a> Checks<'a> {
     /// Arrival selection reads terrain alone. Residents remain a separate
     /// route-node/stride check after the original stance truncation.
     pub(in crate::spatial::embodiment) fn admit(&mut self, pose: &Pose) -> Result<()> {
+        let since = Clock::new();
+        let result = self.admit_timed(pose);
+        self.lap(ADMIT, since);
+        result
+    }
+    fn admit_timed(&mut self, pose: &Pose) -> Result<()> {
         self.admission_reads += 1;
         if !self.admissions.enabled() {
             self.admission_misses += 1;
@@ -432,6 +449,18 @@ impl Drop for Checks<'_> {
                     ("shapes_ns", self.times[4]),
                     ("terrain_ns", self.times[5]),
                     ("support_ns", self.times[6]),
+                ],
+            );
+        }
+        if self.times[ADMIT..].iter().any(|t| *t > 0) {
+            crate::profile::counts(
+                "walking.plan_cost",
+                &[
+                    ("admit_ns", self.times[ADMIT]),
+                    ("footholds_ns", self.times[FOOTHOLDS]),
+                    ("balanced_ns", self.times[BALANCED]),
+                    ("pivot_frames_ns", self.times[PIVOT_FRAMES]),
+                    ("polygons_ns", self.times[POLYGONS]),
                 ],
             );
         }

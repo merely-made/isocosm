@@ -12,7 +12,9 @@ mod checks;
 mod tests;
 mod turns;
 pub(crate) use checks::Checks;
+use crate::profile::Clock;
 use checks::boxes_at;
+use checks::{BALANCED, FOOTHOLDS, PIVOT_FRAMES};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -346,6 +348,7 @@ fn plan_at(
         };
         let local = local_feet(&current, yaw)?;
         let centre = checks.centre(&local, Rotation::at(yaw, angle))?;
+        let since = Clock::new();
         let mut candidates = Vec::new();
         for &foot in &remaining {
             let bearing = feet.keys().copied().filter(|id| *id != foot).collect();
@@ -386,6 +389,7 @@ fn plan_at(
             }
         }
         candidates.sort();
+        checks.lap(checks::POLYGONS, since);
         let mut found = None;
         let mut why = "no bearing-foot polygon within declared body shift".to_string();
         let rise_limit = if rules.clearance {

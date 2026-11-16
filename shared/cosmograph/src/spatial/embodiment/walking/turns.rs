@@ -247,7 +247,8 @@ fn attempt(
         let next_angle = i64::from(direction) * UNIT * (piece + 1) / pieces;
         let mut accepted = None;
         let mut why = "no common paid stance for the next small pivot".to_string();
-        for world in common(
+        let since = Clock::new();
+        let worlds = common(
             &mut checks.grounding,
             doc,
             root,
@@ -256,12 +257,15 @@ fn attempt(
             next_angle,
             rules,
             &current,
-        ) {
+        );
+        checks.lap(FOOTHOLDS, since);
+        for world in worlds {
             *tried += 1;
             if *tried > usize::from(rules.postures) {
                 return Err(format!("turn posture budget exhausted: {why}"));
             }
             let result: Result<_> = (|| {
+                let since = Clock::new();
                 let before = balanced(
                     checks,
                     planted(root, world.clone(), angle),
@@ -269,15 +273,20 @@ fn attempt(
                     from,
                     to,
                     rules,
-                )?;
-                let after = balanced(
-                    checks,
-                    planted(root, world, next_angle),
-                    from.yaw,
-                    from,
-                    to,
-                    rules,
-                )?;
+                );
+                let after = before.is_ok().then(|| {
+                    balanced(
+                        checks,
+                        planted(root, world, next_angle),
+                        from.yaw,
+                        from,
+                        to,
+                        rules,
+                    )
+                });
+                checks.lap(BALANCED, since);
+                let (before, after) = (before?, after.unwrap()?);
+                let since = Clock::new();
                 for i in 0..=16 {
                     let mut f = before.clone();
                     f.root = [0, 1, 2]
@@ -285,6 +294,7 @@ fn attempt(
                     f.turn = angle + (next_angle - angle) * i / 16;
                     check_frame(checks, &f, from.yaw)?;
                 }
+                checks.lap(PIVOT_FRAMES, since);
                 let entry = plan_at(checks, &current, &before, from.yaw, angle, rules, tried)?;
                 Ok((entry, before, after))
             })();
