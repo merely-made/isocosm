@@ -168,6 +168,11 @@ pub struct Entity {
     /// absent elsewhere, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub died: Option<Tick>,
+    /// The switches of its lineage's growth grammar that held when it last
+    /// grew (D49), by index among the grammar's rules; empty where it has
+    /// none, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub switched: Vec<u16>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the

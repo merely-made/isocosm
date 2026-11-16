@@ -95,6 +95,16 @@ pub(crate) fn wave(rules: &Rules, tick: Tick) -> i128 {
     }
 }
 
+/// Where the world's year stands at `tick`, in thousandths from its start:
+/// the phase the wave above turns by. Nought where the year does not turn.
+pub(crate) fn year_phase(rules: &Rules, tick: Tick) -> u16 {
+    if rules.sun.as_ref().is_some_and(|s| s.tidal_lock) {
+        return 0;
+    }
+    let year = u128::from(year_ticks(rules.tick_microseconds()).max(1));
+    u16::try_from(u128::from(tick) % year * u128::from(crate::rules::YEAR) / year).unwrap_or(0)
+}
+
 /// The whole doublings of mass from `reference` to `mass`, negative below it.
 fn doublings(mass: u128, reference: u64) -> i64 {
     let (mass, reference) = (mass.max(1), u128::from(reference.max(1)));

@@ -174,6 +174,7 @@ impl Simulation {
             spent: None,
             learned: None,
             died: None,
+            switched: Vec::new(),
         };
         if self.state.population.count() >= self.genesis.rules.limits.entities {
             return Err("entity limit".into());

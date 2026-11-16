@@ -450,6 +450,10 @@ pub(crate) trait Parties {
     fn development(&mut self, lineage: &str) -> Result<Development> {
         Err(format!("{lineage}'s bodies cannot grow here"))
     }
+    /// How many of `lineage`'s bodies share the actor's place.
+    fn crowd(&self, _lineage: &str) -> u32 {
+        0
+    }
     fn lineage_trait(&self, _lineage: &str, _key: &str) -> bool {
         false
     }

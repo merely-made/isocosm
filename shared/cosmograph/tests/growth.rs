@@ -397,3 +397,73 @@ fn a_kingdom_weighs_what_growth_charges_and_no_function_is_refused() {
     });
     assert_eq!(limb_under(other), (50, true, true));
 }
+
+/// The grazer's world with a grammar whose one switch, while `when` holds,
+/// lengthens the run by a segment: one lump off, two on.
+fn switching(when: Condition) -> Genesis {
+    let mut g = world(false);
+    let mut d = recipe(false);
+    let mut seed = d.recipe.tagmata[0].clone();
+    seed.segments = 1;
+    let on = Rule::Switch { when, rules: vec![Rule::Repeat { tagma: 0, by: 1 }] };
+    d.grammar = Some(Grammar { seed: vec![seed], rules: vec![on] });
+    g.lineages.get_mut("lineage:1").unwrap().development = Some(regrown(&d).unwrap());
+    g.rules.processes.insert("test:grow".into(), grow_act());
+    g
+}
+
+fn lumps(e: &Entity) -> usize {
+    e.living().filter(|(id, _)| e.situs(*id).is_some_and(|s| s[2] == 0)).count()
+}
+
+/// Matter every holder keeps: the world's, as the simulation counts it.
+fn run_grow(g: Genesis, e: Entity) -> (Simulation, Id, u128) {
+    let id = first_grazer(&g);
+    let mut g = g;
+    *g.population.lift(id).unwrap() = e;
+    let mut sim = Simulation::new(g, cosmograph::Execution::Individuals).unwrap();
+    let before = sim.matter();
+    let r = sim.execute(id, None, "test:grow", None);
+    assert_eq!(r.outcome, Outcome::Accepted, "{r:?}");
+    (sim, id, before)
+}
+
+#[test]
+fn a_switch_that_holds_grows_the_body_toward_its_stage_and_conserves_matter() {
+    let g = switching(Condition::Age { ticks: 0 });
+    let mut e = body(&g, &[1], &[], &[], 12);
+    e.accounts.insert(SOIL.into(), 60);
+    assert_eq!(lumps(&e), 1);
+    let (sim, id, before) = run_grow(g, e);
+    let e = sim.state().population.get(id).unwrap();
+    assert_eq!(e.switched, [0], "the switch was read and holds");
+    assert_eq!(lumps(e), 2, "the next lump grew, toward the stage's two");
+    assert_eq!(sim.matter(), before, "no matter made or lost");
+    // The control: a switch that does not hold leaves the body as drawn.
+    let g = switching(Condition::Age { ticks: 1_000_000 });
+    let mut e = body(&g, &[1], &[], &[], 12);
+    e.accounts.insert(SOIL.into(), 60);
+    let (sim, id, _) = run_grow(g, e);
+    let e = sim.state().population.get(id).unwrap();
+    assert!(e.switched.is_empty());
+    assert_eq!(lumps(e), 1);
+}
+
+#[test]
+fn a_switch_that_flips_off_takes_back_the_parts_its_stage_lacks_and_conserves_matter() {
+    let g = switching(Condition::Age { ticks: 1_000_000 });
+    // Grown in the stage, two lumps and their limbs, drawn as one.
+    let mut e = body(&g, &[2], &[], &[], 0);
+    e.soma = vec![1];
+    e.switched = vec![0];
+    assert_eq!((lumps(&e), e.living().count()), (2, 6));
+    let (sim, id, before) = run_grow(g, e);
+    let e = sim.state().population.get(id).unwrap();
+    assert!(e.switched.is_empty(), "the switch no longer holds");
+    assert_eq!((lumps(e), e.living().count()), (1, 3), "what the stage added is gone");
+    assert_eq!(sim.matter(), before, "taken back, no matter made or lost");
+    // The reserve and the ground took what the parts held.
+    let reserve = anatomy::held(e, &sim.genesis().rules, "reserve:1");
+    let soil: u64 = sim.state().sites.values().map(|s| s.accounts.get(SOIL).copied().unwrap_or(0)).sum();
+    assert!(reserve > 0 || soil > 0);
+}

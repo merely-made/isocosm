@@ -368,12 +368,16 @@ fn a_switch_cannot_hold_a_switch_or_a_rule_that_does_not_unfold() {
 
 #[test]
 fn a_switch_reads_the_body_and_its_place() {
-    let now = Situation { age: 30, reserves_full: false, crowd: 2 };
+    let now = Situation { age: 30, reserves_full: false, crowd: 2, year: 300 };
     let holds = |c: Condition| c.holds(&now);
     assert!(holds(Condition::Age { ticks: 30 }) && !holds(Condition::Age { ticks: 31 }));
     assert!(!holds(Condition::FullReserves));
     assert!(Condition::FullReserves.holds(&Situation { reserves_full: true, ..now }));
     assert!(holds(Condition::Crowding { bodies: 2 }) && !holds(Condition::Crowding { bodies: 3 }));
+    // A season is a range of the year, wrapping where it runs past the end.
+    let spring = |from, to| Condition::Season { from, to };
+    assert!(holds(spring(250, 500)) && !holds(spring(301, 500)) && !holds(spring(100, 300)));
+    assert!(holds(spring(900, 400)) && !holds(spring(900, 100)));
     let g = grammar(vec![run(1)], vec![
         Rule::Repeat { tagma: 0, by: 1 },
         switch(Condition::Age { ticks: 10 }, vec![]),

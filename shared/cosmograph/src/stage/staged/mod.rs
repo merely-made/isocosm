@@ -420,6 +420,10 @@ impl Staged<'_> {
                         let (from, to) = ((start, key), (end, into.clone()));
                         self.stage.legs.push(Leg { from, to, amount });
                     }
+                    for (key, amount) in grown.spilled {
+                        let (from, to) = ((start, key), (end, into.clone()));
+                        self.stage.legs.push(Leg { from, to, amount });
+                    }
                     for (taken, to, total) in grown.taken {
                         self.stage
                             .legs

@@ -7,7 +7,7 @@
 //! what the act holds in hand, given to the parts by their room (464).
 
 use super::{Parties, convert, spend};
-use crate::{Result, anatomy, growth, rules::*, schema::*};
+use crate::{Result, anatomy, growth, rules::*, schema::*, switching};
 
 /// What growth moved: what each account paid toward the prices, and what
 /// of the hand each conversion took.
@@ -15,6 +15,8 @@ use crate::{Result, anatomy, growth, rules::*, schema::*};
 pub(crate) struct Grown {
     pub paid: Ledger,
     pub taken: Vec<(Ledger, Key, u64)>,
+    /// What parts taken back (D49) gave the ground, by the account it left.
+    pub spilled: Vec<(Key, u64)>,
 }
 
 pub(crate) fn grow(
@@ -34,6 +36,30 @@ pub(crate) fn grow(
     let Some(tissue) = tissue else {
         return Err(format!("{lineage} has no tissue to grow"));
     };
+    if development.grammar.is_some() {
+        // The switches are read when the body would next grow (D49); parts
+        // the stage now lacks go to the reserve as far as it has room, the
+        // rest to the ground, as rent does.
+        let (now, crowd) = (p.tick(), p.crowd(&lineage));
+        let body = p.body(Binding::Actor)?;
+        let shown = switching::situation(rules, body, now, crowd, reserve.as_ref());
+        if switching::reread(&development, body, &shown) {
+            for (key, n) in switching::resorb(rules, &development, body)? {
+                let room = match &reserve {
+                    Some(r) => p.room(Binding::Actor, r)?,
+                    None => 0,
+                };
+                let put = n.min(room);
+                if let (Some(r), true) = (&reserve, put > 0) {
+                    p.give(Binding::Actor, r, put)?;
+                }
+                if n > put {
+                    p.give(Binding::Place, into, n - put)?;
+                    grown.spilled.push((key, n - put));
+                }
+            }
+        }
+    }
     let pay: Vec<Key> = reserve.into_iter().chain([tissue.clone()]).collect();
     loop {
         let hand = p.held(Binding::Actor, from)?;

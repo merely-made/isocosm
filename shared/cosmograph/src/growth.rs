@@ -77,8 +77,12 @@ pub fn resolve(e: &Entity, policy: &Policy, half: [i32; 3]) -> Option<(PartId, [
 
 /// The segments a body grows toward (495): an anamorphic lineage's recipe
 /// counts, a body keeping any it drew beyond them; otherwise those it drew.
-fn target(d: &Development, e: &Entity) -> Vec<u8> {
+pub(crate) fn target(d: &Development, e: &Entity) -> Vec<u8> {
     let recipe = d.recipe.tagmata.iter().map(|t| t.segments);
+    // A body in a stage grows toward the stage's counts (D49).
+    if !e.switched.is_empty() {
+        return recipe.collect();
+    }
     let drawn = |i: usize| e.soma.get(i).copied();
     recipe
         .enumerate()
@@ -97,6 +101,7 @@ fn target(d: &Development, e: &Entity) -> Vec<u8> {
 /// waits on healing, 485), whose parent it holds alive and which has a free
 /// seat. Returns it ready to attach.
 pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<(Frame, Part)>> {
+    let d = &*crate::switching::staged(d, e);
     let soma = Soma {
         segments: target(d, e),
         absent: vec![],
@@ -146,6 +151,7 @@ fn held(e: &Entity) -> BTreeSet<[u8; 3]> {
 /// The adult mass of the parts `d`'s recipe develops, at the counts the
 /// body grows toward, whose situs the body does not hold.
 pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
+    let d = &*crate::switching::staged(d, e);
     let soma = Soma {
         segments: target(d, e),
         absent: vec![],

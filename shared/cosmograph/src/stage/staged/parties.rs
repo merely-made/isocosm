@@ -36,6 +36,12 @@ impl Parties for Staged<'_> {
     fn tick(&self) -> crate::schema::Tick {
         self.sim.state.tick
     }
+    fn crowd(&self, lineage: &str) -> u32 {
+        let place = self.stage.place;
+        let groups = self.sim.state.population.groups.values();
+        let here = groups.filter(|g| g.entity.alive && g.entity.lineage == lineage && g.entity.place == place);
+        u32::try_from(here.map(|g| g.count).sum::<u64>()).unwrap_or(u32::MAX)
+    }
     fn lineage_trait(&self, lineage: &str, key: &str) -> bool {
         self.sim
             .state

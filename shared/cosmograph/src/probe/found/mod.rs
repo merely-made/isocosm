@@ -532,6 +532,7 @@ pub(super) fn member(
         spent: None,
         learned: None,
         died: None,
+        switched: Vec::new(),
     }
 }
 

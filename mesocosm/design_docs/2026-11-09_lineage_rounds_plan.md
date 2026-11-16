@@ -917,6 +917,25 @@ and the next conditions (D31) are answered. Left:
   This uses the existing exact birth, provision and recorded identity paths.
   The coarse demographic step remains in the coarse-step brief.
 
+- 2026-11-15: switch in the running simulation (D43, D49). `Condition` gains
+  `Season { from, to }`, thousandths of the year, wrapping, read from
+  `climate::year_phase` (the wave's own year, nought where tidally locked).
+  `Entity.switched` (indices of the switches that held, skipped when empty,
+  in the preimage the same way) is the active stage. `meaning/grow.rs::grow`,
+  where a body would next grow, reads its `Situation` (`switching::situation`:
+  age from `born`, full reserve as held and no room, the crowd of its lineage
+  at its place by the new `Parties::crowd`, the year), and where a switch
+  flipped takes off the parts the new unfolding lacks (`switching::resorb`,
+  leaves first, root kept), giving their matter to the reserve up to its room
+  and the rest to the place's `into` account as rent goes, with a flow leg for
+  the spill. `growth::lacking` and `lacking_mass` unfold the stage
+  (`switching::staged`); a body in a stage grows toward the stage's counts, not
+  those it drew, and drawn counts return when the stage ends. Controls in
+  `tests/growth.rs`: a held switch grows the next lump and `sim.matter()` is
+  unchanged; a switch off takes a 6-part body back to 3 with the matter
+  unchanged and `switched` empty. Not done: a birth copies its parent's
+  `switched` with the rest of the entity, and the flow record's per-part
+  routing does not log the resorbed parts.
 - 2026-11-15: dead matter (D46), whole-run radial (D45) and deposit (D47,
   D48). `Entity::sized` (`geometry.rs`) is the parts a sum over parts reads:
   the living ones less a boxed part with no function and no cell, which holds

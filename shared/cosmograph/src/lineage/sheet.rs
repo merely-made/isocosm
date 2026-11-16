@@ -108,6 +108,7 @@ pub fn of(
         spent: None,
         learned: None,
         died: None,
+        switched: Vec::new(),
     };
     e.embody(body);
     let carried = match d.systems.is_empty() {

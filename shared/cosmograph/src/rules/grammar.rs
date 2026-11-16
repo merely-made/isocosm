@@ -82,7 +82,14 @@ pub enum Condition {
     FullReserves,
     /// At least `bodies` of the body's lineage share its place.
     Crowding { bodies: u32 },
+    /// The world's year is within `from` to `to`, in thousandths of the year
+    /// from its start, wrapping past the end where `from` is the greater
+    /// (D49): a season as a phase of the wave climate reads.
+    Season { from: u16, to: u16 },
 }
+
+/// The thousandths in a year, which a season is a range of.
+pub const YEAR: u16 = 1000;
 
 /// What a body and its place show a switch to read.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -90,6 +97,8 @@ pub struct Situation {
     pub age: u64,
     pub reserves_full: bool,
     pub crowd: u32,
+    /// Where the world's year stands, in thousandths from its start.
+    pub year: u16,
 }
 
 impl Condition {
@@ -99,6 +108,8 @@ impl Condition {
             Self::Age { ticks } => now.age >= ticks,
             Self::FullReserves => now.reserves_full,
             Self::Crowding { bodies } => now.crowd >= bodies,
+            Self::Season { from, to } if from <= to => (from..to).contains(&now.year),
+            Self::Season { from, to } => now.year >= from || now.year < to,
         }
     }
 }

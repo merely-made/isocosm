@@ -452,6 +452,7 @@ impl Founding {
                     spent: None,
                     learned: None,
                     died: None,
+                    switched: Vec::new(),
                 },
                 1,
             )?;
@@ -515,6 +516,7 @@ impl Founding {
                     spent: None,
                     learned: None,
                     died: None,
+                    switched: Vec::new(),
                 },
                 count,
             )?;
