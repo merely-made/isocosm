@@ -364,3 +364,44 @@ one search each with identical counts: actor 61 three times (5.1 to 5.3 s,
 pops), actor 58 twice (2.2 s, 128 trials, 4,821 pops). Not established:
 whether those searches end in a route, in none or at a limit, and why each
 is repeated rather than remembered. The 2026-11-02 commit was not run.
+
+## 2026-11-16 E10 step 0, the heavy route searches diagnosed
+
+Same commit, command and seed, instrumented release build, quiet machine
+(step total 36.6 and 37.1 s instrumented against 36.3 s plain). The patch,
+the per-search table and raw output are in
+`Code/scratch/nested-voxel-measure/e10-diag`; nothing was committed.
+
+- A trial is one best-first search to any food. Its best path's unchecked
+  edges are then validated by the full-body step check; the first refused
+  edge is banned and the search restarts. Trials are one more than
+  refusals. There is no limit on trials, only the 256-node graph cap.
+- The time is the step check, not the search: actor 61's 5.48 s is 0.20 s
+  of search and 5.28 s of checks, 264 refused of 447 checked, about 18 ms a
+  refusal and 3 ms an acceptance. Actor 142: 2.19 of 2.52 s. Actor 58: 2.13
+  of 2.21 s.
+- Actors 61 and 142 end with no route and stand still; 58 finds a route
+  after 127 refusals and walks, its later searches falling to 0.53 s and
+  8 ms. Actors 39, 43 and 55 also end with no route, in one trial of about
+  90 ms, three or four times each.
+- The route cache stores failures (`route/cache.rs`, the insert is
+  unconditional) and never filled (at most about 33 of 64 entries). Its key
+  includes every other posed body's boxes in the window. Every repeated
+  search of a standing body missed on those boxes alone, with their count
+  unchanged, so other bodies had moved. Eighteen of 22 repeats gave the
+  same outcome and counts as that body's earlier search. First-time
+  searches cost 10.5 s; repeats cost 22.1 s.
+- Of 962 calls for a food route, 674 returned for no food in range and 167
+  for food within reach; 120 reached the cache, 87 hits and 33 searches.
+
+Diagnostics, not valid simulation:
+
+| Run | 20 steps | Searches | Living at tick 20 |
+| --- | ---: | ---: | ---: |
+| Plain | 36.4 s | 33 | 150 |
+| Cache ignoring other bodies | 14.6 s | 16 | 150 |
+| Stop at the first refusal | 3.38 s | 26 | 148 |
+| Both | 2.62 s | 12 | 148 |
+
+Not established: whether a route exists for 61 and 142 (terrain not
+inspected); about 2.7 s of 61's check time outside the existing timers.

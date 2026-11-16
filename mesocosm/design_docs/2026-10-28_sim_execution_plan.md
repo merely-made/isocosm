@@ -710,6 +710,12 @@ contract.
      workload on a busy machine. The stepper of step 3 calls the same route
      code, so moving these searches to the foreground would not make them
      cheaper.
+     **Diagnosed 2026-11-16** ([receipts](archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md#2026-11-16-e10-step-0-the-heavy-route-searches-diagnosed)):
+     the time is the full-body step check on refused edges (about 18 ms
+     each, hundreds a search), not the search; and a standing body's search
+     is redone because the cache key holds every other body's boxes, which
+     change when anyone moves. Repeats are 22.1 s of 32.6 s and 18 of 22
+     reproduce the earlier result exactly.
   1. The world rule (D52). Done when an older Mesocosm save loads, replays
      and hashes to its stored value.
   2. `mesocosm-runtime` carries handbacks: passed to the clock
