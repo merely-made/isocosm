@@ -841,3 +841,52 @@ is), 5.7 (radial while this waits; lineage rounds D41 stores an arm count),
 - **Owed work.** "One Sonnet lane for both, now (Recommended)": a read of
   Seiche's current state, then the throwaway measurement at 10x, 100x and
   1000x in scratch space outside every repository.
+
+### 2026-11-16, after the first measurement
+
+A lane measured a 4x4x4 tree against dense per-part arrays, a tree with
+shared subtrees and 8x8x8 bricks, on synthetic bodies shaped like the tips
+preset from 864 to 864,000 cells (`Code/scratch/nested-voxel-measure`,
+`results_run1.md` and `results_run2.md`; one configuration rerun and
+matching). Memory was counted from node sizes, not measured. At 864,000
+cells in 144,000 small parts: dense 9.9 MiB, tree 8.0 MiB, shared tree
+9.7 KiB, bricks 38.6 MiB; a stored root sum reads in 0.4 ns against 1.2 ms
+summed from dense cells; a region sum is 9.6 us against 164 us; an edit with
+sums kept is 66 ns against 5 ns with none. With 144 large parts dense was
+about 4x faster on region sums and slightly smaller. Sharing fell from about
+1000x on identical arms to about 10x with one cell in 32 changed and to
+nothing on irregular content, and made an edit about 30x slower. A tree
+rebuild is 50 to 580 us at 8,600 to 108,000 cells and 4.5 to 10 ms at
+864,000.
+
+Seiche, from the one local checkout (`Code/worktrees/seiche-history`,
+`a6b8641`, 2026-11-07, possibly behind its remote): `nisus` is dense
+revisioned voxel chunks with no tree, sums or amounts; `modulus` is 8x8x8
+bricks of one-byte material and is the GPU contract; a new crate would sit
+under `crates/conatus/`.
+
+- **Truth or derived.** "I am alright with 1, but wonder if a plant doesn't
+  capture maybe some of the costs that could be mitigated by saving and
+  hashing the nested tree structure. but I also wonder if there's prior art
+  on this that might lend some insight into this decision." Option 1 was
+  stay derived. Unmeasured, and where a saved, hashed tree would pay: a
+  population of near-identical bodies, hashing per tick, sharing between
+  saves and ticks, and comparing two worlds by hash. Prior art given from
+  memory, unchecked: Hashlife, OpenVDB, sparse voxel DAGs and HashDAG,
+  Dreams, Teardown, Minecraft, Merkle trees; a tree is truth where content
+  changes slowly or regularly and geometry is derived where it changes
+  constantly.
+- **A second measurement.** "Yes, with real bodies and a population
+  (Recommended)": the real preset and a founded lineage's members, about 150
+  bodies changing a little each tick, measuring per-tick hash cost, save
+  size across ticks and diff cost against today's whole-document hashing.
+- **5.1, the sim's truth about shape.** "Wait for the second measurement".
+- **Sums.** "A sum in every node (Recommended)".
+- **Sharing.** "1, probably world-class entities (rarely change)": the plain
+  tree first, with shared subtrees as an optional layer, switched on for
+  world-class entities.
+- **Bricks.** "Why not change modulus to better suit different, recursively
+  derived sizes?" Then "Yes as a direction; assess first (Recommended)":
+  modulus is to draw nested 4x4x4 nodes in place of bricks; a read of its
+  shader and real consumers comes first and becomes a plan in Seiche; until
+  then the tree is flattened to bricks.
