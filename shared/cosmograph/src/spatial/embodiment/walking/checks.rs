@@ -5,7 +5,9 @@ use super::*;
 use crate::profile::Clock;
 use std::cell::RefCell;
 
-const CAPACITY: usize = 8192;
+/// Postures kept per search. The heaviest searches read about 116 thousand
+/// distinct postures, so a smaller store re-reads evicted ones.
+const CAPACITY: usize = 65536;
 const PIVOTS: usize = 8192;
 type Key = (Yaw, [i64; 3], i64, Vec<(PartId, [i64; 3])>, Vec<PartId>);
 type Pivot = Result<([i64; 3], [i64; 2])>;
