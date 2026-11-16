@@ -486,6 +486,21 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D16 · plans sim-execution · summary New generated worlds credit sunlight by the fixed-point rule; the genesis digest and exact-replay pins were re-recorded for it.
 
+- **D49, parts stay the truth and gain stored hashes, per part (2026-11-16):**
+  "Parts stay truth; add stored hashes now; tree stays derived
+  (Recommended)", then "Per part (Recommended)", then "Plan first, then a
+  lane (Recommended)". A scratch measurement on generated populations
+  (`Code/scratch/nested-voxel-measure`, `pop_run1.md` to `pop_run3.md`;
+  the body geometry brief has the tables) found that rehashing every body's
+  document, as the witness does, costs about 3.7 ms a tick for 150 plants,
+  that a remembered hash per body is about 40x faster at 1 percent of
+  bodies changing and a hash per part about 100x, and that a nested voxel
+  tree with stored hashes adds an edge only when about 10 percent change.
+  Those bodies and document sizes are estimates, not the simulator's. The
+  state hash changes once, so its pins are re-recorded once. Phase E11.
+
+  Links: area Processes and rules · draws on 633, 649, 652 · plans sim-execution · summary The part tree stays the simulator's truth and gains remembered per-part hashes; the nested voxel tree stays derived. Not yet built.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -657,6 +672,34 @@ contract.
   timed and its cap brought to Mark.
 - Needs: PG7's Places (landed); conatus for paths and foot placement
 - Rulings: 1080, 1081, 1082, 1083, 1084, D30
+
+### E11. Stored hashes per part (D49)
+Proposed 2026-11-16 from D49; no step started. Today `Simulation::witness`
+puts the whole population in as one entry (`simulation/witness.rs:28`), so
+`state_hash` encodes and hashes every body's document on every call.
+Remembered per-part hashes make that proportional to what changed.
+
+- **H0, where the time goes.** Before anything is built, measure in a real
+  played run how often `state_hash`, `witness` and saving are called and
+  what share of a tick and of a save they take. Outside tests the callers
+  found on 2026-11-16 are benches, probes and replay checks, not the played
+  tick, and the 2026-11-12 played-tick profile is dominated by food route
+  search and walking plans. Done when the receipts hold those numbers for
+  the A1 and world-time worlds at their founded sizes and at 10x.
+- **H1, per-part hashes in the witness.** Each part's hash is remembered and
+  dropped when the part changes; a body's hash is built from its parts' and
+  the population entry from its bodies'. Done when a run's hash after N
+  ticks equals the hash computed with every remembered hash discarded;
+  Individuals and Grouped still agree; replay stays exact; the pins that
+  move are listed and re-recorded once under D49; and H0's measurement,
+  repeated, shows the gain.
+- **H2, saves write unchanged bodies once.** Needs its own read of the save
+  path (`history.rs`, `cosmograph-host/src/world.rs`) before it is specified.
+  Done when consecutive saves share unchanged bodies, an old save still
+  loads and verifies, and the save format carries its version.
+- Needs: nothing outside this repository; the witness crate
+  (`state-witness`, Eidetic) is used as it is.
+- Rulings: D49; 633, 649, 652
 
 ## Deferred and parked
 - **Playable-loop forager route search** (the `playable-loop` branch, unpushed at 2026-10-23): its cost is deliberation the A1 battery does not exercise and no battery measures it. Owned by `bodies`; `sim-execution` reads its cost once a battery exists. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`.

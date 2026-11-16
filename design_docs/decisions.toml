@@ -7636,6 +7636,14 @@ summary = "New generated worlds credit sunlight by the fixed-point rule; the gen
 draws_on = ["sim-execution D16"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D49"]
+title = "parts stay the truth and gain stored hashes, per part (2026-11-16)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The part tree stays the simulator's truth and gains remembered per-part hashes; the nested voxel tree stays derived. Not yet built."
+draws_on = ["633", "649", "652"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"

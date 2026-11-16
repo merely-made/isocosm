@@ -890,3 +890,61 @@ under `crates/conatus/`.
   modulus is to draw nested 4x4x4 nodes in place of bricks; a read of its
   shader and real consumers comes first and becomes a plan in Seiche; until
   then the tree is flattened to bricks.
+
+### 2026-11-16, after the second measurement
+
+The lane extended the probe to populations (`src/bin/pop.rs`,
+`pop_run1.md` to `pop_run3.md`; the per-tick test rerun and matching in
+ratio, on a busy machine). Generated lineages of about 150 members modelled
+on the tips preset (152 parts, 892 cells, an estimated 27.8 KB document) and
+the browser recipe (about 33 parts, 6.0 KB), differing as siblings do
+(segment drift, absence at 1 in 12). The simulator's state hash is FNV-1a 64
+over postcard bytes with the whole population as one entry
+(`shared/cosmograph/src/simulation/witness.rs`), which the probe matched.
+
+| 150 plants, 1 percent changing per tick | per-tick apply and hash | against today |
+|---|---|---|
+| documents rehashed whole (today) | 3.67 ms | 1x |
+| documents, a remembered hash per body | 97 us | 38x |
+| documents, identical parts stored and hashed once | 37 us | 100x |
+| a tree per body, stored hashes | 90 us | 41x |
+| one shared tree store | 95 us | 38x |
+
+At 10 percent changing: per body 9x, per part 26x, tree 23x. A hundred
+snapshots: 342 MiB whole, 10.35 MiB with unchanged bodies written once (33x),
+2.47 MiB as trees so written (138x), 1.74 MiB in one shared store (196x).
+Finding what differs between two worlds: about 1 us by tree, 11 to 14 us by
+remembered per-body hashes, 3 to 4 ms by rehashing. The tree's costs:
+changes 8 to 15x slower to apply, about 1.3x memory beside the documents,
+and a shared store accumulates garbage (43 percent of it after 100 ticks at
+1 percent). Sharing across members ran from 58x fewer nodes when every part
+is full to 1.02x when amounts vary freely, which is probably the real case.
+
+Modulus, read in full with its consumers: the GPU contract is a pointer
+volume and an 8x8x8 one-byte atlas walked a voxel at a time with no
+empty-space skipping (`brick_dda.wgsl`, 151 lines); its consumers are
+`isometer-lens` (about 2,700 lines) and Eponym's client (about 1,100);
+shaders have no 64-bit integers; the lens is tested against a WebGL2-level
+limit; terrain's 8x8x8 bricks do not divide into 4x4x4 nodes.
+
+- **Truth.** "Parts stay truth; add stored hashes now; tree stays derived
+  (Recommended)", at the grain "Per part (Recommended)", by "Plan first,
+  then a lane (Recommended)". Recorded as sim execution D49 and phase E11.
+- **5.1, the sim's truth about shape.** "Boxes stay truth; angles and counts
+  are data for lenses (Recommended)".
+- **Modulus.** "Add a nested path beside bricks; bodies move first
+  (Recommended)": bricks stay for terrain until nisus takes its store.
+- **WebGL2.** "i think \"we work where wgpu does\" is a fair stack stance,
+  given the wgpu of it all. but if 1 works and doesn't cost us much, i'm
+  down". Option 1 was keeping WebGL2-class devices with nodes in textures.
+  So: the stance is wherever wgpu runs; texture-held nodes are kept only if
+  cheap, which the Seiche assessment has to show with real limits.
+- **The far look.** "The material with the most matter (Recommended)": a
+  parent drawn in place of its children shows the material holding the
+  largest amount beneath it.
+- **The drawn leaf.** "A cell; lenses subdivide on the fly (Recommended)".
+
+Open: the hash width if stored nodes are ever addressed across files or
+peers (the witness is FNV-1a 64, an equality witness, not collision-safe);
+the real texture limits on wgpu's weakest targets; a plan in Seiche for the
+nested path, which is another repository's and not started.
