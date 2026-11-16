@@ -49,6 +49,8 @@ fn segment(kind: &str, facing: Facing) -> Tagma {
         facing,
         socket: Facing::Right,
         variance: None,
+        symmetry: None,
+        harden: None,
     }
 }
 

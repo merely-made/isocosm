@@ -157,6 +157,8 @@ fn tagma(sheets: &Sheets, sheet: &str, entry: &TagmaEntry, banks: &Banks) -> Res
         facing: layout.map_or(Facing::Back, |l| facing(l.facing)),
         socket: bears.map_or(Facing::Right, |(_, socket)| socket),
         variance: layout.and_then(|l| l.variance),
+        symmetry: None,
+        harden: None,
     })
 }
 

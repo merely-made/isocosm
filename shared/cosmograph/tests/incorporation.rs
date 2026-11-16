@@ -56,6 +56,8 @@ fn tagma(segment: &str, bears: Option<&str>) -> Tagma {
         facing: Facing::Back,
         socket: Facing::Right,
         variance: None,
+        symmetry: None,
+        harden: None,
     }
 }
 

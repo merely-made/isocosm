@@ -9,7 +9,7 @@ use cosmograph::{
     bodied,
     development::{Soma, develop},
     geometry::Body,
-    rules::{Development, Facing, Policy, Recipe, Rules, Tagma, regrown, unfold},
+    rules::{Accretion, Development, Facing, Policy, Recipe, Rule, Rules, Symmetry, Tagma, Template, regrown, unfold},
     schema::*,
 };
 use std::collections::BTreeSet;
@@ -32,6 +32,8 @@ fn run(segments: u8) -> Tagma {
         facing: Facing::Back,
         socket: Facing::Right,
         variance: None,
+        symmetry: None,
+        harden: None,
     }
 }
 
@@ -129,4 +131,101 @@ fn the_tips_plant_develops_clear_of_itself_and_the_same_each_time() {
     assert!(crossing.is_empty(), "{crossing:?}");
     assert_eq!(body, grown(&r, &bodied::tips(&r).unwrap()));
     assert_eq!(body.parts.len(), 72 + 2 * 8 + 24 + 40, "segments and the plates they bear");
+}
+
+/// A stem of two segments running up, each bearing one plate at its flank,
+/// symmetry named by a rule where `symmetry` is given.
+fn stem(symmetry: Option<Symmetry>, bilateral: bool) -> Development {
+    let seed = Tagma {
+        bears: Some("kind:broad".into()),
+        per_segment: 1,
+        facing: Facing::Above,
+        ..run(2)
+    };
+    let rules = symmetry.map(|symmetry| Rule::Symmetry { tagma: 0, symmetry }).into_iter().collect();
+    let mut d = plain();
+    d.policy = Policy { bilateral, ..Policy::default() };
+    d.lexicon = ["kind:block", "kind:broad"].map(String::from).into();
+    d.grammar = Some(cosmograph::rules::Grammar { seed: vec![seed], rules });
+    regrown(&d).unwrap()
+}
+
+/// Pairs of parts whose boxes cross.
+fn crossings(body: &Body) -> Vec<(PartId, PartId)> {
+    let doc = &body.doc;
+    let mut crossing = vec![];
+    for p in &doc.parts {
+        for q in doc.parts.iter().filter(|q| q.id > p.id) {
+            let (a, b) = (doc.world_pivot(p.id).unwrap(), doc.world_pivot(q.id).unwrap());
+            if (0..3).all(|i| (a[i] - b[i]).abs() < p.half_extent[i].abs() + q.half_extent[i].abs()) {
+                crossing.push((p.id, q.id));
+            }
+        }
+    }
+    crossing
+}
+
+#[test]
+fn a_runs_symmetry_places_what_it_bears_once_in_pairs_or_round() {
+    let r = rules();
+    let parts = |d: &Development| {
+        let body = grown(&r, d);
+        assert!(crossings(&body).is_empty(), "{:?}", crossings(&body));
+        body.parts.len()
+    };
+    // Two stem segments and a plate on each, doubled or not.
+    assert_eq!(parts(&stem(None, false)), 2 + 2);
+    assert_eq!(parts(&stem(None, true)), 2 + 4);
+    // A named symmetry overrides the policy either way.
+    assert_eq!(parts(&stem(Some(Symmetry::None), true)), 2 + 2);
+    assert_eq!(parts(&stem(Some(Symmetry::Bilateral), false)), 2 + 4);
+    // Round the vertical: the arms the lattice can show, four at most, while
+    // the count the rule named is stored whole.
+    assert_eq!(parts(&stem(Some(Symmetry::Radial { arms: 3 }), true)), 2 + 2 * 3);
+    let five = stem(Some(Symmetry::Radial { arms: 5 }), true);
+    assert_eq!(parts(&five), 2 + 2 * 4);
+    assert_eq!(five.recipe.tagmata[0].symmetry, Some(Symmetry::Radial { arms: 5 }));
+}
+
+#[test]
+fn symmetry_leaves_a_recipe_that_names_none_serializing_as_before() {
+    let d = stem(None, true);
+    assert!(!serde_json::to_string(&d.recipe).unwrap().contains("symmetry"));
+    let named = stem(Some(Symmetry::Radial { arms: 5 }), true);
+    let json = serde_json::to_string(&named).unwrap();
+    assert!(json.contains("Radial"));
+    assert_eq!(serde_json::from_str::<Development>(&json).unwrap(), named);
+}
+
+/// A stem of four segments with its oldest two hardened to wood, a kind of
+/// the block's box that holds cells of nothing, and bearing bark round it.
+#[test]
+fn accreted_segments_and_coverings_develop_as_parts_that_do_nothing() {
+    let mut r = rules();
+    let block = r.kinds["kind:block"].clone();
+    for kind in ["kind:wood", "kind:bark"] {
+        r.kinds.insert(kind.into(), Template { cells: Default::default(), ..block.clone() });
+    }
+    let mut d = plain();
+    d.recipe.tagmata = vec![Tagma { facing: Facing::Above, ..run(4) }];
+    let rules_ = [
+        Accretion::Harden { oldest: 2, kind: "kind:wood".into() },
+        Accretion::Cover { kind: "kind:bark".into(), socket: Facing::Right },
+    ];
+    let mut rules_: Vec<Rule> = rules_.into_iter().map(|how| Rule::Accrete { tagma: 0, how }).collect();
+    rules_.push(Rule::Symmetry { tagma: 0, symmetry: Symmetry::None });
+    d.grammar = Some(cosmograph::rules::Grammar { seed: d.recipe.tagmata.clone(), rules: rules_ });
+    d.lexicon = ["kind:block", "kind:wood", "kind:bark"].map(String::from).into();
+    let d = regrown(&d).unwrap();
+    let body = grown(&r, &d);
+    // Four segments and a bark each, none overlapping.
+    assert_eq!(body.parts.len(), 8);
+    assert!(crossings(&body).is_empty());
+    let does_nothing = |p: &Part| p.cells.is_empty() && p.functions.is_empty();
+    let situs = |id: PartId| body.doc.part(id).and_then(|g| g.situs).unwrap();
+    for (id, part) in &body.parts {
+        let [_, s, slot] = situs(*id);
+        // Wood is the oldest two, bark every covering; the young stay live.
+        assert_eq!(does_nothing(part), slot > 0 || s < 2, "{:?}", situs(*id));
+    }
 }

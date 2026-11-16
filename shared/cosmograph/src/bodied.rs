@@ -183,6 +183,8 @@ fn bare(segments: u8, segment: &str) -> Tagma {
         facing: Facing::Back,
         socket: Facing::Right,
         variance: None,
+        symmetry: None,
+        harden: None,
     }
 }
 

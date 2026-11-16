@@ -794,6 +794,27 @@ and the next conditions (D31) are answered. Left:
 
 ## Findings
 
+- 2026-11-15, read from the code for the operators still unbuilt: (1) a
+  living part's upkeep is the body's, not the part's: `upkeep_of`
+  (`probe/found/body/physiology.rs`) prices the body's held tissue to the
+  three-quarter power and its ceiling by `Expr::Parts` over every living part,
+  so an accreted part that holds matter and has a box raises a body's upkeep
+  today; excluding it is an engine change to those readings (and
+  `Reading::Voxels`), not a kind's data. (2) Rot (`ecology/rot.rs`) is an
+  agentless process whose target is a dead entity (`alive: Some(false)`),
+  giving a share of its matter to `world:soil`; a living body's part does
+  not rot. (3) A bite lands on one part drawn by holdings (Bodies 5), so an
+  accreted part that holds matter is already eaten. (4) Growth
+  (`growth.rs::lacking`) develops the recipe at the counts the body grows
+  toward and grows the first missing situs whose parent lives; it never takes
+  a part off. `Entity::take_part` hands the part and its ledger back with the
+  situs cleared, which is what a resorption would start from. (5) Whole-part
+  incorporation (`growth.rs::whole`, `take_whole`) lands a part with its
+  donor's matter, an adapter's functions cleared; a partner that keeps working
+  is the opposite of that landing. (6) Tagmata edits (drift, repertoire) and
+  `Rule` matches elsewhere read `Rule::Repeat` only (`lineage/drift.rs`,
+  `revise.rs`, `speciate.rs`), so a grammar holding any new rule is not
+  drifted.
 - 2026-11-12, from ALIEN (chrxh/alien), read from general knowledge and
   not from its source: its bodies are connected cells with a function
   each, built by a genome, as ours are. It keeps several kinds alive
@@ -868,6 +889,46 @@ and the next conditions (D31) are answered. Left:
   This uses the existing exact birth, provision and recorded identity paths.
   The coarse demographic step remains in the coarse-step brief.
 
+- 2026-11-15: symmetry as a grammar rule (D29, D41). `Rule::Symmetry`
+  sets `Tagma.symmetry` (`Option<Symmetry>`: `Bilateral`, `Radial { arms }`,
+  `None`), which `development::develop` reads through
+  `Symmetry::sockets`. A run that names none still follows
+  `Policy.bilateral`, so no recipe without the field moves: it serializes
+  and hashes as before (`skip_serializing_if`), and the golden digest, the
+  `development`, `grammar` and `exact_memo` tests and `pre958` pass
+  unchanged. Radial repeats what a segment bears round the vertical from its
+  socket, up to the lattice's four horizontal facings, leaving out those
+  along the run's own axis, and stores the arm count whole; fewer than two
+  arms is refused (`rules/recipe.rs`, `rules/grammar.rs`,
+  `validation/recipe.rs`). Controls: `rules/grammar/tests.rs` and
+  `tests/grammar.rs` (two stem segments bearing a plate: 4 parts with none
+  and no mirror, 6 mirrored, 8 with three arms, 10 with five; no boxes cross).
+- 2026-11-15: accrete, harden and cover (D42), built static. `Rule::Accrete`
+  takes `Accretion::Harden { oldest, kind }`, which sets `Tagma.harden`
+  (the run's oldest segments are of `kind`; `Tagma::segment_kind` reads it,
+  as the grammar's cuts and splits carry it on and a side run starts
+  young), or `Accretion::Cover { kind, socket }`, which is the run's one
+  borne kind a segment at `socket` (refused where the run bears already,
+  and a radial run's cover is a ring). Validation holds an accreted kind to
+  one that gives no cell to a function, so the part does nothing
+  (`validation/recipe.rs::inert`, in a switch's rules too). Controls in
+  `rules/grammar/tests.rs` and `tests/grammar.rs` (a developed stem: four
+  segments and a bark each, the oldest two and every bark with no cells or
+  functions, no boxes crossing). Not built: that such a part pays no upkeep,
+  that it can be eaten or rot while its body lives (see Findings), and the
+  third place, matter deposited at the body's place; each waits on a ruling.
+- 2026-11-15: switch (D43), the grammar side only. `Rule::Switch { when,
+  rules }` holds rules that apply where it stands in the order only while
+  `when` holds; `unfold` is the stage with every switch off, as stored, and
+  `unfold_on(grammar, &on)` the stage with the switches at `on` (by index
+  among the rules). `Condition` is `Age { ticks }`, `FullReserves` or
+  `Crowding { bodies }`, read from a `Situation { age, reserves_full, crowd }`
+  by `holds`, `switches` and `switched_on`. A switch may not hold a switch;
+  validation unfolds each switch alone and all together, and checks each
+  against the lexicon and the tagmata checks. Not built: a body reading its
+  own situation, growing toward the stage that holds and taking back the parts
+  it lacks, and season. Controls in
+  `rules/grammar/tests.rs`.
 - 2026-11-14: nutrient axes (D39 model 1, competition for limiting
   resources; case 38), as an optional rule, off by default
   (`Founding.nutrients`, `ecology/nutrients.rs`; Mesocosm

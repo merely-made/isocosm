@@ -71,11 +71,21 @@ fn tagmata(tagmata: &[Tagma]) -> Option<&'static str> {
         {
             return Some("has an unbound or oversized appendage chain");
         }
+        if matches!(t.symmetry, Some(Symmetry::Radial { arms }) if arms < 2) {
+            return Some("has a radial run of fewer than two arms");
+        }
         if t.parent.is_some_and(|p| usize::from(p) >= i) {
             return Some("branches a tagma from one not yet placed");
         }
     }
     None
+}
+
+/// Why a kind laid down as dead matter (D42) is none: it gives cells to a
+/// function, so it would do something.
+fn inert(rules: &Rules, kind: &str) -> Option<String> {
+    let k = rules.kinds.get(kind)?;
+    k.cells.values().any(|n| *n > 0).then(|| format!("accretes {kind}, which gives cells to a function"))
 }
 
 pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<()> {
@@ -91,6 +101,15 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
         }
         if let Some(why) = tagmata(&recipe.tagmata) {
             return refuse(why);
+        }
+        let hardened = recipe.tagmata.iter().filter_map(|t| t.harden.as_ref());
+        for h in hardened {
+            if h.oldest == 0 {
+                return refuse("hardens a run of none of its segments");
+            }
+            if let Some(why) = inert(rules, &h.kind) {
+                return refuse(&why);
+            }
         }
         // A declared tract names a catalogued function on some part (765).
         if d.tracts.iter().any(|t| t.cells == 0 || !rules.functions.contains_key(&t.function)) {
@@ -111,6 +130,17 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
             if let Some(why) = tagmata(&grammar.seed) {
                 return Err(format!("{id}'s grammar seed {why}"));
             }
+            let held = grammar.rules.iter().flat_map(|r| match r {
+                Rule::Switch { rules, .. } => rules.iter().collect(),
+                r => vec![r],
+            });
+            for rule in held {
+                if let Rule::Accrete { how: Accretion::Harden { kind, .. } | Accretion::Cover { kind, .. }, .. } = rule
+                    && let Some(why) = inert(rules, kind)
+                {
+                    return refuse(&why);
+                }
+            }
             let unfolded = unfold(grammar).map_err(|why| format!("{id}'s grammar: {why}"))?;
             if rules.inherited_variation != 0 && unfolded != recipe.tagmata {
                 return refuse("has a body map that differs from its growth grammar");
@@ -118,9 +148,22 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
             if let Some(why) = tagmata(&unfolded) {
                 return Err(format!("{id}'s grammar unfolds to tagmata that {why}"));
             }
-            let named = Recipe { tagmata: unfolded, ..recipe.clone() }.kinds();
-            if let Some(k) = named.iter().find(|k| !d.lexicon.contains(*k)) {
-                return Err(format!("{id}'s grammar names {k}, which its lexicon lacks"));
+            // Each stage a switch can bring about develops and names only
+            // what the line holds, as the stored one does.
+            let all: Vec<usize> = switches(grammar).into_iter().map(|(i, _)| i).collect();
+            let mut stages = vec![unfolded];
+            for on in all.iter().map(|i| vec![*i]).chain([all.clone()]).filter(|on| !on.is_empty()) {
+                let stage = unfold_on(grammar, &on).map_err(|why| format!("{id}'s grammar: {why}"))?;
+                if let Some(why) = tagmata(&stage) {
+                    return Err(format!("{id}'s grammar, with a switch on, unfolds to tagmata that {why}"));
+                }
+                stages.push(stage);
+            }
+            for tagmata in stages {
+                let named = Recipe { tagmata, ..recipe.clone() }.kinds();
+                if let Some(k) = named.iter().find(|k| !d.lexicon.contains(*k)) {
+                    return Err(format!("{id}'s grammar names {k}, which its lexicon lacks"));
+                }
             }
         }
         if let Some(k) = d.lexicon.iter().find(|k| !rules.kinds.contains_key(*k)) {

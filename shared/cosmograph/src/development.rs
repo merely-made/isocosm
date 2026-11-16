@@ -13,7 +13,7 @@
 use crate::{
     Result,
     geometry::{Body, Frame},
-    rules::{Anchor, Development, Facing, Recipe, Rules, Tagma, Template},
+    rules::{Anchor, Development, Facing, Recipe, Rules, Symmetry, Tagma, Template},
     schema::*,
 };
 use serde::{Deserialize, Serialize};
@@ -133,9 +133,9 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
     let mut last: Option<PartId> = None;
     let next = |parts: &Vec<(Frame, Part)>| PartId(parts.len() as u32);
     for (i, t) in recipe.tagmata.iter().enumerate() {
-        let segment = kind(&t.segment)?;
         let mut spine = vec![];
         for s in 0..soma.segments[i] {
+            let segment = kind(t.segment_kind(s))?;
             let parent = match (spine.last(), t.parent) {
                 (Some(prev), _) => Some(*prev),
                 (None, Some(p)) => {
@@ -165,11 +165,8 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
                 continue;
             }
             let borne = kind(bears)?;
-            let sockets = match d.policy.mirrors(t.socket) {
-                true => vec![t.socket, t.socket.mirrored()],
-                false => vec![t.socket],
-            };
             let (run, _) = t.facing.axis();
+            let sockets = Symmetry::sockets(t.symmetry, &d.policy, t.socket, run);
             let mut slot = 0u8;
             for ordinal in 0..t.per_segment {
                 let along = (2 * i32::from(ordinal) + 1 - i32::from(t.per_segment))

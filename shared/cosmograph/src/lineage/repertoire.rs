@@ -68,6 +68,8 @@ fn tailed(d: &Development, kind: &Key) -> Development {
         facing: Facing::Back,
         socket: Facing::Right,
         variance: None,
+        symmetry: None,
+        harden: None,
     });
     v.lexicon.insert(kind.clone());
     v

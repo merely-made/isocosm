@@ -50,6 +50,8 @@ fn recipe(anamorphic: bool) -> Development {
             facing: Facing::Back,
             socket: Facing::Right,
             variance: None,
+            symmetry: None,
+            harden: None,
         }],
         variance: 0,
         absence: [0, 1],

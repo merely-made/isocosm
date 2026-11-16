@@ -54,6 +54,8 @@ fn developed() -> Genesis {
             facing: cosmograph::rules::Facing::Back,
             socket: cosmograph::rules::Facing::Right,
             variance: None,
+            symmetry: None,
+            harden: None,
         }],
         variance: 1,
         absence: [1, 12],

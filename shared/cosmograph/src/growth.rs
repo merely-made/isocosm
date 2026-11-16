@@ -202,10 +202,10 @@ pub fn whole(
         return None;
     }
     let (host, offset) = resolve(eater, &mine.policy, prey.extent(part))?;
-    let kind = prey.situs(part).and_then(|[t, _, slot]| {
+    let kind = prey.situs(part).and_then(|[t, s, slot]| {
         let tagma = theirs.recipe.tagmata.get(usize::from(t))?;
         match slot {
-            0 => Some(tagma.segment.clone()),
+            0 => Some(tagma.segment_kind(s).clone()),
             _ => tagma.bears.clone(),
         }
     });

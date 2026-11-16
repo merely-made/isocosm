@@ -51,6 +51,8 @@ pub(crate) fn development(g: &Genesis, choice: Option<NativeFixtureRecipe>) -> O
             segments: 1, segment: root.into(), bears: Some(STORE.into()), per_segment: 8,
             parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Above,
             variance: None,
+            symmetry: None,
+            harden: None,
         }],
         variance: 0, absence: [0, 1], riff: [0, 1], vary: [0, 1],
     };

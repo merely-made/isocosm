@@ -12,7 +12,7 @@
 //! the bearer into consecutive tagmata of `every` segments, each chained to
 //! the last at its tip, and each whole piece bears one side run at `anchor`.
 
-use super::{Anchor, Development, Facing, Tagma};
+use super::{Anchor, Development, Facing, Hardened, Symmetry, Tagma};
 use crate::{Result, schema::Key};
 use serde::{Deserialize, Serialize};
 
@@ -42,36 +42,132 @@ pub enum Rule {
     /// From segment `at` on, run `tagma`'s segments are of `kind`
     /// (a run splits in two: its near part keeps its kind).
     Differentiate { tagma: u8, at: u8, kind: Key },
+    /// Run `tagma` lays down dead matter (D42): see [`Accretion`].
+    Accrete { tagma: u8, how: Accretion },
+    /// Run `tagma` places what it bears by `symmetry` (D41).
+    Symmetry { tagma: u8, symmetry: Symmetry },
+    /// The rules in `rules` apply only while `when` holds of the body or its
+    /// place (D43); they cannot hold a switch of their own.
+    Switch { when: Condition, rules: Vec<Rule> },
     /// Cap the body's segments at `total`, shortening the longest runs first.
     Allocate { total: u16 },
 }
 
+/// Where a run lays down matter that holds and does nothing (D42). Its kind
+/// is one the world gives no cells.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Accretion {
+    /// The run's `oldest` segments are of `kind`: wood, coral, a stalk.
+    Harden { oldest: u8, kind: Key },
+    /// Each segment bears a covering of `kind` at `socket`: shell, bark,
+    /// plate. A run that bears already has no room for one.
+    Cover { kind: Key, socket: Facing },
+}
+
+/// What a switch reads (D43), of the body or of its place.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Condition {
+    /// The body is at least `ticks` old.
+    Age { ticks: u64 },
+    /// Every store the body has is full.
+    FullReserves,
+    /// At least `bodies` of the body's lineage share its place.
+    Crowding { bodies: u32 },
+}
+
+/// What a body and its place show a switch to read.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Situation {
+    pub age: u64,
+    pub reserves_full: bool,
+    pub crowd: u32,
+}
+
+impl Condition {
+    /// Whether it holds of `now`.
+    pub fn holds(&self, now: &Situation) -> bool {
+        match *self {
+            Self::Age { ticks } => now.age >= ticks,
+            Self::FullReserves => now.reserves_full,
+            Self::Crowding { bodies } => now.crowd >= bodies,
+        }
+    }
+}
+
+/// The switches of `grammar`: each one's index among its rules, with its
+/// condition.
+pub fn switches(grammar: &Grammar) -> Vec<(usize, Condition)> {
+    let found = grammar.rules.iter().enumerate();
+    found.filter_map(|(i, r)| if let Rule::Switch { when, .. } = r { Some((i, *when)) } else { None }).collect()
+}
+
+/// The switches of `grammar` that hold of `now`, by index among its rules.
+pub fn switched_on(grammar: &Grammar, now: &Situation) -> Vec<usize> {
+    switches(grammar).into_iter().filter(|(_, when)| when.holds(now)).map(|(i, _)| i).collect()
+}
+
 /// The tagmata `grammar` unfolds into: its rules applied in order to a copy
-/// of its seed (cases 1202, 1206).
+/// of its seed (cases 1202, 1206), every switch off, as stored.
 ///
 /// # Errors
 /// Fails if a rule names a tagma out of range, a branch has no `every`, a
-/// branch's turn runs along its bearer or past two levels, or the tagmata
-/// pass 255.
+/// branch's turn runs along its bearer or past two levels, a radial run has
+/// fewer than two arms, a run hardens no segment or is covered where it
+/// bears, or the tagmata pass 255.
 pub fn unfold(grammar: &Grammar) -> Result<Vec<Tagma>> {
+    unfold_on(grammar, &[])
+}
+
+/// The tagmata `grammar` unfolds into while the switches at `on` (indices
+/// among its rules) hold: their rules apply where they stand in the order.
+///
+/// # Errors
+/// As [`unfold`], and where a switch holds a switch.
+pub fn unfold_on(grammar: &Grammar, on: &[usize]) -> Result<Vec<Tagma>> {
     let mut t = grammar.seed.clone();
     if t.len() > MOST {
         return Err(format!("a grammar unfolds to more than {MOST} tagmata"));
     }
-    for rule in &grammar.rules {
+    for (i, rule) in grammar.rules.iter().enumerate() {
         match rule {
-            Rule::Repeat { tagma, by } => {
-                let run = named(&mut t, *tagma)?;
-                run.segments = run.segments.saturating_add(*by);
+            Rule::Switch { rules, .. } => {
+                if rules.iter().any(|r| matches!(r, Rule::Switch { .. })) {
+                    return Err("a switch that holds a switch".into());
+                }
+                if on.contains(&i) {
+                    for rule in rules {
+                        apply(&mut t, rule)?;
+                    }
+                }
             },
-            Rule::Branch { tagma, every, depth, taper, anchor, facing } => {
-                branch(&mut t, [*tagma, *every, *depth, *taper], *anchor, *facing)?;
-            },
-            Rule::Differentiate { tagma, at, kind } => differentiate(&mut t, *tagma, *at, kind)?,
-            Rule::Allocate { total } => allocate(&mut t, usize::from(*total)),
+            rule => apply(&mut t, rule)?,
         }
     }
     Ok(t)
+}
+
+/// Applies one rule that is no switch.
+fn apply(t: &mut Vec<Tagma>, rule: &Rule) -> Result<()> {
+    match rule {
+        Rule::Switch { .. } => return Err("a switch that holds a switch".into()),
+        Rule::Repeat { tagma, by } => {
+            let run = named(t, *tagma)?;
+            run.segments = run.segments.saturating_add(*by);
+        },
+        Rule::Branch { tagma, every, depth, taper, anchor, facing } => {
+            branch(t, [*tagma, *every, *depth, *taper], *anchor, *facing)?;
+        },
+        Rule::Differentiate { tagma, at, kind } => differentiate(t, *tagma, *at, kind)?,
+        Rule::Accrete { tagma, how } => accrete(named(t, *tagma)?, how)?,
+        Rule::Symmetry { tagma, symmetry } => {
+            if matches!(symmetry, Symmetry::Radial { arms } if *arms < 2) {
+                return Err("a radial run of fewer than two arms".into());
+            }
+            named(t, *tagma)?.symmetry = Some(*symmetry);
+        },
+        Rule::Allocate { total } => allocate(t, usize::from(*total)),
+    }
+    Ok(())
 }
 
 /// `d` with its tagmata unfolded afresh from its grammar, as when a rule has
@@ -112,12 +208,18 @@ fn cut(t: &mut Vec<Tagma>, run: &Run, every: u8) -> Result<Vec<(u8, bool)>> {
     if run.len > every {
         let proto = t[usize::from(run.head)].clone();
         t[usize::from(run.head)].segments = every;
-        let (mut rest, mut prev) = (run.len - every, run.head);
+        let (mut rest, mut prev, mut done) = (run.len - every, run.head, every);
         while rest > 0 {
             let n = rest.min(every);
-            prev = push(t, Tagma { segments: n, parent: Some(prev), anchor: Anchor::Tip, ..proto.clone() })?;
+            // What hardened of the run beyond the pieces before stays so.
+            let harden = proto.harden.as_ref().and_then(|h| {
+                Some(Hardened { oldest: h.oldest.checked_sub(done).filter(|o| *o > 0)?, ..h.clone() })
+            });
+            let piece = Tagma { segments: n, parent: Some(prev), anchor: Anchor::Tip, harden, ..proto.clone() };
+            prev = push(t, piece)?;
             pieces.push((prev, n == every));
             rest -= n;
+            done += n;
         }
     }
     Ok(pieces)
@@ -171,6 +273,7 @@ fn branch(t: &mut Vec<Tagma>, [tagma, every, depth, taper]: [u8; 4], anchor: Anc
                     parent: Some(piece),
                     anchor,
                     facing: turns[level],
+                    harden: None,
                     socket: if proto.bears.is_some() { clear(proto.socket, run_axis, next) } else { proto.socket },
                     ..proto.clone()
                 };
@@ -178,6 +281,21 @@ fn branch(t: &mut Vec<Tagma>, [tagma, every, depth, taper]: [u8; 4], anchor: Anc
             }
         }
         runs = made;
+    }
+    Ok(())
+}
+
+/// Lays `how` down on `run`.
+fn accrete(run: &mut Tagma, how: &Accretion) -> Result<()> {
+    match how {
+        Accretion::Harden { oldest: 0, .. } => return Err("a run that hardens none of its segments".into()),
+        Accretion::Harden { oldest, kind } => run.harden = Some(Hardened { oldest: *oldest, kind: kind.clone() }),
+        Accretion::Cover { kind, socket } => {
+            if run.bears.is_some() {
+                return Err("a covering on a run that already bears a kind".into());
+            }
+            (run.bears, run.per_segment, run.socket) = (Some(kind.clone()), 1, *socket);
+        },
     }
     Ok(())
 }
@@ -197,6 +315,7 @@ fn differentiate(t: &mut Vec<Tagma>, tagma: u8, at_: u8, kind: &Key) -> Result<(
         segment: kind.clone(),
         parent: Some(tagma),
         anchor: Anchor::Tip,
+        harden: run.harden.as_ref().and_then(|h| Some(Hardened { oldest: h.oldest.checked_sub(at_).filter(|o| *o > 0)?, ..h.clone() })),
         ..run.clone()
     };
     run.segments = at_;

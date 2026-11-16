@@ -18,9 +18,9 @@ impl Staged<'_> {
         let development = self.sim.state.lineages.get(&source.lineage)
             .and_then(|line| line.development.as_ref()).ok_or("graft donor development disappeared")?;
         let kinds: BTreeSet<_> = preview.branch.iter().filter_map(|part| {
-            let [tagma,_,slot] = source.situs(*part)?;
+            let [tagma, s, slot] = source.situs(*part)?;
             let tagma = development.recipe.tagmata.get(usize::from(tagma))?;
-            if slot == 0 { Some(tagma.segment.clone()) } else { tagma.bears.clone() }
+            if slot == 0 { Some(tagma.segment_kind(s).clone()) } else { tagma.bears.clone() }
         }).collect();
         // A branch is indivisible. It asks every exact part/account and may
         // land only when the pass grants all of them; shortfall stays put.

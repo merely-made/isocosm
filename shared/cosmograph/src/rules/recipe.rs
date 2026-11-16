@@ -156,6 +156,68 @@ pub struct Tagma {
     /// Overrides the recipe's variance for this tagma.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub variance: Option<u8>,
+    /// How its borne kinds are placed round a segment (D41); absent, the
+    /// policy's `bilateral` decides, as it always did.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub symmetry: Option<Symmetry>,
+    /// Its oldest segments, laid down as dead matter (D42); absent, every
+    /// segment is of `segment`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub harden: Option<Hardened>,
+}
+
+/// The `oldest` segments of a run, of `kind`: matter that holds and does
+/// nothing (wood, coral, a stalk).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Hardened {
+    pub oldest: u8,
+    pub kind: Key,
+}
+
+impl Tagma {
+    /// The kind of segment `s` of this run.
+    pub fn segment_kind(&self, s: u8) -> &Key {
+        match &self.harden {
+            Some(h) if s < h.oldest => &h.kind,
+            _ => &self.segment,
+        }
+    }
+}
+
+/// How a run places what its segments bear (D41).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Symmetry {
+    /// A lateral socket is matched by its mirror, left and right.
+    Bilateral,
+    /// The borne kinds repeat round the vertical, `arms` of them. The
+    /// lattice has four horizontal facings, so it shows at most four, and
+    /// none along the run's own axis; the count is stored all the same.
+    Radial { arms: u8 },
+    /// Each thing is placed once.
+    None,
+}
+
+/// The horizontal facings in order round the vertical.
+const RING: [Facing; 4] = [Facing::Right, Facing::Back, Facing::Left, Facing::Front];
+
+impl Symmetry {
+    /// The sockets a kind borne at `socket` takes on a run along axis `run`,
+    /// `policy` deciding where the run names no symmetry.
+    pub fn sockets(symmetry: Option<Self>, policy: &Policy, socket: Facing, run: usize) -> Vec<Facing> {
+        match symmetry {
+            None if policy.mirrors(socket) => vec![socket, socket.mirrored()],
+            Some(Self::Bilateral) if socket.lateral() => vec![socket, socket.mirrored()],
+            Some(Self::Radial { arms }) => match RING.iter().position(|f| *f == socket) {
+                None => vec![socket],
+                Some(at) => (0..RING.len())
+                    .map(|i| RING[(at + i) % RING.len()])
+                    .filter(|f| f.axis().0 != run)
+                    .take(usize::from(arms))
+                    .collect(),
+            },
+            _ => vec![socket],
+        }
+    }
 }
 
 /// A lineage's axial recipe (ruling 478): tagmata head to tail; the drift
@@ -327,8 +389,9 @@ impl Recipe {
     /// Every kind the recipe names, segments and what they bear.
     pub fn kinds(&self) -> BTreeSet<Key> {
         let segments = self.tagmata.iter().map(|t| t.segment.clone());
+        let hardened = self.tagmata.iter().filter_map(|t| t.harden.as_ref().map(|h| h.kind.clone()));
         let borne = self.tagmata.iter().filter_map(|t| t.bears.clone());
-        segments.chain(borne).chain(
+        segments.chain(hardened).chain(borne).chain(
                 self.tagmata
                     .iter()
                     .flat_map(|t| t.chain.iter().map(|l| l.kind.clone())),
