@@ -38,8 +38,11 @@ Mark, 2026-11-15, condensed from the spoken pitch (his words where quoted):
   Where it sits).
 - The anti-Spore rule (founding record §2: no stage grows its own engine)
   holds only if this runs on Cosmograph's clock and the existing board.
-- Mesocosm is the first-person vessel. A board seen from above is a different
-  seat, which is why the placement answer below makes it a vessel of its own.
+- Mesocosm's project description says first person, but the lineage rounds
+  plan's D35 (2026-11-12) already rules "You direct; you drive the sapient",
+  so a board seen from above is closer to Mesocosm's seat than the
+  description suggests. The placement answer below still makes this a
+  vessel of its own.
 - "Flora" is spoken for platform-side and is never a game word
   (`mesocosm/CLAUDE.md`, Vocabulary). The pitch's kingdom names would need a
   naming round; the answers below drop kingdoms anyway.

@@ -264,6 +264,22 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Processes and rules · draws on 447, 518, 821 · plans lineage-rounds · summary In new generated worlds a newborn grows from its line's current recipe, so revisions pass down; existing saves keep copying the parent.
 
+- **D41, symmetry is a grammar rule and the body's geometry is reopened (2026-11-15):** asked what radial and none should be, given boxes on a lattice with six facings: "I suppose 1… but wait, wait wait wait is that what bodies should be or is that just what bodies ended up as? cause if there's a wiser way to do this, you know, a more visually interesting way to do this, a more efficient way to do this, then I'm certainly willing to check them out. You know alternate conceptions of what a body could be that would make more sense, taking a holistic perspective of the wing and stack and the options for developing both to replace existing less efficient/cool attempts? again, we're dealing with a prototype." Then, on sequencing: "Build all four now; body shape gets its own brief (Recommended)". Symmetry leaves the placement policy's switch and becomes a rule: bilateral mirrors left and right as now, radial repeats a run round the vertical and stores an arm count, none places each thing once; a run may be radial on a bilateral body. Today's lattice shows what it can of the count (four). What a body is geometrically is a separate research brief, owed.
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Symmetry is a grammar rule (bilateral, radial with an arm count, none); the body's geometry gets its own brief.
+
+- **D42, accrete lays down dead matter in three places (2026-11-15):** "In the sense of this rhythm game, i would think of it as creating a substance that you can then place on the board (e.g. slime, a wall, spikes). 1", then "Build it now (Recommended)". Accreted cells hold matter, do nothing and pay no upkeep; they can be eaten or rot. The rule says where: the oldest segments of a run harden (wood, coral, a stalk), each segment bears a covering (shell, bark, plate), or the matter is deposited at the body's place and held by the place (slime, a wall, a nest, a reef).
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Accrete lays down dead, upkeep-free matter by hardening old segments, covering segments, or depositing at the body's place.
+
+- **D43, switch holds conditional rules and lost parts are resorbed (2026-11-15):** "Conditional rules; lost parts are resorbed (Recommended)". A switch holds rules that apply only while its condition holds, read from the body (age, full reserves) or its place (season, crowding). When it flips, the body grows toward the new unfolding, and parts the new stage lacks are taken back into reserve, matter conserved. Not the microbe's gene switches (D30), which share only the word.
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary A grammar switch applies rules while a body or place condition holds; on a flip the body regrows and resorbs what the new stage lacks.
+
+- **D44, fuse has two forms (2026-11-15):** "Both, as two forms of one rule (Recommended)". Self: two of the body's runs that meet are joined, and joined parts share their stores (a mycelium, a net of veins). Partner: a place on the body where an incorporated part stays its own kind and keeps working (lichen, the kept chloroplast), inherited by descendants.
+
+  Links: area Bodies and anatomy · draws on 1202, 1206 · plans lineage-rounds · summary Fuse joins a body's own runs into a store-sharing network, or keeps an incorporated partner's part working as its own kind.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a

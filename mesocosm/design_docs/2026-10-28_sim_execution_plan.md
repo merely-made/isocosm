@@ -471,6 +471,21 @@ each title names its outcome against the doctrine.
 
   Links: area Method and documents · draws on 1057, sim-execution D18, sim-execution D43 · summary physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed.
 
+- **D48, fixed-point sunlight is the default for new generated worlds
+  (2026-11-15):** "Accept it; re-record the five values (Recommended)".
+  Work left uncommitted on 2026-11-12 made every new generated world record
+  the fixed-point sunlight credit rule, so native and WebAssembly agree;
+  preexisting saves keep the legacy rule through the absent field. It had no
+  ruling and had not been run against the genesis digest pin
+  (`directing/interim/reproduction.rs`) or the exact-replay hashes
+  (`tests/exact_memo.rs`), which it moves: five values, re-recorded under
+  this decision. The exact-replay test passes at the lineage-variation tip
+  without the sunlight work, so the move is that work's alone; Grouped and
+  Individuals still agree. Offered against keeping the legacy rule as the
+  default and against taking the work off main.
+
+  Links: area Processes and rules · draws on sim-execution D16 · plans sim-execution · summary New generated worlds credit sunlight by the fixed-point rule; the genesis digest and exact-replay pins were re-recorded for it.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.

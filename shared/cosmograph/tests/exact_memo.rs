@@ -83,10 +83,12 @@ fn check(name: &str, got: (u64, u64), pinned: (u64, u64)) {
 }
 
 // 2026-11-11, taken with the memo disabled (before the change).
-const A1_INDIVIDUALS: (u64, u64) = (0xa855c4f2dabe794c, 0x2c902ffb9edef484);
-const A1_GROUPED: (u64, u64) = (0xa855c4f2dabe794c, 0x2c902ffb9edef484);
-const WT_INDIVIDUALS: (u64, u64) = (0xe98044de7e465e60, 0xf2afc37f672101ed);
-const WT_GROUPED: (u64, u64) = (0xe98044de7e465e60, 0xf2afc37f672101ed);
+// Rerecorded 2026-11-15 under the execution plan's D48: new generated
+// worlds credit sunlight by the fixed-point rule.
+const A1_INDIVIDUALS: (u64, u64) = (0xd093d4325499110e, 0xdcebdd534a85f488);
+const A1_GROUPED: (u64, u64) = (0xd093d4325499110e, 0xdcebdd534a85f488);
+const WT_INDIVIDUALS: (u64, u64) = (0x0d682e9c07dc10e0, 0xb4b26e52815d984a);
+const WT_GROUPED: (u64, u64) = (0x0d682e9c07dc10e0, 0xb4b26e52815d984a);
 
 #[test]
 fn the_a1_played_world_is_exact_individuals() {

@@ -7006,6 +7006,38 @@ summary = "In new generated worlds a newborn grows from its line's current recip
 draws_on = ["447", "518", "821"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D41"]
+title = "symmetry is a grammar rule and the body's geometry is reopened (2026-11-15)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Symmetry is a grammar rule (bilateral, radial with an arm count, none); the body's geometry gets its own brief."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D42"]
+title = "accrete lays down dead matter in three places (2026-11-15)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Accrete lays down dead, upkeep-free matter by hardening old segments, covering segments, or depositing at the body's place."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D43"]
+title = "switch holds conditional rules and lost parts are resorbed (2026-11-15)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A grammar switch applies rules while a body or place condition holds; on a flip the body regrows and resorbs what the new stage lacks."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D44"]
+title = "fuse has two forms (2026-11-15)"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Fuse joins a body's own runs into a store-sharing network, or keeps an incorporated partner's part working as its own kind."
+draws_on = ["1202", "1206"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
@@ -7475,6 +7507,14 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Method and documents"
 summary = "physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed."
 draws_on = ["1057", "sim-execution D18", "sim-execution D43"]
+
+[decisions."sim-execution D48"]
+title = "fixed-point sunlight is the default for new generated worlds (2026-11-15)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "New generated worlds credit sunlight by the fixed-point rule; the genesis digest and exact-replay pins were re-recorded for it."
+draws_on = ["sim-execution D16"]
+plans = ["sim-execution"]
 
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"

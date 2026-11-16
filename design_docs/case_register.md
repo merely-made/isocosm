@@ -672,7 +672,7 @@ three design docs that cite it. The record holds the words.
 | 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
 | 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
-| 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md) |
+| 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md), [body geometry](2026-11-15_body_geometry_brief.md) |
 | 1150 | First person draws only the played body's parts below the eye. | [denizen](2026-11-02_denizen_plan.md) |
 | 1151 | First person and over the shoulder face the player's aim. | [denizen](2026-11-02_denizen_plan.md) |
 | 1152 | Eponym's proof cameras and residency move to the shared ones or retire, per binary; the far cap is revisited. | [denizen](2026-11-02_denizen_plan.md) |

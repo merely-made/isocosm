@@ -37,10 +37,12 @@ use profile::{Form, world};
 // the founded A1 rules' decomposer processes, and this digest, moved.
 // Rerecorded 2026-11-11: producers that share ground take turns, so the two
 // producers' growth processes of the founded A1 world name a turn group.
+// Rerecorded 2026-11-15 under the execution plan's D48: a new generated
+// world's rules record the fixed-point sunlight credit rule.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "1b1f7de7b5f811a6ae36f78e9d8cf5dc9e5706e7a60a691f0197c77fb4808255");
+    assert_eq!(crate::digest(&genesis), "f44e89047307f31bbd41ac7cf48b7a0f13adf4f24ac7e956bc420f036a3e2d60");
     genesis
 }
 
