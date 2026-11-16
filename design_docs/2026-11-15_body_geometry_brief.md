@@ -815,3 +815,29 @@ section 5's.
 Still open: 5.1 (the sim's truth about shape), 5.4 (levels and what a leaf
 is), 5.7 (radial while this waits; lineage rounds D41 stores an arm count),
 5.8 (where the micro-voxel look comes from).
+
+### 2026-11-16
+
+- **5.1, the sim's truth about shape.** "Decide after the nested-voxel
+  measurement".
+- **5.4, levels and the leaf.** "A leaf is a cell; levels are a world setting
+  (Recommended)": the smallest voxel is today's cell, everything above sums
+  its children exactly, and the simulator never goes finer than a cell.
+- **5.5, confirmed.** "Yes, separate stores (Recommended)".
+- **5.8, the look.** Shown an illustration of one made-up body drawn as a
+  soft surface cut into micro-voxels and as one cube per cell
+  (`Code/testing/isocosm/look_compare_2026-11-16.png`): "3 appeals to me if
+  we get 2 for free either way. Are there other [looks] that could be
+  derived, cause if so, we could consider the microvoxel look just
+  essentially a lens?" Option 3 was both, as a view setting. So a look is a
+  lens over one body, and none is the simulator's truth; `isometer-lens`
+  already holds that boundary ("Simulation authority stays outside this
+  crate"). Asked which lenses come first, he chose all four offered: cells
+  (the derived tree drawn directly), soft micro-voxels (rounded along whole
+  runs, since rounding each box pinches stacked segments), function and
+  matter maps, and the flat sprite. Named and not chosen yet: a smooth
+  uncut surface, a silhouette or glyph, a skeleton of runs and joints, and
+  sound.
+- **Owed work.** "One Sonnet lane for both, now (Recommended)": a read of
+  Seiche's current state, then the throwaway measurement at 10x, 100x and
+  1000x in scratch space outside every repository.

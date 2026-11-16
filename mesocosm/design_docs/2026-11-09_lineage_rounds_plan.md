@@ -308,6 +308,38 @@ Mark's answers, keyed `lineage-rounds D1` onward in the order he gave them.
 
   Links: area Bodies and anatomy · draws on lineage-rounds D44 · plans lineage-rounds · summary A fuse slot on a run takes an incorporated whole part that keeps its functions and kind; the recipe records it for descendants.
 
+- **D52, reserve becomes local and pools share it (2026-11-16), refines D50:** "Reserve becomes local; pools share (Recommended)". A part can spend only reserve it holds or that its pool holds, so unjoined parts can starve while others are full and fusing is what makes a network worth growing. As built a body pays from its whole reserve and a pool only levels where reserve sits. This changes how every body pays; the pinned values it moves are re-recorded under this decision when it is built. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D50 · plans lineage-rounds · summary A part spends only its own or its pool's reserve; fusing is what shares it. Not yet built.
+
+- **D53, a fuse joins named runs or a run's symmetric copies (2026-11-16), applies D50:** asked whether "Two parts joined with a symmetry?" meant that a fuse may name one run and join its mirrored pair or radial arms as well as naming two runs: "Yes, both ways (Recommended)". As built.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D50 · plans lineage-rounds · summary Confirmed: a fuse names runs explicitly, or one run and its symmetric copies.
+
+- **D54, the partner slot names where it sits (2026-11-16), refines D51:** "The rule says where (Recommended)". The slot carries its own facing, above by default, and a collision is refused when the grammar is checked. As built it is always above the run's first segment. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D51 · plans lineage-rounds · summary A partner slot names its facing, above by default; a colliding slot is refused at validation. Not yet built.
+
+- **D55, a newborn is born with every switch off (2026-11-16), refines D49:** "Born with every switch off (Recommended)". A newborn starts in the base form and reaches stages by its own conditions. As built it copies its parent's active stage. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D49 · plans lineage-rounds · summary A newborn starts with no switch on and reaches stages by its own conditions. Not yet built.
+
+- **D56, deposits are installed from the grammar and their rates are per kind in the catalog (2026-11-16), refines D47 and D48:** "Installed from the grammar; rates per kind in the catalog (Recommended)". Founding reads each lineage's grammar and installs its deposits; each kind of deposit is a catalog entry carrying its lay rate and decay, authored data. As built the rule carries the numbers and nothing installs it at founding. Owed; the numbers are not ruled.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D47, lineage-rounds D48, lineage-rounds D38 · plans lineage-rounds · summary Founding installs a lineage's deposits from its grammar; each deposit kind's lay rate and decay are catalog data. Not yet built.
+
+- **D57, drift acts on the rules' own numbers (2026-11-16), refines D22:** "Drift the rules' own numbers (Recommended)". Drift changes each rule's parameters directly within bounds (a repeat's length, a branch's spacing, an arm count) and the body is re-unfolded; nothing is mapped back from measured bodies. As built a grammar holding any rule but repeat is never drifted or revised. A lane of its own. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D22 · plans lineage-rounds · summary Drift edits grammar rule parameters within bounds and re-unfolds; mixed grammars drift. Not yet built.
+
+- **D58, the first part in order takes a partner slot (2026-11-16), refines D51:** "First in order takes it (Recommended)". The slot is claimed when the first part lands, in the simulator's fixed order; a second in the same tick is an ordinary incorporation. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D51 · plans lineage-rounds · summary A partner slot is claimed by the first part to land in the tick's fixed order. Not yet built.
+
+- **D59, each resorbed part is logged (2026-11-16), refines D43:** "Log each part taken back (Recommended)". The history records every part a body takes back at a switch and where its matter went. As built only the spill is logged. Owed.
+
+  Links: area Bodies and anatomy · draws on lineage-rounds D43 · plans lineage-rounds · summary A switch's resorption records each part taken back and where its matter went. Not yet built.
+
 ## Constraints
 
 - Verified by draws, on seeds nobody chose (ruling 15); every phase replays a
@@ -817,21 +849,13 @@ Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
 and the next conditions (D31) are answered. Left:
 
 - **Crossings** (LR10): how a crossing unlocks another kingdom's operators.
-- **The eight operators as built** (LR6, 2026-11-15; D41 to D51), left by the
-  lane:
-  - Pooling's strength (D50): a body already draws on its whole reserve, so
-    a pool only changes where reserve sits, and a lost part takes just its
-    share. Whether parts without stores should draw from the pool is open.
-  - D50's reading that a fuse may join a run's symmetric copies is the
-    implementer's, to confirm.
-  - Deposits at founding (D47): nothing installs a lineage's deposit
-    processes when a world is founded, and no rate or decay is ruled.
-  - Drift over a mixed grammar: a grammar holding any rule but repeat is
-    never drifted or revised (`lineage/drift.rs`, `revise.rs`,
-    `speciate.rs`); it needs this phase's grammar-and-drift design.
-  - The partner sits above its run's first segment, the lane's choice.
-  - Limits: a newborn copies its parent's active stage; two partners taken
-    in one tick could both land in a slot; resorption logs only its spill.
+- **The eight operators as built** (LR6; D41 to D51): what the lane left
+  open was answered on 2026-11-16 as D52 to D59. Owed to build from them,
+  none started: local reserve and pools (D52), the slot's facing (D54),
+  newborns with switches off (D55), deposits at founding from the catalog
+  (D56), drift over rule parameters (D57), the slot's order (D58), the
+  resorption log (D59). Still unruled: every number (a deposit kind's lay
+  rate and decay, drift's bounds).
 - **The microbe's numbers** (LR8): a switch's upkeep while on, and the
   generations a plasmid lasts.
 

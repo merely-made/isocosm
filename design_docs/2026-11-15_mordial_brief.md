@@ -163,6 +163,22 @@ took one).
     it all to growth, essentially, and not so much to, defense, except
     through characteristics of their bodies, like plants."
 
+27. **How far a voice carries.** "Set per trait, louder when faster": each
+    trait has its own carry distance in squares, and a trait firing more
+    often per bar carries further.
+28. **Meter in Mesocosm.** "It becomes the trait's pace": Mesocosm lets each
+    kind act at its own pace on its own clock, and a trait's meter sets how
+    often it acts there.
+29. **What a trait costs, against Mesocosm's D30.** "Upkeep underneath, beats
+    on top": a trait that is on costs upkeep in both games, because the
+    simulator charges it; this game adds that a missed beat wastes it and
+    that playing gives the player away. Refines answer 13.
+30. **Steps on the opening bars.** "Four steps": none or one act a bar
+    (sedentary, long reach), two, four, and eight or more (fastest, shortest
+    reach).
+31. **The name.** "Bank it as a candidate; decide in a naming round": mordial
+    is banked, unchecked, and stays a working label.
+
 Unprompted, the same day (answered by 23 and 25): "I wonder if we could use the growth grammar to
 organize the territory into recognizable body shapes at each tier." And: "I
 wonder how we can sort things into the kingdoms. Or if we should try to do
@@ -273,27 +289,11 @@ read from it, which runs the other way and bears on that statement.
 
 ## Open
 
-- The operators the simulator has not built: fuse, switch, accrete, and
-  radial and no symmetry. Repeat, branch, differentiate, allocate and
-  bilateral symmetry are in (`shared/cosmograph/src/rules/grammar.rs`).
-  Building to eight is already ruled and owed
-  (`mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md`, D29, LR6); this
-  game depends on that work and does not own it. The operators' meanings
-  are "a reading until built" (the lineage rounds brief, §4).
-- Mesocosm's microbes are already played by gene switches that cost upkeep
-  while on (the same plan, D30, LR8). Answer 13 here prices a trait by
-  missed beats and by being heard instead; the two need reconciling.
-- The steps on the opening bars' rate range, and which traits sit at each
-  (answer 26 settles uneven play and silence: any taps average to a tempo,
-  and none gives the slowest, sedentary traits).
-
-- What a trait is here against Cosmograph's own: a part's `traits` and
-  `functions` keys (`schema.rs`), or something this game adds.
-- What Mesocosm does with a trait's meter, having no beat of its own.
-
-- What a fight is when two bodies meet on a beat.
-- What "imitate with variation" records: inputs, or a pattern per measure,
-  and whether progeny copy the toggling too.
-- What an active trait costs while it is on (pillar 5's upkeep, here).
-- How far each voice carries, and whether hearing is itself a trait (`Sense`).
-- The name.
+- The operators are built (lineage rounds D41 to D51, on main since
+  2026-11-15); what they still owe is that plan's D52 to D59, and this game
+  depends on it without owning it.
+- Which traits sit at each of the four opening rates (answer 30).
+- Each trait's carry distance and how much faster play adds (answer 27).
+- What "imitate with variation" records: inputs, or a pattern per measure.
+- Which trait beats which (answer 20's fixed relation).
+- The name, in a naming round (answer 31).

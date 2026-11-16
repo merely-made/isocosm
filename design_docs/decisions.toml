@@ -7094,6 +7094,70 @@ summary = "A fuse slot on a run takes an incorporated whole part that keeps its 
 draws_on = ["lineage-rounds D44"]
 plans = ["lineage-rounds"]
 
+[decisions."lineage-rounds D52"]
+title = "reserve becomes local and pools share it (2026-11-16), refines D50"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A part spends only its own or its pool's reserve; fusing is what shares it. Not yet built."
+draws_on = ["lineage-rounds D50"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D53"]
+title = "a fuse joins named runs or a run's symmetric copies (2026-11-16), applies D50"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Confirmed: a fuse names runs explicitly, or one run and its symmetric copies."
+draws_on = ["lineage-rounds D50"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D54"]
+title = "the partner slot names where it sits (2026-11-16), refines D51"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A partner slot names its facing, above by default; a colliding slot is refused at validation. Not yet built."
+draws_on = ["lineage-rounds D51"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D55"]
+title = "a newborn is born with every switch off (2026-11-16), refines D49"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A newborn starts with no switch on and reaches stages by its own conditions. Not yet built."
+draws_on = ["lineage-rounds D49"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D56"]
+title = "deposits are installed from the grammar and their rates are per kind in the catalog (2026-11-16), refines D47 and D48"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Founding installs a lineage's deposits from its grammar; each deposit kind's lay rate and decay are catalog data. Not yet built."
+draws_on = ["lineage-rounds D38", "lineage-rounds D47", "lineage-rounds D48"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D57"]
+title = "drift acts on the rules' own numbers (2026-11-16), refines D22"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "Drift edits grammar rule parameters within bounds and re-unfolds; mixed grammars drift. Not yet built."
+draws_on = ["lineage-rounds D22"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D58"]
+title = "the first part in order takes a partner slot (2026-11-16), refines D51"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A partner slot is claimed by the first part to land in the tick's fixed order. Not yet built."
+draws_on = ["lineage-rounds D51"]
+plans = ["lineage-rounds"]
+
+[decisions."lineage-rounds D59"]
+title = "each resorbed part is logged (2026-11-16), refines D43"
+source = "mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md"
+area = "Bodies and anatomy"
+summary = "A switch's resorption records each part taken back and where its matter went. Not yet built."
+draws_on = ["lineage-rounds D43"]
+plans = ["lineage-rounds"]
+
 [decisions."mesocosm-overlay D1"]
 title = "the first slice (2026-10-31), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
