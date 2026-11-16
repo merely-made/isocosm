@@ -3,6 +3,7 @@
 //! Derived posture work lives only as long as its immutable physical inputs.
 use super::*;
 use crate::profile::Clock;
+use std::cell::RefCell;
 
 const CAPACITY: usize = 8192;
 type Key = (Yaw, [i64; 3], i64, Vec<(PartId, [i64; 3])>, Vec<PartId>);
@@ -12,7 +13,7 @@ type Stand = ([i64; 3], Yaw, Vec<(PartId, [i64; 3])>);
 pub(crate) struct Checks<'a> {
     pub(super) volume: &'a Volume,
     pub(super) document: &'a BodyDocument,
-    pub(super) blocked: &'a [Box3],
+    pub(super) blocked: Blockers<'a>,
     body: Body,
     clearance: narrow::Clearance<'a>,
     bearing: support::Bearing<'a>,
@@ -85,6 +86,15 @@ impl Body {
     }
 }
 impl<'a> Checks<'a> {
+    /// Records what is asked of the other bodies into `log`.
+    pub(crate) fn watching(mut self, log: &'a RefCell<Footprint>, boxes: &'a [Box3]) -> Self {
+        self.blocked = Blockers::watched(boxes, log);
+        self
+    }
+    /// The other bodies as this check reads them, watched or not.
+    pub(crate) fn blockers(&self) -> Blockers<'a> {
+        self.blocked
+    }
     pub(crate) fn with_balance(mut self, balance: Option<Balance>) -> Self {
         self.entries.clear();
         self.admissions.clear();
@@ -125,7 +135,7 @@ impl<'a> Checks<'a> {
         if stride.is_some() {
             return Err("weight-transfer plan has no matching walking policy".into());
         }
-        sweep_clear(self.volume, self.document, from, to, self.blocked)
+        sweep_clear_in(self.volume, self.document, from, to, self.blocked)
     }
     #[cfg(test)]
     pub(crate) fn without_reuse(mut self) -> Self {
@@ -170,7 +180,7 @@ impl<'a> Checks<'a> {
         Self {
             volume,
             document,
-            blocked,
+            blocked: Blockers::new(blocked),
             body: Body::new(document),
             clearance: narrow::Clearance::new(volume, 16384),
             bearing: support::Bearing::new(volume, 4096),
@@ -198,7 +208,7 @@ impl<'a> Checks<'a> {
         {
             return plan_with(self, from, to, rules).map(Some);
         }
-        sweep_clear(self.volume, self.document, from, to, self.blocked)?;
+        sweep_clear_in(self.volume, self.document, from, to, self.blocked)?;
         Ok(None)
     }
     pub(crate) fn neighbours(
@@ -309,7 +319,7 @@ impl<'a> Checks<'a> {
                 continue;
             }
             self.resident_misses += 1;
-            let hit = intersects(&[bounds], self.blocked);
+            let hit = self.blocked.hits(&[bounds]);
             self.residents.insert(bounds, hit);
             if hit {
                 return true;

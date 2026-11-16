@@ -196,13 +196,13 @@ pub(super) fn turn_clear(
         [from.at[0] - radius, lo_y, from.at[2] - radius],
         [from.at[0] + radius, hi_y, from.at[2] + radius],
     ];
-    check_clear(volume, &[bounds], &[])?;
+    check_clear(volume, &[bounds], Blockers::none())?;
     Ok(vec![bounds])
 }
 
-pub(super) fn check_clear(volume: &Volume, boxes: &[Box3], blocked: &[Box3]) -> Result<()> {
+pub(super) fn check_clear(volume: &Volume, boxes: &[Box3], blocked: Blockers<'_>) -> Result<()> {
     let mut work = 0u64;
-    if intersects(boxes, blocked) {
+    if blocked.hits(boxes) {
         return Err("swing intersects another native body".into());
     }
     for [lo, hi] in boxes {

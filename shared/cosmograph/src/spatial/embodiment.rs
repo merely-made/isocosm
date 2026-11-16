@@ -17,6 +17,7 @@ pub use balance::{
     Balance, FootLoad, Load, balance_for, check_member, check_motion, neighbours_for, step_for,
     stride_load,
 };
+mod blockers;
 mod contacts;
 mod food;
 mod footholds;
@@ -28,6 +29,7 @@ mod support;
 mod walking;
 pub use food::FoodStand;
 pub(crate) use steps::articulated_neighbours;
+pub(crate) use blockers::{Blockers, Footprint};
 pub(crate) use walking::Checks as StrideChecks;
 pub use walking::local_feet as stride_feet;
 pub use walking::{
@@ -39,6 +41,7 @@ pub use articulation::{articulated, foot_points};
 pub use swing::{SAMPLES as SWING_SAMPLES, swing_boxes, swing_feet};
 mod founding;
 mod habitat;
+use contacts::sweep_clear_in;
 pub use contacts::{Contact, contacts, sweep_clear};
 pub use habitat::{ENTERING, arrive_near, declare_site, draw_within, place_entering, place_in_site, place_within, settle, site_window, whole_site};
 #[cfg(test)]
@@ -164,7 +167,7 @@ pub fn check(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()
             pose.yaw,
             &pose.feet,
             &occupied,
-            &[],
+            Blockers::none(),
         )?;
         support::standing(volume, document, pose)?;
     }

@@ -80,6 +80,16 @@ pub fn sweep_clear(
     to: &Pose,
     blocked: &[Box3],
 ) -> Result<()> {
+    sweep_clear_in(volume, document, from, to, Blockers::new(blocked))
+}
+
+pub(super) fn sweep_clear_in(
+    volume: &Volume,
+    document: &BodyDocument,
+    from: &Pose,
+    to: &Pose,
+    blocked: Blockers<'_>,
+) -> Result<()> {
     if !from.feet.is_empty() && !to.feet.is_empty() {
         check(volume, document, from)?;
         check(volume, document, to)?;
@@ -133,7 +143,7 @@ pub fn sweep_clear(
             .checked_add(n)
             .filter(|n| *n <= 1_048_576)
             .ok_or("sweep work budget exceeded")?;
-        if intersects(&[[lo, hi]], blocked) {
+        if blocked.hits(&[[lo, hi]]) {
             return Err("sweep intersects another body".into());
         }
         for x in lo[0]..hi[0] {

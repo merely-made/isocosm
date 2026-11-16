@@ -55,10 +55,21 @@ struct Vertex {
 }
 
 pub(super) fn find(input: &Input) -> Result<RouteSearch> {
-    let mut strides =
-        embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked)
-            .with_balance(input.balance.clone());
-    find_using(input, &mut strides)
+    find_watched(input).map(|(found, _)| found)
+}
+/// The search and every answer the other bodies gave it (D54).
+pub(super) fn find_watched(input: &Input) -> Result<(RouteSearch, embodiment::Footprint)> {
+    let log = std::cell::RefCell::new(embodiment::Footprint::default());
+    let found = {
+        let mut strides =
+            embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked)
+                .watching(&log, &input.blocked)
+                .with_balance(input.balance.clone());
+        find_using(input, &mut strides)?
+    };
+    let mut asked = log.into_inner();
+    asked.seal(&input.blocked);
+    Ok((found, asked))
 }
 fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Result<RouteSearch> {
     let mut work = Work::new(input.actor);
@@ -209,7 +220,7 @@ fn trial(
                         continue;
                     }
                     let boxes = embodiment::boxes(&input.document, &next)?;
-                    if embodiment::intersects(&boxes, &input.blocked) {
+                    if strides.blockers().hits(&boxes) {
                         continue;
                     }
                     graph.insert(to, vertex(input, next)?);

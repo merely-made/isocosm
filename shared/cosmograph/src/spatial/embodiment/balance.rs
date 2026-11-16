@@ -203,7 +203,7 @@ pub(super) fn check_balanced(
     };
     let occupied = boxes(doc, pose)?;
     let root = pose.at.map(|p| p * UNIT);
-    narrow::clear(volume, doc, root, pose.yaw, &pose.feet, &occupied, &[])?;
+    narrow::clear(volume, doc, root, pose.yaw, &pose.feet, &occupied, Blockers::none())?;
     let centre = balance.at(doc, &pose.feet, Rotation::at(pose.yaw, 0))?;
     let bearing = pose.feet.keys().copied().collect();
     let hull = support::bearing(volume, doc, &pose.feet, root, pose.yaw, &bearing)?;

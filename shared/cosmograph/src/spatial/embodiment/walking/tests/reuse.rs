@@ -13,7 +13,7 @@ fn fresh(
     let feet = local_feet(f, yaw)?;
     let rotation = Rotation::at(yaw, f.turn);
     let occupied = boxes_at(doc, f.root, rotation, &feet)?;
-    narrow::clear_rotated(volume, doc, f.root, rotation, &feet, &occupied, blocked)?;
+    narrow::clear_rotated(volume, doc, f.root, rotation, &feet, &occupied, Blockers::new(blocked))?;
     support::check_rotated(volume, doc, &feet, f.root, rotation, &f.bearing)
 }
 

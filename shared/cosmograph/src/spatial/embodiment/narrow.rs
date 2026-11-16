@@ -80,7 +80,7 @@ pub(super) fn clear(
     yaw: Yaw,
     feet: &BTreeMap<PartId, [i64; 3]>,
     occupied: &[Box3],
-    blocked: &[Box3],
+    blocked: Blockers<'_>,
 ) -> Result<()> {
     clear_rotated(
         volume,
@@ -99,9 +99,9 @@ pub(super) fn clear_rotated(
     yaw: Rotation,
     feet: &BTreeMap<PartId, [i64; 3]>,
     occupied: &[Box3],
-    blocked: &[Box3],
+    blocked: Blockers<'_>,
 ) -> Result<()> {
-    if intersects(occupied, blocked) {
+    if blocked.hits(occupied) {
         return Err("swing intersects another native body".into());
     }
     let chains = legs::chains(doc);
@@ -152,10 +152,10 @@ pub(super) fn clear_prepared(
     volume: &Volume,
     parts: impl Iterator<Item = (PartId, Box3)>,
     occupied: &[Box3],
-    blocked: &[Box3],
+    blocked: Blockers<'_>,
     shapes: &Shapes,
 ) -> Result<()> {
-    if intersects(occupied, blocked) {
+    if blocked.hits(occupied) {
         return Err("swing intersects another native body".into());
     }
     check_parts(volume, parts, &shapes.solids)
