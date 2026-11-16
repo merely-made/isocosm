@@ -33,6 +33,8 @@ fn world(stores: u32) -> Session {
         parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Right, variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }], variance: 0, absence: [0,1], riff: [0,1], vary: [0,1] };
     g.lineages.insert(LINE.into(), Lineage { parent: None, revision: 1, policy: None,
         kingdom: "kingdom:fauna".into(), traits: Default::default(),

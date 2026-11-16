@@ -56,6 +56,8 @@ fn developed() -> Genesis {
             variance: None,
             symmetry: None,
             harden: None,
+            pool: None,
+            slot: None,
         }],
         variance: 1,
         absence: [1, 12],

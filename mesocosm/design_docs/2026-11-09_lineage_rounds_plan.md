@@ -917,6 +917,42 @@ and the next conditions (D31) are answered. Left:
   This uses the existing exact birth, provision and recorded identity paths.
   The coarse demographic step remains in the coarse-step brief.
 
+- 2026-11-15: fuse, partner (D44, D51). `Rule::Partner { tagma, kept }`
+  reserves a slot on a run (`Tagma.slot`, `Slot { kept }`, skipped when
+  absent): the third place `PARTNER_SLOT` (255) of the run's first segment,
+  seated above it (`PARTNER_FACING`, the implementer's choice: the flank is
+  where borne kinds sit and collides). `growth::whole` seats a part taken in
+  whole at the first free slot of the eater's recipe, whatever the crossing,
+  and `take_whole` then keeps every function (an adapter's are cleared only
+  where there is no slot); both executions share those two functions.
+  `lineage::draft::learn` then fills the first free slot of the line's recipe
+  with the kind, its grammar's `Partner` rule and its lexicon, and
+  `develop` places a kept partner on a body, so young grow it and a lineage
+  mate lacking it grows it as any missing part. `Tagma::kind_at` names the
+  kind at a situs, the partner's too, for the donor reading in `whole` and
+  graft. Controls: `tests/incorporation/partner.rs` (an adapter-crossing
+  frond lands at situs `[0,0,255]` keeping `fix: 3`, the total of every
+  ledger unchanged, recipe, grammar and lexicon recording it,
+  `regrown(&line) == line`, a young body develops it; without a slot the
+  adapter lands expressing nothing as before) and `rules/grammar/tests.rs`.
+  Limits: a second part taken in the same tick before the line's record is
+  written would also seat in the slot; a part is a slot's only when it is
+  free in the recipe, not the body.
+- 2026-11-15: fuse, self (D44, D50). `Tagma.pool` (skipped when absent) names
+  the pool a run's parts share; `Rule::Fuse { runs }` gives the named runs
+  one pool (refused for none, a repeat or a run not there), and
+  `Rule::Radiate { fused: true }` pools the run with its arms. Naming one run
+  pools its own parts and what they bear, which is how a mirrored pair or a
+  ring of what a run bears shares: that, and the arms, are the implementer's
+  reading of "a symmetry" and join nothing else. What a pool does
+  (`pooling::share`, called where a body would next grow): the reserve its
+  parts hold is redistributed over them by what each can store (held plus
+  room), total untouched, so the pool is one store and a part lost takes
+  only its share. A draw already reaches the whole body's reserve, so
+  sharing changes where it sits, not what can be paid. Controls:
+  `rules/grammar/tests.rs`; `tests/growth.rs` (two lumps, 12 of reserve all
+  in the first: fused it divides over both, unfused it stays 12 and 0, and
+  `sim.matter()` is unchanged).
 - 2026-11-15: switch in the running simulation (D43, D49). `Condition` gains
   `Season { from, to }`, thousandths of the year, wrapping, read from
   `climate::year_phase` (the wave's own year, nought where tidally locked).

@@ -159,6 +159,8 @@ fn tagma(sheets: &Sheets, sheet: &str, entry: &TagmaEntry, banks: &Banks) -> Res
         variance: layout.and_then(|l| l.variance),
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     })
 }
 

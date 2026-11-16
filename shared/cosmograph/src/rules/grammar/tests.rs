@@ -21,6 +21,8 @@ fn run(segments: u8) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 
@@ -390,7 +392,7 @@ fn a_switch_reads_the_body_and_its_place() {
 }
 
 fn arms(n: u8) -> Rule {
-    Rule::Radiate { tagma: 1, arms: n }
+    Rule::Radiate { tagma: 1, arms: n, fused: false }
 }
 
 #[test]
@@ -416,8 +418,8 @@ fn a_run_with_no_joint_or_no_level_cannot_be_copied_round_the_vertical() {
     let bad = |seed: Vec<Tagma>, rule| unfold(&grammar(seed, vec![rule])).unwrap_err();
     bad(vec![run(2), joined(3, 0, Facing::Right)], arms(1));
     bad(vec![run(2), joined(3, 0, Facing::Above)], arms(3));
-    bad(vec![run(2)], Rule::Radiate { tagma: 0, arms: 3 });
-    bad(vec![run(2)], Rule::Radiate { tagma: 5, arms: 3 });
+    bad(vec![run(2)], Rule::Radiate { tagma: 0, arms: 3, fused: false });
+    bad(vec![run(2)], Rule::Radiate { tagma: 5, arms: 3, fused: false });
 }
 
 #[test]
@@ -434,6 +436,46 @@ fn a_deposit_unfolds_to_nothing_and_needs_rates_and_an_account_the_world_holds()
     d.grammar.as_mut().unwrap().rules.push(dep(3, 1));
     let e = crate::validation::development(&rules, &lines(&d)).unwrap_err();
     assert!(e.contains("no matter account"), "{e}");
+}
+
+#[test]
+fn fuse_gives_the_named_runs_one_pool_and_arms_may_be_fused_with_their_run() {
+    let seed = vec![run(2), joined(3, 0, Facing::Right), joined(2, 0, Facing::Above)];
+    let pools = |rules| unfold(&grammar(seed.clone(), rules)).unwrap().iter().map(|t| t.pool).collect::<Vec<_>>();
+    assert_eq!(pools(vec![]), [None, None, None]);
+    assert_eq!(pools(vec![Rule::Fuse { runs: vec![2, 1] }]), [None, Some(2), Some(2)]);
+    // One run named pools its own parts, with what they bear.
+    assert_eq!(pools(vec![Rule::Fuse { runs: vec![1] }]), [None, Some(1), None]);
+    // Arms copied round the vertical and fused are one pool with their run.
+    let ring = Rule::Radiate { tagma: 1, arms: 3, fused: true };
+    assert_eq!(pools(vec![ring]), [None, Some(1), None, Some(1), Some(1)]);
+    let loose = Rule::Radiate { tagma: 1, arms: 3, fused: false };
+    assert_eq!(pools(vec![loose]), [None, None, None, None, None]);
+    // A fuse names a run that is there, and once.
+    unfold(&grammar(seed.clone(), vec![Rule::Fuse { runs: vec![] }])).unwrap_err();
+    unfold(&grammar(seed.clone(), vec![Rule::Fuse { runs: vec![1, 1] }])).unwrap_err();
+    unfold(&grammar(seed, vec![Rule::Fuse { runs: vec![1, 9] }])).unwrap_err();
+}
+
+#[test]
+fn a_partner_reserves_one_free_slot_on_a_run_that_cuts_and_copies_do_not_carry() {
+    let free = Some(Slot { kept: None });
+    let slot = Rule::Partner { tagma: 0, kept: None };
+    let t = unfold(&grammar(vec![run(2)], vec![slot.clone()])).unwrap();
+    assert_eq!(t[0].slot, free);
+    // Cut in pieces, only the first keeps it; a split's far part does not.
+    let cut = Rule::Branch { tagma: 0, every: 2, depth: 1, taper: 0, anchor: Anchor::Tip, facing: Facing::Above };
+    let t = unfold(&grammar(vec![run(4)], vec![slot.clone(), cut])).unwrap();
+    assert_eq!(t.iter().filter(|t| t.slot.is_some()).count(), 1);
+    let split = Rule::Differentiate { tagma: 0, at: 1, kind: "kind:b".into() };
+    let t = unfold(&grammar(vec![run(3)], vec![slot, split])).unwrap();
+    assert_eq!((t[0].slot.clone(), t[1].slot.clone()), (free, None));
+    // A kept kind joins those the recipe names, for the lexicon to hold.
+    let kept = Rule::Partner { tagma: 0, kept: Some("kind:frond".into()) };
+    let t = unfold(&grammar(vec![run(1)], vec![kept])).unwrap();
+    let recipe = Recipe { tagmata: t, variance: 0, absence: [0, 1], riff: [0, 1], vary: [0, 1] };
+    assert!(recipe.kinds().contains("kind:frond"));
+    unfold(&grammar(vec![run(1)], vec![Rule::Partner { tagma: 3, kept: None }])).unwrap_err();
 }
 
 fn tips_world() -> (Rules, Development) {

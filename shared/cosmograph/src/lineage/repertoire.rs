@@ -70,6 +70,8 @@ fn tailed(d: &Development, kind: &Key) -> Development {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     });
     v.lexicon.insert(kind.clone());
     v

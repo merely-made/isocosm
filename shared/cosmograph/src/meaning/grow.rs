@@ -7,7 +7,7 @@
 //! what the act holds in hand, given to the parts by their room (464).
 
 use super::{Parties, convert, spend};
-use crate::{Result, anatomy, growth, rules::*, schema::*, switching};
+use crate::{Result, anatomy, growth, pooling, rules::*, schema::*, switching};
 
 /// What growth moved: what each account paid toward the prices, and what
 /// of the hand each conversion took.
@@ -59,6 +59,12 @@ pub(crate) fn grow(
                 }
             }
         }
+    }
+    if let (true, Some(r)) = (development.grammar.is_some(), &reserve) {
+        // Fused runs hold their reserve as one (D50).
+        let body = p.body(Binding::Actor)?;
+        let stage = switching::staged(&development, body).into_owned();
+        pooling::share(rules, &stage, body, r);
     }
     let pay: Vec<Key> = reserve.into_iter().chain([tissue.clone()]).collect();
     loop {

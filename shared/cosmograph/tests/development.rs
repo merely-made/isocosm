@@ -59,6 +59,8 @@ fn tagma(segments: u8, bears: Option<&str>, per_segment: u8) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 

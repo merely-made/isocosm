@@ -56,7 +56,7 @@ pub use epoch::{
 };
 pub use mind::{Mind, Need, Rate};
 pub use pace::{PaceCost, PaceDuration, PaceProfile};
-pub use recipe::{Affinity, Anchor, ChainFacing, ChainLink, Declared, Development, Facing, Hardened, Policy, Recipe, Symmetry, Tagma, Template, Verdict};
+pub use recipe::{Affinity, Anchor, ChainFacing, ChainLink, Declared, Development, Facing, Hardened, PARTNER_FACING, PARTNER_SLOT, Policy, Recipe, Slot, Symmetry, Tagma, Template, Verdict};
 pub use systems::{Carriage, Fill, Role, System, default_systems};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

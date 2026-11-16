@@ -11,7 +11,7 @@ use crate::{
     Result, anatomy,
     development::{Soma, develop, flush},
     geometry::Frame,
-    rules::{Affinity, Development, Policy, Rules, Verdict},
+    rules::{Affinity, Development, PARTNER_FACING, PARTNER_SLOT, Policy, Rules, Verdict},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -189,6 +189,22 @@ pub struct Whole {
     pub host: PartId,
     pub offset: [i32; 3],
     pub kind: Option<Key>,
+    /// The tagma whose partner slot it lands in, keeping every function
+    /// whatever its crossing (D51).
+    pub slot: Option<u8>,
+}
+
+/// The first free partner slot of `d`'s recipe whose run `e` holds the
+/// first segment of, with where a box of `half` sits on it (D51).
+fn free_slot(e: &Entity, d: &Development, half: [i32; 3]) -> Option<(u8, PartId, [i32; 3])> {
+    let placed = placed(e);
+    d.recipe.tagmata.iter().enumerate().find_map(|(i, t)| {
+        t.slot.as_ref().filter(|s| s.kept.is_none())?;
+        let host = e.living().map(|(id, _)| id).find(|id| e.situs(*id) == Some([i as u8, 0, 0]))?;
+        let offset = flush(e.extent(host), half, PARTNER_FACING);
+        let at = [0, 1, 2].map(|a| placed[&host][a] + offset[a]);
+        free(e, &placed, at, half).then_some((i as u8, host, offset))
+    })
 }
 
 /// Whether `eater` can take `prey`'s part `part` whole: not a part with
@@ -207,19 +223,18 @@ pub fn whole(
     if verdict == Verdict::Refused {
         return None;
     }
-    let (host, offset) = resolve(eater, &mine.policy, prey.extent(part))?;
-    let kind = prey.situs(part).and_then(|[t, s, slot]| {
-        let tagma = theirs.recipe.tagmata.get(usize::from(t))?;
-        match slot {
-            0 => Some(tagma.segment_kind(s).clone()),
-            _ => tagma.bears.clone(),
-        }
-    });
+    let partner = free_slot(eater, mine, prey.extent(part));
+    let (host, offset) = match &partner {
+        Some((_, host, offset)) => (*host, *offset),
+        None => resolve(eater, &mine.policy, prey.extent(part))?,
+    };
+    let kind = prey.situs(part).and_then(|[t, s, slot]| theirs.recipe.tagmata.get(usize::from(t))?.kind_at(s, slot));
     Some(Whole {
         verdict,
         host,
         offset,
         kind,
+        slot: partner.map(|(tagma, ..)| tagma),
     })
 }
 
@@ -238,8 +253,8 @@ pub fn take_whole(
     }
     frame.parent = Some(w.host);
     frame.offset = w.offset;
-    frame.situs = None;
-    if w.verdict == Verdict::Adapter {
+    frame.situs = w.slot.map(|t| [t, 0, PARTNER_SLOT]);
+    if w.verdict == Verdict::Adapter && w.slot.is_none() {
         moved.cells.clear();
         moved.functions.clear();
         for allocation in moved.losses.values_mut() {

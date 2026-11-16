@@ -53,6 +53,8 @@ pub(crate) fn development(g: &Genesis, choice: Option<NativeFixtureRecipe>) -> O
             variance: None,
             symmetry: None,
             harden: None,
+            pool: None,
+            slot: None,
         }],
         variance: 0, absence: [0, 1], riff: [0, 1], vary: [0, 1],
     };

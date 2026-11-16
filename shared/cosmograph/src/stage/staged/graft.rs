@@ -20,7 +20,7 @@ impl Staged<'_> {
         let kinds: BTreeSet<_> = preview.branch.iter().filter_map(|part| {
             let [tagma, s, slot] = source.situs(*part)?;
             let tagma = development.recipe.tagmata.get(usize::from(tagma))?;
-            if slot == 0 { Some(tagma.segment_kind(s).clone()) } else { tagma.bears.clone() }
+            tagma.kind_at(s, slot)
         }).collect();
         // A branch is indivisible. It asks every exact part/account and may
         // land only when the pass grants all of them; shortfall stays put.

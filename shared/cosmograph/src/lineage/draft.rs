@@ -73,6 +73,9 @@ pub fn learn(
     let Some(line) = lines.get_mut(eater) else {
         return;
     };
+    if let Some(d) = line.development.as_mut() {
+        keep_partner(d, kind);
+    }
     if eater != donor && rules.directing.as_ref().is_some_and(|d| d.regard.is_some()) {
         line.ate.insert(donor.to_string());
     }
@@ -95,6 +98,24 @@ pub fn learn(
     meal.last = tick;
     if meal.count >= u32::from(meal.needed) {
         d.lexicon.insert(kind.clone());
+    }
+}
+
+/// A whole part taken in lands in a free partner slot (D51), so the first
+/// free one of `d`'s recipe now keeps `kind`, which the grammar's rule for it
+/// and the lexicon record too, and young grow it.
+fn keep_partner(d: &mut Development, kind: &Key) {
+    let free = d.recipe.tagmata.iter().position(|t| t.slot.as_ref().is_some_and(|s| s.kept.is_none()));
+    let Some(at) = free else { return };
+    d.recipe.tagmata[at].slot = Some(crate::rules::Slot { kept: Some(kind.clone()) });
+    d.lexicon.insert(kind.clone());
+    let rules = d.grammar.iter_mut().flat_map(|g| g.rules.iter_mut());
+    let free = rules.filter_map(|r| match r {
+        crate::rules::Rule::Partner { tagma, kept } if usize::from(*tagma) == at && kept.is_none() => Some(kept),
+        _ => None,
+    });
+    for kept in free.take(1) {
+        *kept = Some(kind.clone());
     }
 }
 

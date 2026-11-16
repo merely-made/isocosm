@@ -52,6 +52,8 @@ fn recipe(anamorphic: bool) -> Development {
             variance: None,
             symmetry: None,
             harden: None,
+            pool: None,
+            slot: None,
         }],
         variance: 0,
         absence: [0, 1],
@@ -466,4 +468,42 @@ fn a_switch_that_flips_off_takes_back_the_parts_its_stage_lacks_and_conserves_ma
     let reserve = anatomy::held(e, &sim.genesis().rules, "reserve:1");
     let soil: u64 = sim.state().sites.values().map(|s| s.accounts.get(SOIL).copied().unwrap_or(0)).sum();
     assert!(reserve > 0 || soil > 0);
+}
+
+/// Two lumps in one run, `fused` or not, all of the reserve in the first.
+fn lopsided(fused: bool) -> (Simulation, Id, u128, [PartId; 2]) {
+    let mut g = world(false);
+    let mut d = recipe(false);
+    let rules = if fused { vec![Rule::Fuse { runs: vec![0] }] } else { vec![] };
+    d.grammar = Some(Grammar { seed: d.recipe.tagmata.clone(), rules });
+    g.lineages.get_mut("lineage:1").unwrap().development = Some(regrown(&d).unwrap());
+    g.rules.processes.insert("test:grow".into(), grow_act());
+    let mut e = body(&g, &[2], &[], &[], 12);
+    let lumps: Vec<PartId> = e.living().filter(|(id, _)| e.situs(*id).is_some_and(|s| s[2] == 0)).map(|(id, _)| id).collect();
+    let all: u64 = lumps.iter().map(|id| e.parts[id].matter.get("reserve:1").copied().unwrap_or(0)).sum();
+    for (i, id) in lumps.iter().enumerate() {
+        let part = e.part_mut(id).unwrap();
+        part.matter.remove("reserve:1");
+        if i == 0 {
+            part.matter.insert("reserve:1".into(), all);
+        }
+    }
+    let at = [lumps[0], lumps[1]];
+    let (sim, id, before) = run_grow(g, e);
+    (sim, id, before, at)
+}
+
+#[test]
+fn fused_runs_hold_their_reserve_as_one_and_matter_is_conserved() {
+    let held = |sim: &Simulation, id: Id, part: PartId| {
+        sim.state().population.get(id).unwrap().parts[&part].matter.get("reserve:1").copied().unwrap_or(0)
+    };
+    let (sim, id, before, [first, second]) = lopsided(true);
+    let (a, b) = (held(&sim, id, first), held(&sim, id, second));
+    assert!(b > 0, "the second lump took a share: {a} and {b}");
+    assert_eq!(a + b, 12, "the pool's reserve is what it was");
+    assert_eq!(sim.matter(), before, "no matter made or lost");
+    // The control: unfused, the reserve stays where it was put.
+    let (sim, id, _, [first, second]) = lopsided(false);
+    assert_eq!((held(&sim, id, first), held(&sim, id, second)), (12, 0));
 }

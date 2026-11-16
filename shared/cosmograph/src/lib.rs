@@ -58,6 +58,7 @@ pub mod institutions;
 mod genesis;
 pub mod geometry;
 pub mod growth;
+pub mod pooling;
 pub mod switching;
 pub mod harm;
 pub mod history;

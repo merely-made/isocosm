@@ -1030,7 +1030,7 @@ three design docs that cite it. The record holds the words.
 | 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [denizen](2026-11-02_denizen_plan.md), [vtt overlay](2026-11-02_vtt_overlay_plan.md), [sim host](2026-11-12_sim_host_brief.md) |
 | 193 | Moved modules are decomposed under the 600-line ceiling along seams the code already has. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 198 | The consistency pass is applied; a dated line keeps the words of its date and a later name reaches it only as a note. | none |
-| 255 | Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts. | none |
+| 255 | Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
 | 260 | Viability gates are staged with the absorption, family by family: producers, then consumers, then decomposers. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 366 | Three method refinements accepted: separate measured evidence from lane reports, order questions by what they unblock, and name each control's detectable fault, keeping failing results. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 592 | No tracked source file over 600 lines without a listed technical reason; a script checks it and oversize files are split. | none |

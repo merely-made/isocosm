@@ -54,6 +54,8 @@ fn development(clutch: u32) -> Development {
             variance: None,
             symmetry: None,
             harden: None,
+            pool: None,
+            slot: None,
         }],
         variance: 0,
         absence: [0, 1],

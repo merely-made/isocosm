@@ -34,6 +34,8 @@ fn run(segments: u8) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 
@@ -276,7 +278,7 @@ fn arms_copied_round_a_vertical_stem_grow_clear_of_one_another() {
     let arm = Tagma { parent: Some(0), facing: Facing::Right, ..run(2) };
     let mut d = plain();
     d.lexicon = ["kind:block"].map(String::from).into();
-    d.grammar = Some(cosmograph::rules::Grammar { seed: vec![spine, arm], rules: vec![Rule::Radiate { tagma: 1, arms: 4 }] });
+    d.grammar = Some(cosmograph::rules::Grammar { seed: vec![spine, arm], rules: vec![Rule::Radiate { tagma: 1, arms: 4, fused: false }] });
     let d = regrown(&d).unwrap();
     assert_eq!(d.recipe.tagmata.len(), 5);
     let body = grown(&r, &d);

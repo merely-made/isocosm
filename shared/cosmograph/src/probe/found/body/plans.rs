@@ -51,6 +51,8 @@ fn segment(kind: &str, facing: Facing) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 

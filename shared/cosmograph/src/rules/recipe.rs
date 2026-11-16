@@ -164,6 +164,29 @@ pub struct Tagma {
     /// segment is of `segment`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub harden: Option<Hardened>,
+    /// The pool whose reserve its parts share with the runs of the same
+    /// pool (D50); absent, they keep their own.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pool: Option<u8>,
+    /// A place on the run kept for a part taken in whole (D51).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub slot: Option<Slot>,
+}
+
+/// The third place of a part on a segment, kept for a partner: the one a
+/// borne kind cannot reach (borne parts count up from one).
+pub const PARTNER_SLOT: u8 = 255;
+
+/// Where a partner sits on the first segment of its run: above it, which
+/// the borne kinds of a flank socket do not take.
+pub const PARTNER_FACING: Facing = Facing::Above;
+
+/// A slot on a run (D51): free until a whole part is taken in, then the
+/// kind of the part kept there, which the recipe records so young grow it.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Slot {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub kept: Option<Key>,
 }
 
 /// The `oldest` segments of a run, of `kind`: matter that holds and does
@@ -175,6 +198,15 @@ pub struct Hardened {
 }
 
 impl Tagma {
+    /// The kind of the part at third place `slot` of segment `s`.
+    pub fn kind_at(&self, s: u8, slot: u8) -> Option<Key> {
+        match slot {
+            0 => Some(self.segment_kind(s).clone()),
+            PARTNER_SLOT => self.slot.as_ref()?.kept.clone(),
+            _ => self.bears.clone(),
+        }
+    }
+
     /// The kind of segment `s` of this run.
     pub fn segment_kind(&self, s: u8) -> &Key {
         match &self.harden {
@@ -405,9 +437,10 @@ impl Recipe {
     /// Every kind the recipe names, segments and what they bear.
     pub fn kinds(&self) -> BTreeSet<Key> {
         let segments = self.tagmata.iter().map(|t| t.segment.clone());
+        let kept = self.tagmata.iter().filter_map(|t| t.slot.as_ref()?.kept.clone());
         let hardened = self.tagmata.iter().filter_map(|t| t.harden.as_ref().map(|h| h.kind.clone()));
         let borne = self.tagmata.iter().filter_map(|t| t.bears.clone());
-        segments.chain(hardened).chain(borne).chain(
+        segments.chain(hardened).chain(kept).chain(borne).chain(
                 self.tagmata
                     .iter()
                     .flat_map(|t| t.chain.iter().map(|l| l.kind.clone())),

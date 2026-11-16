@@ -12,7 +12,7 @@
 //! the bearer into consecutive tagmata of `every` segments, each chained to
 //! the last at its tip, and each whole piece bears one side run at `anchor`.
 
-use super::{Anchor, Development, Facing, Hardened, Symmetry, Tagma};
+use super::{Anchor, Development, Facing, Hardened, Slot, Symmetry, Tagma};
 use crate::{Result, schema::Key};
 use serde::{Deserialize, Serialize};
 
@@ -47,7 +47,25 @@ pub enum Rule {
     /// Run `tagma` is copied round the vertical, `arms` of it in all (D45):
     /// arms round a centre, petals. The count is stored here; the lattice
     /// shows at most four, spread as evenly as it can.
-    Radiate { tagma: u8, arms: u8 },
+    /// With `fused`, the arms and the run share one reserve (D50).
+    Radiate {
+        tagma: u8,
+        arms: u8,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        fused: bool,
+    },
+    /// Run `tagma` keeps a slot for a part taken in whole (D51): it lands
+    /// there keeping all its functions and its kind, and `kept`, which the
+    /// line fills when it does, is the recipe's record of it.
+    Partner {
+        tagma: u8,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        kept: Option<Key>,
+    },
+    /// The named runs share one reserve (D50): their parts, and what the
+    /// parts bear, hold it as one. Naming one run pools its own parts, so a
+    /// mirrored pair or a ring of what it bears shares too.
+    Fuse { runs: Vec<u8> },
     /// The body lays down `account` at its place (D47): each tick it pays
     /// `rate` from its reserve into the place's `account`, which decays at
     /// the place by `decay` a tick (D48). Unfolds to nothing; the world's
@@ -191,7 +209,9 @@ fn apply(t: &mut Vec<Tagma>, rule: &Rule) -> Result<()> {
             }
             named(t, *tagma)?.symmetry = Some(*symmetry);
         },
-        Rule::Radiate { tagma, arms } => radiate(t, *tagma, *arms)?,
+        Rule::Radiate { tagma, arms, fused } => radiate(t, *tagma, *arms, *fused)?,
+        Rule::Fuse { runs } => fuse(t, runs)?,
+        Rule::Partner { tagma, kept } => named(t, *tagma)?.slot = Some(Slot { kept: kept.clone() }),
         Rule::Deposit { rate, decay, .. } if *rate == 0 || *decay == 0 => {
             return Err("a deposit that pays or decays nothing".into());
         },
@@ -246,7 +266,7 @@ fn cut(t: &mut Vec<Tagma>, run: &Run, every: u8) -> Result<Vec<(u8, bool)>> {
             let harden = proto.harden.as_ref().and_then(|h| {
                 Some(Hardened { oldest: h.oldest.checked_sub(done).filter(|o| *o > 0)?, ..h.clone() })
             });
-            let piece = Tagma { segments: n, parent: Some(prev), anchor: Anchor::Tip, harden, ..proto.clone() };
+            let piece = Tagma { segments: n, parent: Some(prev), anchor: Anchor::Tip, harden, slot: None, ..proto.clone() };
             prev = push(t, piece)?;
             pieces.push((prev, n == every));
             rest -= n;
@@ -305,6 +325,8 @@ fn branch(t: &mut Vec<Tagma>, [tagma, every, depth, taper]: [u8; 4], anchor: Anc
                     anchor,
                     facing: turns[level],
                     harden: None,
+                    pool: None,
+                    slot: None,
                     socket: if proto.bears.is_some() { clear(proto.socket, run_axis, next) } else { proto.socket },
                     ..proto.clone()
                 };
@@ -325,7 +347,7 @@ const QUARTERS: usize = 4;
 /// socket. Two arms are opposite; three take the next two quarters; four
 /// and more fill the ring, and a fifth arm is stored, not shown. A run
 /// that joins nothing or runs up or down has no ring to be copied round.
-fn radiate(t: &mut Vec<Tagma>, tagma: u8, arms: u8) -> Result<()> {
+fn radiate(t: &mut Vec<Tagma>, tagma: u8, arms: u8, fused: bool) -> Result<()> {
     if arms < 2 {
         return Err("a radial run of fewer than two arms".into());
     }
@@ -336,8 +358,26 @@ fn radiate(t: &mut Vec<Tagma>, tagma: u8, arms: u8) -> Result<()> {
     let shown = usize::from(arms).min(QUARTERS);
     for arm in 1..shown {
         let places = arm * (QUARTERS / shown);
-        let copy = Tagma { facing: run.facing.turned(places), socket: run.socket.turned(places), ..run.clone() };
+        let copy = Tagma { facing: run.facing.turned(places), socket: run.socket.turned(places), slot: None, ..run.clone() };
         push(t, copy)?;
+    }
+    if fused {
+        let copies = (t.len() - shown + 1..t.len()).map(|i| i as u8);
+        fuse(t, &std::iter::once(tagma).chain(copies).collect::<Vec<_>>())?;
+    }
+    Ok(())
+}
+
+/// Gives the named runs one pool, the first's index naming it.
+fn fuse(t: &mut [Tagma], runs: &[u8]) -> Result<()> {
+    let Some(first) = runs.first().copied() else {
+        return Err("a fuse that names no run".into());
+    };
+    if runs.iter().enumerate().any(|(i, r)| runs[..i].contains(r)) {
+        return Err("a fuse that names a run twice".into());
+    }
+    for run in runs {
+        named(t, *run)?.pool = Some(first);
     }
     Ok(())
 }
@@ -372,6 +412,7 @@ fn differentiate(t: &mut Vec<Tagma>, tagma: u8, at_: u8, kind: &Key) -> Result<(
         segment: kind.clone(),
         parent: Some(tagma),
         anchor: Anchor::Tip,
+        slot: None,
         harden: run.harden.as_ref().and_then(|h| Some(Hardened { oldest: h.oldest.checked_sub(at_).filter(|o| *o > 0)?, ..h.clone() })),
         ..run.clone()
     };

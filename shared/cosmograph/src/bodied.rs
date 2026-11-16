@@ -185,6 +185,8 @@ fn bare(segments: u8, segment: &str) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 

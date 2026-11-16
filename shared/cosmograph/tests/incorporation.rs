@@ -26,6 +26,9 @@ mod abilities;
 #[path = "incorporation/adapter.rs"]
 mod adapter;
 
+#[path = "incorporation/partner.rs"]
+mod partner;
+
 #[path = "incorporation/scruple.rs"]
 mod scruple;
 
@@ -58,6 +61,8 @@ fn tagma(segment: &str, bears: Option<&str>) -> Tagma {
         variance: None,
         symmetry: None,
         harden: None,
+        pool: None,
+        slot: None,
     }
 }
 

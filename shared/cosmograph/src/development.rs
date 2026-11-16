@@ -13,7 +13,7 @@
 use crate::{
     Result,
     geometry::{Body, Frame},
-    rules::{Anchor, Development, Facing, Recipe, Rules, Symmetry, Tagma, Template},
+    rules::{Anchor, Development, Facing, Recipe, Rules, Slot, Symmetry, Tagma, Template, PARTNER_FACING, PARTNER_SLOT},
     schema::*,
 };
 use serde::{Deserialize, Serialize};
@@ -160,6 +160,11 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
             parts.push(part(segment, [i as u8, s, 0], parent, offset));
             spine.push(id);
             last = Some(id);
+            if let (0, Some(Slot { kept: Some(partner) })) = (s, &t.slot) {
+                let kept = kind(partner)?;
+                let offset = flush(segment.half_extent, kept.half_extent, PARTNER_FACING);
+                parts.push(part(kept, [i as u8, 0, PARTNER_SLOT], Some(id), offset));
+            }
             let Some(bears) = &t.bears else { continue };
             if soma.absent.contains(&(i as u8, s)) {
                 continue;
@@ -174,7 +179,7 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
                 for socket in &sockets {
                     let mut offset = flush(segment.half_extent, borne.half_extent, *socket);
                     offset[run] += along;
-                    slot = slot.checked_add(1).ok_or("too many borne parts")?;
+                    slot = slot.checked_add(1).filter(|s| *s < PARTNER_SLOT).ok_or("too many borne parts")?;
                     if t.chain.is_empty() {
                         parts.push(part(borne, [i as u8, s, slot], Some(id), offset));
                     } else {
