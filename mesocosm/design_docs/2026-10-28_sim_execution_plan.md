@@ -670,6 +670,17 @@ contract.
   search or walking plans, re-measured against the 2026-10-31 finding; a
   Mesocosm round renders smooth walking (capture); a foreground step is
   timed and its cap brought to Mark.
+- **Where it stands, 2026-11-16.** Built: the handback contract, the
+  foreground set, round pacing and arrival by travel time (Progress,
+  2026-11-02). Eponym uses the contract (`eponym-play/src/world/rounds.rs`,
+  `contract/mode/clock/driver.rs`). Mesocosm does not: nothing under
+  `mesocosm/crates` names a foreground or a handback, so its in-view bodies
+  still run route search and walking plans inside the tick. Mark, asked what
+  comes first on the played step: "Continue E10's remaining steps"; and on
+  which speed bar governs: "A new bar after the measurement", taken as this
+  phase's own re-measurement. Unexplained and not rerun: the 2026-11-12
+  profile's 109 to 158 s for 20 steps against 14.0 s on 2026-11-02 for the
+  same command and seed.
 - Needs: PG7's Places (landed); conatus for paths and foot placement
 - Rulings: 1080, 1081, 1082, 1083, 1084, D30
 
