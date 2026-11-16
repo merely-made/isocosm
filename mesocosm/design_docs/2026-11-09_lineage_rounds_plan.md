@@ -817,6 +817,21 @@ Regard's bound (D28), the operator set (D29), the microbe's switches (D30)
 and the next conditions (D31) are answered. Left:
 
 - **Crossings** (LR10): how a crossing unlocks another kingdom's operators.
+- **The eight operators as built** (LR6, 2026-11-15; D41 to D51), left by the
+  lane:
+  - Pooling's strength (D50): a body already draws on its whole reserve, so
+    a pool only changes where reserve sits, and a lost part takes just its
+    share. Whether parts without stores should draw from the pool is open.
+  - D50's reading that a fuse may join a run's symmetric copies is the
+    implementer's, to confirm.
+  - Deposits at founding (D47): nothing installs a lineage's deposit
+    processes when a world is founded, and no rate or decay is ruled.
+  - Drift over a mixed grammar: a grammar holding any rule but repeat is
+    never drifted or revised (`lineage/drift.rs`, `revise.rs`,
+    `speciate.rs`); it needs this phase's grammar-and-drift design.
+  - The partner sits above its run's first segment, the lane's choice.
+  - Limits: a newborn copies its parent's active stage; two partners taken
+    in one tick could both land in a slot; resorption logs only its spill.
 - **The microbe's numbers** (LR8): a switch's upkeep while on, and the
   generations a plasmid lasts.
 
