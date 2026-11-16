@@ -705,7 +705,7 @@ Remembered per-part hashes make that proportional to what changed.
   which is replay from genesis. `witnessed()` clones the whole state on each
   call, a quarter of A1's hash cost. Real documents are about 1.2 to 1.4 KB
   a body, not the scratch probe's 27.8 KB, so that probe's absolute figures
-  are wrong while its ratios stand. H1 and H2 await Mark's decision.
+  are wrong while its ratios stand. **Parked, 2026-11-16** (Mark: "Park E11; go after the played step (Recommended)"): H1 and H2 stay owed and unstarted.
 - Needs: nothing outside this repository; the witness crate
   (`state-witness`, Eidetic) is used as it is.
 - Rulings: D49; 633, 649, 652
