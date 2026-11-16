@@ -405,3 +405,149 @@ Diagnostics, not valid simulation:
 
 Not established: whether a route exists for 61 and 142 (terrain not
 inspected); about 2.7 s of 61's check time outside the existing timers.
+
+
+## 2026-11-16 E10 step 0, route cache by consulted regions (D54) and a cheaper step check (D55)
+
+Branch `e10-baseline` from main `60a0ecb2`, Windows release `mesocosm-genet`,
+`COSMOGRAPH_PROFILE_ACTIVE=sum COSMOGRAPH_PROFILE_LIMIT=1000 --play --curve 20
+--seed 18181373014846284518`, each state run twice. The machine was shared and
+noisy (the same state read 15.4 and 17.2 s at one point), so the wall times are
+good to about 10 percent; the counts are exact. Raw output:
+`Code/scratch/e10-lane`. The `curve:` lines are identical in every run (living
+67 at tick 1, 150 at tick 20).
+
+| Measurement | main, run 1 | main, run 2 | D54, run 1 | D54, run 2 | D54 + D55, run 1 | D54 + D55, run 2 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Played steps, 20 (wall) | 36.34 s | 36.44 s | 16.68 s | 15.42 s | 14.38 s | 13.34 s |
+| Food route search | 31.38 s | 31.57 s | 11.23 s | 10.69 s | 8.54 s | 8.24 s |
+| Searches run | 33 | 33 | 23 | 23 | 23 | 23 |
+| Cache hits | 87 | 87 | 97 | 97 | 97 | 97 |
+| Route reads | 794 | 794 | 794 | 794 | 794 | 794 |
+| Walking plans | 28.23 s, 2199 | 28.39 s, 2199 | 9.78 s, 797 | 9.33 s, 797 | 6.96 s, 797 | 6.74 s, 797 |
+| Living at tick 1 / 20 | 67 / 150 | 67 / 150 | 67 / 150 | 67 / 150 | 67 / 150 | 67 / 150 |
+
+"D54" is commit `5da0a2b8`; "D54 + D55" adds `14694b2a` (pivot balance read once
+per posture) and the posture-store size (the head of the branch). The profile
+commit `e92b86de` changes no behaviour.
+
+Per search (actor, ms, trials, pops, candidates; in run order, run 2 of each
+state). The diagnosis lane's table has more columns (tick, caller, outcome,
+refusals, step time); those came from its uncommitted instrumentation and were
+not rebuilt.
+
+Main (33 searches):
+
+```
+actor   ms  trials   pops  candidates
+   39    89       1    281       3480
+   41    18       4     31        131
+   43    91       1    256       3534
+   55    85       1    256       3761
+   57     3       1      2         12
+   61  5072     265  50588       4158
+   43    94       1    256       3534
+   55    85       1    256       3761
+   57     4       1      2         12
+   61  5073     265  50588       4158
+   39    92       1    281       3480
+   43    93       1    256       3534
+   55    88       1    256       3761
+   38    11       1      6         73
+   52     5       1      2         12
+   58  2245     128   4821       1403
+   52     5       1      2         12
+   58  2228     128   4821       1403
+   39    88       1    281       3480
+   41     4       1      2         13
+   43    93       1    256       3534
+   55    88       1    256       3761
+   61  5187     265  50588       4158
+   38     4       1      2         13
+   50     5       1      2         14
+   58   485      29    263        328
+   50     5       1      2         14
+   58   509      29    263        328
+   58     9       1      3         36
+  142  2396      50   6818       3805
+  142  2406      50   6818       3805
+  142  2406      50   6818       3805
+  142  2400      50   6818       3805
+searches 33, total 31462 ms
+```
+
+D54 (23 searches):
+
+```
+actor   ms  trials   pops  candidates
+   39    90       1    281       3480
+   41    18       4     31        131
+   43    90       1    256       3534
+   55    82       1    256       3761
+   57     3       1      2         12
+   61  4888     265  50588       4158
+   43    89       1    256       3534
+   55    83       1    256       3761
+   57     3       1      2         12
+   43    89       1    256       3534
+   55    84       1    256       3761
+   38    11       1      6         73
+   52     5       1      2         12
+   58  2112     128   4821       1403
+   52     5       1      2         12
+   41     4       1      2         13
+   55    84       1    256       3761
+   38     4       1      2         13
+   50     5       1      2         14
+   58   481      29    263        328
+   50     5       1      2         14
+   58     9       1      3         36
+  142  2407      50   6818       3805
+searches 23, total 10650 ms
+```
+
+D54 and D55 (23 searches):
+
+```
+actor   ms  trials   pops  candidates
+   39    91       1    281       3480
+   41    18       4     31        131
+   43    93       1    256       3534
+   55    87       1    256       3761
+   57     4       1      2         12
+   61  3227     265  50588       4158
+   43    92       1    256       3534
+   55    87       1    256       3761
+   57     4       1      2         12
+   43    92       1    256       3534
+   55    85       1    256       3761
+   38    11       1      6         73
+   52     5       1      2         12
+   58  1756     128   4821       1403
+   52     5       1      2         12
+   41     4       1      2         13
+   55    88       1    256       3761
+   38     5       1      2         13
+   50     5       1      2         14
+   58   388      29    263        328
+   50     5       1      2         14
+   58     9       1      3         36
+  142  1967      50   6818       3805
+searches 23, total 8130 ms
+```
+
+Where the heavy searches' time went (`walking.plan_cost` and `walking.cost`,
+summed over the run, instrumented build before D55, quiet run): pivot balance
+3.44 s, foothold choice 1.11, terrain clearance 2.00, pose 1.18, support 0.80,
+arrival admission 0.68, pivot frame checks 0.65 (inside the posture timers),
+other body reads 0.42, shapes 0.39, keys and store 0.53, stance polygons 0.17.
+After D55: pivot balance 0.88 s, terrain 1.47, the store sized for the search
+cut the heaviest search's evaluated postures from 167,914 to 115,835.
+
+Differential check (D54): `cache::differential` in `cosmograph` (6 seeds of 14
+steps of bodies arriving, leaving and moving near and far, each answer equal
+to a fresh search, with hits and misses and routes and no-routes all seen, and a
+test of a blocker leaving a consulted region and a body entering one) passed.
+`COSMOGRAPH_ROUTE_CACHE_VERIFY=1` on the 20-step command, final build: 97 hits,
+each compared with a fresh search by full `RouteSearch` equality, zero
+differences, same `curve:` lines, 116 s wall.
