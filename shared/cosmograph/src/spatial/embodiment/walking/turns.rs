@@ -62,24 +62,14 @@ fn planted(root: [i64; 3], feet: BTreeMap<PartId, [i64; 3]>, turn: i64) -> Strid
     }
 }
 fn balanced(
-    checks: &Checks<'_>,
+    checks: &mut Checks<'_>,
     mut frame: StrideFrame,
     yaw: Yaw,
     from: &Pose,
     to: &Pose,
     rules: Walking,
 ) -> Result<StrideFrame> {
-    let (volume, doc) = (checks.volume, checks.document);
-    let rotation = Rotation::at(yaw, frame.turn);
-    let local = local_feet(&frame, yaw)?;
-    let hull = support::bearing_rotated(volume, doc, &local, frame.root, rotation, &frame.bearing)?;
-    let centre = checks.centre(&local, rotation)?;
-    let at = polygon::balance(
-        &hull,
-        [frame.root[0] + centre[0], frame.root[2] + centre[2]],
-        UNIT / 4,
-    )
-    .ok_or("pivot has no balanced body position")?;
+    let (centre, at) = checks.balance_at(&frame, yaw)?;
     frame.root[0] = at[0] - centre[0];
     frame.root[2] = at[1] - centre[2];
     let reach = i64::from(rules.shift) * UNIT;

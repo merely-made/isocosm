@@ -6,7 +6,9 @@ use crate::profile::Clock;
 use std::cell::RefCell;
 
 const CAPACITY: usize = 8192;
+const PIVOTS: usize = 8192;
 type Key = (Yaw, [i64; 3], i64, Vec<(PartId, [i64; 3])>, Vec<PartId>);
+type Pivot = Result<([i64; 3], [i64; 2])>;
 type Evaluation = Result<(Result<u64>, Result<()>)>;
 /// Slots of `times`: the posture work above, then the planners' own.
 const LAPS: usize = 12;
@@ -27,6 +29,7 @@ pub(crate) struct Checks<'a> {
     entries: Memo<Key, Evaluation>,
     residents: Memo<Box3, bool>,
     admissions: Memo<Stand, Result<()>>,
+    pivots: Memo<Key, Pivot>,
     pub(in crate::spatial::embodiment) grounding: Grounding<'a>,
     resident_reads: usize,
     resident_misses: usize,
@@ -109,6 +112,7 @@ impl<'a> Checks<'a> {
     pub(crate) fn with_balance(mut self, balance: Option<Balance>) -> Self {
         self.entries.clear();
         self.admissions.clear();
+        self.pivots.clear();
         self.body.balance = balance.clone();
         self.grounding.set_balance(balance);
         self
@@ -153,6 +157,7 @@ impl<'a> Checks<'a> {
         self.entries.set_capacity(0);
         self.residents.set_capacity(0);
         self.admissions.set_capacity(0);
+        self.pivots.set_capacity(0);
         self.clearance = narrow::Clearance::new(self.volume, 0);
         self.bearing = support::Bearing::new(self.volume, 0);
         self
@@ -162,6 +167,7 @@ impl<'a> Checks<'a> {
         self.entries.set_capacity(capacity);
         self.residents.set_capacity(capacity);
         self.admissions.set_capacity(capacity);
+        self.pivots.set_capacity(capacity);
     }
     #[cfg(test)]
     pub(super) fn reuse_counts(&self) -> (usize, usize, usize, usize) {
@@ -198,6 +204,7 @@ impl<'a> Checks<'a> {
             entries: Memo::new(CAPACITY),
             residents: Memo::new(16384),
             admissions: Memo::new(8192),
+            pivots: Memo::new(PIVOTS),
             grounding: Grounding::new(volume),
             resident_reads: 0,
             resident_misses: 0,
@@ -344,6 +351,36 @@ impl<'a> Checks<'a> {
         }
         false
     }
+    /// The body position a planted frame balances at, and its centre: the
+    /// part of a pivot's balance that reads terrain, kept per posture.
+    pub(super) fn balance_at(&mut self, frame: &StrideFrame, yaw: Yaw) -> Pivot {
+        let key = posture_key(frame, yaw);
+        if let Some(found) = self.pivots.get(&key) {
+            return found.clone();
+        }
+        let found = (|| {
+            let rotation = Rotation::at(yaw, frame.turn);
+            let local = local_feet(frame, yaw)?;
+            let hull = support::bearing_rotated(
+                self.volume,
+                self.document,
+                &local,
+                frame.root,
+                rotation,
+                &frame.bearing,
+            )?;
+            let centre = self.centre(&local, rotation)?;
+            let at = polygon::balance(
+                &hull,
+                [frame.root[0] + centre[0], frame.root[2] + centre[2]],
+                UNIT / 4,
+            )
+            .ok_or("pivot has no balanced body position")?;
+            Ok((centre, at))
+        })();
+        self.pivots.insert(key, found.clone());
+        found
+    }
     pub(super) fn evaluate(&mut self, frame: &StrideFrame, yaw: Yaw) -> Evaluation {
         let key_time = Clock::new();
         self.reads += 1;
@@ -351,13 +388,7 @@ impl<'a> Checks<'a> {
             self.misses += 1;
             return self.read(frame, yaw);
         }
-        let key = (
-            yaw,
-            frame.root,
-            frame.turn,
-            frame.feet.iter().map(|(&id, &p)| (id, p)).collect(),
-            frame.bearing.iter().copied().collect(),
-        );
+        let key = posture_key(frame, yaw);
         if let Some(found) = self.entries.get(&key) {
             self.times[0] += key_time.ns();
             return found.clone();
@@ -475,6 +506,16 @@ impl Drop for Checks<'_> {
             );
         }
     }
+}
+
+fn posture_key(frame: &StrideFrame, yaw: Yaw) -> Key {
+    (
+        yaw,
+        frame.root,
+        frame.turn,
+        frame.feet.iter().map(|(&id, &p)| (id, p)).collect(),
+        frame.bearing.iter().copied().collect(),
+    )
 }
 
 pub(super) fn boxes_at(
