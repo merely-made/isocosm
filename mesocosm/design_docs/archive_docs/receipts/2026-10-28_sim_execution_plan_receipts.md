@@ -282,3 +282,55 @@ The `sunlight_platform_check` example, built for native Windows and
 `wasm32-unknown-unknown`, matched `e2a1a91c24a0622f`. WebAssembly ran in a
 Node worker. The digest covers 24 seasonal dawn and dusk cases, with each
 case resumed in Grouped and compared with uninterrupted Individuals.
+
+## 2026-11-16 E11 H0, where hashing time goes
+
+A lane measured the simulator as it stands at `05e8adf1`, Windows release,
+on a shared machine (spreads are wide; one configuration was rerun and its
+per-lineage document sizes matched exactly). Temporary counters and timers
+around `witness`, `entity_witness` and `Session::save`, with positive
+controls firing in the same runs. The harness, the instrumentation patch and
+the raw outputs are kept outside the repository in
+`Code/scratch/nested-voxel-measure/h0-harness`; nothing was committed.
+
+Simulator level, `Session::advance(1)`, 30 ticks after 10 of warm-up
+(median). A1 founds 256 on a 3x2 grid and grows to 543 bodies by tick 40;
+world-time founds 240 on 2x2. Ten times is population x10, on the same grid
+or on about ten times the sites. No hash runs inside `advance`.
+
+| World | Tick (ms) | `state_hash` (ms) | Population preimage (bytes) |
+| --- | ---: | ---: | ---: |
+| A1, 256, Grouped | 20.1 | 6.9 | 664,677 (543 bodies, 372 cohorts) |
+| A1, 256, Individuals | 10.6 | 2.9 | same |
+| A1, 2560, 6 sites | 325 | 119.6 | 12,247,576 (7,780 bodies) |
+| A1, 2560, 54 sites | 716 | 130.6 | 11,010,582 (7,900 bodies) |
+| world-time, 240 | 0.32 | 0.92 | 350,810 (244 bodies) |
+| world-time, 2400, 4 sites | 4.7 | 19.0 | 3,392,017 |
+| world-time, 2400, 36 sites | 7.9 | 19.8 | 3,377,117 |
+
+A real body's document is 0.14 to 5.0 KB by lineage, about 1.2 KB a body in
+A1 and 1.44 KB in world-time. The hash runs at 0.2 to 0.43 GB/s.
+`witnessed()` clones the whole state and normalizes the population on every
+call: about a quarter of A1's hash time, 6 percent of world-time's.
+
+Played, through `Runtime::bench_placed` and `step(1)`, A1 generated,
+Grouped. The hash is taken only in rounds where the played critter's frame
+window moved (`frame_attention`, `commit`, `World::cut`).
+
+| Population | Step median (ms) | Witness calls | Share of step time |
+| --- | ---: | --- | --- |
+| 256, seed 1, 30 steps | 477 | 7, 17.1 ms in all | under 0.12 percent |
+| 256, seed 3, 30 steps | 467 | 2, 4.7 ms | about 0.03 percent |
+| 2560, seed 1, 20 steps | 3,341 | 1, 20.7 ms | about 0.03 percent |
+
+Reads and saves through the runtime, at 256 and at 2560: `loop_reading`
+12 to 13.6 ms and 54 ms; `in_site` 0.004 ms and 30.4 ms; `save_world` 6.5 ms
+(55 to 63 percent witness) and 38 ms (77 percent); `resume_world` 16 to 30 s
+and 90 s, of which the witness is 4 ms and 32 ms, the rest replay from
+genesis. Where a test or bench hashes every tick, the hash is 28 to 37
+percent of an A1 tick and 240 to 400 percent of a world-time tick.
+
+Not measured: the genet window's scene refreshes (about two hashes each,
+30 ms apiece at 2560), Eponym, and the family host's commit gate (about four
+saves a commit, by reading). Seeds 2, 4 and 5 stalled at a death checkpoint
+in the harness.

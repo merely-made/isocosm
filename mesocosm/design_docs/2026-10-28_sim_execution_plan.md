@@ -697,6 +697,15 @@ Remembered per-part hashes make that proportional to what changed.
   path (`history.rs`, `cosmograph-host/src/world.rs`) before it is specified.
   Done when consecutive saves share unchanged bodies, an old save still
   loads and verifies, and the save format carries its version.
+- **H0 measured, 2026-11-16** ([receipts](archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md#2026-11-16-e11-h0-where-hashing-time-goes)).
+  In ordinary play the hash is taken in about 1 step in 4 to 1 in 15 and is
+  0.02 to 0.5 percent of a played step, which walking and route work
+  dominate. It is 28 to 400 percent of a tick where a test or bench hashes
+  every tick, 55 to 80 percent of a save, and about 1 percent of a load,
+  which is replay from genesis. `witnessed()` clones the whole state on each
+  call, a quarter of A1's hash cost. Real documents are about 1.2 to 1.4 KB
+  a body, not the scratch probe's 27.8 KB, so that probe's absolute figures
+  are wrong while its ratios stand. H1 and H2 await Mark's decision.
 - Needs: nothing outside this repository; the witness crate
   (`state-witness`, Eidetic) is used as it is.
 - Rulings: D49; 633, 649, 652

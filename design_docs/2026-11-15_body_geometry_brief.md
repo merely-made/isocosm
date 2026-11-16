@@ -948,3 +948,11 @@ Open: the hash width if stored nodes are ever addressed across files or
 peers (the witness is FNV-1a 64, an equality witness, not collision-safe);
 the real texture limits on wgpu's weakest targets; a plan in Seiche for the
 nested path, which is another repository's and not started.
+
+**Correction, 2026-11-16.** The population probe modelled a 27.8 KB document
+per plant. Measured in the simulator (sim execution plan, E11 H0), a real
+body's document is 0.14 to 5.0 KB by lineage and about 1.2 to 1.4 KB on
+average, and the real hash runs at 0.2 to 0.43 GB/s against the probe's
+1.1 GB/s. The two errors partly cancel. The probe's ratios stand; its
+absolute times and its snapshot sizes do not. In ordinary play the state
+hash is under half a percent of a step.
