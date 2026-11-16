@@ -703,6 +703,13 @@ contract.
   plans are a search's inner work, about 70 a search.
   0. Baseline on today's main (D53). Done when the receipts give searches
      and cache hits a tick, the in-view bodies, and the cost of a search.
+     **Measured 2026-11-16** ([receipts](archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md#2026-11-16-e10-step-0-baseline-on-main)):
+     20 steps take 36 s, 90 percent of it 33 route searches. Twenty-one cost
+     about 90 ms; nine cost 2.2 to 5.3 s and are three bodies repeating one
+     many-trial search each, 30 s in all. The 2026-11-12 figure was this
+     workload on a busy machine. The stepper of step 3 calls the same route
+     code, so moving these searches to the foreground would not make them
+     cheaper.
   1. The world rule (D52). Done when an older Mesocosm save loads, replays
      and hashes to its stored value.
   2. `mesocosm-runtime` carries handbacks: passed to the clock

@@ -334,3 +334,33 @@ Not measured: the genet window's scene refreshes (about two hashes each,
 30 ms apiece at 2560), Eponym, and the family host's commit gate (about four
 saves a commit, by reading). Seeds 2, 4 and 5 stalled at a death checkpoint
 in the harness.
+
+## 2026-11-16 E10 step 0, baseline on main
+
+Main at `74e33c40`, Windows release `mesocosm-genet`, unmodified,
+`COSMOGRAPH_PROFILE_ACTIVE=sum`, `--play --curve 20 --seed
+18181373014846284518`, run twice (`COSMOGRAPH_PROFILE_LIMIT=0`, then `1000`
+for the per-search lines). Living 67 at tick 1 and 150 at tick 20, as on
+2026-11-12. Raw output: `Code/scratch/nested-voxel-measure/e10-baseline`.
+
+| Measurement | Run 1 | Run 2 |
+| --- | ---: | ---: |
+| Played steps, 20 | 36.34 s | 35.97 s |
+| Food route search | 32.69 s, 33 searches | 32.23 s, 33 |
+| Walking plans | 29.44 s, 2,199 calls | 29.00 s, 2,199 |
+| Route reads / cache hits | 794 / 87 | 794 / 87 |
+| Smell reads | 1.55 s, 648 calls | |
+
+The 33 searches and about 2,200 walking plans match the 2026-11-12 run, so
+that run's 109 to 158 s was this workload on a busy machine. Route search is
+about 90 percent of the played steps. Eight or nine bodies searched, within
+the foreground cap of 16.
+
+By search (run 2): 21 took one trial and about 90 ms each, about 1 s in all,
+as on 2026-11-02. Twelve took more than one trial and 31.1 s in all; nine
+took over a second and 30.1 s in all, and they are three bodies repeating
+one search each with identical counts: actor 61 three times (5.1 to 5.3 s,
+265 trials, 50,588 pops), actor 142 four times (2.5 s, 50 trials, 6,818
+pops), actor 58 twice (2.2 s, 128 trials, 4,821 pops). Not established:
+whether those searches end in a route, in none or at a limit, and why each
+is repeated rather than remembered. The 2026-11-02 commit was not run.
