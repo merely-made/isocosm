@@ -103,7 +103,7 @@ pub fn scene_folded(adapter: &str, items: &[Item], links: &[(String, String, &st
         let (Some(&from), Some(&to)) = (instances.get(from), instances.get(to)) else { continue };
         let points = vec![scene.items[from.0 as usize].transform.translate,
             scene.items[to.0 as usize].transform.translate];
-        scene.relations.push(RoutedRelation { from, to, space: Scene::WORLD, points,
+        scene.relations.push(RoutedRelation { form: Default::default(), from, to, space: Scene::WORLD, points,
             kind: Some((*kind).into()), weight: None, link_key: None,
             marks: Default::default(), strength: None });
     }

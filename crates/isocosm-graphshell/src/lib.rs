@@ -476,6 +476,7 @@ fn add_overmap_routes(scene: &mut Scene, overmap: &Overmap) {
         let from_point = scene.items[from.0 as usize].transform.translate;
         let to_point = scene.items[to.0 as usize].transform.translate;
         scene.relations.push(RoutedRelation {
+            form: Default::default(),
             from,
             to,
             space: Scene::WORLD,
