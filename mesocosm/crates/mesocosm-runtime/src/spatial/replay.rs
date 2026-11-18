@@ -74,6 +74,13 @@ impl Game {
                 },
                 Command::AdvanceSpatial { ticks, steps, arrivals, .. }
                 | Command::AdvanceBirthSpatial { ticks, steps, arrivals, .. } => {
+                    let handed = match &entry.command {
+                        Command::AdvanceBirthSpatial { handbacks, .. } => handbacks.as_slice(),
+                        _ => &[],
+                    };
+                    if record.handbacks != handed {
+                        return Err("saved handbacks differ from the native entry".into());
+                    }
                     if record.command_outcome.is_some() {
                         return Err("clock record cannot name a direct-command outcome".into());
                     }
@@ -86,10 +93,14 @@ impl Game {
                             if let cosmograph::spatial::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
                         if ordered != record.steps { return Err("saved step acceptance differs from native publication order".into()); }
                         changes.extend(folded.apply_publications(&session.sim, steps, births, &record.births, &record.order)?);
-                        format!("birth spatial advanced {ticks}; answers {}",
-                            cosmograph::digest(&(&record.arrivals, &record.steps, &record.births, &record.order)))
+                        let mut outcome = format!("birth spatial advanced {ticks}; answers {}",
+                            cosmograph::digest(&(&record.arrivals, &record.steps, &record.births, &record.order)));
+                        if !record.handback_reports.is_empty() {
+                            outcome.push_str(&format!("; handbacks {}", cosmograph::digest(&record.handback_reports)));
+                        }
+                        outcome
                     } else {
-                        if !record.births.is_empty() || !record.order.is_empty() {
+                        if !record.births.is_empty() || !record.order.is_empty() || !record.handback_reports.is_empty() {
                             return Err("legacy spatial outcome authenticates no birth/publication fields".into());
                         }
                         changes.extend(folded.apply_steps(steps, &record.steps)?);

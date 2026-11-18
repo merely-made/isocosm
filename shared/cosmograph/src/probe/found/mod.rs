@@ -334,6 +334,7 @@ impl ProbeFounding {
             telling: None,
             banding: None,
             speed: None,
+            foreground_walks: false,
             social: None,
             spread_capacity: None,
             material_recipes: BTreeMap::new(),

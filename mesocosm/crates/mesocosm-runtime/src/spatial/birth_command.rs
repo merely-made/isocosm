@@ -34,7 +34,8 @@ impl Game {
                     if let Some(driver) = &mut game.driver {
                         let entry = native.entries.last().ok_or("forced birth native entry absent")?.id.clone();
                         driver.records.push(profile::Record { entry, changes, steps: BTreeSet::new(),
-                            arrivals: Vec::new(), births: reports, order, command_outcome: Some(out.result.clone()) });
+                            arrivals: Vec::new(), births: reports, order, handbacks: Vec::new(),
+                            handback_reports: Vec::new(), command_outcome: Some(out.result.clone()) });
                     }
                     game.version = game.current_version();
                     game.refresh(&mut native)?;

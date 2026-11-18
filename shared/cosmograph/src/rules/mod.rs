@@ -285,6 +285,11 @@ pub struct Rules {
     /// step a tick (case 1084); absent, worlds step and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub speed: Option<crate::speed::Speed>,
+    /// A round's foreground walks the bodies in its view (E10, D52, case
+    /// 1084): an accepted handback ends that body's pending journey. Absent,
+    /// worlds step and hash as before.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub foreground_walks: bool,
     /// The crafts and deeds a world's sophonts read (778); absent in worlds
     /// without them, which hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]

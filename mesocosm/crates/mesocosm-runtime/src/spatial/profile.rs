@@ -69,6 +69,12 @@ pub struct Record {
     pub births: Vec<cosmograph::spatial::BirthReport>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub order: Vec<cosmograph::spatial::Publication>,
+    /// A round's foreground handbacks for the minute and what the sim made
+    /// of each (case 1080); absent in a minute without them.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub handbacks: Vec<cosmograph::spatial::Handback>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub handback_reports: Vec<cosmograph::spatial::HandbackReport>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub command_outcome: Option<String>,
 }

@@ -30,9 +30,18 @@ impl Session {
         terrain: &[TerrainResolution], steps: &[Resolution], arrivals: &[ArrivalResolution],
         births: &[BirthResolution], fallback: &BirthFallback)
         -> Result<(SpatialAdvance, Vec<BirthResolution>)> {
+        self.try_advance_round_spatial_with_fallback(ticks, terrain, steps, arrivals, births, &[], fallback)
+    }
+
+    /// The same with a round's foreground handbacks (case 1080).
+    #[allow(clippy::too_many_arguments)]
+    pub fn try_advance_round_spatial_with_fallback(&mut self, ticks: Tick,
+        terrain: &[TerrainResolution], steps: &[Resolution], arrivals: &[ArrivalResolution],
+        births: &[BirthResolution], handbacks: &[Handback], fallback: &BirthFallback)
+        -> Result<(SpatialAdvance, Vec<BirthResolution>)> {
         let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
-            handbacks: Vec::new(),
+            handbacks: handbacks.to_vec(),
         };
         let (attempt, automatic) = self.stage_spatial_with(command, Some(fallback))?;
         let out = match attempt {
@@ -49,7 +58,7 @@ impl Session {
                 // as individual callbacks, preserving their exact answer order.
                 let mut expanded = births.to_vec();
                 expanded.extend_from_slice(&automatic);
-                self.try_advance_birth_spatial_with_flows(ticks, terrain, steps, arrivals, &expanded)?
+                self.try_advance_round_spatial(ticks, terrain, steps, arrivals, &expanded, handbacks)?
             },
         };
         Ok((out, automatic))

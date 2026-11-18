@@ -7664,7 +7664,7 @@ plans = ["sim-execution"]
 title = "a world rule says the foreground walks in-view bodies; an accepted handback clears the journey (2026-11-16)"
 source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
-summary = "A world rule marks foreground-walked worlds; accepting a handback ends that body's pending journey. Not yet built."
+summary = "A world rule marks foreground-walked worlds; accepting a handback ends that body's pending journey. Refined by D57."
 draws_on = ["1080", "1084"]
 plans = ["sim-execution"]
 
@@ -7698,6 +7698,22 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "No back-off after a failed route search; D54's cache makes an unchanged retry cheap."
 draws_on = ["sim-execution D54"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D57"]
+title = "the world rule field lands now, before its first reader (2026-11-18)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The world rule is a field absent unless true, landed inert; an accepted handback ends the journey in every world; step 4 gives the rule its meaning."
+draws_on = ["sim-execution D52"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D58"]
+title = "the generated-driver path carries handbacks through one added entry (2026-11-18)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Both of Mesocosm's round paths carry handbacks; Cosmograph gains one additive public entry."
+draws_on = ["sim-execution D52"]
 plans = ["sim-execution"]
 
 [decisions."sim-host D1"]

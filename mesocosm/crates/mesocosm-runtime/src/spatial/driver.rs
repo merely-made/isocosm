@@ -131,11 +131,19 @@ impl Game {
     /// Trusted owner clock. Ordinary played inputs use `advance` and its native access gate.
     pub fn advance_clock(&mut self, session: &mut Session)
         -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, String> {
-        self.advance_clock_with_geometry(session, &mut super::refresh::GeometryCache::default())
+        self.advance_clock_with_geometry(session, &mut super::refresh::GeometryCache::default(), &[])
+    }
+
+    /// The trusted clock for a round's minute: the foreground's handbacks
+    /// are checked by the sim before its passes run, recorded either way
+    /// (case 1080), and an accepted pose is drawn into the game.
+    pub fn advance_clock_round(&mut self, session: &mut Session, handbacks: &[native::Handback])
+        -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, String> {
+        self.advance_clock_with_geometry(session, &mut super::refresh::GeometryCache::default(), handbacks)
     }
 
     pub(crate) fn advance_clock_with_geometry(&mut self, session: &mut Session,
-        geometry: &mut super::refresh::GeometryCache)
+        geometry: &mut super::refresh::GeometryCache, handbacks: &[native::Handback])
         -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, String> {
         let _span = crate::profile::Span::new("clock.total");
         self.version()?;
@@ -155,12 +163,12 @@ impl Game {
             match crate::profile::measure("clock.prepare", ||
                 match &fallback {
                     Some(fallback) => {
-                        let (attempt, automatic) = native_session.try_advance_birth_spatial_with_fallback(
-                            1, &terrain, &steps, &arrivals, &births, fallback)?;
+                        let (attempt, automatic) = native_session.try_advance_round_spatial_with_fallback(
+                            1, &terrain, &steps, &arrivals, &births, handbacks, fallback)?;
                         births.extend(automatic);
                         Ok(attempt)
                     },
-                    None => native_session.try_advance_birth_spatial_with_flows(1, &terrain, &steps, &arrivals, &births),
+                    None => native_session.try_advance_round_spatial(1, &terrain, &steps, &arrivals, &births, handbacks),
                 })? {
                 SpatialAdvance::Terrain(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
@@ -195,6 +203,7 @@ impl Game {
                     let reports = native_session.sim.spatial_arrivals().to_vec();
                     let born = native_session.sim.spatial_births().to_vec();
                     let order = native_session.sim.spatial_order().to_vec();
+                    let handback_reports = native_session.sim.spatial_handbacks().to_vec();
                     let mut game = source;
                     let mut changes = game.apply_arrivals(&arrivals, &reports)?;
                     changes.extend(game.apply_publications(&native_session.sim, &steps, &births, &born, &order)?);
@@ -204,7 +213,8 @@ impl Game {
                     if let Some(driver) = &mut game.driver {
                         let entry = native_session.entries.last().ok_or("spatial native entry absent")?.id.clone();
                         driver.records.push(profile::Record { entry, changes, steps: accepted, arrivals: reports,
-                            births: born, order, command_outcome: None });
+                            births: born, order, handbacks: handbacks.to_vec(), handback_reports,
+                            command_outcome: None });
                     }
                     game.version = game.current_version();
                     game.refresh_with(&mut native_session, geometry)?;

@@ -25,6 +25,8 @@ mod templates;
 mod tier;
 mod settle;
 mod handback;
+#[cfg(test)]
+mod handback_tests;
 pub use handback::{Handback, HandbackReport};
 pub mod embodiment;
 pub mod foraging;
