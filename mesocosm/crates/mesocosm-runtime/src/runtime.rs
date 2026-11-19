@@ -404,6 +404,13 @@ impl Runtime {
     pub fn revision(&self) -> Result<u64, String> { self.driver.world().revision() }
     pub fn set_max_backlog(&mut self, max_backlog: usize) { self.driver.set_max_backlog(max_backlog); }
 
+    /// Attaches the participant's frame now, as the first round would, so a
+    /// foreground read before that round names the bodies the round will.
+    /// The same command at the same state: a later round finds it held.
+    pub fn attach_foreground(&mut self) {
+        if frame::FRAME_TIER { self.with_product(|product, world| product.frame_attention(world)); }
+    }
+
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {
         let _span = crate::profile::Span::new("advance.total");

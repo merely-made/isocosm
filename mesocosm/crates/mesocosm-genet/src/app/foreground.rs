@@ -83,6 +83,8 @@ impl Host {
             (rules.foreground_walks && rules.speed.is_some(), sim.state().tick)
         };
         if walks {
+            // The round's first step would attach the frame; do it before minute 0 is drawn (D70).
+            self.runtime.attach_foreground();
             self.foreground = Some(Foreground::new(self.config.round_speed, tick));
         }
     }

@@ -73,20 +73,24 @@ const MINUTES: u64 = 3;
 #[test]
 fn the_walks_the_window_draws_are_the_handbacks_the_clock_takes() {
     let mut runtime = found(WorldRules { foreground_walks: true, ..WorldRules::generated() });
+    // What a window does before it draws minute 0 (D70).
+    runtime.attach_foreground();
     let participant = runtime.interim().participant;
-    let mut walked = 0;
+    let (mut walked, mut expected) = (0, Vec::new());
     for _ in 0..MINUTES {
-        let (walks, minute) = {
-            let sim = runtime.sim();
-            (cosmograph_host::drive::world_foreground_walks(&sim, participant),
-                cosmograph_host::drive::world_foreground_minute(&sim, participant).unwrap())
-        };
         let sim = runtime.sim();
+        let walks = cosmograph_host::drive::world_foreground_walks(&sim, participant);
+        let minute = cosmograph_host::drive::world_foreground_minute(&sim, participant).unwrap();
         let made: Vec<_> = walks.iter().filter_map(|w| w.handback(&sim, 60).unwrap()).collect();
         assert_eq!(made, minute, "the window's walks hand back what the clock is given");
         walked += walks.len();
+        expected.push(made);
         drop(sim);
         runtime.step(1);
+    }
+    let records = &runtime.spatial().driver.as_ref().unwrap().records;
+    for (minute, record) in records.iter().enumerate() {
+        assert_eq!(expected[minute], record.handbacks, "minute {minute}: the round hands back the walks read before it");
     }
     assert!(walked > 0, "some body walked: the comparison checks nothing otherwise");
 }
@@ -143,11 +147,10 @@ fn a_windowed_round_draws_each_step_and_replays_to_the_headless_hash() {
     let mut headless = found(WorldRules { foreground_walks: true, ..WorldRules::generated() });
     headless.step(MINUTES);
     assert_eq!(headless.sim().state_hash(), hash, "a windowed round and a headless one end alike");
-    // What the window drew a minute from is what the clock was handed, once
-    // the round's own first step has set the foreground (minute 0 differs).
+    // What the window drew a minute from is what the clock was handed, from minute 0.
     let records = &host.runtime.spatial().driver.as_ref().unwrap().records;
     assert_eq!(records.len() as u64, MINUTES);
-    for (minute, record) in records.iter().enumerate().skip(1) {
+    for (minute, record) in records.iter().enumerate() {
         assert_eq!(drawn[&(minute as u64)], record.handbacks, "minute {minute}: drawn walks are the handbacks");
     }
     let replayed = Runtime::replayed_game(host.runtime.save_game()).unwrap();
