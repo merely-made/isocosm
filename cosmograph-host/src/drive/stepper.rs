@@ -91,6 +91,11 @@ impl Walk {
         self.taken
     }
 
+    /// The body this walk moves.
+    pub fn actor(&self) -> Id {
+        self.actor
+    }
+
     fn edges(&self) -> usize {
         self.route.path.len() - 1
     }
@@ -176,21 +181,28 @@ pub fn foreground_minute(sim: &Simulation, participant: Id, walk: &str) -> Resul
     Ok(out)
 }
 
-/// A world's foreground minute under its own rule (D51, D52): empty unless
-/// the world says its foreground walks in-view bodies. Each foreground body
-/// takes the first of the world's foraging walks that gives it a route, so
-/// a windowed round and a headless one hand back the same poses.
-pub fn world_foreground_minute(sim: &Simulation, participant: Id) -> Result<Vec<Handback>, String> {
+/// The walks of a participant's foreground for one minute under the world's
+/// own rule (D51, D52): empty unless the world says its foreground walks
+/// in-view bodies. Each foreground body takes the first of the world's
+/// foraging walks that gives it a route. The one place the set is walked, for
+/// the clock's handbacks and for a window's drawing alike (E10 step 7).
+pub fn world_foreground_walks(sim: &Simulation, participant: Id) -> Vec<Walk> {
     let rules = &sim.genesis().rules;
     let Some(t) = rules.spatial_templates.as_ref().filter(|_| rules.foreground_walks && rules.speed.is_some()) else {
-        return Ok(Vec::new());
+        return Vec::new();
     };
+    sim.foreground(participant).into_iter()
+        .filter_map(|actor| t.foraging.keys().find_map(|walk| Walk::begin(sim, actor, walk).ok().flatten()))
+        .collect()
+}
+
+/// A world's foreground minute under its own rule: each walk's sixty steps
+/// taken and handed back, so a windowed round and a headless one hand back
+/// the same poses.
+pub fn world_foreground_minute(sim: &Simulation, participant: Id) -> Result<Vec<Handback>, String> {
     let mut out = Vec::new();
-    for actor in sim.foreground(participant) {
-        let walk = t.foraging.keys().find_map(|walk| Walk::begin(sim, actor, walk).ok().flatten());
-        if let Some(h) = walk.map(|w| w.handback(sim, STEPS_PER_MINUTE)).transpose()?.flatten() {
-            out.push(h);
-        }
+    for walk in world_foreground_walks(sim, participant) {
+        out.extend(walk.handback(sim, STEPS_PER_MINUTE)?);
     }
     Ok(out)
 }

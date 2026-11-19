@@ -44,6 +44,8 @@ pub struct HostConfig {
     /// The generated world's founding population.
     pub population: u64,
     pub ticks_per_second: u32,
+    /// World time against real time under the foreground rule (case 1080).
+    pub round_speed: cosmograph_host::drive::Speed,
     pub render_scale: u32,
     pub width: u32,
     pub height: u32,
@@ -170,6 +172,7 @@ impl Default for HostConfig {
             // decision periods per kind brought a played tick near 20 ms
             // (the execution plan's D21).
             ticks_per_second: 10,
+            round_speed: cosmograph_host::drive::Speed::X1,
             render_scale: 1,
             width: 960,
             height: 540,

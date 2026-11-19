@@ -21,6 +21,7 @@ mod continuation;
 mod devtime;
 pub mod drive;
 mod follow;
+mod foreground;
 mod view;
 mod graft;
 mod holding;
@@ -86,6 +87,8 @@ pub struct Host {
     pump: Option<actions::Pump>,
     /// Trace entries already turned into events.
     noted: usize,
+    /// The pacer and the minute's walks, under the foreground rule (E10).
+    foreground: Option<foreground::Foreground>,
 }
 
 impl Host {
@@ -145,7 +148,7 @@ impl Host {
             None => None,
         };
         let dev_paused = config.dev && config.start_paused;
-        Self {
+        let mut host = Self {
             follow: config.follow,
             config,
             runtime,
@@ -175,7 +178,10 @@ impl Host {
             events: Vec::new(),
             pump: None,
             noted: 0,
-        }
+            foreground: None,
+        };
+        host.found_foreground();
+        host
     }
 
     /// Runs the host to completion. The `i32` is the process exit code.
@@ -384,7 +390,17 @@ impl Host {
             self.frame_intervals_us.push(elapsed_us);
         }
         let elapsed_us = self.dev_paced_elapsed(elapsed_us);
-        self.steps += self.runtime.advance(elapsed_us);
+        self.advance_by(elapsed_us);
+    }
+
+    /// Takes `elapsed_us` of real time: the foreground's pacer under its
+    /// rule, the core's clock otherwise.
+    fn advance_by(&mut self, elapsed_us: u64) {
+        self.steps += if self.foreground.is_some() {
+            self.pace_foreground(elapsed_us)
+        } else {
+            self.runtime.advance(elapsed_us)
+        };
         // An answered question leaves no stale cursor for the next one.
         if self.runtime.review().is_none() && self.runtime.checkpoint().is_none() { self.board_row = 0; }
     }

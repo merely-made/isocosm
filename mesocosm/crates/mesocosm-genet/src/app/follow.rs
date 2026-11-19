@@ -24,7 +24,7 @@ impl Host {
     /// Where the camera centres: the followed body's presentation spot, else
     /// the played site's centre column.
     pub(super) fn follow_at(&self) -> [i32; 3] {
-        let Some(scene) = &self.scene else {
+        let Some(scene) = self.drawn_scene() else {
             return [0, 0, 0];
         };
         self.followed()

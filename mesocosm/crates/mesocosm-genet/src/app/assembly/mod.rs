@@ -181,9 +181,10 @@ impl State {
         }
         let readings_us = start.elapsed().as_micros();
         let half = crate::section::half_height_or_default(host.config.slab_half_height);
+        let drawn = host.foreground_scene();
         let at = host.follow_at();
         self.error = None;
-        if let Some(scene) = &host.scene {
+        if let Some(scene) = drawn.as_ref().or(host.scene.as_ref()) {
             if host.runtime.spatial().driver.is_some()
                 && host
                     .runtime

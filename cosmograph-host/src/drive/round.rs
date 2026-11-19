@@ -122,6 +122,16 @@ impl Pacer {
         }
     }
 
+    /// The sixtieth of the current world minute a round has reached, in
+    /// `0..steps_per_minute`: the stepper's step a window draws now. Exact
+    /// in integers; none while simming.
+    pub fn minute_step(&self, steps_per_minute: u32) -> u32 {
+        match self.pace {
+            Pace::Round { .. } => (self.world_us * u128::from(steps_per_minute) / u128::from(MINUTE_US)) as u32,
+            Pace::Simming { .. } => 0,
+        }
+    }
+
     pub fn advance(&mut self, elapsed_us: u64) -> Due {
         let due = match self.pace {
             Pace::Round { speed } => {

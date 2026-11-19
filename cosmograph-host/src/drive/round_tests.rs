@@ -100,3 +100,24 @@ fn a_tick_in_step_ends_where_the_worker_ends() {
     assert_eq!(worker, in_step, "the same inputs end in the same state either way");
     assert!(slowest >= Duration::from_millis(5), "in step, a frame waits on its tick");
 }
+
+#[test]
+fn the_minute_step_walks_sixty_steps_and_wraps_at_the_tick() {
+    for speed in Speed::ALL {
+        let mut pacer = Pacer::new(Pace::Round { speed });
+        let real_us = MINUTE_US / speed.factor();
+        let (mut seen, mut ticks) = (Vec::new(), 0);
+        // Frames of about 16 ms, uneven, so steps are met as a window meets them.
+        let mut elapsed = 0;
+        while ticks == 0 {
+            let dt = 16_000 + (elapsed % 3) * 700;
+            ticks += pacer.advance(dt).ticks;
+            elapsed += dt;
+            assert!(elapsed < real_us + 20_000, "{speed:?}: the tick falls due on time");
+            seen.push(pacer.minute_step(60));
+        }
+        assert!(seen.windows(2).all(|w| w[1] >= w[0] || w[1] < 2), "{speed:?}: steps rise, then wrap");
+        assert_eq!(*seen.iter().filter(|s| **s < 60).max().unwrap(), 59, "{speed:?}: all sixty steps are met");
+        assert!(pacer.minute_step(60) < 2, "{speed:?}: the next minute starts at step 0");
+    }
+}

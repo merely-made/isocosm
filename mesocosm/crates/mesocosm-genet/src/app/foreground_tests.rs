@@ -57,3 +57,100 @@ fn a_round_with_the_rule_replays_to_its_hash_at_each_speed() {
     }
     assert!(most > 0, "some speed's round handed a body back: the replay checks nothing otherwise");
 }
+
+fn windowed(speed: Speed) -> Host {
+    let config = HostConfig { seed: SEED, play: true, ecology_rates: Some(cosmograph::ecology::Rates::A1),
+        world_rules: WorldRules { foreground_walks: true, ..WorldRules::generated() }, round_speed: speed,
+        ..Default::default() };
+    Host::new(config)
+}
+
+/// A window's frames, as the frame loop takes them.
+const FRAME_US: u64 = 16_667;
+/// World minutes the window runs below.
+const MINUTES: u64 = 3;
+
+#[test]
+fn the_walks_the_window_draws_are_the_handbacks_the_clock_takes() {
+    let mut runtime = found(WorldRules { foreground_walks: true, ..WorldRules::generated() });
+    let participant = runtime.interim().participant;
+    let mut walked = 0;
+    for _ in 0..MINUTES {
+        let (walks, minute) = {
+            let sim = runtime.sim();
+            (cosmograph_host::drive::world_foreground_walks(&sim, participant),
+                cosmograph_host::drive::world_foreground_minute(&sim, participant).unwrap())
+        };
+        let sim = runtime.sim();
+        let made: Vec<_> = walks.iter().filter_map(|w| w.handback(&sim, 60).unwrap()).collect();
+        assert_eq!(made, minute, "the window's walks hand back what the clock is given");
+        walked += walks.len();
+        drop(sim);
+        runtime.step(1);
+    }
+    assert!(walked > 0, "some body walked: the comparison checks nothing otherwise");
+}
+
+#[test]
+fn a_windowed_round_draws_each_step_and_replays_to_the_headless_hash() {
+    let mut host = windowed(Speed::X8);
+    let (mut moved, mut still_at_start) = (0, 0);
+    // The last pose drawn of each walking body this minute.
+    let mut last: std::collections::BTreeMap<u64, [i64; 3]> = Default::default();
+    let mut tick = 0;
+    let mut drawn = std::collections::BTreeMap::new();
+    let frames = MINUTES * 7_500_000 / FRAME_US + 10;
+    // Then wait out the minutes on their worker, still drawing.
+    for frame in 0..frames + 20_000 {
+        if frame < frames {
+            host.advance_by(FRAME_US);
+        } else {
+            host.advance_by(0);
+            if tick == MINUTES { break }
+            std::thread::sleep(std::time::Duration::from_millis(2));
+        }
+        host.refresh_scene();
+        let now = host.runtime.sim().state().tick;
+        if now != tick {
+            // The minute's last drawn stance is where the sim now has the body.
+            for (id, at) in std::mem::take(&mut last) {
+                let sim = host.runtime.sim().state().spatial_poses.get(&id).map(|p| p.pose.at);
+                assert_eq!(sim, Some(at), "body {id} is where the minute drew it: no jump at the minute");
+            }
+            tick = now;
+        }
+        let step = host.foreground_step().unwrap();
+        let scene = host.foreground_scene();
+        drawn.entry(now).or_insert_with(|| host.drawn_handbacks());
+        let Some(scene) = scene else {
+            still_at_start += 1;
+            continue;
+        };
+        let source = host.scene.clone().unwrap();
+        for body in &scene.bodies {
+            let was = source.body(body.id).and_then(|b| b.physical.as_ref()).map(|p| p.at);
+            let drawn = body.physical.as_ref().map(|p| p.at);
+            if was != drawn {
+                assert!(step >= 1, "a body stands at its first stance at step 0");
+                moved += 1;
+                last.insert(body.id, drawn.unwrap());
+            }
+        }
+    }
+    assert!(moved > 0 && still_at_start > 0, "bodies were drawn both standing and stepped");
+    assert_eq!(host.runtime.sim().state().tick, MINUTES);
+    let hash = host.runtime.sim().state_hash();
+    let mut headless = found(WorldRules { foreground_walks: true, ..WorldRules::generated() });
+    headless.step(MINUTES);
+    assert_eq!(headless.sim().state_hash(), hash, "a windowed round and a headless one end alike");
+    // What the window drew a minute from is what the clock was handed, once
+    // the round's own first step has set the foreground (minute 0 differs).
+    let records = &host.runtime.spatial().driver.as_ref().unwrap().records;
+    assert_eq!(records.len() as u64, MINUTES);
+    for (minute, record) in records.iter().enumerate().skip(1) {
+        assert_eq!(drawn[&(minute as u64)], record.handbacks, "minute {minute}: drawn walks are the handbacks");
+    }
+    let replayed = Runtime::replayed_game(host.runtime.save_game()).unwrap();
+    assert_eq!(replayed.state_hash, hash, "the windowed round replays to its recorded hash");
+}
+
