@@ -543,7 +543,7 @@ each title names its outcome against the doctrine.
 
 - **D60, the stepper is checked against out-of-view travel (2026-11-18):** "Out-of-view travel, over several minutes (Recommended)". Replaces step 3's comparison with native displacement, which D59 makes meaningless. A stepped body and a body travelling out of view by route travel time should cover the same ground at the same speed: compared over several consecutive minutes, medians within one cell. The first attempt at this control showed no movement and is diagnosed first. Offered against accepted-and-within-reach only.
 
-  Links: area Method and documents · draws on sim-execution D59 · plans sim-execution · summary Step 3 is done when stepped bodies and out-of-view travellers agree over several minutes, medians within one cell. Replaced by D63.
+  Links: area Method and documents · draws on sim-execution D59 · plans sim-execution · summary Step 3 is done when stepped bodies and out-of-view travellers agree over several minutes, medians within one cell. Replaced by D63; retired by D64.
 
 - **D61, a body with no route or a blocked one stays where the sim has it (2026-11-18):** "Keep it (Recommended)". The stepper takes the route once at the start of the minute; with none it sends no handback, and a handback the sim's check refuses leaves the body as it was, to try again next minute. Offered against stopping at the last clear stance and against searching again inside the minute.
 
@@ -555,7 +555,11 @@ each title names its outcome against the doctrine.
 
 - **D63, the stepper is checked on arrival, not distance (2026-11-18):** "Arrival, not distance (Recommended)". Replaces D60's medians within one cell. With the same meal, a stepped body stops where its route first touches the meal and a traveller is placed by the sim at a free stance touching it (`habitat.rs` `arrive_near`), which can be far round it: seed 27, a 2-edge route, 2.0 cells stepped against 59.5 travelled; over 10 seeds and 4 minutes the medians were 3.0 and 13.6. So the check is that both head for the same meal, both end touching it, and the minute they arrive agrees within one. Where they stand may differ. The 59-cell placement is not traced. Offered against the same end stance and against tracing the placement first.
 
-  Links: area Method and documents · draws on sim-execution D60, sim-execution D62 · plans sim-execution · summary Step 3 is done when stepped bodies and travellers reach the same meal, touching it, within one minute of each other.
+  Links: area Method and documents · draws on sim-execution D60, sim-execution D62 · plans sim-execution · summary Step 3 is done when stepped bodies and travellers reach the same meal, touching it, within one minute of each other. Retired by D64.
+
+- **D64, watching is checked on a whole run, not body by body (2026-11-19):** "Go ahead." Mark, on the comparisons of D60 and D63: "This feels to me like we're chasing the edgiest of cases that might not matter, big picture", and "Prior to more systems being implemented, is agreement achievable or desirable at all? What would it mean, practically?" Agreement means a creature's fate does not depend on whether someone is looking at it. Case 1084 gives two movement models on purpose, so a watched and an unwatched body never share a cell; the outcomes that matter (meals, reserves, survival) wait on systems not yet built or tuned; and the out-of-view side has untraced behaviour of its own. D60 and D63 are retired as gates. The stepper lands as built, with its handbacks accepted on 10 of 10 seeds. D62 stands and is built in step 4. After step 4, one run of the same world with the window open and closed compares the living curve, within seed-to-seed noise.
+
+  Links: area Method and documents · draws on 1084, sim-execution D60, sim-execution D63 · plans sim-execution · summary No body-by-body comparison of watched and unwatched movement; one whole-run comparison of the living curve after step 4.
 
 ## Constraints
 
@@ -762,13 +766,14 @@ contract.
      (`spatial/driver.rs`), kept in the record, accepted in replay. Done
      when a round with a handback replays to its hash and a refused one
      leaves the source unchanged.
-  3. The shared stepper in `cosmograph-host` (D50, D59, D61). The sim
-     picks the meal (D62). Done when stepped bodies and out-of-view
-     travellers reach the same meal, touching it, within one minute of each
-     other (D63).
+  3. The shared stepper in `cosmograph-host` (D50, D59, D61). **Built
+     2026-11-18**: every stepped minute accepted on 10 of 10 seeds,
+     deterministic. The comparison with unwatched bodies is a whole-run
+     check after step 4 (D64).
   4. The sim stops route search and walking plans for in-view bodies under
      the rule (`foraging/food.rs`, `stage/staged/step.rs`); the journey
-     already clears (D57). Done when a played tick shows none
+     already clears (D57). The stepper takes the sim's meal choice (D62).
+     Done when a played tick shows none
      for foreground bodies, against step 0.
   5. Headless stepping (D51). Done when a round at 1, 2, 4 and 8 times
      replays to its hash with no window.
