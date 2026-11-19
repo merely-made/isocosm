@@ -7764,6 +7764,38 @@ summary = "No body-by-body comparison of watched and unwatched movement; one who
 draws_on = ["1084", "sim-execution D60", "sim-execution D63"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D65"]
+title = "the whole-run check passes (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "Watched and unwatched runs of one world agree closely enough to go on; seed 50 (93 to 77) is noted, untraced."
+draws_on = ["sim-execution D64"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D66"]
+title = "a body in view with nothing to walk to stands still (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Under the rule an in-view body the stepper gives nothing for stands still that minute; no native fallback."
+draws_on = ["sim-execution D57", "sim-execution D61"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D67"]
+title = "Cosmograph gains two entries for the stepper, not one (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The meal choice and the route to it are two public entries; the stepper calls one then the other."
+draws_on = ["sim-execution D62"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D68"]
+title = "the rule is founded by `--foreground-walks` (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "`--foreground-walks` founds a world with the rule; nothing sets it by default."
+draws_on = ["sim-execution D57"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"

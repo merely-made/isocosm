@@ -114,6 +114,12 @@ pub struct WorldRules {
     /// Publish routine far births as counted reproduction.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub cohort_births: bool,
+    /// The round's foreground walks the bodies in view, so the tick neither
+    /// searches nor plans for them (E10, D52, D57). Off unless asked: an
+    /// absent field in a saved setup means off, and an off rule is not
+    /// written; no default founds it.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub foreground_walks: bool,
 }
 
 fn is_zero(value: &u8) -> bool { *value == 0 }
@@ -152,7 +158,7 @@ impl WorldRules {
 
     /// The three rules of the rounds; the climate is its own flag.
     pub fn all() -> Self { Self { drift: true, draft: true, sheet: true, climate: false, regard: false, exertion: false,
-        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false, inherited_variation: 0, population_band: None, cohort_births: false }
+        hosting: false, learning: false, turn: None, mass_law: false, dormancy: false, limits: false, rot: false, spoilage: false, repertoire: false, categories: false, guard: false, mutualism: false, detritus: false, nutrients: false, inherit: false, inherited_variation: 0, population_band: None, cohort_births: false, foreground_walks: false }
     }
 
     /// Sets the chosen rules in a generated genesis; a rule left off stays as found.
@@ -210,6 +216,7 @@ impl WorldRules {
         if self.inherit && genesis.founding.as_ref().is_none_or(|f| !f.inherit) {
             return Err("--inherit is a founding rule: it needs the generated A1 world".into());
         }
+        if self.foreground_walks { genesis.rules.foreground_walks = true; }
         if self.turn.is_some() && !self.climate { return Err("--turn needs --climate".into()); }
         if self.climate {
             let climate = cosmograph::rules::Climate { turn: self.turn, ..measured_climate() };
