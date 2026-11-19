@@ -18,6 +18,10 @@ pub mod clock;
 pub use clock::{Advance, Clock};
 pub mod round;
 pub use round::{Due, Pace, Pacer, Speed, TickMode, Ticker};
+pub mod stepper;
+pub use stepper::{STEPS_PER_MINUTE, Step, Walk, foreground_minute};
+#[cfg(test)]
+mod stepper_tests;
 pub mod input;
 pub use input::{Button, Context, DEFAULT_MAX_BACKLOG, InputRefusal, Named, Pick, Pointed, Press};
 
