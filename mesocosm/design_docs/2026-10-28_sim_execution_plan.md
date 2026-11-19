@@ -577,6 +577,22 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D57 · plans sim-execution · summary `--foreground-walks` founds a world with the rule; nothing sets it by default.
 
+- **D69, step 7 lands with walking not yet visible (2026-11-19):** "Land it as built (Recommended)". The window draws the stepper's poses and a windowed round replays to the headless hash, but in ten captured minutes there were 0 or 1 walks a minute, each 1 to 2 cells, finished in the first of sixty steps at about 49 cells a step. Visible walking waits on bodies having longer journeys and on the speed bar, not on more window work. Offered against proving the drawing on a long route first and against spreading a walk over the minute.
+
+  Links: area Method and documents · draws on sim-execution D59, sim-execution D50 · plans sim-execution · summary Step 7's mechanism is on main; a capture of walking waits on longer journeys and the speed bar.
+
+- **D70, the window attaches the foreground set before it first draws (2026-11-19):** "Attach before first draw (Recommended)". In the first minute the window drew 1 stepped body and the clock handed back 4, because the round's first step attaches the set; 3 bodies jumped at tick 1. Offered against not drawing the first minute and against leaving it. Not yet built.
+
+  Links: area Processes and rules · draws on sim-execution D50 · plans sim-execution · summary Window and clock see the same foreground bodies from the first minute.
+
+- **D71, no cap on a foreground minute for now (2026-11-19):** "No cap for now (Recommended)". Case 1082's measurement over 20 minutes, 3 runs: median 3.9 ms, 17 of 20 under 40 ms, minute 18 about 570 ms, the first minute 5.6 to 6.2 s from one heavy search. Ticks run on the runtime's worker, so a slow minute holds stepped bodies at their last pose and does not freeze the window. Taken up again with the heavy first-time searches. Offered against a node budget per body per minute and against searching a minute ahead.
+
+  Links: area Processes and rules · draws on 1082 · plans sim-execution · summary A foreground minute has no cap yet; one 6 s first minute is absorbed by the tick worker.
+
+- **D72, a rule world's window runs at one world minute a real minute (2026-11-19):** "Keep 1x, dev ladder only (Recommended)". No speed flag; the dev ladder (0.25x to 4x) is the only control. A nudge applies on the next round, so it can wait up to a minute; speed control and that wait are taken up when the rule becomes the default way to play. Offered against a speed setting now and against fixing the input wait first.
+
+  Links: area Processes and rules · draws on 1080, sim-execution D51 · plans sim-execution · summary Rule worlds play at 1x in the window with the dev ladder only; input can wait a round.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -793,9 +809,9 @@ contract.
      for foreground bodies, against step 0.
   5. **Built 2026-11-19.** Headless stepping (D51). Done when a round at 1, 2, 4 and 8 times
      replays to its hash with no window.
-  6. **Measured 2026-11-19 (Findings); the cap is Mark's.** A foreground step with path and feet is timed and the cap brought to
+  6. **Measured 2026-11-19 (Findings); no cap for now (D71).** A foreground step with path and feet is timed and the cap brought to
      Mark (case 1082).
-  7. **Built 2026-11-19 on `e10-foreground`; capture taken, walking short (Findings).** The window drives the pacer and draws foreground poses. Done when a
+  7. **Built 2026-11-19; walking not yet visible (D69); the first minute's set is owed (D70).** The window drives the pacer and draws foreground poses. Done when a
      capture shows walking without a jump each minute.
   Reach in sixty world seconds: the body's speed (D59).
 - Needs: PG7's Places (landed); conatus for paths and foot placement

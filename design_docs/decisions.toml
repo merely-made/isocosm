@@ -7796,6 +7796,38 @@ summary = "`--foreground-walks` founds a world with the rule; nothing sets it by
 draws_on = ["sim-execution D57"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D69"]
+title = "step 7 lands with walking not yet visible (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "Step 7's mechanism is on main; a capture of walking waits on longer journeys and the speed bar."
+draws_on = ["sim-execution D50", "sim-execution D59"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D70"]
+title = "the window attaches the foreground set before it first draws (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Window and clock see the same foreground bodies from the first minute."
+draws_on = ["sim-execution D50"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D71"]
+title = "no cap on a foreground minute for now (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A foreground minute has no cap yet; one 6 s first minute is absorbed by the tick worker."
+draws_on = ["1082"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D72"]
+title = "a rule world's window runs at one world minute a real minute (2026-11-19)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Rule worlds play at 1x in the window with the dev ladder only; input can wait a round."
+draws_on = ["1080", "sim-execution D51"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
