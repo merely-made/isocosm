@@ -543,11 +543,19 @@ each title names its outcome against the doctrine.
 
 - **D60, the stepper is checked against out-of-view travel (2026-11-18):** "Out-of-view travel, over several minutes (Recommended)". Replaces step 3's comparison with native displacement, which D59 makes meaningless. A stepped body and a body travelling out of view by route travel time should cover the same ground at the same speed: compared over several consecutive minutes, medians within one cell. The first attempt at this control showed no movement and is diagnosed first. Offered against accepted-and-within-reach only.
 
-  Links: area Method and documents · draws on sim-execution D59 · plans sim-execution · summary Step 3 is done when stepped bodies and out-of-view travellers agree over several minutes, medians within one cell.
+  Links: area Method and documents · draws on sim-execution D59 · plans sim-execution · summary Step 3 is done when stepped bodies and out-of-view travellers agree over several minutes, medians within one cell. Replaced by D63.
 
 - **D61, a body with no route or a blocked one stays where the sim has it (2026-11-18):** "Keep it (Recommended)". The stepper takes the route once at the start of the minute; with none it sends no handback, and a handback the sim's check refuses leaves the body as it was, to try again next minute. Offered against stopping at the last clear stance and against searching again inside the minute.
 
   Links: area Processes and rules · draws on sim-execution D50 · plans sim-execution · summary No route, no handback; a refused handback leaves the body in place; no search inside the minute.
+
+- **D62, the sim's place-grain choice picks an in-view body's meal (2026-11-18):** "The sim's place-grain choice (Recommended)". The stepper asks the sim for the target a traveller would get (`travel_target`: nearest by place route) and finds the walked route to it, so a body heads for the same meal watched or not, as case 1084 says. As first built the stepper took the nearest meal by walked route (`food_route`), and in 3 of 9 measured bodies that was a different meal from the traveller's. Cosmograph gains one narrow public entry for the choice. Offered against nearest by walked route and against changing the out-of-view choice.
+
+  Links: area Processes and rules · draws on 1084, sim-execution D50 · plans sim-execution · summary In view and out of view a body heads for the same meal, chosen by the sim at place grain; the stepper only finds the path.
+
+- **D63, the stepper is checked on arrival, not distance (2026-11-18):** "Arrival, not distance (Recommended)". Replaces D60's medians within one cell. With the same meal, a stepped body stops where its route first touches the meal and a traveller is placed by the sim at a free stance touching it (`habitat.rs` `arrive_near`), which can be far round it: seed 27, a 2-edge route, 2.0 cells stepped against 59.5 travelled; over 10 seeds and 4 minutes the medians were 3.0 and 13.6. So the check is that both head for the same meal, both end touching it, and the minute they arrive agrees within one. Where they stand may differ. The 59-cell placement is not traced. Offered against the same end stance and against tracing the placement first.
+
+  Links: area Method and documents · draws on sim-execution D60, sim-execution D62 · plans sim-execution · summary Step 3 is done when stepped bodies and travellers reach the same meal, touching it, within one minute of each other.
 
 ## Constraints
 
@@ -754,9 +762,10 @@ contract.
      (`spatial/driver.rs`), kept in the record, accepted in replay. Done
      when a round with a handback replays to its hash and a refused one
      leaves the source unchanged.
-  3. The shared stepper in `cosmograph-host` (D50, D59, D61). Done when
-     stepped bodies and out-of-view travellers agree over several minutes,
-     medians within one cell (D60).
+  3. The shared stepper in `cosmograph-host` (D50, D59, D61). The sim
+     picks the meal (D62). Done when stepped bodies and out-of-view
+     travellers reach the same meal, touching it, within one minute of each
+     other (D63).
   4. The sim stops route search and walking plans for in-view bodies under
      the rule (`foraging/food.rs`, `stage/staged/step.rs`); the journey
      already clears (D57). Done when a played tick shows none
