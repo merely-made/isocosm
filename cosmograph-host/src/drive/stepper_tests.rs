@@ -87,24 +87,29 @@ fn median(v: &mut [f64]) -> f64 {
     v[v.len() / 2]
 }
 
+/// Minutes run for a journey to depart and land: a traveller leaves in the
+/// minute the sim decides its walk and lands at the end of the next one, so
+/// two minutes at least; four let a second decision or two come due.
+const MINUTES: u32 = 4;
+
 /// E10 step 3 over the seeds whose worlds put a hungry body with a route in
-/// the foreground (at most `WAITS` minutes in): the stepper's minute is
-/// accepted by the sim and replays to the same handback, and its
-/// displacement is set beside the sim's own minute for the same body.
+/// the foreground. For each, from one starting state, the body is stepped and
+/// handed back each of `MINUTES` minutes, and the same state is run with the
+/// participant's window closed so the body travels out of view (D60).
 ///
 /// A release run, a few minutes:
 /// `cargo test --release --lib stepper_tests -- --ignored --nocapture`
 ///
-/// The distribution does not agree today, so this test measures and bounds
-/// rather than asserting agreement: native walking publishes the first edge
-/// of the route each minute (`foraging::geometry`), while the stepper walks
-/// the body's speed (49.5 cells a second at these cells). Which of the two
-/// moves is the open fork in the report (the plan's unruled reach).
+/// The stepped minutes are accepted and deterministic, and some traveller
+/// moves (the control's positive control). The two displacements do not agree
+/// within a cell and the test does not assert that they do: see the plan's
+/// Findings of 2026-11-18 for the two causes.
 #[test]
 #[ignore = "a release measurement over many founded worlds"]
-fn stepped_minutes_are_accepted_and_compared_with_native_ones() {
+fn stepped_bodies_are_compared_with_out_of_view_travellers() {
     const WAITS: u32 = 15;
-    let (mut rows, mut stepper, mut native) = (0, Vec::new(), Vec::new());
+    let (mut rows, mut stepper, mut travel, mut moved) = (0, Vec::new(), Vec::new(), 0);
+    println!("seed body edges | stepped cells | travelled cells | same meal | native 1 min");
     for seed in 1..=80u64 {
         let Some(mut w) = world(seed) else { continue };
         let Some((id, walk)) = hungry(&mut w, WAITS) else { continue };
@@ -128,26 +133,45 @@ fn stepped_minutes_are_accepted_and_compared_with_native_ones() {
         assert_eq!(stepping.taken(), STEPS_PER_MINUTE);
         assert_eq!(stepping.stance(STEPS_PER_MINUTE), &h.geometry.pose);
 
-        // (a) the sim accepts the minute's handback.
+        // (a) stepped and handed back each minute: each handback accepted.
         let mut stepped = w.s.clone();
-        minute(&mut stepped, std::slice::from_ref(&h));
-        let report = stepped.sim.spatial_handbacks();
-        assert!(report.iter().any(|r| r.actor == id && r.patch.is_ok()), "seed {seed}: {report:?}");
-        assert!(cells(start, h.geometry.pose.at) <= reach, "seed {seed}: within a tick's walk");
+        for m in 0..MINUTES {
+            let held = at(&stepped, id);
+            let Some(h) = Walk::begin(&stepped.sim, id, &w.walk).ok().flatten()
+                .and_then(|walk| walk.handback(&stepped.sim, STEPS_PER_MINUTE).unwrap()) else {
+                minute(&mut stepped, &[]);
+                continue;
+            };
+            assert!(cells(held, h.geometry.pose.at) <= reach, "seed {seed} minute {m}: within a tick's walk");
+            minute(&mut stepped, std::slice::from_ref(&h));
+            let report = stepped.sim.spatial_handbacks();
+            assert!(report.iter().any(|r| r.actor == id && r.patch.is_ok()), "seed {seed} minute {m}: {report:?}");
+        }
 
-        // The same world, body and minute, no handback: the sim's own step.
+        // The control: the same state with no window, so the body travels.
+        let mut away = w.s.clone();
+        away.close_attention(w.p, w.window).unwrap();
+        let mut meal = None;
+        for _ in 0..MINUTES {
+            minute(&mut away, &[]);
+            meal = meal.or(away.sim.state().spatial_poses[&id].travel.as_ref().map(|t| t.target));
+        }
+        // The sim's own in-view minute, no handback.
         let mut free = w.s.clone();
         minute(&mut free, &[]);
-        let (s, n) = (cells(start, at(&stepped, id)), cells(start, at(&free, id)));
-        println!("seed {seed} tick {} body {id}: route {} edges, displacement stepper {s:.1} native {n:.1} cells",
-            w.s.sim.state().tick, walk.route().path.len() - 1);
+
+        let (s, t) = (cells(start, at(&stepped, id)), cells(start, at(&away, id)));
+        println!("{seed:>4} {id:>4} {:>5} | {s:>13.1} | {t:>15.1} | {:>9} | {:.1}",
+            walk.route().path.len() - 1,
+            meal.map_or("none".into(), |m| (m == walk.route().target).to_string()), cells(start, at(&free, id)));
         stepper.push(s);
-        native.push(n);
+        travel.push(t);
+        moved += usize::from(t > 0.0);
         rows += 1;
         if rows == 10 { break }
     }
     assert!(rows >= 8, "{rows} seeds put a walker in the foreground");
-    let mean = |v: &[f64]| v.iter().sum::<f64>() / v.len() as f64;
-    println!("DISPLACEMENT over {rows} seeds: stepper median {:.1} mean {:.1}, native median {:.1} mean {:.1}",
-        median(&mut stepper.clone()), mean(&stepper), median(&mut native.clone()), mean(&native));
+    assert!(moved > 0, "the control never moved a body: its zeros prove nothing");
+    println!("MEDIANS over {rows} seeds, {MINUTES} minutes: stepped {:.1} cells, travelled {:.1} cells",
+        median(&mut stepper.clone()), median(&mut travel.clone()));
 }
