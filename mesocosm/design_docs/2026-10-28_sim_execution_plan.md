@@ -537,6 +537,18 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D52 · plans sim-execution · summary Both of Mesocosm's round paths carry handbacks; Cosmograph gains one additive public entry.
 
+- **D59, a foreground body walks at its own speed (2026-11-18):** "At the body's speed (Recommended)". The stepper walks a body along its route at the body's speed and stops at the meal or the route's end. Measured over 10 seeds, one minute each: stepped bodies moved a median 3.0 cells (mean 4.2), natively walked ones 1.0 (mean 1.8, none in 5 of 10), because in-tick walking publishes only a route's first edge (`foraging/route.rs`, `path.take(2)`) while the speed allows about 2,970 cells a minute at the 1 mm cell and the handback's limit (`within_reach`) is that speed. Offered against one edge a minute and against a separate cap on reach. This answers the plan's unruled reach in sixty world seconds.
+
+  Links: area Processes and rules · draws on 1080, 1084, sim-execution D50 · plans sim-execution · summary In view a body covers what its speed allows in a minute, the same limit the handback and out-of-view travel use; not one edge a minute.
+
+- **D60, the stepper is checked against out-of-view travel (2026-11-18):** "Out-of-view travel, over several minutes (Recommended)". Replaces step 3's comparison with native displacement, which D59 makes meaningless. A stepped body and a body travelling out of view by route travel time should cover the same ground at the same speed: compared over several consecutive minutes, medians within one cell. The first attempt at this control showed no movement and is diagnosed first. Offered against accepted-and-within-reach only.
+
+  Links: area Method and documents · draws on sim-execution D59 · plans sim-execution · summary Step 3 is done when stepped bodies and out-of-view travellers agree over several minutes, medians within one cell.
+
+- **D61, a body with no route or a blocked one stays where the sim has it (2026-11-18):** "Keep it (Recommended)". The stepper takes the route once at the start of the minute; with none it sends no handback, and a handback the sim's check refuses leaves the body as it was, to try again next minute. Offered against stopping at the last clear stance and against searching again inside the minute.
+
+  Links: area Processes and rules · draws on sim-execution D50 · plans sim-execution · summary No route, no handback; a refused handback leaves the body in place; no search inside the minute.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -742,8 +754,9 @@ contract.
      (`spatial/driver.rs`), kept in the record, accepted in replay. Done
      when a round with a handback replays to its hash and a refused one
      leaves the source unchanged.
-  3. The shared stepper in `cosmograph-host` (D50). Done when foreground
-     and native displacement agree in distribution over a set of seeds.
+  3. The shared stepper in `cosmograph-host` (D50, D59, D61). Done when
+     stepped bodies and out-of-view travellers agree over several minutes,
+     medians within one cell (D60).
   4. The sim stops route search and walking plans for in-view bodies under
      the rule (`foraging/food.rs`, `stage/staged/step.rs`); the journey
      already clears (D57). Done when a played tick shows none
@@ -754,8 +767,7 @@ contract.
      Mark (case 1082).
   7. The window drives the pacer and draws foreground poses. Done when a
      capture shows walking without a jump each minute.
-  Unruled: the reach a body covers in sixty world seconds, which turns on
-  the world's cell size.
+  Reach in sixty world seconds: the body's speed (D59).
 - Needs: PG7's Places (landed); conatus for paths and foot placement
 - Rulings: 1080, 1081, 1082, 1083, 1084, D30
 
