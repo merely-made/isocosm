@@ -155,8 +155,16 @@ impl Simulation {
             if self.food_need_score(actor, feed) <= 0 || self.travelling(actor) {
                 return Some(None);
             }
-            if self.travels_out_of_view(actor) {
-                return Some(self.travel_target(actor, &p.id, f));
+            // In a travelling world a body out of view travels to its meal;
+            // one in view is the foreground's when the world says so (D52,
+            // D57): the sim neither searches nor plans for it.
+            if self.travels() {
+                if !self.in_view().contains(&actor) {
+                    return Some(self.travel_target(actor, &p.id, f));
+                }
+                if self.genesis.rules.foreground_walks {
+                    return Some(None);
+                }
             }
             if f.reachable {
                 return Some(self.food_route(actor, &p.id).ok()

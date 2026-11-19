@@ -3,8 +3,9 @@
 
 //! The shared foreground stepper (case 1084, D50). In view, a body walks a
 //! route sixty times a world minute and hands back where it stands at the
-//! minute's end. The route, its strides and its feet are the simulator's own
-//! (`Simulation::food_route`: the choice of meal, the search and the stride
+//! minute's end. The meal is the simulator's own place-grain choice
+//! (`Simulation::meal_target`, D62); the route to it, its strides and its
+//! feet are the simulator's search (`Simulation::route_to_meal`, the stride
 //! checks native walking uses); the body's speed is the world's
 //! (`Rules::speed`). Nothing here reads a window, a renderer or a clock: a
 //! minute is a pure function of the simulation and the body, so a windowed
@@ -61,7 +62,10 @@ impl Walk {
         let e = sim.state().population.get(actor).ok_or("walker absent")?;
         let doc = e.body.as_ref().ok_or("walker has no body")?;
         let site = sim.state().spatial_poses.get(&actor).ok_or("walker is not posed")?.site;
-        let Some(route) = sim.food_route(actor, walk)?.route.filter(|r| r.path.len() > 1) else {
+        // The sim chooses the meal at place grain, as for a traveller (D62);
+        // the stepper finds the walked route to it (D61: one search, here).
+        let Some(target) = sim.meal_target(actor, walk) else { return Ok(None) };
+        let Some(route) = sim.route_to_meal(actor, walk, target)?.route.filter(|r| r.path.len() > 1) else {
             return Ok(None);
         };
         Ok(Some(Self {
@@ -166,6 +170,25 @@ pub fn foreground_minute(sim: &Simulation, participant: Id, walk: &str) -> Resul
         // A body the player steers has no route of the sim's choosing.
         let Some(w) = Walk::begin(sim, actor, walk).ok().flatten() else { continue };
         if let Some(h) = w.handback(sim, STEPS_PER_MINUTE)? {
+            out.push(h);
+        }
+    }
+    Ok(out)
+}
+
+/// A world's foreground minute under its own rule (D51, D52): empty unless
+/// the world says its foreground walks in-view bodies. Each foreground body
+/// takes the first of the world's foraging walks that gives it a route, so
+/// a windowed round and a headless one hand back the same poses.
+pub fn world_foreground_minute(sim: &Simulation, participant: Id) -> Result<Vec<Handback>, String> {
+    let rules = &sim.genesis().rules;
+    let Some(t) = rules.spatial_templates.as_ref().filter(|_| rules.foreground_walks && rules.speed.is_some()) else {
+        return Ok(Vec::new());
+    };
+    let mut out = Vec::new();
+    for actor in sim.foreground(participant) {
+        let walk = t.foraging.keys().find_map(|walk| Walk::begin(sim, actor, walk).ok().flatten());
+        if let Some(h) = walk.map(|w| w.handback(sim, STEPS_PER_MINUTE)).transpose()?.flatten() {
             out.push(h);
         }
     }

@@ -81,6 +81,16 @@ impl Simulation {
         )
     }
 
+    /// The walked route from `actor` to the meal `target` (the choice
+    /// [`Simulation::meal_target`] makes), by the same physical search
+    /// native walking uses (D62). No route within the node budget is an
+    /// empty search, not an error.
+    pub fn route_to_meal(&self, actor: Id, walk: &str, target: Id) -> Result<RouteSearch> {
+        let at = self.spatial_pose_at_start(actor).ok_or("foraging pose absent")?;
+        let t = self.genesis.rules.spatial_templates.as_ref().ok_or("foraging templates absent")?;
+        self.route_to_foods(actor, walk, &embodiment::site_window(t, at.pose.at), [target])
+    }
+
     fn route_to_foods(
         &self,
         actor: Id,

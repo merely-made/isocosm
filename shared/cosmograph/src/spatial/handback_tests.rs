@@ -121,3 +121,38 @@ fn the_world_rule_is_absent_from_a_world_without_it() {
     assert!(on.contains("\"foreground_walks\":true"));
     assert_eq!(on.replace(",\"foreground_walks\":true", ""), off, "the rule adds only its field");
 }
+
+/// One minute with every step request refused, counting the requests made
+/// for bodies in view and for the rest.
+fn requests(s: &mut Session) -> (usize, usize) {
+    let (mut births, mut steps, mut terrain) = (Vec::new(), Vec::new(), Vec::new());
+    let seen = s.sim.in_view();
+    let (mut near, mut far) = (0, 0);
+    loop {
+        match s.try_advance_round_spatial(1, &terrain, &steps, &[], &births, &[]).unwrap() {
+            SpatialAdvance::Advanced(_) => return (near, far),
+            SpatialAdvance::Birth(p) => births.push(BirthResolution { request: p.request, geometry: Err("test".into()) }),
+            SpatialAdvance::Terrain(p) => terrain.push(TerrainResolution { request: p.request, geometry: Err("test".into()) }),
+            SpatialAdvance::Step(p) => {
+                if seen.contains(&p.request.actor) { near += 1 } else { far += 1 }
+                steps.push(Resolution { request: p.request, geometry: Err("test".into()) });
+            },
+        }
+    }
+}
+
+#[test]
+fn under_the_rule_the_tick_asks_for_no_walk_of_a_body_in_view() {
+    let (mut off, mut on) = ((0, 0), (0, 0));
+    for (walks, total) in [(false, &mut off), (true, &mut on)] {
+        let (mut s, _, _) = world(walks);
+        assert!(!s.sim.in_view().is_empty(), "walks {walks}: a body is in view");
+        for _ in 0..40 {
+            let (near, far) = requests(&mut s);
+            total.0 += near;
+            total.1 += far;
+        }
+    }
+    assert!(off.0 > 0, "the world without the rule asks for walks of bodies in view: {off:?}");
+    assert_eq!(on.0, 0, "the world with the rule asks for none: {on:?}");
+}

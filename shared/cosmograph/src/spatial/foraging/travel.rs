@@ -76,6 +76,19 @@ impl Simulation {
             .map(|(_, id)| id)
     }
 
+    /// The meal `actor` heads for under walking profile `walk`, at place
+    /// grain (case 1084, D62): the choice an out-of-view traveller gets, so
+    /// a body in view and one out of view head for the same meal. `None`
+    /// when the body has no need, food is in reach, or no meal is within
+    /// search by a route its body fits.
+    pub fn meal_target(&self, actor: Id, walk: &str) -> Option<Id> {
+        let f = self.foraging_policy(walk)?;
+        if self.food_need_score(actor, &self.genesis.rules.processes[&f.feed]) <= 0 {
+            return None;
+        }
+        self.travel_target(actor, walk, f)
+    }
+
     /// The journey a chosen walk to `target` makes: its route's cost at
     /// the body's speed, in whole ticks.
     pub(crate) fn departure(&self, actor: Id, target: Id, walk: &str) -> Result<Travel> {
