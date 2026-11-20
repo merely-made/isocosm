@@ -27,7 +27,7 @@ modulus = { git = "https://github.com/merely-made/seiche.git", branch = "main" }
 # Body documents and brick ground, from the family floor. The lens names no
 # product type in production code.
 isometer-core = { path = "../isometer-core" }
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

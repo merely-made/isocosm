@@ -38,7 +38,7 @@ isometer-space = { path = "crates/isometer-space" }
 cambium-rootstock = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
-wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
+wgpu = { version = "30.0.2", default-features = false, features = ["std", "wgsl"] }
 # The frame receipt is serialized by the hosts' bench and receipts lanes.
 serde = { version = "1", features = ["derive"] }
 
@@ -54,7 +54,7 @@ netrender = { git = "https://github.com/merely-made/netrender.git", branch = "ma
 # construction rather than reporting a missing adapter. Naming them here keeps
 # them out of the library a product links and out of that product's own
 # backend choice.
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

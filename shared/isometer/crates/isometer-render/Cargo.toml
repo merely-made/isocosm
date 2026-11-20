@@ -16,7 +16,7 @@ publish = false
 # Part ids, quarter turns and content addresses, from the family floor.
 isometer-core = { path = "../isometer-core" }
 isometer-mesh = { path = "../isometer-mesh" }
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

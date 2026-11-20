@@ -74,7 +74,7 @@ taproot = { workspace = true }
 # on — and only for the receipts: the binary links wgpu through the host and
 # isometer through the view layer either way.
 isometer = { workspace = true }
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

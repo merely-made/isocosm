@@ -125,7 +125,7 @@ postcard = { version = "1", default-features = false, features = ["alloc"] }
 # off, and an instance with no backend panics at construction rather than
 # reporting a missing adapter. Sibling repos omit them because their leaf
 # binaries supply them; this workspace is its own leaf.
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

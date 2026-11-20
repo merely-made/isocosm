@@ -67,7 +67,7 @@ paint_list_render = { workspace = true }
 # L7). Its API is plain arrays and wgpu; glam below is this crate's own math.
 tenant = { workspace = true }
 glam = "0.30"
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "dx12",
     "vulkan",
     "metal",

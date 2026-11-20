@@ -34,7 +34,7 @@ scenotime = { workspace = true }
 [dev-dependencies]
 # The parity gate is a real GPU frame, so the receipts — and only the
 # receipts — turn the backends on. The library above links none.
-wgpu = { version = "30", default-features = false, features = [
+wgpu = { version = "30.0.2", default-features = false, features = [
     "std",
     "wgsl",
     "dx12",

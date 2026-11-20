@@ -68,7 +68,7 @@ isometer = { path = "shared/isometer" }
 # Named only for the two `wgpu::TextureView` words in the `SceneSource`
 # signature. Backends stay the leaf binary's choice, exactly as isometer's own
 # manifest rules; the scene adapter's own receipts turn them on as dev deps.
-wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
+wgpu = { version = "30.0.2", default-features = false, features = ["std", "wgsl"] }
 # The wing GUI layer: the shared panels and the keymap the control-help
 # line is derived from. Its own workspace, so it is taken by path too.
 isomere = { path = "shared/isomere" }
@@ -100,10 +100,10 @@ gemot = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
 # override in .cargo/tabletop-local.toml must say so.
 transport = { package = "mere-transport", git = "https://github.com/merely-made/murm.git", branch = "main" }
 murm = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-p2panda-core = { package = "p2mere-core", version = "0.12.0" }
+p2panda-core = { package = "p2mere-core", version = "0.12.1" }
 # Match the registry source and features used by mere-transport so LogSync can
 # use its endpoint. The address book uses Stickleback's Muniment-backed store.
-p2panda-net = { package = "p2mere-net", version = "0.12.0", default-features = false, features = [
+p2panda-net = { package = "p2mere-net", version = "0.12.1", default-features = false, features = [
     "address_book",
     "iroh_endpoint",
     "iroh_mdns",
@@ -111,8 +111,8 @@ p2panda-net = { package = "p2mere-net", version = "0.12.0", default-features = f
     "gossip",
     "sync",
 ] }
-p2panda-store = { package = "p2mere-store", version = "0.12.0", default-features = false }
-p2panda-sync = { package = "p2mere-sync", version = "0.12.0" }
+p2panda-store = { package = "p2mere-store", version = "0.12.1", default-features = false }
+p2panda-sync = { package = "p2mere-sync", version = "0.12.1" }
 thiserror = "2"
 
 # Product-free projection score and analytic solvers. Isocosm owns the
