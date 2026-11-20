@@ -42,6 +42,8 @@ async fn mesocosm_configure_crosses_admission_and_publishes_live_section_bytes()
                                 scoring: 6,
                             },
                             on_collapse: OnCollapse::Stay,
+                            rounds: Default::default(),
+                            condition: false,
                         })
                         .unwrap(),
                     }],
