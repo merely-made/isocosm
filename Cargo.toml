@@ -100,18 +100,10 @@ gemot = { git = "https://github.com/merely-made/gemot.git", branch = "main" }
 # override in .cargo/tabletop-local.toml must say so.
 transport = { package = "mere-transport", git = "https://github.com/merely-made/murm.git", branch = "main" }
 murm = { git = "https://github.com/merely-made/murm.git", branch = "main" }
-p2panda-core = { package = "p2mere-core", version = "0.11" }
-# The net crate is `mere-p2panda-net =0.7.4`, taken exactly as
-# `mere-transport` and `stickleback` take it: same package, same exact
-# version, same features. It is no longer a registry edge: mere moved the
-# family to the fork's `0.7.4` release (mere `0db9d10d`, "Pin mere-p2panda-net
-# 0.7.4 with prompt idle sync shutdown"), and 0.7.4 was never published, so the
-# `[patch.crates-io]` table below repoints this line at the fork tag. isonetry composes `LogSync` on the endpoint
-# `P2pandaTransport::sync_parts` hands it, so a different dep line here lands a
-# second net crate and the endpoint types stop matching. Every feature except
-# `sqlite`: the address book runs on stickleback's muniment-backed store, and
-# feature unification means every consumer has to opt out, not just one.
-p2panda-net = { package = "p2mere-net", version = "0.11", default-features = false, features = [
+p2panda-core = { package = "p2mere-core", version = "0.12.0" }
+# Match the registry source and features used by mere-transport so LogSync can
+# use its endpoint. The address book uses Stickleback's Muniment-backed store.
+p2panda-net = { package = "p2mere-net", version = "0.12.0", default-features = false, features = [
     "address_book",
     "iroh_endpoint",
     "iroh_mdns",
@@ -119,8 +111,8 @@ p2panda-net = { package = "p2mere-net", version = "0.11", default-features = fal
     "gossip",
     "sync",
 ] }
-p2panda-store = { package = "p2mere-store", version = "0.11", default-features = false }
-p2panda-sync = { package = "p2mere-sync", version = "0.11" }
+p2panda-store = { package = "p2mere-store", version = "0.12.0", default-features = false }
+p2panda-sync = { package = "p2mere-sync", version = "0.12.0" }
 thiserror = "2"
 
 # Product-free projection score and analytic solvers. Isocosm owns the
@@ -249,37 +241,6 @@ oxttl = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
 # Nothing here depends on it; the entry outlived its subject. Taffy needs no
 # patch either: Livery and Buckram select the published genet-taffy 0.16
 # directly, as mere's own manifest says at the pinned rev.
-# `murm-replication` (stickleback) and `mere-transport` are written against the
-# **owned p2panda fork**, not the published crates. mere's manifest repoints the
-# family there; this workspace must mirror it, or it resolves stock p2panda from
-# crates.io and stickleback fails to compile against it.
-#
-# **The family patches together or not at all.** The fork's crates path-dep each
-# other, so repointing one alone lands two `p2panda-core` copies and the trait
-# bounds stop matching. `p2panda-sync` is patched even though nothing but the
-# net crate reaches it in mere, because this workspace declares it directly for
-# isonetry's LogSync composition and would otherwise pull a registry copy.
-#
-# The reference is mere's, and it is the immutable release tag rather than a
-# branch: a branch lets the two workspaces drift a commit apart, which is the
-# same duplicate hazard by another route. Keep no local paths here; the
-# machine-local redirect belongs in the gitignored `.cargo/tabletop-local.toml`.
-# `mere-p2panda-net` joins the family here as of mere `3675a352`. It used to be
-# left out because the net crate came from the registry at `=0.7.2`; mere's
-# `0db9d10d` moved the family to the `0.7.4` fork release, which was never
-# published, so the registry edge named in [workspace.dependencies] above has
-# to be repointed at the fork or `stickleback`'s `=0.7.4` cannot resolve at all:
-#
-#   error: failed to select a version for the requirement
-#   `mere-p2panda-net = "=0.7.4"` ... candidate versions found which didn't
-#   match: 0.7.2, 0.7.1
-#
-# There is still deliberately no `p2panda-net` entry: that *package name* is
-# consumed nowhere in the graph, so patching it would be permanently unused.
-#
-# The imported conversation supplier now reaches `p2panda-stream`; its patch
-# above follows the same fork tag as the rest of the family.
-
 # Vello on wgpu 30. Upstream vello 0.10 still requires wgpu 29, so netrender
 # (and through it this app's render path) takes vello from the owned fork:
 # the v0.10.0 tag plus exactly the API changes in linebender/vello#1754.
