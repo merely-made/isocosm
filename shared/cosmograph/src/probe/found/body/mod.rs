@@ -311,6 +311,7 @@ impl BodyFounding {
             banding: None,
             speed: None,
             foreground_walks: false,
+            route_refusal_limit: None,
             social: None,
             spread_capacity: None,
             material_recipes: BTreeMap::new(),

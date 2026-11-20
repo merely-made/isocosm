@@ -84,6 +84,7 @@ fn retained_cold_failures_keep_their_search_census_with_fewer_posture_evaluation
                     reach: f.reach,
                     nodes: f.nodes,
                     walking: embodiment::walking_rules(sim),
+                    refusal_limit: None,
                 };
                 let mut results = Vec::new();
                 let mut measures = Vec::new();

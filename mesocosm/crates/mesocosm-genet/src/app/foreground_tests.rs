@@ -39,6 +39,16 @@ fn the_flag_sets_the_world_rule_and_no_default_does() {
 }
 
 #[test]
+fn the_refusal_limit_flag_sets_the_world_rule_and_no_default_does() {
+    assert!(WorldRules::generated().route_refusal_limit.is_none() && WorldRules::all().route_refusal_limit.is_none());
+    assert!(HostConfig::default().world_rules.route_refusal_limit.is_none());
+    assert!(!serde_json::to_string(&WorldRules::generated()).unwrap().contains("route_refusal_limit"));
+    let rules = WorldRules { route_refusal_limit: Some(32), ..WorldRules::generated() };
+    assert_eq!(found(rules).sim().genesis().rules.route_refusal_limit, Some(32));
+    assert_eq!(found(WorldRules::generated()).sim().genesis().rules.route_refusal_limit, None);
+}
+
+#[test]
 fn a_round_with_the_rule_replays_to_its_hash_at_each_speed() {
     let rules = WorldRules { foreground_walks: true, ..WorldRules::generated() };
     let mut most = 0;

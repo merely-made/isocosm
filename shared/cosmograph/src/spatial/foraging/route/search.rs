@@ -9,6 +9,8 @@ use profile::Work;
 #[cfg(test)]
 mod cold_tests;
 #[cfg(test)]
+mod limit_tests;
+#[cfg(test)]
 pub(super) mod turn_tests;
 type Node = ([i64; 3], Yaw, [u8; 32]);
 fn node(input: &Input, pose: &Pose) -> Node {
@@ -126,6 +128,13 @@ fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Resu
                 break;
             }
             checked.insert(pair, plan.unwrap());
+        }
+        if !valid
+            && input
+                .refusal_limit
+                .is_some_and(|limit| report.refused_edges >= limit as usize)
+        {
+            break;
         }
         if valid {
             report.route = Some(FoodRoute {

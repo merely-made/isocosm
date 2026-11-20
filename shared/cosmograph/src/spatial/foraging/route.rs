@@ -44,6 +44,7 @@ struct Input {
     nodes: usize,
     walking: Option<embodiment::Walking>,
     balance: Option<embodiment::Balance>,
+    refusal_limit: Option<u32>,
 }
 
 impl Simulation {
@@ -137,6 +138,7 @@ impl Simulation {
             foods,
             reach: f.reach,
             nodes: f.nodes,
+            refusal_limit: self.genesis.rules.route_refusal_limit,
             blocked: self
                 .state
                 .spatial_poses

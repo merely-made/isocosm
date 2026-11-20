@@ -313,6 +313,7 @@ impl Founding {
             cohort_births: self.cohort_births,
             speed: None,
             foreground_walks: false,
+            route_refusal_limit: None,
             social: None,
             spread_capacity: None,
             material_recipes: BTreeMap::new(),

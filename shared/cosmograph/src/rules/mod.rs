@@ -290,6 +290,11 @@ pub struct Rules {
     /// worlds step and hash as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub foreground_walks: bool,
+    /// A food route search gives up, finding no route, once this many of
+    /// its edges have been refused by the full-body step check (E10, D77).
+    /// Absent, a search runs without limit and worlds hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub route_refusal_limit: Option<u32>,
     /// The crafts and deeds a world's sophonts read (778); absent in worlds
     /// without them, which hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]

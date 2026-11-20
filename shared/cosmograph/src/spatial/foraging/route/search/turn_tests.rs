@@ -85,6 +85,7 @@ pub(in crate::spatial::foraging::route) fn control_input(sim: &Simulation) -> In
         reach: 0,
         nodes: 256,
         walking: Some(rules),
+        refusal_limit: None,
     }
 }
 

@@ -43,6 +43,7 @@ impl Input {
             && self.nodes == other.nodes
             && self.walking == other.walking
             && self.balance == other.balance
+            && self.refusal_limit == other.refusal_limit
     }
 }
 impl Cache {
