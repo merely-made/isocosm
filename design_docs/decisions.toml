@@ -7800,7 +7800,7 @@ plans = ["sim-execution"]
 title = "step 7 lands with walking not yet visible (2026-11-19)"
 source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Method and documents"
-summary = "Step 7's mechanism is on main; a capture of walking waits on longer journeys and the speed bar."
+summary = "Step 7's mechanism is on main; a capture of walking waits on longer journeys."
 draws_on = ["sim-execution D50", "sim-execution D59"]
 plans = ["sim-execution"]
 
@@ -7826,6 +7826,38 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Rule worlds play at 1x in the window with the dev ladder only; input can wait a round."
 draws_on = ["1080", "sim-execution D51"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D73"]
+title = "the tick bar is a 0.5 s guard with 0.1 s the aim (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "A played tick under the rule stays under 0.5 s; breaking it stops a phase for speed work; 0.1 s is the aim."
+draws_on = ["978", "sim-execution D53"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D74"]
+title = "the bar is stated by tier (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "The tick bar is the near tier's; the far tier is judged by how its cost grows, and each is measured on its own."
+draws_on = ["sim-execution D24", "sim-execution D73"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D75"]
+title = "cases 966 and 976 retire as bars (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "966's 1.5 s and 976's 8 s are no longer bars."
+draws_on = ["966", "976", "sim-execution D73"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D76"]
+title = "the first minute has its own startup allowance (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "The tick bar starts at the second minute; the cold first minute is judged separately."
+draws_on = ["sim-execution D71", "sim-execution D73"]
 plans = ["sim-execution"]
 
 [decisions."sim-host D1"]

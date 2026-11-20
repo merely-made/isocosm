@@ -577,9 +577,9 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D57 · plans sim-execution · summary `--foreground-walks` founds a world with the rule; nothing sets it by default.
 
-- **D69, step 7 lands with walking not yet visible (2026-11-19):** "Land it as built (Recommended)". The window draws the stepper's poses and a windowed round replays to the headless hash, but in ten captured minutes there were 0 or 1 walks a minute, each 1 to 2 cells, finished in the first of sixty steps at about 49 cells a step. Visible walking waits on bodies having longer journeys and on the speed bar, not on more window work. Offered against proving the drawing on a long route first and against spreading a walk over the minute.
+- **D69, step 7 lands with walking not yet visible (2026-11-19):** "Land it as built (Recommended)". The window draws the stepper's poses and a windowed round replays to the headless hash, but in ten captured minutes there were 0 or 1 walks a minute, each 1 to 2 cells, finished in the first of sixty steps at about 49 cells a step. Visible walking waits on bodies having longer journeys, not on more window work. Offered against proving the drawing on a long route first and against spreading a walk over the minute.
 
-  Links: area Method and documents · draws on sim-execution D59, sim-execution D50 · plans sim-execution · summary Step 7's mechanism is on main; a capture of walking waits on longer journeys and the speed bar.
+  Links: area Method and documents · draws on sim-execution D59, sim-execution D50 · plans sim-execution · summary Step 7's mechanism is on main; a capture of walking waits on longer journeys.
 
 - **D70, the window attaches the foreground set before it first draws (2026-11-19):** "Attach before first draw (Recommended)". In the first minute the window drew 1 stepped body and the clock handed back 4, because the round's first step attaches the set; 3 bodies jumped at tick 1. Offered against not drawing the first minute and against leaving it. Not yet built.
 
@@ -592,6 +592,22 @@ each title names its outcome against the doctrine.
 - **D72, a rule world's window runs at one world minute a real minute (2026-11-19):** "Keep 1x, dev ladder only (Recommended)". No speed flag; the dev ladder (0.25x to 4x) is the only control. A nudge applies on the next round, so it can wait up to a minute; speed control and that wait are taken up when the rule becomes the default way to play. Offered against a speed setting now and against fixing the input wait first.
 
   Links: area Processes and rules · draws on 1080, sim-execution D51 · plans sim-execution · summary Rule worlds play at 1x in the window with the dev ladder only; input can wait a round.
+
+- **D73, the tick bar is a 0.5 s guard with 0.1 s the aim (2026-11-20):** "0.5 s guard, 0.1 s aim (Recommended)". Mark first asked: "is more speed work plausible, or is systems work required before efficiency?" Both: the known costs can be cut now (one cold search is 99% of stepping time, the window and the clock each run a body's search, `spatial.prepare` is about 0.15 s a tick), but longer journeys will put cost where the tick is already heaviest, so tuning to 0.1 s now tunes a world about to change. A played tick with the rule on stays under 0.5 s as systems go in, and a phase that breaks it stops for speed work; 0.1 s (TD2) stays the aim, not a gate. Measured 2026-11-19 in release at 67 to about 150 bodies: 0.6 to 0.7 s a tick with the rule off, about 0.3 to 0.4 s with it on. This is the "new bar after the measurement" of D53. Offered against speed work first to 0.1 s and against no bar until journeys exist.
+
+  Links: area Method and documents · draws on 978, sim-execution D53 · plans sim-execution · summary A played tick under the rule stays under 0.5 s; breaking it stops a phase for speed work; 0.1 s is the aim.
+
+- **D74, the bar is stated by tier (2026-11-20):** "By tier (the third option)", after "we can measure 3". The bar covers the near tier, the bodies in view and their roots; the rest of the world must cost by sites and lineages, not by members (D24). The two are measured apart. Offered against the founded world at tick 20 and against a few hundred members.
+
+  Links: area Method and documents · draws on sim-execution D24, sim-execution D73 · plans sim-execution · summary The tick bar is the near tier's; the far tier is judged by how its cost grows, and each is measured on its own.
+
+- **D75, cases 966 and 976 retire as bars (2026-11-20):** "Both retire (Recommended)". Both were written for the seed-9 save at the old tempo of many ticks a second. D73 replaces them. Offered against keeping 976 as a floor and against leaving both.
+
+  Links: area Method and documents · draws on 966, 976, sim-execution D73 · plans sim-execution · summary 966's 1.5 s and 976's 8 s are no longer bars.
+
+- **D76, the first minute has its own startup allowance (2026-11-20):** "Its own startup allowance (Recommended)". A session's first minute costs 5.6 to 6.2 s from one cold route search against a 3.9 ms median foreground minute. The tick bar applies from the second minute; the first is judged with the heavy first-time searches, still unruled. Offered against the same bar.
+
+  Links: area Method and documents · draws on sim-execution D71, sim-execution D73 · plans sim-execution · summary The tick bar starts at the second minute; the cold first minute is judged separately.
 
 ## Constraints
 
@@ -616,7 +632,7 @@ Every bar the family states, with its ruling or case. Measurements stated in old
 - **Search and startup time:** no number stated; the bar is "fluid play" for the cold first food-route round (EX2).
 - **Memory for SP8:** no time bar, only memory bounded by the loaded window (`place-graph-engine SP8`).
 
-Which governs today: 976 is the ruled bar for the seed-9 save and holds; 978 governs the head's default tempo; the 0.1 s aim at a few hundred members is what E1 to E5 work toward and is not itself a ruling over 976. 966's 1.5 s stays open. The two populations differ (about a hundred members for 966, a few hundred for the aim), and no document states which is the bar; that is a question for Mark.
+Which governs, from 2026-11-20: a played tick under the foreground rule stays under 0.5 s, with 0.1 s the aim (D73), stated for the near tier with the far tier judged by how its cost grows (D74), from a session's second minute (D76). Cases 966 and 976 are retired as bars (D75); 978's head tempo stands.
 
 ## Phases
 
@@ -858,7 +874,7 @@ Remembered per-part hashes make that proportional to what changed.
 - **Playable-loop forager route search** (the `playable-loop` branch, unpushed at 2026-10-23): its cost is deliberation the A1 battery does not exercise and no battery measures it. Owned by `bodies`; `sim-execution` reads its cost once a battery exists. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`.
 
 ## Questions for Mark
-- **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`. Recommendation (2026-10-31, not ruled): the TD2 aim is the bar, split by tier and measured in release: 0.1 s a played tick for the near tier (the rendered area plus roots, a few hundred individuals), and an aggregate whose cost grows with sites and lineages, not with members (D24); 966 and 976 retire as bars.
+- **Which speed bar is the bar.** Ruled 2026-11-20: D73 to D76.
 - **The `cargo test` profile.** The played seed 0 runs far slower under the `cargo test` profile than release, and with debug assertions off drops substantially. The likely source is named but "not strictly separated": the journal's full `State` clone verifying each rollback (`journal.rs:66`) and `passed_by`'s population rescan (`schedule/mod.rs:314`). No action decided. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:350-355`.
 - **Occurrence index in E2's key (conditional).** If the actor, tick and process key collides for a grouped cohort, E2 brings the fork to Mark. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:128-131`.
 - **Where near-tier movement lives (raised 2026-10-30).** Ruled 2026-11-02 as case 1084, split by grain (doctrine Stack 12); the round's foreground is E10. As raised: Doctrine Stack 12 says the sim "never pathfinds an individual, checks line of sight or resolves a single blow"; rulings 841 and 842 say chosen native steps are "resolved by a game"; yet food-route search, Places derivation and walking plans run in the sim's tick (`shared/isocosm/src/spatial/`, `foraging`, `embodiment`), and that was most of the head's 12.5 s tick (D30). Options: keep it in the tick (one authority, but cost grows with members times path and the region of case 124 is out of reach); the game layer resolves it (Stack 12 and conatus's "Product profiles conduct. Conatus advances spatial state.", but the sim's choice loses its reachability read); or split by grain. Recommendation (2026-10-31, not ruled): split by grain. The sim chooses the goal at the place graph's grain (which place, which meal, whether a route exists, from `place-graph-engine` PG7's Places); the game and conatus find the path, pose the body and place the feet; the sim commits the arrival it accepts, which replay already records as a command. Route search, walking and foot placement move toward conatus (`bodies`).
