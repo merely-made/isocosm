@@ -7860,6 +7860,30 @@ summary = "The tick bar starts at the second minute; the cold first minute is ju
 draws_on = ["sim-execution D71", "sim-execution D73"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D77"]
+title = "a route search gives up after a limit of refusals (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A route search stops after a set number of refused edges and the body stands; no unlimited restarts."
+draws_on = ["sim-execution D55", "sim-execution D56", "sim-execution D66"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D78"]
+title = "the limit is 32 (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "32 refusals a search; body 58's 127-refusal route is given up."
+draws_on = ["sim-execution D73", "sim-execution D77"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D79"]
+title = "the limit is a world rule, absent meaning as today (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The refusal limit is a rule field absent unless set; worlds without it are unchanged."
+draws_on = ["sim-execution D57", "sim-execution D77"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"

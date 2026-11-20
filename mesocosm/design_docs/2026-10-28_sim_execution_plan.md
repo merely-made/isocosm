@@ -609,6 +609,18 @@ each title names its outcome against the doctrine.
 
   Links: area Method and documents · draws on sim-execution D71, sim-execution D73 · plans sim-execution · summary The tick bar starts at the second minute; the cold first minute is judged separately.
 
+- **D77, a route search gives up after a limit of refusals (2026-11-20):** "Limit the refusals (Recommended)". Rules what D55 left open. A search bans each refused edge and restarts with no limit (2026-11-16 receipts): body 61 takes 264 refusals and 5.5 s to end with no route, 142 about 120 and 2.5 s, 58 finds a route after 127. Past the limit the search ends with no route and the body stands that minute (D66), retrying as now (D56). Offered against carrying a search across minutes, against inspecting 61 and 142 first, and against leaving it. Not yet built.
+
+  Links: area Processes and rules · draws on sim-execution D55, sim-execution D56, sim-execution D66 · plans sim-execution · summary A route search stops after a set number of refused edges and the body stands; no unlimited restarts.
+
+- **D78, the limit is 32 (2026-11-20):** "32 (Recommended)". At about 18 ms a refusal the worst search is about 0.6 s, near D73's guard. All three heavy bodies stand, and 58 loses the route it finds today after 127 refusals. Offered against 8, 128 and a number left to each world.
+
+  Links: area Processes and rules · draws on sim-execution D77, sim-execution D73 · plans sim-execution · summary 32 refusals a search; body 58's 127-refusal route is given up.
+
+- **D79, the limit is a world rule, absent meaning as today (2026-11-20):** "A world rule, absent means as today (Recommended)". The search is shared by the stepper and by in-tick walking in worlds without the foreground rule, and stopping at the first refusal moved 150 living to 148. A world that does not carry the rule searches without limit and every pin holds; it is switched on per founded world. Offered against tying it to `foreground_walks` and against every world.
+
+  Links: area Processes and rules · draws on sim-execution D77, sim-execution D57 · plans sim-execution · summary The refusal limit is a rule field absent unless set; worlds without it are unchanged.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
