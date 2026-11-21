@@ -7884,6 +7884,22 @@ summary = "The refusal limit is a rule field absent unless set; worlds without i
 draws_on = ["sim-execution D57", "sim-execution D77"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D80"]
+title = "the rule is `route_refusal_limit` and the flag `--route-refusal-limit` (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Field route_refusal_limit, flag --route-refusal-limit COUNT."
+draws_on = ["sim-execution D68", "sim-execution D79"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D81"]
+title = "only the flag sets the limit for now (2026-11-20)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "No world carries the limit by default; D78's 32 is given on the command line."
+draws_on = ["sim-execution D78", "sim-execution D79"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
