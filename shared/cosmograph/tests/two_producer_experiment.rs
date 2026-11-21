@@ -20,6 +20,9 @@ use std::{
     sync::Arc,
 };
 
+#[path = "two_producer_experiment/refuge.rs"]
+mod refuge;
+
 const DAY: u64 = 1440;
 const SEASON: u64 = 6 * DAY;
 const MEADOW: Id = 0;
@@ -119,8 +122,17 @@ fn set_producer(g: &mut Genesis, line: u32, shares: Shares) {
 }
 
 fn founding(seed: u64, shares: [Shares; 2]) -> (Genesis, Id) {
+    found_with_player(seed, shares, None)
+}
+
+fn found_with_player(
+    seed: u64,
+    shares: [Shares; 2],
+    played: Option<cosmograph::directing::Played>,
+) -> (Genesis, Id) {
     let mut g = Founding {
         seed,
+        played,
         sites: 2,
         population: 64,
         cohort_size: 1,
