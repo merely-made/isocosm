@@ -140,6 +140,12 @@ Cambium controls connected to the logged window-attention command, using the cur
 - **H6's measurement**: H6's done-condition says "frame pacing and pointer picking in the viewport leaf are measured against today's loop." "Today's loop" was the hand-rolled loop the head has since left, and no measurement is on record; the old plan gave no alternative. Is the measurement still wanted, and against what? From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md` H6, lines 236-247.
 
 ## Findings
+
+**Meadow and refuge, specimen bench.** The [paired trial](../testing/bench/README.md#meadow-and-refuge) exercises one small cut through the existing host boundary. The Mesocosm pack supplies a playable opening as a native save. The embeddable host opens it. Mesocosm supplies the place-attention intent, lean-season schedule and patch readings. The specimen bench supplies the controls and runs the comparison beside the user's open bench world. The window and headless Mesocosm runner consume the same observations. A separately founded Cosmograph experiment checks both histories independently.
+
+A launcher could open this save and compose the same product operations. Separate executables can already link them. The comparison tests which state and commands must agree. Packaging games as loadable mods and choosing a family launcher remain design choices.
+
+In the seed-9 trial all 12 paired patch readings matched the independent experiment. The grazer stayed in the meadow through day 12. Total grazing was 165 in the meadow and 233 in the refuge under either choice. Only the nudged history recorded the expired request. The native window reached both expected final hashes and returned to the original bench world. Changing one reported unit of refuge grazing failed comparison even with the correct history hashes.
 - 2026-11-12, toward D4's owed list of what is significant and what exactness costs, from the records read that day. Nothing here is ruled.
 
   | Layer | What the records say | What exactness costs |

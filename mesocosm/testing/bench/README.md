@@ -1,5 +1,21 @@
 # Native specimen bench checks
 
+## Meadow and refuge
+
+From the Mesocosm workspace, run `cargo run --release -p mesocosm-genet -- --bench` and choose **Meadow and refuge**. **Nudge toward refuge** compares a single attention nudge with leaving the grazer alone. **Leave both alone** repeats the comparison with identical inputs. Each starts from the same seed-9 save, just as the meadow reopens on day 2. The meadow goes lean on day 6 and reopens on day 8. Both runs continue through day 12. Use **Earlier observation** and **Later observation** to inspect both patches at the same minute. **Back to simulation** returns to the world you had open.
+
+The saved opening in `packs/mesocosm/fixtures/refuge-opening.json` includes the native history through the player's bond with grazer 15. Cosmograph replays that history when it opens the save. The bench computes each subsequent observation live. Plant tissue and grazing use native matter units. Grazing and emerged seedlings accumulate from the fork.
+
+| Check | Reproduction |
+| --- | --- |
+| Same product runner without the window, JSON on stdout | `cargo run --release -p mesocosm-runtime --example refuge -- nudge` (or `alone`) |
+| Compare both histories and every displayed patch reading | `python testing/bench/compare_refuge.py <native-report> <product-json> nudge` (or `alone`) |
+| Native buttons, both final history hashes, previous/next and return | `cargo run --release -p mesocosm-genet -- --bench --scenario testing/bench/refuge.scenario --receipt <output>/refuge.json --capture <output>/refuge.png` |
+
+The independent [Cosmograph experiment](../../../shared/cosmograph/tests/two_producer_experiment/refuge.rs) regenerates the opening from its founding recipe. Set `COSMOGRAPH_REFUGE_START` to a new filename when running that test to export the opening for comparison. The native run and the product run use the same weather schedule. Only the product path translates the Mesocosm attention intent. This comparison qualifies the two-site study at individual resolution.
+
+Acceptance retains the native report, one JSON comparison per choice, the headed scenario receipt and its captures, within 100 MB total. A deliberately changed grazing count must fail comparison even if the saved history hashes agree.
+
 ## Cosmograph simulation
 
 Choose **Simulation** to found and run a world through `shared/cosmograph`.

@@ -264,7 +264,7 @@ fn parse(input: &TextInput) -> Result<u64, String> {
         .parse()
         .map_err(|_| "Enter a whole nonnegative number.".into())
 }
-fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
+pub(super) fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
     Box::new(focusable(clickable(
         el("button", text(label)).attr("aria-label", label),
         move |s: &mut Bench, _| action(s),
@@ -291,6 +291,9 @@ fn input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
 }
 
 pub(super) fn view(state: &Bench) -> Child {
+    if let Some(panel) = &state.refuge {
+        return super::refuge::view(panel);
+    }
     let mut children: Vec<Child> = vec![
         Box::new(el("h1", text("Bench / Cosmograph"))),
         Box::new(el(
@@ -308,6 +311,10 @@ pub(super) fn view(state: &Bench) -> Child {
                     input("Sites", |s| &mut s.sim.sites),
                     input("Lineages", |s| &mut s.sim.lineages),
                     button("Found world", Bench::sim_found),
+                    button("Meadow and refuge", |s| {
+                        s.sim.playing = false;
+                        s.refuge = Some(Default::default());
+                    }),
                     button("Reservoir world", |s| {
                         s.sim.ecology = false;
                         s.sim_found();

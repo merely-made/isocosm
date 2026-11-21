@@ -218,6 +218,9 @@ fn grazer_nudge() {
     })
     .unwrap();
     let fork = format!("{:016x}", s.sim.state_hash());
+    if let Some(path) = std::env::var_os("COSMOGRAPH_REFUGE_START") {
+        serde_json::to_writer(std::fs::File::create_new(path).unwrap(), &s.save()).unwrap();
+    }
     let control = follow(s.clone(), ground, player, grazer, false);
     let nudged = follow(s, ground, player, grazer, true);
     assert_eq!(

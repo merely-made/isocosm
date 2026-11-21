@@ -24,6 +24,7 @@ pub mod glyphs;
 pub mod microbe;
 pub mod perception;
 pub mod readings;
+pub mod refuge;
 pub mod review;
 pub mod runtime;
 mod profile;

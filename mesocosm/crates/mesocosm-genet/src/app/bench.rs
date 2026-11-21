@@ -15,6 +15,7 @@ use isomere::{Picked, Seeds, Sizes};
 use super::HostConfig;
 
 mod probe;
+mod refuge;
 mod sim;
 
 pub(super) type Child = Box<dyn AnyView<Bench, (), GenetCtx, GenetElement>>;
@@ -23,6 +24,7 @@ pub(super) type Logic = fn(&Bench) -> Child;
 /// The bench's state: the sim panel and what a scenario drains.
 pub(super) struct Bench {
     sim: sim::Panel,
+    refuge: Option<refuge::Panel>,
     events: Vec<String>,
     export_directory: std::path::PathBuf,
 }
@@ -62,6 +64,12 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
     let hooks: HostHooks<Bench, Logic, Child> = HostHooks {
         prepare_presentation: Box::new(|_, _| None),
         frame: Box::new(|ctx| {
+            if ctx.runner.state().refuge.as_ref().is_some_and(refuge::Panel::running) {
+                ctx.runner.update(|s| {
+                    if let Some(panel) = &mut s.refuge { panel.poll(); }
+                });
+                return true;
+            }
             if ctx.runner.state().sim.playing {
                 ctx.runner.update(|s| s.sim_step());
             }
@@ -86,6 +94,7 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
         move |_, _, _| {
             let mut state = Bench {
                 sim: sim::Panel::new(seed),
+                refuge: None,
                 events: Vec::new(),
                 export_directory,
             };
@@ -156,6 +165,10 @@ const RULES: &str = r#"
 .sim-site { box-sizing:border-box; width:calc(50% - 4px); min-width:0; padding:8px; border:1px solid var(--isomere-button-border); background:var(--isomere-panel); }
 .sim-site h3 { font-size:15px; margin:0 0 4px; }
 .sim-site p { font-size:12px; margin:4px 0; }
+.refuge-patch { min-width:250px; }
+.patch-row { display:flex; align-items:center; gap:8px; margin:5px 0; }
+.patch-label { flex:1; min-width:0; }
+.patch-value { width:54px; text-align:right; }
 .sim-detail { flex:2; min-width:240px; padding:12px; background:var(--isomere-panel); }
 .sim-detail h2 { font-size:18px; margin:0 0 8px; }
 .sim-detail pre { white-space:pre-wrap; overflow-wrap:anywhere; font:12px monospace; }

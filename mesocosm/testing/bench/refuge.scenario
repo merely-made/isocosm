@@ -1,0 +1,26 @@
+# Same native seed-9 opening and final hashes as the independent Cosmograph trial.
+settle 3
+remember original
+click role:button Meadow and refuge
+settle 2
+click role:button Nudge toward refuge
+wait 20000
+assert snap refuge-tick == 17280
+assert snap refuge-alone == 9d1fcd04cab9afc2
+assert snap refuge-trial == 67266f6ef1beb54b
+assert text expired
+assert text 165
+assert text 233
+assert text 46
+capture refuge-nudged
+click role:button Earlier observation
+assert snap refuge-tick == 15840
+click role:button Later observation
+assert snap refuge-tick == 17280
+click role:button Leave both alone
+wait 20000
+assert snap refuge-tick == 17280
+assert snap refuge-trial == 9d1fcd04cab9afc2
+assert snap refuge-alone == 9d1fcd04cab9afc2
+click role:button Back to simulation
+same original hash
