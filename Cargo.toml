@@ -175,8 +175,8 @@ sprigging = { git = "https://github.com/merely-made/graphshell.git", branch = "m
 # One reference per git source, or two copies of the DOM seams land
 # and the host's `LayoutDom` stops being the one Isocosm's views and receipts
 # build. Bump this when mere's genet pin moves, and only then.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.1" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.2" }
+layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = ">=0.1.1" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = ">=0.1.2" }
 # The shared automatability substrate: selector resolution, so Isocosm's
 # host-routing receipts target a control by role and label rather than pixel.
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
@@ -215,8 +215,8 @@ muniment = { git = "https://github.com/merely-made/eidetic.git", branch = "main"
 # reach them through crates.io, and a registry copy beside the git one is the
 # same two-`LayoutDom` split the workspace dep above guards against. Same
 # revision as mere's Cambium consumes, necessarily.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.1" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "0.1.2" }
+layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = ">=0.1.1" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = ">=0.1.2" }
 # house patches --from https://github.com/merely-made/mere.git
 # Written by `house patches` (eidetic, crates/house) from the upstream's [patch.crates-io]; `house patches --check` fails when they drift.
 oxjsonld = { git = "https://github.com/mark-ik/oxigraph", branch = "mark-ik/0.5" }
