@@ -1,0 +1,22 @@
+# Seed the colony with its collar. The extension process develops one more
+# attached part of this map from living fungal tissue.
+[grammar]
+rules = []
+[[grammar.seed]]
+segments = 1
+segment = "kind:slim"
+[[grammar.seed]]
+parent = 0
+segments = 1
+segment = "kind:block"
+facing = "Below"
+[[grammar.seed]]
+parent = 1
+segments = 4
+segment = "kind:rod"
+facing = "Left"
+[[grammar.seed]]
+parent = 2
+segments = 2
+segment = "kind:slim"
+facing = "Back"

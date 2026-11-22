@@ -49,6 +49,7 @@ pub enum EffectKind {
     Institution,
     DirectOverflow,
     Regrow,
+    Extend,
 }
 
 impl Effect {
@@ -93,6 +94,7 @@ impl Effect {
             Self::Graft { .. } => EffectKind::Graft,
             Self::Institution { .. } => EffectKind::Institution,
             Self::DirectOverflow { .. } => EffectKind::DirectOverflow,
+            Self::Extend { .. } => EffectKind::Extend,
             Self::Regrow { .. } => EffectKind::Regrow,
         }
     }

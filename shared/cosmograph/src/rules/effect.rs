@@ -268,6 +268,8 @@ pub enum Effect {
         account: Key,
         amount: Amount,
     },
+    /// Fund the next part of a growth map from the basal part of the same body.
+    Extend { tissue: Key },
 }
 
 impl Effect {

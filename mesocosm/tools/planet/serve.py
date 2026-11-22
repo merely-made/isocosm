@@ -112,7 +112,7 @@ def run():
                     data = (HERE / name).read_bytes()
                     if key == "" and field:
                         data = data.replace(b'id="field-link" hidden', b'id="field-link"')
-                elif field and key in ("field", "field.js", "field-map.js", "field.css"):
+                elif field and key in ("field", "field.js", "field-map.js", "soil-view.js", "field.css"):
                     name = "field.html" if key == "field" else key
                     kind = {"html":"text/html","js":"text/javascript","css":"text/css"}[name.split(".")[-1]]
                     data = (HERE / name).read_bytes()

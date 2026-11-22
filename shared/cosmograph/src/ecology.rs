@@ -16,6 +16,7 @@ mod guard;
 mod joint;
 mod limits;
 mod mutualism;
+pub mod soil;
 pub mod pocket;
 mod nutrients;
 mod rot;

@@ -29,6 +29,9 @@
               <select id="sites"></select
             ></label>
           </div>
+          <div id="layer-tools" hidden>
+            <button id="surface-layer">Surface</button><button id="soil-layer">Shallow soil</button>
+          </div>
           <div class="viewer">
             <canvas
               id="field"
@@ -60,6 +63,15 @@
               value="0"
             /><output id="tick"></output><button id="latest">Latest</button>
           </div>
+          <section id="soil-section" hidden>
+            <h3>Root cross-section</h3>
+            <div class="section-key"><span style="--sample:#759c60">Plant</span><span style="--sample:#deb5d3">Fungus</span><span style="--sample:#e3af68">Litter</span></div>
+            <canvas
+              id="profile"
+              aria-label="Vertical soil section through the fungal collar"
+            ></canvas>
+            <p id="soil-reading"></p>
+          </section>
           <p id="status" aria-live="polite"></p>
         </section>
         <aside>

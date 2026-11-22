@@ -119,7 +119,9 @@ impl Simulation {
                 let e = &g.entity;
                 if e.alive && e.body.is_some() && e.journey.is_none() && e.resident_site() == Some(site)
                     && !crate::directing::is_participant(e) {
-                    members.extend(first..first + g.count);
+                    // Anchored substrate bodies already have a soil position.
+                    let bed = self.genesis.rules.soil_beds.get(&site);
+                    members.extend((first..first + g.count).filter(|id| bed.is_none_or(|b| !b.colonies.contains_key(id))));
                 }
             }
             let inside = members.iter().filter(|id| s.spatial_poses.get(id)

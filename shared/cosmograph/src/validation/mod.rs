@@ -428,6 +428,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} eats what cannot be eaten"));
             }
         }
+        Effect::Extend { tissue } => matter(rules, tissue)?,
         Effect::Regrow { account, amount } => {
             matter(rules, account)?;
             if !rules.root_stores.contains_key(account) || *amount == Amount::Fixed(0) {

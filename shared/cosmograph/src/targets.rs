@@ -55,6 +55,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::FixingCanopy | Query::FixingShare { .. }
         | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
+        Query::SoilContact(kind) => *kind == crate::ecology::soil::Contact::Root,
         Query::PocketVacant | Query::Related { .. }
         | Query::Project { .. }
         | Query::ProjectDecision

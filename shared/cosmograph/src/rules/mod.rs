@@ -362,6 +362,9 @@ pub struct Rules {
     /// worlds, whose native allocation and bite draw retain their meaning.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub root_stores: BTreeMap<Key, RootStore>,
+    /// Physical litter and the rooted founders occupying its shallow soil.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub soil_beds: BTreeMap<Id, crate::ecology::soil::Bed>,
     /// Temperature and what it costs a body outside its comfort (case 1215;
     /// lineage-rounds D13 to D15); absent, there is no temperature and
     /// worlds hash as before.

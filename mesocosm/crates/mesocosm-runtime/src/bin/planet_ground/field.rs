@@ -65,7 +65,14 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
         for n in 0..flow.count {
             let from = flow.from.0.body().map(|id| id + n);
             let to = flow.to.0.body().map(|id| id + n);
-            let place = |id| state.population.get(id).and_then(|e| e.resident_site());
+            // A resident can exchange or graze and then depart in this round.
+            // Its journey still names the ground where the transfer happened.
+            let place = |id| {
+                let body = state.population.get(id)?;
+                body.resident_site().or_else(|| {
+                    body.journey.filter(|trip| trip.departed == flow.tick).map(|trip| trip.from)
+                })
+            };
             let at = site_endpoint.or_else(|| {
                 let a = place(from?)?;
                 (place(to?) == Some(a)).then_some(a)
@@ -91,12 +98,12 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
     )
 }
 
-pub(super) fn found(parent: &Path, site: u64, dir: &Path) -> Result<()> {
+pub(super) fn found(parent: &Path, site: u64, dir: &Path, litter: Option<bool>) -> Result<()> {
     fs::create_dir_all(dir)?;
     if fs::read_dir(dir)?.next().is_some() {
         return Err("the field output directory must be empty".into());
     }
-    let branch = Branch::found(parent, None, Some(site))?;
+    let branch = Branch::found(parent, None, Some(site), litter)?;
     let mut terrain = branch.terrain()?;
     terrain["unitMicrometres"] = json!(branch.session.sim.genesis().world.base_unit_micrometres);
     for (name, value) in [

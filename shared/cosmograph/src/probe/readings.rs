@@ -370,6 +370,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             },
             Query::Age { .. } => "born".into(),
             Query::Condition { key, .. } => format!("site-condition:{key}"),
+            Query::SoilContact(_) => "spatial:soil".into(),
             Query::PocketVacant => format!("relation:{}", crate::ecology::pocket::CONTACT),
             Query::Related { kind } => format!("relation:{kind}"),
             Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),

@@ -89,6 +89,9 @@ impl Simulation {
             let reading = format!("{query:?} = {food}/{heads}");
             return if yes { Ok(reading) } else { Err(format!("missing requirement: {reading}")) };
         }
+        if let Query::SoilContact(kind) = query {
+            return crate::ecology::soil::test(self, actor, target, place, *kind);
+        }
         if matches!(query, Query::PocketVacant) {
             let resident = target.ok_or("pocket settlement requires a resident")?;
             let occupied = self.state.relations.iter().any(|link|

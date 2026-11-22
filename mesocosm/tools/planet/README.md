@@ -40,3 +40,18 @@ Choose **Field** in the atlas or open `/field` at the printed address. **Globe**
 The ground view projects the living parts of every positioned body onto the same horizontal plane. The ruler uses the founding's length unit. A fine grid appears when a single unit is large enough to see. The resident list gives each body's greatest rest span and draws the silhouettes at a shared scale. Residents known only to the site stay in the census. A body without measured anatomy reads **Size unresolved**. Selecting a resident filters the material transfers for this tick.
 
 The server writes the latest native checkpoint and each observed frame together to `FIELD_SAVE/field.sqlite3`. Restarting against that directory resumes the field branch. An address such as `/field?site=1&tick=3` returns to a recorded moment.
+
+## Watch a fungus reach litter
+
+At site 1 of the seed 9 planet, the two resident fungi can start at living plant collars. Each grows a connected body from the [soil body map](soil-body.toml). The collar pays fungal tissue for each extension. A living part touching a litter face can recover phosphate from the deposit. A connected plant can pay one unit of its carbon-bearing tissue for one unit of phosphate. Plant production at this site requires phosphate alongside the founding's light, soil and exposed fixing tissue.
+
+Create two empty branch directories from the same founding, then run the paired check and serve either directory.
+
+```sh
+"$PLANET_GROUND" soil "$PLANET_SAVE/founding.json" 1 near "$NEAR_SAVE"
+"$PLANET_GROUND" soil "$PLANET_SAVE/founding.json" 1 far "$FAR_SAVE"
+python3 mesocosm/tools/planet/check_soil.py "$PLANET_GROUND" "$NEAR_SAVE" "$FAR_SAVE"
+python3 mesocosm/tools/planet/serve.py "$GROUND_SAVE" "$PLANET_GROUND" --field "$NEAR_SAVE"
+```
+
+Open `/field?site=1&tick=0` and press **Play**. **Shallow soil** shows the litter, plant collars and living fungal parts from overhead. The vertical section cuts through the selected colony at the same spatial scale. The reading distinguishes phosphate held by the fungus, available to the plant and incorporated by the plant. **Surface** returns to grazing at the same tick. The far branch shifts the same deposit 40 mm sideways. New growth follows the body's inherited directions.

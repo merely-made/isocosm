@@ -309,6 +309,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
                 format!("revision {}: {p:?}", b.body_revision),
             )
         },
+        Query::SoilContact(_) => return Err("soil contact needs the resident geometry".into()),
         Query::PocketVacant => return Err("pocket vacancy needs the live relation graph".into()),
         Query::Related { kind } => {
             let v = (s.related)(kind)?;

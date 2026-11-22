@@ -289,6 +289,7 @@ impl BodyFounding {
         }
         let rules = Rules {
             root_stores: BTreeMap::new(),
+            soil_beds: BTreeMap::new(),
             climate: None,
             kingdoms: None,
             exertion: None,

@@ -8,6 +8,8 @@ mod departure;
 mod field;
 #[path = "../../../../../shared/cosmograph/examples/planet_atlas/observation.rs"]
 mod observation;
+#[path = "planet_ground/soil.rs"]
+mod soil;
 use cosmograph::{
     Command, Execution, Session,
     attention::{Region, Target, WindowAttention},
@@ -57,7 +59,12 @@ fn boxes(
 }
 
 impl Branch {
-    fn found(parent: &Path, actor: Option<u64>, field_site: Option<u64>) -> Result<Self> {
+    fn found(
+        parent: &Path,
+        actor: Option<u64>,
+        field_site: Option<u64>,
+        litter: Option<bool>,
+    ) -> Result<Self> {
         let parent = Session::load_json(&fs::read(parent)?, Execution::Grouped)?;
         if parent.sim.state().tick != 0 {
             return Err("a founding save is required".into());
@@ -69,11 +76,19 @@ impl Branch {
         let parent_digest = parent.save().genesis_digest;
         g.world.parent_world = Some(parent_digest.clone());
         embodiment::declare_site_at(&mut g, site)?;
+        if let Some(reachable) = litter {
+            soil::found(&mut g, site, reachable)?;
+        }
         g.rules.foreground_walks = true;
         let side = g.world.footprint.ok_or("missing site extent")?.side as i64;
         let mut session = Session::new(g, Execution::Grouped)?;
         session.branch = match actor {
             Some(id) => format!("ground-{id}-{}", &parent_digest[..12]),
+            None if litter.is_some() => format!(
+                "soil-{site}-{}-{}",
+                if litter == Some(true) { "near" } else { "far" },
+                &parent_digest[..12]
+            ),
             None => format!("field-{site}-{}", &parent_digest[..12]),
         };
         let mut game = Game::default();
@@ -125,6 +140,11 @@ impl Branch {
                 json!({"id":id,"site":r.site,"pose":r.pose,"travel":r.travel,"kingdom":e.kingdom,
                 "boxes":boxes(e,&r.pose)?}),
             );
+        }
+        if self.field_site.is_some() {
+            for (&site, bed) in &sim.genesis().rules.soil_beds {
+                f["sites"][site as usize]["soil"] = soil::observe(sim, site, bed, &mut poses)?;
+            }
         }
         f["poses"] = json!(poses);
         if self.field_site.is_none() {
@@ -365,7 +385,15 @@ fn main() -> Result<()> {
     let args: Vec<_> = env::args().skip(1).collect();
     match args.as_slice() {
         [mode, parent, site, dir] if mode == "field" => {
-            field::found(Path::new(parent), site.parse()?, Path::new(dir))?
+            field::found(Path::new(parent), site.parse()?, Path::new(dir), None)?
+        },
+        [mode, parent, site, treatment, dir] if mode == "soil" => {
+            let near = match treatment.as_str() {
+                "near" => true,
+                "far" => false,
+                _ => return Err("choose near or far litter".into()),
+            };
+            field::found(Path::new(parent), site.parse()?, Path::new(dir), Some(near))?;
         },
         [mode, parent, actor, dir, n] if mode == "branch" => {
             let dir = Path::new(dir);
@@ -374,7 +402,7 @@ fn main() -> Result<()> {
             if fs::read_dir(dir)?.next().is_some() {
                 return Err("the branch output directory must be empty".into());
             }
-            let mut b = Branch::found(Path::new(parent), Some(actor.parse()?), None)?;
+            let mut b = Branch::found(Path::new(parent), Some(actor.parse()?), None, None)?;
             let write = |name: &str, v: &Value| -> Result<()> {
                 fs::write(dir.join(name), serde_json::to_vec(v)?)?;
                 Ok(())
@@ -439,7 +467,7 @@ fn main() -> Result<()> {
         },
         _ => {
             return Err(
-                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | watch SAVE".into(),
+                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | soil PARENT SITE near|far DIRECTORY | watch SAVE".into(),
             );
         },
     };

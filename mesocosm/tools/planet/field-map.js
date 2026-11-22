@@ -1,6 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+import { soilBackdrop } from './soil-view.js'
 import { readTrack } from './ground.js'
 
 const faunaAccents = { mouth: '#b87444', sense: '#ece3af', limb: '#bfa267' }
@@ -123,6 +124,8 @@ export class FieldMap {
     ctx.fillStyle = '#284139'
     ctx.fillRect(0, 0, w, h)
     ctx.drawImage(this.texture(site), X(0), Z(0), this.t.side * scale, this.t.side * scale)
+    const soil = this.soilLayer && frame.sites[site].soil
+    if (soil) soilBackdrop(ctx, soil, X, Z, scale, this.t.side)
     // Each square spans one native length unit; only draw the lattice when it resolves.
     if (scale >= 4) {
       ctx.save()
@@ -143,7 +146,9 @@ export class FieldMap {
       ctx.stroke()
       ctx.restore()
     }
-    const poses = frame.poses.filter((p) => p.site === site)
+    const poses = frame.poses.filter(
+      (p) => p.site === site && (soil ? p.soil || p.kingdom === 'kingdom:flora' : !p.soil),
+    )
     const parts = [],
       labels = []
     const changes = new Map()
@@ -161,15 +166,16 @@ export class FieldMap {
     }
     for (let p of poses) {
       if (next && portion > 0) p = readTrack([frame, next], 0, p.id, portion, true).resident || p
-      for (const [, lo, hi, role] of p.boxes) parts.push({ lo, hi, role, p })
-      if (!p.boxes.length) continue
-      const top = Math.min(...p.boxes.map((b) => b[1][2]))
+      const visible = soil && !p.soil ? p.boxes.filter(([id]) => id === 0) : p.boxes
+      for (const [, lo, hi, role] of visible) parts.push({ lo, hi, role, p })
+      if (!visible.length) continue
+      const top = Math.min(...visible.map((b) => b[1][2]))
       labels.push({ x: X(p.pose.at[0]), y: Z(top) - 7, p })
     }
     ctx.lineWidth = 1.5
     ctx.strokeStyle = '#ffdfa1'
     for (const walk of (portion > 0 ? next?.walks : frame.walks) || []) {
-      if (walk.site !== site) continue
+      if (soil || walk.site !== site) continue
       const pts =
         portion > 0
           ? readTrack([frame, next], 0, walk.id, portion, true).tracks.flatMap((s) => s.points)
@@ -187,7 +193,10 @@ export class FieldMap {
         bw = (hi[0] - lo[0]) * scale,
         bh = (hi[2] - lo[2]) * scale
       if (x > w || y > h || x + bw < 0 || y + bh < 0) continue
-      ctx.fillStyle = (p.kingdom === 'kingdom:fauna' && faunaAccents[role]) || kindOf(p.kingdom)[1]
+      ctx.fillStyle =
+        (p.soil && '#dcaecd') ||
+        (p.kingdom === 'kingdom:fauna' && faunaAccents[role]) ||
+        kindOf(p.kingdom)[1]
       ctx.fillRect(x, y, bw, bh)
       ctx.strokeStyle = p.id === selected ? '#fff0bd' : '#334a37'
       ctx.lineWidth = p.id === selected ? 1.4 : 0.7

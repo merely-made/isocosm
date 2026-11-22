@@ -98,6 +98,11 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
         } => ask
             .resolved()
             .and_then(|ask| carriage::carry(p, rules, *who, (function, *role), (ask, lands))),
+        Effect::Extend { tissue } => (|| {
+            let lineage = p.body(Binding::Actor)?.lineage.clone();
+            let development = p.development(&lineage)?;
+            crate::ecology::soil::extend(p.body(Binding::Actor)?, rules, &development, tissue)
+        })(),
         Effect::Regrow { account, amount } => amount.resolved().and_then(|amount| {
             let moved = crate::anatomy::root_store::regrowth(
                 p.body(Binding::Actor)?,

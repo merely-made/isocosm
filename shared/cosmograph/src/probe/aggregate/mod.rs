@@ -147,7 +147,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
         || p.commitments.iter().chain(&p.effects).any(|e| scattered(e) || e.branches().any(scattered))
         || p.requires.iter().any(|q| {
             let reads = match q {
-                Query::PocketVacant | Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
+                Query::SoilContact(_) | Query::PocketVacant | Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
                 | Query::MembersPerHead { .. }
                 | Query::FoodPerHead { .. }
                 | Query::EdiblePerHead { .. }
@@ -180,6 +180,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
 /// Whether a query reads a target, which a hunt decides for its prey.
 pub(super) fn binds_target(q: &Query) -> bool {
     match q {
+        Query::SoilContact(kind) => *kind == crate::ecology::soil::Contact::Root,
         Query::PocketVacant | Query::Related { .. } => true,
         Query::Alive(who) => *who == Binding::Target,
         Query::Trait { who, .. }

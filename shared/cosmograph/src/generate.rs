@@ -260,6 +260,7 @@ impl Founding {
         helpers::world_processes(&mut processes);
         let mut rules = Rules {
             root_stores: BTreeMap::new(),
+            soil_beds: BTreeMap::new(),
             climate: None,
             kingdoms: None,
             exertion: None,

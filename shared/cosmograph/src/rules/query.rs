@@ -163,4 +163,5 @@ pub enum Query {
     Pocket { who: Binding, run: u8 },
     /// Both endpoints are available for a live, one-resident association.
     PocketVacant,
+    SoilContact(crate::ecology::soil::Contact),
 }

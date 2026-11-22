@@ -42,6 +42,13 @@ fn is_never(odds: &[u32; 2]) -> bool {
     *odds == never()
 }
 
+impl std::str::FromStr for BodyMap {
+    type Err = toml::de::Error;
+    fn from_str(text: &str) -> std::result::Result<Self, Self::Err> {
+        toml::from_str(text)
+    }
+}
+
 impl BodyMap {
     /// Resolve the named anatomy in the seed and rules. The caller installs
     /// the native root and feeding organs before expanding the grammar.

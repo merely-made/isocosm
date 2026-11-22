@@ -1,6 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+import { drawSection, sectionColony } from './soil-view.js'
 import { PlanetView } from './globe.js'
 import { FieldMap, kindOf, sizeOf, measure } from './field-map.js'
 
@@ -106,6 +107,7 @@ async function open() {
     query.has('site') && Number.isSafeInteger(initialSite) && terrain.sites[initialSite]
       ? initialSite
       : f.fieldSite
+  map.soilLayer = !!f.sites[site].soil && query.get('layer') !== 'surface'
   const name = (id) => {
     const s = terrain.sites[id],
       d = s.neighbors.map(([i]) => terrain.sites[i].elevation - s.elevation)
@@ -121,6 +123,8 @@ async function open() {
       $('extent').textContent = 'Dots mark inhabited sites'
     } else {
       map.draw(f, site, selected, next, portion)
+      if (map.soilLayer && f.sites[site].soil)
+        drawSection($('profile'), terrain, site, f, map, selected)
       $('extent').textContent = measure(map.span, terrain.unitMicrometres) + ' across'
     }
   }
@@ -143,6 +147,19 @@ async function open() {
   }
   const focus = () => {
     const poses = atSite(f, site)
+    const bed = f.sites[site].soil
+    if (map.soilLayer && bed) {
+      const colony = poses.find((p) => p.soil)
+      if (colony) {
+        const [x, , z] = colony.pose.at
+        const lx = (bed.litter[0][0] + bed.litter[1][0]) / 2
+        const lz = (bed.litter[0][2] + bed.litter[1][2]) / 2
+        map.center((x + lx) / 2, (z + lz) / 2)
+        map.span = Math.max(76, (Math.abs(lz - z) + 22) * canvas.clientWidth / canvas.clientHeight)
+        autocenter = false
+        return
+      }
+    }
     map.focus(poses, f.sites[site].flows)
     autocenter = !poses.length
   }
@@ -164,12 +181,54 @@ async function open() {
   }
   function refresh() {
     if (autocenter && atSite(f, site).length) focus()
+    const bed = f.sites[site].soil,
+      soil = !!bed && map.soilLayer && !orbital
+    $('layer-tools').hidden = !bed || orbital
+    $('soil-section').hidden = !soil
+    $('soil-layer').setAttribute('aria-pressed', String(soil))
+    $('surface-layer').setAttribute('aria-pressed', String(!soil))
+    $('lens').textContent = orbital
+      ? 'Orbital view'
+      : soil
+        ? 'Shallow soil · plan'
+        : 'Ground survey'
+    if (soil) {
+      const colony = sectionColony(f, site, selected, map.z)
+      const at = bed.colonies.find((c) => c.id === colony?.id)
+      const plant =
+        bed.roots.find((r) => r.id === selected) || bed.roots.find((r) => r.id === at?.host)
+      $('soil-reading').textContent =
+        (at
+          ? 'Fungus #' +
+            at.id +
+            ' · ' +
+            at.parts +
+            (at.parts === 1 ? ' part · ' : ' parts · ') +
+            (at.contact ? 'touching litter' : 'away from litter') +
+            ' · ' +
+            at.p +
+            ' available P. '
+          : '') +
+        (plant
+          ? 'Plant #' +
+            plant.id +
+            ' · ' +
+            plant.p +
+            ' available P · ' +
+            plant.used +
+            ' incorporated P. '
+          : at ? 'No living root in contact. ' : '') +
+        'Litter holds ' +
+        bed.remaining +
+        ' P.'
+    }
     const local = f.sites[site],
       rows = local.residents,
       poses = atSite(f, site)
     if (selected != null && !findResident(rows, selected)) selected = null
     $('planet').textContent =
-      'Planet ' + terrain.seed + ' · ' + measure(terrain.side, terrain.unitMicrometres) + ' site'
+      'Planet ' + terrain.seed + ' · ' + measure(terrain.side, terrain.unitMicrometres) + ' site' +
+      (bed ? (f.branch.includes('-near-') ? ' · Near litter' : ' · Offset litter') : '')
     $('place').textContent = name(site)
     $('sites').value = String(site)
     for (const option of $('sites').options) {
@@ -209,7 +268,7 @@ async function open() {
               ? measure(Math.max(...dims), terrain.unitMicrometres) + ' span'
               : 'Size unresolved') +
               ' · ' +
-              (pose ? 'On ground' : 'Site only'),
+              (pose?.soil ? 'In soil' : pose ? 'On ground' : 'Site only'),
           ),
         )
         btn.append(thumb, label)
@@ -217,6 +276,8 @@ async function open() {
           selected = selected === id ? null : id
           if (selected != null && pose) {
             if (orbital) mode(false)
+            if (pose.soil) map.soilLayer = true
+            else if (pose.kingdom !== 'kingdom:flora') map.soilLayer = false
             map.center(pose.pose.at[0], pose.pose.at[2])
             autocenter = false
           }
@@ -227,7 +288,7 @@ async function open() {
     const unplaced = count(local) - poses.length
     $('resolution').textContent = unplaced
       ? poses.length +
-        ' on ground · ' +
+        ' positioned · ' +
         unplaced +
         ' at site resolution.' +
         (f.fieldSite === site
@@ -253,7 +314,11 @@ async function open() {
       const src = x.from == null ? 'Site' : organism(x.from),
         dst = x.to == null ? 'Site' : organism(x.to)
       const event = node('p', src + ' → ' + dst, 'event')
-      const process = x.process.slice(8).replace(/-\d+$/, '')
+      const process = ({
+        'ecology:root-exchange': 'Root exchange',
+        'ecology:recover-phosphate': 'Litter uptake',
+        'ecology:root-production': 'Plant production',
+      })[x.process] || x.process.slice(8).replace(/-\d+$/, '')
       event.append(
         node(
           'small',
@@ -261,7 +326,7 @@ async function open() {
             ' · ' +
             x.amount +
             ' ' +
-            account(x.debit) +
+            (x.process === 'ecology:root-exchange' && x.debit.startsWith('matter:') ? 'plant carbon' : account(x.debit)) +
             (account(x.credit) === account(x.debit) ? '' : ' → ' + account(x.credit)),
         ),
       )
@@ -380,7 +445,20 @@ async function open() {
   }
   $('scrub').oninput = (e) => seek(Number(e.target.value))
   $('latest').onclick = () => seek(head)
-  $('orbit').onclick = () => mode(!orbital)
+  $('soil-layer').onclick = () => {
+    map.soilLayer = true
+    focus()
+    refresh()
+  }
+  $('surface-layer').onclick = () => {
+    map.soilLayer = false
+    focus()
+    refresh()
+  }
+  $('orbit').onclick = () => {
+    mode(!orbital)
+    refresh()
+  }
   $('more').onclick = () => {
     map.zoom(0.65)
     draw()
@@ -479,8 +557,9 @@ async function open() {
     }
   }
   new ResizeObserver(draw).observe(canvas)
-  focus()
   refresh()
+  focus()
+  draw()
 }
 open().catch((err) => {
   $('status').textContent = err.message
