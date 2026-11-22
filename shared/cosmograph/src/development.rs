@@ -84,6 +84,19 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
     }
 }
 
+/// Draw only the alternative counts licensed by the developed lineage.
+pub fn lineage_soma(rules: &Rules, d: &Development, seed: u64) -> Soma {
+    let mut drawn = soma(rules, &d.recipe, seed);
+    if let Some(grammar) = &d.grammar {
+        for (index, count) in drawn.segments.iter_mut().enumerate() {
+            if let Some(plan) = grammar.partition(index) {
+                *count = if crate::draw(seed, "organ-partition", &[index as u64]) % 2 == 0 { 1 } else { plan.pieces };
+            }
+        }
+    }
+    drawn
+}
+
 /// A part of `t` at `situs`, attached to `parent` at `offset`, holding
 /// nothing: its geometry and its physiology.
 fn part(t: &Template, situs: [u8; 3], parent: Option<PartId>, offset: [i32; 3]) -> (Frame, Part) {
@@ -134,6 +147,36 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
     let next = |parts: &Vec<(Frame, Part)>| PartId(parts.len() as u32);
     for (i, t) in recipe.tagmata.iter().enumerate() {
         let mut spine = vec![];
+        if let Some(plan) = d.grammar.as_ref().and_then(|g| g.partition(i)) {
+            let count = soma.segments[i];
+            plan.validate(t.facing)?;
+            if count != 1 && count != plan.pieces {
+                return Err(format!("organ {i} can grow in one or {} pieces", plan.pieces));
+            }
+            let parent_run = t.parent.and_then(|p| spines.get(usize::from(p))).ok_or("partition needs a bearer")?;
+            let parent = match t.anchor {
+                Anchor::Base => parent_run[0],
+                Anchor::Middle => parent_run[parent_run.len()/2],
+                Anchor::Tip => parent_run[parent_run.len()-1],
+            };
+            let bearer = parts[parent.0 as usize].0.half_extent;
+            let segment = kind(&t.segment)?;
+            let mut organ = segment.clone();
+            organ.half_extent = if count == 1 { plan.whole } else { plan.piece };
+            let axis = plan.axis;
+            plan.admits(segment, bearer)?;
+            for cells in organ.cells.values_mut() { *cells /= u32::from(count); }
+            for s in 0..count {
+                let mut offset = flush(bearer, organ.half_extent, t.facing);
+                offset[axis] = plan.offsets(count, s);
+                let id = next(&parts);
+                parts.push(part(&organ, [i as u8, s, 0], Some(parent), offset));
+                spine.push(id);
+                last = Some(id);
+            }
+            spines.push(spine);
+            continue;
+        }
         for s in 0..soma.segments[i] {
             let segment = kind(t.segment_kind(s))?;
             let parent = match (spine.last(), t.parent) {

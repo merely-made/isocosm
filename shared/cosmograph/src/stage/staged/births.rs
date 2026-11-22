@@ -144,7 +144,7 @@ impl Staged<'_> {
     /// The soma the child `id` draws from `l`'s recipe by its own seed.
     fn soma(&self, l: &Lineal, id: Id) -> development::Soma {
         let seed = crate::draw(self.sim.genesis.dynamics_seed(), "soma", &[id]);
-        development::soma(&self.sim.genesis.rules, &l.d.recipe, seed)
+        development::lineage_soma(&self.sim.genesis.rules, &l.d, seed)
     }
 
     /// A brood, or a clutch of eggs, from the whole provision, each child

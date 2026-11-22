@@ -1,0 +1,58 @@
+# One lineage with fronds on every plant and a gland on some.
+seed = 9
+sites = 1
+population = 42
+lineages = 3
+cohort_size = 2
+stock_min = 8
+stock_max = 10
+period_max = 5
+base_unit_micrometres = 1000
+ecology = true
+ecology_rates = "a1"
+inherit = true
+
+[bodies]
+variance = [1, 2]
+absence = [12, 12]
+clutch = [1, 4]
+grazing = true
+canopy_growth = true
+
+[repertoire]
+only = ["part:cyanide-leaf"]
+
+[guard]
+bite = 2
+gland = 2
+spine_harm = 2
+dose = 16
+toxin_cap = 4
+rent_cells = 8
+
+[body_maps."lineage:0"]
+# One chance in two per founder cohort to omit the gland. Fronds always grow.
+absence = [1, 2]
+
+[body_maps."lineage:0".regions]
+"region:gland" = "part:cyanide-leaf"
+
+[body_maps."lineage:0".grammar]
+# Grow two frond-bearing stem segments in both forms.
+rules = [{ Repeat = { tagma = 0, by = 1 } }]
+
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "kind:block"
+bears = "kind:frond"
+per_segment = 1
+socket = "Above"
+
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "kind:block"
+parent = 0
+facing = "Right"
+bears = "region:gland"
+per_segment = 1
+socket = "Below"

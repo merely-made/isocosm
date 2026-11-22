@@ -42,6 +42,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Part { who, .. }
         | Query::Holds { who, .. }
         | Query::Wounded { who, .. }
+        | Query::Pocket { who, .. }
         | Query::Trades { who, .. }
         | Query::Takes { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
@@ -51,9 +52,10 @@ fn reads_prey(q: &Query) -> bool {
         | Query::FoodPerHead { .. }
         | Query::EdiblePerHead { .. }
         | Query::EmptyBody
+        | Query::FixingCanopy | Query::FixingShare { .. }
         | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
-        Query::Related { .. }
+        Query::PocketVacant | Query::Related { .. }
         | Query::Project { .. }
         | Query::ProjectDecision
         | Query::InstitutionDecision
@@ -210,6 +212,24 @@ impl Simulation {
         if let Some(target)=self.institution_target(actor,p) {return target.ok().flatten();}
         if let Some(target) = self.foraging_target(actor, p) { return target; }
         let selector = p.target.as_ref()?;
+        // A required relationship names individuals. Equal bodies in a stored
+        // group can have different partners. The ordered relation index yields
+        // the exact candidates in the same identity order as an unweighted search.
+        if !selector.weighted && let Some(kind) = p.requires.iter().find_map(|q| match q {
+            Query::Related { kind } => Some(kind),
+            _ => None,
+        }) {
+            let place = self.body_at_start(actor)?.place;
+            let part = self.bind_part(actor, p);
+            let start = Relation { value: i64::MIN, ..Relation::new(actor, kind.clone(), 0) };
+            return self.state.relations.range(start..)
+                .take_while(|r| r.subject == actor && &r.kind == kind)
+                .map(|r| r.object)
+                .find(|&id| id != actor
+                    && self.body_at_start(id).is_some_and(|e| !self.genesis.rules.dormant(e))
+                    && self.target_matches(actor, Some(id), p)
+                    && p.requires.iter().all(|q| self.process_query(actor, Some(id), place, part, p, q).is_ok()));
+        }
         let (place, offered) = self.offering(actor, p)?;
         if let Some(index) = self.weighted_targets(actor, p, place) {
             let selected = index.pick(actor, self.target_draw(actor, p));

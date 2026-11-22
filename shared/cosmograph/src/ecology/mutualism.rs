@@ -256,7 +256,11 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     let every = crate::rules::minutes_ticks(rule.period, g.rules.tick_microseconds());
     let fixing = crate::rules::minutes_ticks(2, g.rules.tick_microseconds());
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
-    let mut made: Vec<Process> = producers.iter().map(|&p| grow(p, sensing, fixing)).collect();
+    let mut made: Vec<Process> = producers.iter().map(|&p| {
+        let mut partnered = grow(p, sensing, fixing);
+        partnered.requires.extend(super::canopy_requirement(founding, p, fixing));
+        partnered
+    }).collect();
     for &d in &decomposers {
         for &p in &producers {
             made.extend([nutrient(&rule, d, p, every), sugar(&rule, p, d, every), digest(&rule, d, p, every)]);

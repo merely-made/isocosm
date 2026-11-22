@@ -12,11 +12,9 @@
 //! declares ([`lowering`]): a box from the part's shape, every cell given to
 //! the part's process, and an intake port from what the part admits and the
 //! tolerance its traits unlock, as `IntakePort` and `process::Tolerance`
-//! hold them. **Nothing founds a line with one.** A line reaches them in two
-//! ways, both through `lineage::repertoire`: as offers at the played line's
-//! review, and as candidates an unplayed line takes at a boundary, scored by
-//! the same forked copy. A kind a line takes joins its lexicon, so the
-//! regrown body carries the part and its port.
+//! hold them. Authored body maps may bind a region to a lowered kind at
+//! founding. Lines can also take them through `lineage::repertoire` at review
+//! or an unwatched boundary. An adopted kind joins the line's lexicon.
 //!
 //! The founded feeding processes admit what each line's mouth admitted at
 //! founding; under the rule they admit what the bound mouth's port admits
@@ -113,7 +111,22 @@ pub fn kind_key(part: &str) -> Key {
 /// Fails where the founding is no bodied ecology, runs in world time, or
 /// `only` names a part that is not in the catalog or cannot be lowered.
 pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
-    let Some(rule) = &founding.repertoire else { return Ok(()) };
+    if g.rules.repertoire.is_none() {
+        g.rules.repertoire = declare(founding, &mut g.rules.kinds)?;
+    }
+    if g.rules.repertoire.is_some() {
+        widen(&mut g.rules);
+    }
+    Ok(())
+}
+
+/// Declare the kinds before a body map grows its founders. Feeding is
+/// widened later, once the founded processes have their ports.
+pub(crate) fn declare(
+    founding: &Founding,
+    templates: &mut BTreeMap<Key, crate::rules::Template>,
+) -> Result<Option<Lowered>> {
+    let Some(rule) = &founding.repertoire else { return Ok(None) };
     if !founding.ecology || founding.bodies.is_none() {
         return Err("repertoire is built for the bodied ecology".into());
     }
@@ -143,7 +156,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
             root: root_key.clone(),
             root_of: None,
         };
-        let mut declare = |k: &Key, t| match g.rules.kinds.insert(k.clone(), t) {
+        let mut declare = |k: &Key, t| match templates.insert(k.clone(), t) {
             Some(_) => Err(format!("repertoire kind {k} is already declared")),
             None => Ok(()),
         };
@@ -154,9 +167,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         }
         kinds.insert(key, entry);
     }
-    g.rules.repertoire = Some(Lowered { across_kingdoms: rule.across_kingdoms, kinds });
-    widen(&mut g.rules);
-    Ok(())
+    Ok(Some(Lowered { across_kingdoms: rule.across_kingdoms, kinds }))
 }
 
 /// Each founded ordinary feed admits what its bound mouth's port admits, of

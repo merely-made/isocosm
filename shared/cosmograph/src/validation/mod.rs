@@ -15,7 +15,7 @@ mod recipe;
 mod direction;
 pub(crate) use body::part;
 pub(crate) use conversion::kinds as conversions;
-pub(crate) use recipe::development;
+pub(crate) use recipe::{development, tagmata};
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -44,6 +44,11 @@ fn account(rules: &Rules, value: &str) -> Result<()> {
 fn query(rules: &Rules, q: &Query) -> Result<()> {
     material::query(rules, q)?;
     match q {
+        Query::FixingShare { tissue, budget, period } => {
+            if *budget == 0 || *period == 0 || !matches!(rules.accounts.get(tissue), Some(AccountKind::Matter { reserve: false, provision: false, .. })) {
+                return Err("fixing share needs tissue, a positive cell budget and a cadence".into());
+            }
+        },
         Query::Account { key, .. } => account(rules, key)?,
         Query::Below { key, .. } => account(rules, key)?,
         Query::Condition { key, .. } if !rules.conditions.contains(key) => {

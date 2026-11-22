@@ -67,7 +67,8 @@ pub(super) fn differentiations<'k>(d: &Development, kinds: impl Iterator<Item = 
             let mut edited = d.clone();
             edited.lexicon.insert(kind.clone());
             if let Some(g) = edited.grammar.as_mut() {
-                g.rules.push(Rule::Differentiate { tagma, at, kind: kind.clone() });
+                let at_rule = g.rules.iter().position(|r| matches!(r, Rule::Partition(_))).unwrap_or(g.rules.len());
+                g.rules.insert(at_rule, Rule::Differentiate { tagma, at, kind: kind.clone() });
             }
             out.push((format!("revision:rule-differentiate-{kind}"), edited));
         }

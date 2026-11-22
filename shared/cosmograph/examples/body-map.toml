@@ -1,0 +1,53 @@
+# A small producer/consumer/decomposer world. Only lineage:0 has a body map.
+seed = 9
+sites = 1
+population = 30
+lineages = 3
+cohort_size = 2
+stock_min = 8
+stock_max = 10
+period_max = 5
+base_unit_micrometres = 1000
+ecology = true
+ecology_rates = "a1"
+inherit = true
+
+[bodies]
+variance = [1, 2]
+absence = [12, 12]
+clutch = [1, 4]
+grazing = true
+
+[repertoire]
+only = ["part:cyanide-leaf"]
+
+[guard]
+bite = 2
+gland = 2
+spine_harm = 2
+dose = 16
+toxin_cap = 4
+rent_cells = 8
+
+[body_maps."lineage:0".regions]
+# Replace with "kind:frond" for the matched plain-tissue control.
+"region:defence" = "part:cyanide-leaf"
+
+[body_maps."lineage:0".grammar]
+# Grow the second run from one segment to two. Its variance below draws
+# founders with one, two or three copies of the mapped region.
+rules = [{ Repeat = { tagma = 1, by = 1 } }]
+
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "kind:block"
+bears = "kind:frond"
+per_segment = 1
+socket = "Above"
+
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "region:defence"
+parent = 0
+facing = "Back"
+variance = 1

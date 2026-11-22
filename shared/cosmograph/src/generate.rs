@@ -100,12 +100,21 @@ pub struct Founding {
     /// Producer and decomposer trade soil for tissue, each paying while the other does (`ecology::mutualism`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mutualism: Option<crate::ecology::Mutualism>,
+    /// A mapped pocket supporting a distinct, removable resident.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pocket: Option<crate::ecology::pocket::Pocket>,
     /// Animals leave dung that dung mouths and rot return (`ecology::detritus`, D39 model 4).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub detritus: Option<crate::ecology::Detritus>,
     /// The ground holds several nutrients and a producer needs them in proportion (`ecology::nutrients`, D39 model 1).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub nutrients: Option<crate::ecology::Nutrients>,
+    /// Authored developmental maps, keyed by the generated lineage they fill.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub body_maps: BTreeMap<Key, crate::bodied::BodyMap>,
+    /// Leave these generated lineage slots empty, preserving all other founder draws and site stocks.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub unstocked_lineages: BTreeSet<u32>,
 }
 
 impl Default for Founding {
@@ -142,8 +151,11 @@ impl Default for Founding {
             population_bands: None,
             cohort_births: false,
             mutualism: None,
+            pocket: None,
             detritus: None,
             nutrients: None,
+            body_maps: BTreeMap::new(),
+            unstocked_lineages: BTreeSet::new(),
         }
     }
 }
@@ -187,6 +199,9 @@ impl Founding {
         }
         if let Some(bodies) = &self.bodies {
             bodies.check()?;
+        }
+        if self.bodies.is_none() && !self.body_maps.is_empty() {
+            return Err("body maps need a bodied founding".into());
         }
         let random = |domain: &str, i| crate::draw(self.seed, domain, &[i]);
         let mut lineages = BTreeMap::from([(
@@ -459,6 +474,9 @@ impl Founding {
                 1,
             )?;
         }
+        if self.unstocked_lineages.iter().any(|i| *i >= self.lineages) {
+            return Err("cannot omit founders of an unknown lineage".into());
+        }
         let mut remaining = self.population;
         let mut group = 0;
         // Every lineage is founded with at least six (1090, 1106), dealt in
@@ -478,6 +496,12 @@ impl Founding {
                 );
             }
             let count = self.cohort_size.min(remaining);
+            if self.unstocked_lineages.contains(&(i as u32)) {
+                population.next_id = population.next_id.checked_add(count).ok_or("founder identity exhausted")?;
+                remaining -= count;
+                group += 1;
+                continue;
+            }
             population.insert(
                 Entity {
                     drawn: None,

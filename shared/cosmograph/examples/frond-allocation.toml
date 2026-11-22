@@ -1,0 +1,35 @@
+# Two inherited allocations of the same canopy, on one patch of ground.
+seed = 9
+sites = 1
+# At seed 9 these slots give eight plant founders of each form.
+population = 31
+lineages = 2
+cohort_size = 1
+# Enough starting biomass to fund all nine cells in both forms.
+stock_min = 10
+stock_max = 10
+period_max = 5
+base_unit_micrometres = 1000
+ecology = true
+ecology_rates = "a1"
+inherit = true
+
+[bodies]
+variance = [1, 2]
+absence = [12, 12]
+clutch = [1, 1]
+grazing = true
+fixing_budget = 9
+
+[body_maps."lineage:0".grammar]
+rules = [{ Partition = { tagma = 1, pieces = 3, whole = [7, 4, 1], piece = [4, 2, 1], axis = 2 } }]
+
+[[body_maps."lineage:0".grammar.seed]]
+segment = "kind:block"
+segments = 1
+
+[[body_maps."lineage:0".grammar.seed]]
+segment = "kind:frond"
+segments = 1
+parent = 0
+facing = "Above"

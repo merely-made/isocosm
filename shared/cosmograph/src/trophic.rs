@@ -33,13 +33,17 @@ fn height(doc: &BodyDocument, id: PartId) -> i32 {
 /// standing over them (no living part's lowest voxel above the plate's
 /// highest).
 pub fn canopy_parts(doc: &BodyDocument) -> Vec<PartId> {
+    canopy(doc).collect()
+}
+
+fn canopy(doc: &BodyDocument) -> impl Iterator<Item = PartId> + '_ {
     let overhead = doc
         .living()
         .map(|p| height(doc, p.id) - p.half_extent[1].abs())
         .max()
         .unwrap_or(0);
     doc.living()
-        .filter(|p| {
+        .filter(move |p| {
             let Some(at) = p.attachment else { return false };
             let top = height(doc, p.id) + p.half_extent[1].abs();
             classify(p.half_extent) == Role::Plate
@@ -48,7 +52,6 @@ pub fn canopy_parts(doc: &BodyDocument) -> Vec<PartId> {
                 && top >= overhead
         })
         .map(|p| p.id)
-        .collect()
 }
 
 /// The mouth: a living part borne under the head (attached to the root,
@@ -68,15 +71,38 @@ pub fn mouth_part(doc: &BodyDocument) -> Option<PartId> {
     found
 }
 
+/// First exposed plate with live fixing cells, in document order. Read from
+/// the current body so severing, regrowth and changes to tissue take effect.
+pub fn fixing_plate(e: &Entity) -> Option<PartId> {
+    canopy(e.body.as_ref()?).find(|id|
+        e.parts.get(id).is_some_and(|p| p.cells.get(FIX).copied().unwrap_or(0) > 0))
+}
+
+/// (Exposed fixing cells, cells backed by local plant biomass). A unit of
+/// tissue can support one cell in this rate law. A bite affects the part it took.
+pub fn fixing_tissue(e: &Entity, tissue: &str) -> (u64, u64) {
+    let Some(doc) = &e.body else { return (0, 0) };
+    canopy(doc).filter_map(|id| e.parts.get(&id)).fold((0, 0), |(exposed, active), p| {
+        let cells = u64::from(p.cells.get(FIX).copied().unwrap_or(0));
+        (exposed + cells, active + cells.min(p.matter.get(tissue).copied().unwrap_or(0)))
+    })
+}
+
+/// Integer pulse density. At constant exposure k of B, exactly k of every B
+/// scheduled opportunities are admitted, each still paying full light and soil.
+pub fn fixes_this_turn(active: u64, budget: u32, turn: u64) -> bool {
+    let budget = u64::from(budget);
+    if budget == 0 { return false; }
+    let phase = turn % budget;
+    let units = active.min(budget);
+    (phase + 1) * units / budget != phase * units / budget
+}
+
 /// The trophic reading `e`'s body makes; none for a body without geometry. A
 /// canopy plate counts only where its cells fix.
 pub fn of(e: &Entity) -> Option<Trophic> {
     let doc = e.body.as_ref()?;
-    let fixes = |id: &PartId| {
-        let part = e.parts.get(id);
-        part.is_some_and(|p| p.cells.get(FIX).copied().unwrap_or(0) > 0)
-    };
-    Some(if canopy_parts(doc).iter().any(fixes) {
+    Some(if fixing_plate(e).is_some() {
         Trophic::Producer
     } else if mouth_part(doc).is_some_and(|id| e.lives(id)) {
         Trophic::Consumer

@@ -78,6 +78,64 @@ pub enum Rule {
     Switch { when: Condition, rules: Vec<Rule> },
     /// Cap the body's segments at `total`, shortening the longest runs first.
     Allocate { total: u16 },
+    /// Allocate a terminal organ's cells once, to one part or several siblings.
+    Partition(Partition),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Partition {
+    pub tagma: u8,
+    pub pieces: u8,
+    pub whole: [i32; 3],
+    pub piece: [i32; 3],
+    /// Axis along the bearer across which the pieces attach.
+    pub axis: usize,
+}
+
+impl Partition {
+    pub(crate) fn validate(&self, facing: Facing) -> Result<()> {
+        if !(2..=16).contains(&self.pieces) || self.axis >= 3 || self.axis == facing.axis().0
+            || self.whole.iter().chain(&self.piece).any(|n| !(1..=64).contains(n))
+        {
+            return Err("partition needs 2 to 16 pieces, positive bounded extents, and a spread axis across its attachment".into());
+        }
+        let whole = crate::anatomy::voxels(self.whole);
+        let divided = u128::from(self.pieces) * crate::anatomy::voxels(self.piece);
+        if whole != divided {
+            return Err(format!("partition must conserve organ volume: the whole has {whole} voxels and the pieces total {divided}"));
+        }
+        Ok(())
+    }
+
+    pub(crate) fn offsets(&self, count: u8, index: u8) -> i32 {
+        let pitch = 2 * self.piece[self.axis] + 1;
+        (i32::from(index) * 2 + 1 - i32::from(count)).saturating_mul(pitch).div_euclid(2)
+    }
+
+    pub(crate) fn admits(&self, organ: &super::Template, bearer: [i32; 3]) -> Result<()> {
+        let n = u32::from(self.pieces);
+        let cells: u64 = organ.cells.values().map(|v| u64::from(*v)).sum();
+        if organ.cells.values().any(|v| v % n != 0)
+            || cells > u64::from(crate::anatomy::capacity(self.whole))
+            || cells / u64::from(n) > u64::from(crate::anatomy::capacity(self.piece))
+        {
+            return Err("partition cannot divide its trait cells equally within the tissue budget".into());
+        }
+        if self.offsets(self.pieces, 0).abs() > bearer[self.axis].abs() + self.piece[self.axis] {
+            return Err("partition needs a wider bearer to attach every piece".into());
+        }
+        Ok(())
+    }
+}
+
+impl Grammar {
+    pub fn partition(&self, run: usize) -> Option<&Partition> {
+        self.rules.iter().find_map(|rule| match rule {
+            Rule::Partition(plan) if usize::from(plan.tagma) == run => Some(plan),
+            _ => None,
+        })
+    }
 }
 
 /// Where a run lays down matter that holds and does nothing (D42). Its kind
@@ -172,11 +230,15 @@ pub fn unfold_on(grammar: &Grammar, on: &[usize]) -> Result<Vec<Tagma>> {
     if t.len() > MOST {
         return Err(format!("a grammar unfolds to more than {MOST} tagmata"));
     }
+    let mut partitions = std::collections::BTreeSet::new();
     for (i, rule) in grammar.rules.iter().enumerate() {
+        if !partitions.is_empty() && !matches!(rule, Rule::Partition(_)) {
+            return Err("partition organs after placing the body plan".into());
+        }
         match rule {
             Rule::Switch { rules, .. } => {
-                if rules.iter().any(|r| matches!(r, Rule::Switch { .. } | Rule::Deposit { .. })) {
-                    return Err("a switch that holds a switch or a deposit".into());
+                if rules.iter().any(|r| matches!(r, Rule::Switch { .. } | Rule::Deposit { .. } | Rule::Partition(_))) {
+                    return Err("a switch that holds a switch, deposit or partition".into());
                 }
                 if on.contains(&i) {
                     for rule in rules {
@@ -184,6 +246,18 @@ pub fn unfold_on(grammar: &Grammar, on: &[usize]) -> Result<Vec<Tagma>> {
                     }
                 }
             },
+            Rule::Partition(plan) => {
+                let tagma = &plan.tagma;
+                let run = t.get(usize::from(*tagma)).ok_or("partition names a missing organ")?;
+                if !partitions.insert(*tagma) || run.parent.is_none() || run.segments != 1
+                    || run.bears.is_some() || !run.chain.is_empty() || run.harden.is_some() || run.slot.is_some()
+                    || t.get(usize::from(*tagma) + 1).is_some_and(|r| r.parent.is_none())
+                    || t.iter().any(|r| r.parent == Some(*tagma))
+                {
+                    return Err("partition needs a single, attached terminal organ".into());
+                }
+                plan.validate(run.facing)?;
+            }
             rule => apply(&mut t, rule)?,
         }
     }
@@ -193,6 +267,7 @@ pub fn unfold_on(grammar: &Grammar, on: &[usize]) -> Result<Vec<Tagma>> {
 /// Applies one rule that is no switch.
 fn apply(t: &mut Vec<Tagma>, rule: &Rule) -> Result<()> {
     match rule {
+        Rule::Partition(_) => return Err("a partition must be a terminal rule of the body plan".into()),
         Rule::Switch { .. } => return Err("a switch that holds a switch".into()),
         Rule::Repeat { tagma, by } => {
             let run = named(t, *tagma)?;

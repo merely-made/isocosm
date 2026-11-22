@@ -222,7 +222,7 @@ impl Simulation {
             lineages: genesis.lineages.clone(),
             locations: BTreeMap::new(),
             polities: BTreeMap::new(),
-            relations: BTreeSet::new(),
+            relations: crate::ecology::pocket::founding_contacts(&genesis),
             notes: Vec::new(),
             roots: BTreeSet::new(),
             released: BTreeMap::new(),

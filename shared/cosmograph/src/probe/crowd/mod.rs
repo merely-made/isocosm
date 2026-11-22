@@ -221,7 +221,7 @@ impl<'w> Crowd<'w> {
             for _ in 0..n {
                 let mut children = vec![];
                 let drawn = |l: &crate::meaning::births::Lineal, s: &mut Stream| {
-                    crate::development::soma(rules, &l.d.recipe, s.below(u64::MAX))
+                    crate::development::lineage_soma(rules, &l.d, s.below(u64::MAX))
                 };
                 match &birth {
                     aggregate::Pending::Hatch {

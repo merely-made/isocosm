@@ -155,4 +155,12 @@ pub enum Query {
         who: Binding,
         class: crate::process::DeadClass,
     },
+    /// The actor has living fixing tissue on a plate exposed in its canopy.
+    FixingCanopy,
+    /// A fixation opportunity scaled by the exposed cells with tissue to work.
+    FixingShare { tissue: Key, budget: u32, period: u64 },
+    /// Two live exchange walls enclose an open seat on this developmental run.
+    Pocket { who: Binding, run: u8 },
+    /// Both endpoints are available for a live, one-resident association.
+    PocketVacant,
 }

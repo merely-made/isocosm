@@ -102,6 +102,8 @@ pub fn development(sim: &Simulation, lineage: &str, since: Tick) -> Option<Devel
     let groups = &sim.state().population.groups;
     let mut moved = had.clone();
     for (i, t) in moved.recipe.tagmata.iter_mut().enumerate() {
+        // The mean of two legal allocations can itself be an illegal allocation.
+        if had.grammar.as_ref().is_some_and(|g| g.partition(i).is_some()) { continue; }
         let held = weighed.iter().map(|(id, &w)| {
             (w, groups[id].entity.soma.get(i).map(|&s| i128::from(s)))
         });

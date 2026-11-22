@@ -10,7 +10,7 @@ impl Simulation {
     pub fn development_body(&self, lineage: &str, seed: u64) -> Result<Body> {
         let d = self.state.lineages.get(lineage)
             .and_then(|l| l.development.as_ref()).ok_or("a lineage with no recipe")?;
-        let soma = development::soma(&self.genesis.rules, &d.recipe, seed);
+        let soma = development::lineage_soma(&self.genesis.rules, d, seed);
         development::develop(&self.genesis.rules, d, &soma)
     }
 
@@ -23,7 +23,7 @@ impl Simulation {
         let d = self.state.lineages.get(&held.lineage)
             .and_then(|l| l.development.as_ref()).ok_or("a lineage with no recipe")?;
         let rules = &self.genesis.rules;
-        let soma = development::soma(rules, &d.recipe, seed);
+        let soma = development::lineage_soma(rules, d, seed);
         let mut next = held.clone();
         next.embody(development::develop(rules, d, &soma)?);
         next.absent = development::recorded(rules, &soma);

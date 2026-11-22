@@ -1,0 +1,69 @@
+# A fungal bearer and a fixing resident on one patch. The empty grazer slot
+# keeps the ordinary three-lineage A1 role assignment and founder IDs.
+seed = 9
+sites = 1
+population = 3
+lineages = 3
+cohort_size = 1
+stock_min = 16
+stock_max = 16
+period_max = 5
+base_unit_micrometres = 1000
+ecology = true
+ecology_rates = "a1"
+inherit = true
+unstocked_lineages = [1]
+
+[bodies]
+variance = [0, 0]
+absence = [12, 12]
+clutch = [1, 1]
+canopy_growth = true
+
+[mutualism]
+period = 3
+nutrient = 4
+fee = 1
+sugar = 3
+credit = 1
+
+[repertoire]
+only = ["part:mycorrhizal-hypha", "part:mycorrhizal-root"]
+
+[body_maps."lineage:2".regions]
+"region:lining" = "part:mycorrhizal-hypha"
+[body_maps."lineage:2".grammar]
+rules = []
+[[body_maps."lineage:2".grammar.seed]]
+segments = 1
+segment = "kind:block"
+[[body_maps."lineage:2".grammar.seed]]
+segments = 1
+segment = "kind:block"
+parent = 0
+facing = "Above"
+bears = "region:lining"
+per_segment = 1
+socket = "Right"
+
+[body_maps."lineage:0".regions]
+"region:exchange" = "part:mycorrhizal-root"
+[body_maps."lineage:0".grammar]
+rules = []
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "kind:block"
+bears = "kind:frond"
+per_segment = 1
+socket = "Above"
+[[body_maps."lineage:0".grammar.seed]]
+segments = 1
+segment = "region:exchange"
+parent = 0
+facing = "Below"
+
+[pocket]
+settle_founders = true
+host = 2
+resident = 0
+run = 1

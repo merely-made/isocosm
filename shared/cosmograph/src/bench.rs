@@ -8,6 +8,16 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+/// Record the bench's ordinary terminal inspection when entering a world.
+pub fn inspect_first_actor(session: &mut Session) -> Result<()> {
+    let actor = session.sim.state().population.groups.iter()
+        .find(|(_, group)| group.entity.method != crate::schema::Method::Inert)
+        .map(|(id, _)| *id)
+        .ok_or("no critter")?;
+    session.command(Command::Inspect(actor))?;
+    Ok(())
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Draws {
     pub version: u32,

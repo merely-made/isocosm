@@ -355,7 +355,9 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             }
             | Query::Part { .. }
             | Query::Wounded { .. }
+            | Query::FixingCanopy | Query::FixingShare { .. }
             | Query::Expresses { .. }
+            | Query::Pocket { .. }
             | Query::Trades { .. }
             | Query::Takes { .. }
             | Query::Routes { .. } => "parts".into(),
@@ -368,6 +370,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             },
             Query::Age { .. } => "born".into(),
             Query::Condition { key, .. } => format!("site-condition:{key}"),
+            Query::PocketVacant => format!("relation:{}", crate::ecology::pocket::CONTACT),
             Query::Related { kind } => format!("relation:{kind}"),
             Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),
             Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } | Query::MembersPerHead { .. } => "members".into(),

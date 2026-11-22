@@ -244,6 +244,15 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             return Err("a count of members requires its native simulation".into()),
         Query::Sensed { .. } =>
             return Err("a sense reading requires its native simulation".into()),
+        Query::FixingShare { tissue, budget, period } => {
+            if *budget == 0 || *period == 0 { return Err("fixing requires a positive budget and cadence".into()); }
+            let (exposed, active) = crate::trophic::fixing_tissue(s.body(Binding::Actor)?, tissue);
+            (crate::trophic::fixes_this_turn(active, *budget, s.tick / period), format!("{active} active of {exposed} exposed fixing cells; full rate at {budget}"))
+        },
+        Query::FixingCanopy => match crate::trophic::fixing_plate(s.body(Binding::Actor)?) {
+            Some(id) => (true, format!("exposed fixing part {}", id.0)),
+            None => (false, "no exposed fixing tissue".into()),
+        },
         Query::EmptyBody => {
             let body = s.body(Binding::Actor)?;
             let empty = |ledger: &Ledger| ledger.iter().all(|(key, n)| *n == 0 || !matter(s.rules, key));
@@ -300,6 +309,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
                 format!("revision {}: {p:?}", b.body_revision),
             )
         },
+        Query::PocketVacant => return Err("pocket vacancy needs the live relation graph".into()),
         Query::Related { kind } => {
             let v = (s.related)(kind)?;
             (v, v.to_string())
@@ -332,6 +342,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = crate::systems::routes(s.body(*who)?, function, *role);
             (v, v.to_string())
         },
+        Query::Pocket { who, run } => {
+            let parts = crate::ecology::pocket::opening(s.body(*who)?, *run);
+            (parts.is_some(), format!("{parts:?}"))
+        }
         Query::Trades { who, what } => {
             let v = crate::ecology::trades(s.body(*who)?, *what);
             (v, v.to_string())

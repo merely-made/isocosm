@@ -45,6 +45,7 @@ pub(super) fn mind(rules: &Rules) -> Result<()> {
                     who: Binding::Actor,
                     ..
                 }
+                | Query::FixingCanopy | Query::FixingShare { .. }
                 | Query::Expresses { .. }
                 | Query::Routes {
                     who: Binding::Actor,

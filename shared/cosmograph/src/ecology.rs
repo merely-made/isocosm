@@ -16,6 +16,7 @@ mod guard;
 mod joint;
 mod limits;
 mod mutualism;
+pub mod pocket;
 mod nutrients;
 mod rot;
 mod spoilage;
@@ -116,6 +117,15 @@ fn sunlight() -> Process {
     sun.period = Some(1);
     sun.priority = -2;
     sun
+}
+
+fn canopy_requirement(founding: &Founding, producer: u32, cadence: u64) -> Option<Query> {
+    let bodies = founding.bodies.as_ref()?;
+    if bodies.fixing_budget > 0 {
+        Some(Query::FixingShare { tissue: format!("matter:{producer}-0"), budget: bodies.fixing_budget, period: cadence })
+    } else {
+        bodies.canopy_growth.then_some(Query::FixingCanopy)
+    }
 }
 
 pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
@@ -333,6 +343,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     at_least: 1,
                 },
             ]);
+            grow.requires.extend(canopy_requirement(founding, i, minutes(2)));
             if sensing {
                 // A plant grows on what it senses (1071): its share of its
                 // site's light and soil, crowded by the plants beside it,
@@ -425,6 +436,17 @@ pub(crate) fn finish(founding: &Founding, g: &mut Genesis) -> Result<()> {
     mutualism::apply(founding, g)?;
     detritus::apply(founding, g)?;
     nutrients::apply(founding, g)?;
+    pocket::apply(founding, g)?;
     crate::repertoire::apply(founding, g)?;
+    // Other ecologies may clone a growth process and retime it during founding.
+    if founding.bodies.as_ref().is_some_and(|b| b.fixing_budget > 0) {
+        for p in g.rules.processes.values_mut() {
+            for q in &mut p.requires {
+                if let Query::FixingShare { period, .. } = q {
+                    *period = p.period.ok_or("cell-scaled growth needs a scheduled process")?;
+                }
+            }
+        }
+    }
     Ok(())
 }

@@ -47,11 +47,15 @@ fn kept(rules: &Rules, d: &crate::rules::Development, parent: &Entity) -> Soma {
     let same_layout = rules.inherited_variation == 0
         || (parent.soma.len() == recipe.tagmata.len()
             && d.grammar.as_ref().is_none_or(|g| g.rules.iter().all(|rule| {
-                matches!(rule, crate::rules::Rule::Repeat { .. } | crate::rules::Rule::Allocate { .. })
+                matches!(rule, crate::rules::Rule::Repeat { .. } | crate::rules::Rule::Allocate { .. } | crate::rules::Rule::Partition(_))
             })));
     let mut segments = Vec::with_capacity(recipe.tagmata.len());
     let mut retained = [false; 256];
     for (i, t) in recipe.tagmata.iter().enumerate() {
+        if let Some(plan) = d.grammar.as_ref().and_then(|g| g.partition(i)) {
+            segments.push(parent.soma.get(i).copied().filter(|n| *n == plan.pieces).unwrap_or(1));
+            continue;
+        }
         let spread = i32::from(t.variance.unwrap_or(recipe.variance));
         let own = i32::from(t.segments);
         let (lo, hi) = ((own - spread).clamp(1, 255), (own + spread).clamp(1, 255));
@@ -107,7 +111,7 @@ fn rebody_with(
     };
     let mut soma = kept(rules, d, child);
     if let Some(seed) = seed {
-        vary(rules, &d.recipe, &mut soma, seed);
+        vary(rules, d, &mut soma, seed);
         child.traits.extend(line.traits.iter().cloned());
     }
     match cache {
@@ -120,11 +124,12 @@ fn rebody_with(
 }
 
 /// Retain the parent's draw, changing one bounded step in each selected region.
-fn vary(rules: &Rules, recipe: &crate::rules::Recipe, soma: &mut Soma, seed: u64) {
+fn vary(rules: &Rules, development: &crate::rules::Development, soma: &mut Soma, seed: u64) {
+    let recipe = &development.recipe;
     let chance = u64::from(rules.inherited_variation);
     for (index, tagma) in recipe.tagmata.iter().enumerate() {
         let spread = i16::from(tagma.variance.unwrap_or(recipe.variance));
-        if spread == 0 {
+        if spread == 0 || development.grammar.as_ref().is_some_and(|g| g.partition(index).is_some()) {
             continue;
         }
         let draw = crate::draw(seed, "region", &[index as u64]);

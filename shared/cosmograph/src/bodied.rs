@@ -4,14 +4,14 @@
 //! Bodies for worlds that ask for them (rulings 511, 512, 525, 531 and 547
 //! to 550). Mesocosm's palette is the default kinds, every cell of a part
 //! seeded to its role's one process; its recipe lottery draws flora as
-//! producers and fauna as consumers, myco and micro waiting for territories
-//! and surfaces; its eight authored bodies are presets; every recipe
+//! producers and fauna as consumers. Authored fungal maps also develop bodies;
+//! unmapped fungi and microbes await territories and surfaces; its eight authored bodies are presets; every recipe
 //! reproduces in one cell of its root; and each lineage's life history is
 //! drawn within what its body allows, all within the founding's bounds.
 
 use crate::{
     Result, anatomy,
-    development::{develop, soma},
+    development::{develop, lineage_soma},
     rules::*,
     schema::*,
     simulation::Genesis,
@@ -20,10 +20,12 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod feeding;
+mod map;
 mod proportions;
 mod rooted;
 mod tips;
 pub use tips::tips;
+pub use map::BodyMap;
 
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
@@ -91,6 +93,13 @@ pub struct Bodies {
     /// name it was founded without, so it reads as `false`.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub sensing: bool,
+    /// Producer growth needs a living, exposed fixing plate. Omitted in
+    /// historical templates, which keep their lineage-based growth.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub canopy_growth: bool,
+    /// Exposed, biomass-backed fixing cells needed for full growth per scheduled act.
+    #[serde(default, skip_serializing_if = "unset")]
+    pub fixing_budget: u32,
     /// Inclusive bounds, in base cells, on the smell radius each animal
     /// lineage draws; a world may widen them.
     #[serde(default, skip_serializing_if = "unset")]
@@ -117,6 +126,8 @@ impl Default for Bodies {
             hazard: [0, 0],
             wound: [0, 0],
             sensing: true,
+            canopy_growth: false,
+            fixing_budget: 0,
             smell: crate::senses::SMELL,
         }
     }
@@ -374,6 +385,10 @@ pub(crate) fn embody_within(
     } else {
         (default_kinds(), roster())
     };
+    let maps = g.founding.as_ref().map(|f| &f.body_maps);
+    if let Some(founding) = g.founding.as_ref().filter(|f| !f.body_maps.is_empty()) {
+        g.rules.repertoire = crate::repertoire::declare(founding, &mut kinds)?;
+    }
     let (mut producers, mut consumers) = (0, 0);
     let mut senses = crate::senses::Senses::default();
     let affinity = g.rules.affinity.clone().unwrap_or_default();
@@ -385,23 +400,26 @@ pub(crate) fn embody_within(
     let source_lineages = g.lineages.clone();
     for (index, (key, lineage)) in g.lineages.iter_mut().enumerate() {
         let index = index as u64;
+        let map = maps.and_then(|maps| maps.get(key));
         let producer = match lineage.kingdom.as_str() {
             "kingdom:flora" => true,
             "kingdom:fauna" if plants.is_none() => false,
+            "kingdom:myco" if plants.is_none() && map.is_some() => false,
             _ => continue,
         };
         bodied.insert(key.clone());
-        if b.sensing && !producer {
+        let animal = lineage.kingdom == "kingdom:fauna";
+        if b.sensing && animal {
             // An animal's smell reaches a radius its lineage draws (1071).
             let [s0, s1] = b.smell;
             senses.smell.insert(key.clone(), s0 + crate::draw(g.seed, "smell", &[index]) % (s1 - s0 + 1));
         }
         let (traits, mut clutch, mut anamorphic) = life(g.seed, index, b);
-        let varied = b.proportions.then(||
+        let varied = (b.proportions && (producer || animal)).then(||
             proportions::drawn(g.seed, index, producer, &traits, &authored)).flatten();
         let mut recipe = match varied {
             Some(recipe) => recipe,
-            None => match b.roster || b.founding.is_some() {
+            None => match (producer || animal) && (b.roster || b.founding.is_some()) {
             false => match &plants {
                 Some(p) => drawn_within(g.seed, index, producer, b, p.span),
                 None => drawn(g.seed, index, producer, b),
@@ -419,6 +437,16 @@ pub(crate) fn embody_within(
             },
             },
         };
+        let mut grammar = None;
+        if let Some(map) = map {
+            if producer && (root_stores || plants.is_some()) {
+                return Err(format!("{key}: the world-time producer requires its native root recipe"));
+            }
+            let mut source = map.resolve(&kinds, g.rules.repertoire.as_ref(), &lineage.kingdom)
+                .map_err(|why| format!("{key}: {why}"))?;
+            recipe = map.recipe(&mut source);
+            grammar = Some(source);
+        }
         if root_stores && producer {
             recipe = rooted::recipe(g.seed, index, &mut kinds)?;
             anamorphic = false;
@@ -428,10 +456,10 @@ pub(crate) fn embody_within(
         if let Some(p) = &plants {
             p.storing(&mut kinds, &mut recipe)?;
         }
-        if !producer {
+        if !producer && map.is_none() {
             proportions::limbs(g.seed, index, b.limb_scale, &mut kinds, &mut recipe)?;
         }
-        if !producer {
+        if animal {
             let seed = if aligned_food {
                 let i = key.trim_start_matches("lineage:").parse::<u32>().map_err(|_| "drawn food lineage has no index")?;
                 Some(feeding::seed(crate::ecology::Role::of(crate::ecology::Web::Diets, i)))
@@ -451,16 +479,21 @@ pub(crate) fn embody_within(
                 }
             }
         }
+        if let Some(source) = &mut grammar {
+            source.seed = std::mem::take(&mut recipe.tagmata);
+            recipe.tagmata = unfold(source).map_err(|why| format!("{key}: {why}"))?;
+            if let Some(why) = crate::validation::tagmata(&recipe.tagmata) {
+                return Err(format!("{key}: body map unfolds to a recipe that {why}"));
+            }
+        }
         lineage.traits.extend(traits.iter().cloned());
         added.insert(key.clone(), traits);
         let domain = (crate::draw(g.seed, "domain", &[index]) % u64::from(affinity.domains)) as u16;
-        let grammar = if g.rules.inherited_variation != 0 {
-            let grammar = crate::inherit::grammar(&recipe);
-            recipe.tagmata = crate::rules::unfold(&grammar)?;
-            Some(grammar)
-        } else {
-            None
-        };
+        if grammar.is_none() && g.rules.inherited_variation != 0 {
+            let generated = crate::inherit::grammar(&recipe);
+            recipe.tagmata = crate::rules::unfold(&generated)?;
+            grammar = Some(generated);
+        }
         lineage.development = Some(Development {
             lexicon: recipe.kinds(),
             recipe,
@@ -482,6 +515,13 @@ pub(crate) fn embody_within(
         g.rules
             .accounts
             .insert(format!("provision:{name}"), provision);
+    }
+    if let Some(maps) = maps {
+        for key in maps.keys() {
+            if !bodied.contains(key) || !g.population.groups.values().any(|g| g.entity.lineage == *key) {
+                return Err(format!("{key}: body map needs a lineage with bodied founders"));
+            }
+        }
     }
     // A lineage without a body has no cells to wound. A world that wounds
     // also rests.
@@ -513,9 +553,9 @@ pub(crate) fn embody_within(
             continue;
         };
         e.traits.extend(added[&e.lineage].iter().cloned());
-        let drawn = soma(
+        let drawn = lineage_soma(
             &rules,
-            &d.recipe,
+            d,
             crate::draw(seed, "founder-soma", &[*first]),
         );
         if rules.inherited_variation == 0 {
@@ -523,7 +563,9 @@ pub(crate) fn embody_within(
         } else {
             bodies.embody(&rules, (line.revision, d), &drawn, e)?;
         }
-        e.absent = crate::development::recorded(&rules, &drawn);
+        let mapped = maps.is_some_and(|maps| maps.contains_key(&e.lineage));
+        // Generic births need the same draw to regrow the parent's optional organs.
+        e.absent = if mapped { drawn.absent } else { crate::development::recorded(&rules, &drawn) };
         e.soma = drawn.segments;
         let own: Vec<Key> = e
             .accounts
@@ -533,7 +575,11 @@ pub(crate) fn embody_within(
             .collect();
         for k in own {
             let held = e.accounts.remove(&k).unwrap_or(0);
-            let give = held.min(anatomy::room(e, &rules, &k));
+            let room = anatomy::room(e, &rules, &k);
+            if mapped && held > room {
+                return Err(format!("{}: body map founder {first} cannot hold its {held} of {k} (room {room})", e.lineage));
+            }
+            let give = held.min(room);
             if give > 0 {
                 if anatomy::root_store::allocation(e, &rules, &k).is_some() {
                     anatomy::root_store::initialize(e, &rules, &k, give).ok_or("no rooted allocation")??;

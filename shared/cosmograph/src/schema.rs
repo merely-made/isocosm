@@ -122,7 +122,7 @@ pub struct Entity {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub soma: Vec<u8>,
     /// The segments, by tagma and index, whose borne kind it drew absent
-    /// (case 1208); kept only where the world's drift reads them.
+    /// (case 1208); kept for drift and to pass on a mapped founder's variation.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub absent: Vec<(u8, u8)>,
     /// The systems it carries (rulings 568, 574 and 583), the world's

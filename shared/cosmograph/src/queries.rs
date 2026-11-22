@@ -89,6 +89,15 @@ impl Simulation {
             let reading = format!("{query:?} = {food}/{heads}");
             return if yes { Ok(reading) } else { Err(format!("missing requirement: {reading}")) };
         }
+        if matches!(query, Query::PocketVacant) {
+            let resident = target.ok_or("pocket settlement requires a resident")?;
+            let occupied = self.state.relations.iter().any(|link|
+                link.kind == crate::ecology::pocket::CONTACT &&
+                ((link.subject == actor && self.body_at_start(link.object).is_some_and(|e| e.alive)) ||
+                 (link.object == resident && self.body_at_start(link.subject).is_some_and(|e| e.alive))));
+            return if occupied { Err("a founder is already in a living pocket association".into()) }
+                else { Ok("host and resident available".into()) };
+        }
         if let Query::EdiblePerHead { feed, at_least, per_members } = query {
             return self.edible_per_head(actor, place, feed, *at_least, *per_members);
         }

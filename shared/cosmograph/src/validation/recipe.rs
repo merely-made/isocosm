@@ -58,7 +58,7 @@ pub(super) fn kinds(rules: &Rules) -> Result<()> {
 
 /// Why `tagmata` cannot develop, if they cannot (the checks of a recipe's
 /// tagmata, which a grammar's seed and unfolding meet too).
-fn tagmata(tagmata: &[Tagma]) -> Option<&'static str> {
+pub(crate) fn tagmata(tagmata: &[Tagma]) -> Option<&'static str> {
     for (i, t) in tagmata.iter().enumerate() {
         if t.segments == 0 {
             return Some("has a tagma of no segments");
@@ -165,6 +165,17 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
                 stages.push(stage);
             }
             for tagmata in stages {
+                for (i, run) in tagmata.iter().enumerate() {
+                    if let Some(plan) = grammar.partition(i) {
+                        if recipe.tagmata.get(i) != Some(run) {
+                            return refuse("changes a partitioned organ outside its growth rule");
+                        }
+                        let parent = &tagmata[usize::from(run.parent.ok_or("partition needs a parent")?)];
+                        let organ = rules.kinds.get(&run.segment).ok_or("partition names an unknown organ")?;
+                        let bearer = rules.kinds.get(&parent.segment).ok_or("partition names an unknown bearer")?;
+                        plan.admits(organ, bearer.half_extent)?;
+                    }
+                }
                 let named = Recipe { tagmata, ..recipe.clone() }.kinds();
                 if let Some(k) = named.iter().find(|k| !d.lexicon.contains(*k)) {
                     return Err(format!("{id}'s grammar names {k}, which its lexicon lacks"));

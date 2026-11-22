@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use cosmograph::{Execution, Founding, Session, history::Command};
+use cosmograph::{Execution, Founding, Session};
 
 fn main() {
     if let Err(why) = run() {
@@ -23,11 +23,13 @@ fn run() -> Result<(), String> {
     let mut map_draws = None;
     let mut lift_draws = None;
     let mut lift_digest = None;
+    let mut expected_state = None;
     let mut output = None;
     let mut trace = None;
     let mut trace_entries = None;
     let mut load = None;
     let mut world = None;
+    let mut founding_file = None;
     let mut mode = Execution::Grouped;
     while let Some(arg) = args.next() {
         if arg == "--individuals" {
@@ -40,7 +42,7 @@ fn run() -> Result<(), String> {
         }
         if arg == "--help" {
             println!(
-                "cosmograph-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--trace FILE] [--trace-entries FILE] [--individuals]"
+                "cosmograph-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--founding TOML | --load SAVE | --world GENESIS] [--expect-state HEX] [--output FILE] [--trace FILE] [--trace-entries FILE] [--individuals]"
             );
             return Ok(());
         }
@@ -65,13 +67,22 @@ fn run() -> Result<(), String> {
             "--map-draws" => map_draws = Some(number()?),
             "--lift-draws" => lift_draws = Some(number()?),
             "--lift-digest" => lift_digest = Some(number()?),
+            "--expect-state" => expected_state = Some(u64::from_str_radix(&value, 16)
+                .map_err(|_| "invalid hexadecimal state hash")?),
             "--output" => output = Some(value),
             "--trace" => trace = Some(value),
             "--trace-entries" => trace_entries = Some(value),
             "--load" => load = Some(value),
             "--world" => world = Some(value),
+            "--founding" => founding_file = Some(value),
             _ => return Err(format!("unknown argument {arg}")),
         }
+    }
+    if [&founding_file, &load, &world].into_iter().filter(|source| source.is_some()).count() > 1 {
+        return Err("supply one of --founding, --load, or --world".into());
+    }
+    if expected_state.is_some() && [draws, map_draws, lift_draws, lift_digest].iter().any(Option::is_some) {
+        return Err("--expect-state applies to one world".into());
     }
     if let Some(sites) = lift_digest {
         println!("{}", cosmograph::bench::lift_digest(founding.seed, sites)?);
@@ -104,6 +115,10 @@ fn run() -> Result<(), String> {
             let bytes=std::fs::read(path).map_err(|e|e.to_string())?;
             let genesis=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
             Session::new(genesis,mode)?
+        } else if let Some(path) = founding_file {
+            let input = std::fs::read_to_string(&path).map_err(|e| format!("{path}: {e}"))?;
+            let founding: Founding = toml::from_str(&input).map_err(|e| format!("{path}: {e}"))?;
+            Session::new(founding.generate()?, mode)?
         } else { Session::new(founding.generate()?,mode)? };
         // `<tick> <witness>` lines (ruling 610) and per-entity entries,
         // framed (653), for every advanced tick.
@@ -130,10 +145,13 @@ fn run() -> Result<(), String> {
         } else {
             session.advance(ticks)?
         };
-        // Observation is an explicit log entry, never a side effect of drawing UI.
-        let actor = session.sim.state().population.groups.iter()
-            .find(|(_,g)|g.entity.method != cosmograph::schema::Method::Inert).map(|(id,_)|*id).ok_or("no critter")?;
-        session.command(Command::Inspect(actor))?;
+        cosmograph::bench::inspect_first_actor(&mut session)?;
+        if let Some(expected) = expected_state {
+            let actual = session.sim.state_hash();
+            if actual != expected {
+                return Err(format!("preview state mismatch at tick {ticks}: expected {expected:016x}, got {actual:016x}"));
+            }
+        }
         eprintln!("seed {} · tick {} · {} entities · {} groups · {} evaluations for {} represented acts · {}",
             session.sim.genesis().seed, session.sim.state().tick, session.sim.state().population.count(),
             session.sim.state().population.groups.len(),work.evaluations,work.represented,format!("{:016x}",session.sim.state_hash()));

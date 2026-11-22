@@ -147,7 +147,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
         || p.commitments.iter().chain(&p.effects).any(|e| scattered(e) || e.branches().any(scattered))
         || p.requires.iter().any(|q| {
             let reads = match q {
-                Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
+                Query::PocketVacant | Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. }
                 | Query::MembersPerHead { .. }
                 | Query::FoodPerHead { .. }
                 | Query::EdiblePerHead { .. }
@@ -161,7 +161,8 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Part { who, .. }
                 | Query::Holds { who, .. }
                 | Query::Wounded { who, .. }
-                | Query::Trades { who, .. }
+                | Query::Pocket { who, .. }
+        | Query::Trades { who, .. }
         | Query::Takes { who, .. }
                 | Query::Routes { who, .. } => target(who),
                 Query::Age { .. }
@@ -169,7 +170,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Mood { .. }
                 | Query::MoodBelow { .. }
                 | Query::Expresses { .. } => false,
-                Query::EmptyBody => false,
+                Query::EmptyBody | Query::FixingCanopy | Query::FixingShare { .. } => false,
                 Query::Computed(x) => x.reads().iter().any(|u| target(&u.body())),
             };
             reads && !meal
@@ -179,7 +180,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
 /// Whether a query reads a target, which a hunt decides for its prey.
 pub(super) fn binds_target(q: &Query) -> bool {
     match q {
-        Query::Related { .. } => true,
+        Query::PocketVacant | Query::Related { .. } => true,
         Query::Alive(who) => *who == Binding::Target,
         Query::Trait { who, .. }
         | Query::Account { who, .. }
@@ -187,6 +188,7 @@ pub(super) fn binds_target(q: &Query) -> bool {
         | Query::Part { who, .. }
         | Query::Holds { who, .. }
         | Query::Wounded { who, .. }
+        | Query::Pocket { who, .. }
         | Query::Trades { who, .. }
         | Query::Takes { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
