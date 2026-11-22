@@ -107,7 +107,15 @@ async function open() {
     query.has('site') && Number.isSafeInteger(initialSite) && terrain.sites[initialSite]
       ? initialSite
       : f.fieldSite
-  map.soilLayer = !!f.sites[site].soil && query.get('layer') !== 'surface'
+  const initialOrganism = Number(query.get('organism'))
+  if (query.has('organism') && Number.isSafeInteger(initialOrganism) &&
+      findResident(f.sites[site].residents, initialOrganism)) {
+    selected = initialOrganism
+  }
+  const selectedColony = f.sites[site].soil?.colonies.some((c) => c.id === selected)
+  map.soilLayer = !!f.sites[site].soil && (query.has('layer')
+    ? query.get('layer') !== 'surface'
+    : selected == null || selectedColony)
   const name = (id) => {
     const s = terrain.sites[id],
       d = s.neighbors.map(([i]) => terrain.sites[i].elevation - s.elevation)
@@ -229,6 +237,13 @@ async function open() {
     $('planet').textContent =
       'Planet ' + terrain.seed + ' · ' + measure(terrain.side, terrain.unitMicrometres) + ' site' +
       (bed ? (f.branch.includes('-near-') ? ' · Near litter' : ' · Offset litter') : '')
+    if (f.calendar && local.temperature != null) {
+      const year = f.calendar.yearTicks
+      const quarter = Math.floor((f.tick % year) * 4 / year)
+      const season = ['Spring', 'Summer', 'Autumn', 'Winter'][(quarter + (local.latitude < 0 ? 2 : 0)) % 4]
+      $('planet').textContent += ' · ' + season + ', year ' + (1 + Math.floor(f.tick / year)) +
+        ' · ' + local.temperature + '°'
+    }
     $('place').textContent = name(site)
     $('sites').value = String(site)
     for (const option of $('sites').options) {
@@ -256,7 +271,7 @@ async function open() {
           shape = f.bodies[row.body]
         const btn = node('button'),
           thumb = node('canvas'),
-          label = node('span', kind + ' #' + id)
+          label = node('span', kind + ' #' + id + (row.dormant ? ' · Dormant seed' : ''))
         btn.setAttribute('aria-pressed', String(selected === id))
         thumb.setAttribute('aria-hidden', 'true')
         specimen(thumb, shape, sharedSpan, color)
@@ -318,7 +333,7 @@ async function open() {
         'ecology:root-exchange': 'Root exchange',
         'ecology:recover-phosphate': 'Litter uptake',
         'ecology:root-production': 'Plant production',
-      })[x.process] || x.process.slice(8).replace(/-\d+$/, '')
+      })[x.process] || (x.process.startsWith('climate:strain-') ? 'Temperature cost' : x.process.slice(8).replace(/-\d+$/, ''))
       event.append(
         node(
           'small',
@@ -559,6 +574,11 @@ async function open() {
   new ResizeObserver(draw).observe(canvas)
   refresh()
   focus()
+  if (selected != null) {
+    const roster = $('roster')
+    const row = roster.querySelector('[aria-pressed=true]')
+    if (row) roster.scrollTop += row.getBoundingClientRect().top - roster.getBoundingClientRect().top
+  }
   draw()
 }
 open().catch((err) => {

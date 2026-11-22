@@ -12,11 +12,14 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
     let state = sim.state();
     let mut sites: Vec<_> = state
         .sites
-        .values()
-        .map(|s| {
-            json!({
-                "residents":[], "flows":[], "accounts":s.accounts
-            })
+        .iter()
+        .map(|(&id, s)| {
+            let mut site = json!({"residents":[], "flows":[], "accounts":s.accounts});
+            if let Some(temperature) = sim.temperature(id) {
+                site["temperature"] = json!(temperature);
+                site["latitude"] = json!(s.conditions.get(cosmograph::light::LATITUDE));
+            }
+            site
         })
         .collect();
     let mut bodies = Vec::new();
@@ -45,16 +48,26 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
             bodies.len() - 1
         });
         let tissue = cosmograph::anatomy::held(e, &sim.genesis().rules, &key);
-        sites[at as usize]["residents"].as_array_mut().unwrap().push(json!({
+        let mut resident = json!({
             "first":first,"count":group.count,"kingdom":e.kingdom,"lineage":e.lineage,"body":index,"tissue":tissue
-        }));
+        });
+        if sim.genesis().rules.dormant(e) {
+            resident["dormant"] = json!(true);
+        }
+        sites[at as usize]["residents"]
+            .as_array_mut()
+            .unwrap()
+            .push(resident);
     }
     let mut totals = BTreeMap::new();
     for flow in flows {
         let MadeBy::Process(process) = &flow.made_by else {
             continue;
         };
-        if !process.starts_with("ecology:") || flow.internal() || flow.amount == 0 {
+        if !(process.starts_with("ecology:") || process.starts_with("climate:strain-"))
+            || flow.internal()
+            || flow.amount == 0
+        {
             continue;
         }
         let site_of = |holder| match holder {
@@ -70,7 +83,9 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
             let place = |id| {
                 let body = state.population.get(id)?;
                 body.resident_site().or_else(|| {
-                    body.journey.filter(|trip| trip.departed == flow.tick).map(|trip| trip.from)
+                    body.journey
+                        .filter(|trip| trip.departed == flow.tick)
+                        .map(|trip| trip.from)
                 })
             };
             let at = site_endpoint.or_else(|| {
@@ -92,10 +107,13 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
                 "process":process,"from":from,"to":to,"debit":debit,"credit":credit,"amount":amount
             }));
     }
-    Ok(
-        json!({"fieldSite":site,"tick":state.tick,"hash":format!("{:016x}",sim.state_hash()),
-        "branch":branch.session.branch,"sites":sites,"bodies":bodies}),
-    )
+    let mut frame = json!({"fieldSite":site,"tick":state.tick,"hash":format!("{:016x}",sim.state_hash()),
+        "branch":branch.session.branch,"sites":sites,"bodies":bodies});
+    if let Some(unit) = sim.genesis().rules.tick_microseconds {
+        frame["calendar"] =
+            json!({"tickMicroseconds":unit, "yearTicks":cosmograph::rules::year_ticks(unit)});
+    }
+    Ok(frame)
 }
 
 pub(super) fn found(parent: &Path, site: u64, dir: &Path, litter: Option<bool>) -> Result<()> {

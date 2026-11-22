@@ -55,3 +55,24 @@ python3 mesocosm/tools/planet/serve.py "$GROUND_SAVE" "$PLANET_GROUND" --field "
 ```
 
 Open `/field?site=1&tick=0` and press **Play**. **Shallow soil** shows the litter, plant collars and living fungal parts from overhead. The vertical section cuts through the selected colony at the same spatial scale. The reading distinguishes phosphate held by the fungus, available to the plant and incorporated by the plant. **Surface** returns to grazing at the same tick. The far branch shifts the same deposit 40 mm sideways. New growth follows the body's inherited directions.
+
+## Follow a plant family over a year
+
+The seed 9 planet runs at one minute per tick. To keep the original branches and try a seasonal comparison, create a new parent in an empty directory. Its 52 weekly rounds span a model year. The two soil branches below inherit the same bodies, stores and terrain from this parent. Their litter is 40 mm apart.
+
+```sh
+mkdir -p "$YEAR_SAVE"
+"$PLANET_GROUND" seasonal "$PLANET_SAVE/founding.json" "$YEAR_SAVE/parent.json"
+"$PLANET_GROUND" soil "$YEAR_SAVE/parent.json" 1 near "$YEAR_SAVE/near"
+"$PLANET_GROUND" soil "$YEAR_SAVE/parent.json" 1 far "$YEAR_SAVE/far"
+for distance in near far; do
+  python3 mesocosm/tools/planet/recruitment.py "$PLANET_GROUND" "$YEAR_SAVE/$distance" \
+    --ancestor 174 --site 1 --through 52 > "$YEAR_SAVE/$distance.json"
+done
+```
+
+A1 organisms keep their feeding, growth, birth and aging schedules in rounds. Each new producer starts as a dormant seed with eight units of provision. After each 13 weeks of its own seed life it has a one-in-four chance to wake if its site is habitable and has room. The planet's latitude and orbital phase also drive temperature. Bodies outside their comfort band spend tissue. Weather variation, drought and shade costs are disabled for this comparison. Weekly rounds leave the surface walk at its existing per-round stride budget. The trial measures seasonal recruitment with stored site energy and does not integrate a week of daylight or travel within each round.
+
+The field clock shows the season in the visited hemisphere. The roster labels dormant seeds. To inspect a recorded birth or bite, open `/field?site=141&tick=23&organism=702` on the relevant branch. The selected body filters the transfer list.
+
+Omit `--through` to measure an existing field database at its saved head. The report reopens the native save, checks the recorded state hash, walks parent–child relations, and matches children to birth provisions. A daughter counts as established once observed alive and awake at least one reproductive interval after birth. A daughter survives a recorded bite when she is observed alive at a later tick. Both measures accompany her actual offspring and final state, including travel between sites.

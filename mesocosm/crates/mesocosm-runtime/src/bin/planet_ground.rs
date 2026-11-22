@@ -10,6 +10,8 @@ mod field;
 mod observation;
 #[path = "planet_ground/soil.rs"]
 mod soil;
+#[path = "planet_ground/recruitment.rs"]
+mod recruitment;
 use cosmograph::{
     Command, Execution, Session,
     attention::{Region, Target, WindowAttention},
@@ -384,6 +386,9 @@ impl Branch {
 fn main() -> Result<()> {
     let args: Vec<_> = env::args().skip(1).collect();
     match args.as_slice() {
+        [mode, parent, save] if mode == "seasonal" => {
+            recruitment::seasonal_parent(Path::new(parent), Path::new(save))?;
+        },
         [mode, parent, site, dir] if mode == "field" => {
             field::found(Path::new(parent), site.parse()?, Path::new(dir), None)?
         },
@@ -450,6 +455,9 @@ fn main() -> Result<()> {
             for line in io::stdin().lock().lines() {
                 let f = match line?.as_str() {
                     "now" => b.frame(&[])?,
+                    cmd if cmd.starts_with("family ") => {
+                        recruitment::family(&b.session, cmd[7..].parse()?)?
+                    },
                     "next" => b.next()?,
                     visit if b.field_site.is_some() && visit.starts_with("visit ") => {
                         let site = visit[6..].parse()?;
@@ -458,7 +466,7 @@ fn main() -> Result<()> {
                         let frame = b.next()?;
                         json!({"frame":frame,"save":b.save()})
                     },
-                    _ => return Err("expected next or now".into()),
+                    _ => return Err("expected next, now, family ID or visit SITE".into()),
                 };
                 serde_json::to_writer(&mut out, &f)?;
                 writeln!(out)?;
@@ -467,7 +475,7 @@ fn main() -> Result<()> {
         },
         _ => {
             return Err(
-                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | soil PARENT SITE near|far DIRECTORY | watch SAVE".into(),
+                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | soil PARENT SITE near|far DIRECTORY | seasonal PARENT NEW_SAVE | watch SAVE".into(),
             );
         },
     };
