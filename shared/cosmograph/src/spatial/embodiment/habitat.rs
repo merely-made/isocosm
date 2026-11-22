@@ -33,7 +33,17 @@ pub fn declare_site(g: &mut Genesis) -> Result<()> {
     if g.rules.spatial_templates.as_ref().is_some_and(|t| t.version >= 2) { return Ok(()); }
     // The same declaration owns processes, diets, birth profiles and defaults.
     // Install full-site stands in that declaration rather than a second engine.
-    founding::declare_in(g, true)
+    founding::declare_in(g, true, None)
+}
+
+/// Found full-site physical rules with only the examined site initially realized.
+/// Other sites acquire residents through normal arrivals and attention draws.
+pub fn declare_site_at(g: &mut Genesis, site: Id) -> Result<()> {
+    if !g.sites.contains_key(&site) { return Err("examined site absent".into()); }
+    if g.rules.spatial_templates.as_ref().is_some_and(|t| t.version >= 2) {
+        return Err("physical founding already declared".into());
+    }
+    founding::declare_in(g, true, Some(site))
 }
 
 /// One placement policy for founding and actual arrivals, using native diets.
@@ -178,7 +188,7 @@ pub fn settle(sim: &Simulation, t: &Templates, id: Id, site: Id, pose: &Pose,
         .find(doc, pose.at, pose.yaw, SEARCH_REACH, SEARCH_STRIDE, SEARCH_CANDIDATES, &blocked)
 }
 
-pub(super) fn stands(g: &Genesis, t: &Templates) -> Result<BTreeMap<Id, Vec<Stand>>> {
+pub(super) fn stands(g: &Genesis, t: &Templates, initial_site: Option<Id>) -> Result<BTreeMap<Id, Vec<Stand>>> {
     let mut source = g.clone();
     let mut declaration = t.clone();
     declaration.crossings.clear();
@@ -187,6 +197,7 @@ pub(super) fn stands(g: &Genesis, t: &Templates) -> Result<BTreeMap<Id, Vec<Stan
     let guide = Simulation::new(source, crate::Execution::Grouped)?;
     let mut out = BTreeMap::new();
     for &site in g.sites.keys() {
+        if initial_site.is_some_and(|focus| focus != site) { out.insert(site, Vec::new()); continue; }
         let mut placed = BTreeMap::new();
         let mut ids: Vec<_> = g.population.groups.iter().flat_map(|(&first, group)|
             (first..first+group.count).filter_map(move |id| {

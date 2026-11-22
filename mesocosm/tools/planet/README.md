@@ -12,3 +12,16 @@ python3 mesocosm/tools/planet/serve.py "$PLANET_SAVE" "$PLANET_ATLAS"
 Open the printed loopback address. The map stores six connected square faces. Relief samples, neighbors, body geometry, feeding and tissue all come from the native session. The valley list selects occupied sites with higher ground on two opposing sides. Positions in this founding resolve to a site or a journey. Individual view magnifies the body, with stored tissue tinting the parts.
 
 The founding command writes the native founding save, terrain, 25 observed frames and a tick-24 resume save. The server verifies the resumed state against the preview and advances the same simulation on demand. Later frames stay available for scrubbing during that server run. Restarting serves the founding preview again.
+
+## Watch a spatial branch
+
+Build the Mesocosm workspace binary with `build --release --locked -p mesocosm-runtime --bin planet_ground`. For the seed 9 atlas, start from the saved founding and open a second viewer:
+
+```sh
+"$PLANET_GROUND" branch "$PLANET_SAVE/founding.json" 462 "$GROUND_SAVE" 24
+python3 mesocosm/tools/planet/serve.py "$GROUND_SAVE" "$PLANET_GROUND"
+```
+
+Use a new directory for `GROUND_SAVE`. The branch inherits the planet and founding organisms. It opens paused with a native observation window over the chosen resident's site. Play follows its accepted walking stances on the terrain. The inspector records food actually transferred and identifies its source. Select Globe to see those same stances plotted at planet scale and magnified in the route inset. Scrub or return to Critter to inspect the same moment. When the followed body chooses to migrate, its observed departure can include supported strides toward the chosen border. The native session admits its last stance before resolving the biological round. The globe retains the walked part. The rest of a site-scale crossing has no ground trail. Walking playback spreads short approaches over the viewing interval so you can see the steps. A link can open any preview tick with `?tick=6`, or the corresponding globe with `?tick=6&view=globe`.
+
+The branch saves the native session and Mesocosm spatial state together. Serve the same directory again to replay the recorded preview and continue from its checkpoint.

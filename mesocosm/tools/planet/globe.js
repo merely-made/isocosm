@@ -188,7 +188,7 @@ export class PlanetView {
     this.ctx.fillRect(0, 0, this.w, this.h)
   }
 
-  orbit(marker, label, sites, trail) {
+  orbit(marker, label, sites, trail, groundTrack) {
     const { ctx, cx, cy, radius: r } = this
     const [right, up, front] = this.basis()
     // Cache the terrain layer while the observer or the clock changes.
@@ -276,6 +276,22 @@ export class PlanetView {
         b = this.vector(trail[i])
       arc((t) => unit(a.map((v, j) => v + (b[j] - v) * t)))
     }
+    if (groundTrack) {
+      // Physical positions have a site and an x/z coordinate inside its oriented face.
+      // A missing segment (including an unposed border journey) leaves a gap.
+      for (const { site, points } of groundTrack.tracks) {
+        ctx.beginPath()
+        let visible = false
+        for (const [x, , z] of points) {
+          const [px, py, depth] = project(
+            this.vector(site, x / this.terrain.side, z / this.terrain.side),
+          )
+          if (depth > 0) visible ? ctx.lineTo(px, py) : ctx.moveTo(px, py)
+          visible = depth > 0
+        }
+        ctx.stroke()
+      }
+    }
     for (const site of sites) {
       const [x, y, z] = project(this.vector(site))
       if (z > 0.06) {
@@ -339,7 +355,7 @@ export class PlanetView {
     return region
   }
 
-  relief(site, local = false) {
+  relief(site, local = false, groundTrack = null) {
     const { samples: k, water, sites, side } = this.terrain
     const ctx = this.ctx,
       tiles = local ? [{ id: site, x: 0, y: 0, turn: 0 }] : this.region(site)
@@ -404,6 +420,26 @@ export class PlanetView {
       }
       if (tile.id === site) {
         center = pt(k / 2, k / 2)
+        const localPoint = ([x, , z]) => {
+          const u = (x * k) / side,
+            v = (z * k) / side
+          const ix = clamp(Math.floor(u), 0, k - 1),
+            iz = clamp(Math.floor(v), 0, k - 1)
+          const low = h(ix, iz) * (1 - u + ix) + h(ix + 1, iz) * (u - ix)
+          const high = h(ix, iz + 1) * (1 - u + ix) + h(ix + 1, iz + 1) * (u - ix)
+          return p(u, v, Math.max(water, low * (1 - v + iz) + high * (v - iz)))
+        }
+        for (const segment of groundTrack?.tracks || []) {
+          if (segment.site !== site) continue
+          ctx.beginPath()
+          segment.points.forEach((at, i) =>
+            i ? ctx.lineTo(...localPoint(at)) : ctx.moveTo(...localPoint(at)),
+          )
+          ctx.strokeStyle = gold
+          ctx.lineWidth = 2
+          ctx.stroke()
+        }
+        if (groundTrack?.resident?.site === site) center = localPoint(groundTrack.resident.pose.at)
         border = []
         for (let i = 0; i < k; i += 2) border.push(pt(i, 0))
         for (let i = 0; i < k; i += 2) border.push(pt(k, i))
@@ -479,12 +515,12 @@ export class PlanetView {
     }
   }
 
-  draw({ level, site, marker, label, sites, body, animal, trail }) {
+  draw({ level, site, marker, label, sites, body, animal, trail, groundTrack }) {
     this.size()
     this.backdrop()
-    if (level === 'orbit') this.orbit(marker, label, sites, trail)
+    if (level === 'orbit') this.orbit(marker, label, sites, trail, groundTrack)
     if (level === 'valley') {
-      const [x, y] = this.relief(site)
+      const [x, y] = this.relief(site, false, groundTrack)
       this.pin(x, y, label)
     }
     if (level === 'animal') {

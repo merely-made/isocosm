@@ -43,7 +43,7 @@ mod founding;
 mod habitat;
 use contacts::sweep_clear_in;
 pub use contacts::{Contact, contacts, sweep_clear};
-pub use habitat::{ENTERING, arrive_near, declare_site, draw_within, place_entering, place_in_site, place_within, settle, site_window, whole_site};
+pub use habitat::{ENTERING, arrive_near, declare_site, declare_site_at, draw_within, place_entering, place_in_site, place_within, settle, site_window, whole_site};
 #[cfg(test)]
 pub(super) mod articulation_tests;
 #[cfg(test)]

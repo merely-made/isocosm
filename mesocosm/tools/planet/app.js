@@ -13,6 +13,10 @@ async function read(url) {
 
 async function openPlanet() {
   const [terrain, frames] = await Promise.all([read('terrain.json'), read('frames.json')])
+  const ground = frames[0].branch ? await import('./ground.js') : null
+  let fraction = 0,
+    animation = 0,
+    lastPaint = 0
   document.title = 'Planet ' + terrain.seed + ' · Mesocosm'
   document.querySelector('a[download]').download = 'planet-' + terrain.seed + '-founding.json'
   const canvas = $('scene'),
@@ -49,8 +53,20 @@ async function openPlanet() {
       .slice(0, 4)
   }
   site = valleys()[0] ?? frame().animals.find((a) => a.site != null)?.site ?? 0
+  if (ground) {
+    watched = frames[0].observer
+    site = anchored(find(frames[0], watched)) ?? site
+    const params = new URLSearchParams(location.search)
+    const requested = Number(params.get('tick'))
+    if (Number.isInteger(requested) && requested >= 0 && requested < frames.length) tick = requested
+    level = params.get('view') === 'globe' ? 'orbit' : 'animal'
+    document.querySelector('.series').textContent = 'Mesocosm · Spatial branch'
+  }
+  const currentTrack = () =>
+    ground && watched !== null ? ground.readTrack(frames, tick, watched, fraction, true) : null
   view.center(view.vector(site))
   view.rotate(0.35, 0.16)
+  if (ground && level === 'orbit') view.center(marker())
 
   function watchState() {
     if (watched === null) return {}
@@ -72,30 +88,63 @@ async function openPlanet() {
     return mid.map((x) => x / Math.hypot(...mid))
   }
   function marker() {
+    const r = currentTrack()?.resident
+    if (r) return view.vector(r.site, r.pose.at[0] / terrain.side, r.pose.at[2] / terrain.side)
     const { last, lastTick } = watchState()
+    if (ground && last?.journey?.departed === tick) {
+      const exit = frame().walks?.find((w) => w.id === watched && w.exit === last.journey.to)
+      if (exit) {
+        const [x, , z] = exit.path.at(-1).at
+        return view.vector(exit.site, x / terrain.side, z / terrain.side)
+      }
+    }
     return last ? markerFor(last, lastTick) : view.vector(site)
   }
   function paint() {
     pending = false
     const { a, last } = watchState()
-    const label = watched === null ? name(site) : (a ? '' : 'Last seen · ') + critter(watched)
+    const groundTrack = currentTrack()
+    const label =
+      watched === null
+        ? name(site)
+        : groundTrack && !groundTrack.resident && a?.journey
+          ? name(a.journey.from) + ' → ' + name(a.journey.to)
+          : (a ? '' : 'Last seen · ') + critter(watched)
     const trail = []
-    if (level === 'orbit' && watched !== null) {
+    if (!ground && level === 'orbit' && watched !== null) {
       for (let i = Math.max(0, tick - 24); i <= tick; i++) {
         const at = anchored(find(frames[i], watched))
         if (at != null && at !== trail.at(-1)) trail.push(at)
       }
     }
-    view.draw({
-      level,
-      site,
-      label,
-      trail,
-      animal: a,
-      marker: !last && watched !== null ? null : marker(),
-      sites: level === 'orbit' ? valleys() : [],
-      body: a ? frame().bodies[a.body] : null,
-    })
+    const crossing = level === 'animal' && groundTrack && !groundTrack.resident && a?.journey
+    if (crossing) view.center(marker())
+    if (level === 'animal' && groundTrack?.resident) {
+      view.size()
+      view.backdrop()
+      ground.drawGround(view, frame(), groundTrack, a)
+      const pos = $('ground-position')
+      if (pos)
+        pos.textContent =
+          'Ground position · ' +
+          groundTrack.resident.pose.at.map((n) => Number(n.toFixed(1))).join(', ')
+      if (fraction > 0 && groundTrack.exit != null)
+        $('gesture').textContent = 'Walking toward ' + name(groundTrack.exit)
+      else if (fraction > 0 && groundTrack.target != null)
+        $('gesture').textContent = 'Walking toward #' + groundTrack.target
+    } else
+      view.draw({
+        level: crossing ? 'orbit' : level,
+        site,
+        label,
+        trail,
+        groundTrack,
+        animal: a,
+        marker: !last && watched !== null ? null : marker(),
+        sites: level === 'orbit' ? valleys() : [],
+        body: a ? frame().bodies[a.body] : null,
+      })
+    if ((level === 'orbit' || crossing) && groundTrack) ground.trackInset(view, groundTrack)
     $('coords').textContent = locationText(level === 'orbit' ? view.basis()[2] : marker())
   }
   function requestPaint() {
@@ -121,6 +170,7 @@ async function openPlanet() {
     p.className = detail ? 'detail' : ''
     p.textContent = text
     $('events').append(p)
+    return p
   }
   function history() {
     const graph = $('history'),
@@ -183,7 +233,8 @@ async function openPlanet() {
           'took in ' +
             quantity(current.fed, 'unit') +
             ' of food' +
-            (sources.length ? ' from ' + sources.join(', ') : ''),
+            (sources.length ? ' from ' + sources.join(', ') : '') +
+            (ground && !frames[i].poses.some((p) => p.id === watched) ? ' (site observation)' : ''),
         )
       }
       if (current.journey && current.journey.departed === i)
@@ -195,6 +246,30 @@ async function openPlanet() {
         note('Tick ' + i + ' · ' + events.join(' · '))
         shown++
       }
+    }
+    if (ground) {
+      const r = frame().poses.find((r) => r.id === watched)
+      for (const w of frame().walks || []) {
+        if (w.id !== watched) continue
+        const goal =
+          w.exit != null
+            ? ' toward ' + name(w.exit)
+            : w.target == null
+              ? ''
+              : ' toward #' + w.target
+        const contact = w.contacts?.length
+          ? ' · reached ' + w.contacts.map((id) => '#' + id).join(', ')
+          : ''
+        note('Walked ' + quantity(w.path.length - 1, 'ground step') + goal + contact + '.')
+      }
+      if (r) note('Ground position · ' + r.pose.at.join(', '), true).id = 'ground-position'
+      else
+        note(
+          a.journey
+            ? 'The sim records this crossing at site resolution.'
+            : 'No ground pose at this tick.',
+          true,
+        )
     }
     if (!shown) note(a.born === 0 ? 'Present at founding.' : 'Born at tick ' + a.born + '.', true)
   }
@@ -215,15 +290,24 @@ async function openPlanet() {
     $('in').disabled = level === 'animal' || (level === 'valley' && $('animal').disabled)
     $('step').disabled = busy
     $('play').textContent = playing ? 'Pause' : 'Play'
+    const onGround = Boolean(ground && frame().poses.some((r) => r.id === watched))
     $('mode').textContent = {
       orbit: 'Orbital view',
       valley: 'Terrain survey',
-      animal: 'Individual view',
+      animal: onGround
+        ? 'Ground follow'
+        : ground && a?.journey
+          ? 'Border crossing'
+          : 'Individual view',
     }[level]
     $('gesture').textContent = {
       orbit: 'Drag to spin · select a site to descend',
       valley: 'Gold outline · selected site and its neighbors',
-      animal: 'Body enlarged · position resolved to site or route',
+      animal: onGround
+        ? 'Ground follow · walking slowed for observation'
+        : ground && a?.journey
+          ? 'Site-scale crossing · ground follow resumes at the next recorded pose'
+          : 'Body enlarged · position resolved to site or route',
     }[level]
     canvas.setAttribute('aria-label', $('mode').textContent + '. ' + $('gesture').textContent)
     $('list').replaceChildren()
@@ -324,9 +408,10 @@ async function openPlanet() {
     setLevel('valley')
   }
   function watch(id) {
+    const resume = !ground || id !== watched
     watched = id
     setLevel('animal')
-    if (!playing) play()
+    if (!playing && resume) play()
   }
   function closer() {
     if (level === 'orbit') {
@@ -345,6 +430,7 @@ async function openPlanet() {
   function stop() {
     playing = false
     clearTimeout(timer)
+    cancelAnimationFrame(animation)
     $('play').textContent = 'Play'
   }
   let revision = 0
@@ -355,8 +441,15 @@ async function openPlanet() {
     busy = true
     $('step').disabled = true
     try {
-      if (requested === frames.length) frames.push(await read('frame?tick=' + requested))
-      if (version === revision) tick = requested
+      if (requested === frames.length) {
+        $('status').textContent = 'Advancing the live world…'
+        frames.push(await read('frame?tick=' + requested))
+        $('status').textContent = ''
+      }
+      if (version === revision) {
+        tick = requested
+        fraction = 0
+      }
     } catch (err) {
       stop()
       $('status').textContent = err.message
@@ -367,6 +460,48 @@ async function openPlanet() {
   }
   function schedule() {
     clearTimeout(timer)
+    if (ground) {
+      const currentRevision = revision
+      const animate = async (now) => {
+        if (!playing || currentRevision !== revision) return
+        if (tick + 1 === frames.length) {
+          if (busy) {
+            animation = requestAnimationFrame(animate)
+            return
+          }
+          busy = true
+          try {
+            $('status').textContent = 'Advancing the live world…'
+            frames.push(await read('frame?tick=' + (tick + 1)))
+            $('status').textContent = ''
+          } catch (e) {
+            stop()
+            $('status').textContent = e.message
+            return
+          } finally {
+            busy = false
+          }
+          lastPaint = performance.now()
+          if (!playing || currentRevision !== revision) return
+        }
+        fraction += Math.min(125, Math.max(0, now - lastPaint)) / 1300
+        lastPaint = now
+        if (fraction >= 1) {
+          tick++
+          fraction = 0
+          refresh()
+        } else if (
+          (level === 'animal' || level === 'orbit') &&
+          frames[tick + 1]?.walks?.some((walk) => walk.id === watched)
+        )
+          requestPaint()
+        animation = requestAnimationFrame(animate)
+      }
+      lastPaint = performance.now()
+      cancelAnimationFrame(animation)
+      animation = requestAnimationFrame(animate)
+      return
+    }
     timer = setTimeout(async () => {
       if (!playing) return
       await advance()
@@ -387,6 +522,7 @@ async function openPlanet() {
   $('scrub').oninput = (e) => {
     stop()
     revision++
+    fraction = 0
     tick = Number(e.target.value)
     refresh()
   }

@@ -11,6 +11,7 @@ from urllib.parse import urlsplit, parse_qs
 
 HERE = Path(__file__).resolve().parent
 STATIC = {"": ("index.html", "text/html"), "globe.js": ("globe.js", "text/javascript"),
+          "ground.js": ("ground.js", "text/javascript"),
           "app.js": ("app.js", "text/javascript"), "style.css": ("style.css", "text/css")}
 
 
@@ -18,11 +19,20 @@ class Timeline:
     def __init__(self, directory, binary):
         self.frames = json.loads((directory / "frames.json").read_bytes())
         self.lock = Lock()
-        self.child = subprocess.Popen([binary, "watch", directory / "resume.json"],
+        self.binary, self.resume = binary, directory / "resume.json"
+        self.child = None
+
+    def resume_native(self):
+        if self.child is not None:
+            return
+        self.child = subprocess.Popen([self.binary, "watch", self.resume],
                                       stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
-        if self.read("now")["hash"] != self.frames[-1]["hash"]:
+        try:
+            if self.read("now")["hash"] != self.frames[-1]["hash"]:
+                raise RuntimeError("The resumed planet differs from the last preview tick")
+        except Exception:
             self.close()
-            raise RuntimeError("The resumed planet differs from the last preview tick")
+            raise
 
     def read(self, command):
         try:
@@ -40,6 +50,7 @@ class Timeline:
             if not 0 <= tick <= len(self.frames):
                 raise ValueError("Request an observed tick or its immediate successor")
             if tick == len(self.frames):
+                self.resume_native()
                 frame = self.read("next")
                 if frame["tick"] != tick:
                     raise RuntimeError("The planet advanced to an unexpected tick")
@@ -47,8 +58,10 @@ class Timeline:
             return self.frames[tick]
 
     def close(self):
-        self.child.stdin.close()
-        self.child.wait()
+        if self.child is not None:
+            self.child.stdin.close()
+            self.child.wait()
+            self.child = None
 
 
 def run():
