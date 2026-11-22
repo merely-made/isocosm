@@ -5,6 +5,7 @@
 //! of a site meeting one side of a neighbour (rulings 72, 73, 395 and 397).
 
 mod grid;
+pub mod sphere;
 
 pub use grid::{Grid, SHAPES};
 

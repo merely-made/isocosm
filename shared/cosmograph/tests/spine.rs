@@ -21,10 +21,13 @@ fn drawn() -> Vec<(Founding, Genesis)> {
     for (s, shape) in SHAPES.iter().enumerate() {
         for i in 0..6u64 {
             let seed = cosmograph::draw(0x5b1e, "spine-test", &[s as u64, i]);
-            let grid = Grid {
-                shape: (*shape).into(),
-                ..Grid::drawn(seed)
-            };
+            let mut grid = Grid::drawn(seed);
+            grid.shape = (*shape).into();
+            if *shape == "shape:sphere" {
+                let n = i as u32 + 1;
+                grid.width = 3 * n;
+                grid.height = 2 * n;
+            }
             let founding = Founding {
                 seed,
                 sites: grid.width * grid.height,
@@ -120,6 +123,7 @@ fn corner_walks_find_every_corner_of_the_grid_once() {
         let expected = match grid.shape.as_str() {
             "shape:plane" => (w + 1) * (h + 1),
             "shape:ring" => w * (h + 1),
+            "shape:sphere" => w * h + 2,
             _ => w * h,
         };
         assert_eq!(corners.len(), expected, "{} {w}x{h}", grid.shape);

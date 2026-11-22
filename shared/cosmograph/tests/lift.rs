@@ -22,10 +22,16 @@ fn drawn(side: u64) -> Vec<Genesis> {
         for i in 0..3u64 {
             let seed = cosmograph::draw(0x11f7, "lift-test", &[s as u64, i]);
             let drawn = Grid::drawn(seed);
+            let (width, height) = if *shape == "shape:sphere" {
+                let n = i as u32 + 1;
+                (3 * n, 2 * n)
+            } else {
+                (2 + drawn.width % 5, 2 + drawn.height % 5)
+            };
             let grid = Grid {
                 shape: (*shape).into(),
-                width: 2 + drawn.width % 5,
-                height: 2 + drawn.height % 5,
+                width,
+                height,
                 side,
                 elevation: [0, side as i64],
                 relief: [0, side as i64 / 8],

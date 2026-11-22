@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Planet 9 · Mesocosm</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <span class="series">Mesocosm</span>
+          <h1>Planet <span id="seed">9</span></h1>
+        </div>
+        <nav aria-label="Viewing scale">
+          <button id="orbit">Globe</button><span>/</span><button id="valley" disabled>Valley</button
+          ><span>/</span><button id="animal" disabled>Critter</button>
+        </nav>
+      </header>
+      <div class="layout">
+        <section class="viewer" aria-label="Planet viewport">
+          <canvas
+            id="scene"
+            tabindex="0"
+            aria-label="Spinning globe. Drag to rotate, click to inspect a site, or select a valley from the list."
+          ></canvas>
+          <div class="maphead"><span id="mode">Orbital view</span><span id="coords"></span></div>
+          <div id="mapfoot">
+            <span id="gesture"></span>
+            <div class="zoom">
+              <button id="out" aria-label="Zoom out">−</button
+              ><button id="in" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+        </section>
+        <aside>
+          <section class="context">
+            <p class="eyebrow" id="context"></p>
+            <h2 id="title">Loading planet…</h2>
+            <p id="description"></p>
+            <p id="position"></p>
+          </section>
+          <section id="choices">
+            <h3 id="choicesTitle">Inhabited valleys</h3>
+            <div id="list"></div>
+          </section>
+          <section id="observe" hidden>
+            <h3>Field observations</h3>
+            <div id="events"></div>
+            <canvas id="history" role="img" aria-label="Recent tissue stores"></canvas>
+          </section>
+          <section class="time">
+            <div class="row">
+              <h3>World time</h3>
+              <output id="tick">Tick 0</output>
+            </div>
+            <input id="scrub" type="range" min="0" value="0" max="24" aria-label="World tick" />
+            <div class="row">
+              <button id="play">Play</button><button id="step">Next tick</button>
+            </div>
+          </section>
+          <p id="status" role="status"></p>
+          <a href="founding.json" download="planet-9-founding.json">Founding save</a>
+        </aside>
+      </div>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

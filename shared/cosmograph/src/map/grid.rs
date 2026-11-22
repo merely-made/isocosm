@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Square sites on a plane, a ring or a torus (ruling 395).
+//! Square sites on a plane, a ring, a torus or a folded cube.
 
 use super::{Laid, default_materials, default_skeleton};
 use crate::{
@@ -13,10 +13,10 @@ use std::collections::{BTreeMap, BTreeSet};
 
 /// A grid of square sites. Site `row * width + column` has side 0 to the
 /// north, 1 east, 2 south and 3 west; a ring wraps east to west, a torus
-/// both ways, and a plane not at all.
+/// both ways, and a sphere joins the oriented edges of six faces.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Grid {
-    /// `shape:plane`, `shape:ring` or `shape:torus`.
+    /// Plane, ring, torus or six square faces in a 3 × 2 atlas for `shape:sphere`.
     pub shape: Key,
     pub width: u32,
     pub height: u32,
@@ -30,7 +30,8 @@ pub struct Grid {
     pub sea_per_mille: u32,
 }
 
-pub const SHAPES: [&str; 3] = ["shape:plane", "shape:ring", "shape:torus"];
+// The first three shapes are the historical seeded rectangular draw space.
+pub const SHAPES: [&str; 4] = ["shape:plane", "shape:ring", "shape:torus", "shape:sphere"];
 /// Terrain values stay within this, so no sum of them can overflow.
 const BAND: i64 = 1 << 40;
 
@@ -53,9 +54,13 @@ impl Grid {
     }
 
     pub(super) fn lay(&self, seed: u64, sites: u32) -> Result<Laid> {
-        if !SHAPES.contains(&self.shape.as_str())
-            || !(2..=16).contains(&self.width)
-            || !(2..=16).contains(&self.height)
+        let dimensions_valid = if self.shape == "shape:sphere" {
+            let n = self.width / 3;
+            (1..=6).contains(&n) && self.width == 3 * n && self.height == 2 * n
+        } else {
+            (2..=16).contains(&self.width) && (2..=16).contains(&self.height)
+        };
+        if !SHAPES.contains(&self.shape.as_str()) || !dimensions_valid
             || !(16..=1 << 20).contains(&self.side)
             || self.elevation[0] > self.elevation[1]
             || self.relief[0] < 0
@@ -80,7 +85,7 @@ impl Grid {
             let id = id as Id;
             let routes = (0..4u8)
                 .filter_map(|side| {
-                    let (c, r) = self.across(column, row, side)?;
+                    let (c, r, enters) = self.across(column, row, side)?;
                     let to = self.id(c, r);
                     (to != id).then(|| Route {
                         to,
@@ -89,7 +94,7 @@ impl Grid {
                             + (draw("map:transmission", &[id, side.into()]) % 500_001) as u32,
                         border: Some(Border {
                             side,
-                            enters: (side + 2) % 4,
+                            enters,
                             flipped: false,
                         }),
                         authored: None,
@@ -146,7 +151,10 @@ impl Grid {
 
     /// The site across `side` of the site at (column, row), if the shape
     /// has one there.
-    fn across(&self, column: u32, row: u32, side: u8) -> Option<(u32, u32)> {
+    fn across(&self, column: u32, row: u32, side: u8) -> Option<(u32, u32, u8)> {
+        if self.shape == "shape:sphere" {
+            return Some(super::sphere::across(self.width / 3, column, row, side));
+        }
         let (wrap_x, wrap_z) = match self.shape.as_str() {
             "shape:ring" => (true, false),
             "shape:torus" => (true, true),
@@ -166,7 +174,7 @@ impl Grid {
         if wrap_z {
             r = r.rem_euclid(h);
         }
-        ((0..w).contains(&c) && (0..h).contains(&r)).then_some((c as u32, r as u32))
+        ((0..w).contains(&c) && (0..h).contains(&r)).then_some((c as u32, r as u32, (side + 2) % 4))
     }
 
     /// A value per site drawn in `band`, then averaged once with the sites
@@ -181,7 +189,7 @@ impl Grid {
             .map(|(c, r)| {
                 let (mut sum, mut n) = (raw[self.id(c, r) as usize], 1);
                 for side in 0..4 {
-                    if let Some((c2, r2)) = self.across(c, r, side) {
+                    if let Some((c2, r2, _)) = self.across(c, r, side) {
                         sum += raw[self.id(c2, r2) as usize];
                         n += 1;
                     }
