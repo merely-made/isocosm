@@ -376,9 +376,11 @@ data-parallel inside a shard, and an ordered merge of cross-shard effects
 designed before the shards, so one shard and N give the same state hash. On the
 web the sim runs in one Worker, scaling down by shard count.
 
-*Not yet built:* waking, parallel evaluation and order-free draws (the
-execution plan's E1 to E3), rates worked out when read and decision periods
-(E7, E8), shards, and worlds syncing at crossings.
+*Implementation status.* The scheduler reuses its index and rechecks changed gates as described in
+[execution E1](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md#e1-waking).
+Parallel evaluation and order-free draws (E2 and E3), rates worked out when
+read and decision periods (E7 and E8), shards and clocks synced at crossings
+remain open.
 
 Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7, sim-execution D1, sim-execution D4, sim-execution D15, sim-execution D16 · summary A fine world-set unit, periods per process and decision periods per lineage; bodily rates worked out when read; the scheduler skips idle time and unchanged members; draws keyed order-free; worlds sync at crossings.
 
@@ -1310,7 +1312,9 @@ advances time: the epoch boundary at a world's scale, which may add nesting
 steps as well as change the rules. Presets (pressures, bodies, named rate
 sets) are founding choices, never the generator's defaults.
 
-*Not yet built:* the world editor, owed in the sim plan's S5.
+*Implementation status.* The [Mesocosm lineage editor](../mesocosm/README.md) edits founding body
+maps and enters a preview at its selected tick. The general editor for
+asserting, replacing and removing placed world content remains open in sim S5.
 
 Links: draws on 89, 90, 91, 272, 907, 935, 1002, 1003 · summary Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices.
 
@@ -1394,7 +1398,11 @@ tenancies, work and institutions and never stored, its tier counting
 residents against thresholds set from measured draws; its history explains it, and factions and polities act
 through its residents.
 
-*Not yet built:* any of it (sim S5 sub-item d); the readings come first.
+*Implementation status.* The [social readings](../shared/cosmograph/src/social/ladder/mod.rs) derive
+kin, households, place tiers and resident groups from recorded facts. The
+mill-ford quick start supplies an authored population. Generating inhabited
+regions from sapient lineage populations and lifting their residents into
+individual play remain open in sim S5(d).
 
 Links: draws on 54, 63, 1017, 1023, 1025, 1027, naming.2, naming.3, processes.6, ecology.4, schema.12 · summary People grow out of a deep-time world (a quick-start world is modded and shared, its founders authored); places read as hamlet, town or city, never stored.
 
