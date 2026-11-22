@@ -2,9 +2,30 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use cosmograph::{Session, directing::readings::{self, View}, schema::Method};
+use cosmograph::{Session, Simulation, directing::readings::{self, View}, schema::{Id, Method}};
 use cosmograph_overlay::{OrdinaryAccess, EntityHandle};
 use crate::succession::Occasion;
+
+pub(crate) fn watch_view(sim: &Simulation, critter: Id) -> View {
+    let state = sim.state();
+    let site = state.population.get(critter)
+        .and_then(|body| body.resident_site().or_else(|| body.journey.map(|j| j.from)))
+        .or_else(|| state.sites.keys().next().copied());
+    site_view(sim, site)
+}
+
+pub(crate) fn site_view(sim: &Simulation, site: Option<Id>) -> View {
+    let state = sim.state();
+    let mut view = View::default();
+    if let Some(site) = site {
+        view.sites.insert(site);
+        view.things.extend(state.population.groups.iter().filter(|(_, group)|
+            group.entity.resident_site() == Some(site)
+                && !cosmograph::directing::is_participant(&group.entity))
+            .map(|(&first, group)| (first, group.count)));
+    }
+    view
+}
 
 pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible: &View)
     -> Result<LoopReading, String> {
@@ -79,6 +100,18 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
         _ => None,
     }).collect();
     if saved.world_end.is_none() && matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching) {
+        let watching = saved.watched_critter.map(|id| watch_view(&session.sim, id))
+            .or_else(|| saved.founding_site.map(|site| site_view(&session.sim, Some(site))));
+        if let Some(view) = watching {
+            out.lineages = view.things.keys().filter(|&&id| {
+                session.sim.state().population.get(id)
+                    .is_some_and(|e| e.alive && e.method == Method::Deliberative)
+                    && (game.driver.is_none() || game.members.get(&id)
+                        .is_some_and(|at| at.realized(&session.sim).is_ok()))
+            })
+                .copied().map(EntityHandle).collect();
+            return Ok(out);
+        }
         // A known line is offered too, seen or not (case 1210); none is known unless the world sets regard.
         let known = readings::known(session, access.participant.0);
         out.lineages = session.sim.state().population.groups.iter().filter(|(first, group)| {

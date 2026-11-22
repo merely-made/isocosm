@@ -21,11 +21,13 @@ enum PanelKey {
     NextOffer,
     CommitOffer,
     KeepLine,
+    Watch,
     Question,
     NextChoice,
     Answer,
     CloseHints,
     TakeBody,
+    EditFounding,
     Inspector(u64, Option<(u64, u32)>),
 }
 
@@ -38,11 +40,13 @@ impl PanelKey {
             Self::NextOffer => "next-offer",
             Self::CommitOffer => "commit-offer",
             Self::KeepLine => "keep-line",
+            Self::Watch => "watch",
             Self::Question => "question",
             Self::NextChoice => "next-choice",
             Self::Answer => "answer",
             Self::CloseHints => "close-hints",
             Self::TakeBody => "take-body",
+            Self::EditFounding => "edit-founding",
             Self::Inspector(..) => "inspector",
         }
     }
@@ -127,7 +131,14 @@ pub(super) fn root(state: &State) -> Child {
             )),
         ),
     ];
+    if state.watching {
+        readings.retain(|(key, _)| *key != PanelKey::Vitals);
+    }
     let mut panels: Vec<(PanelKey, Child)> = Vec::new();
+    if state.can_watch {
+        panels.push((PanelKey::Watch,
+            button("Return to watching", winit::keyboard::Key::Character("w".into()))));
+    }
     if state.review_open {
         panels.push((
             PanelKey::Board,
@@ -203,7 +214,10 @@ pub(super) fn root(state: &State) -> Child {
                 ),
             ));
         }
-        if state.question.take.is_some() {
+        if state.host.runtime.current_loop_phase() == Some(mesocosm_runtime::continuation::LoopPhase::NewWorldRequested) {
+            panels.push((PanelKey::EditFounding,
+                button("Open lineage editor", winit::keyboard::Key::Character("e".into()))));
+        } else if state.question.take.is_some() && !state.watching {
             panels.push((
                 PanelKey::TakeBody,
                 button(
@@ -235,10 +249,12 @@ pub(super) fn root(state: &State) -> Child {
                 Box::new(
                     el(
                         "div",
-                        text(format!(
-                            "tick {} · E / Space attend · S speciate · Z / V turn · Y view",
-                            state.tick_reading
-                        )),
+                        text(if state.watching {
+                            format!("Watching · tick {} · Z / V turn", state.tick_reading)
+                        } else {
+                            format!("tick {} · E / Space attend · S speciate · Z / V turn · Y view",
+                                state.tick_reading)
+                        }),
                     )
                     .attr("class", "status"),
                 ),

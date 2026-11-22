@@ -19,6 +19,7 @@ pub mod bench;
 mod config;
 mod continuation;
 mod devtime;
+mod editor;
 pub mod drive;
 mod follow;
 mod foreground;
@@ -202,7 +203,9 @@ impl Host {
         let sim = self.runtime.sim();
         let styles = &self.styles;
         let played = self.runtime.critter();
-        let Some(site) = crate::played::scene::site_of(&sim, played) else {
+        let anchor = played.or_else(|| self.runtime.watched_critter().filter(|id|
+            crate::played::scene::site_of(&sim, Some(*id)).is_some()));
+        let Some(site) = crate::played::scene::site_of(&sim, anchor) else {
             self.scene_key = None;
             self.scene_source_key = None;
             self.scene_components = None;
@@ -212,7 +215,7 @@ impl Host {
         // presentation grid spot, including after birth or a refused arrival.
         let physical = self.config.spatial.is_some()
             || self.runtime.spatial().driver.is_some()
-            || played.is_some_and(|id| self.runtime.spatial().members.contains_key(&id));
+            || anchor.is_some_and(|id| self.runtime.spatial().members.contains_key(&id));
         let branch = if physical {
             SceneBranch::Physical
         } else {
@@ -227,7 +230,7 @@ impl Host {
                     key.context_matches(
                         &self.runtime,
                         native,
-                        played,
+                        anchor,
                         site,
                         branch,
                         self.config.component_scene,
@@ -242,7 +245,7 @@ impl Host {
             SceneSourceKey::new(
                 &self.runtime,
                 native,
-                played,
+                anchor,
                 site,
                 branch,
                 self.config.component_scene,
@@ -263,11 +266,12 @@ impl Host {
                 .and_then(|visible| {
                     crate::played::scene::site_scene_physical(
                         &sim,
-                        played,
+                        anchor,
                         &visible,
                         self.runtime.spatial(),
                     )
                 })
+                .map(|mut scene| { scene.played = played; scene })
                 .and_then(|scene| {
                     scene_source::store(
                         scene,
@@ -347,7 +351,8 @@ impl Host {
             return false;
         }
         let result =
-            crate::played::scene::site_scene_visible(&sim, played, &visible).and_then(|scene| {
+            crate::played::scene::site_scene_visible(&sim, anchor, &visible).and_then(|mut scene| {
+                scene.played = played;
                 scene_source::store(
                     scene,
                     self.config.component_scene,

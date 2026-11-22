@@ -129,7 +129,31 @@ impl Runtime {
     /// Takes a saved run up where it stands, so a host can watch it go on
     /// (786), under `mode` and `pace`.
     pub fn resume(saved: Saved, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
-        let session = Session::load(saved, Execution::Grouped)?;
+        Self::resume_session(Session::load(saved, Execution::Grouped)?, mode, pace, ticks_per_second)
+    }
+
+    /// Join an unplayed founding at its saved tick. The first new command is
+    /// Join. A watcher has no played body and starts at the normal roster.
+    pub fn enter_founding(bytes: &[u8], ticks_per_second: u32, mode: Option<Mode>) -> Result<Self, String> {
+        let mut session = Session::load_json(bytes, Execution::Grouped)?;
+        if session.sim.state().population.groups.values().any(|g| cosmograph::directing::is_participant(&g.entity)) {
+            return Err("this world already has a participant; resume it with --watch".into());
+        }
+        let site = *session.sim.state().sites.keys().next().ok_or("founding has no site to watch")?;
+        session.command(cosmograph::Command::Join)?;
+        let mut runtime = Self::resume_session(session, mode.unwrap_or(Mode::Creative),
+            Pace { round: 1, scoring: 6 }, ticks_per_second)?;
+        runtime.with_product(|product, world| {
+            product.sync_loop(world);
+            if let Some(loop_state) = &mut product.spatial.continuation {
+                loop_state.phase = crate::continuation::LoopPhase::Watching;
+                loop_state.founding_site = Some(site);
+            }
+        });
+        Ok(runtime)
+    }
+
+    fn resume_session(session: Session, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
         let founded = Founded {
             genesis: session.sim.genesis().clone(),
             start: Start::default(),

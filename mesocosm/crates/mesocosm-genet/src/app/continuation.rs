@@ -137,44 +137,62 @@ impl Host {
                 ("choice".into(), self.continuation.notice.clone().unwrap_or_else(||
                     self.continuation.selected.as_ref().map_or("Nothing selected".into(), |answer| self.continuation_label(answer)))),
             ], stay: "[W] keep watching; Up/Down then Enter / click also selects Watch".into(),
-                take: Some("[Esc] quit; --watch PATH resumes this save. Start a separate run for a new world.".into()) });
+                take: Some("[E] open lineage editor in browser · [Esc] save and quit".into()) });
         }
         let selected = self.continuation.selected.as_ref().map_or("Nothing selected".into(), |answer| self.continuation_label(answer));
+        let watched = self.runtime.watched_critter().map(|id| {
+            let sim = self.runtime.sim();
+            let words = match sim.state().population.get(id) {
+                Some(body) if body.alive => format!("body {id}, {}", body.lineage),
+                Some(_) => format!("Body {id} died."),
+                None => format!("Body {id} is no longer present."),
+            };
+            ("following".into(), words)
+        });
         Some(Succession {
             headline: match reading.phase {
                 LoopPhase::Watching if reading.world_ended_at.is_some() => "Watching this ended world",
                 LoopPhase::Watching => "Watching this world",
                 LoopPhase::WorldEnded => "This world has ended as a game", _ => "Your lineage has ended" }.into(),
-            facts: [Some(("choose".into(), selected)),
-                Some(("other bodies".into(), format!("{} offered in the current native view", reading.lineages.len()))),
+            facts: [watched, Some(("choose".into(), selected)),
+                Some(("bodies".into(), format!("{} available to direct", reading.lineages.len()))),
                 (!reading.starts.is_empty()).then(|| ("starts".into(), format!("{} offered", reading.starts.len()))),
                 mesocosm_views::banked_words(&self.runtime.sim(), None).map(|words| ("seeds".into(), words)),
                 Some(("status".into(), self.continuation.notice.clone().unwrap_or_else(||
                     if let Some(tick) = reading.world_ended_at { format!("The authored world predicate ended the game at tick {tick}.") }
-                    else if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }
+                    else if reading.phase == LoopPhase::Watching { format!("World tick {}", self.runtime.tick()) }
                     else { "The world waits for your choice.".into() })))].into_iter().flatten()
                 .chain(self.held_facts(reading)).collect(),
-            stay: "[Up/Down / Tab] select; [Enter / click panel] apply".into(),
+            stay: "[Up/Down / Tab] select; [Enter] use selected choice".into(),
             take: Some(if matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::WorldEnded) { "[W] watch; [N] request new world" }
                 else { "[N] request new world" }.into()),
         })
     }
 
     fn submit_continuation(&mut self, answer: LoopAnswer) {
+        let was_watching = self.runtime.current_loop_phase() == Some(LoopPhase::Watching);
         let result = (|| {
             let shown = self.continuation.presented.as_ref().ok_or("The continuation pane has not been presented.")?;
             let current = self.runtime.loop_reading()?;
-            if shown.cut != current.cut || shown.phase != current.phase {
+            // The watch clock keeps running while a choice is on screen.
+            // A displayed body can be taken on the current cut if it is still offered.
+            let live_pick = was_watching && matches!(answer, LoopAnswer::OtherLineage(_) | LoopAnswer::NewWorld)
+                && choices(shown).contains(&answer);
+            if (!live_pick && shown.cut != current.cut) || shown.phase != current.phase {
                 return Err("The displayed loop cut changed. Read the refreshed choices.".into());
             }
             if !choices(&current).contains(&answer) { return Err("That choice is not currently offered.".into()); }
             let input = LoopInput { kind: continuation::KIND.into(), version: continuation::VERSION,
                 participant: ParticipantHandle(self.runtime.interim().participant), tick: Tick(self.runtime.tick()),
-                expected: shown.cut.clone(), action: LoopAction::Answer(answer) };
+                expected: current.cut, action: LoopAction::Answer(answer) };
             self.runtime.submit_loop_input(&input).map_err(|why| format!("{why:?}"))
         })();
         match result {
             Ok(note) => {
+                if was_watching && self.runtime.critter().is_some() {
+                    self.follow = None;
+                    self.follow_lost = None;
+                }
                 self.events.push(note);
                 self.continuation.selected = None;
                 self.continuation.notice = None;
@@ -244,7 +262,28 @@ impl Host {
             self.answer_round(answer);
             return true;
         }
+        if matches!(key, Key::Character(c) if c.eq_ignore_ascii_case("w"))
+            && self.runtime.current_loop_phase() == Some(LoopPhase::Running)
+            && self.runtime.critter().is_some() {
+            self.answer_round(LoopAnswer::Watch);
+            if self.runtime.watched_critter().is_some() {
+                self.follow = None;
+                self.follow_lost = None;
+                self.pointer = Default::default();
+                self.view = isometer::View::Overview;
+            }
+            return true;
+        }
         if !self.continuation_open() { return false; }
+        if self.runtime.current_loop_phase() == Some(LoopPhase::NewWorldRequested)
+            && matches!(key, Key::Character(c) if c.eq_ignore_ascii_case("e")) {
+            self.continuation.notice = Some(match super::editor::open() {
+                Ok(()) => "Opening lineage editor".into(),
+                Err(why) => why,
+            });
+            self.last = None;
+            return true;
+        }
         match key {
             Key::Named(NamedKey::ArrowUp | NamedKey::ArrowDown | NamedKey::Tab) => {
                 self.move_continuation_cursor(matches!(key, Key::Named(NamedKey::ArrowUp)));

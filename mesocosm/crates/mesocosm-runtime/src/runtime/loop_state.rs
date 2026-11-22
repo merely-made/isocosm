@@ -47,6 +47,8 @@ impl Mesocosm {
             checkpoint: self.checkpoint.clone(), review: self.review.clone(), proposed,
             happenings: self.happenings.clone(), windows: self.windows.clone(),
             expression: self.authored.as_ref().map(|authored| authored.saved()),
+            watched_critter: prior.and_then(|p| p.watched_critter),
+            founding_site: prior.and_then(|p| p.founding_site),
             ended_lineage: self.happenings.iter().find_map(|h| match h {
                 Happening::LineageEnded { lineage } => Some(lineage.clone()), _ => None,
             }).or_else(|| prior.and_then(|p| p.ended_lineage.clone())),
@@ -130,6 +132,11 @@ impl Mesocosm {
         let access = self.loop_access(world);
         let mut game = self.spatial.clone();
         let out = commit(world, |session| door(session, &mut game, access, input))?;
+        // A round prepared for the previous binding cannot land after a handoff.
+        if matches!(&input.action, LoopAction::Answer(LoopAnswer::Watch | LoopAnswer::OtherLineage(_))) {
+            self.pending = None;
+            self.verified_question = None;
+        }
         self.spatial = game;
         self.restore_loop(world).map_err(Refusal::Sim)?;
         Ok(out)
@@ -165,6 +172,11 @@ impl Runtime {
 
     pub fn loop_settings(&self) -> LoopSettings { self.driver.product().loop_settings() }
 
+    /// The former subject whose site the player is watching.
+    pub fn watched_critter(&self) -> Option<cosmograph::schema::Id> {
+        self.product().spatial.continuation.as_ref()?.watched_critter
+    }
+
     /// Sets the round mode and condition on a new run, before play: the
     /// saved loop keeps them from here (lineage-rounds D7, D8). A waiting
     /// epoch counts its span from now.
@@ -186,8 +198,9 @@ impl Runtime {
     }
 
     pub fn submit_loop_input(&mut self, input: &LoopInput) -> Result<String, Refusal> {
-        if self.driver.queued_len() > 0 && !matches!(&input.action, LoopAction::Answer(_)) {
-            return Err(Refusal::Sim("queued input precedes this loop step or configuration".into()));
+        if self.driver.queued_len() > 0 && (!matches!(&input.action, LoopAction::Answer(_))
+            || matches!(&input.action, LoopAction::Answer(LoopAnswer::Watch | LoopAnswer::OtherLineage(_)))) {
+            return Err(Refusal::Sim("queued input precedes this loop action".into()));
         }
         self.with_product(|product, world| product.loop_input(world, input, continuation::submit_loop))
     }

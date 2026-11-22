@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Resident pocket · Mesocosm</title><link rel="stylesheet" href="/style.css">
+<style>
+header a{color:inherit}.lead{margin-bottom:18px}.lead p,.caption{color:var(--muted)}.settings,.clock,.branch-head,.tools,.key{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.settings{border-block:1px solid var(--line);padding:12px 0}.settings input[type=number]{width:5.5em;padding:6px}.settings label,.tools{font-size:14px}
+.clock{margin:18px 0}.clock input{flex:1;min-width:120px;accent-color:var(--green)}.clock output{min-width:4em}.clock button{min-width:5em}
+.twins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.padded{padding:16px 18px}.branch-head{justify-content:space-between}.branch-head span{font-size:13px}
+.viewbox{display:block;width:100%;height:144px;background-color:#edf1e6;background-image:radial-gradient(#bbc9b9 0.7px,transparent 0.7px);background-size:10px 10px}
+.live{font-family:ui-monospace,monospace;font-size:12px}.ledger{border-block:1px solid var(--line);padding:10px 0;margin:8px 0}.key i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin:0 4px}
+.tissue{width:100%;height:80px}.key{font-size:12px}.needs{margin-top:18px}.needs table{width:100%;border-collapse:collapse}.needs th,.needs td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font:inherit}.needs td:first-child{font-weight:600}.needs th{color:var(--muted);font-size:13px}.scroll{overflow:auto}.tools{margin-top:12px}.tools button{font-size:13px}#status{margin:8px 0;min-height:1.3em}.missing{color:#804825}
+@media(max-width:740px){.twins{grid-template-columns:1fr}.needs td,.needs th{padding:5px;font-size:13px}.settings{gap:10px}}
+</style></head><body>
+<header><span class="brand">❧ Mesocosm</span><a href="/">Founding / Lineage editor</a></header>
+<main><div class="lead"><h1>Resident pocket</h1><p>A fungal host carries soil to a frond-bearing resident. Follow their tissues and their trade through a separation.</p></div>
+<form class="settings" id="settings"><label>Seed <input type="number" min="0" max="4294967295" step="1" value="9" required id="seed"></label>
+<label><input type="checkbox" id="pocket" checked> Grow pocket lining</label><label><input type="checkbox" id="port" checked> Grow resident exchange organ</label>
+<label>Leave at tick <input type="number" min="0" max="36" step="1" value="6" required id="departure"></label><button class="primary" type="submit">Grow world</button></form>
+<p id="status" role="status" aria-live="polite">Growing the founders…</p>
+<div class="clock"><button id="play" disabled>Play</button><label for="tick">World tick</label><input id="tick" type="range" min="0" max="36" value="0" disabled><output id="time" for="tick">0 / 36</output></div>
+<section class="twins" aria-label="Compare resident timelines" id="paths"></section>
+<section class="panel needs"><div class="padded"><h2>What supplies each trait?</h2><p class="caption"><span id="contract">Reading the exchange rule…</span> Part numbers belong to each individual.</p></div>
+<div class="scroll"><table><thead><tr><th>Trait or process</th><th>Supplied by</th><th>Resident stays</th><th>Departure trial</th></tr></thead><tbody id="requires"></tbody></table></div></section>
+</main><script type="module" src="/pocket.js"></script></body></html>

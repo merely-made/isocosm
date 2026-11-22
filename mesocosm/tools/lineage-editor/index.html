@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3e9">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <title>Lineage editor · Mesocosm</title>
+</head>
+<body>
+  <header><span class="brand"><span class="leaf" aria-hidden="true">❧</span> Mesocosm</span><span class="place">Founding / Lineage editor · <a href="/fronds">Compare frond forms</a> · <a href="/pocket">Grow a resident pocket</a></span></header>
+  <main>
+    <div class="title-row"><div><h1>Fronds &amp; defences</h1><p id="subtitle">One plant lineage, two forms, one shared ecology.</p></div>
+      <div class="actions"><label for="sites">World <select id="sites"><option value="playable">Four sites · directable grazers</option><option value="mapped">Four sites · reactive grazers</option><option value="single">Single site · no terrain view</option></select></label><button id="template" disabled>Export template</button><button id="found" disabled>Save world at tick 0</button><button id="enter" class="primary" hidden>Enter in Mesocosm</button></div></div>
+    <p id="status" role="status">Growing the founders and running the native preview…</p>
+    <div class="workbench">
+      <section class="panel map"><div class="section-title"><h2>Body map</h2><div class="map-views" role="group" aria-label="Body map view"><button id="parts-tab" aria-pressed="true">Attachments</button><button id="rules-tab" aria-pressed="false">Growth rules</button></div></div>
+        <div id="attachment-view"><svg id="attachment-map" role="group" aria-label="Developed parts and their attachments"></svg>
+          <div id="part-key" aria-label="Anatomical regions"></div>
+          <p class="map-hint">Select a numbered part to inspect it. Drag a side stem or frond to a highlighted socket to edit the lineage.</p>
+        </div>
+        <div id="rule-view" hidden><button id="layout" class="quiet">Reset layout</button>
+        <svg id="graph" viewBox="0 0 400 250" aria-label="Growth rules. Select a node to inspect it. Drag to arrange."></svg></div>
+        <div class="inspector">
+          <h3 id="rule-title">Defensive organ</h3><p id="rule-desc"></p>
+          <div id="odds-row" class="control"><label for="odds">Organ presence at founding</label><select id="odds">
+            <option value="1/1">0% · never</option><option value="3/4">25%</option><option value="1/2" selected>50%</option><option value="1/4">75%</option><option value="0/1">100% · always</option>
+          </select></div>
+          <div id="bank-row" class="control"><label for="organ">Defensive trait bank</label><select id="organ"></select></div>
+          <p id="trait-list" class="caption"></p>
+          <div id="frond-row" class="control" hidden><label for="frond-socket">Attach fronds</label><select id="frond-socket"><option value="Above">Above the stem</option><option value="Below">Below the stem</option></select></div>
+          <div id="placement" hidden><div class="control"><label for="anchor">Attach to main stem</label><select id="anchor"><option>Base</option><option>Middle</option><option>Tip</option></select>
+            <label for="side">Side</label><select id="side"><option>Left</option><option>Right</option></select><button id="pick-anchor" type="button">Pick on specimen</button></div></div>
+          <div id="variance-row" class="control" hidden><label for="variance">Stem variation per cohort</label><select id="variance"><option value="0">Fixed</option><option value="1">±1 segment</option></select></div>
+          <div id="grain-row" class="control" hidden><label for="grain">Draw founding bodies</label><select id="grain"><option value="2">In pairs</option><option value="1">Individually</option></select></div>
+          <div id="repeat-row" class="control" hidden><label for="repeat">Additional stem segments</label><select id="repeat"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+        </div>
+      </section>
+      <section class="panel specimen"><div class="section-title"><h2>Founder anatomy</h2><div class="anatomy-controls"><span id="seed" class="mono"></span><button id="orbit" class="quiet" type="button">Turn 90°</button></div></div>
+        <div class="plate"><svg id="body" viewBox="0 0 320 190" aria-label="Developed body. Select a part to inspect its growth rule."></svg>
+          <span id="form"></span></div>
+        <div class="pose-control"><label for="bend">Frond flex preview</label><input type="range" id="bend" min="-30" max="30" value="0"><output id="angle" aria-live="off">0°</output><button id="sway" class="quiet" aria-pressed="false">Preview sway</button></div>
+        <div class="specimen-info"><label for="cohort">Founder cohort</label><select id="cohort"></select></div>
+        <div id="gallery" aria-label="Compare founder cohorts"></div>
+        <p id="anatomy" class="caption"></p>
+      </section>
+    </div>
+    <section class="panel survival" aria-labelledby="survival-title">
+      <div class="section-title"><h2 id="survival-title">Survival check</h2><span id="check-range" class="mono"></span></div>
+      <div class="survival-grid">
+        <div><h3>How this founder feeds</h3><p id="feeding"></p><p id="site-reading"></p><button id="inspect-frond" class="source-rule">Inspect fixing tissue</button></div>
+        <div><h3 id="form-trial">This form in the founding</h3><p id="survival-result"></p><p id="survival-budget"></p></div>
+        <div><h3>Other habitats</h3><p id="reference-result"></p><details><summary>See the three seed runs</summary><table aria-label="Survival across reference seeds"><thead><tr><th>Seed</th><th>Founded</th><th>Alive</th><th>Born</th></tr></thead><tbody id="reference-runs"></tbody></table></details></div>
+      </div>
+    </section>
+    <section class="panel history"><div class="section-title"><h2>Competition</h2><label class="rent">Defence upkeep <select id="rent" aria-label="Defence upkeep"><option value="9">Per 9 guard cells</option><option value="8" selected>Per 8 guard cells</option><option value="3">Per 3 guard cells</option></select></label></div>
+      <div class="history-grid"><div>
+        <div class="plot-head"><h3>Living plants</h3><div class="legend"><span class="plain-dot">Fronds only</span><span class="gland-dot">With defence</span></div></div>
+        <svg id="chart" viewBox="0 0 480 110" aria-label="Population history by form"></svg>
+        <div class="scrub"><label for="tick">Tick <output id="tick-label">0</output></label><input id="tick" type="range" min="0" max="35" value="0" disabled><span id="end-tick" class="mono">35</span></div>
+      </div><div>
+        <table><thead><tr><th scope="col">At selected tick</th><th scope="col">Fronds only</th><th scope="col">With defence</th></tr></thead>
+          <tbody id="stats"></tbody></table>
+        <p id="costs" class="caption"></p>
+      </div></div>
+    </section>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body></html>

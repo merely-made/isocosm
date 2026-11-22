@@ -6,6 +6,28 @@ use crate::succession::{self, Occasion};
 use cosmograph::{Session, Command, lineage::{Review, boundary}};
 
 pub(crate) fn validate_question(saved: &Continuation, session: &Session) -> Result<(), String> {
+    if let Some(site) = saved.founding_site {
+        if !matches!(saved.phase, LoopPhase::Watching | LoopPhase::NewWorldRequested | LoopPhase::WorldEnded)
+            || !session.sim.state().sites.contains_key(&site) || saved.watched_critter.is_some()
+            || session.sim.plays(saved.participant).is_some()
+            || session.entries.iter().any(|entry| matches!(&entry.command,
+                Command::Take { participant, .. } | Command::TakeAlso { participant, .. }
+                if *participant == saved.participant)) {
+            return Err("founding spectator differs from the saved site or participant history".into());
+        }
+    }
+    if let Some(critter) = saved.watched_critter {
+        let left = session.entries.iter().rev().find(|entry| matches!(&entry.command,
+            Command::Take { participant, .. } | Command::TakeAlso { participant, .. }
+                | Command::Leave { participant, .. } if *participant == saved.participant));
+        if !matches!(saved.phase, LoopPhase::Watching | LoopPhase::NewWorldRequested)
+            || session.sim.plays(saved.participant).is_some()
+            || !left.is_some_and(|entry| entry.command == (Command::Leave {
+                participant: saved.participant, critter,
+            })) {
+            return Err("saved watch focus lacks its native handoff".into());
+        }
+    }
     if let Some(stamp) = &saved.world_end {
         if !matches!(saved.phase, LoopPhase::WorldEnded | LoopPhase::Watching | LoopPhase::NewWorldRequested) {
             return Err("ended world cannot resume as a played game".into());

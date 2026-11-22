@@ -19,6 +19,7 @@ pub(crate) use verified::{VerifiedQuestion, validate_replayed_question};
 pub(crate) use admission::answer_verified;
 pub use types::*;
 pub use read::read_loop;
+pub(crate) use read::{site_view, watch_view};
 pub use admission::{answer_loop, configure_loop, submit_loop};
 pub use round::advance_loop;
 

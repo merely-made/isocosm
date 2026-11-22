@@ -502,6 +502,12 @@ impl Runtime {
     pub fn view(&self) -> View {
         let lp = &self.product().lp;
         let session = self.session();
+        if let Some(watched) = self.watched_critter() {
+            return crate::continuation::watch_view(&session.sim, watched);
+        }
+        if let Some(site) = self.product().spatial.continuation.as_ref().and_then(|saved| saved.founding_site) {
+            return crate::continuation::site_view(&session.sim, Some(site));
+        }
         let critter = session.sim.plays(lp.participant).unwrap_or(cosmograph::directing::PLACELESS);
         cosmograph::directing::readings::view(&session.sim, critter, lp.mode)
     }
@@ -522,7 +528,8 @@ impl Runtime {
         let spatial = &self.product().spatial;
         spatial.version()?;
         let visible = self.view();
-        if self.product().lp.mode == Mode::Creative || !spatial.has_sight_source() { return Ok(visible); }
+        if self.watched_critter().is_some() || self.product().lp.mode == Mode::Creative
+            || !spatial.has_sight_source() { return Ok(visible); }
         let observer = self.critter().ok_or("marked sight requires the actual played observer")?;
         let sighted = spatial.sight(&self.sim(), observer, &visible)?;
         match sighted {

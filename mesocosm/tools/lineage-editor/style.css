@@ -1,0 +1,124 @@
+/* Copyright 2026 Mark Alan Boykin · SPDX-License-Identifier: MPL-2.0 */
+:root { color-scheme: light; --paper:#f6f4ec; --ink:#23392e; --muted:#526158; --line:#c6cdbf; --green:#3b6855; --amber:#9c611e; --light:#fcfbf5; }
+* { box-sizing:border-box }
+body { margin:0; color:var(--ink); background:var(--paper); font:15px/1.45 "DM Sans",system-ui,sans-serif }
+header { display:flex; align-items:center; gap:22px; background:#243e32; color:#faf9ee; padding:10px max(4vw, calc((100vw - 1190px)/2)); }
+.brand { display:inline-flex; align-items:center; gap:8px; font:bold 23px Georgia,serif; letter-spacing:-.5px }
+.leaf { color:#d6d9a6; font-size:34px; line-height:1 }
+.place { border-left:1px solid #718273; padding-left:20px; color:#e1e6d7; font-size:13px }
+main { width:min(1190px,92%); margin:25px auto 42px }
+h1,h2,h3,p { margin:0 }
+h1,h2 { font-family:"Baskervville",Georgia,serif; font-weight:500; letter-spacing:-.045em }
+h1 { font-size:clamp(36px,4.3vw,61px); line-height:1.1 }
+h2 { font-size:27px; line-height:1.12 }
+h3 { font-size:15px; line-height:1.3 }
+.title-row,.actions,.section-title,.control,.specimen-info,.plot-head,.rent,.scrub { display:flex; align-items:center; justify-content:space-between; gap:12px }
+.title-row p,.caption,.inspector p,#status { color:var(--muted) }
+.title-row p { margin:6px 0 0; font-size:15px }
+button,select { font:inherit; color:inherit; border:1px solid #a4afa0; border-radius:5px; background:var(--light); padding:7px 11px; cursor:pointer }
+button:hover,select:hover { border-color:var(--green); background:#e8ede1 }
+button.primary { color:white; background:var(--green); border-color:var(--green); font-weight:600 }
+button.primary:hover { background:#254d3d }
+button:disabled,select:disabled,input:disabled { opacity:.52; cursor:wait }
+button:focus-visible,select:focus-visible,input:focus-visible,[role=button]:focus-visible { outline:3px solid #9f671c; outline-offset:2px }
+#status { min-height:1.5em; margin:5px 0; font-size:13px }
+#status.error { color:#9d311f }
+.workbench { display:grid; grid-template-columns:1.03fr 1fr; gap:18px }
+.panel { border:1px solid var(--line); border-radius:9px; overflow:hidden; background:var(--light) }
+.section-title { padding:13px 18px; border-bottom:1px solid var(--line); min-height:57px }
+.quiet { padding:4px 8px; font-size:12px; border:1px solid transparent; color:var(--muted); background:transparent }
+.mono,.caption code,#form,.scrub output,table td { font-family:"IBM Plex Mono",ui-monospace,monospace }
+.mono,#form { font-size:12px }
+#graph { width:100%; height:223px; display:block; background-color:#f2f3e9; background-image:radial-gradient(#c5cdbe 0.8px,transparent 0.8px); background-size:12px 12px; border-bottom:1px solid var(--line) }
+.node { cursor:grab; touch-action:none; user-select:none }
+.node:active { cursor:grabbing }
+.node rect { fill:#fffff8; stroke:#879988; stroke-width:1.1 }
+.node.active rect { fill:#fff0d4; stroke:#945c1e; stroke-width:2 }
+.node text { fill:#283c30; font-size:14px; font-weight:650; pointer-events:none }
+.node text.ref { font:10.5px ui-monospace,monospace; fill:#586b5b }
+.edge { stroke:#889a83; stroke-width:1.6; fill:none }
+.inspector { padding:15px 18px; min-height:122px }
+.inspector p,.caption { font-size:13px; margin-top:4px; line-height:1.45 }
+.control { justify-content:flex-start; margin-top:9px; font-size:13px; font-weight:600 }
+.control select,.rent select,.specimen-info select { padding:4px 8px; font-size:13px }
+[hidden] { display:none !important }
+.plate { position:relative; background:radial-gradient(ellipse at 50% 80%,#e8ebdb,transparent 66%),#f5f5ea; border-bottom:1px solid var(--line) }
+#body { width:100%; height:175px; display:block }
+#form { position:absolute; bottom:8px; left:13px; color:var(--muted); pointer-events:none }
+.source-rule { padding:1px 5px; font-size:11px }
+.callout, #body [role=button] { cursor:pointer }
+.specimen-info { padding:10px 16px 4px; font-size:13px; font-weight:600 }
+.specimen .caption { padding:4px 16px 12px }
+#gallery { display:flex; gap:4px; overflow-x:auto; padding:6px 16px }
+.thumb { background:#f5f6ed; flex:1 1 0; min-width:37px; padding:0 1px 2px; border-color:#cbd1bf; line-height:1 }
+.thumb svg { width:100%; height:31px }
+.thumb small { font:10px ui-monospace,monospace }
+.thumb[aria-pressed=true] { outline:2px solid var(--green); outline-offset:-2px }
+.history { margin-top:18px }
+.history-grid { display:grid; grid-template-columns:1.12fr 1fr; gap:26px; padding:16px 18px }
+.rent,.legend { font-size:12px }
+.legend { display:flex; gap:14px; color:var(--muted) }
+.legend span:before { content:''; display:inline-block; width:15px; border-bottom:3px solid var(--green); margin-right:5px; vertical-align:middle }
+.legend .gland-dot:before { border-color:var(--amber); border-bottom-style:dashed }
+#chart { width:100%; height:117px; display:block }
+.scrub { font-size:13px; gap:10px }
+.scrub label { min-width:48px }
+input[type=range] { flex:1; min-width:0; accent-color:var(--green) }
+table { border-collapse:collapse; font-size:13px; width:100% }
+th,td { padding:5px 4px; text-align:right; border-bottom:1px solid #d8dece }
+th:first-child { text-align:left }
+thead th { color:var(--muted); font-size:12px }
+tbody th { font-weight:500 }
+#costs { margin-top:10px }
+@media(max-width:760px) {
+  main { width:94%; margin-top:17px }
+  .title-row { align-items:flex-start; flex-direction:column }
+  .workbench,.history-grid { grid-template-columns:1fr }
+  .workbench,.history-grid { gap:12px }
+  .title-row,.actions { gap:8px }
+  h2 { font-size:24px }
+  #graph { height:218px }
+  .section-title { padding:11px 14px }
+  .inspector { min-height:104px }
+  header { padding:9px 3% }
+}
+.anatomy-controls,.pose-control {display:flex;align-items:center;gap:12px}
+.pose-control {flex-wrap:wrap;padding:6px 16px;font-size:13px;border-bottom:1px solid var(--line)}
+.pose-control output {min-width:3em;text-align:right}
+#bank-row select {max-width:65%}
+.actions,.control {flex-wrap:wrap}
+#body.placing [data-rule=stem] polygon,#body.placing [data-rule=repeat] polygon {stroke:#743e0c;stroke-width:2.4;cursor:crosshair}
+.map-views {display:flex;gap:2px;padding:2px;background:#e9ede3;border:1px solid var(--line);border-radius:6px}
+.map-views button {font-size:12px;padding:4px 9px;background:transparent;border:1px solid transparent}
+.map-views [aria-pressed=true] {background:var(--light);border-color:#afbbac}
+#rule-view {position:relative}
+#layout {position:absolute;right:5px;top:4px;z-index:1}
+#attachment-map {display:block;width:100%;height:204px;background:#f2f4eb}
+.tissue-outlines polygon {fill:#aab391;fill-opacity:.34;stroke:#879674;stroke-width:.9}
+.tissue-outlines .fronds {fill:#7fbc97;stroke:#66896e}
+.tissue-outlines .gland {fill:#e1ad62;stroke:#b18756}
+.tissue-outlines .selected {fill-opacity:.65;stroke:var(--green);stroke-width:1.7}
+.attachments line {stroke:#526b56;stroke-width:2;stroke-linecap:round}
+.part-node {cursor:pointer;touch-action:none;user-select:none}
+.part-node.movable {cursor:grab}
+.part-node.movable:active {cursor:grabbing}
+.part-node circle {fill:#f3f4e7;stroke:var(--green);stroke-width:1.4}
+.part-node circle.hit {fill:transparent;stroke:none}
+.part-node text {font:600 10px ui-monospace,monospace;fill:var(--ink);text-anchor:middle;pointer-events:none}
+.part-node.selected circle:not(.hit) {fill:var(--green);stroke:#263e31}
+.part-node.selected text {fill:white}
+.socket-guides {pointer-events:none}
+.socket-guides circle {fill:#f8e2ae;fill-opacity:.4;stroke:#9c611e;stroke-width:2;stroke-dasharray:3 2}
+.socket-guides circle.target {fill:#efbb53;fill-opacity:.85;stroke-width:3}
+#part-key {display:flex;flex-wrap:wrap;gap:5px 10px;padding:7px 16px 2px}
+#part-key button {border:0;background:transparent;color:var(--green);font-size:12px;padding:2px}
+#part-key button[aria-pressed=true] {text-decoration:underline;text-underline-offset:3px}
+.map-hint {font-size:12px;color:var(--muted);padding:4px 18px 9px;border-bottom:1px solid var(--line)}
+.survival {margin-top:18px}
+.survival-grid {display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:24px;padding:15px 18px}
+.survival-grid p {font-size:13px;margin:5px 0;color:var(--muted)}
+.survival-grid p:first-of-type {color:var(--ink)}
+.survival-grid #feeding.mismatch {border-left:3px solid #a96b20;padding-left:8px;color:#693e10}
+.survival details {font-size:13px;margin-top:5px}
+.survival summary {cursor:pointer;color:var(--green)}
+@media(max-width:760px) {.survival-grid {grid-template-columns:1fr;gap:14px}}

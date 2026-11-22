@@ -36,6 +36,8 @@ pub(super) struct State {
     question: mesocosm_views::Succession,
     dev: mesocosm_views::Dev,
     question_open: bool,
+    can_watch: bool,
+    watching: bool,
     tick_reading: u64,
     review_open: bool,
     committed: Option<super::reading::CommittedSubject>,
@@ -67,6 +69,8 @@ impl State {
             question: empty_question(),
             dev: Default::default(),
             question_open: false,
+            can_watch: false,
+            watching: false,
             tick_reading: 0,
             review_open: false,
             committed: None,
@@ -141,6 +145,9 @@ impl State {
         let committed =
             super::reading::CommittedSubject::capture(host, sim, native.clone(), revision);
         self.tick_reading = sim.state().tick;
+        self.can_watch = r.current_loop_phase() == Some(mesocosm_runtime::continuation::LoopPhase::Running)
+            && r.critter().is_some_and(|id| sim.state().population.get(id).is_some_and(|e| e.alive));
+        self.watching = r.current_loop_phase() == Some(mesocosm_runtime::continuation::LoopPhase::Watching);
         self.review_open = r.review().is_some();
         // What the participant holds is marked on the map, bodiless or not:
         // the map asks nothing of a played critter, only its mark does.

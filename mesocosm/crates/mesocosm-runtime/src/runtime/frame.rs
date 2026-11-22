@@ -6,7 +6,7 @@
 //! attached once and replaced as the critter moves, so members outside it
 //! leave the physical path.
 
-use cosmograph::attention::{Region, WindowAttention};
+use cosmograph::attention::{Region, Target, WindowAttention};
 use cosmograph_host::world::World;
 use super::{Mesocosm, commit, session};
 use crate::runtime::translate::Refusal;
@@ -25,12 +25,17 @@ impl Mesocosm {
         let attention = {
             let s = session(world);
             let sim = &s.sim;
-            let Some(critter) = sim.plays(participant) else { return };
+            let watched = self.spatial.continuation.as_ref().and_then(|saved| saved.watched_critter);
+            let Some(critter) = sim.plays(participant).or(watched) else { return };
             let Some(t) = sim.genesis().rules.spatial_templates.as_ref() else { return };
-            let Some(at) = sim.state().spatial_poses.get(&critter) else { return };
-            let w = cosmograph::spatial::embodiment::site_window(t, at.pose.at);
-            let attention = WindowAttention { examined: Some(Region::Frame { site: at.site, min: w.min, max: w.max }),
-                ..Default::default() };
+            let examined = sim.state().spatial_poses.get(&critter).map(|at| {
+                let w = cosmograph::spatial::embodiment::site_window(t, at.pose.at);
+                Region::Frame { site: at.site, min: w.min, max: w.max }
+            });
+            if examined.is_none() && watched.is_none() { return; }
+            let pinned = watched.filter(|id| sim.state().population.get(*id)
+                .is_some_and(|e| e.alive)).map(Target::Entity).into_iter().collect();
+            let attention = WindowAttention { examined, pinned };
             let held = sim.window_for(participant, PROFILE)
                 .and_then(|w| sim.attention_window(participant, w.id()).ok());
             if held.is_some_and(|(_, _, value)| value == attention) { return; }

@@ -18,7 +18,7 @@ use crate::input;
 impl Host {
     /// The body the camera is on: the followed one, else the played one.
     pub(super) fn followed(&self) -> Option<Id> {
-        self.follow.or_else(|| self.runtime.critter())
+        self.follow.or_else(|| self.runtime.critter()).or_else(|| self.runtime.watched_critter())
     }
 
     /// Where the camera centres: the followed body's presentation spot, else

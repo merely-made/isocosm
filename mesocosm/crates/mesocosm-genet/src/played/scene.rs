@@ -201,15 +201,14 @@ pub fn placed_physical(sim: &Simulation, site: Id,
 /// the played body travels or lacks a supported pose. Only checked bodies draw.
 pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     game: &mesocosm_runtime::spatial::Game) -> Result<SiteScene, String> {
-    let id = played.ok_or("physical scene has no played native member")?;
-    let admitted = game.members.get(&id).filter(|held|
-        held.realized(sim).is_ok() && game.placement_unoccupied(sim, id).is_ok());
+    let admitted = played.and_then(|id| game.members.get(&id).filter(|held|
+        held.realized(sim).is_ok() && game.placement_unoccupied(sim, id).is_ok()));
     let (site, window) = if let Some(held) = admitted {
         (held.site.0, &held.window)
     } else {
         let templates = sim.genesis().rules.spatial_templates.as_ref()
-            .filter(|t| t.version >= 2).ok_or("played member has no current physical window")?;
-        (site_of(sim, played).ok_or("played member has no native site or journey")?, &templates.window)
+            .filter(|t| t.version >= 2).ok_or("no current physical window or terrain template")?;
+        (site_of(sim, played).ok_or("no native site to draw")?, &templates.window)
     };
     let volume = if cosmograph::spatial::embodiment::whole_site(sim) {
         let t = sim.genesis().rules.spatial_templates.as_ref().expect("site templates");

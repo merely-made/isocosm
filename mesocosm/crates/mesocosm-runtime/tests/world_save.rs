@@ -11,6 +11,101 @@ use cosmograph_host::{
     world::World,
 };
 use mesocosm_runtime::{GameSave, Runtime, runtime::MODE};
+use mesocosm_runtime::continuation::{self, LoopAction, LoopAnswer, LoopInput, LoopPhase};
+use cosmograph_overlay::{ParticipantHandle, Tick};
+
+fn answer(runtime: &mut Runtime, answer: LoopAnswer) -> Result<String, mesocosm_runtime::Refusal> {
+    let reading = runtime.loop_reading().unwrap();
+    let input = LoopInput {
+        kind: continuation::KIND.into(),
+        version: continuation::VERSION,
+        participant: ParticipantHandle(runtime.interim().participant),
+        tick: Tick(runtime.tick()),
+        expected: reading.cut,
+        action: LoopAction::Answer(answer),
+    };
+    runtime.submit_loop_input(&input)
+}
+
+#[test]
+fn leaving_a_living_critter_keeps_it_watchable_after_reopen_and_allows_reentry() {
+    verify_handoff(worlds::offered());
+}
+
+#[test]
+fn the_generated_spatial_clock_and_placements_survive_handoff_and_reopen() {
+    let mut founded = mesocosm_runtime::Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
+    let mut domain = founded.genesis.founding.clone().unwrap();
+    domain.ecology_rates = cosmograph::ecology::Rates::A1;
+    let bodies = domain.bodies.as_mut().unwrap();
+    bodies.hazard = [0; 2];
+    bodies.wound = [0; 2];
+    founded.genesis = domain.generate().unwrap();
+    for group in founded.genesis.population.groups.values_mut() {
+        group.count = 1;
+    }
+    for site in founded.genesis.sites.values_mut() {
+        site.conditions.extend([
+            ("terrain:elevation".into(), 64),
+            ("terrain:relief".into(), 0),
+            ("terrain:water".into(), 0),
+        ]);
+    }
+    cosmograph::spatial::embodiment::declare(&mut founded.genesis).unwrap();
+    let genesis = &founded.genesis;
+    let templates = genesis.rules.spatial_templates.as_ref().unwrap();
+    let (actor, neighbour) = templates.stands.values().find_map(|stands| {
+        let mut actors = stands.iter().filter_map(|stand| stand.actor);
+        Some((actors.next()?, actors.next()?))
+    }).expect("two placed playable bodies at a site");
+    for id in [actor, neighbour] {
+        founded.genesis.population.groups.get_mut(&id).unwrap().entity_mut().method =
+            cosmograph::schema::Method::Deliberative;
+    }
+    let runtime = Runtime::bench_placed(founded, worlds::RATE).unwrap();
+    let participant = runtime.interim().participant;
+    runtime.world().command(cosmograph::Command::Take { participant, critter: actor }).unwrap();
+    // Refresh the fixture's saved continuation over the selected native binding.
+    let saved = runtime.save_game().into_world_save().unwrap();
+    let runtime = Runtime::resume_world(saved, worlds::RATE, None).unwrap();
+    assert!(runtime.spatial().members.contains_key(&runtime.critter().unwrap()));
+    verify_handoff(runtime);
+}
+
+fn verify_handoff(mut original: Runtime) {
+    let critter = original.critter().unwrap();
+    let participant = original.interim().participant;
+    let bond = original.sim().bond(participant, critter);
+    let tick = original.tick();
+    answer(&mut original, LoopAnswer::Watch).unwrap();
+    assert_eq!(original.tick(), tick);
+    assert_eq!(original.critter(), None);
+    assert_eq!(original.watched_critter(), Some(critter));
+    assert_eq!(original.sim().bond(participant, critter), bond);
+    assert!(original.sim().state().population.get(critter).unwrap().alive);
+    assert!(original.view().shows(critter));
+
+    let bytes = original.save_world().unwrap().encode().unwrap();
+    let saved = Runtime::decode_world_save(&bytes).unwrap();
+    let mut reopened = Runtime::resume_world(saved, worlds::RATE, None).unwrap();
+    assert_eq!(reopened.watched_critter(), Some(critter));
+    assert_eq!(reopened.loop_reading().unwrap().phase, LoopPhase::Watching);
+    assert_eq!(reopened.step(3), 3);
+    assert_eq!(original.step(3), 3);
+    assert_eq!(reopened.tick(), tick + 3);
+    assert_eq!(reopened.save_world().unwrap(), original.save_world().unwrap());
+    assert_eq!(reopened.sim().plays(participant), None);
+    assert!(reopened.view().shows(critter));
+
+    let choices = reopened.loop_reading().unwrap().lineages;
+    assert!(choices.iter().any(|id| id.0 == critter));
+    let next = choices.into_iter().find(|id| id.0 != critter).expect("another living critter");
+    answer(&mut reopened, LoopAnswer::OtherLineage(next)).unwrap();
+    assert_eq!(reopened.critter(), Some(next.0));
+    assert_eq!(reopened.watched_critter(), None);
+    assert_eq!(reopened.loop_reading().unwrap().phase, LoopPhase::Running);
+    assert_eq!(reopened.sim().bond(participant, critter), bond);
+}
 
 #[test]
 fn legacy_game_import_loads_in_the_core_and_resumes_the_same_play() {
@@ -141,4 +236,37 @@ fn saving_after_an_endpoint_turn_keeps_its_newer_section() {
     let mut resumed = Runtime::resume_world(saved, worlds::RATE, None).unwrap();
     assert_eq!(resumed.fault(), Some("endpoint refusal"));
     assert_eq!(resumed.step(1), 0);
+}
+
+#[test]
+fn enter_edited_founding_joins_as_watcher_at_the_selected_tick() {
+    use cosmograph::{Command, Execution, Founding, Session};
+    use mesocosm_runtime::continuation::LoopPhase;
+    let founding = Founding { seed: 9, population: 42, sites: 1, ecology: true,
+        played: Some(cosmograph::directing::Played { lineage: 1, region_sites: 1 }),
+        ..Default::default() };
+    let mut preview = Session::new(founding.generate().unwrap(), Execution::Grouped).unwrap();
+    preview.advance(17).unwrap();
+    cosmograph::bench::inspect_first_actor(&mut preview).unwrap();
+    let input = serde_json::to_vec(&preview.save()).unwrap();
+    let unjoined = Runtime::decode_world_save(&input).unwrap();
+    assert!(Runtime::resume_world(unjoined, 6, None).is_err());
+    let game = Runtime::enter_founding(&input, 6, None).unwrap();
+    preview.command(Command::Join).unwrap();
+    assert_eq!(game.session().save(), preview.save());
+    assert_eq!(game.loop_reading().unwrap().phase, LoopPhase::Watching);
+    let saved = game.save_world().unwrap();
+    let mut reopened = Runtime::resume_world(saved, 6, None).unwrap();
+    assert_eq!(reopened.current_loop_phase(), Some(LoopPhase::Watching));
+    assert_eq!(reopened.session().save(), preview.save());
+    reopened.step(1);
+    assert_eq!(reopened.tick(), 18);
+    assert_eq!(reopened.loop_reading().unwrap().phase, LoopPhase::Watching);
+    answer(&mut reopened, LoopAnswer::NewWorld).unwrap();
+    answer(&mut reopened, LoopAnswer::Watch).unwrap();
+    let first = reopened.loop_reading().unwrap().lineages[0];
+    answer(&mut reopened, LoopAnswer::OtherLineage(first)).unwrap();
+    assert_eq!(reopened.critter(), Some(first.0));
+    assert!(reopened.spatial().continuation.as_ref().unwrap().founding_site.is_none());
+    assert!(Runtime::enter_founding(&serde_json::to_vec(&preview.save()).unwrap(), 6, None).is_err());
 }

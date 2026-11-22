@@ -547,6 +547,71 @@ odds and policy weights retain their own drift outside the unfolding.
   expresses it; what cannot be expressed is dropped and recorded as a
   finding.
 
+**Body-map founding and variation (2026-11-14, first slice in D34 and
+D37).** Found an editable lineage template from a body map,
+growth rules and traits bound to sites on that map. The map names the
+anatomy, its attachments and the regions that can express a trait. Shared
+catalog definitions give those traits costs and processes. A clade inherits
+its parent template and records the parameters that moved. The lineage's
+population varies within the template, using the same rules for authored
+templates and drawn ones.
+
+- Cosmograph accepts named maps in `Founding.body_maps`. The selected
+  lineage gets its map through ordinary founding, including native
+  reproduction and feeding setup. Seeded variation uses the compiled
+  recipe's per-run bounds. Use
+  [the editable example](../../shared/cosmograph/examples/body-map.toml)
+  with `cosmograph-bench --founding <file>`. The example has one producer
+  lineage with a repeatable region that binds to either a native frond or
+  a catalogue defence. It uses D40 to inherit the parent's variation.
+  The [native receipt](archive_docs/receipts/2026-11-09_lineage_rounds_plan_receipts.md#ordinary-body-map-founding-2026-11-14)
+  records the change in grazing, wounds, upkeep, births and survival,
+  plus the save and reopen check.
+- The [optional-gland map](../../shared/cosmograph/examples/optional-gland.toml)
+  uses the recipe's absence draw to found two forms of the same lineage.
+  Fixing fronds always grow. The optional gland has its own attachment and
+  the founder records the draw so generic births inherit the parent's form.
+  Both forms share soil and meet the same grazers. The
+  [competition receipt](archive_docs/receipts/2026-11-09_lineage_rounds_plan_receipts.md#gland-competition-within-a-lineage-2026-11-15)
+  records four seeded worlds across nine combinations of grazing and
+  gland upkeep. The [graphical founding editor](../README.md#found-a-plant-lineage)
+  opens that map, links developed parts to their growth rules, and saves the
+  selected native tick. The New World menu opens this editor. It can start
+  Mesocosm watching at that tick, recording Join as the first new command.
+  A fresh watcher starts at the first founding site and may take an available
+  deliberative grazer there. The mapped world and its directing rules are
+  selected before projecting history. The one-site unmapped fixture remains
+  available for the original competition.
+  Its defensive slot draws choices from the existing catalogue and native
+  lowering. The side stem can attach at its parent's base, middle or tip,
+  on either side. Stem variance and founder cohort size control native draws.
+  The quarter-turn view, frond flex and sway show placement and articulation
+  in the editor. Only founding edits change the saved world.
+- Put founding, inheritance and the readings in Cosmograph. Compile the
+  grammar to tagmata once per developmental revision where they suffice.
+  Make admitted catalog traits and their native processes available to
+  the same founding pass that draws the body map.
+  Give heritable edits stable anatomical addresses across expansions and
+  keep the source revision with each expressed variant. Keep paid growth,
+  wounds and other lived changes with the member. Isometer derives the
+  visible form for each view.
+- Keep variation shared where its consequences are shared. Count the
+  distribution of stage and functionally relevant body traits in cohorts as
+  the execution plan's cohort form permits. Keep correlations that an
+  interaction reads, such as size and defence together. When a member is
+  observed, its materialized anatomy must agree with the traits that
+  already affected its life. Carry a pinned member's realized variation
+  through handback and reopen.
+- Done when a native founding draws related but distinct lineages from
+  the same template. A mapped trait and one structural parameter each
+  change a named ecological interaction. The same edit and seed replay
+  from a save, the systems sheet names the reason for the change, and a
+  batched or shared body representation is compared with individually
+  developed bodies on the same draws. Read functional diversity,
+  persistence and refusals across held-out seeds as well as construction
+  time, retained bytes and simulation time. Native incidence of the
+  interacting traits belongs in that reading.
+
 ### LR7. Abilities and their routes
 An active move exists where the body's functions and systems can perform it
 (1233). Ordinary activity is paid inside upkeep, and exertion past a
@@ -882,6 +947,16 @@ and the next conditions (D31) are answered. Left:
   `Rule` matches elsewhere read `Rule::Repeat` only (`lineage/drift.rs`,
   `revise.rs`, `speciate.rs`), so a grammar holding any new rule is not
   drifted.
+- 2026-11-14, before body-map founding (D34, D37, LR6). Ordinary
+  `bodied::embody_within` assigns `grammar: None` and develops one body
+  per founder group. The tip-grown plant is a preset outside that path.
+  Repertoire lowers catalog parts to kinds and offers them during review.
+  D40 inherits a soma against the current recipe. Sampling a trait-bearing
+  body map at founding is still open. A matched release probe found
+  a small unfolding cost relative to constructing the native frames and
+  tracts. Distinct seeded draws often shared the same body in that probe.
+  See the [body-generation receipt](archive_docs/receipts/2026-11-09_lineage_rounds_plan_receipts.md#matched-body-development-2026-11-14).
+
 - 2026-11-12, from ALIEN (chrxh/alien), read from general knowledge and
   not from its source: its bodies are connected cells with a function
   each, built by a genome, as ours are. It keeps several kinds alive

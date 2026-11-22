@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frond competition · Mesocosm</title>
+<link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css">
+<style>
+.forms,.worlds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.forms article{display:flex;align-items:center;gap:1rem}.forms svg{width:34%;height:100px}.forms p{margin:.3rem 0}
+.panel.study{padding:1rem}.study h2{margin:0}.study svg.plot{width:100%;height:auto;margin:1rem 0}
+.broad{color:#315f45}.split{color:#9a4d25} a{color:inherit}.timeline{display:flex;align-items:center;gap:1rem;padding:1rem 0}.timeline input{flex:1}
+.study table{width:100%}.study th,.study td{text-align:right}.study th:first-child{text-align:left}.study table th{font-weight:500}
+#study-status{min-height:1.2em} @media(max-width:700px){.worlds,.forms{grid-template-columns:1fr}.timeline{flex-wrap:wrap}}
+</style></head>
+<body>
+<header><span class="brand">❧ Mesocosm</span><a href="/">Founding / Lineage editor</a><a href="/pocket">Resident pocket</a></header>
+<main><div class="title-row"><div><h1>Frond competition</h1><p>One lineage on one patch of ground. Both forms draw from the same light and soil.</p></div>
+<div class="actions"><label>World seed <input id="seed" type="number" min="0" max="4294967295" value="9" required></label>
+<label>Frond attachment <select id="facing"><option>Above</option><option>Below</option></select></label><button id="grow">Grow worlds</button></div></div>
+<details><summary>Edit the frond growth rule</summary>
+<div class="actions"><label>Broad frond <input id="whole" value="15 × 9 × 3" size="13"></label>
+<label>Each small frond <input id="piece" value="9 × 5 × 3" size="13"></label></div>
+<p>Enter width × height × depth in odd voxel counts. The three pieces must fit their bearer, keep the broad frond’s combined volume, and each carry one third of its fixing cells. Apply edits with Grow worlds.</p></details>
+<p id="study-status" role="status">Growing the two worlds…</p>
+<section class="forms" aria-label="Founder anatomy"></section>
+<div class="timeline"><button id="play" disabled>Play</button><label for="tick">World tick</label><input type="range" min="0" max="35" value="0" id="tick" disabled><output id="time" for="tick">0</output></div>
+<div class="worlds" aria-label="Paired worlds"></div>
+<p>Each exposed fixing cell can work while its frond holds one unit of plant tissue. Nine active cells earn one growth opportunity every scheduled turn. A successful act consumes one light and two soil.</p>
+</main><script type="module" src="/fronds.js"></script></body></html>

@@ -171,6 +171,12 @@ pub struct Continuation {
     pub proposed: Vec<SavedProposal>, pub happenings: Vec<Happening>, pub windows: FlowWindows,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expression: Option<SavedExpressionSource>,
+    /// The living body voluntarily left at handoff, retained as the watch focus.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub watched_critter: Option<Id>,
+    /// The first site shown to a newly joined watcher until they take a body.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub founding_site: Option<Id>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ended_lineage: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

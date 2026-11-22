@@ -7,18 +7,24 @@ use crate::{Refusal, FlowWindows, succession::Occasion};
 use cosmograph::{Session, Command, directing::{Aim, Toward, readings::{self, Mode, View}}};
 use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
 
-/// How a participant stands to the loop: playing its one body, or holding a
-/// lineage with no living body (case 1217).
+/// A participant may direct one body, hold a lineage, or watch after handoff.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(crate) enum Standing { Playing, Holding }
+enum Standing { Playing, Holding, Watching }
 
-fn access(session: &Session, access: OrdinaryAccess) -> Result<Standing, Refusal> {
+fn access(session: &Session, game: &Game, access: OrdinaryAccess) -> Result<Standing, Refusal> {
     // Mesocosm plays one body (its limit, case 1065): a participant who plays
     // several, by another product's TakeAlso, is not played here.
     if access.seat != Seat::Player { return Err(Refusal::NotPlayed); }
     if access.subject.is_some() && session.sim.played(access.participant.0).len() == 1
         && session.sim.plays(access.participant.0) == access.subject.map(|id| id.0) {
         return Ok(Standing::Playing);
+    }
+    if access.subject.is_none() && session.sim.plays(access.participant.0).is_none()
+        && game.continuation.as_ref().is_some_and(|saved|
+            saved.participant == access.participant.0
+                && matches!(saved.phase, LoopPhase::Watching | LoopPhase::NewWorldRequested)
+                && (saved.watched_critter.is_some() || saved.founding_site.is_some())) {
+        return Ok(Standing::Watching);
     }
     // A holder with no living body is admitted for the round and the handle;
     // one that holds nothing is not (case 1217).
@@ -31,7 +37,7 @@ fn access(session: &Session, access: OrdinaryAccess) -> Result<Standing, Refusal
 
 fn source(session: &Session, game: &Game, access: OrdinaryAccess, input: &LoopInput)
     -> Result<Standing, Refusal> {
-    let standing = self::access(session, access)?;
+    let standing = self::access(session, game, access)?;
     game.validate(session).map_err(Refusal::Sim)?;
     if input.kind != KIND || input.version != VERSION || input.participant != access.participant
         || input.tick.0 != session.sim.state().tick || input.expected != cut(session, game) {
@@ -57,7 +63,7 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
     let mut saved = Continuation { version: VERSION, participant: access.participant.0,
         settings: *settings, native: String::new(), native_entries: 0, native_tick: 0, physical: String::new(), phase: LoopPhase::Running,
         checkpoint: None, review: None, proposed: Vec::new(), happenings: Vec::new(),
-        windows: FlowWindows::new(), expression: None, ended_lineage: None, world_end: None,
+        windows: FlowWindows::new(), expression: None, watched_critter: None, founding_site: None, ended_lineage: None, world_end: None,
         queued: Vec::new(), round: None, origin: None, fault: None,
         ending: Default::default() };
     // A waiting epoch counts its span from here (case 1199).
@@ -71,7 +77,7 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
 pub(crate) fn visible(session: &Session, game: &Game, access: OrdinaryAccess) -> Result<View, Refusal> {
     // A holder with no body at all sees through no eye (case 1217).
     let Some(observer) = access.subject.map(|id| id.0) else {
-        return if super::holding::bodiless(session, access.participant.0) { Ok(View::default()) }
+        return if matches!(self::access(session, game, access), Ok(Standing::Holding | Standing::Watching)) { Ok(View::default()) }
             else { Err(Refusal::NotPlayed) };
     };
     // These global lifecycle controls reveal no bodies or inputs and need no
@@ -163,8 +169,19 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
             if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching)
                 || saved.world_end.is_some() || !offered.lineages.contains(critter) { return Err(Refusal::Unasked); }
             candidate.command(Command::Take { participant: saved.participant, critter: critter.0 }).map_err(Refusal::Sim)?;
+            saved.watched_critter = None;
+            saved.founding_site = None;
             saved.ended_lineage = None;
             saved.phase = LoopPhase::Running;
+        },
+        LoopAnswer::Watch if saved.phase == LoopPhase::Running && saved.world_end.is_none() => {
+            let critter = access.subject.map(|id| id.0).filter(|id| candidate.sim.state()
+                .population.get(*id).is_some_and(|e| e.alive)).ok_or(Refusal::NotPlayed)?;
+            if standing != Standing::Playing { return Err(Refusal::NotPlayed); }
+            candidate.command(Command::Leave { participant: saved.participant, critter }).map_err(Refusal::Sim)?;
+            saved.watched_critter = Some(critter);
+            saved.ending.par = None;
+            saved.phase = LoopPhase::Watching;
         },
         LoopAnswer::Start { lineage, site } => {
             if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching) || saved.world_end.is_some() {
@@ -198,7 +215,8 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
         },
         LoopAnswer::Forfeit => {
             if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching)
-                || saved.world_end.is_some() || saved.ending.forfeit { return Err(Refusal::Unasked); }
+                || saved.watched_critter.is_some() || saved.world_end.is_some()
+                || saved.ending.forfeit { return Err(Refusal::Unasked); }
             saved.ending.forfeit = true;
             saved.phase = LoopPhase::Watching;
         },
@@ -211,7 +229,11 @@ pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
     next.continuation = Some(saved); next.version = next.current_version();
     next.validate(&candidate).map_err(Refusal::Sim)?;
     *session = candidate; *game = next;
-    Ok("answered exact saved loop question".into())
+    Ok(match answer {
+        LoopAnswer::Watch => "Watching this world",
+        LoopAnswer::OtherLineage(_) if standing == Standing::Watching => "Directing the selected critter",
+        _ => "answered exact saved loop question",
+    }.into())
 }
 
 /// A holding answer: the sim's command, the loop's question and phase left
@@ -267,12 +289,13 @@ mod one_body_tests {
         let seat = |s: &Session| OrdinaryAccess { participant: ParticipantHandle(p), seat: Seat::Player,
             subject: s.sim.plays(p).map(EntityHandle) };
         session.command(Command::Take { participant: p, critter: bodies[0] }).unwrap();
-        assert!(access(&session, seat(&session)).is_ok());
+        let game = Game::default();
+        assert!(access(&session, &game, seat(&session)).is_ok());
         session.command(Command::TakeAlso { participant: p, critter: bodies[1] }).unwrap();
-        assert!(matches!(access(&session, seat(&session)), Err(Refusal::NotPlayed)));
+        assert!(matches!(access(&session, &game, seat(&session)), Err(Refusal::NotPlayed)));
         session.command(Command::Leave { participant: p, critter: bodies[1] }).unwrap();
-        assert!(access(&session, seat(&session)).is_ok());
+        assert!(access(&session, &game, seat(&session)).is_ok());
         session.command(Command::Leave { participant: p, critter: bodies[0] }).unwrap();
-        assert!(matches!(access(&session, seat(&session)), Err(Refusal::NotPlayed)));
+        assert!(matches!(access(&session, &game, seat(&session)), Err(Refusal::NotPlayed)));
     }
 }

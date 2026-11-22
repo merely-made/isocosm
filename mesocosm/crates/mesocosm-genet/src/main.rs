@@ -231,9 +231,10 @@ fn main() {
             "--no-trace" => no_trace = true,
             "--receipt" => receipt = args.next().map(PathBuf::from),
             "--replay" => replay = args.next().map(PathBuf::from),
-            "--watch" => match args.next().map(PathBuf::from) {
-                Some(path) => config.watch = Some(path),
-                None => fail("--watch wants a recorded save"),
+            "--watch" | "--enter-world" => {
+                if config.watch.is_some() { fail("select a single world to enter or resume"); }
+                config.enter_founding = arg == "--enter-world";
+                config.watch = Some(args.next().map(PathBuf::from).unwrap_or_else(|| fail("missing saved world path")));
             },
             "--spatial" => match args.next().map(PathBuf::from) {
                 Some(path) => config.spatial = Some(path),
@@ -504,6 +505,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --no-trace      omit the session save (default behavior remains enabled)
   --receipt PATH  write the run's receipt
   --replay PATH   replay a recorded save headlessly and check its hash
+  --enter-world PATH  join an unplayed Cosmograph save as a watcher at its saved tick
   --watch PATH    take a recorded save up and play on in the window
   --spatial PATH  load explicit authored poses and operation geometry
   --graft PATH    apply an explicit native Carry input after spatial admission
@@ -532,6 +534,7 @@ at a checkpoint the keys narrow:
   T      take the body on offer
   Tab    at a loss with several heirs, move among them; Enter takes the chosen one
 at any time in a round (a refusal shows in the vitals notice):
+  W      stop directing and watch the critter while the world runs
   D      call the round (waiting or continuous, once the span has passed)
   A      extend a capped round past its span, once
   H      forfeit the round when no body of the line is left
@@ -539,10 +542,10 @@ at the boundary the trait board comes up:
   Tab    move among the offers
   R      commit the selected offer
 when the lineage or authored global world ends, or while watching:
-  Up/Down or Tab select a native-visible other body, a start (a lineage and a
+  Up/Down or Tab select a visible body, a start (a lineage and a
   site; a fringe one is a journey), Watch, or New World
   Enter or click the pane applies the selected choice; W watches, N requests
-  a new world. Esc saves the configured trace and quits; a new run starts
+  a new world. At New World, E opens the lineage editor. Esc saves the configured trace and quits; a new run starts
   separately through the startup flags, and --watch PATH resumes this world.
   At a pending new-world request, W cancels the request and keeps watching.
 with --dev, host-only keys (none reaches the session's log):

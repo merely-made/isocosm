@@ -49,6 +49,27 @@ fn host(rounds: continuation::Rounds, condition: bool) -> Host {
 fn press(host: &mut Host, key: &str) -> bool { host.try_continuation_key(&Key::Character(key.into())) }
 
 #[test]
+fn watch_key_keeps_the_scene_on_the_living_critter_and_reenters_as_time_runs() {
+    let mut host = host(continuation::Rounds::Capped, false);
+    let former = host.runtime.critter().unwrap();
+    assert!(press(&mut host, "w"));
+    assert_eq!(host.runtime.critter(), None);
+    assert_eq!(host.followed(), Some(former));
+    host.refresh_scene();
+    let scene = host.scene.as_ref().unwrap();
+    assert!(scene.body(former).is_some());
+    assert_eq!(scene.played, None);
+
+    let shown = host.prepared_continuation().unwrap();
+    let next = shown.lineages.iter().copied().find(|id| id.0 != former).unwrap();
+    host.mark_continuation_presented(Some(shown));
+    assert_eq!(host.runtime.step(1), 1);
+    host.submit_continuation(LoopAnswer::OtherLineage(next));
+    assert_eq!(host.runtime.critter(), Some(next.0));
+    assert_eq!(host.followed(), Some(next.0));
+}
+
+#[test]
 fn the_round_keys_send_their_answers_and_a_refusal_shows() {
     use continuation::Rounds;
     let mut host = host(Rounds::Capped, false);

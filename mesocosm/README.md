@@ -43,6 +43,97 @@ game and the [sim plan](design_docs/2026-10-28_sim_plan.md) for Cosmograph.
 The standing caveat outranks all of it: the game must make somebody want
 another run.
 
+## Found a plant lineage
+
+**Compare frond forms** opens two ordinary foundings on a shared time slider.
+The plant founders have the same IDs, bodies and starting stocks in both.
+The second world also stocks grazers. Edit the voxel dimensions, then choose
+**Grow worlds** to try a body map. Its partition rule must fit nine fixing
+cells and the same total frond volume into one blade or three. At each tick
+the charts show plant counts and the tables report exposed cells, cells
+backed by local plant tissue, soil fixed, births and biomass eaten. Each
+world can be saved at the selected tick. The default map is in the
+[frond allocation template](../shared/cosmograph/examples/frond-allocation.toml).
+
+The [lineage editor](tools/lineage-editor/) opens the ordinary
+[optional-gland founding template](../shared/cosmograph/examples/optional-gland.toml).
+The initial world lays four mapped sites and gives the grazer lineage the native
+directing rules. Choose reactive grazers for a mapped ecology without directing, or
+**Single site** to reproduce the original unmapped competition.
+**Attachments** draws one numbered node per part the selected founder grew.
+Edges follow the physical attachments. Select the same part in either view to
+inspect its parent, tissue and growth rule. Drag a side stem to a base, middle
+or tip socket, or drag a frond above or below its stem. The inspector offers the
+same edits by keyboard. Edits apply to the lineage and regrow all founder bodies.
+**Growth rules** shows how the template produces the selected anatomy.
+The defensive organ offers plant tissues from the native catalogue with the
+spine and toxin strengths read by the current rules. Repeat controls the stem
+length, its seeded variation and whether initial bodies are drawn in pairs or
+individually. Turning the specimen, flexing its fronds and playing the sway preview are view controls.
+
+**Survival check** reads the selected founder's fixing tissue, canopy and site.
+It reports the selected form's head count, births, soil converted, upkeep and
+grazing over 35 native ticks. Three additional seeds sample the same edited
+founding with different founders and habitats. In this template, moving all fronds
+below the stem leaves the plant without exposed fixing tissue. Light-driven
+growth then stops while upkeep and grazing continue. One exposed fixing plate
+allows an act at the configured rate if the site can supply its light and soil.
+The founding template enables this shared rule with `bodies.canopy_growth`.
+The competition timeline scrubs the chosen world independently of these trials.
+**Save world at tick** downloads a Cosmograph save at the selected tick.
+**Export template** downloads the TOML for founding that world again.
+**Enter in Mesocosm** opens a new game window in Watching at the selected tick.
+Entering appends one native Join. The entry and the game save on exit have
+separate paths under `~/Mesocosm/worlds/`; pass `--world-dir` to choose another.
+At the game's New World screen, E opens the editor again. The browser editor
+uses the native executable supplied to the launcher.
+
+**Grow a resident pocket** opens a two-founder experiment. Switch the fungal
+lining or the resident's exchange organ on or off before founding. Scrub both
+paths together to inspect their anatomy, stocks and cumulative soil, sugar and
+carrying costs. The departure removes their contact on one path. Both keep
+living on the same patch. Either timeline can be saved or entered at its
+selected tick, including the founding contact and any departure.
+
+From the umbrella repository in the local Code workspace, run:
+
+```sh
+python3 /Users/markik/Code/tools/build_storage.py build --lane cosmograph-world-time \
+  --cwd "$PWD/shared/cosmograph" -- build --release --locked --offline \
+  --example lineage_preview --example pocket_preview --bin cosmograph-bench
+python3 /Users/markik/Code/tools/build_storage.py build --lane mesocosm-scene-composition \
+  --cwd "$PWD/mesocosm" -- build --release --locked --offline -p mesocosm-genet --bin mesocosm-genet
+python3 mesocosm/tools/lineage-editor/serve.py --open \
+  --game /Users/markik/Code/targets/lanes/mesocosm-scene-composition/artifacts/release/mesocosm-genet \
+  --bin-dir /Users/markik/Code/targets/lanes/cosmograph-world-time/artifacts/release
+```
+
+Elsewhere, build the same two release targets in `shared/cosmograph` and pass
+Cargo's release directory to the Python launcher. A game started independently
+uses the running editor or looks beside its executable for the founding tools.
+Set `MESOCOSM_EDITOR_BIN_DIR` if they are built separately. A bare founding
+save can also be opened with `mesocosm-genet --enter-world <entry.json>`.
+Resume the game's subsequent `world.json` with `--watch`. The editor runs on loopback
+and requires Python 3 and a browser. Reopen a downloaded world with
+`cosmograph-bench --load <save.json> --ticks 18 --output <continued.json>`.
+
+### Root and litter trial
+
+The seed 9 root trial divides 24 units of phosphorus between a plant's root
+zone and litter accessible to the fungus. It forks at tick 6 and records each
+partner through tick 24 with and without contact. From the repository root,
+choose an empty output directory for the saves and report.
+
+```sh
+trial=/path/to/root-trial
+python3 /Users/markik/Code/tools/build_storage.py build --lane cosmograph-world-time \
+  --cwd "$PWD/shared/cosmograph" -- run --release --locked --offline --example root_patch -- "$trial"
+python3 mesocosm/tools/lineage-editor/root_report.py "$trial"
+```
+
+Open `index.html` in that directory to scrub the forks, compare light and
+phosphorus supply, and open either native save.
+
 ## Use
 
 ```sh

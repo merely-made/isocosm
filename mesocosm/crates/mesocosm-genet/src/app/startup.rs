@@ -334,6 +334,9 @@ pub(super) fn configured(config: &HostConfig, authored: &mesocosm_runtime::Autho
                         .map_err(|why| why.to_string())
                 })
                 .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
+            (Some(path), None) if config.enter_founding => std::fs::read(path)
+                .map_err(|why| format!("{}: {why}", path.display()))
+                .and_then(|bytes| Runtime::enter_founding(&bytes, config.ticks_per_second, config.mode)),
             (Some(path), None) => {
                 crate::played::resume_with_mode(path, config.ticks_per_second, config.mode)
             },
