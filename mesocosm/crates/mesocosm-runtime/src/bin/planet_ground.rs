@@ -4,6 +4,8 @@
 //! Observe a physical sibling of a planet founding through the ordinary Mesocosm spatial clock.
 #[path = "planet_ground/departure.rs"]
 mod departure;
+#[path = "planet_ground/field.rs"]
+mod field;
 #[path = "../../../../../shared/cosmograph/examples/planet_atlas/observation.rs"]
 mod observation;
 use cosmograph::{
@@ -26,6 +28,7 @@ struct Branch {
     session: Session,
     game: Game,
     actor: u64,
+    field_site: Option<u64>,
     observer: u64,
 }
 
@@ -54,16 +57,14 @@ fn boxes(
 }
 
 impl Branch {
-    fn found(parent: &Path, actor: u64) -> Result<Self> {
+    fn found(parent: &Path, actor: Option<u64>, field_site: Option<u64>) -> Result<Self> {
         let parent = Session::load_json(&fs::read(parent)?, Execution::Grouped)?;
         if parent.sim.state().tick != 0 {
             return Err("a founding save is required".into());
         }
         let mut g = parent.sim.genesis().clone();
-        let site = g
-            .population
-            .get(actor)
-            .and_then(|e| e.resident_site())
+        let site = field_site
+            .or_else(|| g.population.get(actor?).and_then(|e| e.resident_site()))
             .ok_or("resident missing at founding")?;
         let parent_digest = parent.save().genesis_digest;
         g.world.parent_world = Some(parent_digest.clone());
@@ -71,7 +72,10 @@ impl Branch {
         g.rules.foreground_walks = true;
         let side = g.world.footprint.ok_or("missing site extent")?.side as i64;
         let mut session = Session::new(g, Execution::Grouped)?;
-        session.branch = format!("ground-{actor}-{}", &parent_digest[..12]);
+        session.branch = match actor {
+            Some(id) => format!("ground-{id}-{}", &parent_digest[..12]),
+            None => format!("field-{site}-{}", &parent_digest[..12]),
+        };
         let mut game = Game::default();
         if !game.found_generated(&mut session)? {
             return Err("physical founding unavailable".into());
@@ -90,7 +94,7 @@ impl Branch {
                     min: [0; 2],
                     max: [side; 2],
                 }),
-                pinned: [Target::Entity(actor)].into(),
+                pinned: actor.into_iter().map(Target::Entity).collect(),
                 ..Default::default()
             },
         )?;
@@ -98,12 +102,16 @@ impl Branch {
             session,
             game,
             observer,
-            actor,
+            actor: actor.unwrap_or_default(),
+            field_site,
         })
     }
 
     fn frame(&self, flows: &[cosmograph::flows::Flow]) -> Result<Value> {
-        let mut f = observation::frame(&self.session, flows)?;
+        let mut f = match self.field_site {
+            Some(site) => field::frame(self, flows, site)?,
+            None => observation::frame(&self.session, flows)?,
+        };
         let sim = &self.session.sim;
         let mut poses = vec![];
         for (&id, r) in &sim.state().spatial_poses {
@@ -119,7 +127,9 @@ impl Branch {
             );
         }
         f["poses"] = json!(poses);
-        f["observer"] = json!(self.actor);
+        if self.field_site.is_none() {
+            f["observer"] = json!(self.actor);
+        }
         f["branch"] = json!(self.session.branch);
         Ok(f)
     }
@@ -137,6 +147,14 @@ impl Branch {
         let Some(site) = destination else {
             return Ok(());
         };
+        self.examine(site)
+    }
+
+    fn examine(&mut self, site: u64) -> Result<()> {
+        let sim = &self.session.sim;
+        if !sim.state().sites.contains_key(&site) {
+            return Err("unknown site".into());
+        }
         let window = sim
             .window_for(self.observer, "mesocosm")
             .ok_or("observation window missing")?;
@@ -161,7 +179,9 @@ impl Branch {
     }
 
     fn next(&mut self) -> Result<Value> {
-        self.follow_arrival()?;
+        if self.field_site.is_none() {
+            self.follow_arrival()?;
+        }
         let walks = world_foreground_walks(&self.session.sim, self.observer);
         let mut handbacks = vec![];
         let mut paths = vec![];
@@ -198,7 +218,8 @@ impl Branch {
             .get(self.actor)
             .and_then(|e| e.journey)
             .filter(|j| j.departed == candidate.sim.state().tick);
-        if let Some(trip) = trip
+        if self.field_site.is_none()
+            && let Some(trip) = trip
             && !handbacks.iter().any(|h| h.actor == self.actor)
             && let Some((exit, path)) = departure::walk(&self.session.sim, self.actor, trip)?
         {
@@ -287,11 +308,14 @@ impl Branch {
     fn terrain(&self) -> Result<Value> {
         let mut t = observation::terrain(&self.session)?;
         let sim = &self.session.sim;
-        let site = sim
-            .state()
-            .population
-            .get(self.actor)
-            .and_then(|e| e.resident_site())
+        let site = self
+            .field_site
+            .or_else(|| {
+                sim.state()
+                    .population
+                    .get(self.actor)
+                    .and_then(|e| e.resident_site())
+            })
             .ok_or("missing focus")?;
         let view = cosmograph::terrain::View::of(sim.genesis())?;
         let side = view.footprint().side;
@@ -316,7 +340,11 @@ impl Branch {
     }
 
     fn save(&self) -> Value {
-        json!({"native":self.session.save(),"game":self.game,"observer":self.observer,"actor":self.actor})
+        let mut saved = json!({"native":self.session.save(),"game":self.game,"observer":self.observer,"actor":self.actor});
+        if let Some(site) = self.field_site {
+            saved["fieldSite"] = json!(site);
+        }
+        saved
     }
     fn reopen(path: &Path) -> Result<Self> {
         let v: Value = serde_json::from_slice(&fs::read(path)?)?;
@@ -326,6 +354,7 @@ impl Branch {
         Ok(Self {
             session,
             game,
+            field_site: v["fieldSite"].as_u64(),
             actor: v["actor"].as_u64().ok_or("missing actor")?,
             observer: v["observer"].as_u64().ok_or("missing observer")?,
         })
@@ -335,6 +364,9 @@ impl Branch {
 fn main() -> Result<()> {
     let args: Vec<_> = env::args().skip(1).collect();
     match args.as_slice() {
+        [mode, parent, site, dir] if mode == "field" => {
+            field::found(Path::new(parent), site.parse()?, Path::new(dir))?
+        },
         [mode, parent, actor, dir, n] if mode == "branch" => {
             let dir = Path::new(dir);
             let ticks = n.parse::<u32>()?;
@@ -342,7 +374,7 @@ fn main() -> Result<()> {
             if fs::read_dir(dir)?.next().is_some() {
                 return Err("the branch output directory must be empty".into());
             }
-            let mut b = Branch::found(Path::new(parent), actor.parse()?)?;
+            let mut b = Branch::found(Path::new(parent), Some(actor.parse()?), None)?;
             let write = |name: &str, v: &Value| -> Result<()> {
                 fs::write(dir.join(name), serde_json::to_vec(v)?)?;
                 Ok(())
@@ -391,6 +423,13 @@ fn main() -> Result<()> {
                 let f = match line?.as_str() {
                     "now" => b.frame(&[])?,
                     "next" => b.next()?,
+                    visit if b.field_site.is_some() && visit.starts_with("visit ") => {
+                        let site = visit[6..].parse()?;
+                        b.examine(site)?;
+                        b.field_site = Some(site);
+                        let frame = b.next()?;
+                        json!({"frame":frame,"save":b.save()})
+                    },
                     _ => return Err("expected next or now".into()),
                 };
                 serde_json::to_writer(&mut out, &f)?;
@@ -400,7 +439,7 @@ fn main() -> Result<()> {
         },
         _ => {
             return Err(
-                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | watch SAVE".into(),
+                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | watch SAVE".into(),
             );
         },
     };

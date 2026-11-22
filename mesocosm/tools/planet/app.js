@@ -277,6 +277,7 @@ async function openPlanet() {
   function refresh() {
     const { a, last, lastTick } = watchState()
     if (last) site = anchored(last) ?? site
+    $('field-link').href = 'field?site=' + site
     $('seed').textContent = terrain.seed
     $('tick').textContent = 'Tick ' + tick
     $('scrub').value = tick

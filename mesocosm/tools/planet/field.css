@@ -1,0 +1,149 @@
+header nav a,
+#field-link {
+  color: #335947;
+  text-decoration: none;
+  border-bottom: 1px solid #839987;
+  padding: 0.25em;
+}
+.field-heading {
+  margin-bottom: 12px;
+  gap: 8px;
+}
+.field-heading p {
+  margin: 0 0 4px;
+  color: #4b6a54;
+}
+.field-heading label {
+  display: grid;
+  gap: 3px;
+  font-size: 12px;
+  color: #435749;
+}
+select {
+  font: inherit;
+  font-size: 14px;
+  color: #293e33;
+  background: #faf9ef;
+  border: 1px solid #a4b19e;
+  border-radius: 4px;
+  padding: 5px;
+  max-width: 40vw;
+}
+#field {
+  height: clamp(365px, 57vh, 670px);
+  background: #223c36;
+}
+.maphead span,
+#extent {
+  background: #17372ddc;
+  color: #f2f1db;
+  padding: 4px 7px;
+  border-radius: 2px;
+}
+#neighbors,
+.clock {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+#neighbors button {
+  flex: 1;
+  font-size: 13px;
+  padding: 5px 4px;
+}
+.clock input {
+  flex: 1;
+  min-width: 55px;
+  accent-color: #406c55;
+}
+.clock output {
+  min-width: 48px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+#roster,
+#flows {
+  max-height: 245px;
+  overflow: auto;
+}
+#roster button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  gap: 9px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #d0d5c7;
+  border-radius: 0;
+  padding: 3px 0;
+}
+#roster button:hover,
+#roster button[aria-pressed='true'] {
+  background: #e1e7d8;
+}
+#roster canvas {
+  background: #e7eadc;
+  border: 1px solid #d4d8c9;
+  border-radius: 3px;
+}
+#roster small,
+.event small {
+  display: block;
+  color: #4a5e50;
+  line-height: 1.35;
+}
+#census,
+#resolution,
+#status,
+.quiet {
+  color: #526356;
+  font-size: 13px;
+}
+.event,
+.balance {
+  padding: 5px 0;
+  margin: 0;
+  font-size: 14px;
+}
+.balance {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d5d8cb;
+  font-variant-numeric: tabular-nums;
+}
+#stores {
+  max-height: 160px;
+  overflow: auto;
+}
+@media (max-width: 760px) {
+  #field {
+    height: 44vh;
+    min-height: 285px;
+  }
+  #neighbors {
+    gap: 3px;
+  }
+  .field-heading label {
+    font-size: 11px;
+  }
+  .field-heading h2 {
+    font-size: 29px;
+  }
+}
+
+@media (max-width: 760px) {
+  #mapfoot {
+    gap: 4px;
+  }
+  #extent,
+  .zoom button {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .zoom button {
+    padding: 5px 7px;
+  }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="field.css" />
+    <title>Field survey · Mesocosm</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <span class="series">Mesocosm · Field branch</span>
+          <h1>Field survey</h1>
+        </div>
+        <nav aria-label="World views"><a href="./">Original atlas ↗</a></nav>
+      </header>
+      <div class="layout">
+        <section>
+          <div class="row field-heading">
+            <div>
+              <p id="planet" class="eyebrow"></p>
+              <h2 id="place">Opening the field…</h2>
+            </div>
+            <label
+              >Visit a site
+              <select id="sites"></select
+            ></label>
+          </div>
+          <div class="viewer">
+            <canvas
+              id="field"
+              tabindex="0"
+              aria-label="Overhead habitat. Drag to pan or select a body."
+            ></canvas>
+            <div class="maphead"><span id="lens">Ground survey</span><span>N ↑</span></div>
+            <div id="mapfoot">
+              <span id="extent"></span>
+              <div class="zoom">
+                <button id="orbit">Globe</button
+                ><span class="zoom" id="ground-tools"
+                  ><button id="fit">Whole site</button
+                  ><button id="less" aria-label="Zoom out">−</button
+                  ><button id="more" aria-label="Zoom in">+</button></span
+                >
+              </div>
+            </div>
+          </div>
+          <div id="neighbors" aria-label="Neighboring sites"></div>
+          <div class="clock">
+            <button id="play" disabled>Play</button><button id="step" disabled>Next tick</button
+            ><input
+              id="scrub"
+              aria-label="World tick"
+              type="range"
+              min="0"
+              max="0"
+              value="0"
+            /><output id="tick"></output><button id="latest">Latest</button>
+          </div>
+          <p id="status" aria-live="polite"></p>
+        </section>
+        <aside>
+          <section>
+            <h3>Residents</h3>
+            <p id="census"></p>
+            <div id="roster"></div>
+            <p id="resolution"></p>
+          </section>
+          <section>
+            <h3>Field observations</h3>
+            <div id="flows"></div>
+          </section>
+          <section>
+            <h3>Site stores</h3>
+            <div id="stores"></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script type="module" src="field.js"></script>
+  </body>
+</html>

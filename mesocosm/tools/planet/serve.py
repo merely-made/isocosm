@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import subprocess
 from threading import Lock
+from field_server import FieldTrip
 from urllib.parse import urlsplit, parse_qs
 
 HERE = Path(__file__).resolve().parent
@@ -69,10 +70,39 @@ def run():
     parser.add_argument("directory", type=Path)
     parser.add_argument("binary", type=Path)
     parser.add_argument("--port", type=int, default=0)
+    parser.add_argument("--field", type=Path, help="an independent native field founding to visit")
     args = parser.parse_args()
+    field = FieldTrip(args.field, args.binary) if args.field else None
     timeline = Timeline(args.directory, args.binary)
 
     class Handler(BaseHTTPRequestHandler):
+        def send_data(self, data, kind):
+            self.send_response(200)
+            self.send_header("Content-Type", kind)
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(data)
+
+        def do_POST(self):
+            if self.path != "/field/advance" or field is None:
+                return self.send_error(404)
+            if self.headers.get_content_type() != "application/json":
+                return self.send_error(415)
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                if not 0 < length <= 256:
+                    return self.send_error(400)
+                body = json.loads(self.rfile.read(length))
+                data = field.advance(body["tick"], body["site"])
+                self.send_data(json.dumps(data,separators=(",",":")).encode(), "application/json")
+            except (ValueError, TypeError, KeyError) as err:
+                self.send_error(400, str(err))
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            except RuntimeError as err:
+                self.send_error(503, str(err))
+
         def do_GET(self):
             target = urlsplit(self.path)
             key = target.path.removeprefix("/")
@@ -80,6 +110,18 @@ def run():
                 if key in STATIC:
                     name, kind = STATIC[key]
                     data = (HERE / name).read_bytes()
+                    if key == "" and field:
+                        data = data.replace(b'id="field-link" hidden', b'id="field-link"')
+                elif field and key in ("field", "field.js", "field-map.js", "field.css"):
+                    name = "field.html" if key == "field" else key
+                    kind = {"html":"text/html","js":"text/javascript","css":"text/css"}[name.split(".")[-1]]
+                    data = (HERE / name).read_bytes()
+                elif field and key == "field/terrain":
+                    data, kind = (args.field / "terrain.json").read_bytes(), "application/json"
+                elif field and key == "field/frame":
+                    params = parse_qs(target.query)
+                    tick = int(params["tick"][0]) if "tick" in params else None
+                    data, kind = json.dumps(field.frame(tick),separators=(",",":")).encode(), "application/json"
                 elif key in ("terrain.json", "frames.json", "founding.json"):
                     data, kind = (args.directory / key).read_bytes(), "application/json"
                 elif key == "frame":
@@ -88,12 +130,7 @@ def run():
                     kind = "application/json"
                 else:
                     return self.send_error(404)
-                self.send_response(200)
-                self.send_header("Content-Type", kind)
-                self.send_header("Content-Length", str(len(data)))
-                self.send_header("Cache-Control", "no-store")
-                self.end_headers()
-                self.wfile.write(data)
+                self.send_data(data, kind)
             except ValueError as err:
                 self.send_error(400, str(err))
             except (BrokenPipeError, ConnectionResetError):
@@ -107,6 +144,8 @@ def run():
             server.serve_forever()
     finally:
         timeline.close()
+        if field:
+            field.close()
 
 
 if __name__ == "__main__":
