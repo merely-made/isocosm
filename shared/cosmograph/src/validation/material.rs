@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{Result, rules::{Query, Rules}};
+use crate::{Result, rules::{AccountKind, Query, Rules}};
 
 pub(super) fn catalogue(rules: &Rules) -> Result<()> {
     crate::institutions::validate(rules)?;
@@ -20,6 +20,15 @@ pub(super) fn catalogue(rules: &Rules) -> Result<()> {
 }
 
 pub(super) fn query(rules: &Rules, query: &Query) -> Result<()> {
+    if let Query::FixingShare { tissue, budget, period } = query {
+        let tissue_account = matches!(
+            rules.accounts.get(tissue),
+            Some(AccountKind::Matter { reserve: false, provision: false, .. })
+        );
+        if *budget == 0 || *period == 0 || !tissue_account {
+            return Err("fixing share needs tissue, a positive cell budget and a cadence".into());
+        }
+    }
     if let Query::Project { definition, process, .. } = query {
         if !rules.projects.as_ref().is_some_and(|catalogue|
             catalogue.definitions.contains_key(definition))

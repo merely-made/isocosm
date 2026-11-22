@@ -345,9 +345,11 @@ Lifting samples by seed, conditioned on every asserted fact; restriction
 conserves the accounts back. A process's coarse form derives from its one
 definition, so scripted hooks run only in the foreground.
 
-*Not yet built:* the cohort form (the execution plan's E4 and E6), waiting on
-the mass law and the two-year bar (1166); its speed bar is measured first
-(1164).
+*Implementation status.* A1 ecology can band populations and
+[count eligible reactive births](../shared/cosmograph/src/schedule/births.rs)
+without creating personal histories. Advancing whole regions over a span by
+certified cohort rates remains open in execution E4 and E6. The speed and
+two-year ecology gates are cases 1164 and 1166.
 
 Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, 1052, 1163, 1164, 1165, 1166, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area the one sim's cohort form, mass-law demography and mass-derived encounters, fitted only where checks fail.
 
