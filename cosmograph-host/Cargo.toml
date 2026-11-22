@@ -68,7 +68,6 @@ rust-version = "1.97.1"
 
 [patch.crates-io]
 document-session-api = { git = "https://github.com/merely-made/genet.git", branch = "main" }
-light-file-dialog = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 armillary = { version = "0.1.1", git = "https://github.com/merely-made/armillary.git", branch = "main" }
 fieldbook = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
 hodograph = { git = "https://github.com/merely-made/eidetic.git", branch = "main" }
