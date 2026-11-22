@@ -3,7 +3,7 @@
 
 use super::{Bench, Child, sim::button};
 use cambium::{el, text};
-use mesocosm_runtime::refuge::{self, DAY, Observation, Pair, Patch};
+use mesocosm_runtime::refuge::{self, DAY, MeadowChange, Observation, Pair, Patch};
 use std::sync::mpsc::{self, Receiver, TryRecvError};
 
 enum Message {
@@ -16,6 +16,7 @@ pub(super) struct Panel {
     worker: Option<Receiver<Message>>,
     samples: Vec<Pair>,
     selected: usize,
+    when: MeadowChange,
     nudge: bool,
     error: Option<String>,
 }
@@ -26,21 +27,24 @@ impl Panel {
     }
 
     fn start(bench: &mut Bench, nudge: bool) {
+        let Some(when) = bench.refuge.as_ref().map(|panel| panel.when) else { return };
         let (send, receive) = mpsc::channel();
         let worker = std::thread::Builder::new()
             .name("meadow-comparison".into())
             .spawn(move || {
                 let result =
-                    refuge::compare(nudge, |pair| send.send(Message::Sample(pair)).is_ok());
+                    refuge::compare_at(when, nudge, |pair| send.send(Message::Sample(pair)).is_ok());
                 let _ = send.send(Message::Finished(result));
             });
         bench.refuge = Some(match worker {
             Ok(_) => Self {
                 worker: Some(receive),
+                when,
                 nudge,
                 ..Self::default()
             },
             Err(e) => Self {
+                when,
                 error: Some(e.to_string()),
                 ..Self::default()
             },
@@ -85,7 +89,7 @@ fn location(o: &Observation) -> &'static str {
     }
 }
 
-fn patch(name: &str, a: &Patch, b: &Patch) -> Child {
+fn patch(name: &str, a: &Patch, b: &Patch, alone_minutes: u64, trial_minutes: u64) -> Child {
     let row = |label: &str, left: String, right: String, role: &'static str| -> Child {
         Box::new(
             el(
@@ -114,6 +118,7 @@ fn patch(name: &str, a: &Patch, b: &Patch) -> Child {
     )];
     for (label, left, right) in [
         ("Resident grazers", a.grazers, b.grazers),
+        ("Minutes this grazer spent here", alone_minutes, trial_minutes),
         ("Plant matter eaten", a.grazed, b.grazed),
         ("Eaten by this grazer", a.eaten_by_grazer, b.eaten_by_grazer),
         ("Shoot matter", a.shoots, b.shoots),
@@ -140,6 +145,19 @@ fn patch(name: &str, a: &Patch, b: &Patch) -> Child {
 pub(super) fn view(panel: &Panel) -> Child {
     let mut controls = vec![button("Back to simulation", |s| s.refuge = None)];
     if !panel.running() {
+        let switch = match panel.when {
+            MeadowChange::Reopens => "Wait until day 6",
+            MeadowChange::TurnsLean => "Return to day 2",
+        };
+        controls.push(button(switch, |s| {
+            if let Some(p) = &mut s.refuge {
+                let when = match p.when {
+                    MeadowChange::Reopens => MeadowChange::TurnsLean,
+                    MeadowChange::TurnsLean => MeadowChange::Reopens,
+                };
+                *p = Panel { when, ..Panel::default() };
+            }
+        }));
         controls.push(button("Nudge toward refuge", |s| Panel::start(s, true)));
         controls.push(button("Leave both alone", |s| Panel::start(s, false)));
     }
@@ -161,9 +179,10 @@ pub(super) fn view(panel: &Panel) -> Child {
         Box::new(el("h1", text("Meadow and refuge"))),
         Box::new(el(
             "p",
-            text(
-                "Seed 9. The meadow reopens on day 2. Both histories start with the same grazer. The control leaves it alone.",
-            ),
+            text(match panel.when {
+                MeadowChange::Reopens => "Day 2 start. The meadow has reopened. Both histories start with grazer 15. The control leaves it alone.",
+                MeadowChange::TurnsLean => "Day 6 start. The meadow has just gone lean. Both histories waited with grazer 15 untouched. Counts start here.",
+            }),
         )),
         Box::new(el("div", controls).attr("class", "toolbar")),
     ];
@@ -206,8 +225,8 @@ pub(super) fn view(panel: &Panel) -> Child {
             el(
                 "div",
                 vec![
-                    patch("Meadow", &p.alone.patches[0], &p.trial.patches[0]),
-                    patch("Refuge", &p.alone.patches[1], &p.trial.patches[1]),
+                    patch("Meadow", &p.alone.patches[0], &p.trial.patches[0], p.alone.minutes[0], p.trial.minutes[0]),
+                    patch("Refuge", &p.alone.patches[1], &p.trial.patches[1], p.alone.minutes[1], p.trial.minutes[1]),
                 ],
             )
             .attr("class", "sim-sites"),

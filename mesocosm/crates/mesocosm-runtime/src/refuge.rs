@@ -14,8 +14,26 @@ use std::collections::BTreeMap;
 
 const OPENING: &[u8] = include_bytes!("../../../packs/mesocosm/fixtures/refuge-opening.json");
 pub const DAY: u64 = 1440;
+const LEAN: u64 = 6 * DAY;
 const REFUGE: Id = 1;
 const GRAZE: &str = "ecology:feed-1";
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum MeadowChange {
+    #[default]
+    Reopens,
+    TurnsLean,
+}
+
+fn set_weather(session: &mut Session, ground: Id, process: &str) -> Result<(), String> {
+    session.command(Command::Act {
+        actor: ground,
+        process: process.into(),
+        target: None,
+        cause: None,
+    })?;
+    Ok(())
+}
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize)]
 pub struct Patch {
@@ -135,16 +153,11 @@ impl Run {
                 }
             }
             let weather = match s.sim.state().tick - founded {
-                t if t == 6 * DAY => "experiment:begin-lean",
+                LEAN => "experiment:begin-lean",
                 t if t == 8 * DAY => "experiment:end-lean",
                 _ => continue,
             };
-            s.command(Command::Act {
-                actor: self.ground,
-                process: weather.into(),
-                target: None,
-                cause: None,
-            })?;
+            set_weather(s, self.ground, weather)?;
         }
         Ok(())
     }
@@ -206,9 +219,19 @@ impl Run {
 
 /// Emits the opening before the click, its expiry time, and each following
 /// day through day 12. Dropping the receiver stops the run at the next sample.
-pub fn compare(nudge: bool, mut receive: impl FnMut(Pair) -> bool) -> Result<(), String> {
+pub fn compare(nudge: bool, receive: impl FnMut(Pair) -> bool) -> Result<(), String> {
+    compare_at(MeadowChange::Reopens, nudge, receive)
+}
+
+/// Follow the common history through the chosen weather change, then fork.
+/// Residence and grazing are counted only from that fork.
+pub fn compare_at(
+    when: MeadowChange,
+    nudge: bool,
+    mut receive: impl FnMut(Pair) -> bool,
+) -> Result<(), String> {
     let saved = serde_json::from_slice(OPENING).map_err(|e| e.to_string())?;
-    let (session, _) = World::resume_native(saved, Execution::Individuals)?.into_parts()?;
+    let (mut session, _) = World::resume_native(saved, Execution::Individuals)?.into_parts()?;
     // Observation minutes start at founding. Envelopes use the world's clock.
     let opening = session.sim.state().tick - session.sim.genesis().started;
     if opening != 2 * DAY {
@@ -236,11 +259,16 @@ pub fn compare(nudge: bool, mut receive: impl FnMut(Pair) -> bool) -> Result<(),
         .find(|(_, group)| group.entity.traits.contains("experiment:weather-keeper"))
         .map(|(&id, _)| id)
         .ok_or("the meadow save has no weather keeper")?;
+    if when == MeadowChange::TurnsLean {
+        session.advance(LEAN - opening)?;
+        set_weather(&mut session, ground, "experiment:begin-lean")?;
+    }
+    let start = session.sim.state().tick - session.sim.genesis().started;
     let mut alone = Run::new(session.clone(), grazer, ground);
     let mut trial = Run::new(session, grazer, ground);
-    for tick in [opening, opening + span]
+    for tick in [start, start + span]
         .into_iter()
-        .chain((3..=12).map(|day| day * DAY))
+        .chain((start / DAY + 1..=12).map(|day| day * DAY))
     {
         alone.advance_to(tick)?;
         trial.advance_to(tick)?;
@@ -252,7 +280,7 @@ pub fn compare(nudge: bool, mut receive: impl FnMut(Pair) -> bool) -> Result<(),
         }) {
             break;
         }
-        if nudge && tick == opening {
+        if nudge && tick == start {
             let envelope = MesocosmIntentEnvelope {
                 participant: ParticipantHandle(participant),
                 tick: Tick(trial.session.sim.state().tick),

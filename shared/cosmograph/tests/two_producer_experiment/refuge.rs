@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! One native attention nudge, forked from the same reopening meadow as its control.
+//! One native attention nudge, forked at a meadow weather change with its control.
 use super::*;
 use cosmograph::{
     directing::{Aim, Answer, Played, Toward, readings::unable},
@@ -48,6 +48,7 @@ struct Outcome {
 }
 
 fn follow(mut s: Session, ground: Id, player: Id, grazer: Id, nudged: bool) -> Outcome {
+    let start = s.sim.state().tick - s.sim.genesis().started;
     let initial_matter = matter(&s);
     let span = s.sim.genesis().rules.directing.as_ref().unwrap().span;
     if nudged {
@@ -70,15 +71,15 @@ fn follow(mut s: Session, ground: Id, player: Id, grazer: Id, nudged: bool) -> O
     let mut grazed = Counts::new();
     let mut recruited = Counts::new();
     let mut first_refuge_tick = None;
-    for tick in OPEN..=2 * SEASON {
-        if tick < OPEN + span
+    for tick in start..=2 * SEASON {
+        if tick < start + span
             && let Some(route) = unable(&s.sim, grazer)
                 .into_iter()
                 .find(|a| a.process == "move:0-1")
         {
             *blocked_route_minutes.entry(route.why).or_default() += 1;
         }
-        if tick == SEASON {
+        if tick == SEASON && tick > start {
             weather(&mut s, ground, false);
         } else if tick == SEASON + OPEN {
             weather(&mut s, ground, true);
@@ -94,7 +95,7 @@ fn follow(mut s: Session, ground: Id, player: Id, grazer: Id, nudged: bool) -> O
         if resident == Some(REFUGE) {
             first_refuge_tick.get_or_insert(tick);
         }
-        if tick % DAY == 0 || tick == OPEN + span {
+        if tick % DAY == 0 || tick == start + span {
             assert_eq!(matter(&s), initial_matter);
             samples.push(Sample {
                 tick,
@@ -157,6 +158,16 @@ fn follow(mut s: Session, ground: Id, player: Id, grazer: Id, nudged: bool) -> O
 #[test]
 #[ignore = "matched native meadow and refuge experiment"]
 fn grazer_nudge() {
+    compare_at(OPEN);
+}
+
+#[test]
+#[ignore = "matched native meadow and refuge experiment"]
+fn grazer_nudge_when_lean() {
+    compare_at(SEASON);
+}
+
+fn compare_at(start: u64) {
     let seed = 9;
     let (mut g, ground) = found_with_player(
         seed,
@@ -217,6 +228,13 @@ fn grazer_nudge() {
         critter: grazer,
     })
     .unwrap();
+    if start == SEASON {
+        s.advance(SEASON - OPEN).unwrap();
+        weather(&mut s, ground, false);
+    }
+    let focal = s.sim.state().population.get(grazer).unwrap();
+    assert!(focal.alive && focal.resident_site() == Some(MEADOW));
+    assert!(s.sim.state().nudges.is_empty());
     let fork = format!("{:016x}", s.sim.state_hash());
     if let Some(path) = std::env::var_os("COSMOGRAPH_REFUGE_START") {
         serde_json::to_writer(std::fs::File::create_new(path).unwrap(), &s.save()).unwrap();

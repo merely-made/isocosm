@@ -1,0 +1,35 @@
+# Both histories wait until the meadow actually goes lean on day 6.
+settle 3
+remember original
+click role:button Meadow and refuge
+click role:button Wait until day 6
+click role:button Nudge toward refuge
+wait 20000
+assert snap refuge-tick == 17280
+assert snap refuge-alone == 9d1fcd04cab9afc2
+assert snap refuge-trial == 5bd75f0c8876f494
+assert text expired
+assert text 89
+assert text 94
+capture lean-day-12
+click role:button Earlier observation
+click role:button Earlier observation
+click role:button Earlier observation
+click role:button Earlier observation
+click role:button Earlier observation
+click role:button Earlier observation
+assert snap refuge-tick == 8700
+assert text meadow lean
+assert text Route closed for 60 min
+capture lean-first-hour
+click role:button Earlier observation
+assert snap refuge-tick == 8640
+assert snap refuge-alone == f9e588692bea6545
+assert snap refuge-trial == f9e588692bea6545
+click role:button Leave both alone
+wait 20000
+assert snap refuge-trial == 9d1fcd04cab9afc2
+click role:button Return to day 2
+assert text meadow has reopened
+click role:button Back to simulation
+same original hash

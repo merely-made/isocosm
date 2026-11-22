@@ -4,15 +4,19 @@
 
 From the Mesocosm workspace, run `cargo run --release -p mesocosm-genet -- --bench` and choose **Meadow and refuge**. **Nudge toward refuge** compares a single attention nudge with leaving the grazer alone. **Leave both alone** repeats the comparison with identical inputs. Each starts from the same seed-9 save, just as the meadow reopens on day 2. The meadow goes lean on day 6 and reopens on day 8. Both runs continue through day 12. Use **Earlier observation** and **Later observation** to inspect both patches at the same minute. **Back to simulation** returns to the world you had open.
 
-The saved opening in `packs/mesocosm/fixtures/refuge-opening.json` includes the native history through the player's bond with grazer 15. Cosmograph replays that history when it opens the save. The bench computes each subsequent observation live. Plant tissue and grazing use native matter units. Grazing and emerged seedlings accumulate from the fork.
+Choose **Wait until day 6** to leave the same bonded grazer alone until the meadow goes lean. Then choose **Nudge toward refuge** or **Leave both alone**. Grazing, emerged seedlings and minutes resident in each patch accumulate from the selected start. Plant tissue and grazing use native matter units.
+
+The saved opening in `packs/mesocosm/fixtures/refuge-opening.json` includes the native history through the player's bond with grazer 15. Cosmograph replays that history when it opens the save. The bench computes each subsequent observation live.
+
+On seed 9, grazer 15 stayed in the meadow for all 8,640 minutes after the day-6 fork under both choices. Its mood stayed at zero throughout the nudge's 60 minutes. Travel required mood below zero. During the two lean days the meadow supplied 26 units of grazing and the refuge 38. By day 12 the totals since the fork were 89 and 94. The focal grazer ate 25 of the meadow units. Both choices gave the same patch readings at all eight observations.
 
 | Check | Reproduction |
 | --- | --- |
-| Same product runner without the window, JSON on stdout | `cargo run --release -p mesocosm-runtime --example refuge -- nudge` (or `alone`) |
+| Same product runner without the window, JSON on stdout | `cargo run --release -p mesocosm-runtime --example refuge -- nudge lean`. Choose `nudge` or `alone`. Timing defaults to `open`. |
 | Compare both histories and every displayed patch reading | `python testing/bench/compare_refuge.py <native-report> <product-json> nudge` (or `alone`) |
-| Native buttons, both final history hashes, previous/next and return | `cargo run --release -p mesocosm-genet -- --bench --scenario testing/bench/refuge.scenario --receipt <output>/refuge.json --capture <output>/refuge.png` |
+| Native buttons, both histories, previous/next and return | `cargo run --release -p mesocosm-genet -- --bench --scenario testing/bench/refuge.scenario --receipt <output>/refuge.json --capture <output>/refuge.png`. Use `refuge-lean.scenario` with fresh output paths for day 6. |
 
-The independent [Cosmograph experiment](../../../shared/cosmograph/tests/two_producer_experiment/refuge.rs) regenerates the opening from its founding recipe. Set `COSMOGRAPH_REFUGE_START` to a new filename when running that test to export the opening for comparison. The native run and the product run use the same weather schedule. Only the product path translates the Mesocosm attention intent. This comparison qualifies the two-site study at individual resolution.
+The independent [Cosmograph experiment](../../../shared/cosmograph/tests/two_producer_experiment/refuge.rs) regenerates the opening from its founding recipe. Set `COSMOGRAPH_REFUGE_REPORT` to a new filename and run `cargo test --release --manifest-path ../shared/cosmograph/Cargo.toml --test two_producer_experiment refuge::grazer_nudge_when_lean -- --ignored --exact` from the Mesocosm workspace. Use `refuge::grazer_nudge` for day 2. Set `COSMOGRAPH_REFUGE_START` to a new filename to export the pre-nudge save. The native run and the product run use the same weather schedule. The product path translates the Mesocosm attention intent. This comparison qualifies the two-site study at individual resolution.
 
 Acceptance retains the native report, one JSON comparison per choice, the headed scenario receipt and its captures, within 100 MB total. A deliberately changed grazing count must fail comparison even if the saved history hashes agree.
 
