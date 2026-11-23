@@ -48,7 +48,7 @@ impl World {
             return Err("replica predecessor is stale".into());
         }
         let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
-        let mut candidate = world.session.clone();
+        let mut candidate = world.session.as_ref().clone();
         let mut sections = world.sections.clone();
         for entry in native_suffix {
             let ticks = entry.tick.checked_sub(candidate.sim.state().tick)
@@ -74,7 +74,7 @@ impl World {
         }
         let native_revision = native_changed.then(|| world.native_revision.next()).transpose()?;
         verify(&candidate, &sections, revision)?;
-        world.session = candidate;
+        world.session = Arc::new(candidate);
         if let Some(native_revision) = native_revision {
             world.native_cut.set(None);
             world.native_revision = native_revision;

@@ -4,6 +4,7 @@
 use std::cell::{Cell, RefCell};
 use std::collections::BTreeMap;
 use std::rc::Rc;
+use std::sync::Arc;
 use cosmograph::{Command, Execution, Session, attention::WindowId};
 use cosmograph::history::Saved as NativeSaved;
 use cosmograph_overlay::{ParticipantHandle, PlayerAttention};
@@ -20,7 +21,7 @@ mod revision_tests;
 
 #[derive(Clone)]
 struct OpenWorld {
-    session: Session,
+    session: Arc<Session>,
     sections: BTreeMap<String, Vec<u8>>,
     revision: u64,
     native_revision: NativeRevision,
@@ -93,7 +94,7 @@ impl World {
     /// product handoff carries them.
     pub fn with_sections(session: Session, sections: BTreeMap<String, Vec<u8>>) -> Self {
         Self(Rc::new(RefCell::new(OpenWorld {
-            session,
+            session: Arc::new(session),
             sections,
             revision: 0,
             native_revision: NativeRevision { owner: Rc::new(()), sequence: 0 },
@@ -122,7 +123,7 @@ impl World {
     /// founding step. Shared live worlds cannot be taken apart.
     pub fn into_parts(self) -> Result<(Session, BTreeMap<String, Vec<u8>>), String> {
         let world = Rc::try_unwrap(self.0).map_err(|_|"world has shared owners")?.into_inner();
-        Ok((world.session, world.sections))
+        Ok((Arc::unwrap_or_clone(world.session), world.sections))
     }
     pub fn resume(saved: WorldSave, execution: Execution) -> Result<Self, String> {
         if saved.format != FORMAT_VERSION { return Err("unknown mode-host save format".into()); }
@@ -165,7 +166,13 @@ impl World {
     /// Hold it no longer than a read: a transaction refuses while it lives.
     pub fn session(&self) -> Result<std::cell::Ref<'_, Session>, String> {
         let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
-        Ok(std::cell::Ref::map(world, |open| &open.session))
+        Ok(std::cell::Ref::map(world, |open| open.session.as_ref()))
+    }
+    /// A read-only handle to the accepted session. A worker can read this
+    /// generation after a later transaction publishes a replacement.
+    pub fn session_snapshot(&self) -> Result<Arc<Session>, String> {
+        let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
+        Ok(Arc::clone(&world.session))
     }
     /// One mode's section bytes, if it has any.
     pub fn section(&self, mode: &str) -> Result<Option<Vec<u8>>, String> {
@@ -211,7 +218,7 @@ impl World {
         if expected.is_some_and(|before| world.cut() != before) {
             return Err("prepared binding is stale".into());
         }
-        let mut candidate = world.session.clone();
+        let mut candidate = world.session.as_ref().clone();
         let accepted = admit(&mut candidate)?;
         if !same_authority(&candidate, &world.session) {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
@@ -226,7 +233,7 @@ impl World {
                     revision,
                 )?;
             }
-            world.session = candidate;
+            world.session = Arc::new(candidate);
             world.native_cut.set(None);
             world.native_revision = native_revision;
             world.revision = revision;
@@ -257,7 +264,7 @@ impl World {
     ) -> Result<T, String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
         if world.cut() != before { return Err("prepared binding is stale".into()); }
-        let mut candidate = world.session.clone();
+        let mut candidate = world.session.as_ref().clone();
         let (value, sections) = admit(&mut candidate, &world.sections)?;
         let native_changed = !same_authority(&candidate, &world.session);
         if native_changed || sections != world.sections {
@@ -273,7 +280,7 @@ impl World {
                     revision,
                 )?;
             }
-            world.session = candidate;
+            world.session = Arc::new(candidate);
             if let Some(native_revision) = native_revision {
                 world.native_cut.set(None);
                 world.native_revision = native_revision;

@@ -272,7 +272,8 @@ impl State {
             || self.host.pump.is_some()
             || revision.is_none()
             || revision != self.refreshed_revision
-            || !same_native;
+            || !same_native
+            || self.host.foreground_became_ready();
         if refresh {
             self.refresh();
         }
@@ -495,7 +496,9 @@ impl Product for WindowProduct {
             },
             _ => return false,
         };
+        presentation::profile_camera_key(&key, "received");
         runner.update(|s| s.press(&key));
+        presentation::profile_camera_key(&key, "handled");
         true
     }
     fn close_request(&mut self, _: &mut Ctx<'_, Self>, _: CloseRequest) -> CloseDisposition {

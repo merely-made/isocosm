@@ -8,6 +8,23 @@ fn cached_cut(world: &World) -> Option<Cut> {
     world.0.borrow().native_cut.get()
 }
 
+#[test]
+fn a_background_reader_keeps_the_accepted_session_across_a_publication() {
+    let world = crate::fixtures::fixture().world;
+    let before = world.session_snapshot().unwrap();
+    let saved = before.save();
+    assert!(Arc::ptr_eq(&before, &world.session_snapshot().unwrap()));
+    assert!(cached_cut(&world).is_none());
+
+    world.command(Command::Join).unwrap();
+    let after = world.session_snapshot().unwrap();
+    assert_eq!(after.entries.len(), before.entries.len() + 1);
+    assert!(!Arc::ptr_eq(&before, &after));
+    let (session, _) = world.into_parts().unwrap();
+    assert_eq!(session.save(), after.save());
+    assert_eq!(before.save(), saved);
+}
+
 fn replay_bytes(world: &World) {
     let saved = world.save().unwrap();
     let bytes = saved.encode().unwrap();

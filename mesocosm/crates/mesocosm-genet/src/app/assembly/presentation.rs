@@ -6,6 +6,30 @@ use crate::app::reading::CommittedSubject;
 use cambium_rootstock::{PreparedPresentationObserver, PresentedFrame};
 use mesocosm_runtime::continuation::LoopReading;
 
+fn profile_time_us() -> Option<u128> {
+    static PROFILE: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    PROFILE
+        .get_or_init(|| std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v == "1"))
+        .then(|| {
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_micros()
+        })
+}
+
+pub(super) fn profile_camera_key(key: &Key, phase: &str) {
+    let name = match key {
+        Key::Character(c) if matches!(c.as_str(), "z" | "Z" | "v" | "V") => c.as_str(),
+        Key::Named(NamedKey::ArrowLeft) => "left",
+        Key::Named(NamedKey::ArrowRight) => "right",
+        _ => return,
+    };
+    if let Some(now) = profile_time_us() {
+        eprintln!("[mesocosm-key] unix_us={now} phase={phase} key={name}");
+    }
+}
+
 /// Product facts belong to the candidate's prepare cut. They are never read
 /// back out of mutable State when GPU validation completes later.
 pub(super) struct Facts {
@@ -43,6 +67,15 @@ impl State {
         let sink = self.presentation.pending.clone();
         PreparedPresentationObserver::new(move |actual| {
             if actual == proposed {
+                if let Some(now) = profile_time_us()
+                    && let Some(subject) = &facts.subject
+                    && let Some(camera) = facts.picture.as_ref().and_then(|p| p.presentation.as_ref())
+                {
+                    eprintln!(
+                        "[mesocosm-presented] unix_us={now} frame={} native={} camera={:?} view={:?} centre={:?}",
+                        actual.sequence, subject.native.sequence(), camera.mode, camera.looking.view, camera.centre
+                    );
+                }
                 *sink.borrow_mut() = Some(Accepted {
                     stamp: actual,
                     facts,

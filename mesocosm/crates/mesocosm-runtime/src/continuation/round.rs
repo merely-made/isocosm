@@ -22,7 +22,7 @@ pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, partici
 }
 
 pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, participant: Id,
-    geometry: &mut crate::spatial::GeometryCache, mut first_minute: Option<&MinuteWalks>)
+    geometry: &mut crate::spatial::GeometryCache, mut first_minute: Option<(&MinuteWalks, cosmograph_host::world::Cut)>)
     -> Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
     let _span = crate::profile::Span::new("round.borrowed");
     game.validate(session).map_err(Refusal::Sim)?;
@@ -57,9 +57,9 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     // not, and handed back to the clock (D51, D52).
     let mut advance = |session: &mut Session| {
         let handbacks = crate::profile::measure("round.foreground_step", || {
-            match first_minute.take().filter(|minute| minute.matches(session, participant)) {
-                Some(minute) => minute.handbacks(&session.sim),
-                None => cosmograph_host::drive::world_foreground_minute(&session.sim, participant),
+            match first_minute.take() {
+                Some((minute, cut)) if minute.matches(session, participant, cut) => minute.handbacks(&session.sim),
+                _ => cosmograph_host::drive::world_foreground_minute(&session.sim, participant),
             }
         })?;
         driver.borrow_mut().advance_clock_with_geometry(session, geometry, &handbacks).map(|out| out.flows)

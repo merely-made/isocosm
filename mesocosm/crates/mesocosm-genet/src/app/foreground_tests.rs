@@ -123,11 +123,51 @@ fn walks_follow_accepted_native_changes_within_the_same_minute() {
 }
 
 #[test]
+fn a_cold_draw_returns_native_positions_before_the_plan_is_ready() {
+    let mut host = windowed(Speed::X1);
+    host.refresh_scene();
+    let source = host.scene.clone().expect("ordinary native scene");
+    let started = std::time::Instant::now();
+    assert!(host.foreground_scene().is_none());
+    assert!(std::rc::Rc::ptr_eq(host.drawn_scene().unwrap(), &source));
+    assert!(host.drawn_handbacks().is_none(),
+        "the first draw completed the seeded route search inline in {:?}", started.elapsed());
+
+    // Start the authoritative round while the preview is in flight. Polling
+    // the ready plan must not itself advance the clock.
+    host.pace_foreground(REAL_US);
+    let handbacks = wait_for_drawing(&mut host);
+    assert!(!handbacks.is_empty());
+    assert_eq!(host.runtime.tick(), 0);
+    while host.runtime.tick() == 0 {
+        assert!(started.elapsed() < std::time::Duration::from_secs(180), "round stalled");
+        host.pace_foreground(0);
+        std::thread::sleep(std::time::Duration::from_millis(2));
+    }
+    assert_eq!(host.runtime.spatial().driver.as_ref().unwrap().records[0].handbacks, handbacks);
+    let replay = Runtime::replayed_game(host.runtime.save_game()).unwrap();
+    assert_eq!(replay.state_hash, host.runtime.sim().state_hash());
+}
+
+fn wait_for_drawing(host: &mut Host) -> Vec<cosmograph::spatial::Handback> {
+    let started = std::time::Instant::now();
+    while !host.foreground_became_ready() {
+        // The previous frame may already have adopted the matching plan.
+        if let Some(walks) = host.drawn_handbacks() { return walks; }
+        assert!(started.elapsed() < std::time::Duration::from_secs(180), "preview stalled");
+        std::thread::sleep(std::time::Duration::from_millis(2));
+    }
+    let _ = host.foreground_scene();
+    assert!(!host.foreground_became_ready(), "a held frame refreshes once per plan");
+    host.drawn_handbacks().expect("the completed plan was adopted")
+}
+
+#[test]
 fn closing_the_frame_removes_its_walks_from_the_same_tick_drawing() {
     let mut host = windowed(Speed::X1);
     host.refresh_scene();
     let _ = host.foreground_scene();
-    let before = host.drawn_handbacks();
+    let before = wait_for_drawing(&mut host);
     let tick = host.runtime.tick();
     let participant = host.runtime.interim().participant;
     let window = host.runtime.sim().window_for(participant, "mesocosm").unwrap();
@@ -136,7 +176,8 @@ fn closing_the_frame_removes_its_walks_from_the_same_tick_drawing() {
     assert_ne!(before, expected, "closing the frame must remove a walking body in this fixture");
     assert_eq!(host.runtime.tick(), tick);
     let _ = host.foreground_scene();
-    assert_eq!(host.drawn_handbacks(), expected);
+    assert!(host.drawn_handbacks().is_none(), "the previous revision must not be drawn");
+    assert_eq!(wait_for_drawing(&mut host), expected);
 }
 
 #[test]
@@ -168,8 +209,9 @@ fn a_windowed_round_draws_each_step_and_replays_to_the_headless_hash() {
             tick = now;
         }
         let step = host.foreground_step().unwrap();
+        let _ = host.foreground_scene();
+        drawn.entry(now).or_insert_with(|| wait_for_drawing(&mut host));
         let scene = host.foreground_scene();
-        drawn.entry(now).or_insert_with(|| host.drawn_handbacks());
         let Some(scene) = scene else {
             still_at_start += 1;
             continue;

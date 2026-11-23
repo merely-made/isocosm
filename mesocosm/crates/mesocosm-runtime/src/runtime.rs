@@ -196,10 +196,14 @@ impl Mesocosm {
         let mut game = self.spatial.clone();
         // Scripts without a view can plan directly inside their one synchronous round.
         let minute = self.foreground.cached(&world.native_revision()?, participant);
+        let first = match minute.as_deref() {
+            Some(minute) => Some((minute, world.cut()?)),
+            None => None,
+        };
         let round =
             crate::profile::measure("round.transaction", || world.product_current(|session|
                 crate::continuation::round::advance_with_flows_cached(
-                    session, &mut game, participant, &mut self.geometry, minute.as_deref())
+                    session, &mut game, participant, &mut self.geometry, first)
                     .map_err(|why| format!("{why:?}"))));
         match round {
             Ok((_, flows, verified)) => self.finish_round(world, game, flows, verified),

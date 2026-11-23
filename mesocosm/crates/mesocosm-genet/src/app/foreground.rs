@@ -104,8 +104,8 @@ impl Host {
         self.runtime.advance(ticks * clock_step_us)
     }
 
-    /// The scene with this frame's foreground poses, or `None` when it has
-    /// none to draw (no rule, nothing walking): the sim's own scene stands.
+    /// Draw ready walks for this revision. While the preview is pending, or
+    /// when no body has stepped, the view uses its ordinary native scene.
     pub(super) fn foreground_scene(&mut self) -> Option<Rc<SiteScene>> {
         let source = self.scene.clone()?;
         let fg = self.foreground.as_mut()?;
@@ -113,7 +113,7 @@ impl Host {
         static PROFILE: OnceLock<bool> = OnceLock::new();
         let profile = *PROFILE.get_or_init(|| std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v == "1"));
         let begun = profile.then(Instant::now);
-        let Some(walks) = self.runtime.foreground_walks().ok().flatten() else {
+        let Some(walks) = self.runtime.poll_foreground_walks().ok().flatten() else {
             fg.walks = None;
             fg.drawn = None;
             return None;
@@ -140,6 +140,13 @@ impl Host {
         Some(scene)
     }
 
+    /// A held frame has a frozen pacer step, but its pending walks can
+    /// still arrive. Refresh once to adopt them at that step.
+    pub(super) fn foreground_became_ready(&mut self) -> bool {
+        self.scene.is_some() && self.foreground.as_ref().is_some_and(|fg| fg.walks.is_none())
+            && self.runtime.poll_foreground_walks().is_ok_and(|walks| walks.is_some())
+    }
+
     /// The scene as drawn this frame: the foreground's when it has one
     /// (so the camera follows a body as it is drawn), else the sim's.
     pub(super) fn drawn_scene(&self) -> Option<&Rc<SiteScene>> {
@@ -152,10 +159,10 @@ impl Host {
 
     /// The handbacks of the walks being drawn, at the minute's last step.
     #[cfg(test)]
-    pub(super) fn drawn_handbacks(&self) -> Vec<cosmograph::spatial::Handback> {
+    pub(super) fn drawn_handbacks(&self) -> Option<Vec<cosmograph::spatial::Handback>> {
         let sim = self.runtime.sim();
-        let walks = self.foreground.as_ref().and_then(|fg| fg.walks.as_deref()).unwrap_or_default();
-        walks.iter().filter_map(|w| w.handback(&sim, STEPS_PER_MINUTE).unwrap()).collect()
+        let walks = self.foreground.as_ref()?.walks.as_deref()?;
+        Some(walks.iter().filter_map(|w| w.handback(&sim, STEPS_PER_MINUTE).unwrap()).collect())
     }
 
     /// The step of the minute now drawn, for a capture's receipt.
