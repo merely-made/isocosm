@@ -22,7 +22,12 @@ pub(crate) fn generator_pack_roots() -> Vec<std::path::PathBuf> {
     // The `core` pack ships the default beat vocabulary (strike, recoil, fall,
     // cheer...). It is a pack like any other, so a campaign overrides a beat
     // simply by declaring the same name: the app owns no choreography.
-    let mut roots = vec![example_pack("core")];
+    let resources = std::env::current_exe().ok().and_then(|exe| isocosm_campaign::bundle_resources(&exe));
+    let core = resources.as_ref().map_or_else(|| example_pack("core"), |dir| dir.join("core"));
+    let mut roots = vec![core];
+    if let Some(resources) = resources {
+        roots.push(resources.join("packs"));
+    }
     // `demo` and `watchtower` are fixtures: the host's tests and the watchtower
     // self-test load them, a user's table does not.
     if cfg!(test) || std::env::var_os("ISOCOSM_WATCHTOWER_SELFTEST").is_some() {
@@ -105,7 +110,8 @@ impl App {
     /// is handed in `init` is the app sheet plus whatever choreography they
     /// declared.
     pub(crate) fn boot() -> Self {
-        let generator_catalog = GeneratorCatalog::discover(generator_pack_roots());
+        let roots = generator_pack_roots();
+        let generator_catalog = GeneratorCatalog::discover(&roots);
         // Choreography is pack data: the stylesheet the packs supply is appended
         // to the app's, and the emote menu is built from whichever beats they
         // marked emotable. A table with no packs still plays a correct game; it
@@ -123,7 +129,7 @@ impl App {
         // Looks are pack data too (doctrine VTT 7): the core pack's are built
         // in, and every other pack's `appearance.toml` overlays them. The
         // class rules are baked again only when a pack changed them.
-        let (pack_appearance, overlaid) = pack_appearance(&generator_pack_roots());
+        let (pack_appearance, overlaid) = pack_appearance(&roots);
         if overlaid {
             sheet.push('\n');
             sheet.push_str(&isocosm_views::class_css(&pack_appearance));
@@ -235,7 +241,7 @@ impl App {
 /// parse is reported and skipped, so one bad pack cannot blank the board.
 fn pack_appearance(roots: &[std::path::PathBuf]) -> (isocosm_views::appearance::Library, bool) {
     let mut library = isocosm_views::appearance::Library::core();
-    let core = example_pack("core").canonicalize().ok();
+    let core = roots.first().and_then(|path| path.canonicalize().ok());
     let mut overlaid = false;
     let mut packs = Vec::new();
     for root in roots {

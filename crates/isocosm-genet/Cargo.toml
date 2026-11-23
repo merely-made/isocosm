@@ -8,6 +8,17 @@ authors.workspace = true
 repository.workspace = true
 description = "Isocosm's desktop application over the shared Cambium desktop host: state, hooks, the net bridge, and the self-tests. The native host itself is genet's."
 
+[package.metadata.packager]
+product-name = "Isocosm"
+identifier = "com.merely.isocosm"
+formats = ["app"]
+binaries = [{ path = "isocosm-genet", main = true }, { path = "pf2e_table", main = false }]
+resources = [
+    { src = "../isocosm-system/examples/packs/core", target = "core" },
+    { src = "../../packs", target = "packs" },
+    { src = "packaging/macos", target = "djinn" },
+]
+
 [dependencies]
 isocosm-core = { workspace = true }
 isocosm-campaign = { workspace = true }

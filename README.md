@@ -49,15 +49,26 @@ accepted table time. The effect examples describe the exact boundaries.
 
 ### Play the Pathfinder encounter
 
-The `pf2e_table` example prepares a two-character Pathfinder 2e encounter. Build
-the `isocosm-genet` binary and the `isocosm-native` example with the `endpoint`
-feature. With both executables on your path, run these from the host's campaign
-directory. Use a fresh ledger and give each table its own handoff folder.
+The installed macOS app includes the table tool and its rules packs. From the
+host's chosen campaign directory, these commands create a fresh two-character encounter.
 
 ```sh
+export PATH="/Applications/Isocosm.app/Contents/MacOS:$PATH"
 mkdir -p campaigns
 pf2e_table campaigns/pathfinder_bench.family --combat
 ```
+
+For a source build, the same commands use the `isocosm-genet` binary and the
+`isocosm-native` example built with the `endpoint` feature. Use a fresh ledger
+and a separate handoff folder for each table. The packaging command needs Python 3.11 or newer
+and `cargo-packager`. Run it from the source checkout with paths to your two
+built executables. It writes `dist/Isocosm.app`.
+
+```sh
+python3 scripts/package-macos.py /path/to/isocosm-genet /path/to/pf2e_table dist
+```
+
+The packaged roles require a Merely-signed build.
 
 The example prints the **player participant** and the two **body** IDs. Arden is
 the player's rogue, and Brisa is the GM's fighter. The seat assignment below
@@ -65,7 +76,13 @@ takes the participant ID.
 
 Each device needs an unlocked Djinn identity and an owner grant for `isocosm`.
 Both seats use the `isocosm/table/v1` key. The host also signs invitations for
-the `mere.graphshell` delegation scope. Use the active persona on the host.
+the `mere.graphshell` delegation scope. A host can name its open persona with
+`--persona <name>`. The signed app includes matching owner grant templates in
+`Contents/Resources/djinn/guest.json` and `host.json`. Each pins the Merely
+team and the `com.merely.isocosm` identifier. Add the file for that device's
+role to the `applications` array in the selected Djinn profile's owner settings.
+The custodian's current-persona policy must admit the table salt. A host
+invitation requests the owner's usual per-operation approval.
 
 1. On the player's device, run `isocosm-genet --join ./handoff`. The log names
    the contact file to give the GM. Each device uses its own Djinn identity.

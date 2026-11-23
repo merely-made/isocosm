@@ -43,6 +43,26 @@ mod tests {
     use super::*;
 
     #[test]
+    fn packaged_grants_match_the_ordinary_seats_and_pin_the_signed_app() {
+        use ostiary::declaration::AppGrant;
+        for (host, json) in [
+            (false, include_str!("../packaging/macos/guest.json")),
+            (true, include_str!("../packaging/macos/host.json")),
+        ] {
+            let grant: AppGrant = serde_json::from_str(json).unwrap();
+            grant.validate().unwrap();
+            let requested = declaration(host, false);
+            assert_eq!(grant.app.as_str(), "isocosm");
+            assert_eq!(grant.routes, requested.routes);
+            assert_eq!(grant.custody.operations, requested.custody.operations);
+            assert_eq!(grant.custody.salts, requested.custody.salts);
+            assert_eq!(grant.custody.acts, requested.custody.acts);
+            let pin = grant.identity.unwrap().macos.unwrap();
+            assert_eq!((pin.team.as_str(), pin.identifier.as_str()), ("HWVZ5S7ACJ", "com.merely.isocosm"));
+        }
+    }
+
+    #[test]
     fn only_the_replication_host_requests_the_record_key() {
         for (host, records) in [(false, false), (true, false), (true, true)] {
             let wants = declaration(host, records).custody;

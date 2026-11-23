@@ -1,0 +1,30 @@
+{
+  "app": "isocosm",
+  "identity": {
+    "macos": {
+      "team": "HWVZ5S7ACJ",
+      "identifier": "com.merely.isocosm"
+    }
+  },
+  "routes": [
+    {
+      "exact": "custody"
+    }
+  ],
+  "custody": {
+    "operations": [
+      "status",
+      "watch_lock",
+      "release",
+      "attest"
+    ],
+    "salts": [
+      {
+        "source": "persona",
+        "name": {
+          "exact": "isocosm/table/v1"
+        }
+      }
+    ]
+  }
+}

@@ -28,7 +28,7 @@ pub use chronicle::{
 };
 pub use construction::{CONSTRUCTION_SCHEMA, ConstructionError, ConstructionProposal};
 pub use edition::{
-    EditionPack, EditionSection, PackPin, bundled, bundled_pack, bundled_records, bundled_root,
+    EditionPack, EditionSection, PackPin, bundle_resources, bundled, bundled_pack, bundled_records, bundled_root,
 };
 pub use fact::{RevealCondition, SecretFact, Visibility, WorldFact};
 pub use generator::{

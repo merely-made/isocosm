@@ -173,12 +173,26 @@ fn content_hash(manifest_text: &str, files: &BTreeMap<String, String>) -> String
         .collect()
 }
 
-/// The bundled `packs/` folder: beside the executable when shipped, else the
-/// source tree's.
+/// The resource directory shared by executables in a macOS application bundle.
+pub fn bundle_resources(executable: &Path) -> Option<PathBuf> {
+    let macos = executable.parent()?;
+    let contents = macos.parent()?;
+    let bundle = contents.parent()?;
+    (macos.ends_with("MacOS") && contents.ends_with("Contents") && bundle.extension()? == "app")
+        .then(|| contents.join("Resources"))
+}
+
+/// Edition data ships in the macOS bundle or beside a standalone executable.
+/// A development executable can read the source tree's packs.
 pub fn bundled_root() -> Option<PathBuf> {
-    let beside = std::env::current_exe()
-        .ok()
-        .and_then(|exe| exe.parent().map(|dir| dir.join("packs")))
+    let executable = std::env::current_exe().ok();
+    if let Some(resources) = executable.as_deref().and_then(bundle_resources) {
+        let packs = resources.join("packs");
+        return packs.is_dir().then_some(packs);
+    }
+    let beside = executable.as_deref()
+        .and_then(Path::parent)
+        .map(|dir| dir.join("packs"))
         .filter(|dir| dir.is_dir());
     beside.or_else(|| {
         let source = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../packs");
@@ -192,7 +206,7 @@ pub fn bundled() -> Result<&'static [EditionPack], String> {
     static PACKS: OnceLock<Result<Vec<EditionPack>, String>> = OnceLock::new();
     PACKS
         .get_or_init(|| {
-            let root = bundled_root().ok_or("no bundled packs folder beside the app or in the source tree")?;
+            let root = bundled_root().ok_or("no bundled edition packs found")?;
             let mut packs = Vec::new();
             let entries = std::fs::read_dir(&root).map_err(|e| format!("read {}: {e}", root.display()))?;
             for entry in entries {
@@ -271,6 +285,15 @@ records = { items = ["items.json"] }
         let escaping = MANIFEST.replace("items.json", "../items.json");
         assert!(EditionPack::from_files(&escaping, files("[]")).is_err());
         assert!(EditionPack::from_files(&MANIFEST.replace("[edition]", "[unrelated]"), files("[]")).is_err());
+    }
+
+    #[test]
+    fn both_packaged_executables_share_the_resources_directory() {
+        let bundle = Path::new("/Applications/Isocosm.app/Contents");
+        for binary in ["isocosm-genet", "pf2e_table"] {
+            assert_eq!(bundle_resources(&bundle.join("MacOS").join(binary)), Some(bundle.join("Resources")));
+        }
+        assert!(bundle_resources(Path::new("/opt/isocosm/isocosm-genet")).is_none());
     }
 
     #[test]
