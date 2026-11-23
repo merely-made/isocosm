@@ -106,6 +106,40 @@ fn the_walks_the_window_draws_are_the_handbacks_the_clock_takes() {
 }
 
 #[test]
+fn walks_follow_accepted_native_changes_within_the_same_minute() {
+    use std::sync::Arc;
+    let mut runtime = found(WorldRules { foreground_walks: true, ..WorldRules::generated() });
+    runtime.attach_foreground();
+    let tick = runtime.tick();
+    let first = runtime.foreground_walks().unwrap().unwrap();
+    assert!(!first.is_empty());
+    runtime.world().put_section("foreground-control", vec![1]).unwrap();
+    let after_section = runtime.foreground_walks().unwrap().unwrap();
+    assert!(Arc::ptr_eq(&first, &after_section));
+    runtime.world().command(cosmograph::Command::Join).unwrap();
+    assert_eq!(tick, runtime.tick());
+    let after_command = runtime.foreground_walks().unwrap().unwrap();
+    assert!(!Arc::ptr_eq(&first, &after_command));
+}
+
+#[test]
+fn closing_the_frame_removes_its_walks_from_the_same_tick_drawing() {
+    let mut host = windowed(Speed::X1);
+    host.refresh_scene();
+    let _ = host.foreground_scene();
+    let before = host.drawn_handbacks();
+    let tick = host.runtime.tick();
+    let participant = host.runtime.interim().participant;
+    let window = host.runtime.sim().window_for(participant, "mesocosm").unwrap();
+    host.runtime.world().product_current(|session| session.close_attention(participant, window)).unwrap();
+    let expected = cosmograph_host::drive::world_foreground_minute(&host.runtime.sim(), participant).unwrap();
+    assert_ne!(before, expected, "closing the frame must remove a walking body in this fixture");
+    assert_eq!(host.runtime.tick(), tick);
+    let _ = host.foreground_scene();
+    assert_eq!(host.drawn_handbacks(), expected);
+}
+
+#[test]
 fn a_windowed_round_draws_each_step_and_replays_to_the_headless_hash() {
     let mut host = windowed(Speed::X8);
     let (mut moved, mut still_at_start) = (0, 0);

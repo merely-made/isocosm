@@ -19,7 +19,7 @@ pub use clock::{Advance, Clock};
 pub mod round;
 pub use round::{Due, Pace, Pacer, Speed, TickMode, Ticker};
 pub mod stepper;
-pub use stepper::{STEPS_PER_MINUTE, Step, Walk, foreground_minute, world_foreground_minute, world_foreground_walks};
+pub use stepper::{STEPS_PER_MINUTE, Step, Walk, foreground_minute, walk_handbacks, world_foreground_minute, world_foreground_walks};
 #[cfg(test)]
 mod stepper_tests;
 pub mod input;

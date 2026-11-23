@@ -10,9 +10,10 @@
 //! what is handed back. Presentation only: nothing here reaches the log.
 
 use std::rc::Rc;
+use std::sync::{Arc, OnceLock};
 use std::time::Instant;
 
-use cosmograph_host::drive::{Pace, Pacer, STEPS_PER_MINUTE, Speed, Walk, world_foreground_walks};
+use cosmograph_host::drive::{Pace, Pacer, STEPS_PER_MINUTE, Speed, Walk};
 
 use super::Host;
 use crate::section::{SiteScene, Walk as Trail};
@@ -20,9 +21,8 @@ use crate::section::{SiteScene, Walk as Trail};
 /// The pacer and the minute's walks.
 pub(super) struct Foreground {
     pacer: Pacer,
-    /// The minute's walks, begun at `tick`.
-    walks: Vec<Walk>,
-    tick: Option<u64>,
+    /// The plan that supplied the last drawing.
+    walks: Option<Arc<[Walk]>>,
     /// The sim tick the pacer began at, and the minutes it has authorised.
     base: u64,
     authorised: u64,
@@ -32,7 +32,7 @@ pub(super) struct Foreground {
 
 impl Foreground {
     pub(super) fn new(speed: Speed, base: u64) -> Self {
-        Self { pacer: Pacer::new(Pace::Round { speed }), walks: Vec::new(), tick: None, base, authorised: 0, drawn: None }
+        Self { pacer: Pacer::new(Pace::Round { speed }), walks: None, base, authorised: 0, drawn: None }
     }
 
     /// The step to draw at sim tick `tick`: the pacer's, or the minute's last
@@ -108,15 +108,21 @@ impl Host {
     /// none to draw (no rule, nothing walking): the sim's own scene stands.
     pub(super) fn foreground_scene(&mut self) -> Option<Rc<SiteScene>> {
         let source = self.scene.clone()?;
-        let participant = self.runtime.interim().participant;
-        let tick = self.runtime.sim().state().tick;
         let fg = self.foreground.as_mut()?;
-        if fg.tick != Some(tick) {
-            let begun = Instant::now();
-            fg.walks = world_foreground_walks(&self.runtime.sim(), participant);
-            fg.tick = Some(tick);
-            if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v == "1") {
-                eprintln!("[mesocosm-view] foreground walks={} in {}us", fg.walks.len(), begun.elapsed().as_micros());
+        let tick = self.runtime.tick();
+        static PROFILE: OnceLock<bool> = OnceLock::new();
+        let profile = *PROFILE.get_or_init(|| std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v == "1"));
+        let begun = profile.then(Instant::now);
+        let Some(walks) = self.runtime.foreground_walks().ok().flatten() else {
+            fg.walks = None;
+            fg.drawn = None;
+            return None;
+        };
+        if !fg.walks.as_ref().is_some_and(|prior| Arc::ptr_eq(prior, &walks)) {
+            fg.drawn = None;
+            fg.walks = Some(Arc::clone(&walks));
+            if let Some(begun) = begun {
+                eprintln!("[mesocosm-view] foreground walks={} in {}us", walks.len(), begun.elapsed().as_micros());
             }
         }
         let step = fg.step(tick);
@@ -125,8 +131,8 @@ impl Host {
         {
             return Some(scene.clone());
         }
-        let scene = Rc::new(at_step(&source, &fg.walks, step)?);
-        if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v == "1") {
+        let scene = Rc::new(at_step(&source, &walks, step)?);
+        if profile {
             let ms = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_or(0, |d| d.as_millis());
             eprintln!("[mesocosm-view] foreground drawn tick={tick} step={step} at {ms}ms");
         }
@@ -148,8 +154,8 @@ impl Host {
     #[cfg(test)]
     pub(super) fn drawn_handbacks(&self) -> Vec<cosmograph::spatial::Handback> {
         let sim = self.runtime.sim();
-        let walks = self.foreground.iter().flat_map(|fg| &fg.walks);
-        walks.filter_map(|w| w.handback(&sim, STEPS_PER_MINUTE).unwrap()).collect()
+        let walks = self.foreground.as_ref().and_then(|fg| fg.walks.as_deref()).unwrap_or_default();
+        walks.iter().filter_map(|w| w.handback(&sim, STEPS_PER_MINUTE).unwrap()).collect()
     }
 
     /// The step of the minute now drawn, for a capture's receipt.

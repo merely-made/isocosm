@@ -5,15 +5,22 @@
 //! world while the next tick computes. The result commits against the cut it
 //! started from; if the world moved meanwhile, it is dropped and run again.
 
+use std::sync::Arc;
 use std::sync::mpsc::{self, Receiver, TryRecvError};
 use cosmograph::Session;
 use cosmograph_host::world::{Cut, World};
-use super::{Mesocosm, Runtime, session};
+use super::{Mesocosm, Runtime, foreground::MinuteWalks, session};
 use crate::{continuation::VerifiedQuestion, spatial::{Game, GeometryCache}};
 
 type Out = Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), String>;
 
-pub(crate) struct Pending { cut: Cut, done: Receiver<Done> }
+pub(crate) struct Pending { cut: Cut, minute: Option<Arc<MinuteWalks>>, done: Receiver<Done> }
+
+impl Pending {
+    pub(super) fn plans(&self, minute: &Arc<MinuteWalks>) -> bool {
+        self.minute.as_ref().is_some_and(|held| Arc::ptr_eq(held, minute))
+    }
+}
 
 struct Done { session: Session, game: Game, geometry: GeometryCache, out: Out }
 
@@ -23,6 +30,8 @@ impl Mesocosm {
         if self.pending.is_some() { return Ok(()); }
         self.sync_loop(world);
         let cut = world.cut()?;
+        let minute = self.foreground_minute(world)?;
+        let worker_minute = minute.clone();
         let mut session = session(world).clone();
         let mut game = self.spatial.clone();
         let mut geometry = std::mem::take(&mut self.geometry);
@@ -30,10 +39,10 @@ impl Mesocosm {
         let (send, done) = mpsc::channel();
         std::thread::Builder::new().name("mesocosm-round".into()).spawn(move || {
             let out = crate::continuation::round::advance_with_flows_cached(
-                &mut session, &mut game, participant, &mut geometry).map_err(|why| format!("{why:?}"));
+                &mut session, &mut game, participant, &mut geometry, worker_minute.as_deref()).map_err(|why| format!("{why:?}"));
             let _ = send.send(Done { session, game, geometry, out });
         }).map_err(|why| why.to_string())?;
-        self.pending = Some(Pending { cut, done });
+        self.pending = Some(Pending { cut, minute, done });
         Ok(())
     }
 

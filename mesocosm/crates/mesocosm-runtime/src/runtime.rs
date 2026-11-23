@@ -39,6 +39,7 @@ pub(crate) mod translate;
 pub mod keymap;
 mod loop_state;
 mod background;
+pub(crate) mod foreground;
 mod frame;
 pub use translate::Refusal;
 
@@ -156,6 +157,7 @@ pub(crate) struct Mesocosm {
     pub(crate) spatial: crate::spatial::Game,
     verified_question: Option<crate::continuation::VerifiedQuestion>,
     geometry: crate::spatial::GeometryCache,
+    foreground: foreground::Foreground,
     /// Rounds from the clock run on a worker thread (`with_background`).
     background: bool,
     pending: Option<background::Pending>,
@@ -192,10 +194,12 @@ impl Mesocosm {
         self.sync_loop(world);
         let participant = self.lp.participant;
         let mut game = self.spatial.clone();
+        // Scripts without a view can plan directly inside their one synchronous round.
+        let minute = self.foreground.cached(&world.native_revision()?, participant);
         let round =
             crate::profile::measure("round.transaction", || world.product_current(|session|
                 crate::continuation::round::advance_with_flows_cached(
-                    session, &mut game, participant, &mut self.geometry)
+                    session, &mut game, participant, &mut self.geometry, minute.as_deref())
                     .map_err(|why| format!("{why:?}"))));
         match round {
             Ok((_, flows, verified)) => self.finish_round(world, game, flows, verified),
@@ -286,6 +290,7 @@ impl Runtime {
             spatial: crate::spatial::Game::default(),
             verified_question: None,
             geometry: crate::spatial::GeometryCache::default(),
+            foreground: foreground::Foreground::default(),
             background: false,
             pending: None,
         };

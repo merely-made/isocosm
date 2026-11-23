@@ -3,7 +3,7 @@
 
 use std::cell::RefCell;
 use super::*;
-use crate::{Refusal, succession};
+use crate::{Refusal, runtime::foreground::MinuteWalks, succession};
 use cosmograph::{Session, schema::Id, directing::interim::{BorrowedInterim, Happening},
     lineage::{boundary, revise}};
 
@@ -18,11 +18,11 @@ pub fn advance_loop(session: &mut Session, game: &mut Game, participant: Id)
 pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, participant: Id)
     -> Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
     let mut geometry = crate::spatial::GeometryCache::default();
-    advance_with_flows_cached(session, game, participant, &mut geometry)
+    advance_with_flows_cached(session, game, participant, &mut geometry, None)
 }
 
 pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, participant: Id,
-    geometry: &mut crate::spatial::GeometryCache)
+    geometry: &mut crate::spatial::GeometryCache, mut first_minute: Option<&MinuteWalks>)
     -> Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
     let _span = crate::profile::Span::new("round.borrowed");
     game.validate(session).map_err(Refusal::Sim)?;
@@ -56,8 +56,12 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     // Under the world's rule each minute's foreground is stepped, windowed or
     // not, and handed back to the clock (D51, D52).
     let mut advance = |session: &mut Session| {
-        let handbacks = crate::profile::measure("round.foreground_step", ||
-            cosmograph_host::drive::world_foreground_minute(&session.sim, participant))?;
+        let handbacks = crate::profile::measure("round.foreground_step", || {
+            match first_minute.take().filter(|minute| minute.matches(session, participant)) {
+                Some(minute) => minute.handbacks(&session.sim),
+                None => cosmograph_host::drive::world_foreground_minute(&session.sim, participant),
+            }
+        })?;
         driver.borrow_mut().advance_clock_with_geometry(session, geometry, &handbacks).map(|out| out.flows)
     };
     let mut scorer = scoring::Scorer::default();

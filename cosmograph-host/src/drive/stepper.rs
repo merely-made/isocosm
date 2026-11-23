@@ -200,8 +200,13 @@ pub fn world_foreground_walks(sim: &Simulation, participant: Id) -> Vec<Walk> {
 /// taken and handed back, so a windowed round and a headless one hand back
 /// the same poses.
 pub fn world_foreground_minute(sim: &Simulation, participant: Id) -> Result<Vec<Handback>, String> {
+    walk_handbacks(sim, &world_foreground_walks(sim, participant))
+}
+
+/// The minute-end handbacks from walks already planned on this simulation.
+pub fn walk_handbacks(sim: &Simulation, walks: &[Walk]) -> Result<Vec<Handback>, String> {
     let mut out = Vec::new();
-    for walk in world_foreground_walks(sim, participant) {
+    for walk in walks {
         out.extend(walk.handback(sim, STEPS_PER_MINUTE)?);
     }
     Ok(out)
