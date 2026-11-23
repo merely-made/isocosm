@@ -24,14 +24,15 @@ use cosmograph_host::{
     window::Window,
     world::World,
 };
-use cosmograph_overlay::{AttentionSet, ParticipantHandle, Seat};
+use cosmograph_overlay::{AttentionSet, OrdinaryAccess, ParticipantHandle, Seat};
 
-use crate::contract::{Reading, mode::{ModeState, clock, life}};
+use crate::contract::{Reading, mode::{self, ModeState, actions, clock, life}};
 
 pub const SESSION: &str = "eponym:next-life";
 /// The world section that holds the mode state.
 pub const MODE: &str = "eponym";
 pub const STEP: &str = "eponym.step";
+pub const REST: &str = "eponym.rest";
 pub const TAKE: &str = "eponym.take-life";
 const ADAPTER: &str = "eponym.next-life";
 
@@ -65,6 +66,20 @@ fn advance(session: &mut Session, bytes: Vec<u8>) -> Result<Vec<u8>, String> {
     serde_json::to_vec(&mode).map_err(|e| e.to_string())
 }
 
+/// Rest belongs to one living, physically bound player body.
+fn rest_binding<'a>(session: &Session, mode: &'a ModeState, access: OrdinaryAccess) -> Option<&'a mode::PoseBinding> {
+    let body = access.subject?.0;
+    let participant = access.participant.0;
+    let native = session.sim.state().population.get(body)?;
+    if !native.alive || native.method != cosmograph::schema::Method::Normative
+        || mode.actions.is_none() || !session.sim.genesis().rules.processes.contains_key(crate::founding::RESTS)
+        || session.sim.played(participant).as_slice() != [body]
+        || life::played_by_another(&session.sim, body, Some(participant)) {
+        return None;
+    }
+    mode.bindings.iter().find(|binding| binding.entity == body)
+}
+
 pub struct EponymEndpoint {
     world: World,
     window: Window,
@@ -86,11 +101,15 @@ impl EponymEndpoint {
     fn items(&mut self) -> Result<Vec<Item>, String> {
         let cut = self.window.projection()?;
         let access = cut.access;
-        let (bodies, waiting, choices) = self.world.read_sections(|session, sections| {
+        let (bodies, waiting, choices, resting) = self.world.read_sections(|session, sections| {
             let bodies = Reading::new(session, &cut.visible).bodies();
             let waiting = awaiting(session, access.participant.0);
-            let choices = waiting.then(|| life::death_choices(session, &game(sections), access, &cut.visible));
-            (bodies, waiting, choices)
+            let bytes = sections.get(MODE).map_or(&[][..], Vec::as_slice);
+            let choices = waiting.then(|| life::death_choices(session, bytes, access, &cut.visible));
+            let resting = ModeState::decode(bytes).ok().flatten()
+                .and_then(|mode| rest_binding(session, &mode, access)
+                    .filter(|binding| binding.current(session).is_ok()).map(|binding| binding.entity));
+            (bodies, waiting, choices, resting)
         })?;
         let state = if waiting { "Awaiting a next life" } else { "Living" };
         let mut items = vec![Item { id: "eponym".into(),
@@ -99,7 +118,9 @@ impl EponymEndpoint {
                 NULL, IntentEffect::DomainTruth)] }];
         for (id, name, parts) in bodies {
             items.push(Item { id: format!("body:{id}"),
-                card: card(name, vec![value("Body", id), value("Parts", parts)], &["body"]), actions: Vec::new() });
+                card: card(name, vec![value("Body", id), value("Parts", parts)], &["body"]), actions: if resting == Some(id) {
+                    vec![action(REST, "Rest", "Rest this life and recover energy.", NULL, IntentEffect::DomainTruth)]
+                } else { Vec::new() } });
         }
         self.lives.clear();
         match choices {
@@ -119,6 +140,28 @@ impl EponymEndpoint {
             },
         }
         Ok(items)
+    }
+
+    fn rest(&mut self, source: &str) -> Result<IntentResult, String> {
+        let cut = self.window.projection()?;
+        let before = self.window.cut()?;
+        let result = self.world.product_sections(before, |session, sections| {
+            let bytes = game(sections);
+            let mode = ModeState::decode(&bytes)?.ok_or("Eponym has no configured lives")?;
+            let binding = rest_binding(session, &mode, cut.access)
+                .ok_or("this player has no available living body")?;
+            if source != format!("body:{}", binding.entity) {
+                return Err("this body belongs to another life".into());
+            }
+            let input = actions::ActionInput {
+                kind: "eponym:actions".into(), version: 1, expected_native: mode::source(session),
+                expected_game: actions::game_source(&bytes), subject: binding.subject,
+                action: actions::Action::Act { process: crate::founding::RESTS.into(), target: None, selections: Vec::new() },
+            };
+            let (_, next) = actions::submit(session, bytes, &input, cut.access, &cut.visible, crate::MotionSolver::STILL)?;
+            Ok(((), with_game(sections, next)))
+        });
+        Ok(match result { Ok(()) => self.disclosure.accepted(), Err(why) => rejected(why) })
     }
 
     fn take(&mut self, input: life::Input) -> Result<IntentResult, String> {
@@ -176,6 +219,7 @@ impl IntentSink for EponymEndpoint {
         };
         match intent.intent.as_str() {
             STEP => self.step(),
+            REST => self.rest(&source),
             TAKE => match self.lives.get(&source).cloned() {
                 Some(input) => self.take(input),
                 None => Ok(rejected("this next life is no longer offered")),

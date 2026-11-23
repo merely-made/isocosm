@@ -280,7 +280,7 @@ impl World {
         Ok(())
     }
 
-    fn from_genesis(seed: u64, config: WorldConfig, version: u32,
+    pub(crate) fn from_genesis(seed: u64, config: WorldConfig, version: u32,
         genesis: cosmograph::simulation::Genesis, movement: cosmograph::schema::Movement,
         intents: Vec<WorldIntent>) -> Result<Self, WorldError> {
         let side = config.extent as u64 * 2;

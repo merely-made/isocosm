@@ -1,3 +1,5 @@
+mod players;
+
 use std::rc::Rc;
 use std::sync::Arc;
 use std::time::Duration;
@@ -7,9 +9,9 @@ use chirograph::{
     Carrier, CarrierRequestBody, CarrierResponseBody, IntentInvocation, IntentResult,
     ProjectionRequest, ProjectionSnapshot, ProtocolVersion, ResourceResponse, SessionOpen,
 };
-use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
 use cosmograph::Execution;
 use cosmograph_host::world::World;
+use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
 use isonetry::family::{
     AcceptedRecord, FamilyHost, FamilyLedgerLimits, FamilyLimits, FamilyReplica, SessionId,
     WireLimits,
@@ -51,6 +53,8 @@ pub struct Harness {
     guest: Arc<P2pandaTransport>,
     host_key: SigningKey,
     seed: u8,
+    players: std::collections::BTreeMap<u8, Arc<P2pandaTransport>>,
+    player: Option<u8>,
 }
 
 impl Harness {
@@ -166,6 +170,8 @@ impl Harness {
             guest,
             host_key,
             seed,
+            players: Default::default(),
+            player: None,
         }
     }
 
@@ -283,7 +289,8 @@ impl Harness {
         <E as PresentationSource>::Error: Display,
         <E as IntentSink>::Error: Display,
     {
-        self.serve_and_read(endpoint, descriptor, intents, Vec::new()).await;
+        self.serve_and_read(endpoint, descriptor, intents, Vec::new())
+            .await;
     }
 
     /// Serve the endpoint, run the intents, then return the item ids each of
@@ -294,14 +301,23 @@ impl Harness {
         descriptor: Option<FamilyCheckpointDescriptor>,
         intents: Vec<ClientIntent>,
         reads: Vec<ProjectionRequest>,
-    ) -> Vec<Vec<String>> where
+    ) -> Vec<Vec<String>>
+    where
         E: ProjectionCatalog + ProjectionSource + PresentationSource + IntentSink + 'static,
         <E as ProjectionSource>::Error: Display,
         <E as PresentationSource>::Error: Display,
         <E as IntentSink>::Error: Display,
     {
+        let (guest, key) = self.projection_player();
+        assert!(
+            self.player.is_none() || descriptor.is_none(),
+            "ordinary player cannot receive a replica bootstrap"
+        );
+        let expected = InMemoryProvider::from_seed([key; 32])
+            .master_public_key()
+            .to_bytes();
         let (request, host_policy, dial_policy) =
-            admission_setup(self.seed, self.guest.local_peer_id());
+            admission_setup(self.seed, key, guest.local_peer_id());
         let host_side = Arc::clone(&self.owner);
         let accepting_host_side = Arc::clone(&host_side);
         let (client_closed_tx, client_closed_rx) = tokio::sync::oneshot::channel();
@@ -316,6 +332,10 @@ impl Harness {
             .await
             .expect("admitted product session")
             .expect("viewer admitted");
+            assert_eq!(
+                admitted.principal.subject, expected,
+                "serve only the endpoint bound to this admitted persona"
+            );
             let authority = lifecycle::SessionAuthority::retain_admitted(&admitted);
             let mut resume = |_: &mut E, _| Err("resume not used by this test".into());
             let summary = session_loop::serve_admitted_session(
@@ -334,7 +354,7 @@ impl Harness {
             summary
         });
 
-        let guest_side = Arc::clone(&self.guest);
+        let guest_side = Arc::clone(guest);
         let runtime = tokio::runtime::Handle::current();
         let dial_peer = host_side.local_peer_id();
         let host_key = self.host_key.verifying_key();
@@ -389,6 +409,12 @@ impl Harness {
             .leave_and_wait()
             .await
             .expect("guest lane shutdown");
+        for player in self.players.into_values() {
+            player
+                .close()
+                .await
+                .expect("ordinary player transport shutdown");
+        }
         self.owner.close().await.expect("host transport shutdown");
         self.guest.close().await.expect("guest transport shutdown");
         drop(self.owner_rx);
@@ -505,6 +531,7 @@ async fn wait_for_record(
 
 fn admission_setup(
     seed: u8,
+    viewer_key: u8,
     guest_peer: transport::PeerID,
 ) -> (
     notochord::SessionHello,
@@ -514,7 +541,7 @@ fn admission_setup(
     let network = notochord::NetworkId([seed.wrapping_add(10); 32]);
     let root_authority = [seed.wrapping_add(11); 32];
     let owner = InMemoryProvider::from_seed([seed.wrapping_add(12); 32]);
-    let viewer = InMemoryProvider::from_seed([seed.wrapping_add(3); 32]);
+    let viewer = InMemoryProvider::from_seed([viewer_key; 32]);
     let trusted = notochord::TrustedRoot {
         authority: root_authority,
         issuer: owner.master_public_key().to_bytes(),

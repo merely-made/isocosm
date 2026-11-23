@@ -213,8 +213,34 @@ fn build_timed_action_world(
     practice_at_target: Option<bool>,
     rounds: bool,
 ) -> Fixture {
+    build_timed_fixture(World::generate(7, WorldConfig::default()).unwrap(), solver, practice_at_target, rounds, |_| {})
+}
+
+/// Three separately playable subjects in an authored world. Without an actual
+/// deed of trust, a deceased player's successor is a free visible denizen.
+pub(super) fn cooperative_rounds() -> Fixture {
+    use cosmograph::social::{CompanionPolicy, CompanionRule, Direction, Range, StandingRule};
+    let config = WorldConfig::default();
+    let mut genesis = crate::founding::genesis(7, u32::from(config.side), config.extent as u64 * 2).unwrap();
+    genesis.rules.companions = Some(CompanionPolicy {
+        key: "eponym:trusted-companion".into(),
+        rule: CompanionRule::Standing {
+            direction: Direction::PredecessorToCompanion,
+            predicate: StandingRule { trust: Range { min: 1, max: 100 }, affinity: Range { min: -100, max: 100 } },
+        },
+    });
+    let world = World::from_genesis(7, config, crate::world::GENERATOR_VERSION, genesis, cosmograph::schema::Movement::Journey, Vec::new()).unwrap();
+    build_timed_fixture(world, crate::MotionSolver::STILL, Some(false), true, |game| {
+        // A player's native window needs the striker's initial patch as well as its authored pose.
+        let striker = crate::fixtures::native_severing::STRIKER;
+        let toward = game.movement().position(striker).unwrap();
+        apply(game, |tick| GameIntent::Move { tick, subject: striker, toward });
+    })
+}
+
+fn build_timed_fixture(mut world: World, solver: crate::MotionSolver, practice_at_target: Option<bool>,
+    rounds: bool, prepare_players: impl FnOnce(&mut GameState)) -> Fixture {
     let keeper = three_lives::KEEPER;
-    let mut world = World::generate(7, WorldConfig::default()).unwrap();
     if rounds {
         world = world.in_rounds().expect("a fresh world takes the rounds marker");
     }
@@ -344,6 +370,7 @@ fn build_timed_action_world(
             max_hops: 4,
         },
     };
+    prepare_players(&mut game);
     let session = Session::begin(game, keeper).unwrap();
     Fixture {
         action: TimedActionSession::begin(session, network(keeper), rules).unwrap(),

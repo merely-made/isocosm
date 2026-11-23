@@ -102,7 +102,15 @@ impl NativeClock {
 
 /// The rounds timed-action world, handed off and its clock configured.
 pub fn native_clock_in_rounds() -> NativeClock {
-    let mut f = session::timed_action_world_in_rounds();
+    clock_for(session::timed_action_world_in_rounds())
+}
+
+/// An ordinary two-player world with a third bound subject for succession.
+pub fn cooperative_lives_in_rounds() -> NativeClock {
+    clock_for(session::cooperative_rounds())
+}
+
+fn clock_for(mut f: session::Fixture) -> NativeClock {
     // The keeper tells the sim its patch once, with one still step (case
     // 1102); only the played body steps.
     let subjects: Vec<_> = f.action.session().game().world().subjects().collect();

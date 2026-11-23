@@ -406,6 +406,9 @@ impl Borrowed<'_> {
                 }
             },
         };
+        if mode::life::played_by_another(self.sim(), critter, participant) {
+            return Err(WorldError::NotPlayed);
+        }
         let participant = match (participant, c) {
             (Some(p), _) => p,
             (None, LifeCheckpoint::First(_)) => {

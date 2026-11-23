@@ -12,6 +12,12 @@ use cosmograph_overlay::eponym::{LifeCheckpoint, LifeChoice, StartTime, Successo
 
 pub const KIND: &str = "eponym:life";
 
+/// A first life or successor must be free of another participant's native control.
+pub(crate) fn played_by_another(sim: &cosmograph::Simulation, body: Id, participant: Option<Id>) -> bool {
+    sim.state().relations.iter().any(|r| r.kind == cosmograph::directing::PLAYS
+        && r.object == body && Some(r.subject) != participant)
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Input {
@@ -160,6 +166,9 @@ fn admit(session: &Session, mode: &ModeState, input: &Input, access: OrdinaryAcc
     let body = session.sim.state().population.get(target).ok_or("selected native life is absent")?;
     if !body.alive || body.method != Method::Normative {
         return Err("Eponym takes an existing living native sophont; non-sapient critters stay directed".into());
+    }
+    if played_by_another(&session.sim, target, Some(participant)) {
+        return Err("another participant already plays this life".into());
     }
     let previous = previous_take(session, participant);
     match input.checkpoint {
