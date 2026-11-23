@@ -45,12 +45,6 @@ fn card(view: &VttProjectionView, item: &VttCardView) -> UiChild {
     let mut children: Vec<UiChild> = vec![Box::new(
         el("div", text(item.title.clone())).attr("class", "vtt-card-title"),
     )];
-    let mut strides = std::collections::BTreeSet::new();
-    if is_board {
-        let (board, drawn) = board::render(view, item);
-        children.push(board);
-        strides = drawn;
-    }
     children.extend(
         item.badges
             .iter()
@@ -76,6 +70,12 @@ fn card(view: &VttProjectionView, item: &VttCardView) -> UiChild {
                 ) as UiChild
             }),
     );
+    let mut strides = std::collections::BTreeSet::new();
+    if is_board {
+        let (board, drawn) = board::render(view, item);
+        children.push(board);
+        strides = drawn;
+    }
     let actions: Vec<UiChild> = item
         .actions
         .iter()

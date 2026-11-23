@@ -10,7 +10,7 @@ use crate::ruleset::{self, Action, State, pathfinder::play};
 use chirograph::{AdvertisedAction, IntentEffect};
 use cosmograph::Session;
 use cosmograph_host::endpoint::disclosure::{Item, NULL, action, card, value};
-use cosmograph_overlay::Seat;
+use cosmograph_overlay::{OrdinaryAccess, Seat};
 use isocosm_core::encounter_board::{BADGE, BoardCell, BoardToken, EncounterBoard, VALUE};
 use isocosm_system::pf2e::{combat, records};
 use std::collections::BTreeMap;
@@ -51,7 +51,16 @@ impl Board {
         );
     }
 
-    fn push(self, built: &mut Built) -> Result<(), String> {
+    fn push(self, built: &mut Built, state: &State, access: OrdinaryAccess) -> Result<(), String> {
+        let mut values = Vec::new();
+        if let Some(turn) = state.encounter.as_ref().and_then(|e| e.current())
+            && self.tokens.iter().any(|t| t.body == u64::from(turn.token))
+        {
+            values.push(value("Actions remaining", turn.actions));
+        }
+        if let Some(result) = last_strike(state, &self.tokens, access) {
+            values.push(value("Last Strike", result));
+        }
         let board = EncounterBoard {
             site: self.site,
             cells_per_square: self.spacing,
@@ -62,10 +71,10 @@ impl Board {
                 .map(|(at, stride)| BoardCell { at, stride })
                 .collect(),
         };
-        let values = vec![value(
+        values.push(value(
             VALUE,
             serde_json::to_string(&board).map_err(|e| e.to_string())?,
-        )];
+        ));
         built.push(
             Item {
                 id: format!("pf2e-board:{}", self.site),
@@ -76,6 +85,38 @@ impl Board {
         );
         Ok(())
     }
+}
+
+/// Old ledgers already record the two bodies, roll and degree. Expose only the
+/// result of an encounter Strike involving this player’s currently visible bodies.
+/// Other combat details in the GM log can name allies outside the board.
+fn last_strike(state: &State, tokens: &[BoardToken], access: OrdinaryAccess) -> Option<String> {
+    use isocosm_system::pf2e::play::Degree::{CriticalFailure, CriticalSuccess, Failure, Success};
+
+    state.encounter.as_ref()?;
+    let mut entries = state.log.iter().rev().take_while(|entry| {
+        !matches!(entry.action, Action::StartEncounter | Action::EndEncounter)
+    });
+    entries.find_map(|entry| {
+        let (Action::Attack { actor, target } | Action::RuleAttack { actor, target }) = entry.action
+            else { return None };
+        if access.seat != Seat::Dm && !access.subject.is_some_and(|eye| eye.0 == actor || eye.0 == target) {
+            return None;
+        }
+        let attacker = tokens.iter().find(|t| t.body == actor)?;
+        let defender = tokens.iter().find(|t| t.body == target)?;
+        // The persisted Strike heading ends with its degree. Only established
+        // degree labels cross this boundary, including when reading older saves.
+        let (_, name) = entry.note.split(';').next()?.rsplit_once(": ")?;
+        let degree = [CriticalFailure, Failure, Success, CriticalSuccess]
+            .into_iter().find(|degree| degree.name() == name)?;
+        let roll = entry.rolls.first()?;
+        let mut result = format!("{} → {} · {} (roll {})", attacker.name, defender.name, degree.name(), roll.total);
+        if let Some(damage) = entry.rolls.get(1) {
+            result.push_str(&format!(" · {} damage rolled", damage.total));
+        }
+        Some(result)
+    })
 }
 
 pub(super) fn append(
@@ -292,7 +333,42 @@ pub(super) fn append(
                 }
             }
         }
-        board.push(built)?;
+        board.push(built, &state, access)?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cosmograph_overlay::{EntityHandle, ParticipantHandle};
+    use isocosm_core::RollRecord;
+    use isocosm_system::pf2e::play::Encounter;
+
+    #[test]
+    fn last_strike_uses_only_this_encounter_and_disclosed_participants() {
+        let mut state = State::new(3);
+        state.encounter = Some(Encounter { round: 1, current: 0, order: vec![] });
+        let tokens = [(18, "Arden"), (19, "Brisa")].map(|(body, name)| BoardToken {
+            body, name: name.into(), at: [0; 3], active: body == 18,
+        });
+        let mut access = OrdinaryAccess {
+            participant: ParticipantHandle(17), seat: Seat::Player, subject: Some(EntityHandle(18)),
+        };
+        let roll = |total| RollRecord { by: String::new(), expr: String::new(), dice: vec![], total };
+        let strike = ruleset::Log {
+            by: 17, tick: 5, action: Action::RuleAttack { actor: 18, target: 19 },
+            note: "Character 18 Strikes 19 with Shortbow: success; private GM details".into(),
+            rolls: vec![roll(23), roll(7)],
+        };
+        state.log.push(strike.clone());
+        assert_eq!(last_strike(&state, &tokens, access).as_deref(), Some("Arden → Brisa · success (roll 23) · 7 damage rolled"));
+        assert_eq!(last_strike(&state, &tokens[..1], access), None);
+        access.subject = Some(EntityHandle(20));
+        assert_eq!(last_strike(&state, &tokens, access), None);
+        access.seat = Seat::Dm;
+        assert!(last_strike(&state, &tokens, access).is_some());
+        state.log.push(ruleset::Log { action: Action::StartEncounter, ..strike });
+        assert_eq!(last_strike(&state, &tokens, access), None);
+    }
 }

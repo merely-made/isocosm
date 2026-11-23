@@ -21,6 +21,12 @@ fn board(
     Some((view, card, serde_json::from_str(&encoded.value).unwrap()))
 }
 
+fn feedback(views: &[VttProjectionView]) -> (String, Option<String>) {
+    let (_, card, _) = board(views).expect("the player's encounter board");
+    let field = |label: &str| card.values.iter().find(|v| v.label == label).map(|v| v.value.clone());
+    (field("Actions remaining").expect("visible turn budget"), field("Last Strike"))
+}
+
 fn gm_click(table: &mut FamilyTable, intent: &str) {
     let views = table.projections().unwrap();
     assert_eq!(
@@ -82,6 +88,7 @@ fn invited_pathfinder_player_strides_strikes_and_rejoins_the_reopened_table() {
     );
     assert!(guest.replica().is_none());
     let (view, card, offered) = board(&seen).unwrap();
+    assert_eq!(feedback(&seen), ("3".to_owned(), None));
     let origin = offered
         .tokens
         .iter()
@@ -125,6 +132,7 @@ fn invited_pathfinder_player_strides_strikes_and_rejoins_the_reopened_table() {
                 })
         },
     );
+    assert_eq!(feedback(&seen), ("2".to_owned(), None));
     let strike = format!("vtt.pf2e-strike-{target}");
     let (view, card, _) = board(&seen).unwrap();
     assert!(
@@ -160,7 +168,13 @@ fn invited_pathfinder_player_strides_strikes_and_rejoins_the_reopened_table() {
         (u64::from(turn.token), turn.actions, turn.attacks),
         (actor, 1, 1)
     );
-    assert!(!state.log.last().unwrap().rolls.is_empty());
+    let logged = state.log.last().unwrap();
+    let (actions, result) = feedback(&seen);
+    assert_eq!(actions, "1");
+    let result = result.expect("the player sees the accepted Strike on the board");
+    assert!(result.contains("Arden") && result.contains("Brisa"), "{result}");
+    assert!(result.contains(&format!("roll {}", logged.rolls[0].total)), "{result}");
+    assert!(result.contains("failure") || result.contains("success"), "{result}");
     guest.close();
     drop(pumps);
     host.close();
@@ -190,6 +204,7 @@ fn invited_pathfinder_player_strides_strikes_and_rejoins_the_reopened_table() {
         },
     );
     assert!(guest.replica().is_none());
+    assert_eq!(feedback(&seen), ("1".to_owned(), Some(result)));
     assert_eq!(
         table.sequence(),
         before + 2,

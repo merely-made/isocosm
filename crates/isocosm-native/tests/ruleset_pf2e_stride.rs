@@ -2,7 +2,7 @@
 //! Stride (case 1042): an admitted, placed character spends one action and
 //! its native cell batch moves it in the same transaction, ruled by a GM seat
 //! with no scale, measured against Speed with one.
-use chirograph::{IntentInvocation, IntentResult, PortableCardV1, ResourceRequest};
+use chirograph::{CardValueV1, IntentInvocation, IntentResult, PortableCardV1, ResourceRequest};
 use cosmograph::Execution;
 use cosmograph_host::world::World;
 use cosmograph_overlay::Seat;
@@ -48,7 +48,7 @@ fn click(endpoint: &mut VttEndpoint, projection: &str, card: &str, intent: &str,
 }
 
 /// Read precisely the card and advertised intents available to this window.
-fn boards(endpoint: &mut VttEndpoint) -> Vec<(String, EncounterBoard, Vec<String>)> {
+fn boards(endpoint: &mut VttEndpoint) -> Vec<(String, EncounterBoard, Vec<String>, Vec<CardValueV1>)> {
     let request = endpoint.describe().projections.into_iter().find(|p| p.request.session.0 == TABLE).unwrap().request;
     let snapshot = endpoint.snapshot(request).unwrap();
     snapshot.scene.active_items_in_order().into_iter().filter_map(|(instance, item)| {
@@ -59,7 +59,7 @@ fn boards(endpoint: &mut VttEndpoint) -> Vec<(String, EncounterBoard, Vec<String
         if !card.badges.iter().any(|b| b == BADGE) { return None; }
         let data = card.values.iter().find(|field| field.label == VALUE).unwrap();
         let actions = offer.semantics.actions.iter().map(|a| a.intent.0.clone()).collect();
-        Some((source.id.clone(), serde_json::from_str(&data.value).unwrap(), actions))
+        Some((source.id.clone(), serde_json::from_str(&data.value).unwrap(), actions, card.values))
     }).collect()
 }
 
@@ -104,7 +104,7 @@ fn stride_carries_the_native_move_ruled_then_measured() {
         }
         assert_eq!(click(endpoint, SHEETS, &card, "vtt.draft-finish", &[]), IntentResult::Accepted);
     }
-    let (site_card, _, start) = boards(&mut gm).pop().unwrap();
+    let (site_card, _, start, _) = boards(&mut gm).pop().unwrap();
     assert!(start.iter().any(|id| id == "vtt.pf2e-start-encounter"));
     assert_ne!(click(&mut seat, TABLE, &site_card, "vtt.pf2e-start-encounter", &[]), IntentResult::Accepted);
     assert_eq!(click(&mut gm, TABLE, &site_card, "vtt.pf2e-start-encounter", &[]), IntentResult::Accepted);
@@ -126,8 +126,9 @@ fn stride_carries_the_native_move_ruled_then_measured() {
         assert_eq!(click(&mut gm, TABLE, &site_card, "vtt.pf2e-end-turn", &[]), IntentResult::Accepted);
     }
     let before = at(&host, characters[0]);
-    let (card, board, offers) = boards(&mut seat).pop().unwrap();
+    let (card, board, offers, values) = boards(&mut seat).pop().unwrap();
     assert_eq!(board.cells_per_square, 4);
+    assert!(values.iter().any(|v| v.label == "Actions remaining" && v.value == "3"), "the turn starts with three actions on the board");
     assert!(board.tokens.iter().any(|t| t.body == characters[0] && t.at == before && t.active));
     // The draft purchased scale mail but never readied it. This dwarf has
     // the ancestry's 20-foot Speed; the legacy sheet offered a full Stride.
@@ -140,7 +141,7 @@ fn stride_carries_the_native_move_ruled_then_measured() {
     assert!(offers.iter().any(|offered| offered == stride));
     assert!(offers.iter().any(|id| id == "vtt.pf2e-end-turn"));
     // Even a GM who sees this character does not play it.
-    let (_, gm_board, gm_offers) = boards(&mut gm).pop().unwrap();
+    let (_, gm_board, gm_offers, _) = boards(&mut gm).pop().unwrap();
     assert!(gm_board.cells.iter().all(|cell| cell.stride.is_none()) && !gm_offers.iter().any(|id| id == stride));
     assert_ne!(click(&mut gm, TABLE, &card, "vtt.pf2e-end-turn", &[]), IntentResult::Accepted);
     assert_ne!(click(&mut gm, TABLE, &card, stride, &[]), IntentResult::Accepted);
@@ -173,13 +174,14 @@ fn board_uses_the_selected_native_eye_for_tokens_and_terrain() {
     founded(&world);
     let mut gm = VttEndpoint::open(&world, dm, Seat::Dm).unwrap();
     let mut seat = VttEndpoint::open(&world, player, Seat::Player).unwrap();
-    let (_, truth, _) = boards(&mut gm).pop().unwrap();
+    let (_, truth, _, _) = boards(&mut gm).pop().unwrap();
     assert_eq!(truth.tokens.len(), 2);
     assert!(truth.cells.len() > 2);
     assert_ne!(truth.tokens[0].at, truth.tokens[1].at, "the hidden token stands in another column");
     assert!(boards(&mut seat).is_empty(), "the original, unmarked observer has no admitted eye");
     assert_eq!(click(&mut seat, TABLE, &format!("body:{}", characters[0]), "vtt.view-as", &[]), IntentResult::Accepted);
-    let (_, cut, offers) = boards(&mut seat).pop().unwrap();
+    let (_, cut, offers, values) = boards(&mut seat).pop().unwrap();
+    assert!(values.iter().all(|v| v.label != "Last Strike" && v.label != "Actions remaining"));
     assert_eq!(cut.tokens.len(), 1);
     assert_eq!(cut.tokens[0].body, characters[0]);
     assert_eq!(cut.cells.len(), 1);
