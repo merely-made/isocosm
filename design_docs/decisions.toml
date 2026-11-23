@@ -7900,6 +7900,30 @@ summary = "No world carries the limit by default; D78's 32 is given on the comma
 draws_on = ["sim-execution D78", "sim-execution D79"]
 plans = ["sim-execution"]
 
+[decisions."sim-execution D82"]
+title = "the limit counts step checks, not refusals (2026-11-22)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The route search limit counts full-body step checks, the thing that costs."
+draws_on = ["sim-execution D73", "sim-execution D77", "sim-execution D78"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D83"]
+title = "the exhausted graphs are checked before anything is built (2026-11-22)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Exhausted route graphs are left alone if they cost only in the first minute."
+draws_on = ["sim-execution D54", "sim-execution D76"]
+plans = ["sim-execution"]
+
+[decisions."sim-execution D84"]
+title = "minutes 2 to 20 are profiled next (2026-11-22)"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "Profile minutes 2 to 20 for stepper against clock before more speed work."
+draws_on = ["sim-execution D73", "sim-execution D76", "sim-execution D83"]
+plans = ["sim-execution"]
+
 [decisions."sim-host D1"]
 title = "the games stay separate; what is shared first is reading any game's world (2026-11-12), refines 381"
 source = "mesocosm/design_docs/2026-10-28_sim_host_plan.md"
