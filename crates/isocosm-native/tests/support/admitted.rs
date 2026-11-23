@@ -28,7 +28,7 @@ pub struct Admitted {
     pub world: World,
     pub dm: ParticipantHandle,
     pub player: ParticipantHandle,
-    /// The admitted characters' native ids, the player's first.
+    /// The admitted characters in Arden, Brisa order.
     pub characters: [Id; 2],
 }
 
@@ -37,6 +37,14 @@ pub fn admitted_table() -> Admitted { admitted_table_controlled([true, false]) }
 /// The bench with each admitted character controlled by the player (`true`)
 /// or the DM, beside the body each already plays (case 1065).
 pub fn admitted_table_controlled(by_player: [bool; 2]) -> Admitted {
+    placed_table(by_player, None)
+}
+
+/// A table with an explicitly admitted physical eye for each player character.
+/// Both use the same native window so their geometry shares one patch reading.
+pub fn sighted_table(by_player: [bool; 2], range: u64) -> Admitted { placed_table(by_player, Some(range)) }
+
+fn placed_table(by_player: [bool; 2], sight: Option<u64>) -> Admitted {
     let table::Table { world, dm, player, bodies } = table::table_with_native_geometry();
     let (mut session, mut sections) = world.into_parts().unwrap();
     sections.entry("vtt".into()).or_insert_with(|| GameBindings::decode(&[]).unwrap().encode().unwrap());
@@ -67,14 +75,32 @@ pub fn admitted_table_controlled(by_player: [bool; 2]) -> Admitted {
     submit(&mut session, &mut sections, &AdmissionBatch { version: 1, assertions: vec![],
         characters: characters.to_vec(), placements: vec![], controls: vec![], project_carry: None, spatial: vec![] });
     let ids = KEYS.map(|key| session.sim.authored_entity(key).unwrap().0);
-    let placements = KEYS.iter().zip(&stands).zip(ids).map(|((key, stand), id)| {
-        let window = cosmograph::spatial::embodiment::site_window(&template, stand.pose.at);
+    let shared_window = stands.iter().map(|stand| cosmograph::spatial::embodiment::site_window(&template, stand.pose.at))
+        .reduce(|mut a, b| {
+            for k in 0..2 { a.min[k] = a.min[k].min(b.min[k]); a.max[k] = a.max[k].max(b.max[k]); }
+            a.depth = a.depth.max(b.depth);
+            a
+        }).unwrap();
+    let placements: Vec<_> = KEYS.iter().zip(&stands).zip(ids).map(|((key, stand), id)| {
+        let window = if sight.is_some() { shared_window.clone() } else {
+            cosmograph::spatial::embodiment::site_window(&template, stand.pose.at)
+        };
         let volume = session.sim.volume(site, window.min, window.max, window.depth).unwrap();
         let places = isometer_space::places::Places::derive(&volume, template.places).unwrap();
-        // The highest clear cell in the resident's column, inside the window.
-        let at = (volume.datum..volume.ceiling()).rev().map(|y| [stand.pose.at[0], y, stand.pose.at[2]])
-            .find(|at| volume.material(*at) == Some(volume.materials.air) && places.place_at(*at).is_some())
-            .expect("a clear cell in the column");
+        let [x, _, z] = stand.pose.at;
+        let at = if sight.is_some() {
+            // The marked table starts on the surface rather than at its window ceiling.
+            let floor = volume.surface(x, z).expect("grounded stand column");
+            let at = [x, floor + 1, z];
+            assert!(volume.material([x, floor, z]).is_some_and(|m| m != volume.materials.air && m != volume.materials.water));
+            assert_eq!(volume.material(at), Some(volume.materials.air));
+            at
+        } else {
+            // Existing unmarked fixtures and saves may occupy any admitted clear cell.
+            (volume.datum..volume.ceiling()).rev().map(|y| [x, y, z])
+                .find(|at| volume.material(*at) == Some(volume.materials.air) && places.place_at(*at).is_some())
+                .expect("legacy clear cell")
+        };
         let patch = places.place_at(at).unwrap();
         CharacterPlacement {
             character: (*key).into(), site, patch,
@@ -86,7 +112,15 @@ pub fn admitted_table_controlled(by_player: [bool; 2]) -> Admitted {
     }).collect();
     let controls = KEYS.iter().zip(by_player).map(|(key, mine)| CharacterControl { character: (*key).into(),
         participant: ParticipantInput::Existing(if mine { player.0 } else { dm.0 }) }).collect();
-    submit(&mut session, &mut sections, &AdmissionBatch { version: 2, assertions: vec![], characters: vec![],
-        placements, controls, project_carry: None, spatial: vec![] });
+    let (version, placements, spatial) = match sight {
+        None => (2, placements, vec![]),
+        Some(range) => (4, vec![], placements.into_iter().map(|placement| isocosm_native::native::CharacterSpatialPlacement {
+            placement, spatial: isocosm_native::native::SpatialSense {
+                yaw: cosmograph::custody::Yaw::Zero, eye_offset: [0, 0, 0], range,
+            },
+        }).collect()),
+    };
+    submit(&mut session, &mut sections, &AdmissionBatch { version, assertions: vec![], characters: vec![],
+        placements, controls, project_carry: None, spatial });
     Admitted { world: World::with_sections(session, sections), dm, player, characters: ids }
 }

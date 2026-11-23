@@ -88,17 +88,35 @@ impl UiState {
         self.vtt_action_request.take()
     }
 
-    pub(crate) fn request_vtt_action(&mut self, projection: &str, card: &str, action: &str) {
+    pub(crate) fn request_vtt_action(
+        &mut self,
+        projection: &str,
+        card: &str,
+        action: &str,
+        cut: (u64, u64),
+    ) {
         let view = self
             .vtt_projections
             .iter()
-            .find(|view| view.id == projection);
+            .find(|view| view.id == projection && (view.epoch, view.revision) == cut);
         let action_view = view.and_then(|view| {
             view.cards
                 .iter()
                 .find(|item| item.id == card)
                 .and_then(|item| item.actions.iter().find(|candidate| candidate.id == action))
         });
+        if std::env::var_os("ISOCOSM_VTT_ACTION_TRACE").is_some() {
+            let current = self
+                .vtt_projections
+                .iter()
+                .find(|v| v.id == projection)
+                .map(|v| (v.epoch, v.revision));
+            eprintln!(
+                "[vtt-input] action={action} cut={cut:?} current={current:?} selected={} advertised={}",
+                projection == self.vtt_selected_projection,
+                action_view.is_some()
+            );
+        }
         if projection != self.vtt_selected_projection {
             return;
         }
@@ -150,7 +168,7 @@ mod tests {
         let mut ui = UiState::new(MapDocument::new("VTT control", 4, 3));
         ui.set_vtt_projections(vec![view("vtt:table", "vtt.join")]);
         ui.vtt_action_payload = cambium::TextInput::new("{\"name\":\"Mira\"}");
-        ui.request_vtt_action("vtt:table", "card-1", "vtt.join");
+        ui.request_vtt_action("vtt:table", "card-1", "vtt.join", (2, 7));
         assert_eq!(
             ui.take_vtt_action_request(),
             Some(VttActionRequest {
@@ -162,10 +180,20 @@ mod tests {
                 revision: 7,
             })
         );
-        ui.request_vtt_action("vtt:table", "card-1", "invented");
+        ui.request_vtt_action("vtt:table", "card-1", "invented", (2, 7));
         assert!(ui.take_vtt_action_request().is_none());
-        ui.request_vtt_action("vtt:table", "card-1", "vtt.join");
+        ui.request_vtt_action("vtt:table", "card-1", "vtt.join", (2, 7));
         ui.set_vtt_projections(vec![view("vtt:table", "vtt.leave")]);
+        assert!(ui.take_vtt_action_request().is_none());
+    }
+
+    #[test]
+    fn stale_painted_action_cannot_acquire_a_new_observation_cut() {
+        let mut ui = UiState::new(MapDocument::new("VTT", 1, 1));
+        ui.set_vtt_projections(vec![view("vtt:table", "stride")]);
+        ui.request_vtt_action("vtt:table", "card-1", "stride", (2, 6));
+        assert!(ui.take_vtt_action_request().is_none());
+        ui.request_vtt_action("vtt:table", "card-1", "stride", (1, 7));
         assert!(ui.take_vtt_action_request().is_none());
     }
 
@@ -187,7 +215,7 @@ mod tests {
         view.cards[0].actions[0].payload_schema = r#"{"type":"null"}"#.into();
         ui.set_vtt_projections(vec![view]);
         ui.vtt_action_payload = cambium::TextInput::new("stale details");
-        ui.request_vtt_action("vtt:table", "card-1", "vtt.join");
+        ui.request_vtt_action("vtt:table", "card-1", "vtt.join", (2, 7));
         assert!(ui.take_vtt_action_request().unwrap().payload.is_empty());
     }
 }

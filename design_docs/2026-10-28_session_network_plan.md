@@ -8,8 +8,11 @@ in their products' `archive_docs/2026-10-28/`. `isonetry` has begun its remake:
 `family`, `family_network` and `source_time` modules exist, with a host-signed
 record lane over `JoinedSpace` and in-process and loopback tests. 2026-11-01: the
 working table's invite and join flow is built (case 1060; `1f1d38f4` and after),
-and its headed run stops at custody (Djinn refuses the app). Open are the
-production admission and peer setup (H7d), the network gate, retiring the old VTT
+and that initial headed run stopped at custody. The ordinary table now serves
+seat projections and Graphshell revision notices. A host-selected replica has a
+separate signed grant for the full checkpoint and accepted log. The desktop
+declares its role's custody operations to Djinn. Open are production admission
+and peer setup (H7d), the network gate, retiring the old VTT
 event authority, the Stickleback adoption of `campaign_sync.rs` (K0 to K2) and
 the demand-gated tiers of the shared-authority plan.
 
@@ -77,14 +80,12 @@ where the GM store and proposal lifecycle go on retirement
 ## Phases
 
 ### H7. The family session layer
-`isonetry`, remade, is the family's session layer (923, 924). One peer hosts
-the core's `World`; others send intent envelopes and receive the accepted log.
-The family stack owns authenticated peer identity and admitted connections;
-each game maps an authenticated peer to its native participant and seat.
-Projection or seat access does not grant full-World replication (a separate
-gate). This is the route for the VTT and later the other games, not evidence
-that all three have shipped peer play. Open: production stack admission and
-peer setup. The sub-phases below are its gates.
+`isonetry` is the family's session layer (923, 924). One peer hosts the core's
+`World`. Invited players see their seat's projections and send intents to the
+host. A separately authorized replica receives the accepted log. The family
+stack authenticates peer identities and connections. Each game maps a peer to
+its own participant and seat. The VTT uses this route today. The remaining
+production admission and device setup work is tracked under H7d.
 - Done when: (draft, "to be set by that assessment") "a world hosted on one peer accepts intents from a second over the stack's transport through each product's endpoint, both peers reach the same world revision and state hash, and the VTT's table runs on it with the old DM-authority core retired."
 - Needs: rulings 959, 960 (recommended paths chosen 2026-10-17); K0 to K2 below
   (`campaign_sync.rs` still assembles `LogSync` and `SyncedSpace` directly); 921
@@ -131,13 +132,15 @@ DM-authority core retired" is made true. VTT-only parts move to `isocosm-native`
   (the H7 follow-on; harvest src `:71-77,91-94`).
 
 ### H7d. Production admission, setup and durability
-The shipping Genet UI qualifies one native VTT action and an exact
-same-campaign ledger restart. Production peer admission and setup, and
-power-loss durability, stay open. H7's family-record lane uses `JoinedSpace`
-only for single-host World replication; it does not implement multi-writer
-campaign sync (that is K0).
+Two native Genet windows on one Mac can play the same Pathfinder table through
+independent Djinn identities. The owner binds a contact to an existing player
+seat. Graphshell serves its projections and announces revisions. Murm's
+`JoinedSpace` carries the single-host World log for an explicitly invited
+replica. K0 covers multi-writer campaigns. Packaged grants, a session on two
+physical devices and recovery after power loss remain open here.
 - Done when: not stated; owed
-- Needs: K0; H7c
+- The archived plan also tracks K0 and H7c. The single-host, two-seat
+  encounter already runs while those migrations remain open.
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-08-08_stickleback_migration_plan.md:3-12`.
 
@@ -323,6 +326,20 @@ parked (`wing-organs` D1).
 - 2026-11-12: `shared/wing-integration/tests/family_network/mesocosm.rs:38` does not compile under `cargo check --locked --all-targets` in that lock root: `LoopSettings` (Isocosm's own `continuation` crate) is missing the fields `condition` and `rounds`, so the test predates a change to that struct. Seen during the engine split's P4 relock (`89c2e207`); a lock cannot change a path crate, so it predates the relock, but it was read, not baselined at the earlier commit. The libraries check clean.
 
 ## Progress
+- 2026-11-22. On one Mac, two Genet processes connected through separate
+  development residents with owner-configured grants. The owner started
+  the encounter, the ordinary player clicked a board landing and struck a
+  visible target, and the player saw the saved position after both windows
+  reopened. The host ledger stayed at sequence 83 across rejoin, with the
+  same action history and positions. The host used its active persona. A named host with the same
+  grant was refused during delegation signing. See `README.md` for the
+  player handoff and `crates/isocosm-genet/src/family_guest_tests/encounter.rs`
+  for the repeatable transport and ledger check.
+- 2026-11-22. All six `shared/wing-integration` family network tests passed
+  with that workspace's locked dependencies. They cover a Mesocosm loop
+  configuration, an Eponym time step, VTT seat and party actions, and signed
+  record transfer. The Mesocosm fixture now supplies the `LoopSettings`
+  fields called out in the November 12 entry.
 - 2026-10-31, working table steps 1-2: GM grants per participant, any number
   or none, a GM on the player roster, claim/withdraw/consent/release with the
   yes of every seated GM or, with none, every bound player; the "distinct DM"

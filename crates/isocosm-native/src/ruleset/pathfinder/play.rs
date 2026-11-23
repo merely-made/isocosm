@@ -19,6 +19,7 @@ mod shield;
 mod stride;
 mod strike;
 pub(crate) use stride::{ground, position, speed};
+pub(crate) use strike::strike_reach;
 
 /// Player Core's simple DC for a 1st-level task.
 const DEFAULT_DC: i64 = 15;
@@ -48,7 +49,7 @@ fn int(map: &MapDocument, id: TokenId, key: &str) -> i64 {
 }
 
 /// Out of the fight: unconscious, dying or dead.
-fn down(map: &MapDocument, id: TokenId) -> bool {
+pub(crate) fn down(map: &MapDocument, id: TokenId) -> bool {
     int(map, id, "unconscious") > 0 || int(map, id, "dying") > 0 || int(map, id, "dead") > 0
 }
 

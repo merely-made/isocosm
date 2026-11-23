@@ -225,6 +225,7 @@ async fn admitted_graphshell_stream_and_host_signed_lane_converge_and_shutdown()
                 SESSION,
                 TOPIC,
                 host_author,
+                crate::family_network::FamilyRecordAccess::until(guest_transport.local_peer_id().to_bytes(), u64::MAX),
                 WireLimits::default(),
                 _owner_received_tx,
             )
@@ -236,6 +237,7 @@ async fn admitted_graphshell_stream_and_host_signed_lane_converge_and_shutdown()
                 SESSION,
                 TOPIC,
                 host_author,
+                crate::family_network::FamilyRecordAccess::until(owner_transport.local_peer_id().to_bytes(), u64::MAX),
                 WireLimits::default(),
                 guest_received_tx,
             )
@@ -580,3 +582,19 @@ mod validation;
 
 #[path = "lifecycle_tests.rs"]
 mod lifecycle_tests;
+
+
+#[tokio::test]
+async fn record_sync_gate_checks_the_granted_transport_peer_topic_and_expiry() {
+    use murm_sync::{AfterHandshakeOutcome as Decision, SyncHooks};
+    use super::{FamilyRecordAccess, RecordSyncGate};
+    let selected = SigningKey::from_bytes(&[1; 32]).verifying_key();
+    let seat = SigningKey::from_bytes(&[2; 32]).verifying_key();
+    let topic = p2panda_core::Topic::from(TOPIC);
+    let gate = RecordSyncGate { access: FamilyRecordAccess::until(*selected.as_bytes(), u64::MAX), topic: TOPIC };
+    assert!(matches!(gate.after_handshake(selected, &topic).await, Decision::Accept));
+    assert!(matches!(gate.after_handshake(seat, &topic).await, Decision::Reject));
+    assert!(matches!(gate.after_handshake(selected, &p2panda_core::Topic::from([0; 32])).await, Decision::Reject));
+    let expired = RecordSyncGate { access: FamilyRecordAccess::until(*selected.as_bytes(), 0), topic: TOPIC };
+    assert!(matches!(expired.after_handshake(selected, &topic).await, Decision::Reject));
+}

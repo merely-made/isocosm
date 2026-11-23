@@ -3,10 +3,9 @@
 //! The owner's identity, never a product key, makes everything here: the
 //! transport key and the record-signing key are keys it derives under the
 //! product's salts, and a guest reaches the table only with the owner's
-//! invitation (`graphshell_host::invitation`). What travels out of band is a
-//! [`FamilyCard`] (the owner's contact and ticket, its attested record key and
-//! the checkpoint to bootstrap from) and the guest's own invitation; the
-//! checkpoint bytes travel after admission.
+//! invitation (`graphshell_host::invitation`). A seat uses the owner's Graphshell
+//! card. A full replica additionally uses a [`FamilyCard`] binding the signed
+//! checkpoint descriptor to the owner's separately attested record key.
 
 use super::FamilyCheckpointDescriptor;
 use graphshell_native::{
@@ -32,10 +31,12 @@ pub fn profile() -> ProfileRef {
 
 /// Bind the transport on the key `identity` derives under `terms.salt`, so a
 /// contact's attested key is the peer id a guest dials and admission reads.
-pub async fn bind(identity: &dyn IdentityProvider, terms: &InvitationTerms)
+pub async fn bind(identity: &dyn IdentityProvider, terms: &InvitationTerms, records: bool)
 -> Result<P2pandaTransport, String> {
     let key = identity.derived_keypair(terms.salt).map_err(|e| e.to_string())?;
-    P2pandaTransport::builder_for(&key).alpns(vec![projection_alpn()]).gossip().bind().await
+    let builder = P2pandaTransport::builder_for(&key).alpns(vec![projection_alpn()]);
+    let builder = if records { builder.gossip() } else { builder };
+    builder.bind().await
         .map_err(|e| e.to_string())
 }
 
@@ -65,8 +66,8 @@ pub fn serves(terms: &InvitationTerms, session: uuid::Uuid, principal: &Admitted
         && terms.path(session).starts_with(PROJECTION_SERVICE)
 }
 
-/// What the owner hands every guest: its card, its attested record key and
-/// the signed checkpoint a guest bootstraps from.
+/// The owner's card, record-key attestation and checkpoint descriptor for a full replica.
+/// The host and recipient separately enforce replication permission.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct FamilyCard {

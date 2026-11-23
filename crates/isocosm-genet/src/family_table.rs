@@ -50,7 +50,7 @@ impl App {
             .callback();
         let table = self
             .family_table
-            .as_ref()
+            .as_mut()
             .ok_or("family table is not open")?;
         let (endpoint, pump) = table.admitted_endpoint(session, wake)?;
         self.family_request_pumps.push(pump);
@@ -94,8 +94,10 @@ pub(crate) struct FamilyTable {
     durable: bool,
     snapshots: BTreeMap<String, ProjectionSnapshot>,
     peer_endpoints: BTreeMap<[u8; 32], VttEndpoint>,
+    /// Schedule publication and seat revision bells following an owner-thread action.
+    publication_wake: Option<Arc<dyn Fn() + Send + Sync>>,
     /// The signed bootstrap checkpoint while hosting invited peers.
-    checkpoint: Option<isonetry::family_network::FamilyCheckpointResource>,
+    checkpoint: Option<(isonetry::family_network::FamilyRecordAccess, isonetry::family_network::FamilyCheckpointResource)>,
 }
 
 impl FamilyTable {
@@ -227,7 +229,7 @@ impl FamilyTable {
                 host.read(|session, _| cosmograph::digest(&session.save()))?,
             );
         }
-        let endpoint = VttEndpoint::open(
+        let endpoint = VttEndpoint::for_table(
             host.world(),
             ParticipantHandle(access.host_participant),
             Seat::Dm,
@@ -241,6 +243,7 @@ impl FamilyTable {
             durable,
             snapshots: BTreeMap::new(),
             peer_endpoints: BTreeMap::new(),
+            publication_wake: None,
             checkpoint: None,
         })
     }
@@ -267,7 +270,11 @@ impl FamilyTable {
 
     pub(crate) fn invoke(&mut self, request: VttActionRequest) -> Result<IntentResult, String> {
         let invocation = view::invocation(&self.snapshots, request)?;
-        self.endpoint.invoke(invocation)
+        let result = self.endpoint.invoke(invocation)?;
+        if result == IntentResult::Accepted {
+            if let Some(wake) = &self.publication_wake { wake(); }
+        }
+        Ok(result)
     }
 
     pub(crate) fn drain_records(&self) -> Vec<AcceptedRecord> {
@@ -337,7 +344,7 @@ impl FamilyTable {
     /// policy; this only binds the authenticated carrier key to the owner
     /// thread's bounded VTT request pump.
     pub(crate) fn admitted_endpoint<S>(
-        &self,
+        &mut self,
         session: &AdmittedSession<S>,
         wake: Arc<dyn Fn() + Send + Sync>,
     ) -> Result<(BridgeEndpoint, AdmittedRequestPump), String> {
@@ -354,12 +361,7 @@ impl FamilyTable {
             }
             self.admits(&session.principal, &session.claims.delegations, invite::now_ms())?
         };
-        let peer_endpoint = VttEndpoint::open(
-            self.host.world(),
-            ParticipantHandle(participant),
-            Seat::Player,
-        )?;
-        let descriptor = peer_endpoint.describe();
+        let descriptor = self.peer_endpoint(*peer_key.as_bytes(), participant)?.describe();
         BridgeEndpoint::for_admitted_session_with_wake(
             session,
             descriptor,
@@ -392,7 +394,27 @@ impl FamilyTable {
             // stream's pump or any later request.
             let _ = request.respond(answer);
         }
+        let sequence = self.sequence();
+        if let Some(endpoint) = self.peer_endpoints.get_mut(pump.peer_key().as_bytes()) {
+            pump.update_notices(sequence, || {
+                endpoint.describe().projections.into_iter().map(|offer| {
+                    let snapshot = endpoint.snapshot(offer.request)?;
+                    Ok(chirograph::CarrierNotice { session: snapshot.session,
+                        epoch: snapshot.scene.epoch, revision: snapshot.scene.revision })
+                }).collect()
+            })?;
+        }
         Ok(consumed)
+    }
+
+    /// Describe and serve a peer using the same attached native window across stream reconnects.
+    fn peer_endpoint(&mut self, peer: [u8; 32], participant: cosmograph::schema::Id)
+    -> Result<&mut VttEndpoint, String> {
+        use std::collections::btree_map::Entry;
+        Ok(match self.peer_endpoints.entry(peer) {
+            Entry::Occupied(entry) => entry.into_mut(),
+            Entry::Vacant(entry) => entry.insert(VttEndpoint::for_table(self.host.world(), ParticipantHandle(participant), Seat::Player)?),
+        })
     }
 
     fn answer_admitted_request(
@@ -403,21 +425,10 @@ impl FamilyTable {
         let participant = self
             .participant_for_peer(peer_key)
             .ok_or_else(|| "admitted peer has no native table participant binding".to_owned())?;
-        if let Some(answer) = self.checkpoint_answer(&request.call) {
+        if let Some(answer) = self.checkpoint_answer(peer_key, &request.call) {
             return answer;
         }
-        if !self.peer_endpoints.contains_key(&peer_key) {
-            let endpoint = VttEndpoint::open(
-                self.host.world(),
-                ParticipantHandle(participant),
-                Seat::Player,
-            )?;
-            self.peer_endpoints.insert(peer_key, endpoint);
-        }
-        let endpoint = self
-            .peer_endpoints
-            .get_mut(&peer_key)
-            .expect("inserted endpoint");
+        let endpoint = self.peer_endpoint(peer_key, participant)?;
         match &request.call {
             EndpointCall::Snapshot(projection) => endpoint
                 .snapshot(projection.clone())
@@ -435,7 +446,11 @@ impl FamilyTable {
                 ))
             },
             EndpointCall::Intent(intent) => {
-                endpoint.invoke(intent.clone()).map(EndpointAnswer::Intent)
+                let result = endpoint.invoke(intent.clone())?;
+                if result == IntentResult::Accepted {
+                    if let Some(wake) = &self.publication_wake { wake(); }
+                }
+                Ok(EndpointAnswer::Intent(result))
             },
             EndpointCall::Resume(resume) => {
                 let offer = endpoint

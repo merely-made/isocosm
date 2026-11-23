@@ -61,7 +61,40 @@ pub struct ControlBinding {
     pub take_entry: Key,
 }
 
+/// Authored VTT windows are exact dense native volumes. Their admissible
+/// vertical bounds are part of the placement contract, including on old saves.
+pub(crate) struct PlacementGeometry {
+    pub volume: isometer_space::volume::Volume,
+    pub places: Places,
+}
+
+#[derive(PartialEq, Eq)]
+struct GeometryKey {
+    site: Id,
+    window: PlacementWindow,
+    places: Rules,
+    terrain: String,
+}
+
+std::thread_local! {
+    static GEOMETRY: std::cell::RefCell<Option<(GeometryKey, std::rc::Rc<PlacementGeometry>)>> = const {
+        std::cell::RefCell::new(None)
+    };
+}
+
 impl CharacterPlacement {
+    pub(crate) fn geometry(&self, session: &Session) -> Result<std::rc::Rc<PlacementGeometry>, String> {
+        let key = GeometryKey { site: self.site, window: self.window.clone(), places: self.places,
+            terrain: session.sim.terrain_revision() };
+        if let Some(hit) = GEOMETRY.with(|g| g.borrow().as_ref().filter(|(k, _)| *k == key).map(|(_, v)| v.clone())) {
+            return Ok(hit);
+        }
+        let volume = session.sim.volume(self.site, self.window.min, self.window.max, self.window.depth)?;
+        let places = Places::derive(&volume, self.places)?;
+        let ground = std::rc::Rc::new(PlacementGeometry { volume, places });
+        GEOMETRY.with(|g| *g.borrow_mut() = Some((key, ground.clone())));
+        Ok(ground)
+    }
     pub(crate) fn check(&self, session: &Session, entity: Id, placed: bool) -> Result<(), String> {
         if self.window.depth < 0 || matches!(self.places.cap, Cap::Own(sides) if sides.contains(&0)) {
             return Err("character geometry contains an invalid authored depth or patch cap".into());
@@ -73,11 +106,12 @@ impl CharacterPlacement {
             || session.sim.terrain_revision() != self.terrain_revision
             || placed && native.patch != Some(self.patch)
         { return Err("character geometry names a stale native body, site, patch or terrain".into()); }
-        let volume = session.sim.volume(self.site, self.window.min, self.window.max, self.window.depth)?;
+        let geometry = self.geometry(session)?;
+        let volume = &geometry.volume;
         if !volume.holds(self.at[0], self.at[2]) || self.at[1] < volume.datum
             || self.at[1] >= volume.ceiling()
         { return Err("character position is outside the authored native window".into()); }
-        let places = Places::derive(&volume, self.places)?;
+        let places = &geometry.places;
         if !places.places.contains_key(&self.patch) || places.place_at(self.at) != Some(self.patch)
             || !volume.material(self.at).is_some_and(|material|
                 material == volume.materials.air || material == volume.materials.water)

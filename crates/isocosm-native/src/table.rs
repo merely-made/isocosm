@@ -29,8 +29,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
     let (seat, participant, subject) = (access.seat, access.participant.0, access.subject.map(|id| id.0));
     let party = cx.party.map(str::to_owned);
     let mut built = Built::new();
-    endpoint.read(|session, bytes| {
+    endpoint.world.read_sections(|session, sections| {
+        let bytes = sections.get(super::MODE).map_or(&[][..], Vec::as_slice);
         let game = GameBindings::decode(bytes)?;
+        super::encounter_board::append(&mut built, cx, session, sections, &game)?;
         time::validate_bindings(session, game.downtime(), game.time_holds())?;
         let roster = game.shared_roster();
         let players = game.shared_players();
@@ -180,8 +182,8 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 built.push(Item { id: "map".into(), card: card("Party map", values, &["map"]), actions: Vec::new() }, Vec::new());
             },
         }
-        Ok(())
-    })?;
+        Ok::<(), String>(())
+    })??;
     Ok(built)
 }
 

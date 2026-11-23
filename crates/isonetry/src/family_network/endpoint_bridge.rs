@@ -203,10 +203,29 @@ impl AdmittedEndpointRequest {
 /// respond before returning to the event loop. `try_next` never waits.
 pub struct AdmittedRequestPump {
     requests: Receiver<AdmittedEndpointRequest>,
+    peer_key: AuthenticatedPeerKey,
+    notice_tx: tokio::sync::watch::Sender<Option<chirograph::CarrierNotice>>,
+    observed: std::cell::RefCell<Option<(u64, Vec<chirograph::CarrierNotice>)>>,
     limits: EndpointBridgeLimits,
 }
 
 impl AdmittedRequestPump {
+    pub fn peer_key(&self) -> AuthenticatedPeerKey { self.peer_key }
+
+    /// Publish a coalesced bell only when a disclosed projection's own clock changes.
+    pub fn update_notices(&self, sequence: u64,
+        read: impl FnOnce() -> Result<Vec<chirograph::CarrierNotice>, String>) -> Result<(), String> {
+        let mut observed = self.observed.borrow_mut();
+        if observed.as_ref().is_some_and(|(last, _)| *last == sequence) { return Ok(()); }
+        let clocks = read()?;
+        if let Some(changed) = observed.as_ref().and_then(|(_, before)|
+            clocks.iter().find(|clock| !before.contains(clock))) {
+            self.notice_tx.send_replace(Some(changed.clone()));
+        }
+        *observed = Some((sequence, clocks));
+        Ok(())
+    }
+
     /// Fetch one pending request without blocking the UI loop.
     pub fn try_next(&self) -> Result<Option<AdmittedEndpointRequest>, EndpointBridgeError> {
         match self.requests.try_recv() {
@@ -230,8 +249,18 @@ pub struct BridgeEndpoint {
     peer_key: AuthenticatedPeerKey,
     descriptor: EndpointDescriptor,
     requests: SyncSender<AdmittedEndpointRequest>,
+    notices: tokio::sync::watch::Receiver<Option<chirograph::CarrierNotice>>,
     limits: EndpointBridgeLimits,
     wake: Option<Arc<dyn Fn() + Send + Sync>>,
+}
+
+impl graphshell_endpoint::ProjectionNoticeSource for BridgeEndpoint {
+    type Error = String;
+    fn poll_notice(&mut self) -> Result<Option<chirograph::CarrierNotice>, Self::Error> {
+        if self.notices.has_changed().unwrap_or(false) {
+            Ok(self.notices.borrow_and_update().clone())
+        } else { Ok(None) }
+    }
 }
 
 impl BridgeEndpoint {
@@ -271,16 +300,18 @@ impl BridgeEndpoint {
         let limits = limits.validate()?;
         check_size(&descriptor, limits.max_message_bytes, "endpoint descriptor")?;
         let (requests, receiver) = mpsc::sync_channel(limits.queue_capacity);
+        let (notice_tx, notices) = tokio::sync::watch::channel(None);
         Ok((
             Self {
                 peer_key,
                 descriptor,
                 requests,
+                notices,
                 limits,
                 wake,
             },
             AdmittedRequestPump {
-                requests: receiver,
+                requests: receiver, peer_key, notice_tx, observed: Default::default(),
                 limits,
             },
         ))

@@ -221,10 +221,10 @@ pub(crate) fn init(
     let can_restore = !matches!(app.net_intent.as_ref(), Some(NetIntent::Join(_)));
     let mut restore_status = None;
     let mut restored_public = None;
-    let mut restored_campaign_name = None;
+    let family_ledger = app.campaign_arg.as_deref().filter(|_| can_restore).map(crate::boot::family_path);
+    let has_family_ledger = family_ledger.as_ref().is_some_and(|path| path.exists());
     if can_restore {
         if let Some(name) = app.campaign_arg.take() {
-            restored_campaign_name = Some(name.clone());
             match CampaignRepository::open(campaign_path(&name))
                 .and_then(|repository| repository.load_checkpoint())
             {
@@ -238,6 +238,7 @@ pub(crate) fn init(
                     restored_public = Some(checkpoint.public);
                     restore_status = Some(format!("restored campaign {name}"));
                 },
+                Ok(None) if has_family_ledger => {},
                 Ok(None) => restore_status = Some(format!("campaign {name} has no checkpoint")),
                 Err(error) => restore_status = Some(format!("campaign restore failed: {error}")),
             }
@@ -248,8 +249,6 @@ pub(crate) fn init(
     if let Some(snapshot) = restored_public {
         ui.apply_snapshot(snapshot);
     }
-    let family_ledger = restored_campaign_name.as_deref().map(crate::boot::family_path);
-    let has_family_ledger = family_ledger.as_ref().is_some_and(|path| path.exists());
     if has_family_ledger || (ui.native.world.is_some() && ui.native.table.is_some()) {
         match family_table::FamilyTable::open(
             ui.native.world.as_ref(),
@@ -356,7 +355,7 @@ pub(crate) fn init(
     // B2's flag, read once here for the same reason every other `ISOCOSM_*`
     // hook is: the environment is the host's to read, and the view is handed a
     // field. With it unset nothing below is built and the DOM board stands.
-    if app.family_table.is_none() && scene_board::enabled() {
+    if app.family_table.is_none() && !ui.invited_table && scene_board::enabled() {
         ui.scene_board = true;
         let board = scene_board::SceneBoard::new(&mut ui);
         // B3: the board's gestures resolve through the frame this producer
@@ -567,7 +566,7 @@ impl App {
 /// and are the assembly's now, on either side of this call.
 impl App {
     pub(crate) fn frame_tick(&mut self, ctx: &mut Ctx<'_>) -> bool {
-        if self.family_table.is_some() {
+        if self.family_table.is_some() || ctx.runner.state().invited_table {
             // The endpoint page has no legacy scene leaf. In particular, do
             // not rebuild that hidden board from the older campaign snapshot.
             return self.selftests_pending();

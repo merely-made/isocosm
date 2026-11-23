@@ -37,40 +37,28 @@ pub(crate) fn speed(build: &Build, gear: &Gear) -> i64 {
 
 /// The terrain a position stands in: its window's volume and patches,
 /// lifted once for any number of landings.
-pub(crate) struct Ground {
-    volume: isometer_space::volume::Volume,
-    places: isometer_space::places::Places,
-}
+pub(crate) struct Ground(std::rc::Rc<crate::native::PlacementGeometry>);
 
-std::thread_local! {
-    /// The last ground lifted, keyed by site, window, places and terrain
-    /// revision: card snapshots ask for it on every frame of a turn.
-    static GROUND: std::cell::RefCell<Option<(String, std::rc::Rc<Ground>)>> = const { std::cell::RefCell::new(None) };
-}
-
-pub(crate) fn ground(session: &Session, from: &PositionBinding) -> Option<std::rc::Rc<Ground>> {
-    let p = &from.placement;
-    let key = format!("{}:{:?}:{:?}:{}:{:?}:{}", p.site, p.window.min, p.window.max, p.window.depth, p.places,
-        session.sim.terrain_revision());
-    if let Some(hit) = GROUND.with(|g| g.borrow().as_ref().filter(|(k, _)| *k == key).map(|(_, v)| v.clone())) {
-        return Some(hit);
-    }
-    let volume = session.sim.volume(p.site, p.window.min, p.window.max, p.window.depth).ok()?;
-    let places = isometer_space::places::Places::derive(&volume, p.places).ok()?;
-    let ground = std::rc::Rc::new(Ground { volume, places });
-    GROUND.with(|g| *g.borrow_mut() = Some((key, ground.clone())));
-    Some(ground)
+pub(crate) fn ground(session: &Session, from: &PositionBinding) -> Option<Ground> {
+    from.placement.geometry(session).ok().map(Ground)
 }
 
 impl Ground {
-    /// The highest clear cell of the column at `x, z`, if its patch derives.
+    /// The moved eye must still fit the landing's clear native patch.
+    pub(crate) fn fits_eye(&self, from: &PositionBinding, at: [i64; 3]) -> bool {
+        let Some(sense) = &from.spatial else { return true };
+        sense.eye(at).is_ok_and(|eye| self.0.places.place_at(eye) == self.0.places.place_at(at)
+            && self.0.volume.material(eye).is_some_and(|m| m == self.0.volume.materials.air || m == self.0.volume.materials.water))
+    }
+
+    /// A clear, grounded outdoor destination above the column's solid surface.
     pub(crate) fn landing(&self, x: i64, z: i64) -> Option<[i64; 3]> {
-        let v = &self.volume;
-        if !v.holds(x, z) {
-            return None;
-        }
-        (v.datum..v.ceiling()).rev().map(|y| [x, y, z])
-            .find(|at| v.material(*at) == Some(v.materials.air) && self.places.place_at(*at).is_some())
+        let v = &self.0.volume;
+        let floor = v.surface(x, z)?;
+        let at = [x, floor.checked_add(1)?, z];
+        (at[1] >= v.datum && at[1] < v.ceiling()
+            && v.material([x, floor, z]).is_some_and(|m| m != v.materials.water && m != v.materials.air)
+            && v.material(at) == Some(v.materials.air) && self.0.places.place_at(at).is_some()).then_some(at)
     }
 }
 

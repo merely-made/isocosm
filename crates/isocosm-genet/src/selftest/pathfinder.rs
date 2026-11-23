@@ -5,11 +5,13 @@
 //! `play` (over a `pf2e_table --ready` ledger: start an encounter, Strike
 //! twice, Raise a Shield) or `stride` (over a `pf2e_table --stride` ledger:
 //! start an encounter, pass turns to the body `ISOCOSM_PF2E_STRIDER` names,
-//! and Stride it).
+//! and Stride it). `board` uses the same fixture, then clicks the landing on
+//! Table and verifies the moved token on the refreshed board.
+mod peer;
 use super::painted::Painted;
 use super::*;
 use cambium_genet_winit_host::ScrollAlign;
-use isocosm_native::{SHEETS, ruleset::State};
+use isocosm_native::{SHEETS, TABLE, ruleset::State};
 use isonetry::family::{Checkpoint, FamilyReplica};
 
 const HUMAN_ROGUE: &[&str] = &[
@@ -45,6 +47,10 @@ pub(crate) struct PathfinderSelftest {
     finished: bool,
     play: bool,
     strider: Option<u64>,
+    peer: Option<peer::Peer>,
+    board: bool,
+    /// Native destination of the painted diamond actually clicked.
+    board_destination: Option<String>,
     /// (striker, target) in combat mode.
     combat: Option<(u64, u64)>,
     /// Log length when the last play step was clicked.
@@ -61,12 +67,13 @@ pub(crate) struct PathfinderSelftest {
 impl PathfinderSelftest {
     pub(crate) fn from_env() -> Option<Self> {
         std::env::var("ISOCOSM_PF2E_SELFTEST").ok().map(|mode| {
-            assert!(["draft", "finished", "play", "stride", "combat"].contains(&mode.as_str()), "pf2e selftest mode");
+            let peer = peer::Peer::from_env(&mode);
+            assert!(peer.is_some() || ["draft", "finished", "play", "stride", "board", "combat"].contains(&mode.as_str()), "pf2e selftest mode");
             let id = |name: &str| std::env::var(name).expect("combat mode names its bodies").parse::<u64>().expect("a body id");
             let combat = (mode == "combat").then(|| (id("ISOCOSM_PF2E_STRIKER"), id("ISOCOSM_PF2E_TARGET")));
-            let strider = (mode == "stride").then(|| std::env::var("ISOCOSM_PF2E_STRIDER")
+            let strider = matches!(mode.as_str(), "stride" | "board").then(|| std::env::var("ISOCOSM_PF2E_STRIDER")
                 .expect("stride mode names its body").parse().expect("a body id"));
-            Self { finished: mode == "finished", play: mode == "play", strider, combat, log: 0, phase: Phase::Select, started: Instant::now(),
+            Self { finished: mode == "finished", play: mode == "play", strider, peer, board: mode == "board", board_destination: None, combat, log: 0, phase: Phase::Select, started: Instant::now(),
                 painted: Painted::default(), body: None, before: None, waiting: false }
         })
     }
@@ -89,6 +96,10 @@ impl PathfinderSelftest {
         }
         assert!(self.started.elapsed() < Duration::from_secs(180),
             "Pathfinder selftest stalled: {:?}; {}", self.phase, ctx.runner.state().status);
+        if let Some(peer) = self.peer.as_mut() {
+            if peer.drive(app, ctx, &mut self.painted) { self.phase = Phase::Done; }
+            return;
+        }
         let Some(table) = app.family_table.as_mut() else { return };
         if self.before.is_none() {
             table.drain_records();
@@ -131,7 +142,8 @@ impl PathfinderSelftest {
                 }
             },
             Phase::Select if self.strider.is_some() => {
-                if self.painted.tab(ctx, SHEETS) {
+                let page = if self.board { TABLE } else { SHEETS };
+                if self.painted.tab(ctx, page) {
                     self.phase = Phase::Stride(false);
                 }
             },
@@ -155,7 +167,25 @@ impl PathfinderSelftest {
                 let clicked = if !started {
                     self.painted.button(ctx, "vtt.pf2e-start-encounter", None)
                 } else if current != Some(strider) {
-                    self.painted.button(ctx, "vtt.pf2e-end-turn", current)
+                    self.painted.button(ctx, "vtt.pf2e-end-turn", if self.board { None } else { current })
+                } else if self.board {
+                    if ctx.runner.state().vtt_selected_projection != TABLE {
+                        self.painted.tab(ctx, TABLE);
+                        return;
+                    }
+                    let landing = {
+                        let dom = ctx.runner.dom();
+                        let dom = dom.borrow();
+                        dom.all_with_class(dom.document(), "vtt-board-stride").into_iter().find_map(|node| {
+                            let at = dom.attribute(node, &Namespace::from(""), &LocalName::from("data-native-at"))?;
+                            Some((node, at.to_owned()))
+                        })
+                    };
+                    landing.is_some_and(|(node, at)| {
+                        if !self.painted.click_node(ctx, node) { return false; }
+                        self.board_destination = Some(at);
+                        true
+                    })
                 } else {
                     let offered: Vec<String> = ctx.runner.state().vtt_projections.iter().find(|p| p.id == SHEETS)
                         .into_iter().flat_map(|p| p.cards.iter())
@@ -234,6 +264,21 @@ impl PathfinderSelftest {
                 }
             },
             Phase::Verify => {
+                if self.board {
+                    let body = self.body.unwrap().to_string();
+                    let at = self.board_destination.as_deref().expect("clicked a painted landing");
+                    let dom = ctx.runner.dom();
+                    let dom = dom.borrow();
+                    let moved = dom.all_with_class(dom.document(), "vtt-board-token").into_iter().any(|node| {
+                        let attr = |key| dom.attribute(node, &Namespace::from(""), &LocalName::from(key));
+                        attr("data-body") == Some(body.as_str()) && attr("data-native-at") == Some(at)
+                    });
+                    if !moved { return; }
+                    let turn = state.as_ref().unwrap().encounter.as_ref().unwrap().current().unwrap();
+                    assert_eq!(u64::from(turn.token), self.body.unwrap());
+                    assert_eq!(turn.actions, 2, "the painted Stride spent one action");
+                    eprintln!("[pf2e-selftest] painted board token {body} reached {at} with two actions");
+                }
                 let (checkpoint, sequence) = self.before.as_ref().unwrap();
                 let suffix = table.persisted_suffix_after(*sequence).unwrap();
                 let replica = FamilyReplica::install(checkpoint.clone(), &suffix, cosmograph::Execution::Grouped).unwrap();
@@ -242,7 +287,7 @@ impl PathfinderSelftest {
                 let id = isocosm_native::ruleset::token(self.body.unwrap()).unwrap();
                 eprintln!(
                     "[pf2e-selftest] PASS mode={} body={} choices={} sheet={} hp={:?} accepted_records={} durable_replay=exact; last={:?}",
-                    if self.combat.is_some() { "combat" } else if self.strider.is_some() { "stride" } else if self.play { "play" } else if self.finished { "finished" } else { "draft" },
+                    if self.combat.is_some() { "combat" } else if self.board { "board" } else if self.strider.is_some() { "stride" } else if self.play { "play" } else if self.finished { "finished" } else { "draft" },
                     self.body.unwrap(),
                     state.drafts[&id].choices.len(),
                     state.sheets.contains_key(&id),
@@ -253,7 +298,14 @@ impl PathfinderSelftest {
                 self.phase = Phase::Capture(0);
             },
             Phase::Capture(frames) => {
-                if frames == 0 {
+                if frames == 0 && self.board {
+                    let node = {
+                        let dom = ctx.runner.dom();
+                        let dom = dom.borrow();
+                        dom.all_with_class(dom.document(), "vtt-board-turn").into_iter().next()
+                    };
+                    if let Some(node) = node { ctx.scroll_into_view(node, ScrollAlign::Nearest); }
+                } else if frames == 0 {
                     let wanted = if self.combat.is_some() { "Result: Character " } else if self.strider.is_some() { "This turn: 2 actions" } else if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
                     let node = {
                         let dom = ctx.runner.dom();

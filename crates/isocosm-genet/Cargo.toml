@@ -22,6 +22,7 @@ notochord = { workspace = true }
 # case 1060): co-op's invitation, lifted into graphshell-host, and Djinn's
 # custody client that signs it. Same sources isonetry's graphshell-host uses.
 graphshell-host = { git = "https://github.com/merely-made/graphshell.git", branch = "main", default-features = false, features = ["native", "custody-client"] }
+ostiary = "0.0.1"
 castellan-client = { git = "https://github.com/merely-made/dramatis.git", branch = "main", default-features = false, features = ["client"] }
 personae = { workspace = true }
 insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
@@ -33,6 +34,7 @@ p2panda-core = { workspace = true }
 # Direct endpoint contract use in the Genet-owned FamilyTable adapter.
 chirograph = { workspace = true }
 graphshell-endpoint = { workspace = true }
+graphshell-client = { git = "https://github.com/merely-made/graphshell.git", branch = "main", features = ["pump"] }
 isocosm-system = { workspace = true }
 tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"] }
 cambium = { workspace = true }

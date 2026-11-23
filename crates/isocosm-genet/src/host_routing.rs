@@ -13,6 +13,8 @@
 //! the panel ends — that is the host's flex layout to decide, and a test that
 //! hard-coded it would fail for the wrong reason the day it changed.
 
+mod disclosed_board;
+
 use cambium_genet_winit_host::{Harness, Init, KeyPress, NamedKey, inert_hooks};
 use isocosm_core::{TileCoord, TokenId};
 use layout_dom_api::{LayoutDom as _, LocalName, Namespace};

@@ -135,6 +135,7 @@ impl Harness {
             session_id,
             topic,
             host_key.verifying_key(),
+            isonetry::family_network::FamilyRecordAccess::until(guest_id.to_bytes(), u64::MAX),
             WireLimits::default(),
             owner_tx,
         )
@@ -146,6 +147,7 @@ impl Harness {
             session_id,
             topic,
             host_key.verifying_key(),
+            isonetry::family_network::FamilyRecordAccess::until(owner_id.to_bytes(), u64::MAX),
             WireLimits::default(),
             guest_tx,
         )

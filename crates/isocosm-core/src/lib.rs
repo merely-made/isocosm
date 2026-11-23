@@ -9,6 +9,7 @@
 mod appearance;
 mod beat;
 mod dice;
+pub mod encounter_board;
 mod event;
 mod grid;
 mod iso;

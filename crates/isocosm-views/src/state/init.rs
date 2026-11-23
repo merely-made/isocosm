@@ -151,6 +151,7 @@ impl UiState {
             compendium_tab: CompendiumTab::Monsters,
             spells: Vec::new(),
             items: Vec::new(),
+            invited_table: false,
             vtt_projections: Vec::new(),
             vtt_selected_projection: String::new(),
             vtt_action_payload: TextInput::default(),

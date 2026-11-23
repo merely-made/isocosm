@@ -118,6 +118,46 @@ pub fn verify_host_record(
     Ok(record)
 }
 
+/// The authenticated transport peer explicitly trusted to receive this full record log.
+#[derive(Clone, Copy, Debug)]
+pub struct FamilyRecordAccess {
+    peer: [u8; 32],
+    expires_at_ms: u64,
+}
+
+impl FamilyRecordAccess {
+    pub fn until(peer: [u8; 32], expires_at_ms: u64) -> Self {
+        Self { peer, expires_at_ms }
+    }
+
+    pub fn is_live(&self, now_ms: u64) -> bool { now_ms <= self.expires_at_ms }
+
+    pub fn permits(&self, peer: [u8; 32], now_ms: u64) -> bool {
+        self.peer == peer && self.is_live(now_ms)
+    }
+}
+
+#[derive(Clone, Copy, Debug)]
+struct RecordSyncGate {
+    access: FamilyRecordAccess,
+    topic: [u8; 32],
+}
+
+impl murm_sync::SyncHooks for RecordSyncGate {
+    type Handshake = Topic;
+
+    async fn after_handshake(&self, remote: VerifyingKey, topic: &Topic)
+        -> murm_sync::AfterHandshakeOutcome {
+        let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH);
+        if *topic == Topic::from(self.topic) && now.is_ok_and(|time|
+            self.access.permits(*remote.as_bytes(), u64::try_from(time.as_millis()).unwrap_or(u64::MAX))) {
+            murm_sync::AfterHandshakeOutcome::Accept
+        } else {
+            murm_sync::AfterHandshakeOutcome::Reject
+        }
+    }
+}
+
 /// One continuously reconciling host-author log and its local store.
 pub struct FamilyRecordLane<B>
 where
@@ -143,6 +183,7 @@ where
         session: SessionId,
         topic: [u8; 32],
         host: VerifyingKey,
+        access: FamilyRecordAccess,
         limits: WireLimits,
         received: tokio::sync::mpsc::Sender<AcceptedRecord>,
     ) -> Result<Self, JoinError> {
@@ -153,7 +194,7 @@ where
         let topic_for_accept = topic;
         let rejected_records = Arc::new(AtomicU64::new(0));
         let rejects = Arc::clone(&rejected_records);
-        let joined = JoinedSpace::join::<_, [u8; 16], _, _>(
+        let joined = JoinedSpace::join_with_hooks::<_, [u8; 16], _, _, _>(
             lane_id("cosmograph/family-records/v1", topic),
             store.clone(),
             endpoint,
@@ -179,6 +220,7 @@ where
                     .await
                 }
             },
+            RecordSyncGate { access, topic },
         )
         .await?;
         Ok(Self {

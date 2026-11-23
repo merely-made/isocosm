@@ -13,9 +13,9 @@ impl App {
     /// tail of every dispatch.
     pub(crate) fn after_dispatch(&mut self, ctx: &mut Ctx<'_>) {
         if self.pump_peer_guest(ctx) { return; }
+        let before_peers = self.family_table.as_ref().map(family_table::FamilyTable::sequence);
         self.pump_peer_host(ctx);
         if self.family_table.is_some() {
-            let mut network_processed = false;
             let mut network_error = None;
             let mut closed_pumps = Vec::new();
             let mut budget = 4;
@@ -26,7 +26,6 @@ impl App {
                     }
                     match table.pump_admitted_requests(pump, budget) {
                         Ok(count) => {
-                            network_processed |= count > 0;
                             budget -= count;
                         },
                         Err(error) => {
@@ -39,22 +38,25 @@ impl App {
             for index in closed_pumps.into_iter().rev() {
                 self.family_request_pumps.remove(index);
             }
-            let network_projections = if network_processed {
-                self.family_table.as_mut().map(family_table::FamilyTable::projections)
-            } else {
-                None
-            };
+            // Snapshot, resource and revision requests only read the table. Refresh
+            // the owner's page when an invitation or peer action changed its ledger.
+            let network_projections = self.family_table.as_mut()
+                .filter(|table| Some(table.sequence()) != before_peers)
+                .map(family_table::FamilyTable::projections);
             let mut action = None;
             let mut legacy_events = Vec::new();
             let mut save_or_load = false;
             let mut load_requested = false;
-            ctx.runner.update(|ui| {
-                action = ui.take_vtt_action_request();
-                legacy_events = std::mem::take(&mut ui.net_outbox);
-                let save = std::mem::take(&mut ui.save_requested);
-                load_requested = std::mem::take(&mut ui.load_requested);
-                save_or_load = save || load_requested;
-            });
+            let ui = ctx.runner.state();
+            if ui.vtt_action_request.is_some() || !ui.net_outbox.is_empty() || ui.save_requested || ui.load_requested {
+                ctx.runner.update(|ui| {
+                    action = ui.take_vtt_action_request();
+                    legacy_events = std::mem::take(&mut ui.net_outbox);
+                    let save = std::mem::take(&mut ui.save_requested);
+                    load_requested = std::mem::take(&mut ui.load_requested);
+                    save_or_load = save || load_requested;
+                });
+            }
             if let Some(error) = network_error {
                 ctx.runner.update(|ui| {
                     ui.status = format!("Peer session ended: {error}");

@@ -19,6 +19,7 @@ pub use borrowed::{WindowReading, submit_contract_assertions};
 mod characters;
 pub use characters::{CharacterAdmission, RecipeBinding, admit_character};
 mod placement;
+pub(crate) use placement::PlacementGeometry;
 pub use placement::{CharacterControl, CharacterPlacement, ControlBinding, ParticipantInput,
     PlacementWindow, PositionBinding,CharacterSpatialPlacement,SpatialSense};
 pub mod eye;

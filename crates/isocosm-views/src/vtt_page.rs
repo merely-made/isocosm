@@ -3,7 +3,10 @@
 use cambium::{TextInput, caret_text_field, clickable, el, lens, text};
 
 use crate::board::UiChild;
-use crate::state::{UiState, VttProjectionView};
+use crate::state::{UiState, VttCardView, VttProjectionView};
+
+mod board;
+pub(crate) use board::CSS as BOARD_CSS;
 
 pub(crate) const CSS: &str = r#"
 .vtt-page { position: absolute; left: 232px; top: 36px; width: 480px; max-height: 78%; overflow-y: auto; background-color: #1b1e27; border: 1px solid #2c3347; border-radius: 4px; padding: 10px 10px 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.55); }
@@ -36,30 +39,49 @@ fn tab(ui: &UiState, projection: &VttProjectionView) -> UiChild {
     ))
 }
 
-fn card(projection: &str, item: &crate::state::VttCardView) -> UiChild {
+fn card(view: &VttProjectionView, item: &VttCardView) -> UiChild {
+    let is_board = board::is_board(view, item);
+    let cut = (view.epoch, view.revision);
     let mut children: Vec<UiChild> = vec![Box::new(
         el("div", text(item.title.clone())).attr("class", "vtt-card-title"),
     )];
-    children.extend(item.badges.iter().map(|badge| {
-        Box::new(el("span", text(badge.clone())).attr("class", "vtt-badge")) as UiChild
-    }));
-    children.extend(item.values.iter().map(|value| {
-        Box::new(
-            el(
-                "div",
-                (
-                    text(format!("{}: ", value.label)),
-                    text(value.value.clone()),
-                ),
-            )
-            .attr("class", "vtt-value"),
-        ) as UiChild
-    }));
+    let mut strides = std::collections::BTreeSet::new();
+    if is_board {
+        let (board, drawn) = board::render(view, item);
+        children.push(board);
+        strides = drawn;
+    }
+    children.extend(
+        item.badges
+            .iter()
+            .filter(|badge| !(is_board && *badge == board::BADGE))
+            .map(|badge| {
+                Box::new(el("span", text(badge.clone())).attr("class", "vtt-badge")) as UiChild
+            }),
+    );
+    children.extend(
+        item.values
+            .iter()
+            .filter(|value| !(is_board && value.label == board::VALUE))
+            .map(|value| {
+                Box::new(
+                    el(
+                        "div",
+                        (
+                            text(format!("{}: ", value.label)),
+                            text(value.value.clone()),
+                        ),
+                    )
+                    .attr("class", "vtt-value"),
+                ) as UiChild
+            }),
+    );
     let actions: Vec<UiChild> = item
         .actions
         .iter()
+        .filter(|action| !strides.contains(&action.id))
         .map(|action| {
-            let projection = projection.to_owned();
+            let projection = view.id.clone();
             let item_id = item.id.clone();
             let action_id = action.id.clone();
             Box::new(el(
@@ -68,10 +90,12 @@ fn card(projection: &str, item: &crate::state::VttCardView) -> UiChild {
                     clickable(
                         el("span", text(action.label.clone())).attr("class", "vtt-action"),
                         move |ui: &mut UiState, _| {
-                            ui.request_vtt_action(&projection, &item_id, &action_id)
+                            ui.request_vtt_action(&projection, &item_id, &action_id, cut)
                         },
                     ),
-                    (!action.explanation.is_empty()).then(||el("div", text(action.explanation.clone())).attr("class", "vtt-action-help")),
+                    (!action.explanation.is_empty()).then(|| {
+                        el("div", text(action.explanation.clone())).attr("class", "vtt-action-help")
+                    }),
                 ),
             )) as UiChild
         })
@@ -84,7 +108,10 @@ fn card(projection: &str, item: &crate::state::VttCardView) -> UiChild {
 
 pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
     if ui.vtt_projections.is_empty() {
-        return None;
+        return ui.invited_table.then(|| crate::widgets::overlay_panel(
+            "vtt-page", "Table connection".to_owned(), Vec::new(),
+            vec![Box::new(el("div", text(ui.status.clone())).attr("class", "vtt-status"))],
+        ));
     }
     let selected = ui
         .vtt_projections
@@ -109,11 +136,7 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
             "Action details (JSON)"
         };
         body.push(Box::new(
-            el(
-                "div",
-                text(label),
-            )
-            .attr("class", "vtt-action-help"),
+            el("div", text(label)).attr("class", "vtt-action-help"),
         ));
         body.push(Box::new(
             el(
@@ -126,12 +149,30 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
             .attr("class", "vtt-payload"),
         ));
     }
-    body.extend(selected.cards.iter().map(|item| card(&selected.id, item)));
+    // Put the encounter surface above the table management cards.
+    for boards in [true, false] {
+        body.extend(
+            selected
+                .cards
+                .iter()
+                .filter(|item| board::is_board(selected, item) == boards)
+                .map(|item| card(selected, item)),
+        );
+    }
     body.push(Box::new(
         el("div", text(ui.status.clone())).attr("class", "vtt-status"),
     ));
+    let class = if selected
+        .cards
+        .iter()
+        .any(|item| board::is_board(selected, item))
+    {
+        "vtt-page vtt-with-board"
+    } else {
+        "vtt-page"
+    };
     Some(crate::widgets::overlay_panel(
-        "vtt-page",
+        class,
         selected.label.clone(),
         Vec::new(),
         body,

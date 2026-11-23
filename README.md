@@ -47,7 +47,54 @@ accepted table time. The effect examples describe the exact boundaries.
   <sub>A painted battlemap with terrain, tokens, editing tools, and turn order in view.</sub>
 </p>
 
-### Status (2026-10-30)
+### Play the Pathfinder encounter
+
+The `pf2e_table` example prepares a two-character Pathfinder 2e encounter. Build
+the `isocosm-genet` binary and the `isocosm-native` example with the `endpoint`
+feature. With both executables on your path, run these from the host's campaign
+directory. Use a fresh ledger and give each table its own handoff folder.
+
+```sh
+mkdir -p campaigns
+pf2e_table campaigns/pathfinder_bench.family --combat
+```
+
+The example prints the **player participant** and the two **body** IDs. Arden is
+the player's rogue, and Brisa is the GM's fighter. The seat assignment below
+takes the participant ID.
+
+Each device needs an unlocked Djinn identity and an owner grant for `isocosm`.
+Both seats use the `isocosm/table/v1` key. The host also signs invitations for
+the `mere.graphshell` delegation scope. Use the active persona on the host.
+
+1. On the player's device, run `isocosm-genet --join ./handoff`. The log names
+   the contact file to give the GM. Each device uses its own Djinn identity.
+2. On the GM's device, put the contact in `./handoff` and start the table with
+   the player's exact contact file and the participant ID printed above.
+
+   ```sh
+   isocosm-genet --host --campaign "Pathfinder Bench" --handoff ./handoff \
+     --player-contact "./handoff/<guest-contact-file>" --player-participant "<participant-id>"
+   ```
+
+   Replace the two placeholders before running. Return the table card and that
+   guest's invitation from the host's handoff directory to the player's handoff
+   directory. A shared folder performs the same exchange. The owner-selected
+   binding persists when the table reopens.
+3. On **Table time and party**, the GM selects **Start encounter**. If Brisa wins initiative,
+   the GM can select **End turn** to pass play to Arden. On Arden's turn, the
+   player clicks a highlighted landing to Stride. A visible target in reach
+   appears as a named Strike action on the board. The character sheets also
+   carry encounter controls. Reopen the same campaign and rejoin with the
+   same identity to resume from the accepted position and turn.
+
+An ordinary invitation carries the player's views and actions. The host can
+also authorize one contact to receive the full world and its accepted history
+with `--replica-contact <contact-file>`. This role also uses the host's
+`isocosm/table/records/v1` key. That guest carries their
+`*.replica.json` offer and joins with `--replicate`.
+
+### Status
 
 Pre-release. Built in Rust on the Merely stack
 (Cambium, genet-layout, netrender); no published releases yet.
@@ -55,9 +102,10 @@ Pre-release. Built in Rust on the Merely stack
 - Native campaigns run through the family host and `VttEndpoint`, including
   table time, parties, journeys, disclosed knowledge, authoring and sheets.
 - The retained battlemap screenshot above records the earlier board path.
-  The current native table does not use its legacy mutable session handlers.
-- Family checkpoints and accepted-record replay are tested. Live peer
-  transport/admission remains open during the session-layer replacement.
+  The native Pathfinder table renders the cells, tokens and legal landings
+  disclosed to the current seat.
+- The family host keeps the encounter ledger. Invited players receive seat
+  projections over an admitted connection. Full-world replay has a separate grant.
 - A 5e SRD content pack ships in `isocosm-system` (sheets, bestiary, items,
   spells) with Lua rules via piccolo.
 - Eight-crate workspace (core, campaign, graphshell, views, genet, net,

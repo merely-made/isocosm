@@ -270,19 +270,28 @@ fn actions(choices: &mut Choices, state: &State, id: u64, token: TokenId, build:
     }
 }
 
+/// One shared action for rolling the table into initiative from either surface.
+pub(super) fn start_encounter(state: &State, gm: bool) -> Option<(String, String, String, Action)> {
+    (gm && state.encounter.is_none()).then(|| ("vtt.pf2e-start-encounter".into(), "Start encounter".into(),
+        "Roll Perception for initiative. Each turn has three actions and a reaction.".into(), Action::StartEncounter))
+}
+
 /// The table's encounter and DC card.
-pub(crate) fn table(built: &mut Built, state: &State, gm: bool, tick: u64, propose: bool) {
+pub(crate) fn table(built: &mut Built, state: &State, gm: bool, tick: u64, propose: bool,
+    visible: &std::collections::BTreeSet<u64>) {
+    let shows = |token: u32| gm || visible.contains(&u64::from(token));
     let mut values = vec![value("Ruleset", RULESET), value("Skill check DC", state.check_dc.unwrap_or(15))];
-    if let Some(p) = &state.pending {
+    if let Some(p) = &state.pending && shows(p.target) && shows(p.attacker) {
         values.push(value("Waiting on", format!("character {}'s Shield Block decision ({} damage from {})",
             p.target, p.amount, p.attacker)));
     }
-    for a in &state.activities {
+    let activities = state.activities.iter().filter(|a| shows(a.actor) && shows(a.target));
+    for a in activities.clone() {
         values.push(value(format!("Character {}", a.actor), format!("{} for {}; {} native ticks to go",
             a.kind, a.target, a.until.saturating_sub(tick))));
     }
     if propose {
-        if let Some(wait) = state.activities.iter().map(|a| a.until.saturating_sub(tick)).filter(|w| *w > 0).max() {
+        if let Some(wait) = activities.map(|a| a.until.saturating_sub(tick)).filter(|w| *w > 0).max() {
             built.push(Item { id: "pf2e-activity-time".into(),
                 card: card("Activity and table time", vec![value("Native ticks needed", wait)], &["time"]),
                 actions: vec![action("vtt.pf2e-propose-downtime", "Propose downtime for the activities",
@@ -294,7 +303,7 @@ pub(crate) fn table(built: &mut Built, state: &State, gm: bool, tick: u64, propo
     match &state.encounter {
         Some(e) => {
             values.push(value("Round", e.round));
-            for (n, t) in e.order.iter().enumerate() {
+            for (n, t) in e.order.iter().enumerate().filter(|(_, t)| shows(t.token)) {
                 values.push(value(format!("{} Character {}", if n == e.current { "Now:" } else { "Then:" }, t.token),
                     format!("initiative {}, {} actions", t.initiative, t.actions)));
             }
@@ -305,11 +314,7 @@ pub(crate) fn table(built: &mut Built, state: &State, gm: bool, tick: u64, propo
         },
         None => {
             values.push(value("Mode", "free play"));
-            if gm {
-                choices.push(("vtt.pf2e-start-encounter".into(), "Start encounter".into(),
-                    "Roll Perception for initiative; each turn has three actions and a reaction.".into(),
-                    Action::StartEncounter));
-            }
+            choices.extend(start_encounter(state, gm));
         },
     }
     if gm {

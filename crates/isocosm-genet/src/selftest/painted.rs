@@ -6,7 +6,8 @@ use cambium_genet_winit_host::ScrollAlign;
 
 #[derive(Default)]
 pub(super) struct Painted {
-    scrolled: bool,
+    scrolled: Option<(genet_scripted_dom::NodeId, Option<(u64, u64)>)>,
+    missed: Option<genet_scripted_dom::NodeId>,
 }
 
 impl Painted {
@@ -23,7 +24,8 @@ impl Painted {
             .unwrap()
             .label
             .clone();
-        self.click_text(ctx, "vtt-tab", &label)
+        self.click_text(ctx, "vtt-tab", &label);
+        false
     }
     pub(super) fn button(&mut self, ctx: &mut Ctx<'_>, id: &str, body: Option<u64>) -> bool {
         let selected = &ctx.runner.state().vtt_selected_projection;
@@ -107,19 +109,65 @@ impl Painted {
         let Some(node) = node else {
             return false;
         };
-        if !self.scrolled {
+        self.click_node(ctx, node)
+    }
+
+    pub(super) fn click_node(
+        &mut self,
+        ctx: &mut Ctx<'_>,
+        node: genet_scripted_dom::NodeId,
+    ) -> bool {
+        let presentation = ctx.presentation.map(|frame| (frame.host, frame.sequence));
+        if self.scrolled.is_none_or(|(previous, _)| previous != node) {
             ctx.scroll_into_view(node, ScrollAlign::Nearest);
-            self.scrolled = true;
+            self.scrolled = Some((node, presentation));
             return false;
         }
-        let Some((x, y, w, h)) = ctx.painted_rect(node) else {
+        // Native pointer routing reads the accepted picture. The retained
+        // layout can already know where a control will appear on a later redraw.
+        if ctx.window.is_some()
+            && (presentation.is_none() || self.scrolled == Some((node, presentation)))
+        {
+            return false;
+        }
+        let rect = ctx.visible_rect(node);
+        let dom = ctx.runner.dom();
+        let dom = dom.borrow();
+        let label = dom
+            .attribute(node, &Namespace::from(""), &LocalName::from("aria-label"))
+            .map(str::to_owned)
+            .unwrap_or_else(|| dom.dom_children(node).filter_map(|n| dom.text(n)).collect());
+        let point = rect.and_then(|(x, y, w, h)| {
+            [(0.5, 0.5), (0.25, 0.5), (0.75, 0.5)]
+                .into_iter()
+                .find_map(|(u, v)| {
+                    let point = (x + w * u, y + h * v);
+                    let hit = ctx.painted_hit(point.0, point.1)?;
+                    std::iter::successors(Some(hit), |n| dom.parent(*n))
+                        .any(|n| n == node)
+                        .then_some(point)
+                })
+        });
+        drop(dom);
+        let Some((x, y)) = point else {
+            if self.missed != Some(node) {
+                eprintln!(
+                    "[painted] waiting for {label:?} to receive pointer, visible={rect:?}, status={}",
+                    ctx.runner.state().status
+                );
+                self.missed = Some(node);
+            }
+            ctx.scroll_into_view(node, ScrollAlign::Start);
             return false;
         };
-        let (x, y) = (x + w / 2.0, y + h / 2.0);
-        ctx.pointer.push(HostPointer::Moved(x, y));
+        self.missed = None;
+        eprintln!(
+            "[painted] click {label:?} at ({x:.1}, {y:.1}), presentation={presentation:?}, status={}",
+            ctx.runner.state().status
+        );
         ctx.pointer.push(HostPointer::Press(x, y));
         ctx.pointer.push(HostPointer::Release(x, y));
-        self.scrolled = false;
+        self.scrolled = None;
         true
     }
 }

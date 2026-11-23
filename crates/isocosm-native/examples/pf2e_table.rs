@@ -2,6 +2,7 @@
 //! desktop creation trial; `--inspect` reopens a saved one and prints what the
 //! family host replayed. `--ready` drafts both bodies as dwarf fighters;
 //! `--stride` does so over admitted, placed characters at 4 cells a square.
+//! `--board` seats both characters with the host for the single-window board trial.
 #[path = "../tests/native_founding/fixture.rs"]
 mod content_fixture;
 #[path = "../tests/support/table.rs"]
@@ -82,14 +83,15 @@ fn main() -> Result<(), String> {
         return inspect(&args.next().ok_or("supply the saved .family ledger path")?);
     }
     let mode = args.next();
-    let admitted_mode = matches!(mode.as_deref(), Some("--stride" | "--combat"));
+    let admitted_mode = matches!(mode.as_deref(), Some("--stride" | "--combat" | "--board"));
     let combat = mode.as_deref() == Some("--combat");
-    let (world, dm, bodies) = if admitted_mode {
-        let a = admitted::admitted_table();
-        (a.world, a.dm, a.characters)
+    let (world, dm, player, bodies) = if admitted_mode {
+        let solo_board = mode.as_deref() == Some("--board");
+        let a = admitted::sighted_table([!solo_board, false], 48);
+        (a.world, a.dm, a.player, a.characters)
     } else {
         let t = table::table_with_sites(1);
-        (t.world, t.dm, t.bodies)
+        (t.world, t.dm, t.player, t.bodies)
     };
     let (session, mut sections) = world.into_parts()?;
     let draft = content_fixture::draft();
@@ -126,18 +128,33 @@ fn main() -> Result<(), String> {
         FamilyLedgerLimits::default(),
     )?;
     let mut endpoint = VttEndpoint::open(host.world(), dm, Seat::Dm)?;
+    let mut player_endpoint = VttEndpoint::open(host.world(), player, Seat::Player)?;
+    if admitted_mode {
+        // The physical bench supplied older bodies beside each admitted character.
+        // Leave those so a newly opened window looks through its character's eye.
+        for (seat, participant) in [(&mut player_endpoint, player), (&mut endpoint, dm)] {
+            for other in host.read(|session, _| session.sim.played(participant.0))? {
+                if !bodies.contains(&other) {
+                    click(seat, TABLE, &format!("body:{other}"), "vtt.leave-body")?;
+                }
+            }
+        }
+    }
     click(&mut endpoint, TABLE, "roster", "vtt.roster-empty")?;
     // `--ready`: both bodies drafted as dwarf fighters through the same
     // sheet buttons, with longsword, steel shield and scale mail readied.
     if mode.is_some() {
         for (n, body) in bodies.into_iter().enumerate() {
+            let controller = if host.read(|session, _| session.sim.plays_body(player.0, body))? {
+                &mut player_endpoint
+            } else { &mut endpoint };
             let rogue = combat && n == 0;
             let card = format!("sheet:{body}");
-            click(&mut endpoint, SHEETS, &card, "vtt.sheet-create")?;
+            click(controller, SHEETS, &card, "vtt.sheet-create")?;
             for value in if rogue { HUMAN_ROGUE } else { DWARF_FIGHTER } {
-                click(&mut endpoint, SHEETS, &card, &format!("vtt.draft-{value}"))?;
+                click(controller, SHEETS, &card, &format!("vtt.draft-{value}"))?;
             }
-            click(&mut endpoint, SHEETS, &card, "vtt.draft-finish")?;
+            click(controller, SHEETS, &card, "vtt.draft-finish")?;
             let items = host.read(|_, sections| -> Result<Vec<(String, String)>, String> {
                 let state = isocosm_native::ruleset::State::read(sections)?.ok_or("no edition state")?;
                 let inventory = &state.inventories[&isocosm_native::ruleset::token(body)?];
@@ -146,7 +163,7 @@ fn main() -> Result<(), String> {
             for (id, name) in items {
                 let wanted: &[&str] = if rogue { &["Shortbow", "Leather Armor"] } else { &["Longsword", "Steel Shield", "Scale Mail"] };
                 if wanted.contains(&name.as_str()) {
-                    click(&mut endpoint, SHEETS, &card, &format!("vtt.pf2e-equip-{id}"))?;
+                    click(controller, SHEETS, &card, &format!("vtt.pf2e-equip-{id}"))?;
                 }
             }
         }
@@ -158,8 +175,8 @@ fn main() -> Result<(), String> {
         click_payload(&mut endpoint, isocosm_native::AUTHORING, "ruleset-scale", "vtt.ruleset-scale", br#"{"cells_per_square":4}"#)?;
     }
     println!(
-        "Pathfinder Bench ledger {path}; bodies={bodies:?}; sequence={}",
-        host.sequence()
+        "Pathfinder Bench ledger {path}; player participant={}; bodies={bodies:?}; sequence={}",
+        player.0, host.sequence()
     );
     Ok(())
 }

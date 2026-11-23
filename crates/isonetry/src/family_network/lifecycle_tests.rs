@@ -1,3 +1,5 @@
+use transport::Transport;
+use crate::family_network::FamilyRecordAccess;
 use super::{SESSION, TOPIC, host, transports};
 use crate::family::{HostAdmission, WireLimits};
 use crate::family_network::{FamilyHostNetwork, FamilyRecordOutbox, FamilyReplicaNetwork};
@@ -22,7 +24,8 @@ async fn lifecycle_wrappers_checkpoint_publish_retry_apply_and_leave() {
 
             let host_store = MunimentStore::new(MemoryBackend::new());
             let host_network =
-                FamilyHostNetwork::join(&owner_transport, host_store, SESSION, TOPIC, key, limits)
+                FamilyHostNetwork::join(&owner_transport, host_store, SESSION, TOPIC, key,
+                    FamilyRecordAccess::until(guest_transport.local_peer_id().to_bytes(), u64::MAX), limits)
                     .await
                     .expect("host lifecycle joins signed lane");
             let bootstrap = host_network
@@ -37,6 +40,7 @@ async fn lifecycle_wrappers_checkpoint_publish_retry_apply_and_leave() {
                 bootstrap.descriptor(),
                 TOPIC,
                 host_key,
+                FamilyRecordAccess::until(owner_transport.local_peer_id().to_bytes(), u64::MAX),
                 limits,
                 8,
             )

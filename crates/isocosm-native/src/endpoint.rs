@@ -19,6 +19,7 @@
 #[path = "knowledge.rs"] mod knowledge;
 #[path = "overmap.rs"] mod overmap;
 #[path = "table.rs"] mod table;
+#[path = "encounter_board.rs"] mod encounter_board;
 #[path = "table_seats.rs"] mod table_seats;
 #[path = "sheets.rs"] mod sheets;
 #[path = "sheets_pf2e.rs"] mod sheets_pf2e;
@@ -134,13 +135,36 @@ pub struct VttEndpoint {
 fn game(sections: &BTreeMap<String, Vec<u8>>) -> Vec<u8> { sections.get(MODE).cloned().unwrap_or_default() }
 
 impl VttEndpoint {
-    /// `participant`'s table at `seat` (the DM or a player).
+    fn binding() -> Binding {
+        Binding { mode: MODE.into(), controls: SESSIONS.iter().map(|(_, label)| (*label).into()).collect(),
+            view_defaults: Vec::new(), attention: AttentionSet::default() }
+    }
+
+    /// Attach a new independent native window for this participant.
     pub fn open(world: &World, participant: ParticipantHandle, seat: Seat) -> Result<Self, String> {
-        let binding = Binding { mode: MODE.into(), controls: SESSIONS.iter().map(|(_, l)| (*l).into()).collect(),
-            view_defaults: Vec::new(), attention: AttentionSet::default() };
-        let window = Window::attach(world, participant, seat, binding)?;
-        Ok(Self { world: world.share(), window, party: None, overmap: None, quote: None,
-            disclosures: SESSIONS.iter().map(|(s, _)| (*s, Disclosure::new(s, world))).collect(), acts: BTreeMap::new() })
+        let window = Window::attach(world, participant, seat, Self::binding())?;
+        Ok(Self::with_window(world, window))
+    }
+
+    /// Reopen the table participant's VTT window and its saved attention across sessions.
+    /// On a first join, or an older save with no VTT window, attach one.
+    pub fn for_table(world: &World, participant: ParticipantHandle, seat: Seat) -> Result<Self, String> {
+        let saved = world.read(|session| {
+            session.sim.window_for(participant.0, MODE).map(|id| {
+                let handle = cosmograph_overlay::WindowHandle(id.id());
+                cosmograph_host::native_attention::restored(session, participant, handle, MODE)
+                    .map(|attention| (handle, attention))
+            }).transpose()
+        })??;
+        let Some((handle, attention)) = saved else { return Self::open(world, participant, seat); };
+        let binding = Binding { attention, ..Self::binding() };
+        let window = Window::restore(world, participant, seat, handle, binding)?;
+        Ok(Self::with_window(world, window))
+    }
+
+    fn with_window(world: &World, window: Window) -> Self {
+        Self { world: world.share(), window, party: None, overmap: None, quote: None,
+            disclosures: SESSIONS.iter().map(|(s, _)| (*s, Disclosure::new(s, world))).collect(), acts: BTreeMap::new() }
     }
 
     pub fn world(&self) -> &World { &self.world }

@@ -56,7 +56,12 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         let map=state.current_map(session)?;
         let pathfinder=super::sheets_pf2e::plays(sections)?;
         let ars=ruleset::edition(sections)?==isocosm_system::ars::SYSTEM;
-        let propose=crate::native::GameBindings::decode(sections.get("vtt").map_or(&[],Vec::as_slice))?.shared_players().is_some();
+        let game=crate::native::GameBindings::decode(sections.get("vtt").map_or(&[],Vec::as_slice))?;
+        let propose=game.shared_players().is_some();
+        let marked=pathfinder && access.seat==Seat::Player && game.positions().values().any(|p|p.spatial.is_some());
+        let observer=access.subject.map(|body|body.0);
+        let here=observer.and_then(|id|session.sim.state().population.get(id)).and_then(|b|b.resident_site());
+        let eye=if marked {observer.zip(here).and_then(|(id,site)|crate::native::eye::current(session,&game,id,site).ok())} else {None};
         let mut built=Built::new();
         let native=session.sim.state();
         let mut bodies:std::collections::BTreeSet<u64>=state.sheets.keys().map(|id|u64::from(id.0)).collect();
@@ -66,7 +71,13 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         // A player sees every body its participant plays, wherever it is (1065).
         let mine=|id:u64|session.sim.plays_body(access.participant.0,id);
         bodies.retain(|id|cx.cut.visible.shows(*id) || mine(*id));
-        let visible=bodies.clone();
+        let mut visible=bodies.clone();
+        if marked {
+            // The window's selected physical eye governs targeting and initiative identities.
+            visible.retain(|id| mine(*id) || game.positions().values().find(|p|p.entity==*id).is_some_and(|p|
+                Some(p.placement.site)==here && p.current(session).is_ok_and(|at|
+                    eye.as_ref().is_some_and(|eye|eye.sees(at,Some(p.placement.patch)).unwrap_or(false)))));
+        }
         for id in bodies {
             if access.seat!=Seat::Dm && !mine(id) {continue;}
             let tid=ruleset::token(id)?;
@@ -86,7 +97,11 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 let targets:Vec<u64>=visible.iter().copied().filter(|t|*t!=id && map.sheet(ruleset::token(*t).unwrap()).is_some_and(|s|s.int("dead").unwrap_or(0)==0)
                     && native.population.get(id).and_then(|b|b.resident_site()).is_some_and(|site|native.population.get(*t).and_then(|b|b.resident_site())==Some(site))
                     ).collect();
-                let strides=if can_control {super::sheets_pf2e::strides(&state,session,sections,id,tid,dm)} else {Vec::new()};
+                let mut strides=if can_control {super::sheets_pf2e::strides(&state,session,sections,id,tid,dm)} else {Vec::new()};
+                if marked {
+                    let local=native.population.get(id).and_then(|b|b.resident_site())==here;
+                    strides.retain(|(_,at,_)|local && eye.as_ref().is_some_and(|eye|eye.sees(*at,None).unwrap_or(false)));
+                }
                 let seat=super::sheets_pf2e::Seat{control:can_control,gm:dm,alive,measured:state.cells_per_square.is_some(),targets,strides};
                 super::sheets_pf2e::body(&mut built,&state,&map,id,tid,&title,&seat)?;
                 continue;
@@ -178,7 +193,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             }
         }
         if pathfinder {
-            super::sheets_pf2e::table(&mut built,&state,access.seat==Seat::Dm,native.tick,propose);
+            super::sheets_pf2e::table(&mut built,&state,access.seat==Seat::Dm,native.tick,propose, &visible);
         }
         if ars {
             super::sheets_ars::covenant(&mut built,&state,session,access.seat==Seat::Dm);

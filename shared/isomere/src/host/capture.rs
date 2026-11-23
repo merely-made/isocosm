@@ -84,40 +84,46 @@ impl Capture {
     }
 
     /// Finish a queued readback, or request one for this presentation when
-    /// the policy allows it. Returns whether a readback is in flight, which
-    /// the host treats as a reason to present again; nothing else here asks
-    /// for a frame, so capture never creates an idle redraw loop.
+    /// the policy allows it. A one-shot readback wakes the host once when
+    /// queued. Returning true keeps it presenting until that readback lands.
     ///
     /// A failed readback or write leaves `saved` clear, so a later natural
     /// frame retries.
     pub fn arm<P: Product>(&self, ctx: &mut Ctx<'_, P>, ready: bool) -> bool {
-        if self.finish() {
-            return true;
+        match self.finish() {
+            Ok(true) => return true,
+            Err(()) => return false,
+            Ok(false) => {},
         }
         if !self.should_arm(ready) {
             return false;
         }
         let slot = self.pending.clone();
         let prefix = self.names.log_prefix;
+        let wake = (!self.every_frame).then(|| ctx.wake.clone());
         *ctx.capture = Some(Box::new(move |result| match result {
-            Ok(job) => *slot.borrow_mut() = Some((job, Instant::now())),
+            Ok(job) => {
+                *slot.borrow_mut() = Some((job, Instant::now()));
+                // The final presentation can park before its readback gets a poll.
+                if let Some(wake) = wake { wake.wake(); }
+            },
             Err(refusal) => eprintln!("[{prefix}] capture failed: {refusal}"),
         }));
         false
     }
 
     /// Polls the queued readback and writes it when it lands. True while it
-    /// is still in flight.
-    fn finish(&self) -> bool {
+    /// is still in flight. On failure the next natural frame can try again.
+    fn finish(&self) -> Result<bool, ()> {
         let mut slot = self.pending.borrow_mut();
         let Some((job, armed)) = slot.as_mut() else {
-            return false;
+            return Ok(false);
         };
         let landed = if armed.elapsed() >= READBACK_LIMIT {
             Err(format!("native frame readback timed out after {} ms", READBACK_LIMIT.as_millis()))
         } else {
             match job.poll() {
-                None => return true,
+                None => return Ok(true),
                 Some(result) => result.map(|(_, pixels)| pixels).map_err(|refusal| refusal.to_string()),
             }
         };
@@ -127,11 +133,11 @@ impl Capture {
             Ok(frame) => frame,
             Err(error) => {
                 eprintln!("[{prefix}] capture failed: {error}");
-                return false;
+                return Err(());
             },
         };
         if !self.every_frame && self.saved.load(Ordering::Acquire) {
-            return false;
+            return Ok(false);
         }
         let directory = self.directory.as_ref().expect("armed only with a directory");
         let path = directory.join(self.names.file);
@@ -140,9 +146,12 @@ impl Capture {
             .and_then(|()| std::fs::rename(&pending, &path).map_err(|why| why.to_string()));
         match result {
             Ok(()) => self.saved.store(true, Ordering::Release),
-            Err(error) => eprintln!("[{prefix}] capture failed: {error}"),
+            Err(error) => {
+                eprintln!("[{prefix}] capture failed: {error}");
+                return Err(());
+            },
         }
-        false
+        Ok(false)
     }
 }
 

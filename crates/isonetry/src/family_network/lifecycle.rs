@@ -6,7 +6,7 @@
 //! does not create keys, infer participants, or replace admission policy.
 
 use super::{
-    FamilyCheckpointDescriptor, FamilyCheckpointResource, FamilyRecordBatch, FamilyRecordExt,
+    FamilyCheckpointDescriptor, FamilyCheckpointResource, FamilyRecordAccess, FamilyRecordBatch, FamilyRecordExt,
     FamilyRecordLane, read_stored_suffix, verify_checkpoint_resource,
 };
 use crate::family::{AcceptedRecord, Checkpoint, FamilyReplica, SessionId, WireLimits};
@@ -53,6 +53,7 @@ where
         session: SessionId,
         topic: [u8; 32],
         signing_key: SigningKey,
+        access: FamilyRecordAccess,
         limits: WireLimits,
     ) -> Result<Self, JoinError> {
         let (incoming, mut echoes) = tokio::sync::mpsc::channel(1);
@@ -63,6 +64,7 @@ where
             session,
             topic,
             signing_key.verifying_key(),
+            access,
             limits,
             incoming,
         )
@@ -266,6 +268,7 @@ where
         descriptor: &FamilyCheckpointDescriptor,
         topic: [u8; 32],
         pinned_host: VerifyingKey,
+        access: FamilyRecordAccess,
         limits: WireLimits,
         record_capacity: usize,
     ) -> Result<Self, String> {
@@ -281,6 +284,7 @@ where
             descriptor.family_session,
             topic,
             pinned_host,
+            access,
             limits,
             sender,
         )

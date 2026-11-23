@@ -435,6 +435,7 @@ pub fn board_css() -> String {
     css.push_str(&force_css());
     css.push_str(COMPENDIUM_CSS);
     css.push_str(crate::vtt_page::CSS);
+    css.push_str(crate::vtt_page::BOARD_CSS);
     // Structure from the catalog, palette from here. The swatch's own classes
     // (box, node buttons, focus ring, labels) were hand-copied into
     // COMPENDIUM_CSS and drifted from the component; adopting the exported

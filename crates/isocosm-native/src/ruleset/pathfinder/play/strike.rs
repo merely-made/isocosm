@@ -5,6 +5,39 @@
 
 use super::*;
 
+/// The same native line, reach and range check for advertising and resolving a Strike.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn strike_reach(state: &State, session: &Session, sections: &BTreeMap<String, Vec<u8>>,
+    access: OrdinaryAccess, actor: u64, target: u64, weapon: &Item, ruled: bool, payload: &[u8])
+    -> Result<(Option<u64>, String, i64), String> {
+    let ranged = weapon.range.is_some();
+    let ruling: &[u8] = if ruled {
+        gm(access)?;
+        if ranged {
+            br#"{"squares":1,"reason":"GM ruled the target within the first range increment with a clear line"}"#
+        } else {
+            br#"{"squares":1,"reason":"GM ruled the target within reach with a clear path"}"#
+        }
+    } else {
+        payload
+    };
+    let mut distance = None;
+    let (_, reach) = frame::reach_with(state, session, sections, access, actor, target, ruling,
+        &mut |start, end, scale| {
+            let feet = combat::feet(start, end, scale);
+            if !ranged && !combat::in_reach(weapon, start, end, scale) {
+                return Err(format!("{feet} feet is beyond the {}'s {}-foot reach", weapon.name, combat::reach(weapon)));
+            }
+            distance = Some(feet);
+            Ok((u32::try_from(feet / 5).unwrap_or(u32::MAX), format!("{feet} feet, measured at {scale} cells per square")))
+        })?;
+    let range = match (ranged, distance) {
+        (true, Some(feet)) => combat::range_penalty(weapon, feet)?,
+        _ => 0,
+    };
+    Ok((distance, reach, range))
+}
+
 #[allow(clippy::too_many_arguments)]
 pub(super) fn strike(state: &mut State, map: &mut MapDocument, session: &mut Session,
     sections: &BTreeMap<String, Vec<u8>>, access: OrdinaryAccess, action: &Action, payload: &[u8],
@@ -23,30 +56,7 @@ pub(super) fn strike(state: &mut State, map: &mut MapDocument, session: &mut Ses
     let weapon = gear(state, a).weapon.cloned().unwrap_or_else(rules::fist);
     let ranged = weapon.range.is_some();
     let ruled = matches!(action, Action::RuleAttack { .. });
-    let ruling: &[u8] = if ruled {
-        gm(access)?;
-        if ranged {
-            br#"{"squares":1,"reason":"GM ruled the target within the first range increment with a clear line"}"#
-        } else {
-            br#"{"squares":1,"reason":"GM ruled the target within reach with a clear path"}"#
-        }
-    } else {
-        payload
-    };
-    let mut distance = None;
-    let (_, reach) = frame::reach_with(state, session, &*sections, access, *actor, *target, ruling,
-        &mut |start, end, scale| {
-            let feet = combat::feet(start, end, scale);
-            if !ranged && !combat::in_reach(&weapon, start, end, scale) {
-                return Err(format!("{feet} feet is beyond the {}'s {}-foot reach", weapon.name, combat::reach(&weapon)));
-            }
-            distance = Some(feet);
-            Ok((u32::try_from(feet / 5).unwrap_or(u32::MAX), format!("{feet} feet, measured at {scale} cells per square")))
-        })?;
-    let range = match (ranged, distance) {
-        (true, Some(feet)) => combat::range_penalty(&weapon, feet)?,
-        _ => 0,
-    };
+    let (distance, reach, range) = strike_reach(state, session, sections, access, *actor, *target, &weapon, ruled, payload)?;
     spend(state, a, 1)?;
     let spent = spend_ammunition(state, a, &weapon)?;
     let attacks = state.encounter.as_ref().and_then(|e| e.current()).map_or(0, |turn| turn.attacks);

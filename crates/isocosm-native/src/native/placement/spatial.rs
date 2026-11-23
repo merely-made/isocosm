@@ -41,9 +41,9 @@ impl SpatialSense {
     }
     pub(crate) fn check(&self,session:&Session,placement:&CharacterPlacement)->Result<(),String> {
         let eye=self.eye(placement.at)?;
-        let window=&placement.window;
-        let volume=session.sim.volume(placement.site,window.min,window.max,window.depth)?;
-        let places=Places::derive(&volume,placement.places)?;
+        let geometry=placement.geometry(session)?;
+        let volume=&geometry.volume;
+        let places=&geometry.places;
         let range=self.range as i64;
         if places.places.values().any(|place|(0..3).any(|axis|
             place.bounds[0][axis].checked_sub(range).is_none()

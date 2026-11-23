@@ -446,7 +446,9 @@ pub struct UiState {
     /// Host-supplied compendium content for the Spells and Items tabs.
     pub spells: Vec<SpellRow>,
     pub items: Vec<ItemRow>,
-    /// The six endpoint-provided VTT projections and local projection choice.
+    /// This window follows an invited table, including while its connection is pending.
+    pub invited_table: bool,
+    /// Endpoint-provided VTT projections and local projection choice.
     pub vtt_projections: Vec<VttProjectionView>,
     pub vtt_selected_projection: String,
     /// Draft JSON for the next advertised endpoint action.
