@@ -6,7 +6,7 @@ use super::*;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) struct Paged {
-    rule:SiteRule, edits:Vec<Edit>, pub high:i64,
+    rule:SiteRule, edits:Vec<Edit>, pub ceiling:i64,
     columns:Option<([i64;2],usize,Vec<i64>)>,
 }
 impl Paged {
@@ -44,15 +44,35 @@ impl Paged {
         }
         clipped
     }
-    fn surface(&self,x:i64,z:i64) -> i64 {
-        let mut high = self.top(x,z).max(self.rule.water);
+    fn surface(&self, x: i64, z: i64, datum: i64) -> Option<i64> {
+        if self.edits.is_empty() { return Some(self.top(x, z).max(self.rule.water)); }
+        self.column(x, z, [datum, self.ceiling]).into_iter().rev()
+            .find(|(_, m)| *m != self.rule.m.air).map(|(span, _)| span[1] - 1)
+    }
+
+    /// Dense replay starts from the raised terrain and applies the final
+    /// material of every touched cell in one write. Above that terrain only
+    /// surviving non-air edits allocate bricks. A write below the datum fails.
+    fn replay_ceiling(&self, min: [i64; 2], max: [i64; 2], datum: i64, mut high: i64) -> Result<i64> {
         for edit in &self.edits {
-            if edit.op != crate::edit::Op::Carve {
-                high = high.max(runs(&edit.shape,x,z).iter().map(|r| r[1]-1).max().unwrap_or(high));
+            let [lo, hi] = edit.shape.extent();
+            let raises = edit.op.material(self.rule.m) != self.rule.m.air;
+            if lo[1] >= datum && (!raises || hi[1] <= high + 1) { continue; }
+            for z in lo[2].max(min[1])..hi[2].min(max[1]) {
+                for x in lo[0].max(min[0])..hi[0].min(max[0]) {
+                    for [bottom, end] in runs(&edit.shape, x, z) {
+                        if bottom < datum { return Err("an edit reaching below the window's datum".into()); }
+                        if raises && end > high + 1
+                            && let Some((span, _)) = self.column(x, z, [bottom.max(high + 1), end])
+                                .into_iter().rev().find(|(_, m)| *m != self.rule.m.air) {
+                            high = span[1] - 1;
+                        }
+                    }
+                }
             }
         }
-        while self.material([x,high,z]) == self.rule.m.air { high-=1; }
-        high
+        let brick = i64::from(BRICK);
+        Ok(brick_ceiling(datum, (high - datum).div_euclid(brick)))
     }
 }
 
@@ -85,34 +105,33 @@ impl Volume {
             .iter().any(|m|*m>isometer_core::ground::MAX_MATERIAL) {
             return Err("paged materials exceed Ground's material contract".into());
         }
-        let [mut low,mut high] = rule.heights();
         let width=(max[0]-min[0]) as usize;
-        let count=width*(max[1]-min[1]) as usize;
+        let count = width.checked_mul((max[1] - min[1]) as usize);
         // Fine physical windows keep one height per column, never all the
         // water/rock voxels beneath it. Wider display windows remain procedural.
-        let columns = if count<=256*256 {
-            let mut tops=Vec::with_capacity(count);
-            for z in min[1]..max[1] {for x in min[0]..max[0] {tops.push(rule.top(x,z));}}
-            low=*tops.iter().min().unwrap();
-            high=(*tops.iter().max().unwrap()).max(rule.water);
-            Some((min,width,tops))
-        } else {None};
+        let (columns, [low, high]) = if let Some(count) = count.filter(|n| *n <= 256 * 256) {
+            let mut tops = Vec::with_capacity(count);
+            for z in min[1]..max[1] { for x in min[0]..max[0] { tops.push(rule.top(x,z)); } }
+            let bounds = [*tops.iter().min().unwrap(), *tops.iter().max().unwrap()];
+            (Some((min, width, tops)), bounds)
+        } else { (None, rule.heights(min, max)) };
         let edits:Vec<_> = reaching(a,site,edits).into_iter().filter(|e| {
             let [lo,hi]=e.shape.extent();
             lo[0]<max[0] && hi[0]>min[0] && lo[2]<max[1] && hi[2]>min[1]
         }).collect();
-        for e in &edits { let [lo,hi]=e.shape.extent(); low=low.min(lo[1]); high=high.max(hi[1]); }
         let datum = low-rule.soil-depth.max(0);
         let extent = ((max[0]-min[0]).max(max[1]-min[1])/2) as i32;
         let ground = Ground::empty(extent,(rule.water-datum) as i32);
-        Ok(Self {site,min,max,datum,materials,extent,ground,
-            columns:Some(Arc::new(Paged {rule,edits,high,columns})) })
+        let high = high.max(rule.water);
+        let mut paged = Paged { rule, edits, ceiling: 0, columns };
+        paged.ceiling = paged.replay_ceiling(min, max, datum, high)?;
+        Ok(Self {site,min,max,datum,materials,extent,ground, columns:Some(Arc::new(paged)) })
     }
 
     /// Highest occupied cell, including water and edits, in site coordinates.
     pub fn surface(&self,x:i64,z:i64) -> Option<i64> {
         if !self.holds(x,z) { return None; }
-        if let Some(p) = &self.columns { return Some(p.surface(x,z)); }
+        if let Some(p) = &self.columns { return p.surface(x,z,self.datum); }
         let [gx,_,gz] = self.to_ground([x,self.datum,z]);
         self.ground.surface(gx,gz).map(|y| self.datum+i64::from(y))
     }
@@ -141,3 +160,7 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "paged_tests.rs"]
+mod admission_tests;

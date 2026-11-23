@@ -21,12 +21,9 @@ pub(crate) struct SiteRule {
 }
 
 impl SiteRule {
-    /// Conservative column bounds, including every declared cliff.
-    pub fn heights(&self) -> [i64;2] {
-        let q = self.lattice.q;
-        let lo = self.lattice.heights.iter().flatten().copied().min().unwrap_or(0).div_euclid(q) as i64;
-        let hi = self.lattice.heights.iter().flatten().copied().max().unwrap_or(0).div_euclid(q) as i64;
-        [lo-self.lattice.cliffs.iter().map(|c| c.drop).sum::<i64>(), hi.max(self.water)]
+    /// Exact unedited solid heights in these half-open columns.
+    pub fn heights(&self, min: [i64; 2], max: [i64; 2]) -> [i64; 2] {
+        self.lattice.window_heights(min, max)
     }
     pub fn of<A: Atlas + ?Sized>(a: &A, site: SiteId) -> Result<Self> {
         Ok(Self {

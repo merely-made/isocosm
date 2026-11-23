@@ -63,6 +63,11 @@ impl Terrain for Columns<'_> {
     }
 }
 
+// The top-exclusive frame of the brick containing the highest stored cell.
+fn brick_ceiling(datum: i64, top_brick: i64) -> i64 {
+    datum + (top_brick + 1) * i64::from(BRICK)
+}
+
 impl Volume {
     /// Base columns `min..max` of `site` with `edits` replayed, holding
     /// `depth` cells of rock under the window's lowest soil.
@@ -190,11 +195,12 @@ impl Volume {
         out
     }
 
-    /// The highest cell `Ground` may hold anything in, plus one.
+    /// Exclusive top of the window's highest terrain brick. This includes
+    /// the air above its last occupied cell up to the next brick boundary.
     pub fn ceiling(&self) -> i64 {
-        if let Some(p) = &self.columns { return p.high+1; }
+        if let Some(p) = &self.columns { return p.ceiling; }
         let top = self.ground.keys().map(|k| i64::from(k[1])).max().unwrap_or(0);
-        self.datum + (top + 1) * i64::from(BRICK)
+        brick_ceiling(self.datum, top)
     }
 
     pub fn ground(&self) -> &Ground {

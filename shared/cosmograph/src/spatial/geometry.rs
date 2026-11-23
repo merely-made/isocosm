@@ -282,3 +282,36 @@ pub(super) fn check_pose(sim: &Simulation, actor: &Entity, site: Id, geometry: &
     }
     Ok(patch)
 }
+
+#[cfg(test)]
+mod window_tests {
+    use super::*;
+    use crate::map::{Grid, Layout};
+    use crate::{Founding, terrain::View};
+
+    #[test]
+    fn paged_and_realized_terrain_admit_the_same_grounded_stance_and_eye() {
+        let genesis = Founding {
+            sites: 4,
+            map: Some(Layout::Grid(Grid {
+                shape: "shape:plane".into(), width: 2, height: 2, side: 64, elevation: [0, 0],
+                relief: [0, 0], sea_per_mille: 0,
+            })),
+            ..Default::default()
+        }.generate().unwrap();
+        let atlas = View::of(&genesis).unwrap();
+        let site = *genesis.sites.keys().next().unwrap();
+        let (min, max) = ([8, 8], [24, 24]);
+        let dense = Volume::lift(&atlas, site, min, max, 4, &[]).unwrap();
+        let paged = Volume::paged(&atlas, site, min, max, 4, &[]).unwrap();
+        let foot = [12, dense.surface(12, 13).unwrap() + 1, 13];
+        let root = [foot[0], dense.ceiling() - 1, foot[2]];
+        assert!(root[1] > foot[1]);
+        let offset = [0, foot[1] - root[1], 0];
+        for volume in [&dense, &paged] {
+            assert!(clear(volume, root), "the saved raised root and eye remain in the window");
+            assert_eq!(stance(volume, offset, 2, root), Some(foot));
+            assert!(!clear(volume, [root[0], dense.ceiling(), root[2]]));
+        }
+    }
+}

@@ -7,6 +7,7 @@
 //! power-of-two cell sizes. Integers throughout.
 
 pub mod check;
+mod bounds;
 mod chunk;
 mod cliff;
 mod corners;
