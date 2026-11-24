@@ -87,9 +87,8 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
                 return Err("edible matter per head requires a feed that eats from a target selector".into());
             }
         }
-        Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
-            return Err("mood is read only in a world with a mind".into());
-        }
+        Query::Mood { .. } | Query::MoodBelow { .. } | Query::MigrationMotive { .. } if rules.mind.is_none() =>
+            return Err("mood is read only in a world with a mind".into()),
         Query::Expresses { function } | Query::Routes { function, .. }
             if !rules.functions.contains_key(function) =>
         {

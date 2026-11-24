@@ -459,7 +459,12 @@ impl Rules {
     }
     /// The world's directing rules, or the defaults (ruling 178).
     pub fn directing(&self) -> Directing {
-        self.directing.clone().unwrap_or_default()
+        self.directing_ref().clone()
+    }
+    /// Borrow the same rules when considering many acts or participants.
+    pub fn directing_ref(&self) -> &Directing {
+        static DEFAULTS: std::sync::LazyLock<Directing> = std::sync::LazyLock::new(Directing::default);
+        self.directing.as_ref().unwrap_or_else(|| &DEFAULTS)
     }
     /// The world's telling rules, or the defaults (1066).
     pub fn telling(&self) -> Telling {
@@ -561,7 +566,7 @@ impl Process {
                             ..
                         }
                         | Query::Mood { .. }
-                        | Query::MoodBelow { .. }
+                        | Query::MoodBelow { .. } | Query::MigrationMotive { .. }
                         | Query::Holds {
                             who: Binding::Actor,
                             ..

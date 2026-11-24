@@ -24,6 +24,11 @@ impl Simulation {
         p: &Process,
         place: Id,
     ) -> Option<Cow<'static, str>> {
+        self.infeasible_guided(actor, target, p, place, None)
+    }
+
+    pub(super) fn infeasible_guided(&self, actor: Id, target: Option<Id>, p: &Process, place: Id,
+        guidance: Option<&super::Guidance>) -> Option<Cow<'static, str>> {
         if !self.route_ready(actor, p) {
             return Some("route actor is not resident or route is absent".into());
         }
@@ -41,7 +46,7 @@ impl Simulation {
         }
         let part = self.bind_part(actor, p);
         for q in &p.requires {
-            if let Err(why) = self.process_query(actor, target, place, part, p, q) {
+            if let Err(why) = self.process_query_guided(actor, target, place, part, p, q, guidance) {
                 // The act binds its intake organ before it reads a requirement.
                 return Some(self.bind_intake(actor, p).err().unwrap_or(why).into());
             }

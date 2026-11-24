@@ -145,12 +145,20 @@ impl Simulation {
     }
 
     pub(crate) fn process_query(&self,actor:Id,target:Option<Id>,place:Id,part:Option<PartId>,p:&Process,q:&Query) -> Result<String> {
+        self.process_query_guided(actor, target, place, part, p, q, None)
+    }
+
+    pub(crate) fn process_query_guided(&self,actor:Id,target:Option<Id>,place:Id,part:Option<PartId>,p:&Process,q:&Query,
+        guidance: Option<&crate::directing::Guidance>) -> Result<String> {
         if matches!(q,Query::InstitutionDecision)
             && p.requires.iter().any(|gate|matches!(gate,Query::Institution {..})) {
             let input=self.institution_process_scope(actor,target,p)?.ok_or("no explicit constitutional deciding producer")?;
             return self.institution_context_ready(&input,actor,target);
         }
-        self.query(actor,target,place,part,q)
+        match self.query(actor,target,place,part,q) {
+            Err(_) if self.directed_migration(actor, place, p, q, guidance) => Ok("bond motivates migration".into()),
+            result => result,
+        }
     }
 
     pub(crate) fn institution_process_cause(&self,actor:Id,target:Option<Id>,p:&Process) -> Result<Option<Key>> {

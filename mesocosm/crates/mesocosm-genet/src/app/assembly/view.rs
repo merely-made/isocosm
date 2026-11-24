@@ -209,7 +209,7 @@ pub(super) fn root(state: &State) -> Child {
             panels.push((
                 PanelKey::CloseHints,
                 button(
-                    "Close hints",
+                    "Close directions",
                     winit::keyboard::Key::Named(winit::keyboard::NamedKey::Escape),
                 ),
             ));

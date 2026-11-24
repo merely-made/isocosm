@@ -176,7 +176,7 @@ impl Source {
 }
 
 /// Route hops from every site to `target`, over routes as they stand.
-fn hops_to(sim: &Simulation, target: Id) -> BTreeMap<Id, u32> {
+pub(in crate::directing) fn hops_to(sim: &Simulation, target: Id) -> BTreeMap<Id, u32> {
     let mut back: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
     for (&id, site) in &sim.state().sites {
         for r in &site.routes {

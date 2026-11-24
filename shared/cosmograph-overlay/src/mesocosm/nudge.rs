@@ -5,8 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{ActKey, EntityHandle, PlaceHandle};
 
-/// The one directive a Mesocosm player gives: a click that draws the played
-/// critter's attention to a place or a thing (rulings 176, 214). The critter
+/// A request addressed to the played critter about a place or a thing. The critter
 /// weighs it by its bond (ruling 177) and answers it by its own needs, senses
 /// and mood. It never warns (ruling 215), and the standing orders, places to
 /// range and make home, priorities and stances, are grown by the sim from the
@@ -39,4 +38,9 @@ pub enum NudgeMeaning {
     /// critter's biology can do with the target (ruling 59), and the critter
     /// still weighs the nudge.
     Act(ActKey),
+    MoveToward,
+    MoveAway,
+    StayNear,
+    /// Suggest a native choice performed at this site without a selected object.
+    ActHere(ActKey),
 }

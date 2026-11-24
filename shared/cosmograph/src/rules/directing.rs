@@ -45,8 +45,11 @@ pub struct Directing {
     pub most: i64,
     /// How far one answered nudge moves the bond.
     pub step: i64,
-    /// How long a nudge stays live, unanswered.
+    /// Maximum lifetime of a request, including an ongoing spatial direction.
     pub span: Tick,
+    /// Radius of StayNear, in directed route hops to the named body or site.
+    #[serde(default = "one_hop", skip_serializing_if = "is_one_hop")]
+    pub near_hops: u32,
     /// What a nudge adds to a choice at the strongest bond (683).
     pub sway: i64,
     /// Each trophic level's slot in a region (226, 689): matter, by the
@@ -142,6 +145,9 @@ fn four() -> u32 {
     4
 }
 
+fn one_hop() -> u32 { 1 }
+fn is_one_hop(radius: &u32) -> bool { *radius == one_hop() }
+
 impl Default for Directing {
     fn default() -> Self {
         Self {
@@ -152,6 +158,7 @@ impl Default for Directing {
             most: 1000,
             step: 50,
             span: 60,
+            near_hops: one_hop(),
             sway: 1000,
             slots: BTreeMap::new(),
             variants: four(),

@@ -171,8 +171,15 @@ cargo run -p mesocosm-genet -- --help   # every flag and key
 cargo test --workspace
 ```
 
-Click or E/Space attends, right click or Q chooses a current hint, S
-speciates, arrows pan, Z/V rotate, C switches surface and section, Y cycles
+Click or press E/Space to point something out. Right-click a visible body or
+site to ask your critter to move toward it, move away, or stay near. Q opens
+the same menu at the critter's site. Choose **Suggest an act** to see the
+alternatives Cosmograph currently offers that creature and their targets.
+Use Up/Down to choose and Enter to confirm. The creature weighs a request
+by its bond to your player. By default, “near” means within one route hop,
+and a direction lasts up to 60 simulation ticks or until you replace it.
+
+S speciates, arrows pan, Z/V rotate, C switches surface and section, Y cycles
 the overview, over the shoulder and first person, +/- zoom, and Esc saves
 the trace and quits.
 

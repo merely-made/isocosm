@@ -37,7 +37,7 @@ pub fn orders(sim: &Simulation, participant: Id, critter: Id) -> Orders {
             Toward::Site(site) => Some(site),
             Toward::Thing(_) => n.answer.as_ref().and_then(|a| a.resident_site()),
         };
-        if let Some(site) = named {
+        if let Some(site) = named && n.aim != Aim::MoveAway {
             *attention.entry(site).or_default() += 1;
         }
         let Some(a) = &n.answer else {
@@ -45,7 +45,7 @@ pub fn orders(sim: &Simulation, participant: Id, critter: Id) -> Orders {
         };
         let went = if a.served { 1 } else { -1 };
         if let Some(site) = a.resident_site() { *thrived.entry(site).or_default() += went; }
-        if n.aim == Aim::Act {
+        if matches!(n.aim, Aim::Act | Aim::ActHere) {
             *o.priorities.entry(a.process.clone()).or_default() += went;
             if let Toward::Thing(t) = n.toward
                 && let Some(e) = s.population.get(t)

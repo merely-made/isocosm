@@ -12,6 +12,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 mod choice;
+mod guidance;
+pub(crate) use guidance::Guidance;
 mod holding;
 mod infeasible;
 mod learn;
@@ -39,11 +41,22 @@ pub const PLAYS: &str = "directing:plays";
 /// The kingdom of the world-class lineages, which have no critter body.
 pub const WORLD: &str = "kingdom:world";
 
-/// What a nudge asks: to attend, or to act (690).
+/// A participant can point something out, suggest an act, or indicate a spatial relation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Aim {
     Attend,
     Act,
+    MoveToward,
+    MoveAway,
+    StayNear,
+    /// A named act without a target selector, offered at the actor's site.
+    ActHere,
+}
+
+impl Aim {
+    pub fn is_direction(self) -> bool {
+        matches!(self, Self::MoveToward | Self::MoveAway | Self::StayNear)
+    }
 }
 
 /// What a nudge names: a site, at this grain a place (690), or a thing.
@@ -102,6 +115,11 @@ pub(crate) fn hold(relations: &mut BTreeSet<Relation>, relation: Relation, prese
 }
 
 impl Simulation {
+    /// Stable player identity within this world, including after a save or a change of body.
+    pub fn player_seed(&self, participant: Id) -> Result<u64> {
+        self.participant(participant)?;
+        Ok(crate::draw(self.genesis.seed, "directing:player", &[participant]))
+    }
     /// The weight of `participant`'s bond to `critter`, if they have one.
     pub fn bond(&self, participant: Id, critter: Id) -> Option<i64> {
         related(&self.state.relations, participant, BOND, critter).map(|r| r.value)
@@ -309,6 +327,14 @@ impl Simulation {
         act: Option<Key>,
     ) -> Result<()> {
         self.participant(participant)?;
+        if aim.is_direction() && act.is_some() {
+            return Err("a spatial direction cannot also name an act".into());
+        }
+        if aim == Aim::ActHere && !(matches!(to, Toward::Site(_)) && act.as_ref()
+            .and_then(|id| self.genesis.rules.processes.get(id))
+            .is_some_and(|p| p.target.is_none() && p.causation == crate::rules::Causation::Choice)) {
+            return Err("a local suggestion needs a site and a named targetless choice".into());
+        }
         if !self.state.population.get(critter).is_some_and(|e| e.alive) {
             return Err("the critter is not living".into());
         }
@@ -337,21 +363,21 @@ impl Simulation {
         });
         Ok(())
     }
-    /// Each bonded participant's latest nudge to `critter`, while it is
-    /// unanswered and live at `tick`, by index.
+    /// Each participant's latest live request. Directions last for their span,
+    /// while attention and act suggestions end on their first answer.
     pub(crate) fn live_nudges(&self, critter: Id, tick: Tick) -> Vec<usize> {
-        let span = self.genesis.rules.directing().span;
+        let span = self.genesis.rules.directing_ref().span;
         let mut latest = std::collections::BTreeMap::new();
-        for (i, n) in self.state.nudges.iter().enumerate() {
+        for (i, n) in self.state.nudges.iter().enumerate().rev() {
+            if tick >= n.tick.saturating_add(span) { break; }
             if n.critter == critter && n.tick <= tick {
-                latest.insert(n.participant, i);
+                latest.entry(n.participant).or_insert(i);
             }
         }
-        let live = |i: &usize| {
-            let n = &self.state.nudges[*i];
-            n.answer.is_none() && tick < n.tick.saturating_add(span)
-        };
-        latest.into_values().filter(live).collect()
+        latest.into_values().filter(|&i| {
+            let n = &self.state.nudges[i];
+            n.answer.is_none() || n.aim.is_direction()
+        }).collect()
     }
 }
 

@@ -24,6 +24,10 @@ pub fn apply(session: &mut Session, participant: Id, round: u64,
             let (aim, act) = match &nudge.meaning {
                 NudgeMeaning::Attend => (Aim::Attend, None),
                 NudgeMeaning::Act(key) => (Aim::Act, Some(key.0.clone())),
+                NudgeMeaning::MoveToward => (Aim::MoveToward, None),
+                NudgeMeaning::MoveAway => (Aim::MoveAway, None),
+                NudgeMeaning::StayNear => (Aim::StayNear, None),
+                NudgeMeaning::ActHere(key) => (Aim::ActHere, Some(key.0.clone())),
             };
             let toward = match nudge.target {
                 NudgeTarget::Place(place) => Toward::Site(place.0),

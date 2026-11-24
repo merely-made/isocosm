@@ -68,7 +68,7 @@ fn an_arrival_takes_its_declared_stand_and_an_unseated_body_takes_none() {
     let route = format!("move:{}-{}", crossing.from, crossing.to);
     let mut forced = probe.sim.genesis().rules.processes[&route].clone();
     forced.id = "test:forced-move".into();
-    forced.requires.retain(|q| !matches!(q, cosmograph::rules::Query::MoodBelow { .. }));
+    forced.requires.retain(|q| !matches!(q, cosmograph::rules::Query::MoodBelow { .. } | cosmograph::rules::Query::MigrationMotive { .. }));
     let mut genesis = probe.sim.genesis().clone();
     genesis.rules.processes.insert(forced.id.clone(), forced);
     let mut session = Session::new(genesis, Execution::Grouped).unwrap();

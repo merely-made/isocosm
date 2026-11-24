@@ -164,4 +164,6 @@ pub enum Query {
     /// Both endpoints are available for a live, one-resident association.
     PocketVacant,
     SoilContact(crate::ecology::soil::Contact),
+    /// A low mood or an active spatial request favoring this movement.
+    MigrationMotive { amount: i64 },
 }
