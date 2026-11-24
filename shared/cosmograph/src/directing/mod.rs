@@ -13,6 +13,8 @@ use std::collections::BTreeSet;
 
 mod choice;
 mod guidance;
+mod experience;
+pub(crate) use experience::Encounter;
 pub(crate) use guidance::Guidance;
 mod holding;
 mod infeasible;
@@ -192,6 +194,7 @@ impl Simulation {
             spent: None,
             learned: None,
             died: None,
+            places: None,
             switched: Vec::new(),
         };
         if self.state.population.count() >= self.genesis.rules.limits.entities {

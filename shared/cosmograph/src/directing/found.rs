@@ -114,13 +114,14 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     rules.directing = Some(Directing {
         slots,
         movement_ties: MovementTies::Seeded,
+        place_memory: Some(PlaceMemory { span: 60, meal: 100, hurt: 600 }),
         ..Directing::default()
     });
     Ok(())
 }
 
 /// Members migrate (753): a move process per route, open to a member at
-/// the route's site when low mood or a trusted direction motivates it. A site names itself by the
+/// the route's site when mood, experience or a trusted request motivates it. A site names itself by the
 /// condition `site:<id>`, so a move asks where its actor is.
 fn migrate(g: &mut Genesis) -> Result<()> {
     let mut moves = Vec::new();

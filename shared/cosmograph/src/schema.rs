@@ -163,6 +163,9 @@ pub struct Entity {
     /// serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub learned: Option<Learned>,
+    /// This individual's last successful feeding and injury sites.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub places: Option<std::sync::Arc<RememberedPlaces>>,
     /// The tick it died, kept only where the world's spoilage rule is set
     /// (`crate::ecology::Spoilage`), from which its flesh's age is read;
     /// absent elsewhere, which serializes and hashes as before.
@@ -234,6 +237,13 @@ impl Entity {
     pub fn parts_mut(&mut self) -> impl Iterator<Item = (&PartId, &mut Part)> {
         self.parts.iter_mut().map(|(id, part)| (id, std::sync::Arc::make_mut(part)))
     }
+}
+
+/// Site and tick of each firsthand encounter. Newborns start without either.
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct RememberedPlaces {
+    pub meal: Option<(Id, Tick)>,
+    pub hurt: Option<(Id, Tick)>,
 }
 
 /// A past residence. A departure closes it; a journey is no residence.

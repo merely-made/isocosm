@@ -75,6 +75,7 @@ pub(crate) fn newborn(parent: &Entity, body: Body, soma: Vec<u8>, tick: Tick) ->
     child.accounts = Ledger::new();
     child.born = tick;
     child.arrived = tick;
+    child.places = None;
     child.visits.clear();
     child.skills = BTreeMap::new();
     child.provenance = Provenance::Born(child.lineage.clone());

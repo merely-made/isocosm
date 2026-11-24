@@ -74,6 +74,7 @@ impl Recipe {
             spent: None,
             learned: None,
             died: None,
+            places: None,
             switched: Vec::new(),
         })
     }

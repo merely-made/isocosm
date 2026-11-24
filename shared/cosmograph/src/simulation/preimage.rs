@@ -93,6 +93,8 @@ pub(super) struct Entity<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     learned: Option<&'a Learned>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    places: Option<&'a RememberedPlaces>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     died: Option<Tick>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     switched: &'a Vec<u16>,
@@ -130,6 +132,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             settled,
             spent,
             learned,
+            places,
             died,
             switched,
         } = value;
@@ -163,6 +166,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             settled: *settled,
             spent: *spent,
             learned: learned.as_ref(),
+            places: places.as_deref(),
             died: *died,
             switched,
         }

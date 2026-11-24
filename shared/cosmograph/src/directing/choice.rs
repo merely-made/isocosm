@@ -333,7 +333,7 @@ impl Simulation {
 
     /// Scoring reads the same pass-start body and site as feasibility (454).
     /// Wellbeing keeps its live before/after readings for bond accounting.
-    fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
+    pub(super) fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
         let e = self.body_at_start(actor);
         self.minded_in(e, e.and_then(|e| e.resident_site().and_then(|site| self.site_at_start(site))))
     }
@@ -423,8 +423,8 @@ impl Simulation {
             return Choice::default();
         };
         let live = self.live_nudges(actor, tick);
-        let guidance = super::Guidance::new(self, &live);
         let (mood, pressing) = self.choice_minded(actor);
+        let guidance = super::Guidance::for_actor(self, actor, &live, Some(&pressing));
         let waiting = self.foraging_wait_score(actor);
         // A lineage policy scores in the hand-written score's place (M3.5).
         let policy = self.expressed(actor, directing.policy.expression);
@@ -477,8 +477,7 @@ impl Simulation {
                 continue;
             }
             best.options.insert(p.id.clone(), (score, target));
-            // Waiting is an available response when departure would break a
-            // trusted request to stay near and no stronger need pays for it.
+            // Wait if the cost of this direction outweighs the reasons to act.
             if direction < 0 && score < 0 { continue; }
             candidates.push((score, p.id.clone(), target, nudged.is_some(), answers.clone()));
             if score > top {

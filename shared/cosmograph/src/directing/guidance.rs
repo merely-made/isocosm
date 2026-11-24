@@ -23,6 +23,7 @@ struct Request {
 
 #[derive(Default)]
 pub(crate) struct Guidance {
+    personal: [Option<super::experience::Preference>; 2],
     requests: Vec<Request>,
     distances: BTreeMap<(Id, bool), BTreeMap<Id, u32>>,
 }
@@ -115,6 +116,21 @@ impl Guidance {
         result
     }
 
+    pub(super) fn for_actor(
+        sim: &Simulation,
+        actor: Id,
+        live: &[usize],
+        needs: Option<&[&crate::rules::Need]>,
+    ) -> Self {
+        let mut guidance = Self::new(sim, live);
+        guidance.personal = sim.place_preferences(actor, needs);
+        guidance
+    }
+
+    fn is_empty(&self) -> bool {
+        self.requests.is_empty() && self.personal.iter().all(Option::is_none)
+    }
+
     /// Agreement (+1), indifference, or leaving the requested vicinity (-1).
     fn vote(&self, request: &Request, here: Id, to: Option<Id>) -> i64 {
         let distances = &self.distances[&request.field];
@@ -143,17 +159,28 @@ impl Guidance {
         place: Id,
         answers: &mut Vec<usize>,
     ) -> i64 {
-        if self.requests.is_empty() {
+        if self.is_empty() {
             return 0;
         }
         let (destinations, can_stay) = movement(process);
-        let mut score = 0;
-        for req in &self.requests {
-            let vote = destinations
+        let outcomes = || {
+            destinations
                 .iter()
                 .copied()
                 .map(Some)
                 .chain(can_stay.then_some(None))
+        };
+        let mut score = self
+            .personal
+            .iter()
+            .flatten()
+            .map(|pref| {
+                let vote = outcomes().map(|to| pref.vote(place, to)).min().unwrap_or(0);
+                vote * i64::from(pref.weight)
+            })
+            .sum::<i64>();
+        for req in &self.requests {
+            let vote = outcomes()
                 .map(|to| self.vote(req, place, to))
                 .min()
                 .unwrap_or(0);
@@ -166,15 +193,19 @@ impl Guidance {
     }
 
     fn wants_step(&self, place: Id, to: Id) -> bool {
-        self.requests
+        self.personal
             .iter()
-            .any(|r| self.vote(r, place, Some(to)) > 0 && self.vote(r, place, None) == 0)
+            .flatten()
+            .any(|p| p.vote(place, Some(to)) > p.vote(place, None))
+            || self
+                .requests
+                .iter()
+                .any(|r| self.vote(r, place, Some(to)) > 0 && self.vote(r, place, None) == 0)
     }
 }
 
 impl Simulation {
-    /// Low mood motivates spontaneous migration. A trusted spatial request can
-    /// motivate that same generated move. Authored mood gates keep their meaning.
+    /// A personal preference or a trusted request may motivate a generated move.
     pub(crate) fn directed_migration(
         &self,
         actor: Id,
@@ -183,21 +214,30 @@ impl Simulation {
         q: &Query,
         known: Option<&Guidance>,
     ) -> bool {
-        if !matches!(q, Query::MigrationMotive { .. })
-            || self.state.nudges.is_empty()
-            || p.causation != Causation::Choice
-        {
+        if !matches!(q, Query::MigrationMotive { .. }) || p.causation != Causation::Choice {
             return false;
         }
         let fresh;
         let guidance = match known {
             Some(g) => g,
             None => {
-                fresh = Guidance::new(self, &self.live_nudges(actor, self.state.tick));
+                if self.state.nudges.is_empty()
+                    && !self
+                        .body_at_start(actor)
+                        .is_some_and(|e| e.places.is_some())
+                {
+                    return false;
+                }
+                fresh = Guidance::for_actor(
+                    self,
+                    actor,
+                    &self.live_nudges(actor, self.state.tick),
+                    None,
+                );
                 &fresh
             },
         };
-        if guidance.requests.is_empty() {
+        if guidance.is_empty() {
             return false;
         }
         let (destinations, can_stay) = movement(p);

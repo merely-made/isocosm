@@ -28,6 +28,18 @@ pub(super) struct Harms {
 const WOUND_SLOT: u8 = 250;
 
 impl Staged<'_> {
+    pub(super) fn remember_bite(&mut self, from: Binding) -> Result<()> {
+        use crate::directing::Encounter;
+        let rules = &self.sim.genesis.rules;
+        if rules.directing_ref().place_memory.is_some() && self.stage.demands.is_none() {
+            let place = self.stage.place;
+            let tick = self.sim.state.tick;
+            self.body(Binding::Actor)?.remember(rules, place, tick, Encounter::Meal);
+            self.body(from)?.remember(rules, place, tick, Encounter::Hurt);
+        }
+        Ok(())
+    }
+
     /// Eats, then pays for what the mouth does not tolerate.
     pub(in crate::stage::staged) fn meal(
         &mut self,

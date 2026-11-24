@@ -8,6 +8,8 @@ use crate::{
     directing::{Played, tests::played},
 };
 
+mod personal;
+
 fn world(seed: u64, sites: u32) -> Session {
     let g = Founding {
         seed,

@@ -179,6 +179,12 @@ Use Up/Down to choose and Enter to confirm. The creature weighs a request
 by its bond to your player. By default, “near” means within one route hop,
 and a direction lasts up to 60 simulation ticks or until you replace it.
 
+In a newly founded playable world, each deliberative critter remembers where
+it last ate and where it last got hurt. A hungry animal can head back to a
+familiar feeding site. Once fed, it favors staying there. An injury gives
+it a reason to leave and avoid returning. The animal weighs those memories
+alongside its other needs even when nobody is directing it.
+
 S speciates, arrows pan, Z/V rotate, C switches surface and section, Y cycles
 the overview, over the shoulder and first person, +/- zoom, and Esc saves
 the trace and quits.

@@ -248,6 +248,9 @@ impl Staged<'_> {
                 sim.diagnostic_meal_update(None, None, Some(&holdings));
                 sim.diagnostic_given(&holdings);
                 let eater = self.untolerated(from, offered.keys())?;
+                if holdings.values().any(|&amount| amount > 0) {
+                    self.remember_bite(from)?;
+                }
                 return Ok(bite::Harms { eater, wards: Self::wards(guarded, 0) });
             }
         }
@@ -285,6 +288,9 @@ impl Staged<'_> {
                 _ => debit(self.ledger(from)?, key, *value)?,
             }
             total = total.checked_add(*value).ok_or("meal overflow")?;
+        }
+        if total > 0 {
+            self.remember_bite(from)?;
         }
         sim.diagnostic_meal_update(None, None, Some(&taken));
         if let Some(meal) = partition {

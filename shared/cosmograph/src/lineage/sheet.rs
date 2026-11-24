@@ -108,6 +108,7 @@ pub fn of(
         spent: None,
         learned: None,
         died: None,
+        places: None,
         switched: Vec::new(),
     };
     e.embody(body);
