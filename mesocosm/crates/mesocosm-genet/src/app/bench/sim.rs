@@ -3,7 +3,7 @@
 
 //! A host over the simulation. Rendering and controls never mutate its world directly.
 use super::{Bench, Child};
-use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
+use cambium::{TextInput, clickable, el, focusable, lens, text, caret_text_field};
 use cosmograph::{
     Execution, Founding, Session,
     history::{Command, Merge},
@@ -271,13 +271,20 @@ pub(super) fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
     )))
 }
 fn input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
+    field(label, get, cambium::text_field_typed)
+}
+pub(super) fn founding_input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
+    field(label, get, |value| caret_text_field(value, &[]))
+}
+fn field(label: &'static str, get: fn(&mut Bench) -> &mut TextInput,
+    view: fn(&TextInput) -> cambium::TextField) -> Child {
     Box::new(el(
         "label",
         (
             el("span", text(label)),
             el(
                 "div",
-                lens(|input: &mut TextInput| text_field_typed(input), get),
+                lens(move |input: &mut TextInput| view(input), get),
             )
             .attr(
                 "class",
@@ -291,6 +298,9 @@ fn input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
 }
 
 pub(super) fn view(state: &Bench) -> Child {
+    if let Some(panel) = &state.founding {
+        return super::founding::view(panel);
+    }
     if let Some(panel) = &state.refuge {
         return super::refuge::view(panel);
     }
@@ -311,6 +321,7 @@ pub(super) fn view(state: &Bench) -> Child {
                     input("Sites", |s| &mut s.sim.sites),
                     input("Lineages", |s| &mut s.sim.lineages),
                     button("Found world", Bench::sim_found),
+                    button("World and lineage editor", Bench::open_founding),
                     button("Meadow and refuge", |s| {
                         s.sim.playing = false;
                         s.refuge = Some(Default::default());

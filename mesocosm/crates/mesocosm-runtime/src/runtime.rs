@@ -514,7 +514,7 @@ impl Runtime {
         if let Some(watched) = self.watched_critter() {
             return crate::continuation::watch_view(&session.sim, watched);
         }
-        if let Some(site) = self.product().spatial.continuation.as_ref().and_then(|saved| saved.founding_site) {
+        if let Some(site) = self.founding_site() {
             return crate::continuation::site_view(&session.sim, Some(site));
         }
         let critter = session.sim.plays(lp.participant).unwrap_or(cosmograph::directing::PLACELESS);

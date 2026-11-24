@@ -43,6 +43,34 @@ game and the [sim plan](design_docs/2026-10-28_sim_plan.md) for Cosmograph.
 The standing caveat outranks all of it: the game must make somebody want
 another run.
 
+## Found a world in Mesocosm
+
+Launch `mesocosm-genet` with no arguments, choose **World and lineage editor** on
+the native bench, or press **E** at the game's **New World** screen. An explicit
+launch is `mesocosm-genet --founding-editor --seed 104`.
+
+**World conditions** sets the seed, population, cohort size, starting stock
+range, climate preset and water level. The starting map is a four-site plane.
+**Use a planet** folds a six-face grid into a sphere. You can also load a
+Cosmograph founding TOML. **Lineage body maps** selects a lineage and a growth
+run. Drag an attached run around its parent to change the direction it grows.
+Add branches, edit repeats and variation, and attach native tissues and
+admitted catalogue parts. **Load body map** takes a single lineage TOML.
+
+**Project founding** grows the founders and opens the world at tick zero.
+Select a site and **Watch time pass**, or advance and rewind by one or twelve
+ticks. Select a joint on the developed specimen to inspect its tissue.
+The population rows group the inhabitants by their realized segment counts
+and omitted organs. The matter readings come from native process transfers.
+
+**Save projection** writes the selected tick, the founding TOML and a reusable
+TOML for each authored lineage under `~/Mesocosm/worlds/` (override with
+`MESOCOSM_WORLD_DIR`). Paste its `entry.json` into **Template or save path**
+and choose **Reopen projection** to scrub it again. **Enter this world**
+opens Mesocosm watching the selected site and tick. The game writes its
+continuation to `world.json` in that entry's directory. Open it with
+`mesocosm-genet --watch <world.json>`.
+
 ## Found a plant lineage
 
 **Compare frond forms** opens two ordinary foundings on a shared time slider.
@@ -55,7 +83,7 @@ backed by local plant tissue, soil fixed, births and biomass eaten. Each
 world can be saved at the selected tick. The default map is in the
 [frond allocation template](../shared/cosmograph/examples/frond-allocation.toml).
 
-The [lineage editor](tools/lineage-editor/) opens the ordinary
+The [browser comparison editor](tools/lineage-editor/) opens the ordinary
 [optional-gland founding template](../shared/cosmograph/examples/optional-gland.toml).
 The initial world lays four mapped sites and gives the grazer lineage the native
 directing rules. Choose reactive grazers for a mapped ecology without directing, or
@@ -85,7 +113,7 @@ The competition timeline scrubs the chosen world independently of these trials.
 **Enter in Mesocosm** opens a new game window in Watching at the selected tick.
 Entering appends one native Join. The entry and the game save on exit have
 separate paths under `~/Mesocosm/worlds/`; pass `--world-dir` to choose another.
-At the game's New World screen, E opens the editor again. The browser editor
+The native New World editor and this browser comparison can both enter an ordinary founding. The browser editor
 uses the native executable supplied to the launcher.
 
 **Grow a resident pocket** opens a two-founder experiment. Switch the fungal

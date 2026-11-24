@@ -37,9 +37,15 @@ pub fn lift(sim: &Simulation, site: Id) -> Result<isometer::space::volume::Volum
 /// each placed at a presentation spot ([`super::layout`]).
 pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, String> {
     let site = site_of(sim, played).ok_or("a world with no sites")?;
+    site_scene_at(sim, site, played, None)
+}
+
+pub(crate) fn site_scene_at(sim: &Simulation, site: Id, played: Option<Id>, visible: Option<&View>)
+    -> Result<SiteScene, String> {
     let volume = lift(sim, site)?;
     let ground = volume.ground().clone();
     let mut bodies = placed(sim, site, &volume);
+    if let Some(v) = visible { bodies.retain(|body| v.shows(body.id)); }
     let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene {
         walking: cosmograph::spatial::embodiment::walking_rules(sim),
@@ -55,10 +61,8 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
 /// The same edited site with only the bodies admitted by the native view.
 pub fn site_scene_visible(sim: &Simulation, played: Option<Id>, visible: &View)
     -> Result<SiteScene, String> {
-    let mut scene = site_scene(sim, played)?;
-    scene.bodies.retain(|b| visible.shows(b.id));
-    scene.volumes = body_volumes(&mut scene.bodies)?;
-    Ok(scene)
+    let site = site_of(sim, played).ok_or("a world with no sites")?;
+    site_scene_at(sim, site, played, Some(visible))
 }
 
 /// Explicit in-site geometry drives both rays and the corresponding picture.

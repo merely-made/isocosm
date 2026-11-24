@@ -1,0 +1,29 @@
+settle 3
+assert text World conditions
+click role:button Lineage body maps
+settle 3
+assert text Tissue and traits
+click role:button Increase repeat
+click role:button Change variation
+capture lineage-map
+click role:button Project founding
+settle 3
+assert snap tick == 0
+assert snap watch-site == 0
+remember founded
+click role:button Next site
+same founded hash
+click role:button Advance 12 ticks
+settle 3
+assert snap tick == 12
+assert snap watch-site == 1
+remember away
+click role:button Previous site
+same away hash
+capture living-world
+click role:button Back 12 ticks
+same founded hash
+click role:button Advance 12 ticks
+same away hash
+click role:button Save projection
+assert text Saved

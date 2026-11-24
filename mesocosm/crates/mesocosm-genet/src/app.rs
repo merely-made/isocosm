@@ -205,7 +205,11 @@ impl Host {
         let played = self.runtime.critter();
         let anchor = played.or_else(|| self.runtime.watched_critter().filter(|id|
             crate::played::scene::site_of(&sim, Some(*id)).is_some()));
-        let Some(site) = crate::played::scene::site_of(&sim, anchor) else {
+        let site = match anchor {
+            Some(_) => crate::played::scene::site_of(&sim, anchor),
+            None => self.runtime.founding_site().or_else(|| crate::played::scene::site_of(&sim, None)),
+        };
+        let Some(site) = site else {
             self.scene_key = None;
             self.scene_source_key = None;
             self.scene_components = None;
@@ -351,8 +355,7 @@ impl Host {
             return false;
         }
         let result =
-            crate::played::scene::site_scene_visible(&sim, anchor, &visible).and_then(|mut scene| {
-                scene.played = played;
+            crate::played::scene::site_scene_at(&sim, site, played, Some(&visible)).and_then(|scene| {
                 scene_source::store(
                     scene,
                     self.config.component_scene,

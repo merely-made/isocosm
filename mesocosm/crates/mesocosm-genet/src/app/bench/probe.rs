@@ -34,13 +34,15 @@ impl mandrake::Product for BenchProduct {
 
     fn snapshot(&self, ctx: &Context<'_>, captures: usize, _opacity: f32) -> ProbeSnapshot {
         let sim = &ctx.runner.state().sim;
-        let session = sim.session.as_ref();
+        let projection = ctx.runner.state().founding.as_ref().map(super::founding::Panel::reading);
+        let session = projection.map(|(s, _)| s).or(sim.session.as_ref());
         let state = session.map(|s| s.sim.state());
         let sample = ctx.runner.state().refuge.as_ref().and_then(super::refuge::Panel::current);
         let fields = [
             ("refuge-tick", sample.map_or(0, |p| p.tick).to_string()),
             ("refuge-alone", sample.map(|p| p.alone.hash.clone()).unwrap_or_default()),
             ("refuge-trial", sample.map(|p| p.trial.hash.clone()).unwrap_or_default()),
+            ("watch-site", projection.map_or(String::new(), |(_, s)| s.to_string())),
             ("captures", captures.to_string()),
             ("founded", (session.is_some()).to_string()),
             ("tick", state.map_or(0, |s| s.tick).to_string()),

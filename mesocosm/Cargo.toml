@@ -64,6 +64,7 @@ sprigging = { git = "https://github.com/merely-made/graphshell.git", branch = "m
 cambium = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 cambium-desktop = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
 cambium-rootstock = { git = "https://github.com/merely-made/graphshell.git", branch = "main" }
+layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = ">=0.1.1" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # The CSS/layout/paint engine. `genet-layout` is gone: genet deleted the Stylo
 # compatibility cone on 2026-08-21 and Livery over Buckram is what lays out a

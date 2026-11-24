@@ -14,6 +14,7 @@ use isomere::{Picked, Seeds, Sizes};
 
 use super::HostConfig;
 
+mod founding;
 mod probe;
 mod refuge;
 mod sim;
@@ -24,13 +25,15 @@ pub(super) type Logic = fn(&Bench) -> Child;
 /// The bench's state: the sim panel and what a scenario drains.
 pub(super) struct Bench {
     sim: sim::Panel,
+    founding: Option<founding::Panel>,
     refuge: Option<refuge::Panel>,
     events: Vec<String>,
     export_directory: std::path::PathBuf,
+    world_directory: Option<std::path::PathBuf>,
 }
 
 /// Runs the bench until its window closes; the `i32` is the exit code.
-pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
+pub fn run(config: HostConfig, founding_editor: bool) -> Result<i32, winit::error::EventLoopError> {
     let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {
         Some(Ok(scenario)) => Some(scenario),
         Some(Err(why)) => {
@@ -40,7 +43,7 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
         None => None,
     };
     let options = HostOptions {
-        title: "Mesocosm · Bench".into(),
+        title: if founding_editor { "Mesocosm · New world" } else { "Mesocosm · Bench" }.into(),
         initial_logical_size: (config.width as f64, config.height as f64),
         ..Default::default()
     };
@@ -61,9 +64,25 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
         .with_frame_limit(config.frames),
     ));
     let close_lane = lane.clone();
+    let mut drawn = None;
     let hooks: HostHooks<Bench, Logic, Child> = HostHooks {
         prepare_presentation: Box::new(|_, _| None),
-        frame: Box::new(|ctx| {
+        frame: Box::new(move |ctx| {
+            let diagram = ctx.runner.state().founding.as_ref().and_then(founding::Panel::diagram);
+            let changed = drawn != diagram;
+            if changed {
+                if let Some(scene) = &diagram {
+                    ctx.leaves.insert(founding::diagram::LEAF, Box::new(scene.paint_leaf(|tissue| {
+                        let [r,g,b] = if *tissue { [0.18,0.46,0.28] } else { [0.55,0.37,0.20] };
+                        cambium::ColorF { r,g,b,a:1. }
+                    })));
+                } else { ctx.leaves.remove(&founding::diagram::LEAF); }
+                drawn = diagram;
+            }
+            if ctx.runner.state().founding.as_ref().is_some_and(founding::Panel::playing) {
+                ctx.runner.update(|s| { if let Some(p) = &mut s.founding { p.advance_clock(); } });
+                return true;
+            }
             if ctx.runner.state().refuge.as_ref().is_some_and(refuge::Panel::running) {
                 ctx.runner.update(|s| {
                     if let Some(panel) = &mut s.refuge { panel.poll(); }
@@ -73,7 +92,7 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
             if ctx.runner.state().sim.playing {
                 ctx.runner.update(|s| s.sim_step());
             }
-            ctx.runner.state().sim.playing
+            changed || ctx.runner.state().sim.playing
         }),
         after_dispatch: Box::new(|_| {}),
         after_frame: Box::new(move |ctx| lane.borrow_mut().after_frame(ctx)),
@@ -85,7 +104,7 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
             }
             cambium_genet_winit_host::CloseDisposition::KeepVisible
         }),
-        focused_text: Box::new(|_| None),
+        focused_text: Box::new(founding::fields::focused),
         key_intercept: Box::new(|_, _| false),
     };
     let seed = config.seed;
@@ -94,11 +113,14 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
         move |_, _, _| {
             let mut state = Bench {
                 sim: sim::Panel::new(seed),
+                founding: None,
                 refuge: None,
                 events: Vec::new(),
                 export_directory,
+                world_directory: std::env::var_os("MESOCOSM_WORLD_DIR").map(std::path::PathBuf::from)
+                    .or_else(|| std::env::home_dir().map(|p| p.join("Mesocosm/worlds"))),
             };
-            state.sim_found();
+            if founding_editor { state.open_founding(); } else { state.sim_found(); }
             Init {
                 state,
                 logic: sim::view as Logic,
@@ -159,6 +181,10 @@ const RULES: &str = r#"
 .sim label { font-size:12px; }
 .sim .generation-input { width:110px; padding:4px; overflow:hidden; }
 .sim .generation-input input { white-space:pre; height:20px; overflow:hidden; }
+.authoring { overflow:auto; }
+.authoring h2 { margin:15px 0 6px; font-size:17px; }
+.authoring .author-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.authoring .sim-template-or-save-path, .authoring .sim-body-map-path { width:410px; }
 .sim .sim-saved-world-path { width:320px; }
 .sim-columns { display:flex; gap:12px; align-items:flex-start; margin:10px 0; }
 .sim-sites { display:flex; flex-wrap:wrap; gap:8px; flex:3; }
@@ -176,4 +202,4 @@ const RULES: &str = r#"
 "#;
 
 pub(super) static SHEET: LazyLock<String> =
-    LazyLock::new(|| isomere::sheet_with(&seeds(), &SIZES, RULES));
+    LazyLock::new(|| isomere::sheet_with(&seeds(), &SIZES, &format!("{}\n{RULES}", cambium::GRAPH_CANVAS_SWATCH_CSS)));

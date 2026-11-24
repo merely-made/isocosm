@@ -576,7 +576,10 @@ templates and drawn ones.
   records four seeded worlds across nine combinations of grazing and
   gland upkeep. The [graphical founding editor](../README.md#found-a-plant-lineage)
   opens that map, links developed parts to their growth rules, and saves the
-  selected native tick. The New World menu opens this editor. It can start
+  selected native tick. New World now opens the native founding bench. The
+  [native editor](../README.md#found-a-world-in-mesocosm) edits or imports a
+  lineage map, projects it under selected world conditions, and enters at the
+  watched site and tick. The original plant comparison can also start
   Mesocosm watching at that tick, recording Join as the first new command.
   A fresh watcher starts at the first founding site and may take an available
   deliberative grazer there. The mapped world and its directing rules are

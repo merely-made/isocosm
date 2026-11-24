@@ -137,7 +137,7 @@ impl Host {
                 ("choice".into(), self.continuation.notice.clone().unwrap_or_else(||
                     self.continuation.selected.as_ref().map_or("Nothing selected".into(), |answer| self.continuation_label(answer)))),
             ], stay: "[W] keep watching; Up/Down then Enter / click also selects Watch".into(),
-                take: Some("[E] open lineage editor in browser · [Esc] save and quit".into()) });
+                take: Some("[E] open native founding editor · [Esc] save and quit".into()) });
         }
         let selected = self.continuation.selected.as_ref().map_or("Nothing selected".into(), |answer| self.continuation_label(answer));
         let watched = self.runtime.watched_critter().map(|id| {
@@ -277,7 +277,7 @@ impl Host {
         if !self.continuation_open() { return false; }
         if self.runtime.current_loop_phase() == Some(LoopPhase::NewWorldRequested)
             && matches!(key, Key::Character(c) if c.eq_ignore_ascii_case("e")) {
-            self.continuation.notice = Some(match super::editor::open() {
+            self.continuation.notice = Some(match super::editor::open(self.config.seed) {
                 Ok(()) => "Opening lineage editor".into(),
                 Err(why) => why,
             });

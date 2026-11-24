@@ -37,7 +37,8 @@ fn main() {
     let mut curve: Option<u64> = None;
     let (mut replay, mut trace, mut receipt, mut capture) = (None, None, None, None);
     let mut no_trace = false;
-    let mut bench = false;
+    let mut founding_editor = std::env::args_os().len() == 1;
+    let mut bench = founding_editor;
     let mut bench_epoch_explicit = false;
     let mut sun_explicit = false;
     let mut size_explicit = false;
@@ -48,6 +49,7 @@ fn main() {
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--bench" => bench = true,
+            "--founding-editor" => { bench = true; founding_editor = true; },
             "--bench-world" => config.bench_world = true,
             "--component-scene" => config.component_scene = true,
             "--bench-epoch" => { bench_epoch_explicit=true; config.bench_epoch = args.next().and_then(|v|v.parse().ok())
@@ -231,6 +233,8 @@ fn main() {
             "--no-trace" => no_trace = true,
             "--receipt" => receipt = args.next().map(PathBuf::from),
             "--replay" => replay = args.next().map(PathBuf::from),
+            "--watch-site" => config.watch_site = Some(args.next().and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| fail("--watch-site needs a numeric site ID"))),
             "--watch" | "--enter-world" => {
                 if config.watch.is_some() { fail("select a single world to enter or resume"); }
                 config.enter_founding = arg == "--enter-world";
@@ -298,6 +302,7 @@ fn main() {
         }
     }
 
+    if config.watch_site.is_some() && !config.enter_founding { fail("--watch-site requires --enter-world"); }
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
     if config.component_scene && !config.dev {
         fail("--component-scene is a --dev comparison backend");
@@ -397,7 +402,7 @@ fn main() {
         config.height = 900;
     }
     let result = if bench {
-        mesocosm_genet::app::bench::run(config)
+        mesocosm_genet::app::bench::run(config, founding_editor)
     } else {
         Host::run(config)
     };
@@ -506,6 +511,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --receipt PATH  write the run's receipt
   --replay PATH   replay a recorded save headlessly and check its hash
   --enter-world PATH  join an unplayed Cosmograph save as a watcher at its saved tick
+  --watch-site ID  select the starting site with --enter-world
   --watch PATH    take a recorded save up and play on in the window
   --spatial PATH  load explicit authored poses and operation geometry
   --graft PATH    apply an explicit native Carry input after spatial admission
@@ -513,6 +519,7 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --ecology-witness PATH  require one authored joint native witness before a new-world offer
   --ecology-candidate PATH  supply complete authored generated rules, lifecycle and joint witness
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
+  --founding-editor  open the native world and lineage editor (default without arguments)
   --bench         open the bench over a native session (1280x900)
   --bench-world   play an explicit dev world through the core and Assembly
   --component-scene compare native component scene storage; requires --dev

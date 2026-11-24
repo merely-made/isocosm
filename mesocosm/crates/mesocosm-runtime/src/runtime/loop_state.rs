@@ -172,6 +172,11 @@ impl Runtime {
 
     pub fn loop_settings(&self) -> LoopSettings { self.driver.product().loop_settings() }
 
+    /// The accepted site chosen by a watcher entering a founding.
+    pub fn founding_site(&self) -> Option<cosmograph::schema::Id> {
+        self.product().spatial.continuation.as_ref()?.founding_site
+    }
+
     /// The former subject whose site the player is watching.
     pub fn watched_critter(&self) -> Option<cosmograph::schema::Id> {
         self.product().spatial.continuation.as_ref()?.watched_critter

@@ -1,0 +1,7 @@
+# Run paused on site 1 at tick 12, first with --enter-world and then with --watch.
+settle 5
+assert snap tick == 12
+assert snap site == 1
+assert snap controlled == none
+assert snap dev-intents == 0
+capture watched-site

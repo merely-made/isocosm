@@ -135,11 +135,18 @@ impl Runtime {
     /// Join an unplayed founding at its saved tick. The first new command is
     /// Join. A watcher has no played body and starts at the normal roster.
     pub fn enter_founding(bytes: &[u8], ticks_per_second: u32, mode: Option<Mode>) -> Result<Self, String> {
+        Self::enter_founding_at(bytes, ticks_per_second, mode, None)
+    }
+
+    /// Start watching at the site selected in the projection.
+    pub fn enter_founding_at(bytes: &[u8], ticks_per_second: u32, mode: Option<Mode>, site: Option<u64>) -> Result<Self, String> {
         let mut session = Session::load_json(bytes, Execution::Grouped)?;
         if session.sim.state().population.groups.values().any(|g| cosmograph::directing::is_participant(&g.entity)) {
             return Err("this world already has a participant; resume it with --watch".into());
         }
-        let site = *session.sim.state().sites.keys().next().ok_or("founding has no site to watch")?;
+        let sites = &session.sim.state().sites;
+        let site = site.or_else(|| sites.keys().next().copied()).ok_or("founding has no site to watch")?;
+        if !sites.contains_key(&site) { return Err(format!("World has no site {site} to watch")); }
         session.command(cosmograph::Command::Join)?;
         let mut runtime = Self::resume_session(session, mode.unwrap_or(Mode::Creative),
             Pace { round: 1, scoring: 6 }, ticks_per_second)?;

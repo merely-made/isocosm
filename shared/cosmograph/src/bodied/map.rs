@@ -50,6 +50,28 @@ impl std::str::FromStr for BodyMap {
 }
 
 impl BodyMap {
+    /// Begin an authored map with one structural run. Founding installs the
+    /// same reproductive root and feeding organs as for any other mapped line.
+    pub fn single_run() -> Self {
+        Self {
+            grammar: Grammar { seed: vec![super::bare(1, "block")], rules: Vec::new() },
+            variance: 0, absence: never(), regions: BTreeMap::new(),
+        }
+    }
+
+    /// Attach a new seed run without renumbering existing rule addresses.
+    pub fn branch_from(&mut self, parent: usize) -> Result<usize> {
+        let next = self.grammar.seed.len();
+        if parent >= next || next > usize::from(u8::MAX) {
+            return Err("branch requires an existing parent and a free run address".into());
+        }
+        let mut run = super::bare(1, "block");
+        run.parent = Some(parent as u8);
+        run.facing = crate::rules::Facing::Right;
+        self.grammar.seed.push(run);
+        Ok(next)
+    }
+
     /// Resolve the named anatomy in the seed and rules. The caller installs
     /// the native root and feeding organs before expanding the grammar.
     pub(super) fn resolve(
