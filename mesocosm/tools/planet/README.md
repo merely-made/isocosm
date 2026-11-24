@@ -76,3 +76,32 @@ A1 organisms keep their feeding, growth, birth and aging schedules in rounds. Ea
 The field clock shows the season in the visited hemisphere. The roster labels dormant seeds. To inspect a recorded birth or bite, open `/field?site=141&tick=23&organism=702` on the relevant branch. The selected body filters the transfer list.
 
 Omit `--through` to measure an existing field database at its saved head. The report reopens the native save, checks the recorded state hash, walks parent–child relations, and matches children to birth provisions. A daughter counts as established once observed alive and awake at least one reproductive interval after birth. A daughter survives a recorded bite when she is observed alive at a later tick. Both measures accompany her actual offspring and final state, including travel between sites.
+
+## Leave a seed nursery unwatched
+
+On the seasonal seed-9 parent, site 1 can hold a nursery for the first rooted
+producer and a second resident fungal colony. The parent keeps its ground
+position. Its provisioned, dormant daughter lands downwind on supported ground
+in the same site. The landing rule uses a 32 mm wind displacement, up to 1 mm
+of variation on each horizontal axis, and the existing clearance search. A seed
+without a landing stays dormant. An anchored fungus or plant cannot take the
+site's hunger migration action.
+
+The first colony stays at the parent. The second starts with four phosphorus
+units from the finite litter stock. In one branch it sits below the downwind
+patch, and in the other it starts 40 mm farther across it. Local resources,
+genomes, weather, season draws and grazers come from the same founding. Run the
+same camera over site 98 in both branches, then reopen the native heads and
+compare the daughters.
+
+```sh
+"$PLANET_GROUND" nursery "$YEAR_SAVE/parent.json" 1 near "$NURSERY/near"
+"$PLANET_GROUND" nursery "$YEAR_SAVE/parent.json" 1 far "$NURSERY/far"
+python3 mesocosm/tools/planet/check_nursery.py "$PLANET_GROUND" \
+  "$NURSERY/near" "$NURSERY/far" --watch 98 --through 65
+```
+
+The report gives each daughter's birth, landing coordinates, contact with the
+nurse, phosphorus bought, growth, germination, time alive and awake, and
+offspring. The ordinary field viewer can inspect either saved nursery by site,
+organism and recorded tick.

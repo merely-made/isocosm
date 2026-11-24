@@ -34,3 +34,15 @@ test('entering a feeding patch centers the two participants at the current magni
   map.fit()
   assert.ok(map.span / 2 >= 512, 'whole site fits both axes')
 })
+
+test('a selected root inspects the fungus reaching its own collar', async () => {
+  const { sectionColony } = await import('./soil-view.js')
+  const colony = (id, lo, hi) => ({ id, site: 1, soil: true, pose: { at: lo }, boxes: [[0, lo, hi]] })
+  const distant = colony(300, [0, 0, 0], [2, 2, 2])
+  const nurse = colony(301, [10, 0, 10], [12, 2, 12])
+  const root = { id: 540, bounds: [[10, 2, 10], [12, 4, 12]] }
+  const frame = { sites: { 1: { soil: { roots: [root] } } }, poses: [distant, nurse] }
+  assert.equal(sectionColony(frame, 1, 540, 0), nurse)
+  root.bounds = [[12, 2, 12], [14, 4, 14]]
+  assert.equal(sectionColony(frame, 1, 540, 0), undefined)
+})

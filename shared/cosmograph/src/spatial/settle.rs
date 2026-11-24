@@ -27,7 +27,8 @@ impl Simulation {
             .map(|(&id, r)| (id, r.site, r.pose.clone())).collect();
         for (id, site, pose) in posed {
             let Some(e) = self.state.population.get(id) else { continue };
-            if !e.alive || e.body.is_none() || e.resident_site() != Some(site) {
+            if !e.alive || e.body.is_none() || e.resident_site() != Some(site)
+                || self.genesis.rules.soil_beds.get(&site).is_some_and(|bed| bed.rooted(e)) {
                 continue;
             }
             let Ok(terrain) = self.site_geometry(site, &embodiment::site_window(&t, pose.at), t.places) else { continue };

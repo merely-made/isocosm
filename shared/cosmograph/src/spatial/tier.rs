@@ -74,6 +74,7 @@ impl Simulation {
             .keys()
             .copied()
             .filter(|id| !windows.foreground(*id, 1) && !buffered.contains(id))
+            .filter(|id| !self.state.population.get(*id).is_some_and(|e| e.alive && self.genesis.rules.soil_beds.get(&e.place).is_some_and(|bed| bed.rooted(e))))
             .collect();
         for id in far {
             if let Some(j) = &mut self.journal {
@@ -121,7 +122,7 @@ impl Simulation {
                     && !crate::directing::is_participant(e) {
                     // Anchored substrate bodies already have a soil position.
                     let bed = self.genesis.rules.soil_beds.get(&site);
-                    members.extend((first..first + g.count).filter(|id| bed.is_none_or(|b| !b.colonies.contains_key(id))));
+                    members.extend((first..first + g.count).filter(|id| bed.is_none_or(|b| !b.colonies.contains_key(id) && (!b.rooted(e) || s.spatial_poses.contains_key(id)))));
                 }
             }
             let inside = members.iter().filter(|id| s.spatial_poses.get(id)

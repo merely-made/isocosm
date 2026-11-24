@@ -65,7 +65,7 @@ impl Branch {
         parent: &Path,
         actor: Option<u64>,
         field_site: Option<u64>,
-        litter: Option<bool>,
+        litter: Option<soil::Survey>,
     ) -> Result<Self> {
         let parent = Session::load_json(&fs::read(parent)?, Execution::Grouped)?;
         if parent.sim.state().tick != 0 {
@@ -88,7 +88,7 @@ impl Branch {
             Some(id) => format!("ground-{id}-{}", &parent_digest[..12]),
             None if litter.is_some() => format!(
                 "soil-{site}-{}-{}",
-                if litter == Some(true) { "near" } else { "far" },
+                litter.expect("soil survey").label(),
                 &parent_digest[..12]
             ),
             None => format!("field-{site}-{}", &parent_digest[..12]),
@@ -392,13 +392,13 @@ fn main() -> Result<()> {
         [mode, parent, site, dir] if mode == "field" => {
             field::found(Path::new(parent), site.parse()?, Path::new(dir), None)?
         },
-        [mode, parent, site, treatment, dir] if mode == "soil" => {
+        [mode, parent, site, treatment, dir] if mode == "soil" || mode == "nursery" => {
             let near = match treatment.as_str() {
                 "near" => true,
                 "far" => false,
                 _ => return Err("choose near or far litter".into()),
             };
-            field::found(Path::new(parent), site.parse()?, Path::new(dir), Some(near))?;
+            field::found(Path::new(parent), site.parse()?, Path::new(dir), Some(if mode == "nursery" { soil::Survey::Nurse(near) } else { soil::Survey::Litter(near) }))?;
         },
         [mode, parent, actor, dir, n] if mode == "branch" => {
             let dir = Path::new(dir);
@@ -475,7 +475,7 @@ fn main() -> Result<()> {
         },
         _ => {
             return Err(
-                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | soil PARENT SITE near|far DIRECTORY | seasonal PARENT NEW_SAVE | watch SAVE".into(),
+                "usage: planet_ground branch PARENT ACTOR DIRECTORY TICKS | field PARENT SITE DIRECTORY | soil PARENT SITE near|far DIRECTORY | nursery PARENT SITE near|far DIRECTORY | seasonal PARENT NEW_SAVE | watch SAVE".into(),
             );
         },
     };

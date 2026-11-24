@@ -18,10 +18,30 @@ pub type Bounds = [[i64; 3]; 2];
 pub struct Bed {
     pub litter: Bounds,
     pub colonies: BTreeMap<Id, Pose>,
+    /// Local wind carries the provisioned seed across this bed in base units.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub seed_rain: Option<SeedRain>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SeedRain {
+    pub lineage: String,
+    pub drift: [i32; 2],
+    pub jitter: u16,
+}
+
+impl Bed {
+    pub fn rooted(&self, e: &Entity) -> bool {
+        self.seed_rain
+            .as_ref()
+            .is_some_and(|rain| rain.lineage == e.lineage)
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Contact {
+    Unanchored,
+    SeedLanded,
     InSoil,
     Litter,
     Root,
@@ -65,6 +85,30 @@ pub(crate) fn test(
     site: Id,
     kind: Contact,
 ) -> Result<String> {
+    if kind == Contact::SeedLanded {
+        let requires_landing = sim
+            .genesis()
+            .rules
+            .soil_beds
+            .get(&site)
+            .is_some_and(|bed| sim.body_at_start(actor).is_some_and(|e| bed.rooted(e)));
+        return if !requires_landing || sim.spatial_pose_at_start(actor).is_some() {
+            Ok("seed on ground".into())
+        } else {
+            Err("seed lacks a landing".into())
+        };
+    }
+    if kind == Contact::Unanchored {
+        let anchored = sim.genesis().rules.soil_beds.get(&site).is_some_and(|bed| {
+            bed.colonies.contains_key(&actor)
+                || sim.body_at_start(actor).is_some_and(|e| bed.rooted(e))
+        });
+        return if anchored {
+            Err("rooted in substrate".into())
+        } else {
+            Ok("unanchored".into())
+        };
+    }
     let yes = (|| {
         let bed = sim.genesis().rules.soil_beds.get(&site)?;
         // A root requests phosphate from its connected fungus. Growth and
@@ -77,6 +121,7 @@ pub(crate) fn test(
         let fungus = sim.body_at_start(colony)?;
         let anchor = pose(bed, site, colony, fungus)?;
         let bounds = match kind {
+            Contact::Unanchored | Contact::SeedLanded => unreachable!(),
             Contact::InSoil => return Some(true),
             Contact::Litter => bed.litter,
             Contact::Root => {

@@ -116,7 +116,7 @@ pub(super) fn frame(branch: &Branch, flows: &[Flow], site: u64) -> Result<Value>
     Ok(frame)
 }
 
-pub(super) fn found(parent: &Path, site: u64, dir: &Path, litter: Option<bool>) -> Result<()> {
+pub(super) fn found(parent: &Path, site: u64, dir: &Path, litter: Option<super::soil::Survey>) -> Result<()> {
     fs::create_dir_all(dir)?;
     if fs::read_dir(dir)?.next().is_some() {
         return Err("the field output directory must be empty".into());

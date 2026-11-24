@@ -6,18 +6,25 @@
 export function sectionColony(frame, site, selected, z) {
   const soil = frame.sites[site].soil
   const local = frame.poses.filter((p) => p.soil && p.site === site)
-  const id = selected == null ? null : soil.colonies.find((c) => c.id === selected || c.host === selected)?.id
-  return local.find((p) => p.id === id) ||
+  const root = soil.roots.find((r) => r.id === selected)
+  if (root) {
+    return local.find((colony) => colony.boxes.some(([, lo, hi]) => {
+      const overlap = lo.map((v, i) => Math.min(hi[i], root.bounds[1][i]) - Math.max(v, root.bounds[0][i]))
+      return overlap.every((v) => v >= 0) && overlap.filter((v) => v > 0).length >= 2
+    }))
+  }
+  return local.find((p) => p.id === selected) ||
     local.sort((a, b) => Math.abs(a.pose.at[2] - z) - Math.abs(b.pose.at[2] - z))[0]
 }
 export function drawSection(canvas, terrain, site, frame, map, selected) {
   const soil = frame.sites[site].soil
-  const fungus = sectionColony(frame, site, selected, map.z)
-  if (!fungus) {
+  const focus = frame.poses.find((p) => p.site === site && p.id === selected && p.kingdom === 'kingdom:flora')
+    || sectionColony(frame, site, selected, map.z)
+  if (!focus) {
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
     return
   }
-  const [cx, cy, z] = fungus.pose.at,
+  const [cx, cy, z] = focus.pose.at,
     w = canvas.clientWidth,
     h = canvas.clientHeight,
     dpr = window.devicePixelRatio || 1
@@ -70,7 +77,7 @@ export function drawSection(canvas, terrain, site, frame, map, selected) {
     for (const [, a, b] of p.boxes) box([a, b], p.soil ? '#deb5d3' : '#759c60')
   ctx.fillStyle = '#f9f5e8'
   ctx.font = '12px ui-monospace, monospace'
-  const caption = 'Fungus #' + fungus.id + ' · section at z ' + z
+  const caption = (focus.soil ? 'Fungus #' : 'Root #') + focus.id + ' · section at z ' + z
   ctx.fillStyle = '#453a32e8'
   ctx.fillRect(5, h - 26, ctx.measureText(caption).width + 12, 23)
   ctx.fillStyle = '#fff3de'

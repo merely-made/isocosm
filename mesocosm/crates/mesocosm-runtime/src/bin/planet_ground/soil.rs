@@ -43,7 +43,24 @@ fn convert(who: Binding, from: &str, to: &str) -> Effect {
     }
 }
 
-pub(super) fn found(g: &mut Genesis, site: Id, reachable: bool) -> Result<()> {
+#[derive(Clone, Copy)]
+pub(super) enum Survey {
+    Litter(bool),
+    Nurse(bool),
+}
+
+impl Survey {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Litter(true) => "near",
+            Self::Litter(false) => "far",
+            Self::Nurse(true) => "nurse-near",
+            Self::Nurse(false) => "nurse-far",
+        }
+    }
+}
+
+pub(super) fn found(g: &mut Genesis, site: Id, survey: Survey) -> Result<()> {
     use Binding::{Actor, Place, Target as Partner};
     let stands = &g
         .rules
@@ -161,13 +178,19 @@ pub(super) fn found(g: &mut Genesis, site: Id, reachable: bool) -> Result<()> {
     let origin = anchors[&fungi[0]].at;
     // Only the lateral displacement changes between the two treatments.
     let x = origin[0] - 20;
-    let z = origin[2] + if reachable { 0 } else { 40 };
+    let z = origin[2]
+        + if matches!(survey, Survey::Litter(false)) {
+            40
+        } else {
+            0
+        };
     let litter = [[x, origin[1] - 4, z - 2], [x + 4, origin[1] - 2, z + 2]];
     g.rules.soil_beds.insert(
         site,
         Bed {
             litter,
             colonies: anchors,
+            seed_rain: None,
         },
     );
     g.rules.conditions.insert(BACKGROUND.into());
@@ -294,6 +317,86 @@ pub(super) fn found(g: &mut Genesis, site: Id, reachable: bool) -> Result<()> {
     for p in [extend, recover, trade, assimilate, growth] {
         g.rules.processes.insert(p.id.clone(), p);
     }
+    if let Survey::Nurse(near) = survey {
+        let donor = *fungi
+            .get(1)
+            .ok_or("seed nursery needs a second resident fungus")?;
+        seed_bed(g, site, near, &plants[0], donor, &plant_line, pindex)?;
+    }
+    Ok(())
+}
+
+/// A sheltered substrate-scale experiment with one nutrient-bearing nurse colony.
+/// The donor carries an equal share of the finite litter phosphorus in both arms.
+fn seed_bed(
+    g: &mut Genesis,
+    site: Id,
+    near: bool,
+    source: &(Id, Pose),
+    donor: Id,
+    lineage: &str,
+    cycle: &str,
+) -> Result<()> {
+    let rain = soil::SeedRain {
+        lineage: lineage.into(),
+        drift: [32, 0],
+        jitter: 1,
+    };
+    let guide = Simulation::new(g.clone(), cosmograph::Execution::Grouped)?;
+    let t = guide
+        .genesis()
+        .rules
+        .spatial_templates
+        .as_ref()
+        .ok_or("seed nursery needs terrain")?;
+    let (plant, root) = source;
+    let mut downwind = root.clone();
+    downwind.at[0] += i64::from(rain.drift[0]);
+    let stand = cosmograph::spatial::embodiment::settle(
+        &guide,
+        t,
+        *plant,
+        site,
+        &downwind,
+        &BTreeMap::new(),
+    )?;
+    let collar = soil::collar(g.population.get(*plant).unwrap(), &stand)
+        .ok_or("missing recipient collar")?;
+    let fungus = g.population.get(donor).ok_or("missing recipient colony")?;
+    let half = fungus.extent(fungus.body.as_ref().ok_or("missing colony map")?.root);
+    let bed = g.rules.soil_beds.get_mut(&site).unwrap();
+    let nurse = bed.colonies.get_mut(&donor).unwrap();
+    nurse.at = [
+        stand.at[0],
+        collar[0][1] - i64::from(half[1]),
+        stand.at[2] + if near { 0 } else { 40 },
+    ];
+    bed.seed_rain = Some(rain);
+    *g.sites
+        .get_mut(&site)
+        .unwrap()
+        .accounts
+        .get_mut(BOUND)
+        .ok_or("litter phosphorus missing")? -= 4;
+    g.population.lift(donor)?.accounts.insert(P.into(), 4);
+    let location = format!("site:{site}");
+    for p in g.rules.processes.values_mut() {
+        if p.effects
+            .iter()
+            .any(|e| matches!(e, Effect::Move { .. } | Effect::MovePaced { .. }))
+            && p.requires
+                .iter()
+                .any(|q| matches!(q, Query::Condition { key, .. } if key == &location))
+        {
+            p.requires.push(Query::SoilContact(Contact::Unanchored));
+        }
+    }
+    g.rules
+        .processes
+        .get_mut(&format!("ecology:wake-{cycle}"))
+        .ok_or("seed nursery needs seasonal germination")?
+        .requires
+        .push(Query::SoilContact(Contact::SeedLanded));
     Ok(())
 }
 

@@ -157,6 +157,13 @@ async function open() {
     const poses = atSite(f, site)
     const bed = f.sites[site].soil
     if (map.soilLayer && bed) {
+      const specimen = poses.find((p) => p.id === selected)
+      if (specimen) {
+        map.center(specimen.pose.at[0], specimen.pose.at[2])
+        map.span = 76
+        autocenter = false
+        return
+      }
       const colony = poses.find((p) => p.soil)
       if (colony) {
         const [x, , z] = colony.pose.at
@@ -236,7 +243,9 @@ async function open() {
     if (selected != null && !findResident(rows, selected)) selected = null
     $('planet').textContent =
       'Planet ' + terrain.seed + ' · ' + measure(terrain.side, terrain.unitMicrometres) + ' site' +
-      (bed ? (f.branch.includes('-near-') ? ' · Near litter' : ' · Offset litter') : '')
+      (bed ? (f.branch.includes('-nurse-')
+        ? (f.branch.includes('-nurse-near-') ? ' · Nurse at landing patch' : ' · Nurse offset 40 mm')
+        : (f.branch.includes('-near-') ? ' · Near litter' : ' · Offset litter')) : '')
     if (f.calendar && local.temperature != null) {
       const year = f.calendar.yearTicks
       const quarter = Math.floor((f.tick % year) * 4 / year)

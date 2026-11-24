@@ -23,6 +23,7 @@ mod birth_geometry;
 mod birth_command;
 mod templates;
 mod tier;
+mod seed;
 mod settle;
 mod handback;
 #[cfg(test)]

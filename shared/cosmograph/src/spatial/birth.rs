@@ -95,8 +95,20 @@ impl Simulation {
     }
 
     pub(crate) fn place_births(&mut self, marks: &[BirthMark]) {
-        if !self.spatial_resolutions.birth_enabled { return; }
         for mark in marks {
+            if let Some(seed) = self.state.population.get(mark.child)
+                && let Some(site) = seed.resident_site()
+                && let Some(bed) = self.genesis.rules.soil_beds.get(&site)
+                && bed.rooted(seed)
+                && self.genesis.rules.dormancy.as_ref().is_some_and(|d| d.seeds.contains_key(&mark.process))
+                && let Some(rain) = bed.seed_rain.clone()
+            {
+                // A failed landing leaves its provision in an unplaced seed.
+                self.state.population.lift(mark.child).expect("accepted seed exists").patch = None;
+                let _ = self.land_seed(mark.parent, mark.child, site, &rain);
+                continue;
+            }
+            if !self.spatial_resolutions.birth_enabled { continue; }
             let request = self.birth_request(mark);
             let available = request.site.is_some() && request.child_journey.is_none()
                 && self.genesis.rules.birth_profiles.values().any(|p| p.process == request.process)
