@@ -98,7 +98,8 @@ impl Authored {
 
     pub(crate) fn from_saved(source: &crate::continuation::SavedExpressionSource) -> Result<Self, String> {
         let policy = Policy { fuel: source.fuel, max_output_bytes: source.max_output_bytes,
-            max_depth: source.max_depth, max_entries: source.max_entries };
+            max_depth: source.max_depth, max_entries: source.max_entries,
+            ..Policy::default() };
         // A save retains the actual host policy; it cannot enlarge the existing
         // expression VM admission budget or introduce opaque command sources.
         let ceiling = Policy::default();

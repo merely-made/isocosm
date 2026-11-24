@@ -28,7 +28,7 @@ use isocosm_campaign::{
 use isocosm_core::{
     Beat, FieldValue, Rng, RollRecord, SheetData, SheetDelta, TileCoord, TokenId, roll,
 };
-use piccolo::{Closure, Executor, Fuel, IntoValue, Lua, StashedExecutor, Table, Value};
+use piccolo::{Closure, Executor, IntoValue, Lua, StashedExecutor, Table, Value};
 
 mod bestiary;
 pub mod effect_catalogue;
@@ -344,6 +344,7 @@ pub struct System {
     /// on the road (reading its own `c.stance`, so it yields only when Foraging).
     /// `None` means travel gathers no food.
     pub forage_func: Option<String>,
+    rules_limits: RulesLimits,
     lua: Lua,
 }
 
@@ -355,6 +356,8 @@ pub struct GeneratorLimits {
     pub fuel: i32,
     pub max_output_bytes: usize,
     pub max_value_depth: usize,
+    /// Ceiling on the generator's Lua heap, a backstop beside `fuel`.
+    pub max_heap_bytes: usize,
 }
 
 impl Default for GeneratorLimits {
@@ -363,6 +366,29 @@ impl Default for GeneratorLimits {
             fuel: 4_096,
             max_output_bytes: 64 * 1024,
             max_value_depth: 16,
+            max_heap_bytes: DEFAULT_MAX_HEAP_BYTES,
+        }
+    }
+}
+
+/// The family's Lua heap ceiling: 16 MiB.
+pub const DEFAULT_MAX_HEAP_BYTES: usize = 16 * 1024 * 1024;
+
+/// Limits on a system's rules formulas, host policy set with
+/// [`System::with_rules_limits`]. A formula past either is refused, not hung.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RulesLimits {
+    /// Total fuel for one formula call.
+    pub fuel: u64,
+    /// Ceiling on the rules Lua heap.
+    pub max_heap_bytes: usize,
+}
+
+impl Default for RulesLimits {
+    fn default() -> Self {
+        Self {
+            fuel: 1_000_000,
+            max_heap_bytes: DEFAULT_MAX_HEAP_BYTES,
         }
     }
 }

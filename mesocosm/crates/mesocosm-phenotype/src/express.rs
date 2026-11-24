@@ -89,6 +89,9 @@ pub struct Policy {
     pub max_depth: usize,
     /// The longest list the host will read out of a returned table.
     pub max_entries: usize,
+    /// Ceiling on the script's Lua heap, a backstop beside `fuel`. Past it is
+    /// [`Refused::Heap`].
+    pub max_heap_bytes: usize,
 }
 
 impl Default for Policy {
@@ -98,6 +101,7 @@ impl Default for Policy {
             max_output_bytes: 4_096,
             max_depth: 8,
             max_entries: 64,
+            max_heap_bytes: 16 * 1024 * 1024,
         }
     }
 }
@@ -150,6 +154,8 @@ pub enum Refused {
     NoEntrypoint,
     /// The script did not finish inside its fuel budget.
     Fuel { limit: i32 },
+    /// The script's heap grew past the host's ceiling, in bytes.
+    Heap { limit: usize },
     /// The decoded proposal is larger than the host will read.
     Output { bytes: usize, limit: usize },
     /// A returned table nests deeper than the host will walk.
@@ -182,6 +188,9 @@ impl Refused {
         match self {
             Refused::NoEntrypoint => "the script declares no express(request, entropy)".to_owned(),
             Refused::Fuel { limit } => format!("the script did not finish within {limit} fuel"),
+            Refused::Heap { limit } => {
+                format!("the script used more than {limit} bytes of memory")
+            },
             Refused::Output { bytes, limit } => {
                 format!("the proposal is {bytes} bytes and the host reads {limit}")
             },

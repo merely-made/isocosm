@@ -21,7 +21,7 @@ publish = false
 [dependencies]
 cosmograph = { workspace = true }
 isometer-core = { workspace = true }
-piccolo = "0.3"
+piccolo = { git = "https://github.com/merely-made/didgeridoo", branch = "main" }
 serde = { workspace = true }
 # The pack formats (wing design record, ruling 624): TOML for authored files,
 # JSON for recorded fixtures and packs written elsewhere. Both are already in

@@ -15,20 +15,10 @@ pub(crate) fn execute_bounded_gen_value(
     lua: &mut Lua,
     executor: &StashedExecutor,
     total_fuel: i32,
+    max_heap_bytes: usize,
     max_depth: usize,
 ) -> Result<GenValue, String> {
-    let mut fuel = Fuel::with(total_fuel);
-    loop {
-        let complete = lua
-            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel))
-            .map_err(|e| format!("run generator: {e}"))?;
-        if complete {
-            break;
-        }
-        if !fuel.should_continue() {
-            return Err("generator exhausted fuel".to_owned());
-        }
-    }
+    drive_generator(lua, executor, total_fuel, max_heap_bytes)?;
     lua.try_enter(|ctx| {
         let value = ctx.fetch(executor).take_result::<Value>(ctx)??;
         lua_value_to_gen(ctx, value, 0, max_depth).map_err(|error| error.into_value(ctx).into())

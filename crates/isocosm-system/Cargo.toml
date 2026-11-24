@@ -18,7 +18,7 @@ serde_json = { workspace = true }
 toml = "1"
 # Pure-Rust Lua VM: the system-plugin scripting engine, sandboxed
 # (no io/os), wasm-friendly, and the tabletop modding lingua franca.
-piccolo = "0.3"
+piccolo = { git = "https://github.com/merely-made/didgeridoo", branch = "main" }
 
 [dev-dependencies]
 isocosm-native = { workspace = true, default-features = false }

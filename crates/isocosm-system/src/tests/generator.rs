@@ -293,3 +293,30 @@ fn the_npc_generator_yields_a_bestiary_backed_creature_that_can_be_statted() {
     let differs = (1..8).any(|s| gen(s) != npc);
     assert!(differs, "reroll should be able to produce a different NPC");
 }
+
+const GROW: &str = r#"
+    function call_gen(args, entropy)
+        local t = {} local i = 0
+        while true do i = i + 1 t[i] = {} end
+    end
+"#;
+
+#[test]
+fn generator_growing_table_is_refused_for_fuel_then_heap() {
+    let mut runtime = GeneratorRuntime::load(GROW, GeneratorLimits::default()).unwrap();
+    let mut tape = EntropyTape::from_seed(1);
+    assert_eq!(
+        runtime.call(&generator_request(), &mut tape).unwrap_err(),
+        "generator exhausted fuel"
+    );
+
+    let limits = GeneratorLimits {
+        fuel: i32::MAX,
+        ..GeneratorLimits::default()
+    };
+    assert_eq!(limits.max_heap_bytes, 16 * 1024 * 1024);
+    let mut runtime = GeneratorRuntime::load(GROW, limits).unwrap();
+    let mut tape = EntropyTape::from_seed(1);
+    let error = runtime.call(&generator_request(), &mut tape).unwrap_err();
+    assert!(error.contains("heap ceiling of 16777216 bytes"), "{error}");
+}
