@@ -9,7 +9,13 @@ use std::{cell::RefCell,collections::BTreeMap};
 pub struct ColumnTerrain { pub volume:Volume, pub cell:i64, layers:RefCell<BTreeMap<[i16;2],i16>> }
 impl ColumnTerrain {
     pub fn new(volume:Volume,cell:i64) -> Self {
-        Self { volume,cell:cell.max(1),layers:RefCell::default() }
+        // Atlas keys and the exclusive end of a column's layer range are i16.
+        // Choose a representable starting grain before casting any brick key.
+        let width = (volume.max[0] - volume.min[0]).max(volume.max[1] - volume.min[1]);
+        let reach = ((width + 1) / 2).max(volume.ceiling() - volume.datum);
+        let mut cell = cell.max(1);
+        while reach / cell / 8 >= i64::from(i16::MAX) { cell *= 2; }
+        Self { volume, cell, layers: RefCell::default() }
     }
     /// Frame native camera coordinates, coarsening only when its atlas would
     /// otherwise drop visible bricks. The retained source keeps that grain.

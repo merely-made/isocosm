@@ -183,7 +183,7 @@ impl Default for HostConfig {
             trace: None,
             receipt: None,
             scenario: None,
-            slab_half_height: section::SLAB_HALF_HEIGHT,
+            slab_half_height: 0.0,
             camera: CameraMode::default(),
             view_depth: None,
             terrain_style: section::TerrainStyle::Auto,

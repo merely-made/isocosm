@@ -29,7 +29,7 @@ impl Host {
         };
         self.followed()
             .and_then(|id| scene.at(id))
-            .unwrap_or_else(|| crate::played::layout::centre(&scene.ground))
+            .unwrap_or_else(|| crate::played::layout::centre(&scene.window))
     }
 
     pub(super) fn follow_key(&mut self, action: input::DevKey) {

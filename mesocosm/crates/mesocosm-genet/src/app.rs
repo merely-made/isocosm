@@ -103,6 +103,14 @@ impl Host {
             std::process::exit(1);
         });
         config.seed = runtime.founded().genesis.seed;
+        if config.slab_half_height <= 0.0 {
+            config.slab_half_height = if runtime.founding_site().is_some() {
+                let width = runtime.sim().atlas().map_or(0, |a| a.footprint.side);
+                (width as f32 * 0.48).clamp(crate::section::SLAB_HALF_HEIGHT, 2048.0)
+            } else {
+                crate::section::SLAB_HALF_HEIGHT
+            };
+        }
         if config.spread.is_some() {
             if let Some(founding) = &runtime.founded().genesis.founding {
                 config.population = founding.population;
@@ -311,7 +319,8 @@ impl Host {
                 },
             };
         }
-        let key = (site, mesocosm_runtime::runtime::placing::terrain_key(&sim));
+        let pageable = self.runtime.founding_site().is_some();
+        let key = (site, format!("{}:{pageable}", mesocosm_runtime::runtime::placing::terrain_key(&sim)));
         if self.scene_key.as_ref() == Some(&key)
             && let Some(scene) = &self.scene
         {
@@ -354,8 +363,11 @@ impl Host {
             self.scene_source_key = source_key;
             return false;
         }
-        let result =
-            crate::played::scene::site_scene_at(&sim, site, played, Some(&visible)).and_then(|scene| {
+        let result = if pageable {
+            crate::played::scene::watched_site(&sim, site, played, &visible)
+        } else {
+            crate::played::scene::site_scene_at(&sim, site, played, Some(&visible))
+        }.and_then(|scene| {
                 scene_source::store(
                     scene,
                     self.config.component_scene,

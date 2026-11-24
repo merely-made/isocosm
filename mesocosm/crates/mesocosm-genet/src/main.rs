@@ -501,9 +501,9 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --light-step Q  hybrid sun quantum, 0 for exact (default 1/32)
   --body-display E  default body style: srgb (baseline) or neutral (Neutral tonemap, 2.2 curve)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
-  --terrain-style MODE  auto (classic), classic or habitat
+  --terrain-style MODE  auto (habitat), classic or habitat
   --camera MODE   dimetric (default), dimetric-south/west/north, isometric, isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north
-  --slab H        view half-height in voxels (default 28)
+  --slab H        view half-height in voxels (automatic at world entry)
   --view-depth D  visible depth, 1..1024 voxels (default: surface frame or 16 for sections)
   --capture PATH  write the final frame as a PNG
   --trace PATH    write the session's save as the trace

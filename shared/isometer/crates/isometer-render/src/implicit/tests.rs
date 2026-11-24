@@ -366,3 +366,18 @@ fn gpu_surface_draws_under_a_perspective_and_respects_terrain_depth() {
     let inside = draw(Vec3::new(0.2, 0., -0.5), 12.0);
     assert!(inside.pixel(24, 24)[3] > 0, "from inside the box the far wall of the block still draws");
 }
+
+#[test]
+fn a_curved_plate_keeps_its_span_and_picks_its_part_inside_the_rim() {
+    let turn = Quat::from_rotation_y(std::f32::consts::FRAC_PI_2);
+    let surface = Surface {
+        parts: vec![Primitive::ellipsoid(PartId(7), Vec3::ZERO, Vec3::new(4., 4., 1.), turn, [1.; 3])],
+        blend: 0.,
+    };
+    assert!(surface.valid());
+    assert!(surface.sample([0., 3.8, 0.]).0 < 0.);
+    assert!(surface.sample([0., 3.8, 3.8]).0 > 0.);
+    let hit = surface.pick([0., 0., -8.], [0., 0., 1.], 20., clip()).unwrap().unwrap();
+    assert_eq!(hit.part, PartId(7));
+    assert!((hit.distance - 4.).abs() < 0.025);
+}

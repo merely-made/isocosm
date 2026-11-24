@@ -27,6 +27,13 @@ fn distance(p:vec3<f32>,part:Primitive)->f32 {
         return length(p-part.a.xyz-ab*t)-part.a.w;
     }
     let local=rotate(vec4(-part.rotation.xyz,part.rotation.w),p-part.a.xyz);
+    if part.tag.x==2u {
+        let radii=part.half.xyz;
+        let unit=local/radii;
+        let k=length(unit);
+        if k>1. {return (k-1.)*k/length(unit/radii);}
+        return (k-1.)*min(radii.x,min(radii.y,radii.z));
+    }
     let q=abs(local)-part.half.xyz+part.half.w;
     return length(max(q,vec3(0.)))+min(max(q.x,max(q.y,q.z)),0.)-part.half.w;
 }
@@ -114,6 +121,8 @@ struct Fragment { @location(0) colour:vec4<f32>, @builtin(frag_depth) depth:f32 
     let normal=normalize(vec3(field(p+vec3(e,0.,0.),body).d-field(p-vec3(e,0.,0.),body).d,
         field(p+vec3(0.,e,0.),body).d-field(p-vec3(0.,e,0.),body).d,
         field(p+vec3(0.,0.,e),body).d-field(p-vec3(0.,0.,e),body).d));
-    let lighting=vec3(frame.light.w)+frame.sun.rgb*max(dot(normal,normalize(frame.light.xyz)),0.);
+    // Diffuse skylight reveals curvature even when direct sunlight is zero.
+    let sky=0.82+0.48*normal.y;
+    let lighting=vec3(frame.light.w*sky)+frame.sun.rgb*max(dot(normal,normalize(frame.light.xyz)),0.);
     return Fragment(vec4(sample.colour*lighting,1.),depth);
 }

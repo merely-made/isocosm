@@ -50,6 +50,12 @@ impl Primitive {
             meta: [0, part.0, 0, 0],
         }
     }
+    /// A curved skin inscribed in the part's three declared radii.
+    pub fn ellipsoid(part: PartId, centre: Vec3, half: Vec3, rotation: Quat, colour: [f32; 3]) -> Self {
+        let mut primitive = Self::rounded_box(part, centre, half, rotation, 0.0, colour);
+        primitive.meta[0] = 2;
+        primitive
+    }
     pub fn capsule(part: PartId, a: Vec3, b: Vec3, radius: f32, colour: [f32; 3]) -> Self {
         Self {
             a: a.extend(radius).to_array(),
@@ -68,6 +74,15 @@ impl Primitive {
             return (point - a - ab * t).length() - self.a[3];
         }
         let p = Quat::from_array(self.rotation).conjugate() * (point - a);
+        let radii = Vec3::from_slice(&self.half);
+        if self.meta[0] == 2 {
+            let unit = p / radii;
+            let k = unit.length();
+            // Outside, the tangent plane at the radial surface point gives
+            // a conservative step. Inside, scale by the smallest radius.
+            if k > 1.0 { return (k - 1.0) * k / (unit / radii).length(); }
+            return (k - 1.0) * radii.min_element();
+        }
         let q = p.abs() - Vec3::from_slice(&self.half) + self.half[3];
         q.max(Vec3::ZERO).length() + q.max_element().min(0.0) - self.half[3]
     }
@@ -101,7 +116,8 @@ impl Surface {
                     .chain(&p.rotation)
                     .chain(&p.colour)
                     .all(|v| v.is_finite())
-                    && p.meta[0] <= 1
+                    && p.meta[0] <= 2
+                    && (p.meta[0] != 2 || p.half[..3].iter().all(|r| *r > 0.0))
                     && p.a[3] >= 0.0
                     && p.half.iter().all(|v| *v >= 0.0)
                     && (Quat::from_array(p.rotation).length_squared() - 1.0).abs() < 0.01

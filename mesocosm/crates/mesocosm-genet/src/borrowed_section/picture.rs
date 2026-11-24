@@ -38,7 +38,7 @@ impl Snapshot {
             .scene
             .played
             .and_then(|id| self.scene.at(id))
-            .unwrap_or_else(|| layout::centre(&self.scene.ground));
+            .unwrap_or_else(|| layout::centre(&self.scene.window));
         SlabCamera {
             projection: Default::default(),
             centre: section::centre_on(at, Pan::default(), section::SLAB_HALF_HEIGHT, mode),

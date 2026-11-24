@@ -227,6 +227,8 @@ fn anatomy(
                 .parts
                 .push(Primitive::capsule(part.id, knee, foot, radius, colour));
             stats.joints += 1;
+        } else if part.shape.is_empty() && matches!(role, Role::Plate | Role::Mass | Role::Sensor) {
+            surface.parts.push(Primitive::ellipsoid(part.id, centre, half, rotation, colour));
         } else {
             // Preserve broad mass and thin plates; soften the corners within
             // each declared envelope rather than giving every part one blob.

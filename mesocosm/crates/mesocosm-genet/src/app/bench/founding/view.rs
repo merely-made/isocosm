@@ -118,6 +118,22 @@ fn world(p: &Panel, out: &mut Vec<Child>) {
                 Ok(())
             }),
         ]));
+        let millimetres = grid.side as f64 * p.draft.base_unit_micrometres as f64 / 1000.0;
+        out.push(row(vec![
+            words(format!("Site width {millimetres} mm")),
+            action("Double site width", |p| {
+                if let Some(cosmograph::map::Layout::Grid(g)) = &mut p.draft.map {
+                    g.side = (g.side * 2).min(1 << 20);
+                }
+                Ok(())
+            }),
+            action("Halve site width", |p| {
+                if let Some(cosmograph::map::Layout::Grid(g)) = &mut p.draft.map {
+                    g.side = (g.side / 2).max(16);
+                }
+                Ok(())
+            }),
+        ]));
     } else {
         out.push(words(format!(
             "{} sites · {} lineages",

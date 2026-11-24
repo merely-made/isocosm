@@ -41,11 +41,15 @@ impl Section {
             ..Grade::clay()
         };
         let [soil, rock, unknown] = terrain_colours(style);
+        let sky_light = self.body_tenant.block();
+        let daylight = (sky_light.sun.into_iter().fold(0.0, f32::max) * sky_light.toward[1] / 0.5).clamp(0.0, 1.0);
+        let sky = [0.64, 0.73, 0.76];
+        let night = [0.09, 0.13, 0.18];
         self.terrain_appearance = Some(TerrainAppearance {
             soil,
             rock,
             unknown,
-            sky: [0.64, 0.73, 0.76],
+            sky: [0, 1, 2].map(|i| night[i] + daylight * (sky[i] - night[i])),
             underground: [0.09, 0.12, 0.14],
             section_centre,
             clearing_y,
@@ -138,10 +142,10 @@ impl TerrainStyle {
         }
     }
 
-    /// Auto is classic; habitat is asked for by name.
+    /// The living site uses a continuous grade; classic retains the retro fog bands.
     pub fn resolved(self) -> Self {
         match self {
-            Self::Auto => Self::Classic,
+            Self::Auto => Self::Habitat,
             explicit => explicit,
         }
     }

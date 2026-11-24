@@ -42,7 +42,22 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
 
 pub(crate) fn site_scene_at(sim: &Simulation, site: Id, played: Option<Id>, visible: Option<&View>)
     -> Result<SiteScene, String> {
-    let volume = lift(sim, site)?;
+    in_volume(sim, site, played, visible, lift(sim, site)?)
+}
+
+/// The founded site's terrain is pageable across its full footprint. Its
+/// cohort representatives still use the ordinary native appearance and seat.
+pub(crate) fn watched_site(sim: &Simulation, site: Id, played: Option<Id>, visible: &View)
+    -> Result<SiteScene, String> {
+    let atlas = sim.atlas()?;
+    let side = i64::try_from(atlas.footprint.side).map_err(|_| "site side exceeds terrain coordinates")?;
+    let edits: Vec<_> = sim.state().edits.iter().map(|e| (e.site, e.edit.clone())).collect();
+    let volume = isometer::space::volume::Volume::paged(&atlas, site, [0; 2], [side; 2], DEPTH, &edits)?;
+    in_volume(sim, site, played, Some(visible), volume)
+}
+
+fn in_volume(sim: &Simulation, site: Id, played: Option<Id>, visible: Option<&View>,
+    volume: isometer::space::volume::Volume) -> Result<SiteScene, String> {
     let ground = volume.ground().clone();
     let mut bodies = placed(sim, site, &volume);
     if let Some(v) = visible { bodies.retain(|body| v.shows(body.id)); }
@@ -111,27 +126,23 @@ pub fn placed(
     site: Id,
     volume: &isometer::space::volume::Volume,
 ) -> Vec<PlacedBody> {
-    let ground = volume.ground();
-    sim.state()
+    let mut bodies: Vec<_> = sim.state()
         .population
         .groups
         .iter()
         .filter(|(_, group)| group.entity.resident_site() == Some(site) && group.entity.alive)
         .filter_map(|(id, group)| Some((*id, &group.entity, group.entity.body.clone()?)))
-        .enumerate()
-        .map(|(index, (id, entity, document))| PlacedBody {
+        .map(|(id, entity, document)| PlacedBody {
             id,
             document,
             physical: None, walks: vec![],
-            at: entity
-                .patch
-                .filter(|p| volume.holds(p.cell[0], p.cell[2]))
-                .map(|p| volume.to_ground(p.cell))
-                .unwrap_or_else(|| super::layout::spot(ground, index)),
+            at: [0; 3],
             tint: tint_of(trophic::of(entity)),
             parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
             alive: entity.alive, display: None })
-        .collect()
+        .collect();
+    super::layout::residents(volume, &mut bodies, |id| sim.state().population.get(id)?.patch.map(|p| p.cell));
+    bodies
 }
 
 /// A body's colour by the kingdom its body reads as.

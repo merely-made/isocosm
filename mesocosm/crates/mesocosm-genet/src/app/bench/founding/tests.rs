@@ -116,3 +116,33 @@ fn independent_body_maps_are_authored_imported_and_expressed() {
     assert!(p.project().is_err());
     assert_eq!(p.session.sim.state_hash(), hash);
 }
+
+#[test]
+fn watched_site_pages_the_whole_ground_and_keeps_representatives_on_it() {
+    let mut draft = Panel::starter(9);
+    let Some(cosmograph::map::Layout::Grid(ref mut grid)) = draft.map else { unreachable!() };
+    grid.side = 512;
+    let mut panel = Panel::new(draft).unwrap();
+    panel.site = 1;
+    panel.seek(12).unwrap();
+    let saved = serde_json::to_vec(&panel.session.save()).unwrap();
+    let runtime = Runtime::enter_founding_at(&saved, 4, None, Some(1)).unwrap();
+    let sim = runtime.sim();
+    let before = sim.state_hash();
+    let scene = crate::played::scene::watched_site(&sim, 1, None, &runtime.view()).unwrap();
+    assert!(scene.window.is_paged());
+    assert_eq!((scene.window.min, scene.window.max), ([0; 2], [512; 2]));
+    assert!(scene.ground.keys().next().is_none());
+    assert!(scene.bodies.len() > 1);
+    let mut footprints = Vec::new();
+    for body in &scene.bodies {
+        let bounds = body.document.aabb();
+        let [x, _, z] = body.at;
+        let rect = [x + bounds.min[0], z + bounds.min[2], x + bounds.max[0], z + bounds.max[2]];
+        assert!(rect[0] >= -256 && rect[1] >= -256 && rect[2] <= 256 && rect[3] <= 256);
+        assert!(footprints.iter().all(|r: &[i32; 4]| rect[2] <= r[0] || r[2] <= rect[0]
+            || rect[3] <= r[1] || r[3] <= rect[1]));
+        footprints.push(rect);
+    }
+    assert_eq!(sim.state_hash(), before);
+}

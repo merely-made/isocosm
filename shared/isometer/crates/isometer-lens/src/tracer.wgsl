@@ -490,6 +490,15 @@ fn trace_sample(in: VsOut) -> TraceSample {
     let from_above = hit.normal.y > 0.5 && ray.direction.y < 0.0 && !in_wall;
     // The ground is the one caller that asks for the quantiser's floor; see
     // `grade`. Sky and bodies never do.
+    // The habitat has continuous illumination. The trace target stores
+    // display bytes, so encode this linear material/light product once.
+    if (params.terrain[0].x > 0.5) {
+        let linear = material_colour(hit.material) * light;
+        let encoded = select(1.055 * pow(max(linear, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055,
+            12.92 * linear, linear <= vec3(0.0031308));
+        return TraceSample(vec4(grade(encoded, hit.t, pixel, from_above, true), 1.0),
+            ray.origin + ray.direction * hit.t);
+    }
     return TraceSample(
         vec4(grade(material_colour(hit.material) * light, hit.t, pixel, from_above, true), 1.0),
         ray.origin + ray.direction * hit.t,

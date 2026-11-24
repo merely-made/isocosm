@@ -441,11 +441,11 @@ fn lower(
     // is deliberately not a host admission or an access grant.
     let volume = match geometry {
         Some((space, _)) => space.volume().clone(),
-        None => mesocosm_runtime::runtime::placing::lift(&session.sim, region.site)?,
+        None => scene::lift(&session.sim, region.site)?,
     };
     let ground = volume.ground().clone();
     let mut bodies = Vec::new();
-    for (index, body) in region.bodies.into_iter().enumerate() {
+    for body in region.bodies {
         let entity = session
             .sim
             .state()
@@ -479,11 +479,7 @@ fn lower(
                 };
                 volume.to_ground(cell)
             },
-            None => body
-                .patch
-                .filter(|p| volume.holds(p.cell[0], p.cell[2]))
-                .map(|p| volume.to_ground(p.cell))
-                .unwrap_or_else(|| layout::spot(&ground, index)),
+            None => [0; 3],
         };
         bodies.push(PlacedBody {
             id: body.id,
@@ -498,6 +494,9 @@ fn lower(
             alive: entity.alive,
             display: None,
         });
+    }
+    if geometry.is_none() {
+        layout::residents(&volume, &mut bodies, |id| session.sim.state().population.get(id)?.patch.map(|p| p.cell));
     }
     let volumes = section::body_volumes(&mut bodies)?;
     Ok(Snapshot {

@@ -154,7 +154,11 @@ impl Host {
                 LoopPhase::Watching if reading.world_ended_at.is_some() => "Watching this ended world",
                 LoopPhase::Watching => "Watching this world",
                 LoopPhase::WorldEnded => "This world has ended as a game", _ => "Your lineage has ended" }.into(),
-            facts: [watched, Some(("choose".into(), selected)),
+            facts: [watched, self.scene.as_ref().map(|s| {
+                let mm = (s.window.max[0] - s.window.min[0]) as f64
+                    * self.runtime.founded().genesis.world.base_unit_micrometres as f64 / 1000.0;
+                ("terrain".into(), format!("Site {} · {mm} mm across", s.site))
+            }), Some(("choose".into(), selected)),
                 Some(("bodies".into(), format!("{} available to direct", reading.lineages.len()))),
                 (!reading.starts.is_empty()).then(|| ("starts".into(), format!("{} offered", reading.starts.len()))),
                 mesocosm_views::banked_words(&self.runtime.sim(), None).map(|words| ("seeds".into(), words)),
