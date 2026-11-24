@@ -143,18 +143,20 @@ fn generated_cube_support_uses_its_graph_edge_while_the_upper_cube_stays_rigid()
         })
         .unwrap();
     assert_eq!((stats.joints, stats.contacts), (1, 1));
-    assert!(
-        surface
-            .parts
-            .iter()
-            .any(|p| p.meta[1] == 2 && p.meta[0] == 0)
+    // Changing the sole's contact must leave the upper part at its
+    // authored centre, orientation and radii under either rigid skin.
+    let upper_is_rigid = |surface: &Surface| surface.parts.iter().any(|part|
+        part.meta[1] == 2 && part.a[..3] == [0., 10., 0.] &&
+        part.half[..3] == [2.; 3] && part.rotation == Quat::IDENTITY.to_array()
     );
+    assert!(upper_is_rigid(&surface));
     let (hanging, stats) =
         from_anatomy(&document, crate::LiveBody::new(&mesh, [0., 6., 0.]), |_| {
             Some(-10.)
         })
         .unwrap();
     assert_eq!(stats.contacts, 0);
+    assert!(upper_is_rigid(&hanging));
     for p in hanging
         .parts
         .iter()
