@@ -18,6 +18,7 @@ fn world(seed: u64, sites: u32) -> Session {
         lineages: 3,
         cohort_size: 4,
         ecology: true,
+        place_memory: Some(Default::default()),
         played: Some(Played {
             lineage: 1,
             region_sites: 2,

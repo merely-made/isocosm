@@ -90,6 +90,7 @@ impl Founded {
                 wound: cosmograph::harm::hazard::CELLS,
                 ..Default::default()
             }),
+            place_memory: Some(Default::default()),
             played: Some(cosmograph::directing::Played {
                 lineage: 1,
                 region_sites: 2,

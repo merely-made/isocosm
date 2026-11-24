@@ -114,7 +114,6 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     rules.directing = Some(Directing {
         slots,
         movement_ties: MovementTies::Seeded,
-        place_memory: Some(PlaceMemory { span: 60, meal: 100, hurt: 600 }),
         ..Directing::default()
     });
     Ok(())

@@ -41,6 +41,12 @@ pub struct PlaceMemory {
     pub hurt: u16,
 }
 
+impl Default for PlaceMemory {
+    fn default() -> Self {
+        Self { span: 60, meal: 100, hurt: 600 }
+    }
+}
+
 /// A world's directing rules. Absent means these defaults.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Directing {

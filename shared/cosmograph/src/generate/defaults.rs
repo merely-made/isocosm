@@ -21,6 +21,7 @@ impl Default for Founding {
             preset: None,
             bodies: None,
             played: None,
+            place_memory: None,
             affinity: None,
             ecology_rates: Default::default(),
             web: Default::default(),

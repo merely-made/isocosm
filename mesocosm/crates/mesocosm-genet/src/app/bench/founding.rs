@@ -66,6 +66,7 @@ impl Panel {
             relief: [0, 6],
             sea_per_mille: 0,
         }));
+        draft.place_memory = Some(Default::default());
         draft.played = Some(cosmograph::directing::Played {
             lineage: 1,
             region_sites: 1,

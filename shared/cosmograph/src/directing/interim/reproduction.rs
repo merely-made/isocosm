@@ -42,7 +42,6 @@ use profile::{Form, world};
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    genesis.rules.directing.as_mut().unwrap().place_memory = None;
     // The recorded ecology predates spatial requests as a reason to travel.
     for process in genesis.rules.processes.values_mut() {
         for gate in &mut process.requires {
