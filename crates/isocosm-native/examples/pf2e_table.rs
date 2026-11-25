@@ -55,7 +55,7 @@ fn click_payload(
         observed_epoch: snap.scene.epoch,
         observed_revision: snap.scene.revision,
         intent: intent.into(),
-        payload: payload.to_vec(),
+        payload: payload_cbor(payload),
     })? {
         IntentResult::Accepted => Ok(()),
         other => Err(format!("fixture action refused: {other:?}")),
@@ -214,4 +214,14 @@ fn inspect(path: &str) -> Result<(), String> {
         .map_err(|e| e.to_string())?
     );
     Ok(())
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

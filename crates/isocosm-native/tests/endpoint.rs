@@ -44,7 +44,7 @@ fn invoke(snapshot: &ProjectionSnapshot, id: &str, intent: &str, payload: &[u8])
     let target = snapshot.scene.active_items_in_order().into_iter().find(|(_, item)|
         snapshot.scene.tables.sources[item.source.0 as usize].as_ref().unwrap().id == id).unwrap().0;
     IntentInvocation { session: snapshot.session.clone(), target, observed_epoch: snapshot.scene.epoch,
-        observed_revision: snapshot.scene.revision, intent: intent.into(), payload: payload.to_vec() }
+        observed_revision: snapshot.scene.revision, intent: intent.into(), payload: payload_cbor(payload) }
 }
 
 /// Snapshot `session`, invoke `intent` on card `id` and return the result.
@@ -153,6 +153,12 @@ fn authoring_refuses_malformed_operations_and_previews_nothing() {
     }
     assert!(!read(&mut dm, AUTHORING).iter().any(|(id, _, _)| id == "quote"), "a refused preview quotes nothing");
     assert_eq!(t.world.cut().unwrap(), before, "refusals leave the world alone");
+    // Positive control: a real input, sent as the intent's CBOR payload, is
+    // admitted through the typed path (D237).
+    let roster = br#"{"version":1,"expected_roster_revision":0,"players":[]}"#;
+    assert!(read(&mut dm, TABLE).iter().any(|(id, _, _)| id == "roster"), "no roster is configured yet");
+    assert_eq!(act(&mut dm, AUTHORING, "authoring", "vtt.apply", roster), IntentResult::Accepted);
+    assert!(!read(&mut dm, TABLE).iter().any(|(id, _, _)| id == "roster"), "the applied roster is configured");
     let mut player = VttEndpoint::open(&t.world, t.player, Seat::Player).unwrap();
     let authoring = snapshot(&mut player, AUTHORING);
     assert!(matches!(player.invoke(invoke(&authoring, "authoring", "vtt.apply", b"{}")).unwrap(),
@@ -191,4 +197,14 @@ fn a_dm_change_stales_a_players_open_snapshot() {
     assert!(matches!(player.invoke(invoke(&open, &party, "vtt.read-party", b"")).unwrap(),
         IntentResult::Stale { .. }), "the player's snapshot predates the DM's change");
     assert_eq!(act(&mut player, TABLE, &party, "vtt.read-party", b""), IntentResult::Accepted);
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

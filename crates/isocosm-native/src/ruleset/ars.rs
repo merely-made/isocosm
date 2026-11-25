@@ -78,9 +78,9 @@ fn unfinished<'a>(state: &'a mut State, map: &MapDocument, id: TokenId) -> Resul
     state.drafts.get_mut(&id).ok_or_else(|| "this body has no creation draft".into())
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-struct NewSumma {
+pub(crate) struct NewSumma {
     subject: String,
     level: u32,
     quality: u32,
@@ -212,7 +212,7 @@ pub(super) fn apply(
         },
         Action::AddSumma => {
             pathfinder::gm(access)?;
-            let new: NewSumma = serde_json::from_slice(payload).map_err(|_| "enter a summa: subject, level and quality")?;
+            let new: NewSumma = chirograph::wire::decode(payload).map_err(|_| "enter a summa: subject, level and quality")?;
             if r.art(&new.subject).is_none() && r.ability(&new.subject).is_none() {
                 return Err(format!("{} is not an Art or Ability of this slice", new.subject));
             }

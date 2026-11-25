@@ -61,7 +61,7 @@ fn invoke(
         observed_epoch: snap.scene.epoch,
         observed_revision: snap.scene.revision,
         intent: intent.into(),
-        payload: payload.to_vec(),
+        payload: payload_cbor(payload),
     }
 }
 
@@ -167,4 +167,14 @@ fn played_turn_records_section_only_setup_and_native_step_and_refusal_is_inert()
         snap.scene.revision.0 + 1,
         endpoint.world().revision().unwrap()
     );
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

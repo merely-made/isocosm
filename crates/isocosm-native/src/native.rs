@@ -26,6 +26,7 @@ pub mod eye;
 mod game;
 pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit_game_access,
     submit_game_access_with_roster, submit_external_table_access};
+pub(crate) use game::{Input, submit_game_input};
 mod shared_roster;
 pub use shared_roster::SharedRosterInput;
 pub mod seats;

@@ -11,13 +11,15 @@ pub(crate) fn strike_reach(state: &State, session: &Session, sections: &BTreeMap
     access: OrdinaryAccess, actor: u64, target: u64, weapon: &Item, ruled: bool, payload: &[u8])
     -> Result<(Option<u64>, String, i64), String> {
     let ranged = weapon.range.is_some();
+    let built;
     let ruling: &[u8] = if ruled {
         gm(access)?;
-        if ranged {
-            br#"{"squares":1,"reason":"GM ruled the target within the first range increment with a clear line"}"#
+        built = if ranged {
+            frame::ruling(1, "GM ruled the target within the first range increment with a clear line")
         } else {
-            br#"{"squares":1,"reason":"GM ruled the target within reach with a clear path"}"#
-        }
+            frame::ruling(1, "GM ruled the target within reach with a clear path")
+        };
+        &built
     } else {
         payload
     };

@@ -349,7 +349,7 @@ fn measured_attacks_read_paid_native_poses_and_share_the_terrain_cache() {
         "vtt.ruleset-scale",
     );
     calibrate.payload =
-        serde_json::to_vec(&serde_json::json!({"cells_per_square":span.max(1)})).unwrap();
+        chirograph::wire::encode(&serde_json::json!({"cells_per_square":span.max(1)})).unwrap();
     assert_eq!(endpoint.invoke(calibrate).unwrap(), IntentResult::Accepted);
     let before = state(&host);
     let reach = host
@@ -408,7 +408,7 @@ fn measured_attacks_read_paid_native_poses_and_share_the_terrain_cache() {
             "ruleset-scale",
             "vtt.ruleset-scale",
         );
-        calibrate.payload = br#"{"cells_per_square":1}"#.to_vec();
+        calibrate.payload = chirograph::wire::encode(&serde_json::json!({"cells_per_square":1})).unwrap();
         assert_eq!(endpoint.invoke(calibrate).unwrap(), IntentResult::Accepted);
         let before = host.world().save().unwrap();
         let refused = request(

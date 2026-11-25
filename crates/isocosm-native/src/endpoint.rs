@@ -207,6 +207,19 @@ impl VttEndpoint {
         })
     }
 
+    /// A decoded game input through the same admission path (D237).
+    fn submit_input(&mut self, input: crate::native::Input) -> Result<(), String> {
+        let access = self.window.projection()?.access;
+        let before = self.window.cut()?;
+        self.world.product_sections(before, |session, sections| {
+            let (_, next) = crate::native::submit_game_input(session, game(sections), input, access)?;
+            let mut sections = sections.clone();
+            sections.insert(MODE.into(), next);
+            crate::ruleset::settle(session, &mut sections)?;
+            Ok(((), sections))
+        })
+    }
+
     fn envelope<T: serde::Serialize>(&self, make: impl FnOnce(u64, u64) -> T) -> Result<Vec<u8>, String> {
         let access = self.window.projection()?.access;
         let tick = self.window.cut()?.tick;
@@ -224,7 +237,12 @@ impl VttEndpoint {
                     Ok(((), next))
                 })
             },
-            Act::Submit(bytes) => self.submit(if bytes.is_empty() { payload } else { &bytes }),
+            // The intent's own payload is canonical CBOR (D231); built bytes are the game's JSON.
+            Act::Submit(bytes) if bytes.is_empty() => {
+                let input = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
+                self.submit_input(input)
+            },
+            Act::Submit(bytes) => self.submit(&bytes),
             Act::Send(intent) => {
                 let bytes = self.envelope(|participant, tick| VttIntentEnvelope {
                     participant: ParticipantHandle(participant), tick: Tick(tick), intent: Intent::Game(intent) })?;
@@ -240,7 +258,7 @@ impl VttEndpoint {
             },
             Act::Hook(intent) => self.act(Act::Send(VttIntent::Hook(intent)), payload),
             Act::Reshape { arc, goal } => {
-                let note: String = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
+                let note: String = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
                 self.act(Act::Send(VttIntent::Hook(HookIntent::ReshapeGoal { arc, goal, note })), payload)
             },
             Act::Seat(action) => {
@@ -296,7 +314,7 @@ impl VttEndpoint {
                     return Err("native table assertions require the DM seat".into());
                 }
                 self.read(|_, game| crate::native::seats::require_held(game, access))?;
-                let assertions: Vec<Assertion> = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
+                let assertions: Vec<Assertion> = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
                 let before = self.window.cut()?;
                 self.world.product_sections(before, |session, sections| {
                     crate::native::submit_contract_assertions(session, &assertions)

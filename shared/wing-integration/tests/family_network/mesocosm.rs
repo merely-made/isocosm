@@ -35,7 +35,7 @@ async fn mesocosm_configure_crosses_admission_and_publishes_live_section_bytes()
                         projection: projection.clone(),
                         target: "turn".into(),
                         intent: CONFIGURE.into(),
-                        payload: serde_json::to_vec(&LoopSettings {
+                        payload: chirograph::wire::encode(&LoopSettings {
                             mode: Mode::Survival,
                             pace: Pace {
                                 round: 1,

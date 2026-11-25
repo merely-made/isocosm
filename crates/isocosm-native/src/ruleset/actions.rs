@@ -190,12 +190,14 @@ pub(super) fn apply(
                 return Err("attacker cannot act".into());
             }
             let ruled = matches!(action, Action::RuleAttack { .. });
+            let built;
             let ruling_payload = if ruled {
                 dm(access)?;
                 if state.cells_per_square.is_some() {
                     return Err("calibrated physical reach uses the native placement".into());
                 }
-                br#"{"squares":1,"reason":"DM ruled the bodies within five feet with a clear path by choosing Rule within reach and attack"}"#.as_slice()
+                built = frame::ruling(1, "DM ruled the bodies within five feet with a clear path by choosing Rule within reach and attack");
+                built.as_slice()
             } else {
                 payload
             };
@@ -285,12 +287,7 @@ pub(super) fn apply(
         },
         Action::Calibrate => {
             dm(access)?;
-            #[derive(Deserialize)]
-            #[serde(deny_unknown_fields)]
-            struct Scale {
-                cells_per_square: u32,
-            }
-            let scale: Scale = serde_json::from_slice(payload)
+            let scale: crate::ruleset::Scale = chirograph::wire::decode(payload)
                 .map_err(|_| "enter native cells per five-foot square")?;
             if scale.cells_per_square == 0 {
                 return Err("physical scale must be positive".into());

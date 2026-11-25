@@ -43,7 +43,7 @@ fn send(endpoint: &mut SimEndpoint, id: &str, intent: &str, payload: &[u8]) -> I
         .map(|(instance, _)| instance).unwrap_or_else(|| panic!("{id} is not shown"));
     endpoint.invoke(IntentInvocation { session: snapshot.session.clone(), target,
         observed_epoch: snapshot.scene.epoch, observed_revision: snapshot.scene.revision,
-        intent: intent.into(), payload: payload.to_vec() }).unwrap()
+        intent: intent.into(), payload: payload_cbor(payload) }).unwrap()
 }
 
 fn hash(endpoint: &SimEndpoint) -> u64 {
@@ -147,4 +147,14 @@ fn the_main_line_takes_no_change_from_the_viewer() {
     let group = shown.iter().find(|id| id.starts_with("group:")).unwrap();
     assert!(matches!(send(&mut endpoint, group, DEATH, &[]), IntentResult::Rejected { .. }),
         "a death is offered only inside a branch");
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

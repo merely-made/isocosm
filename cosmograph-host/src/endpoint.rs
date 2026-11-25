@@ -67,7 +67,7 @@ impl SimEndpoint {
 /// The ticks a step asks for: an empty payload is one, else `{"ticks": n}`.
 fn ticks(payload: &[u8]) -> Result<u64, String> {
     if payload.is_empty() { return Ok(1); }
-    let value: serde_json::Value = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
+    let value: serde_json::Value = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
     match value.get("ticks").and_then(serde_json::Value::as_u64) {
         Some(n) if n > 0 => Ok(n),
         _ => Err("a step names a positive number of ticks".into()),

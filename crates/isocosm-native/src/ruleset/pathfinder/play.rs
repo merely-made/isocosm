@@ -195,12 +195,7 @@ pub(super) fn apply(
         Action::RuleStride { actor, to } => stride::stride(state, map, session, sections, access, *actor, *to, true)?,
         Action::Calibrate => {
             gm(access)?;
-            #[derive(Deserialize)]
-            #[serde(deny_unknown_fields)]
-            struct Scale {
-                cells_per_square: u32,
-            }
-            let scale: Scale = serde_json::from_slice(payload).map_err(|_| "enter native cells per five-foot square")?;
+            let scale: crate::ruleset::Scale = chirograph::wire::decode(payload).map_err(|_| "enter native cells per five-foot square")?;
             if scale.cells_per_square == 0 {
                 return Err("physical scale must be positive".into());
             }

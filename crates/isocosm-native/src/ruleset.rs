@@ -9,6 +9,13 @@ use isocosm_system::pf2e::{self, draft::Draft};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+/// The payload of `vtt.ruleset-scale`: native cells per five-foot square.
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Scale {
+    pub(crate) cells_per_square: u32,
+}
+
 mod actions;
 pub mod ars;
 mod frame;

@@ -61,6 +61,16 @@ fn physical_point(
     })
 }
 
+/// A recorded ruling as the canonical CBOR payload the reach check reads.
+pub(super) fn ruling(squares: u32, reason: &str) -> Vec<u8> {
+    #[derive(serde::Serialize)]
+    struct Ruling<'a> {
+        squares: u32,
+        reason: &'a str,
+    }
+    chirograph::wire::encode(&Ruling { squares, reason }).expect("a ruling encodes")
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct ReachRuling {
@@ -163,7 +173,7 @@ pub(super) fn reach_with(
     if access.seat != Seat::Dm {
         return Err("uncalibrated reach needs the DM's recorded ruling".into());
     }
-    let ruling: ReachRuling = serde_json::from_slice(payload)
+    let ruling: ReachRuling = chirograph::wire::decode(payload)
         .map_err(|_| "enter squares and a reason for the reach ruling")?;
     if ruling.reason.trim().is_empty() {
         return Err("reach ruling needs its reason".into());

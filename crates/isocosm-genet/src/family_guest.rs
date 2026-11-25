@@ -24,7 +24,7 @@ use isonetry::family_network::{
 
 };
 use std::collections::BTreeMap;
-use graphshell_client::pump::LinePump;
+use graphshell_client::pump::ItemPump;
 use transport::Transport;
 use tokio::sync::mpsc as command;
 type Stream = <transport::P2pandaTransport as Transport>::Stream;
@@ -190,7 +190,7 @@ impl FamilyGuest {
 }
 
 struct GuestCarrier<'a> {
-    pump: LinePump<Stream>,
+    pump: ItemPump<Stream>,
     runtime: &'a tokio::runtime::Handle,
     next_id: u64,
     dirty: bool,
@@ -200,18 +200,18 @@ impl GuestCarrier<'_> {
     fn request(&mut self, body: CarrierRequestBody) -> Result<CarrierResponseBody, String> {
         let id = self.next_id;
         self.next_id += 1;
-        let line = chirograph::line::encode(&CarrierRequest { id, body }).map_err(|e| e.to_string())?;
+        // One canonical CBOR wire item each way, as Graphshell's guests send (D210).
+        let item = chirograph::wire::encode(&CarrierRequest { id, body }).map_err(|e| e.to_string())?;
         self.runtime.block_on(async {
             tokio::time::timeout(TIMEOUT, async {
-                self.pump.send(&line).await.map_err(|e| e.to_string())?;
+                self.pump.send(&item).await.map_err(|e| e.to_string())?;
                 loop {
-                    let line = self.pump.recv().await.map_err(|e| e.to_string())?.ok_or("table disconnected")?;
-                    match chirograph::line::decode(&line).map_err(|e| e.to_string())? {
-                        Some(CarrierOutput::Response(response)) if response.id == id =>
+                    let item = self.pump.recv().await.map_err(|e| e.to_string())?.ok_or("table disconnected")?;
+                    match chirograph::wire::decode::<CarrierOutput>(&item).map_err(|e| e.to_string())? {
+                        CarrierOutput::Response(response) if response.id == id =>
                             return response.body.map_err(|failure| failure.message),
-                        Some(CarrierOutput::Notice(_)) => self.dirty = true,
-                        Some(_) => return Err("the owner answered another request".into()),
-                        None => {},
+                        CarrierOutput::Notice(_) => self.dirty = true,
+                        CarrierOutput::Response(_) => return Err("the owner answered another request".into()),
                     }
                 }
             }).await.map_err(|_| "table response timed out".to_owned())?
@@ -235,7 +235,7 @@ fn run(handle: &tokio::runtime::Handle, identity: &dyn personae::IdentityProvide
         tokio::time::timeout(TIMEOUT, invited::dial(transport, identity, &TERMS, &invitation, &card)).await
             .map_err(|_| "table connection timed out")?
     })?;
-    let mut carrier = GuestCarrier { pump: LinePump::new(stream), runtime: handle, next_id: 1, dirty: false };
+    let mut carrier = GuestCarrier { pump: ItemPump::new(stream), runtime: handle, next_id: 1, dirty: false };
     let opened = handle.block_on(async {
         tokio::time::timeout(TIMEOUT, carrier.pump.open(chirograph::CapabilityProfile::default())).await
             .map_err(|_| "table open timed out")?.map_err(|e| e.to_string())
@@ -265,7 +265,7 @@ fn run(handle: &tokio::runtime::Handle, identity: &dyn personae::IdentityProvide
             Err(error) => send(Event::Status(format!("Full replication unavailable: {error}"))),
         }
     }
-    enum Incoming { Action(Option<Command>), Line(Option<String>), Tick }
+    enum Incoming { Action(Option<Command>), Item(Option<Vec<u8>>), Tick }
     loop {
         if carrier.dirty {
             carrier.dirty = false;
@@ -276,7 +276,7 @@ fn run(handle: &tokio::runtime::Handle, identity: &dyn personae::IdentityProvide
         let incoming = handle.block_on(async {
             tokio::select! {
                 action = commands.recv() => Ok::<_, String>(Incoming::Action(action)),
-                line = carrier.pump.recv() => Ok(Incoming::Line(line.map_err(|e| e.to_string())?)),
+                item = carrier.pump.recv() => Ok(Incoming::Item(item.map_err(|e| e.to_string())?)),
                 _ = tokio::time::sleep(Duration::from_millis(250)), if following => Ok(Incoming::Tick),
             }
         })?;
@@ -290,12 +290,11 @@ fn run(handle: &tokio::runtime::Handle, identity: &dyn personae::IdentityProvide
                 send(Event::Outcome(outcome));
                 carrier.dirty = true;
             }
-            Incoming::Line(Some(line)) => match chirograph::line::decode(&line).map_err(|e| e.to_string())? {
-                Some(CarrierOutput::Notice(_)) => carrier.dirty = true,
-                Some(_) => return Err("unexpected idle table response".into()),
-                None => {}
+            Incoming::Item(Some(item)) => match chirograph::wire::decode::<CarrierOutput>(&item).map_err(|e| e.to_string())? {
+                CarrierOutput::Notice(_) => carrier.dirty = true,
+                CarrierOutput::Response(_) => return Err("unexpected idle table response".into()),
             }
-            Incoming::Line(None) => return Err("owner disconnected".into()),
+            Incoming::Item(None) => return Err("owner disconnected".into()),
             Incoming::Tick => send(Event::Tick),
         }
     }

@@ -44,7 +44,7 @@ fn click(endpoint: &mut VttEndpoint, projection: &str, card: &str, intent: &str,
         .find(|(_, item)| snap.scene.tables.sources[item.source.0 as usize].as_ref().unwrap().id == card)
         .unwrap().0;
     endpoint.invoke(IntentInvocation { session: snap.session, target, observed_epoch: snap.scene.epoch,
-        observed_revision: snap.scene.revision, intent: intent.into(), payload: payload.to_vec() }).unwrap()
+        observed_revision: snap.scene.revision, intent: intent.into(), payload: payload_cbor(payload) }).unwrap()
 }
 
 /// Read precisely the card and advertised intents available to this window.
@@ -187,4 +187,14 @@ fn board_uses_the_selected_native_eye_for_tokens_and_terrain() {
     assert_eq!(cut.cells.len(), 1);
     assert_eq!(cut.cells[0].at, cut.tokens[0].at);
     assert!(cut.cells[0].stride.is_none() && offers.is_empty());
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

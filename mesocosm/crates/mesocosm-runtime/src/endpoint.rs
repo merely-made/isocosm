@@ -265,7 +265,7 @@ impl IntentSink for MesocosmEndpoint {
             Err(refused) => return Ok(refused),
         };
         match intent.intent.as_str() {
-            CONFIGURE => match serde_json::from_slice::<LoopSettings>(&intent.payload) {
+            CONFIGURE => match chirograph::wire::decode::<LoopSettings>(&intent.payload) {
                 Ok(settings) => self.submit(LoopAction::Configure(settings)),
                 Err(why) => Ok(rejected(format!("a loop setup names mode, pace and collapse choice: {why}"))),
             },

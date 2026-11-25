@@ -29,7 +29,7 @@ fn click(endpoint: &mut VttEndpoint, projection: &str, id: &str, intent: &str, p
         .find(|(_, item)| snap.scene.tables.sources[item.source.0 as usize].as_ref().is_some_and(|s| s.id == id))
         .ok_or("missing card")?.0;
     match endpoint.invoke(IntentInvocation { session: snap.session, target, observed_epoch: snap.scene.epoch,
-        observed_revision: snap.scene.revision, intent: intent.into(), payload: payload.to_vec() })? {
+        observed_revision: snap.scene.revision, intent: intent.into(), payload: payload_cbor(payload) })? {
         IntentResult::Accepted => Ok(()),
         other => Err(format!("fixture action {intent} refused: {other:?}")),
     }
@@ -90,4 +90,14 @@ fn inspect(path: &str) -> Result<(), String> {
     println!("{}", serde_json::to_string_pretty(&serde_json::json!({"sequence": host.sequence(), "reopened": report}))
         .map_err(|e| e.to_string())?);
     Ok(())
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

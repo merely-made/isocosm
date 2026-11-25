@@ -19,7 +19,7 @@ const KINDS: [&str; 6] = ["Preview institution operation", "Preview physical map
     "Preview graft carrying", "Preview knowledge statement", "Preview Location grouping"];
 
 fn input<T: DeserializeOwned>(payload: &[u8]) -> Result<T, String> {
-    serde_json::from_slice(payload).map_err(|e| e.to_string())
+    chirograph::wire::decode(payload).map_err(|e| e.to_string())
 }
 
 fn pretty(value: &impl serde::Serialize) -> Result<String, String> {

@@ -67,7 +67,7 @@ fn invoke_in(
         observed_epoch: snap.scene.epoch,
         observed_revision: snap.scene.revision,
         intent: intent.into(),
-        payload: payload.to_vec(),
+        payload: payload_cbor(payload),
     }
 }
 
@@ -153,4 +153,14 @@ fn vtt_local_selection_is_record_free_then_native_party_join_replays() {
         matches!(records[0].section_updates.get("vtt"), Some(Some(_))),
         "the VTT game section is committed with it"
     );
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

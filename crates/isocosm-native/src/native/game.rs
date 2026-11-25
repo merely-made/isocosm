@@ -49,9 +49,11 @@ pub struct AdmissionBatch {
     pub spatial: Vec<super::placement::CharacterSpatialPlacement>,
 }
 
-#[derive(Deserialize)]
+/// One game input. A table's bytes arrive as its JSON; an intent's payload as
+/// canonical CBOR, decoded by the endpoint (Mere engine split D237).
+#[derive(Serialize, Deserialize)]
 #[serde(untagged)]
-enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope),
+pub(crate) enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope),
     SharedRoster(super::SharedRosterInput), Journey(super::joint_journey::JourneyEnvelope),
     Overmap(super::overmap::OvermapInput), Pack(super::pack::PackEnvelope), Storylet(super::storylets::StoryletInput),
     Physical(super::physical_map::PhysicalMapInput), Institution(super::institutions::InstitutionInput),
@@ -372,6 +374,20 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
     super::movement::current_access(session, access)?;
     super::seats::require_held(&game, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
+    dispatch(session, game, input, access, roster, shared)
+}
+
+/// [`submit_game_access`] for an input already decoded: the same access checks
+/// and the same shared-table semantics.
+pub(crate) fn submit_game_input(session: &mut Session, game: Vec<u8>, input: Input, access: OrdinaryAccess)
+    -> Result<(String, Vec<u8>), String> {
+    super::movement::current_access(session, access)?;
+    super::seats::require_held(&game, access)?;
+    dispatch(session, game, input, access, None, true)
+}
+
+fn dispatch(session: &mut Session, game: Vec<u8>, input: Input, access: OrdinaryAccess,
+    roster: Option<&super::time::Roster>, shared: bool) -> Result<(String, Vec<u8>), String> {
     match input {
         Input::Seat(input) if shared => super::seats::submit(session, game, access, &input),
         Input::Seat(_) => Err("standalone table seats are the external host's".into()),

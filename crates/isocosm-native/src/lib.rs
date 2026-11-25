@@ -15,3 +15,7 @@ pub mod ruleset;
 mod endpoint;
 #[cfg(feature = "endpoint")]
 pub use endpoint::*;
+#[cfg(feature = "endpoint")]
+mod vtt_payload;
+#[cfg(feature = "endpoint")]
+pub use vtt_payload::vtt_payload;

@@ -40,12 +40,12 @@ pub struct GraphSession {
 
 /// A payload's one named number.
 fn number(payload: &[u8], key: &str) -> Result<u64, String> {
-    let value: Value = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
+    let value: Value = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
     value.get(key).and_then(Value::as_u64).ok_or_else(|| format!("this intent names a {key}"))
 }
 
 fn domains(payload: &[u8]) -> Result<Vec<Domain>, String> {
-    let value: Value = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
+    let value: Value = chirograph::wire::decode(payload).map_err(|e| e.to_string())?;
     let words = value.get("domains").and_then(Value::as_array).ok_or("a filter names its domains")?;
     words.iter().map(|w| w.as_str().and_then(Domain::parse)
         .ok_or_else(|| format!("{w} is not geography, ecology, society or polities"))).collect()

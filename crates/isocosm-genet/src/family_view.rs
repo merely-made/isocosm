@@ -31,8 +31,8 @@ pub(crate) fn invocation(snapshots: &BTreeMap<String, ProjectionSnapshot>, reque
         target,
         observed_epoch: SceneEpoch(request.epoch),
         observed_revision: Revision(request.revision),
+        payload: isocosm_native::vtt_payload(&request.action, &request.payload)?,
         intent: request.action,
-        payload: request.payload,
     })
 }
 

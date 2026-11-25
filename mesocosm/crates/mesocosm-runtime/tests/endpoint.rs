@@ -34,7 +34,7 @@ fn invoke(snapshot: &ProjectionSnapshot, id: &str, intent: &str, payload: Vec<u8
     let target = snapshot.scene.active_items_in_order().into_iter().find(|(_, item)|
         snapshot.scene.tables.sources[item.source.0 as usize].as_ref().unwrap().id == id).unwrap().0;
     IntentInvocation { session: snapshot.session.clone(), target, observed_epoch: snapshot.scene.epoch,
-        observed_revision: snapshot.scene.revision, intent: intent.into(), payload }
+        observed_revision: snapshot.scene.revision, intent: intent.into(), payload: payload_cbor(&payload) }
 }
 
 fn settings() -> Vec<u8> {
@@ -118,4 +118,14 @@ fn the_endpoint_survives_the_wire_encoding() {
     let CarrierResponseBody::Intent(result) = carrier.request(CarrierRequestBody::Intent(
         invoke(&first, "turn", CONFIGURE, settings()))).unwrap() else { panic!("an intent answers a result") };
     assert_eq!(result, IntentResult::Accepted);
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }

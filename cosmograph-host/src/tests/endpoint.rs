@@ -43,7 +43,7 @@ fn target(snapshot: &ProjectionSnapshot, id: &str) -> sceno::InstanceId {
 fn invoke(snapshot: &ProjectionSnapshot, id: &str, intent: &str, payload: &[u8]) -> IntentInvocation {
     IntentInvocation { session: snapshot.session.clone(), target: target(snapshot, id),
         observed_epoch: snapshot.scene.epoch, observed_revision: snapshot.scene.revision,
-        intent: intent.into(), payload: payload.to_vec() }
+        intent: intent.into(), payload: payload_cbor(payload) }
 }
 
 #[test]
@@ -168,4 +168,14 @@ fn a_change_through_one_endpoint_stales_another_over_the_same_world() {
     assert_eq!(world.cut().unwrap(), before);
     assert!(matches!(a.invoke(invoke(&seen, "world", STEP, b"")).unwrap(), IntentResult::Stale { .. }));
     assert!(snapshot(&mut a).scene.revision.0 > seen.scene.revision.0, "the next snapshot is a new revision");
+}
+
+/// A test's JSON payload as the canonical CBOR the endpoint reads (Mere
+/// engine split D231).
+fn payload_cbor(json: &[u8]) -> Vec<u8> {
+    if json.is_empty() {
+        return Vec::new();
+    }
+    let value: serde_json::Value = serde_json::from_slice(json).expect("test payloads are JSON");
+    chirograph::wire::encode(&value).expect("a JSON value encodes")
 }
