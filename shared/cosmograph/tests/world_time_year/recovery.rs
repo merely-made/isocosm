@@ -13,7 +13,7 @@
 use cosmograph::{
     Session,
     directing::readings::scopes::{Scope, reading},
-    schema::{Id, Key, Provenance},
+    schema::{EventPlace, Id, Key, Provenance, Tick},
 };
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
@@ -27,8 +27,7 @@ pub const RETURN_MONTHS: u64 = 6;
 /// Living residents by site and diet at one monthly sample.
 pub type Residents = BTreeMap<Id, BTreeMap<&'static str, u64>>;
 
-/// How a returning resident came: born of a scattered birth at `from`, or
-/// walked in from `from`.
+/// How a returning resident came: it walked in, was born, or woke at the site.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct Route {
     pub lineage: Key,
@@ -111,7 +110,14 @@ pub fn diet(s: &Session, lineage: &str) -> Option<&'static str> {
 
 impl Recovery {
     /// Reads the run at a monthly sample, then judges the months so far.
-    pub fn observe(&mut self, s: &Session, expected: &BTreeSet<Key>, month: u64) {
+    pub fn observe(
+        &mut self,
+        s: &Session,
+        expected: &BTreeSet<Key>,
+        month: u64,
+        since: Option<Tick>,
+        sample: &super::support::Sample,
+    ) {
         let sites: Vec<Id> = s.sim.state().sites.keys().copied().collect();
         let mut residents = Residents::new();
         for &site in &sites {
@@ -126,13 +132,16 @@ impl Recovery {
                 }
             }
         }
-        let world = reading(&s.sim, &Scope::World).expect("a world reading");
-        self.living.push(expected.iter().map(|l| (l.clone(), world.living.get(l).copied().unwrap_or(0))).collect());
+        self.living.push(expected.iter().map(|lineage| {
+            let active = sample.lineages.get(lineage).map_or(0, |totals| totals.members);
+            let banked = sample.dormant.get(lineage).map_or(0, |stock| stock.count);
+            (lineage.clone(), active + banked)
+        }).collect());
         if let Some(before) = self.residents.last() {
             for (&site, by) in &residents {
                 for (&d, &n) in by {
                     if n > 0 && before[&site][d] == 0 {
-                        self.routes.insert((month, site, d), routes(s, site, d));
+                        self.routes.insert((month, site, d), routes(s, site, d, since));
                     }
                 }
             }
@@ -230,20 +239,27 @@ pub fn outcome(_patch: &[PatchLoss], global: &[GlobalLoss], months: u64) -> supe
 }
 
 /// How the residents of `diet` now at `site` came there.
-fn routes(s: &Session, site: Id, diet_key: &str) -> Vec<Route> {
+fn routes(s: &Session, site: Id, diet_key: &str, since: Option<Tick>) -> Vec<Route> {
     let state = s.sim.state();
+    let woke: BTreeSet<_> = state.events.values()
+        .filter(|event| since.is_some_and(|tick| event.tick > tick)
+            && event.place == EventPlace::Site(site)
+            && event.process.starts_with("ecology:wake-"))
+        .map(|event| event.subject)
+        .collect();
     let mut out = vec![];
-    for g in state.population.groups.values() {
+    for (&id, g) in &state.population.groups {
         let e = &g.entity;
-        if !e.alive || e.resident_site() != Some(site) || diet(s, &e.lineage) != Some(diet_key) {
+        if !e.alive || s.sim.genesis().rules.dormant(e) || e.resident_site() != Some(site) || diet(s, &e.lineage) != Some(diet_key) {
             continue;
         }
         let walked = e.visits.last().filter(|v| v.place != site).map(|v| v.place);
         let route = match (&e.provenance, walked) {
+            _ if woke.contains(&id) => Route { lineage: e.lineage.clone(), means: "woke from dormancy", from: Some(site) },
             (_, Some(from)) => Route { lineage: e.lineage.clone(), means: "walk", from: Some(from) },
             (Provenance::Born(event), None) => {
                 let from = state.events.get(event).and_then(|ev| match ev.place {
-                    cosmograph::schema::EventPlace::Site(p) => Some(p),
+                    EventPlace::Site(p) => Some(p),
                     _ => None,
                 });
                 Route { lineage: e.lineage.clone(), means: "scattered birth", from }

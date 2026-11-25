@@ -108,6 +108,41 @@ fn a_short_bodied_observation_is_inconclusive_and_changes_no_native_state() {
 }
 
 #[test]
+fn a_bank_keeps_a_lineage_alive_without_counting_as_residents() {
+    let mut g = Founding {
+        seed: 9,
+        sites: 2,
+        population: 60,
+        cohort_size: 1,
+        lineages: 5,
+        ecology: true,
+        web: Web::Diets,
+        ecology_rates: Rates::WorldTime,
+        experimental_food_contract: true,
+        bodies: Some(Bodies::default()),
+        dormancy: Some(cosmograph::rules::Dormancy::default()),
+        ..Default::default()
+    }.generate().unwrap();
+    // Model a world with only banked plants at the first observation.
+    let line = "lineage:0";
+    let dormant = g.rules.dormancy.as_ref().unwrap().key.clone();
+    for group in g.population.groups.values_mut().filter(|g| g.entity.lineage == line) {
+        group.entity_mut().traits.insert(dormant.clone());
+    }
+    let s = Session::new(g, Execution::Grouped).unwrap();
+    let before = s.sim.state_hash();
+    let report = Report::new(&s);
+    assert_eq!(s.sim.state_hash(), before);
+    let sample = &report.samples[0];
+    assert!(sample.dormant[line].count > 0 && sample.dormant[line].matter > 0);
+    assert!(!sample.lineages.contains_key(line));
+    assert!(sample.resident_sites.values().all(|by| !by.contains_key(line)));
+    assert!(!sample.rooted_tissue.contains_key(line));
+    assert!(report.recovery.global_losses.iter().any(|loss| loss.diet == "producer"));
+    assert!(report.recovery.lineage_losses.iter().all(|loss| loss.lineage != line));
+}
+
+#[test]
 fn twenty_four_native_months_complete_the_stationary_observer_control() {
     let mut s = stationary();
     let mut report = Report::new(&s);
@@ -128,6 +163,18 @@ fn twenty_four_native_months_complete_the_stationary_observer_control() {
         !report.root_store_qualified,
         "a stationary trajectory cannot qualify the missing body contract"
     );
+}
+
+#[test]
+fn a_partial_final_month_does_not_complete_the_recovery_bar() {
+    let mut s = stationary();
+    let mut report = Report::new(&s);
+    months(&mut s, &mut report, 23);
+    s.advance(1).unwrap();
+    report.observe(&s);
+    assert_eq!(report.samples.len(), 25);
+    assert_eq!(report.recovery.months, 23);
+    assert_eq!(report.recovery.outcome, Some(Outcome::Inconclusive));
 }
 
 #[test]

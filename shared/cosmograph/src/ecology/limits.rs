@@ -12,7 +12,8 @@
 //! [`DECOMPOSER_CEILING`]): set `spare_decomposers` to found as it did.
 //!
 //! - fullness: its `ecology:feed-{i}` holds only while it holds less than
-//!   `full` of its own tissue, so a full body does not eat;
+//!   `full` of its own tissue, so a full body does not eat. The same gate
+//!   applies to a world-time decomposer's site-detritus meal;
 //! - a ceiling per site: its `ecology:birth-{i}` holds only where fewer than
 //!   `most` of its lineage stand at its site. A number that fits one world
 //!   does not fit another (the A1 played world founds 32 grazers on 6
@@ -111,15 +112,15 @@ impl Limits {
 /// founding sets none.
 ///
 /// # Errors
-/// Fails where the founding is not a bodied stock or A1 ecology, or the
-/// limits name no fullness or a ceiling that is nought or has no divisor.
+/// Fails where the founding is not a bodied ecology, a limit is invalid,
+/// or world time requests the ordinary-feed-only stocking gate.
 pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     let Some(limits) = &founding.limits else { return Ok(()) };
     if !founding.ecology || founding.bodies.is_none() {
         return Err("the limits are built for a bodied ecology".into());
     }
-    if founding.ecology_rates == Rates::WorldTime {
-        return Err("the limits layer on the stock and A1 rates, not world time".into());
+    if founding.ecology_rates == Rates::WorldTime && limits.stocked.is_some() {
+        return Err("the limits' stocking gate does not cover world-time feeding".into());
     }
     if limits.full == 0 {
         return Err("the limits' fullness is nought".into());
@@ -151,8 +152,12 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
             },
             None => None,
         };
+        let fullness = Query::Below { who: Binding::Actor, key: format!("matter:{i}-0"), amount: limits.full };
         if let Some(feed) = g.rules.processes.get_mut(&format!("ecology:feed-{i}")) {
-            feed.requires.push(Query::Below { who: Binding::Actor, key: format!("matter:{i}-0"), amount: limits.full });
+            feed.requires.push(fullness.clone());
+        }
+        if let Some(detritus) = g.rules.processes.get_mut(&format!("ecology:detritus-{i}")) {
+            detritus.requires.push(fullness);
         }
         if let Some(birth) = g.rules.processes.get_mut(&format!("ecology:birth-{i}")) {
             birth.requires.push(Query::MembersBelow { among: BTreeSet::from([lineage.clone()]), amount: most });

@@ -92,7 +92,8 @@ impl Admission {
                 group.count == 1 && group.pool.is_empty(),
                 format!("{prefix}: not an unpooled individual founder"),
             );
-            let Some(index) = e.lineage.strip_prefix("lineage:") else {
+            let Some(index) = e.lineage.strip_prefix("lineage:")
+                .and_then(|i| i.parse::<u32>().ok()) else {
                 out.failures
                     .push(format!("{prefix}: no native founding lineage index"));
                 continue;
@@ -103,9 +104,11 @@ impl Admission {
                     .push(format!("{prefix}: no admitted own-tissue root allocation"));
                 continue;
             };
+            let seed_share = founding.dormancy.as_ref()
+                .map_or(10, |dormancy| dormancy.drawn(founding.seed, index));
             out.check(
-                a.rule.exposed == 40 && a.rule.stored == 20 && a.rule.seed == 10,
-                format!("{prefix}: adult/seed shares differ from exposed40/store20/seed10"),
+                a.rule.exposed == 40 && a.rule.stored == 20 && a.rule.seed == seed_share,
+                format!("{prefix}: adult/seed shares differ from exposed40/store20/seed{seed_share}"),
             );
             out.check(
                 e.body.is_some() && e.lives(a.store),
@@ -172,7 +175,7 @@ impl Admission {
                 ),
             );
             if checked.insert(e.lineage.clone(), ()).is_none() {
-                out.processes(g, index, &account, &a.rule.identity);
+                out.processes(g, index, &account, &a.rule.identity, seed_share);
             }
             out.producers.push(Founder {
                 group: id,
@@ -197,7 +200,7 @@ impl Admission {
         out
     }
 
-    fn processes(&mut self, g: &Genesis, index: &str, account: &str, identity: &str) {
+    fn processes(&mut self, g: &Genesis, index: u32, account: &str, identity: &str, seed_share: u64) {
         let minutes = |n| cosmograph::rules::minutes_ticks(n, g.rules.tick_microseconds());
         let owns = |p: &cosmograph::rules::Process| {
             p.requires
@@ -240,10 +243,18 @@ impl Admission {
             format!("lineage:{index}: ordinary daily root upkeep is absent"),
         );
         self.check(process("birth").is_some_and(|p| p.period == Some(minutes(90 * 1440)) && owns(p)
-            && p.effects.iter().any(|e| matches!(e, Effect::Birth { provision, .. } if provision.get(account) == Some(&10)))
+            && p.effects.iter().any(|e| matches!(e, Effect::Birth { provision, .. } if provision.get(account) == Some(&seed_share)))
+            && p.risk.as_ref().is_some_and(|risk| risk.effects.iter().any(|e|
+                matches!(e, Effect::Birth { provision, scatter: Some(_) } if provision.get(account) == Some(&seed_share))))
             && p.requires.iter().any(|q| matches!(q, Query::Account {
-                who: Binding::Actor, key, at_least: 70
-            } if key == account))), format!("lineage:{index}: ordinary single-seed seasonal birth is absent"));
+                who: Binding::Actor, key, at_least
+            } if key == account && *at_least == 60 + seed_share))), format!("lineage:{index}: ordinary single-seed seasonal birth is absent"));
+        if let Some(dormancy) = g.founding.as_ref().and_then(|f| f.dormancy.as_ref()) {
+            let birth = format!("ecology:birth-{index}");
+            self.check(g.rules.dormancy.as_ref().is_some_and(|rule| {
+                rule.key == dormancy.key && rule.seeds.get(&birth) == Some(&seed_share)
+            }), format!("lineage:{index}: no dormant seed share on the birth process"));
+        }
         self.check(
             process("death").is_some_and(|p| {
                 owns(p)
@@ -307,6 +318,24 @@ mod tests {
             assert_eq!(tissue.entity_ledger_matter, 0);
             assert_eq!(tissue.unassigned_cohort_pool, 0);
         }
+    }
+
+    #[test]
+    fn dormancy_changes_the_seed_share_without_changing_adult_admission() {
+        let plain = fixture();
+        let dormant = Founding {
+            dormancy: Some(cosmograph::rules::Dormancy {
+                seed: [17, 17],
+                ..Default::default()
+            }),
+            ..plain.founding.clone().unwrap()
+        }.generate().unwrap();
+        assert_eq!(plain.population, dormant.population);
+        let admission = Admission::inspect(&dormant);
+        assert!(admission.qualified, "{:?}", admission.failures);
+        let mut wrong = dormant;
+        wrong.rules.root_stores.values_mut().next().unwrap().seed = 10;
+        assert!(!Admission::inspect(&wrong).qualified);
     }
 
     #[test]

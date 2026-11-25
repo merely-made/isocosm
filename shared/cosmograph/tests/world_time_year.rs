@@ -7,6 +7,10 @@
 //! trajectory; behavioral root regressions belong to the frozen build evidence.
 //! The full run is ignored because the minute clock remains expensive.
 //! `WORLD_TIME_DAYS` selects a diagnostic span; a short span is inconclusive.
+//! `WORLD_TIME_DORMANCY=on` tests the native seed bank against the default
+//! `off` control. Both use the same founding and acceptance criteria.
+//! `WORLD_TIME_CONSUMER_CEILING=on` adds the standard per-site breeding
+//! ceilings and keeps the world-time hunger thresholds.
 //! `WORLD_TIME_REPORT` may name an absolute JSON receipt path, and
 //! `WORLD_TIME_SOURCE` the source identity (a commit) it records. Each run
 //! reports two verdicts from the same samples: case 1173's recovery
@@ -16,7 +20,7 @@
 use cosmograph::{
     Execution, Founding, Session,
     bodied::Bodies,
-    ecology::{Rates, Web},
+    ecology::{Limits, Rates, Web},
 };
 use support::{Outcome, Report};
 
@@ -55,6 +59,18 @@ fn a_bodied_world_time_web_holds_two_years() {
         height: 2,
         ..cosmograph::map::Grid::drawn(seed)
     };
+    let dormancy = match std::env::var("WORLD_TIME_DORMANCY").as_deref() {
+        Ok("on") => Some(cosmograph::rules::Dormancy::default()),
+        Ok("off") | Err(std::env::VarError::NotPresent) => None,
+        other => panic!("WORLD_TIME_DORMANCY must be on or off: {other:?}"),
+    };
+    let limits = match std::env::var("WORLD_TIME_CONSUMER_CEILING").as_deref() {
+        // The native WorldTime hunger thresholds are all lower than this.
+        // Use the same per-site ceilings without changing appetite.
+        Ok("on") => Some(Limits { full: u64::MAX, ..Limits::default() }),
+        Ok("off") | Err(std::env::VarError::NotPresent) => None,
+        other => panic!("WORLD_TIME_CONSUMER_CEILING must be on or off: {other:?}"),
+    };
     let genesis = Founding {
         seed,
         sites: 4,
@@ -65,6 +81,8 @@ fn a_bodied_world_time_web_holds_two_years() {
         web: Web::Diets,
         ecology_rates: Rates::WorldTime,
         experimental_food_contract: true,
+        dormancy,
+        limits,
         bodies: Some(Bodies {
             clutch: [1, 1],
             sensing: true,

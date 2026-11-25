@@ -24,7 +24,7 @@ pub fn read(s: &Session) -> BTreeMap<Key, BTreeMap<Key, Tissue>> {
     let mut out: BTreeMap<Key, BTreeMap<Key, Tissue>> = BTreeMap::new();
     for group in s.sim.state().population.groups.values() {
         let e = &group.entity;
-        if !e.alive {
+        if !e.alive || rules.dormant(e) {
             continue;
         }
         for account in rules.root_stores.keys() {

@@ -238,10 +238,53 @@ fn the_limits_name_what_they_cannot_found() {
     };
     says(Founding { bodies: None, ..founding(Some(Limits::default())) }, "no bodies");
     says(Founding { ecology: false, ..founding(Some(Limits::default())) }, "no ecology");
-    says(Founding { ecology_rates: Rates::WorldTime, ..founding(Some(Limits::default())) }, "world time");
+    says(Founding { ecology_rates: Rates::WorldTime, ..founding(Some(Limits { stocked: Some(1), ..Limits::default() })) }, "world time stocking");
     says(founding(Some(Limits { full: 0, ..Limits::default() })), "no fullness");
     says(founding(Some(Limits { ceiling: [0, 1], ..Limits::default() })), "no ceiling");
     says(founding(Some(Limits { ceiling: [3, 0], ..Limits::default() })), "no divisor");
+}
+
+#[test]
+fn limits_compose_with_world_time_dormancy_and_both_decomposer_meals() {
+    let mut f = Founding {
+        ecology_rates: Rates::WorldTime,
+        experimental_food_contract: true,
+        played: None,
+        cohort_size: 1,
+        dormancy: Some(Dormancy::default()),
+        ..founding(None)
+    };
+    let off = f.generate().unwrap();
+    let limits = Limits::default();
+    f.limits = Some(limits.clone());
+    let on = f.generate().unwrap();
+    assert_eq!(off.population, on.population);
+    assert_eq!(off.sites, on.sites);
+    assert_eq!(off.rules.dormancy, on.rules.dormancy);
+    for (id, process) in &off.rules.processes {
+        let expected = ["ecology:feed-", "ecology:detritus-", "ecology:birth-"]
+            .into_iter()
+            .find_map(|prefix| {
+                let i = id.strip_prefix(prefix)?.parse::<u32>().ok()?;
+                if !consumer(i) { return None; }
+                let lineage = format!("lineage:{i}");
+                let gate = if prefix == "ecology:birth-" {
+                    let founded: u64 = off.population.groups.values()
+                        .filter(|g| g.entity.alive && g.entity.lineage == lineage)
+                        .map(|g| g.count).sum();
+                    let share = founded.div_ceil(off.sites.len() as u64).max(1);
+                    let amount = if i == 2 { limits.decomposer_most(share) } else { limits.most(share) };
+                    Query::MembersBelow { among: BTreeSet::from([lineage]), amount }
+                } else {
+                    Query::Below { who: Binding::Actor, key: format!("matter:{i}-0"), amount: limits.full }
+                };
+                Some(gate)
+            });
+        assert_eq!(added(&on.rules.processes[id], process), expected.into_iter().collect::<Vec<_>>(), "{id}");
+    }
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        Session::new(on.clone(), mode).unwrap();
+    }
 }
 
 #[test]

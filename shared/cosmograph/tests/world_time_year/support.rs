@@ -21,6 +21,12 @@ pub struct Totals {
     pub bodied_members: u64,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct DormantStock {
+    pub count: u64,
+    pub matter: u128,
+}
+
 impl Totals {
     fn add(&mut self, other: &Self) {
         self.members += other.members;
@@ -40,14 +46,19 @@ pub struct Region {
 pub struct Sample {
     pub elapsed_ticks: u64,
     pub lineages: BTreeMap<Key, Totals>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub dormant: BTreeMap<Key, DormantStock>,
     pub rooted_tissue: BTreeMap<Key, BTreeMap<Key, super::tissue::Tissue>>,
     pub resident_sites: BTreeMap<Id, BTreeMap<Key, Totals>>,
     pub travelling: BTreeMap<Key, Totals>,
     /// Members in transit remain associated with their recorded source site.
     pub fixed_geographic_regions: Vec<Region>,
     pub births: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub wakes: Option<usize>,
     pub starvation_deaths: usize,
     pub hazard_deaths: usize,
+    pub matter: u128,
     pub soil: BTreeMap<Id, u64>,
     pub detritus: BTreeMap<Id, u64>,
 }
@@ -134,7 +145,7 @@ impl Report {
         );
         let root_store_admission = super::admission::Admission::inspect(genesis);
         let mut out = Self {
-            version: 2,
+            version: 3,
             seed: genesis.seed,
             founding: genesis.founding.clone(),
             genesis_digest: cosmograph::digest(genesis),
@@ -243,9 +254,13 @@ impl Report {
                     .filter(|(_, t)| t.members > 0)
                     .map(move |(lineage, _)| (site, lineage.clone()))
             }));
-        let month = sample.elapsed_ticks / self.month_ticks;
+        let elapsed = sample.elapsed_ticks;
+        if elapsed % self.month_ticks == 0 {
+            let month = elapsed / self.month_ticks;
+            let since = elapsed.checked_sub(self.month_ticks).map(|tick| self.started_tick + tick);
+            self.recovery.observe(s, &self.expected, month, since, &sample);
+        }
         self.samples.push(sample);
-        self.recovery.observe(s, &self.expected, month);
         self.evaluate();
     }
 
@@ -269,7 +284,7 @@ impl Report {
                     let (lo, hi) = (*window.iter().min().unwrap(), *window.iter().max().unwrap());
                     LineageVerdict {
                         lineage: name.clone(),
-                        alive: series[12] > 0,
+                        alive: series[12] > 0 || months[12].dormant.contains_key(name),
                         within_fourfold: lo > 0 && u128::from(hi) <= u128::from(lo) * 4,
                         no_third_loss: series
                             .windows(2)
@@ -288,7 +303,7 @@ impl Report {
             .flat_map(|s| {
                 self.expected
                     .iter()
-                    .filter(|name| s.lineages.get(*name).is_none_or(|t| t.members == 0))
+                    .filter(|name| !s.lineages.contains_key(*name) && !s.dormant.contains_key(*name))
                     .cloned()
             })
             .collect();
@@ -311,9 +326,14 @@ impl Report {
 fn sample(s: &Session, started: u64, footprints: &[BTreeSet<Id>]) -> Sample {
     let state = s.sim.state();
     let rules = &s.sim.genesis().rules;
+    let dormant = cosmograph::directing::readings::propagules(&s.sim)
+        .into_iter()
+        .map(|(lineage, stock)| (lineage, DormantStock { count: stock.count, matter: stock.matter }))
+        .collect();
     let mut out = Sample {
         elapsed_ticks: state.tick - started,
         lineages: BTreeMap::new(),
+        dormant,
         rooted_tissue: super::tissue::read(s),
         resident_sites: state
             .sites
@@ -333,8 +353,10 @@ fn sample(s: &Session, started: u64, footprints: &[BTreeSet<Id>]) -> Sample {
             })
             .collect(),
         births: events(s, "ecology:birth"),
+        wakes: rules.dormancy.as_ref().map(|_| events(s, "ecology:wake-")),
         starvation_deaths: events(s, "ecology:death"),
         hazard_deaths: events(s, "ecology:hazard"),
+        matter: s.sim.matter(),
         soil: state
             .sites
             .iter()
@@ -353,7 +375,7 @@ fn sample(s: &Session, started: u64, footprints: &[BTreeSet<Id>]) -> Sample {
     };
     for group in state.population.groups.values() {
         let e = &group.entity;
-        if !e.alive || e.kingdom == "kingdom:world" {
+        if !e.alive || e.kingdom == "kingdom:world" || rules.dormant(e) {
             continue;
         }
         let matter =

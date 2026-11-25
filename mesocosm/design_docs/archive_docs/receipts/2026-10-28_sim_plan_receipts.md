@@ -850,3 +850,40 @@ the EX4 timing run), living / cumulative hazard deaths / cumulative
 starvation deaths: month 12, 612/99/497 then and 615/102/502 now; month 18,
 626/190/1132 and 874/200/948; month 20, 534/214/1347 and 688/226/1359;
 month 21, 504/224/1429 and 0/231/2056.
+
+## Paired WorldTime dormancy and consumer ceilings, 2026-11-14
+
+Source `3d15c593` plus the frozen Cosmograph patch, SHA-256
+`aec91e6692030f088105a951badd97aa7d88633235c467be3e1a105543a40175`.
+The guarded release build's binary, patch, lockfile, commands, logs and
+per-run JSON are retained in
+`Code/output/cosmograph-world-time/dormancy-measure-20261114-135114/`.
+The archived executable's SHA-256 is
+`64c1fe9e6f05b71baeac55d460dab5ea5fc9004bb26111e1c76ce0da2d74dd90`.
+
+Each run advanced 1,051,920 native minute ticks and recorded all 25 samples
+in Grouped execution. Each seed starts with the same 240 active members,
+ten lineages and four laid sites across the three arms. Initial samples
+match within each seed, and total world matter stays constant at every
+sample. The ceilings use the existing three-times founding share per site
+for grazers, predators and omnivores, and ten times for decomposers. The run
+keeps the native WorldTime hunger thresholds and the per-role rate table.
+
+| Seed | Arm | Case 1173 | Peak active | Final active | Final dormant | Recorded wakes |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| 9 | Control | Fail, producers absent month 20; all diets absent month 21 | 931 | 0 | 0 | 0 |
+| 9 | Dormancy | Pass, every diet held; one predator lineage lost month 15 | 387 | 159 | 0 | 0 |
+| 9 | Dormancy and ceilings | Fail, predators absent from month 22 | 387 | 206 | 0 | 0 |
+| 31 | Control | Fail, predators absent from month 3 | 520 | 361 | 0 | 0 |
+| 31 | Dormancy | Fail, predators absent from month 3 | 341 | 118 | 9 | 20 |
+| 31 | Dormancy and ceilings | Fail, predators absent from month 3 | 352 | 112 | 17 | 22 |
+
+All six fail the original year-bar comparator. The independent seed-9
+control built before the Cosmograph production change, retained under
+`initial-control-20261114-134613/`, matches the paired control's genesis,
+rules, initial state, all 25 overlapping sample fields, terminal state
+hash `4910754816234712638`, and terminal history digest. The guarded
+release gates passed 710 library tests, 18 observer tests, and 40 tests
+across native recovery, scheduled meals, the food diagnostic and rooted
+bodies. The matrix tests two of the five historical seeds and leaves the
+mass-and-temperature law and case 1166 open.
