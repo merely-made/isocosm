@@ -158,7 +158,12 @@ pub enum Query {
     /// The actor has living fixing tissue on a plate exposed in its canopy.
     FixingCanopy,
     /// A fixation opportunity scaled by the exposed cells with tissue to work.
-    FixingShare { tissue: Key, budget: u32, period: u64 },
+    FixingShare {
+        tissue: Key, budget: u32, period: u64,
+        /// Sample the upward footprint of each fixing plate against this body's live boxes.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        projected: bool,
+    },
     /// Two live exchange walls enclose an open seat on this developmental run.
     Pocket { who: Binding, run: u8 },
     /// Both endpoints are available for a live, one-resident association.

@@ -1,0 +1,35 @@
+settle 3
+click role:button Project founding
+click role:button Next site
+click role:button Advance 12 ticks
+click role:button Lineage body maps
+click role:button Increase repeat
+click role:button Compare edit
+settle 3
+assert text Original and edited
+assert snap tick == 12
+assert snap watch-site == 1
+remember edited
+click role:button Save original
+click role:button Save edited
+click role:button Back 12 ticks
+assert snap tick == 0
+click role:button Advance 12 ticks
+same edited hash
+capture lineage
+click role:button Previous site
+same edited hash
+click role:button Lineage body maps
+click role:button Decrease repeat
+click role:button World conditions
+click role:button Change sea level
+click role:button Change sea level
+click role:button Compare edit
+assert snap tick == 12
+click role:button Save edited
+click role:button Next site
+click role:button Back one tick
+click role:button Advance one tick
+click role:button Save original
+assert text Saved
+capture habitat

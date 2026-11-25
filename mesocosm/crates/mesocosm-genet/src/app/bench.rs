@@ -33,7 +33,7 @@ pub(super) struct Bench {
 }
 
 /// Runs the bench until its window closes; the `i32` is the exit code.
-pub fn run(config: HostConfig, founding_editor: bool) -> Result<i32, winit::error::EventLoopError> {
+pub fn run(config: HostConfig, founding_editor: bool) -> Result<i32, Box<dyn std::error::Error>> {
     let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {
         Some(Ok(scenario)) => Some(scenario),
         Some(Err(why)) => {

@@ -28,13 +28,16 @@ impl Web {
     /// levels, as the generator always drew; by each role's share in a web
     /// of diets.
     pub(crate) fn founder(self, lineages: u32, draw: u64, rates: super::Rates) -> u64 {
+        self.draw_founder(lineages,draw,rates,|i| Role::of(self,i))
+    }
+    pub(crate) fn draw_founder(self, lineages:u32, draw:u64, rates:super::Rates, role:impl Fn(u32)->Role) -> u64 {
         let world_time = rates == super::Rates::WorldTime;
         if self == Self::Levels && !world_time {
             return draw % u64::from(lineages);
         }
         // A world-time founding is a biomass pyramid (1078).
-        let share = |i: u32| if world_time { super::world_time::founders(Role::of(self, i)) }
-            else { Role::of(self, i).founders() };
+        let share = |i: u32| if world_time { super::world_time::founders(role(i)) }
+            else { role(i).founders() };
         let total: u64 = (0..lineages).map(share).sum();
         let mut left = draw % total.max(1);
         for i in 0..lineages {
@@ -81,6 +84,8 @@ impl Role {
             Self::Grazer | Self::Predator | Self::Omnivore => 1,
         }
     }
+
+    pub(crate) fn kingdom(self)->&'static str { super::KINGDOMS[self.level()] }
 
     pub(crate) fn consumer(self) -> bool {
         self.level() == 1

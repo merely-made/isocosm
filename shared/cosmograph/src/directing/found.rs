@@ -106,7 +106,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     // role the ecology founds it in.
     for i in 0..f.lineages {
         if let Some(l) = g.lineages.get_mut(&format!("lineage:{i}")) {
-            l.decides = Some(crate::ecology::rates::DECIDES[crate::ecology::Role::of(f.web, i).level()]);
+            l.decides = Some(crate::ecology::rates::DECIDES[f.role(i).level()]);
         }
     }
     migrate(g)?;

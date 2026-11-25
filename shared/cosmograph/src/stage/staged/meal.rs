@@ -9,6 +9,7 @@ use super::*;
 mod bite;
 mod guard;
 mod partition;
+mod resprout;
 
 impl Staged<'_> {
     /// What a meal asks: its amount, times how often its eater's lineage
@@ -285,6 +286,9 @@ impl Staged<'_> {
                 _ => debit(self.ledger(from)?, key, *value)?,
             }
             total = total.checked_add(*value).ok_or("meal overflow")?;
+        }
+        if let (Some(part), Some(Holder::Entity(id))) = (bitten, prey) {
+            self.resprout(from, id, part, &taken)?;
         }
         sim.diagnostic_meal_update(None, None, Some(&taken));
         if let Some(meal) = partition {

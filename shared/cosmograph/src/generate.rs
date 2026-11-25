@@ -118,16 +118,34 @@ pub struct Founding {
 }
 
 mod defaults;
+mod kingdom_draw;
+#[cfg(test)]
+mod kingdom_draw_tests;
+mod habitats;
+pub use kingdom_draw::{FoundingForm, KingdomDraw};
+pub use habitats::WorldBody;
 mod helpers;
 pub(crate) use helpers::process;
 use helpers::set;
 
 impl Founding {
     pub fn generate(&self) -> Result<Genesis> {
+        if let Some((prepared, roster)) = self.drawn_founding()? {
+            let mut g = prepared.generate_inner(&roster)?;
+            let mut declared = self.clone();
+            declared.lineages=roster.iter().map(|(_,n)|n).sum();
+            declared.played=prepared.played;
+            g.founding = Some(declared);
+            return Ok(g);
+        }
+        self.generate_inner(&[])
+    }
+
+    fn generate_inner(&self, roster: &[(FoundingForm, u32)]) -> Result<Genesis> {
         if let Some(affinity) = &self.affinity { affinity.validate()?; }
         if self.sites == 0
             || self.sites > 256
-            || self.lineages == 0
+            || (self.lineages == 0 && roster.is_empty())
             || self.lineages > 256
             || self.population == 0
             || self.population > 1_000_000
@@ -338,6 +356,13 @@ impl Founding {
             epoch: Default::default(),
             deep_time: Default::default(),
         };
+        if !roster.is_empty() {
+            // The ecology declares three trade directions per plant/fungus pair,
+            // plus per-line processes and the routes between real sites.
+            let richness = |k| roster.iter().find(|(kind,_)| *kind==k).map_or(0,|(_,n)|*n as usize);
+            rules.limits.processes = rules.limits.processes.max(3*richness(FoundingForm::Plant)*richness(FoundingForm::Fungus)
+                + 32*self.lineages as usize + 8*self.sites as usize);
+        }
         // The epoch is a year at the world's own unit (case 1072).
         rules.epoch_ticks = crate::rules::year_ticks(rules.tick_microseconds());
         let mut sites = BTreeMap::new();
@@ -436,14 +461,17 @@ impl Founding {
         if self.unstocked_lineages.iter().any(|i| *i >= self.lineages) {
             return Err("cannot omit founders of an unknown lineage".into());
         }
-        let mut remaining = self.population;
+        let mut remaining = if self.lineages == 0 { 0 } else { self.population };
         let mut group = 0;
         // Every lineage is founded with at least six (1090, 1106), dealt in
         // turn before the draw.
-        let floor = u64::from(self.lineages) * FOUNDING_FLOOR.div_ceil(self.cohort_size.max(1));
+        let cohort = if roster.is_empty() || self.lineages == 0 { self.cohort_size }
+            else { self.cohort_size.min(self.population / u64::from(self.lineages)) };
+        let floor = u64::from(self.lineages) * FOUNDING_FLOOR.div_ceil(cohort.max(1));
         while remaining > 0 {
             let i = if group < floor { group % u64::from(self.lineages) }
-                else { self.web.founder(self.lineages, random("lineage", group), self.ecology_rates) };
+                else if roster.is_empty() { self.web.founder(self.lineages,random("lineage",group),self.ecology_rates) }
+                else { self.web.draw_founder(self.lineages,random("lineage",group),self.ecology_rates,|i|self.role(i)) };
             let lineage = format!("lineage:{i}");
             let n = 2 + random("compartments", i) % 3;
             let mut accounts = BTreeMap::from([("world:soil".into(), 4)]);
@@ -454,7 +482,7 @@ impl Founding {
                         + random("stock", group * 8 + j) % (self.stock_max - self.stock_min + 1),
                 );
             }
-            let count = self.cohort_size.min(remaining);
+            let count = cohort.min(remaining);
             if self.unstocked_lineages.contains(&(i as u32)) {
                 population.next_id = population.next_id.checked_add(count).ok_or("founder identity exhausted")?;
                 remaining -= count;
@@ -543,6 +571,7 @@ impl Founding {
                 materials,
             },
         };
+        habitats::found(self, roster, &mut genesis)?;
         if self.ecology {
             crate::ecology::configure(self, &mut genesis)?;
         }

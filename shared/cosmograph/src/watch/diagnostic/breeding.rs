@@ -136,9 +136,9 @@ impl Simulation {
                     p.id.strip_prefix("ecology:birth-")
                         .and_then(|i| i.parse::<u32>().ok())
             {
-                let role = crate::ecology::Role::of(founding.web, index);
+                let role = founding.role(index);
                 let among = (0..founding.lineages)
-                    .filter(|i| role.eats(crate::ecology::Role::of(founding.web, *i)))
+                    .filter(|i| role.eats(founding.role(*i)))
                     .map(|i| format!("lineage:{i}"))
                     .collect();
                 r.role_members = site.map_or(0, |s| self.members_at(s, &among));

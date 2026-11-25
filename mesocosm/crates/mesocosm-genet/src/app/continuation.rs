@@ -157,7 +157,12 @@ impl Host {
             facts: [watched, self.scene.as_ref().map(|s| {
                 let mm = (s.window.max[0] - s.window.min[0]) as f64
                     * self.runtime.founded().genesis.world.base_unit_micrometres as f64 / 1000.0;
-                ("terrain".into(), format!("Site {} · {mm} mm across", s.site))
+                let label=if let Some(chart)=&s.window.chart {
+                    let p=self.view_centre(s,self.follow_at(),self.config.slab_half_height);
+                    chart.ground_site([p[0],p[2]].map(|v|v.floor() as i64))
+                        .map_or_else(||"Chart edge".into(),|site|format!("Site {site}"))
+                } else {format!("Site {}",s.site)};
+                ("terrain".into(), format!("{label} · {mm} mm across"))
             }), Some(("choose".into(), selected)),
                 Some(("bodies".into(), format!("{} available to direct", reading.lineages.len()))),
                 (!reading.starts.is_empty()).then(|| ("starts".into(), format!("{} offered", reading.starts.len()))),
@@ -281,7 +286,7 @@ impl Host {
         if !self.continuation_open() { return false; }
         if self.runtime.current_loop_phase() == Some(LoopPhase::NewWorldRequested)
             && matches!(key, Key::Character(c) if c.eq_ignore_ascii_case("e")) {
-            self.continuation.notice = Some(match super::editor::open(self.config.seed) {
+            self.continuation.notice = Some(match super::editor::open() {
                 Ok(()) => "Opening lineage editor".into(),
                 Err(why) => why,
             });

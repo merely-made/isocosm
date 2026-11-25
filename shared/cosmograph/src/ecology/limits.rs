@@ -132,8 +132,8 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     let sites = (g.sites.len() as u64).max(1);
     let limited = |role: Role| role.consumer() || (role == Role::Decomposer && !limits.spare_decomposers);
-    for i in (0..founding.lineages).filter(|&i| limited(Role::of(founding.web, i))) {
-        let decomposer = Role::of(founding.web, i) == Role::Decomposer;
+    for i in (0..founding.lineages).filter(|&i| limited(founding.role(i))) {
+        let decomposer = founding.role(i) == Role::Decomposer;
         let lineage: Key = format!("lineage:{i}");
         let founded: u64 = g.population.groups.values()
             .filter(|c| c.entity.alive && c.entity.lineage == lineage)

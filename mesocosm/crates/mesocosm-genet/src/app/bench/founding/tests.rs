@@ -21,12 +21,15 @@ fn same_projection_lives_away_from_view_and_reopens_at_selected_site() {
                 .map(|(id, g)| (*id, g.clone()))
                 .collect::<Vec<_>>()
         };
-        let original = at_site(&reference, 0);
+        let away=reference.sim.state().population.groups.values()
+            .find_map(|g|g.entity.body.as_ref().and_then(|_|g.entity.resident_site()).filter(|&id|id!=1))
+            .expect("a founded body outside the watched site");
+        let original = at_site(&reference, away);
         projection.site = 1;
         projection.seek(12).unwrap();
         reference.advance(12).unwrap();
-        assert_ne!(at_site(&reference, 0), original);
-        assert_eq!(at_site(&projection.session, 0), at_site(&reference, 0));
+        assert_ne!(at_site(&reference, away), original);
+        assert_eq!(at_site(&projection.session, away), at_site(&reference, away));
         assert_eq!(
             projection.session.sim.state_hash(),
             reference.sim.state_hash()
@@ -40,7 +43,7 @@ fn same_projection_lives_away_from_view_and_reopens_at_selected_site() {
             reference.sim.state_hash()
         );
 
-        let folder = projection.save(dir.path()).unwrap();
+        let folder = Panel::save(&projection.session, dir.path()).unwrap();
         let entry = folder.join("entry.json");
         let saved = std::fs::read(&entry).unwrap();
         let runtime = Runtime::enter_founding_at(&saved, 4, None, Some(1)).unwrap();
@@ -69,7 +72,8 @@ fn same_projection_lives_away_from_view_and_reopens_at_selected_site() {
 #[test]
 fn independent_body_maps_are_authored_imported_and_expressed() {
     let dir = tempfile::tempdir().unwrap();
-    let mut p = Panel::new(Panel::starter(12)).unwrap();
+    let authored:Founding=toml::from_str(include_str!(concat!(env!("CARGO_MANIFEST_DIR"),"/../../../shared/cosmograph/examples/optional-gland.toml"))).unwrap();
+    let mut p=Panel::new(Founding {seed:12,..authored}).unwrap();
     let initial = p.session.sim.state_hash();
     let first = p.map().unwrap().clone();
     p.run = 1;
@@ -94,7 +98,7 @@ fn independent_body_maps_are_authored_imported_and_expressed() {
     assert_eq!(p.map().unwrap().regions["region:gland"], "kind:frond");
     let new_map = p.map().unwrap().clone();
     assert_ne!(new_map, first);
-    let folder = p.save(dir.path()).unwrap();
+    let folder = Panel::save(&p.session, dir.path()).unwrap();
     p.lineage = "lineage:2".into();
     p.path = TextInput::new(folder.join("lineage-0.toml").to_string_lossy());
     p.load_map().unwrap();
@@ -115,6 +119,65 @@ fn independent_body_maps_are_authored_imported_and_expressed() {
     p.cohort = field(0);
     assert!(p.project().is_err());
     assert_eq!(p.session.sim.state_hash(), hash);
+}
+
+#[test]
+fn comparing_edits_keeps_the_original_at_the_displayed_tick() {
+    let base = tempfile::tempdir().unwrap();
+    let mut panel = Panel::new(Panel::starter(104)).unwrap();
+    panel.seek(12).unwrap();
+    panel.site = 1;
+    let unchanged = panel.session.clone();
+    panel.repeat(true);
+    panel.compare_edit().unwrap();
+    let edited_hash = panel.session.sim.state_hash();
+    assert_ne!(unchanged.sim.state_hash(), edited_hash);
+    assert_eq!(
+        panel.original.as_ref().unwrap().sim.state_hash(),
+        unchanged.sim.state_hash()
+    );
+    assert_eq!(panel.site, 1);
+    panel.seek(0).unwrap();
+    panel.seek(12).unwrap();
+    assert_eq!(
+        panel.original.as_ref().unwrap().sim.state_hash(),
+        unchanged.sim.state_hash()
+    );
+    assert_eq!(panel.session.sim.state_hash(), edited_hash);
+
+    panel.next_preset();
+    panel.compare_edit().unwrap();
+    assert_ne!(panel.session.sim.state_hash(), edited_hash);
+    let mut reference = unchanged.clone();
+    reference.advance(6).unwrap();
+    panel.seek(18).unwrap();
+    assert_eq!(
+        panel.original.as_ref().unwrap().sim.state_hash(),
+        reference.sim.state_hash()
+    );
+    let mut edited = Session::new(
+        panel.recipe().unwrap().generate().unwrap(),
+        Execution::Grouped,
+    )
+    .unwrap();
+    edited.advance(18).unwrap();
+    assert_eq!(panel.session.sim.state_hash(), edited.sim.state_hash());
+    for world in [panel.original.as_ref().unwrap(), &panel.session] {
+        let dir = Panel::save(world, base.path()).unwrap();
+        let bytes = std::fs::read(dir.join("entry.json")).unwrap();
+        let saved = Session::load_json(&bytes, Execution::Grouped).unwrap();
+        assert_eq!(saved.sim.state_hash(), world.sim.state_hash());
+        let entered = Runtime::enter_founding_at(&bytes, 4, None, Some(panel.site)).unwrap();
+        assert_eq!(entered.tick(), 18);
+        assert_eq!(entered.view().sites, BTreeSet::from([1]));
+    }
+    panel.cohort = field(0);
+    assert!(panel.compare_edit().is_err());
+    assert_eq!(
+        panel.original.as_ref().unwrap().sim.state_hash(),
+        reference.sim.state_hash()
+    );
+    assert_eq!(panel.session.sim.state_hash(), edited.sim.state_hash());
 }
 
 #[test]

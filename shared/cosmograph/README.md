@@ -90,6 +90,27 @@ founding parameters accompany its realized rules and topology.
   account the prey holds in proportion and credited to the eater's own body.
   Sites are explicitly well-mixed compartments. These are testable law
   families, not the full authored ecology.
+- Newly founded catalogue ecologies with a positive `fixing_budget` use
+  the body map to estimate how much overhead light reaches each fixing
+  plate. Sixteen samples across its footprint test for higher parts of
+  the same body. Offset branches can leave a lower frond in full sun;
+  overlapping branches shade just the samples they cover. Tissue mass
+  limits the cells that can work. An ordinary frond uses direct light at
+  full efficiency. The catalogue's `part:understory-leaf` uses three
+  quarters efficiency in direct light and one quarter under cover. The
+  prairie blade uses five quarters in the open and zero under cover. Each
+  trait's `light_response` in `datasheets/catalog/traits_living.toml` sets
+  both rates. The world's growth cadence still caps production.
+  Each successful growth act still pays its usual light and nutrient costs.
+  Existing saved growth rules retain the calculation recorded at founding.
+- In a bodied stock or A1 ecology with a repertoire, a plant body map can
+  bind `part:resprouting-tuber` to a storage region. The tuber receives a
+  share of the plant's tissue. When a grazer takes tissue from a living
+  frond, the tuber pays back up to the amount bitten, limited by its stock
+  of that same tissue. With `canopy_growth` enabled, replenishing exposed
+  fixing cells can let the plant use its next opportunity to grow. Tick flow
+  records identify both parts and the amount moved. Once the tuber is empty,
+  further bites deplete the frond.
 - A world's rules may name the shapes its parts take and a catalogue of
   functions (rulings 276, 278 and 338 to 341), each function listing the
   shapes that admit it and whether growing such a part expresses it (Grown)

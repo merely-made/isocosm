@@ -123,7 +123,7 @@ fn sunlight() -> Process {
 fn canopy_requirement(founding: &Founding, producer: u32, cadence: u64) -> Option<Query> {
     let bodies = founding.bodies.as_ref()?;
     if bodies.fixing_budget > 0 {
-        Some(Query::FixingShare { tissue: format!("matter:{producer}-0"), budget: bodies.fixing_budget, period: cadence })
+        Some(Query::FixingShare { tissue: format!("matter:{producer}-0"), budget: bodies.fixing_budget, period: cadence, projected: founding.repertoire.is_some() })
     } else {
         bodies.canopy_growth.then_some(Query::FixingCanopy)
     }
@@ -163,7 +163,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // Birth thresholds are above initial bodies, so reproduction must be fed.
         e.accounts
             .insert(format!("matter:{i}-0"), founding.stock_min + 2);
-        let level = Role::of(founding.web, i).level();
+        let level = founding.role(i).level();
         let role = LEVELS[level];
         e.kingdom = KINGDOMS[level].into();
         e.traits.insert(role.into());
@@ -173,10 +173,10 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     // Life history is stated in minutes and read at the world's unit (1072).
     let unit = g.rules.tick_microseconds();
     let minutes = |m: u64| crate::rules::minutes_ticks(m, unit);
-    let producers = (0..founding.lineages).filter(|&i| Role::of(founding.web, i) == Role::Producer).count();
+    let producers = (0..founding.lineages).filter(|&i| founding.role(i) == Role::Producer).count();
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
-        let role = Role::of(founding.web, i);
+        let role = founding.role(i);
         let consumer = role.consumer();
         g.rules.traits.insert(LEVELS[role.level()].into());
         let body = format!("matter:{i}-0");
@@ -368,7 +368,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             // the living of the roles their diet admits, decomposers the dead
             // of every other lineage.
             let prey = (0..founding.lineages)
-                .filter(|&j| i != j && role.eats(Role::of(founding.web, j)))
+                .filter(|&j| i != j && role.eats(founding.role(j)))
                 .map(|j| format!("lineage:{j}"))
                 .collect();
             let mut feed = process(

@@ -44,6 +44,20 @@ pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, lo
 /// The founding rule. Working names.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Repertoire {
+    /// Compose founder lineage grammars from this world's runnable organs.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub founders: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub kingdom_draw: Option<crate::generate::KingdomDraw>,
+    /// Authored world-class recipes by ordinal within their kingdom.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub world_bodies: BTreeMap<String,crate::generate::WorldBody>,
+    /// Edits kept by kingdom and within-kingdom ordinal when a new seed omits the lineage.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub lineage_edits: BTreeMap<String,crate::bodied::BodyMap>,
+    /// Resolved during founding; saves retain the seed and the authored draw.
+    #[serde(skip)]
+    pub bodied_kingdoms: Vec<crate::generate::FoundingForm>,
     /// The catalog parts to lower; empty lowers every part that can be.
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub only: BTreeSet<Key>,

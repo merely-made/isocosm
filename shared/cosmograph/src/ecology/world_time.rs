@@ -136,7 +136,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     let year = year_ticks(unit);
     // Founders are born before the world starts, their ages staggered over
     // each role's span; the start is a whole number of years.
-    let oldest = (0..founding.lineages).map(|i| role_time(Role::of(founding.web, i)).founding_age_days)
+    let oldest = (0..founding.lineages).map(|i| role_time(founding.role(i)).founding_age_days)
         .max().unwrap_or(0);
     let mut dormancy = dormant::declare(founding, g)?;
     let started = minutes(oldest * DAY).div_ceil(year) * year;
@@ -146,7 +146,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         e.born = started;
         e.arrived = started;
         let Some(i) = e.lineage.strip_prefix("lineage:").and_then(|i| i.parse::<u32>().ok()) else { continue };
-        let time = role_time(Role::of(founding.web, i));
+        let time = role_time(founding.role(i));
         e.accounts.insert(format!("matter:{i}-0"), time.adult);
         let span = minutes(time.founding_age_days * DAY).max(1);
         e.born = started - crate::draw(founding.seed, "founding-age", &[first]) % span;
@@ -159,7 +159,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         if let Some(soil) = site.accounts.get_mut("world:soil") { *soil *= SOIL_FACTOR; }
     }
     for i in 0..founding.lineages {
-        let role = Role::of(founding.web, i);
+        let role = founding.role(i);
         let mut time = role_time(role);
         if experimental {
             // Keep the trial's measured inputs separate from the upstream retune.
@@ -229,7 +229,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         }
         if time.prey > 0 {
             // Breeding slows where food is scarce (1111), read per head (1145).
-            let among = (0..founding.lineages).filter(|&j| role.eats(Role::of(founding.web, j)))
+            let among = (0..founding.lineages).filter(|&j| role.eats(founding.role(j)))
                 .map(|j| format!("lineage:{j}")).collect();
             let food = if experimental {
                 Query::MembersPerHead { among, per: None, at_least: time.prey, per_members: time.crowd }

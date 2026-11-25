@@ -63,6 +63,18 @@ ticks. Select a joint on the developed specimen to inspect its tissue.
 The population rows group the inhabitants by their realized segment counts
 and omitted organs. The matter readings come from native process transfers.
 
+To compare a change, advance to a tick of interest, open **Lineage body maps**
+or **World conditions**, make an edit, then choose **Compare edit**. Both
+worlds appear at the same tick. Moving the clock or changing the site updates
+both readings. Further edits keep the first world as the original. Each
+world has its own save and entry buttons. **Project founding** starts a fresh
+projection at tick zero. A saved `entry.json` reopens one world at a time.
+
+Run the [native comparison scenario](testing/bench/native-founding-comparison.scenario)
+with `--founding-editor --seed 73`. At site 1, tick 12, one extra repeat of the frond-bearing
+segment yielded five living plants beside the original four. Raising only
+sea level moved the waterline from 6 to 11 and left four plants there.
+
 **Save projection** writes the selected tick, the founding TOML and a reusable
 TOML for each authored lineage under `~/Mesocosm/worlds/` (override with
 `MESOCOSM_WORLD_DIR`). Paste its `entry.json` into **Template or save path**

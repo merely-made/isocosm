@@ -228,6 +228,8 @@ pub(super) struct TraitRow {
     pub unlocks: Vec<String>,
     #[serde(default)]
     pub strengths: Vec<Strength>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub light_response: Option<crate::process::LightResponse>,
 }
 
 /// An effect row as the datasheet writes it.
@@ -334,6 +336,8 @@ pub struct Trait {
     /// enzyme pattern of the brief (section 10, item 3).
     pub unlocks: Vec<String>,
     pub strengths: Vec<Strength>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub light_response: Option<crate::process::LightResponse>,
     pub status: Status,
 }
 

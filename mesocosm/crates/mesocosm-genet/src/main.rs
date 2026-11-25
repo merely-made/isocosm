@@ -340,6 +340,10 @@ fn main() {
     if config.mode.is_some() && (config.spread.is_some() || replay.is_some() || bench) {
         fail("--mode applies to ordinary new or watched worlds; authored spread declares its own mode");
     }
+    if founding_editor && !seed_explicit {
+        config.seed=std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_else(|error|fail(&format!("world seed clock: {error}"))).as_nanos() as u64;
+    }
     config.unchosen_seed = unchosen_explicit || (!seed_explicit && config.watch.is_none()
         && config.spread.is_none() && config.ecology_candidate.is_none() && replay.is_none() && !bench && !config.bench_world);
     if config.spread.is_some()
@@ -404,7 +408,7 @@ fn main() {
     let result = if bench {
         mesocosm_genet::app::bench::run(config, founding_editor)
     } else {
-        Host::run(config)
+        Host::run(config).map_err(Into::into)
     };
     match result {
         Ok(code) => std::process::exit(code),

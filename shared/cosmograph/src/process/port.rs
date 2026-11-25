@@ -19,6 +19,18 @@ pub enum NisKind {
     Decomposer,
 }
 
+/// Tissue yield in quarter-cell units per sample of open or covered sky.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct LightResponse {
+    pub open: u8,
+    pub covered: u8,
+}
+
+impl LightResponse {
+    pub const ORDINARY: Self = Self { open: 4, covered: 0 };
+}
+
 /// A compact, part-local declaration of what one intake organ can accept.
 ///
 /// This is anatomy carried beside the part's allocation. Geometry supplies a
@@ -55,6 +67,11 @@ pub struct IntakePort {
     /// set, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "is_none_tolerated")]
     trade: u8,
+    /// A storage organ can spend its own tissue to refill a grazed fixing part.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    resprouting: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    light_response: Option<LightResponse>,
 }
 
 /// What an organ does in a trade under the mutualism rule (lineage-rounds
@@ -205,7 +222,27 @@ impl IntakePort {
             classes: 0,
             strength: Strength::NONE,
             trade: 0,
+            resprouting: false,
+            light_response: None,
         }
+    }
+
+    /// Yield of the fixing tissue carried on this part, where specified.
+    pub const fn light_response(self) -> Option<LightResponse> { self.light_response }
+
+    pub(crate) const fn with_light_response(mut self, response: LightResponse) -> Self {
+        self.light_response = Some(response);
+        self
+    }
+
+    pub(crate) const fn with_resprouting(mut self) -> Self {
+        self.resprouting = true;
+        self
+    }
+
+    /// Whether this storage organ can spend its own tissue after a bite.
+    pub const fn resprouts(self) -> bool {
+        self.resprouting
     }
 
     pub const fn live(kind: NisKind) -> Self {
@@ -221,6 +258,8 @@ impl IntakePort {
             classes: 0,
             strength: Strength::NONE,
             trade: 0,
+            resprouting: false,
+            light_response: None,
         }
     }
 

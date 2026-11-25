@@ -123,8 +123,8 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     let (h, r) = (pocket.host, pocket.resident);
     if h >= founding.lineages
         || r >= founding.lineages
-        || super::Role::of(founding.web, h) != super::Role::Decomposer
-        || super::Role::of(founding.web, r) != super::Role::Producer
+        || founding.role(h) != super::Role::Decomposer
+        || founding.role(r) != super::Role::Producer
     {
         return Err("a pocket needs a decomposer host and a producer resident".into());
     }

@@ -23,7 +23,8 @@
 //! rule (`ecology::detritus`), a dung mouth being a dead-stock port limited to
 //! the dung class. Parts that take the nutrient the ground is scarcest in lower
 //! only where the world sets the nutrient rule (`ecology::nutrients`), as an
-//! organ whose port draws.
+//! organ whose port draws. A resprouting store can refill a grazed fixing
+//! organ with matching tissue already held in that store.
 
 use crate::{
     catalog::{Catalog, Part, Role, Site, Status, Kind, refs},
@@ -69,6 +70,28 @@ fn def(process: &str) -> Result<&'static ProcessDef, String> {
 /// dead-stock mouth to those classes (`ecology::categories`); without it
 /// every dead flow is a mouth for all dead stock, as before.
 fn port(part: &Part, c: &Catalog, cats: bool, guard: bool) -> Result<Option<IntakePort>, String> {
+    let base = feeding_port(part, c, cats, guard)?;
+    if refs::process_name(&part.process) != "fix" || !part.admits.iter().any(|f| f == "light") {
+        return Ok(base);
+    }
+    let mut responses = part.traits.iter().filter_map(|k| c.trait_by_key(k)?.light_response);
+    let Some(leaf) = responses.next() else { return Ok(base) };
+    if responses.any(|other| other != leaf) {
+        return Err("the leaf traits prescribe different light responses".into());
+    }
+    let port = base.unwrap_or_else(IntakePort::none).with_light_response(leaf);
+    Ok(Some(port.supported_by(def(&part.process)?.reference())))
+}
+
+fn feeding_port(part: &Part, c: &Catalog, cats: bool, guard: bool) -> Result<Option<IntakePort>, String> {
+    if refs::process_name(&part.process) == "store"
+        && part.traits.iter().any(|t| t == "trait:resprouting")
+        && part.effects.get(&Site::Eaten)
+            .is_some_and(|effects| effects.iter().any(|e| e == "effect:regrow-after-bite"))
+    {
+        let store = IntakePort::none().with_resprouting().supported_by(def(&part.process)?.reference());
+        return Ok(Some(store));
+    }
     if needs_mutualism(part) {
         let organ = exchange(part);
         let organ = if needs_nutrients(part) { organ.trading(Trade::Draws) } else { organ };

@@ -87,7 +87,7 @@ pub(super) fn flat(founding: &Founding, g: &mut Genesis) -> Result<()> {
     g.rules.traits.insert(rule.key.clone());
     let unit = g.rules.tick_microseconds();
     let season = rule.season_ticks.unwrap_or_else(|| minutes_ticks(rule.season, unit));
-    let producers: Vec<u32> = (0..founding.lineages).filter(|&i| Role::of(founding.web, i) == Role::Producer).collect();
+    let producers: Vec<u32> = (0..founding.lineages).filter(|&i| founding.role(i) == Role::Producer).collect();
     let among: BTreeSet<Key> = producers.iter().map(|i| format!("lineage:{i}")).collect();
     for i in producers {
         let share = rule.drawn(founding.seed, i);

@@ -229,8 +229,8 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     let every = crate::rules::minutes_ticks(rule.period, unit);
     let child = founding.stock_min.max(2);
     let mut made = vec![self::rot(&rule)];
-    for i in (0..founding.lineages).filter(|&i| Role::of(founding.web, i) != Role::Producer) {
-        let consumer = Role::of(founding.web, i).consumer();
+    for i in (0..founding.lineages).filter(|&i| founding.role(i) != Role::Producer) {
+        let consumer = founding.role(i).consumer();
         made.push(eat(&rule, i, founding.ecology_rates.birth_gate(founding.stock_min, consumer) + child, every));
     }
     if g.rules.processes.len() + made.len() > g.rules.limits.processes {

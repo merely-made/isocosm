@@ -251,7 +251,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         return Err("mutualism layers on the stock and A1 rates, not world time".into());
     }
     rule.validate()?;
-    let lines = |role| (0..founding.lineages).filter(move |&i| Role::of(founding.web, i) == role).collect::<Vec<_>>();
+    let lines = |role| (0..founding.lineages).filter(move |&i| founding.role(i) == role).collect::<Vec<_>>();
     let (producers, decomposers) = (lines(Role::Producer), lines(Role::Decomposer));
     let every = crate::rules::minutes_ticks(rule.period, g.rules.tick_microseconds());
     let fixing = crate::rules::minutes_ticks(2, g.rules.tick_microseconds());

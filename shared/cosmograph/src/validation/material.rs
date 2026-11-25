@@ -20,7 +20,7 @@ pub(super) fn catalogue(rules: &Rules) -> Result<()> {
 }
 
 pub(super) fn query(rules: &Rules, query: &Query) -> Result<()> {
-    if let Query::FixingShare { tissue, budget, period } = query {
+    if let Query::FixingShare { tissue, budget, period, .. } = query {
         let tissue_account = matches!(
             rules.accounts.get(tissue),
             Some(AccountKind::Matter { reserve: false, provision: false, .. })

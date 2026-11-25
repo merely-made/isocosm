@@ -122,7 +122,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     for i in 0..founding.lineages {
         if let Some(k) = rot.decomposer_bites
-            && Role::of(founding.web, i) == Role::Decomposer
+            && founding.role(i) == Role::Decomposer
             && let Some(feed) = g.rules.processes.get(&format!("ecology:feed-{i}")).cloned()
         {
             for n in 1..k {

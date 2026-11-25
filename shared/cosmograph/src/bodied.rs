@@ -19,6 +19,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod catalogue;
 mod feeding;
 mod map;
 mod proportions;
@@ -386,8 +387,15 @@ pub(crate) fn embody_within(
         (default_kinds(), roster())
     };
     let maps = g.founding.as_ref().map(|f| &f.body_maps);
-    if let Some(founding) = g.founding.as_ref().filter(|f| !f.body_maps.is_empty()) {
-        g.rules.repertoire = crate::repertoire::declare(founding, &mut kinds)?;
+    let mut generated=BTreeMap::new();
+    if let Some(founding)=g.founding.as_ref() {
+        let compose=founding.repertoire.as_ref().is_some_and(|rule|rule.founders);
+        if compose || !founding.body_maps.is_empty() {
+            g.rules.repertoire=crate::repertoire::declare(founding,&mut kinds)?;
+        }
+        if compose && let Some(lowered)=&g.rules.repertoire {
+            generated=catalogue::maps(founding,lowered,&kinds)?;
+        }
     }
     let (mut producers, mut consumers) = (0, 0);
     let mut senses = crate::senses::Senses::default();
@@ -399,8 +407,10 @@ pub(crate) fn embody_within(
     // are assigned below; keep them available during the mutable line walk.
     let source_lineages = g.lineages.clone();
     for (index, (key, lineage)) in g.lineages.iter_mut().enumerate() {
-        let index = index as u64;
-        let map = maps.and_then(|maps| maps.get(key));
+        let index = if g.founding.as_ref().is_some_and(|f|f.repertoire.as_ref().is_some_and(|r|r.kingdom_draw.is_some())) {
+            key.strip_prefix("lineage:").and_then(|n|n.parse().ok()).unwrap_or(index as u64)
+        } else { index as u64 };
+        let map = maps.and_then(|maps| maps.get(key)).or_else(||generated.get(key));
         let producer = match lineage.kingdom.as_str() {
             "kingdom:flora" => true,
             "kingdom:fauna" if plants.is_none() => false,
@@ -547,6 +557,7 @@ pub(crate) fn embody_within(
     let seed = g.seed;
     let bodies = crate::inherit::Cache::default();
     for (first, group) in g.population.groups.iter_mut() {
+        let members=group.count;
         let e = group.entity_mut();
         let lineage = g.lineages.get(&e.lineage);
         let Some((line, d)) = lineage.and_then(|l| l.development.as_ref().map(|d| (l, d))) else {
@@ -563,7 +574,7 @@ pub(crate) fn embody_within(
         } else {
             bodies.embody(&rules, (line.revision, d), &drawn, e)?;
         }
-        let mapped = maps.is_some_and(|maps| maps.contains_key(&e.lineage));
+        let mapped = generated.contains_key(&e.lineage) || maps.is_some_and(|maps| maps.contains_key(&e.lineage));
         // Generic births need the same draw to regrow the parent's optional organs.
         e.absent = if mapped { drawn.absent } else { crate::development::recorded(&rules, &drawn) };
         e.soma = drawn.segments;
@@ -577,7 +588,16 @@ pub(crate) fn embody_within(
             let held = e.accounts.remove(&k).unwrap_or(0);
             let room = anatomy::room(e, &rules, &k);
             if mapped && held > room {
-                return Err(format!("{}: body map founder {first} cannot hold its {held} of {k} (room {room})", e.lineage));
+                if generated.contains_key(&e.lineage) && !maps.is_some_and(|m|m.contains_key(&e.lineage))
+                    && g.founding.as_ref().is_some_and(|f|f.repertoire.as_ref().is_some_and(|r|r.kingdom_draw.is_some())) {
+                    // Found only what fits the phenotype. The unallocated
+                    // starting material stays in this cohort's home soil.
+                    let unused=(held-room).checked_mul(members).ok_or("founder supply overflow")?;
+                    let soil=g.sites.get_mut(&e.place).ok_or("founder has no home site")?.accounts.entry("world:soil".into()).or_default();
+                    *soil=soil.checked_add(unused).ok_or("founder soil overflow")?;
+                } else {
+                    return Err(format!("{}: body map founder {first} cannot hold its {held} of {k} (room {room})", e.lineage));
+                }
             }
             let give = held.min(room);
             if give > 0 {

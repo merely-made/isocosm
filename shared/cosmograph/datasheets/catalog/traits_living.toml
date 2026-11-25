@@ -1,16 +1,17 @@
 # Traits, part three: metabolism and behaviour.
 #
-# PROVISIONAL, a prototype (mesocosm lineage_rounds_plan D37, D38). Every key
-# here is a plain working word, not a player-facing name; a naming round is
-# the owner's. Not read by founding, generation or the tick.
+# Prototype vocabulary from the Mesocosm lineage rounds plan (D37, D38).
+# Founding maps runnable traits onto body parts. A fixing organ's light_response
+# gives open and covered yield in quarters of an ordinary sunlit cell.
 
 schema = 1
 owner = "cosmograph catalog"
-consumer = "cosmograph::catalog (read only; nothing in the sim reads it yet)"
+consumer = "cosmograph::catalog and cosmograph::repertoire"
 status = "provisional"
 
 [[trait]]
 key = "trait:c4-fixation"
+light_response = { open = 5, covered = 0 }
 summary = "A way of fixing carbon that wins in strong light and heat."
 category = "metabolism"
 process = "mesocosm:fix"
@@ -26,6 +27,7 @@ via = ["function:fix", "rule:climate"]
 
 [[trait]]
 key = "trait:shade-tolerance"
+light_response = { open = 3, covered = 1 }
 summary = "A leaf that makes do where others starve of light."
 category = "metabolism"
 process = "mesocosm:fix"

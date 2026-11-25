@@ -244,8 +244,13 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             return Err("a count of members requires its native simulation".into()),
         Query::Sensed { .. } =>
             return Err("a sense reading requires its native simulation".into()),
-        Query::FixingShare { tissue, budget, period } => {
+        Query::FixingShare { tissue, budget, period, projected } => {
             if *budget == 0 || *period == 0 { return Err("fixing requires a positive budget and cadence".into()); }
+            if *projected {
+                let (cells, units) = crate::trophic::canopy_light::capture(s.body(Binding::Actor)?, tissue);
+                let lit = crate::trophic::canopy_light::due(units, *budget, s.tick / period);
+                return Ok((lit, format!("{units}/64 effective fixing cells from {cells} cells; full rate at {budget}")));
+            }
             let (exposed, active) = crate::trophic::fixing_tissue(s.body(Binding::Actor)?, tissue);
             (crate::trophic::fixes_this_turn(active, *budget, s.tick / period), format!("{active} active of {exposed} exposed fixing cells; full rate at {budget}"))
         },

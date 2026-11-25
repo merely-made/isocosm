@@ -21,6 +21,8 @@ pub enum Trophic {
     Decomposer,
 }
 
+pub mod canopy_light;
+
 const FIX: &str = "function:fix";
 
 /// A part's height: its pivot's `y` in body space, which no yaw moves.

@@ -128,6 +128,11 @@ pub(super) fn build() -> Result<Catalog, String> {
     let mut traits = Vec::new();
     for r in trait_rows {
         one_of("trait", &r.key, &r.via, &r.needs)?;
+        if let Some(response) = r.light_response
+            && (r.process != "mesocosm:fix" || response.open > 8 || response.covered > response.open)
+        {
+            return Err(format!("{} needs fixing tissue with 0 <= covered <= open <= 8 quarter units", r.key));
+        }
         let status = trait_status(&r.process, &r.via, &r.needs);
         traits.push(Trait {
             key: r.key,
@@ -147,6 +152,7 @@ pub(super) fn build() -> Result<Catalog, String> {
             needs: r.needs,
             unlocks: r.unlocks,
             strengths: r.strengths,
+            light_response: r.light_response,
             status,
         });
     }

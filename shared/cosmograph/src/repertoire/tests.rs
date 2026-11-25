@@ -63,7 +63,7 @@ fn unset_founds_and_hashes_as_before() {
 
 #[test]
 fn it_round_trips_and_bad_values_are_named() {
-    let f = founding(Some(Repertoire { only: BTreeSet::from([JAW.replace("kind:catalog-", "part:")]), across_kingdoms: true }), false);
+    let f = founding(Some(Repertoire { only: BTreeSet::from([JAW.replace("kind:catalog-", "part:")]), across_kingdoms: true, ..Default::default() }), false);
     let json = serde_json::to_string(&f).unwrap();
     assert_eq!(serde_json::from_str::<Founding>(&json).unwrap(), f);
     assert!(serde_json::to_string(&founding(all(), false)).unwrap().contains("\"repertoire\":{}"));
@@ -73,7 +73,7 @@ fn it_round_trips_and_bad_values_are_named() {
     assert!(bad("part:no-such-part").contains("catalog lacks"));
     let waiting = catalog().parts().iter().find(|p| !matches!(p.status, crate::catalog::Status::Expressible { .. })).unwrap();
     assert!(bad(&waiting.key).contains("not runnable"));
-    let leaf = catalog().parts().iter().find(|p| p.process == "mesocosm:fix" && matches!(p.status, crate::catalog::Status::Expressible { .. }) && !needs_categories(p)).unwrap();
+    let leaf = catalog().parts().iter().find(|p| p.process == "mesocosm:fix" && !p.traits.iter().any(|t| catalog().trait_by_key(t).is_some_and(|t|t.light_response.is_some())) && matches!(p.status, crate::catalog::Status::Expressible { .. }) && !needs_categories(p)).unwrap();
     assert!(bad(&leaf.key).contains("intake port can carry"));
     let world_time = Founding { ecology_rates: Rates::WorldTime, ..founding(all(), false) };
     assert!(world_time.generate().unwrap_err().contains("world time"));
@@ -174,11 +174,12 @@ fn a_review_offer_grows_the_part_and_its_port_into_the_body() {
     assert!(s.sim.revisable("lineage:3", &stranger).is_err());
     // Another kingdom's parts are not offered, unless the rule lets lines cross.
     let plant = revise::offered(&s, "lineage:0", &s.sim.state().lineages["lineage:0"].development.clone().unwrap(), usize::MAX);
-    assert!(plant.iter().all(|(n, _)| !n.contains("repertoire-")), "no flora part is lowered, and no animal part reaches a plant");
+    assert!(plant.iter().any(|(n, _)| n.ends_with("catalog-resprouting-tuber")));
+    assert!(plant.iter().all(|(n, _)| !n.ends_with(ORGAN)), "the detox gut stays in its kingdom");
     let across = founding(Some(Repertoire { across_kingdoms: true, ..Default::default() }), false).generate().unwrap();
     let s = session(across);
     let plant = revise::offered(&s, "lineage:0", &s.sim.state().lineages["lineage:0"].development.clone().unwrap(), usize::MAX);
-    assert!(plant.iter().any(|(n, _)| n.contains("repertoire-")));
+    assert!(plant.iter().any(|(n, _)| n.ends_with(ORGAN)), "a cross-kingdom line may reach that same gut");
 }
 
 #[test]
@@ -331,3 +332,5 @@ mod detritus;
 mod guard;
 mod mutualism;
 mod nutrients;
+
+mod resprouting;

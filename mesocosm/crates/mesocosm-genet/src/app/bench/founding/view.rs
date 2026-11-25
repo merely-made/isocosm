@@ -1,10 +1,12 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use super::{Bench, Child, Page, Panel};
+use super::{Bench, Child, Page, Panel, Version};
 use crate::app::bench::sim::{button, founding_input as input};
 use cambium::{clickable, el, focusable, text};
 use cosmograph::rules::Facing;
+
+mod worldgen;
 
 fn action(
     label: impl Into<String>,
@@ -48,6 +50,9 @@ pub(in crate::app::bench) fn view(p: &Panel) -> Child {
             action("Project founding", Panel::project),
         ]),
     ];
+    if p.page != Page::Watch {
+        content.push(row(vec![action("Compare edit", Panel::compare_edit)]));
+    }
     match p.page {
         Page::World => world(p, &mut content),
         Page::Body => anatomy(p, &mut content),
@@ -63,9 +68,10 @@ pub(in crate::app::bench) fn view(p: &Panel) -> Child {
 
 fn world(p: &Panel, out: &mut Vec<Child>) {
     out.push(heading("World conditions"));
+    worldgen::settings(p,out);
     out.push(row(vec![
         input("World seed", |b| &mut b.founding.as_mut().unwrap().seed),
-        input("Starting population", |b| {
+        input("Starting body population", |b| {
             &mut b.founding.as_mut().unwrap().population
         }),
         input("Founder cohort size", |b| {
@@ -155,10 +161,15 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
     out.push(heading("Lineages"));
     let genesis = p.session.sim.genesis();
     let mut lines = Vec::new();
-    for (key, line) in &genesis.lineages {
-        if !key.starts_with("lineage:") {
-            continue;
-        }
+    let mut all:Vec<_>=genesis.lineages.iter().filter_map(|(k,l)|Some((k.strip_prefix("lineage:")?.parse::<u32>().ok()?,k,l))).collect();
+    all.sort_by_key(|(i,_,_)|*i);
+    let pages=all.len().div_ceil(6);
+    if pages>1 {out.push(row(vec![
+        action("Previous lineages",move |p|{p.lineage_page=p.lineage_page.saturating_sub(1);Ok(())}),
+        words(format!("Lineages · page {} of {pages}",p.lineage_page+1)),
+        action("Next lineages",move |p|{p.lineage_page=(p.lineage_page+1).min(pages-1);Ok(())}),
+    ]));}
+    for (_,key,line) in all.into_iter().skip(p.lineage_page*6).take(6) {
         let key = key.clone();
         lines.push(action(
             format!("{} · {}", key, small(&line.kingdom)),
@@ -176,6 +187,18 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
         action("Load body map", Panel::load_map),
     ]));
     let Some(map) = p.map() else {
+        if let Some(line)=genesis.lineages.get(&p.lineage) {
+            if line.kingdom=="kingdom:world" || line.kingdom=="kingdom:micro" {
+                if let Some(body)=p.habitats.get(&p.lineage) {
+                    out.push(words(format!("{} shapes the ground across up to {} borders. Edit its terrain recipe in World conditions.",p.lineage,body.reach)));
+                    return;
+                }
+                let facts=line.traits.iter().map(|s|small(s)).collect::<Vec<_>>().join(", ");
+                let habitat=if line.kingdom=="kingdom:world" {"World-class habitat"}else{"Microbial surface"};
+                out.push(words(format!("{} · {habitat} · {facts}",p.lineage)));
+                return;
+            }
+        }
         out.push(words(format!("{} uses its generated anatomy.", p.lineage)));
         if genesis.lineages.get(&p.lineage).is_some_and(|l| {
             matches!(
@@ -398,17 +421,32 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
         move_time("Back one tick", -1),
         move_time("Advance one tick", 1),
         move_time("Advance 12 ticks", 12),
-        button("Save projection", |b| {
-            if let Err(e) = b.store_projection(false) {
-                b.founding.as_mut().unwrap().notice = e;
-            }
-        }),
-        button("Enter this world", |b| {
-            if let Err(e) = b.store_projection(true) {
-                b.founding.as_mut().unwrap().notice = e;
-            }
-        }),
+        button(
+            if p.original.is_some() {
+                "Save edited"
+            } else {
+                "Save projection"
+            },
+            |b| {
+                if let Err(e) = b.store_projection(Version::Edited, false) {
+                    b.founding.as_mut().unwrap().notice = e;
+                }
+            },
+        ),
+        button(
+            if p.original.is_some() {
+                "Enter edited"
+            } else {
+                "Enter this world"
+            },
+            |b| {
+                if let Err(e) = b.store_projection(Version::Edited, true) {
+                    b.founding.as_mut().unwrap().notice = e;
+                }
+            },
+        ),
     ]));
+    worldgen::atlas(p,out);
     let sites: Vec<_> = state.sites.keys().copied().collect();
     let index = sites.iter().position(|s| *s == p.site).unwrap_or(0);
     let previous = sites[(index + sites.len() - 1) % sites.len()];
@@ -428,7 +466,37 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
             Ok(())
         }),
     ]));
+    if let Some(original) = &p.original {
+        super::comparison::display(original, &p.session, p.site, out);
+        out.push(row(vec![
+            button("Save original", |b| {
+                if let Err(e) = b.store_projection(Version::Original, false) {
+                    b.founding.as_mut().unwrap().notice = e;
+                }
+            }),
+            button("Enter original", |b| {
+                if let Err(e) = b.store_projection(Version::Original, true) {
+                    b.founding.as_mut().unwrap().notice = e;
+                }
+            }),
+        ]));
+    }
     if let Some(site) = state.sites.get(&p.site) {
+        if let Some(skel)=&p.session.sim.genesis().rules.skeleton {
+            out.push(words(format!("Ground elevation {} · relief {} · water level {}",
+                site.conditions[&skel.elevation],site.conditions[&skel.relief],site.conditions[&skel.water])));
+        }
+        for (k,n) in &site.conditions {
+            if let Some(id)=k.strip_prefix("habitat:body-") && let Some(body)=p.habitats.get(&format!("lineage:{id}")) {
+                let [elevation,relief,water]=body.contribution(*n);
+                out.push(words(format!("World-class lineage {id} here · elevation {elevation:+} · relief {relief:+} · water level {water:+}")));
+            }
+        }
+        for (k,n) in &site.accounts {
+            if state.spreads.identities.contains(&cosmograph::spread::Identity::Surface(k.clone())) {
+                out.push(words(format!("Microbial surface {k} · {n} mg here")));
+            }
+        }
         out.push(words(format!(
             "Soil {} · light {}",
             site.accounts.get("world:soil").unwrap_or(&0),
@@ -449,6 +517,9 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
                 Ok(())
             }),
         ]));
+        if let Some(parent)=state.relations.iter().find(|r|r.subject==id && r.kind=="sim:parent") {
+            out.push(words(format!("Born at tick {} · parent #{}",body.born,parent.object)));
+        }
         if let Some(graph) = super::diagram::view(p) {
             out.push(graph);
         }
@@ -478,6 +549,25 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
                 .map(|(k, v)| format!("{v} {}", small(k)))
                 .collect::<Vec<_>>();
             out.push(words(format!("Part {id} · {}", cells.join(", "))));
+            let part_id=cosmograph::schema::PartId(id);
+            if let Some([run,seg,slot])=body.situs(part_id)
+                && part.graft_origin.is_none()
+                && let Some(dev)=state.lineages.get(&body.lineage).and_then(|l|l.development.as_ref())
+                && let Some(run)=dev.recipe.tagmata.get(usize::from(run))
+                && (slot==0 || run.chain.is_empty())
+                && let Some(kind)=run.kind_at(seg,slot)
+                && let Some(bank)=&p.session.sim.genesis().rules.repertoire {
+                let suffix=format!("-port-{}",body.lineage.trim_start_matches("lineage:"));
+                if let Some(entry)=bank.kinds.get(kind.strip_suffix(&suffix).unwrap_or(&kind))
+                    && let Some(named)=cosmograph::catalog::catalog().part_by_key(&entry.part) {
+                    out.push(words(format!("Lineage recipe · {} · {}",small(&named.key),named.traits.join(", "))));
+                }
+            }
+            if body.lives(part_id)
+                && let Some(port)=cosmograph::mosaic::ports::active(part) {
+                let abilities=super::organ_reading(port);
+                if !abilities.is_empty(){out.push(words(abilities.join(" · ")));}
+            }
         }
     }
     let mut forms = std::collections::BTreeMap::new();
