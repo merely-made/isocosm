@@ -8359,8 +8359,8 @@ draws_on = ["919", "1064"]
 title = "What the player plays"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds, a microbe by switches and plasmids at host events; speciating is the player's act."
-draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204", "1216", "1217", "1221", "1223", "1224", "1225", "1226"]
+summary = "The player is the lineage's continuity, one critter at a time and otherwise acting through regard, learning and selection; a critter lives by instinct under the nudge until sapient; succession runs offspring, kin, nearest member; world-class lines, the world the top one, are held by regard and played between rounds; a microbe by switches and plasmids; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "671", "682", "1056", "1198", "1204", "1216", "1217", "1221", "1223", "1224", "1225", "1226", "1244", "1248"]
 
 [statements."mesocosm.2"]
 title = "The only directive is a nudge"
@@ -8387,8 +8387,8 @@ draws_on = ["833", "841", "842", "848", "method.8"]
 title = "Defaults"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "Mesocosm defaults to A1, to statistical agreement and to 2 ticks a second, following measurement."
-draws_on = ["961", "978", "sim-execution D2"]
+summary = "Mesocosm defaults to A1 and statistical agreement at 10 ticks a second; time runs at play speed only while the foreground needs it, aiming at a round of an hour or two."
+draws_on = ["961", "978", "1249", "sim-execution D2", "sim-execution D21"]
 
 [statements."mesocosm.6"]
 title = "The edit and its sheet"
@@ -8759,8 +8759,8 @@ draws_on = ["172"]
 title = "Epochs and deep time"
 source = "design_docs/doctrine.md"
 area = "Record and history"
-summary = "An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs."
-draws_on = ["451", "452", "1199", "1212"]
+summary = "An epoch ends by a timed (a year by default), gated or player-called rule; unplayed deep time steps on epochs that lengthen with distance from play, to millions of years, over an ecological span in which lineages remake the world."
+draws_on = ["451", "452", "1199", "1212", "1246", "1250"]
 
 [statements."schema.1"]
 title = "Authored content is native"

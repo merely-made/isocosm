@@ -5,8 +5,8 @@ after he named four games as Mesocosm's inspirations. It is not a plan and
 changes no code. It holds no rules of its own: it reads the doctrine as one
 game, says what each timescale of play is and lacks, and asks what the
 doctrine leaves open (§10). Its questions were answered on 2026-11-25 as
-cases 1244 to 1251, under §10; the doctrine statements they refine
-(Mesocosm 1 and 5, Record 7) are not yet rewritten. Mark's words are quoted
+cases 1244 to 1251, under §10, and Mesocosm 1 and 5 and Record 7 were
+rewritten from them the same day. Mark's words are quoted
 with their date.
 
 **For:** one place that says what Mesocosm is to play, from a moment to deep
