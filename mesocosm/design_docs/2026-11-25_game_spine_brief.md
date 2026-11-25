@@ -6,8 +6,10 @@ changes no code. It holds no rules of its own: it reads the doctrine as one
 game, says what each timescale of play is and lacks, and asks what the
 doctrine leaves open (§10). Its questions were answered on 2026-11-25 as
 cases 1244 to 1251, under §10, and Mesocosm 1 and 5 and Record 7 were
-rewritten from them the same day. Mark's words are quoted
-with their date.
+rewritten from them the same day. Corrected the same day against the code:
+the first draft read built status off plan headings and called members'
+learning and the round's rules unbuilt; they are built behind host options
+(§3, §5, §9). Mark's words are quoted with their date.
 
 **For:** one place that says what Mesocosm is to play, from a moment to deep
 time, so building can be judged against a whole game rather than a phase.
@@ -71,9 +73,13 @@ keeps leading, which nudges served) becomes a member's learned delta (M3.6),
 a third of each parent's delta passes at birth (case 1058), the boundary
 selects among lines by reproductive success (Ecology 1), and over deep time
 selection works on the rate constants themselves (case 1119, 3.7). That
-chain is what makes the timescales one game. **It is unbuilt past M3.5**: the
-lineage policy evolves, but members do not yet learn, so play does not yet
-reach the next generation.
+chain is what makes the timescales one game. It is built as far as a member
+and its young (`directing/learn.rs`, M3.6, behind `--learning`): a delta on
+drives and on kinds of act, credit for a delayed reward, fading, a third to
+each child. Open past that (lineage-rounds plan, Findings): recurrent
+state, a delta reaching the policy's hidden weights, the fold of members'
+deltas back into the lineage, and imitation, teaching and learning from
+play (M3.7).
 
 ## 4. Verbs
 
@@ -118,8 +124,9 @@ menu over a body (pillar 1). A finite list, by timescale:
 
 ## 5. A session
 
-What an evening of play is, read from the doctrine. Steps marked † are
-unbuilt or unruled.
+What an evening of play is, read from the doctrine. Most steps exist behind
+host options (named in brackets, from `mesocosm/README.md`) rather than in
+the ordinary New World founding; † marks what is not built.
 
 1. The player opens a world and picks a known lineage and a start
    (Mesocosm 3). A first world offers its founded lines.
@@ -128,14 +135,16 @@ unbuilt or unruled.
    Nudges that serve it grow its bond and its trust in that kind of
    direction.
 3. It breeds; they stay or take the young. It dies; they continue as an
-   heir. The kin near them have heard them before and heed sooner †(M3.6,
-   trust per kind).
-4. The round ends by the span agreed or the condition picked †(LR1, EB3).
+   heir. What the critter learned fades, and a third passes to its young
+   [`--learning`]; kin heeding sooner by kind of direction †(trust per
+   kind).
+4. The round ends by the span agreed or the condition picked [`--rounds`,
+   `--condition`]; goals offered and verified †(EB3).
 5. At the boundary they see what prospered, read the sheet, draft from what
-   the line ate, and pick among scored candidates †(LR2 to LR4). Every other
-   lineage drifts beside theirs.
-6. Between rounds, if a world-class lineage regards them, they shape its
-   conditions and cycles †(LR8).
+   the line ate, and pick among scored candidates [`--rounds-rules`: the
+   drift, the draft, the sheet]. Every other lineage drifts beside theirs.
+6. Between rounds, if a world-class lineage regards them [`--regard`], they
+   shape its conditions [`--turn`, temperature only] and cycles †.
 7. The next round starts on the new world. Over many rounds lines speciate,
    some become sapient and are driven (Directing 3) †(the measure), and the
    world keeps the record.
@@ -211,16 +220,17 @@ add verbs to a loop that must hold without them.
 
 | Timescale | Built | Missing for play |
 |---|---|---|
-| A moment | Directing D1 to D5, the switch, native bodies with stances, supported turning and sensed reachable food | Trust per kind, regard (Mesocosm 2); certification of M3 and M4i |
-| A round | Lineage policy evolving (M3.5); growth grammar operators (LR6) | Rounds as such (LR1); members learning (M3.6); culture (M3.7); the tier line (E5) |
-| The boundary | Boundary, review, revision, speciation native (`lineage/`) | Success-weighted drift (LR2), the draft (LR3), the sheet (LR4), a coarse copy faster than exact (EB7) |
-| Deep time | Generated worlds, climate, seasons (`Condition::Season`) | The coarse step (E4b, the coarse-step brief), world-class levers (LR8), a web that holds for years on more seeds (sim S10) |
+| A moment | Directing D1 to D5, the switch, native bodies with stances, supported turning and sensed reachable food; asking a critter toward, away from or near a target; place memory of meals and injuries | Trust per kind of direction (Mesocosm 2); certification of M3 and M4i |
+| A round | Rounds with spans, conditions, heirs and forfeit (`--rounds`, `--condition`); the lineage policy as a small integer net (M3.5); members learning with delayed credit and a third to young (`--learning`, M3.6); regard and known lineages (`--regard`); growth grammar operators (LR6) | Recurrent state, the fold of members' deltas into the lineage, imitation and teaching (M3.7); verified goals (EB3); the tier line (E5) |
+| The boundary | Boundary, review, revision, speciation native (`lineage/`); the success-weighted drift, the draft from what the line ate, the sheet (`--rounds-rules`); young grown from the line's current recipe | A coarse copy faster than exact (EB7); adopt or branch between edits (LR9) |
+| Deep time | Generated worlds, climate, seasons (`Condition::Season`); a held world's temperature turned (`--turn`); a microbe held by switches (`--hosting`) | The coarse step (E4b, the coarse-step brief), lengthening epochs (1250), water and light offsets and cycles (LR8), a web that holds for years on more seeds (sim S10) |
 
-Lineage-rounds D1 already orders the first slice (LR1 to LR4, solo, on
-today's bodies). Read against §3, M3.6 belongs in that slice too: without
-it a played round leaves no trace in the next generation, and the loop
-plays as SimLife with a camera rather than as one game. Case 1251 adds it to
-v1.
+The pieces of a round are built one flag at a time. What is missing for play
+is their composition: an ordinary New World founding with learning, the
+round's rules and regard on together, each choice legible in the window,
+and 1249's tempo. Case 1251 makes that v1. Lineage-rounds D1's check stands
+for it: three rounds on an unchosen seed, then whether a fourth is wanted
+(LR4h).
 
 ## 10. Questions for Mark
 
