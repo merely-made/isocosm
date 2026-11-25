@@ -7,6 +7,7 @@ use cambium::{clickable, el, focusable, text};
 use cosmograph::rules::Facing;
 
 mod worldgen;
+mod growth;
 
 fn action(
     label: impl Into<String>,
@@ -68,6 +69,15 @@ pub(in crate::app::bench) fn view(p: &Panel) -> Child {
 
 fn world(p: &Panel, out: &mut Vec<Child>) {
     out.push(heading("World conditions"));
+    if p.draft.repertoire.as_ref().is_some_and(|r| r.generative_ecology) {
+        out.push(row(vec![action("Find a persistent ecology", Panel::search)]));
+        if let Some(summary) = p.candidate() {
+            out.push(words(summary));
+            out.push(row(vec![action("Open suggested world", Panel::open_candidate)]));
+        } else {
+            for message in p.outlook_words() { out.push(words(message)); }
+        }
+    }
     worldgen::settings(p,out);
     out.push(row(vec![
         input("World seed", |b| &mut b.founding.as_mut().unwrap().seed),
@@ -182,6 +192,22 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
         ));
     }
     out.push(row(lines));
+    if let Some(played) = p.draft.played
+        && p.generated_maps.contains_key(&p.lineage)
+        && let Some(index) = p.lineage.strip_prefix("lineage:").and_then(|s| s.parse::<u32>().ok())
+    {
+        if played.lineage == index {
+            out.push(words(format!("You can direct members of {} in this founding.", p.lineage)));
+        } else {
+            out.push(row(vec![
+                words(format!("Played lineage · lineage:{}", played.lineage)),
+                action("Play this lineage", move |p| {
+                    if let Some(played) = &mut p.draft.played { played.lineage = index; }
+                    Ok(())
+                }),
+            ]));
+        }
+    }
     out.push(row(vec![
         input("Body map path", |b| &mut b.founding.as_mut().unwrap().path),
         action("Load body map", Panel::load_map),
@@ -215,6 +241,9 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
         return;
     };
     out.push(heading(format!("{} · body map", p.lineage)));
+    for rule in &map.grammar.rules {
+        out.push(words(growth::describe(rule)));
+    }
     if let Some(graph) = super::diagram::view(p) {
         out.push(graph);
     }
@@ -466,6 +495,21 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
             Ok(())
         }),
     ]));
+    let mut forecast = vec![action("Forecast this ecology", Panel::forecast), action("Visit selected lineage", Panel::visit_lineage), words(format!("Selected {}", p.lineage))];
+    if let Some((_, specimen)) = p.specimen()
+        && specimen.lineage != p.lineage
+    {
+        let lineage = specimen.lineage.clone();
+        forecast.push(action(format!("Select {}", lineage), move |p| {
+            p.lineage.clone_from(&lineage);
+            p.run = 0;
+            Ok(())
+        }));
+    }
+    out.push(row(forecast));
+    for line in p.outlook_words() {
+        out.push(words(line));
+    }
     if let Some(original) = &p.original {
         super::comparison::display(original, &p.session, p.site, out);
         out.push(row(vec![
@@ -528,6 +572,18 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
             let cosmograph::flows::MadeBy::Process(key) = &flow.made_by else {
                 continue;
             };
+            // The sugar leg is the single payment identifying both partners.
+            if key.starts_with("mutualism:exchange-")
+                && flow.from.1 == "world:exchange-sugar" && flow.to.1 == flow.from.1
+                && !flow.internal()
+                && let (Some(buyer), Some(carrier)) = (flow.from.0.body(), flow.to.0.body())
+                && (id == buyer || id == carrier)
+            {
+                out.push(words(format!(
+                    "#{buyer} paid #{carrier} {} mg of sugar for mineral nutrients at tick {}",
+                    flow.amount, flow.tick,
+                )));
+            }
             for (end, direction) in [(flow.from.0, "out"), (flow.to.0, "in")] {
                 if end
                     .body()

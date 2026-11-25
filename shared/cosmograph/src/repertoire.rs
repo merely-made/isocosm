@@ -47,6 +47,9 @@ pub struct Repertoire {
     /// Compose founder lineage grammars from this world's runnable organs.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub founders: bool,
+    /// Compose growth rules at founding and admit local exchange by living organs.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub generative_ecology: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub kingdom_draw: Option<crate::generate::KingdomDraw>,
     /// Authored world-class recipes by ordinal within their kingdom.
@@ -158,7 +161,14 @@ pub(crate) fn declare(
     }
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
-        let Ok(Lowering { template, root }) = lowering_full(part, cats, guard, mutual, rules) else { continue };
+        let Ok(Lowering { mut template, mut root }) = lowering_full(part, cats, guard, mutual, rules) else { continue };
+        if rule.generative_ecology && needs_mutualism(part) {
+            for organ in std::iter::once(&mut template).chain(root.as_mut()) {
+                if let Some(port) = &mut organ.port {
+                    *port = lower::exchange_goods(*port, part);
+                }
+            }
+        }
         let key = kind_key(&part.key);
         let function = lower::function_of(&template).ok_or("a lowered kind has no function")?;
         let root_key = root.as_ref().map(|_| format!("{key}-root"));

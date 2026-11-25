@@ -7,6 +7,8 @@
 use super::*;
 use crate::{Founding, ecology::Role, process::IntakePort, repertoire::Lowered};
 
+mod growth;
+
 type Pool<'a> = BTreeMap<IntakePort, Vec<&'a str>>;
 
 pub(crate) fn maps(
@@ -15,6 +17,11 @@ pub(crate) fn maps(
     kinds: &BTreeMap<Key, Template>,
 ) -> Result<BTreeMap<Key, BodyMap>> {
     let mut pools: BTreeMap<(&str, bool), Pool> = BTreeMap::new();
+    let generative = f.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
+    let share_parts = generative && lowered.across_kingdoms;
+    // Keep the native pool and the world's whole pool indexed by capability.
+    // A draw can favor natal forms without making the kingdom a hard boundary.
+    let mut common: BTreeMap<bool, Pool> = BTreeMap::new();
     for (kind, entry) in &lowered.kinds {
         if entry.root_of.is_some() {
             continue;
@@ -28,6 +35,14 @@ pub(crate) fn maps(
             continue;
         }
         if let Some(port) = kinds[kind].port {
+            if share_parts {
+                common
+                    .entry(entry.mouth)
+                    .or_default()
+                    .entry(port)
+                    .or_default()
+                    .push(&entry.part);
+            }
             pools
                 .entry((&entry.kingdom, entry.mouth))
                 .or_default()
@@ -53,8 +68,24 @@ pub(crate) fn maps(
                 crate::draw(f.seed, "distinct-founder", &[i.into(), attempt])
             };
             let draw = |name: &str| crate::draw(seed, name, &[i.into()]);
+            let pool_for = |mouth| {
+                let natal = pools.get(&(kingdom, mouth));
+                let world = common.get(&mouth);
+                if share_parts
+                    && draw(if mouth {
+                        "mouth-repertoire"
+                    } else {
+                        "organ-repertoire"
+                    }) % 2
+                        == 0
+                {
+                    world.or(natal)
+                } else {
+                    natal.or(world)
+                }
+            };
             let pick = |mouth: bool, domain: &str| -> Option<Key> {
-                let pool = pools.get(&(kingdom, mouth))?;
+                let pool = pool_for(mouth)?;
                 let n = draw(domain);
                 let entries = pool.values().nth((n % pool.len() as u64) as usize)?;
                 Some(entries[((n / pool.len() as u64) % entries.len() as u64) as usize].to_string())
@@ -73,8 +104,7 @@ pub(crate) fn maps(
                 root.per_segment = 1;
             }
             // A producer keeps its fixing surfaces, a consumer its feeding and
-            // locomotor tissue. The branches that remain available can express
-            // zero, one or two distinct accessory capabilities.
+            // locomotor tissue. Accessory organs draw distinct capabilities.
             let mut axis = super::bare(1, "block");
             axis.parent = Some(0);
             if role.consumer() {
@@ -83,12 +113,11 @@ pub(crate) fn maps(
                 axis.socket = Facing::Right;
             }
             map.grammar.seed.push(axis);
-            let mut organs: Vec<_> = pools
-                .get(&(kingdom, false))
+            let mut organs: Vec<_> = pool_for(false)
                 .into_iter()
                 .flat_map(|pool| pool.iter())
                 .collect();
-            let count = (draw("founder-organ-count") % 3) as usize;
+            let count = usize::from(generative) + (draw("founder-organ-count") % 3) as usize;
             let right = draw("founder-facing") % 2 == 0;
             for slot in 0..count.min(organs.len()) {
                 let n = crate::draw(seed, "founder-organ", &[i.into(), slot as u64]);
@@ -130,6 +159,11 @@ pub(crate) fn maps(
                 axis.segments = 1 + (draw("founder-axis-length") % 4) as u8;
                 axis.facing = [Facing::Front, Facing::Right, Facing::Left, Facing::Above]
                     [(draw("founder-axis-facing") % 4) as usize];
+            }
+            if generative {
+                growth::compose(&mut map.grammar, seed, i, grown);
+            }
+            if roster {
                 let mut signature = map.clone();
                 signature.variance = 0;
                 signature.absence = [0, 1];

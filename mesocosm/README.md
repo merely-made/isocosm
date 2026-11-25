@@ -45,15 +45,22 @@ another run.
 
 ## Found a world in Mesocosm
 
-Launch `mesocosm-genet` with no arguments, choose **World and lineage editor** on
-the native bench, or press **E** at the game's **New World** screen. An explicit
+Launch `mesocosm-genet` with no arguments to open the editor. You can also
+choose **World and lineage editor** on the bench or press **E** at the game's
+**New World** screen. An explicit
 launch is `mesocosm-genet --founding-editor --seed 104`.
 
 **World conditions** sets the seed, population, cohort size, starting stock
-range, climate preset and water level. The starting map is a four-site plane.
-**Use a planet** folds a six-face grid into a sphere. You can also load a
+range, climate preset and water level. The seed draws the map, its outline,
+the starting lineages and their growth instructions. **Find a persistent ecology**
+compares the current seed with two other draws using your settings. It
+shortlists two using a regional estimate, then simulates the finalists in
+detail for 96 ticks. **Open suggested world** opens the finalist with the
+best surviving fraction of founding populations at tick zero. A tie favours
+the one with more surviving lineages. You can also load a
 Cosmograph founding TOML. **Lineage body maps** selects a lineage and a growth
-run. Drag an attached run around its parent to change the direction it grows.
+run. Choose **Play this lineage** to direct its members when you enter the
+projected world. Drag an attached run around its parent to change the direction it grows.
 Add branches, edit repeats and variation, and attach native tissues and
 admitted catalogue parts. **Load body map** takes a single lineage TOML.
 
@@ -61,7 +68,12 @@ admitted catalogue parts. **Load body map** takes a single lineage TOML.
 Select a site and **Watch time pass**, or advance and rewind by one or twelve
 ticks. Select a joint on the developed specimen to inspect its tissue.
 The population rows group the inhabitants by their realized segment counts
-and omitted organs. The matter readings come from native process transfers.
+and omitted organs. The matter readings come from native process transfers. Select a specimen to
+see its functional tissues and any sugar it exchanged with a local partner on
+the displayed tick. **Forecast this ecology** samples twelve unattended ticks
+and projects regional stocks and populations 96 ticks ahead. Use **Visit selected lineage** to jump to a site it occupies and read
+its projected numbers and biomass. Your playable world stays at the tick you
+selected.
 
 To compare a change, advance to a tick of interest, open **Lineage body maps**
 or **World conditions**, make an edit, then choose **Compare edit**. Both
@@ -71,9 +83,9 @@ world has its own save and entry buttons. **Project founding** starts a fresh
 projection at tick zero. A saved `entry.json` reopens one world at a time.
 
 Run the [native comparison scenario](testing/bench/native-founding-comparison.scenario)
-with `--founding-editor --seed 73`. At site 1, tick 12, one extra repeat of the frond-bearing
-segment yielded five living plants beside the original four. Raising only
-sea level moved the waterline from 6 to 11 and left four plants there.
+with `--founding-editor --seed 73` to compare a body edit and a water-level
+edit at the same site and tick. You can also forecast the original and edited
+ecologies side by side before choosing which one to enter.
 
 **Save projection** writes the selected tick, the founding TOML and a reusable
 TOML for each authored lineage under `~/Mesocosm/worlds/` (override with

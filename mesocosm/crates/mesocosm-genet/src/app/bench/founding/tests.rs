@@ -186,13 +186,20 @@ fn watched_site_pages_the_whole_ground_and_keeps_representatives_on_it() {
     let Some(cosmograph::map::Layout::Grid(ref mut grid)) = draft.map else { unreachable!() };
     grid.side = 512;
     let mut panel = Panel::new(draft).unwrap();
-    panel.site = 1;
     panel.seek(12).unwrap();
+    let mut representatives = BTreeMap::new();
+    for group in panel.session.sim.state().population.groups.values() {
+        let body = &group.entity;
+        if body.alive && body.body.is_some() && let Some(site) = body.resident_site() {
+            *representatives.entry(site).or_insert(0usize) += 1;
+        }
+    }
+    let (&site, _) = representatives.iter().max_by_key(|(_, n)| *n).expect("populated site");
     let saved = serde_json::to_vec(&panel.session.save()).unwrap();
-    let runtime = Runtime::enter_founding_at(&saved, 4, None, Some(1)).unwrap();
+    let runtime = Runtime::enter_founding_at(&saved, 4, None, Some(site)).unwrap();
     let sim = runtime.sim();
     let before = sim.state_hash();
-    let scene = crate::played::scene::watched_site(&sim, 1, None, &runtime.view()).unwrap();
+    let scene = crate::played::scene::watched_site(&sim, site, None, &runtime.view()).unwrap();
     assert!(scene.window.is_paged());
     assert_eq!((scene.window.min, scene.window.max), ([0; 2], [512; 2]));
     assert!(scene.ground.keys().next().is_none());

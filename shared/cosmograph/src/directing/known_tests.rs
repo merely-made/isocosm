@@ -60,7 +60,7 @@ fn flow(from: &str, to: &str, amount: u64, count: u64) -> Flow {
     Flow {
         tick: 0, made_by: MadeBy::Process("test:give".into()),
         from: (Holder::Entity(0), "matter:x".into()), to: (Holder::Entity(1), "matter:x".into()),
-        amount, count, from_kind: kind(from), to_kind: kind(to), composition: None,
+        amount, count, from_kind: kind(from), to_kind: kind(to), body_locations: [None, None], composition: None,
     }
 }
 

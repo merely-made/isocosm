@@ -25,13 +25,8 @@ fn generated_founders_keep_authored_overrides_and_reroll_unedited_lines() {
         let lineage = &g.lineages[key];
         assert!(lineage.development.as_ref().unwrap().grammar.is_some());
         for part in map.regions.values().filter(|p| p.starts_with("part:")) {
-            assert_eq!(
-                cosmograph::catalog::catalog()
-                    .part_by_key(part)
-                    .unwrap()
-                    .kingdom,
-                lineage.kingdom
-            );
+            let kind = cosmograph::repertoire::kind_key(part);
+            assert!(g.rules.repertoire.as_ref().unwrap().reaches(&lineage.kingdom, &kind));
         }
     }
 }

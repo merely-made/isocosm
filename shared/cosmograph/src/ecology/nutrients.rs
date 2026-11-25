@@ -128,7 +128,7 @@ pub fn axis(a: u32) -> String {
     if a == 0 { SOIL.into() } else { format!("{SOIL}-{a}") }
 }
 
-fn owed(a: u32) -> String {
+pub(super) fn owed(a: u32) -> String {
     format!("nutrients:owed-{a}")
 }
 
@@ -305,15 +305,15 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         return Err("nutrients layer on the stock and A1 rates, not world time".into());
     }
     rule.validate()?;
-    let producers: Vec<u32> = (0..founding.lineages).filter(|&i| founding.role(i) == Role::Producer).collect();
     let every = crate::rules::minutes_ticks(rule.period, g.rules.tick_microseconds());
-    let drawers = (0..founding.lineages).filter(|&i| matches!(founding.role(i), Role::Producer | Role::Decomposer));
+    let body_driven = founding.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
+    let drawers = (0..founding.lineages).filter(|&i| body_driven || matches!(founding.role(i), Role::Producer | Role::Decomposer));
     let mut made: Vec<Process> = (1..rule.axes).flat_map(|a| CHUNKS.map(|c| sort(a, c))).collect();
     made.extend(drawers.flat_map(|i| (0..rule.axes).map(move |a| (i, a))).map(|(i, a)| tuned(&rule, i, a, every)));
     if g.rules.processes.len() + made.len() > g.rules.limits.processes {
         return Err("nutrients' turns exceed the world's process limit".into());
     }
-    for &i in &producers {
+    for i in 0..founding.lineages {
         if let Some(grow) = g.rules.processes.get_mut(&format!("ecology:produce-{i}")) {
             retune(grow, &rule, i, true);
         }

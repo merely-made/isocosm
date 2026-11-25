@@ -79,11 +79,15 @@ impl Review {
     pub fn of_draft_using(session: &Session, lineage: &str, scoring: Tick,
         draft: Option<Tick>,
         score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Self> {
-    let budget = draft.and_then(|_| draft::budget(session, lineage));
+        let budget = draft.and_then(|_| draft::budget(session, lineage));
+        let mut readings = reckon::readings(&session.sim);
+        if session.sim.genesis().founding.as_ref().and_then(|f| f.repertoire.as_ref()).is_some_and(|r| r.generative_ecology) {
+            readings.extend(reckon::neighbours(&session.sim, lineage));
+        }
         Ok(Self {
             tick: session.sim.state().tick,
             lineage: lineage.into(),
-            readings: reckon::readings(&session.sim),
+            readings,
             program: program::digest(&program::program(session, lineage)),
             offers: offers_draft_using(session, lineage, scoring, draft, score)?,
             budget,

@@ -38,8 +38,11 @@ fn flat(at: [f32; 3]) -> [f32; 2] {
 impl Panel {
     pub(super) fn specimen(&self) -> Option<(u64, &Entity)> {
         let population = &self.session.sim.state().population;
-        if let Some(id) = self.specimen_id {
-            return population.get(id).map(|e| (id, e));
+        if let Some(id) = self.specimen_id
+            && let Some(e) = population.get(id)
+            && e.alive && e.resident_site() == Some(self.site)
+        {
+            return Some((id, e));
         }
         population
             .groups
@@ -50,6 +53,34 @@ impl Panel {
                     && g.entity.resident_site() == Some(self.site)
             })
             .map(|(&id, g)| (id, g.entity.as_ref()))
+    }
+
+    pub(super) fn visit_lineage(&mut self) -> Result<(), String> {
+        let state = self.session.sim.state();
+        let mut inhabited = std::collections::BTreeMap::new();
+        for (&id, group) in &state.population.groups {
+            let body = &group.entity;
+            if body.alive && body.lineage == self.lineage && let Some(site) = body.resident_site() {
+                inhabited.entry(site).or_insert(Some(id));
+            }
+        }
+        let marker = self.lineage.strip_prefix("lineage:").map(|i| format!("habitat:body-{i}"));
+        for (&site, place) in &state.sites {
+            if place.accounts.get(&self.lineage).copied().unwrap_or(0) > 0
+                || marker.as_ref().is_some_and(|k| place.conditions.get(k).copied().unwrap_or(0) > 0)
+            {
+                inhabited.entry(site).or_insert(None);
+            }
+        }
+        let next = inhabited.range((std::ops::Bound::Excluded(self.site), std::ops::Bound::Unbounded)).next()
+            .or_else(|| inhabited.first_key_value());
+        let Some((&site, &specimen)) = next else {
+            return Err(format!("No resident or surface population of {} is visible at this tick.", self.lineage));
+        };
+        self.site = site;
+        self.specimen_id = specimen;
+        self.part_id = None;
+        Ok(())
     }
 
     pub(super) fn next_specimen(&mut self) {

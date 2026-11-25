@@ -86,6 +86,12 @@ pub enum Trade {
     /// tissue (the nutrient rule, `crate::ecology::Nutrients`): no partner
     /// is needed, so it is no trade, but it is read where one is.
     Draws,
+    /// Exports photosynthate or exudate to a partner.
+    GivesSugar,
+    /// Carries mineral nutrients from the substrate to a partner.
+    GivesNutrient,
+    /// Can take up a partner's sugar or exudate.
+    TakesSugar,
 }
 
 impl Trade {
@@ -94,6 +100,9 @@ impl Trade {
             Self::Gives => 1,
             Self::Takes => 2,
             Self::Draws => 4,
+            Self::GivesSugar => 8,
+            Self::GivesNutrient => 16,
+            Self::TakesSugar => 32,
         }
     }
 }
@@ -324,7 +333,7 @@ impl IntakePort {
     }
 
     pub const fn with_trade_bits(mut self, bits: u8) -> Self {
-        self.trade |= bits & 7;
+        self.trade |= bits & 63;
         self
     }
 

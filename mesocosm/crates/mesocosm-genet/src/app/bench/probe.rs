@@ -29,7 +29,11 @@ impl mandrake::Product for BenchProduct {
     }
 
     fn busy(&self, ctx: &Context<'_>, capture_pending: bool) -> Option<bool> {
-        ctx.runner.state().refuge.as_ref().map(|panel| capture_pending || panel.running())
+        let state = ctx.runner.state();
+        if let Some(panel) = &state.founding {
+            return Some(capture_pending || panel.forecasting());
+        }
+        state.refuge.as_ref().map(|panel| capture_pending || panel.running())
     }
 
     fn snapshot(&self, ctx: &Context<'_>, captures: usize, _opacity: f32) -> ProbeSnapshot {

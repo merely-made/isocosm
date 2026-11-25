@@ -32,6 +32,7 @@ pub mod directing;
 pub mod ecology;
 pub mod defence;
 pub mod climate;
+pub mod coarse;
 #[cfg(test)]
 mod climate_tests;
 #[cfg(test)]

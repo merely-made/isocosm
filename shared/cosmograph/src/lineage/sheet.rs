@@ -35,6 +35,9 @@ pub struct Sheet {
     pub trophic: Option<Trophic>,
     /// What it does with matter, read from its ports.
     pub feeding: FeedingMode,
+    /// Exchange functions expressed by the adult's living organs.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub exchange: BTreeSet<crate::process::Trade>,
     /// Cells by function over the whole body.
     pub functions: BTreeMap<Key, u32>,
     /// The systems the body realises.
@@ -136,6 +139,11 @@ pub fn of(
         clutch: d.clutch,
         trophic: trophic::of(&e),
         feeding: crate::mosaic::ports::feeding(&e),
+        exchange: [
+            crate::process::Trade::GivesSugar,
+            crate::process::Trade::GivesNutrient,
+            crate::process::Trade::TakesSugar,
+        ].into_iter().filter(|&what| crate::ecology::trades(&e, what)).collect(),
         functions,
         systems: carried
             .iter()

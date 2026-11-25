@@ -14,8 +14,11 @@ use std::{
 mod comparison;
 pub(super) mod diagram;
 pub(super) mod fields;
+mod outlook;
 #[cfg(test)]
 mod catalogue_tests;
+#[cfg(test)]
+mod partner_tests;
 #[cfg(test)]
 mod tests;
 mod view;
@@ -64,6 +67,7 @@ pub(super) struct Panel {
     transfers: BTreeMap<u64, BTreeMap<String, u128>>,
     notice: String,
     next_tick: Option<std::time::Instant>,
+    outlook: outlook::Outlook,
 }
 
 impl Panel {
@@ -89,6 +93,8 @@ impl Panel {
             detritus: Some(Default::default()),
             repertoire: Some(cosmograph::repertoire::Repertoire {
                 founders: true,
+                generative_ecology: true,
+                across_kingdoms: true,
                 kingdom_draw: Some(Default::default()),
                 ..Default::default()
             }),
@@ -130,6 +136,11 @@ impl Panel {
             .keys()
             .next()
             .cloned()
+            .or_else(|| {
+                let played = session.sim.genesis().founding.as_ref()?.played?;
+                let key = format!("lineage:{}", played.lineage);
+                generated_maps.contains_key(&key).then_some(key)
+            })
             .or_else(|| generated_maps.keys().next().cloned())
             .or_else(|| {
                 session
@@ -179,10 +190,16 @@ impl Panel {
             transfers: BTreeMap::new(),
             notice: String::new(),
             next_tick: None,
+            outlook: Default::default(),
         })
     }
 
     fn recipe(&self) -> Result<Founding, String> {
+        let seed = self.seed.text().trim().parse().map_err(|_| "Seed must be a whole nonnegative number.")?;
+        self.recipe_for_seed(seed)
+    }
+
+    fn recipe_for_seed(&self, seed: u64) -> Result<Founding, String> {
         let mut draft = self.draft.clone();
         let number = |name, value: &TextInput| {
             value
@@ -191,7 +208,7 @@ impl Panel {
                 .parse::<u64>()
                 .map_err(|_| format!("{name} must be a whole nonnegative number."))
         };
-        draft.seed = number("Seed", &self.seed)?;
+        draft.seed = seed;
         draft.population = number("Population", &self.population)?;
         draft.cohort_size = number("Cohort size", &self.cohort)?;
         draft.stock_min = number("Minimum stock", &self.stock_min)?;
@@ -232,6 +249,7 @@ impl Panel {
         self.lineage_page=0;
         self.run = self.map().map_or(0, |m| self.run.min(m.grammar.seed.len().saturating_sub(1)));
         self.session = session;
+        self.outlook.invalidate();
         self.original = None;
         self.transfers.clear();
         self.flows.clear();
@@ -270,6 +288,7 @@ impl Panel {
         if current == tick {
             return Ok(());
         }
+        self.outlook.invalidate();
         self.flows = if let Some(original) = &self.original {
             // Publish the pair only when both simulations reached the requested tick.
             let mut original = original.clone();
@@ -526,6 +545,9 @@ fn organ_reading(port: cosmograph::process::IntakePort) -> Vec<String> {
             "Draws the scarcest soil nutrient",
         ),
         (port.trades(Trade::Gives), "Can supply a trading partner"),
+        (port.trades(Trade::GivesSugar), "Offers sugar or exudate"),
+        (port.trades(Trade::GivesNutrient), "Supplies mineral nutrients"),
+        (port.trades(Trade::TakesSugar), "Accepts sugar or exudate"),
         (
             port.trades(Trade::Takes),
             "Can receive from a trading partner",

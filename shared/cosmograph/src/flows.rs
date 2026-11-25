@@ -63,9 +63,22 @@ pub struct Flow {
     pub from_kind: Option<Kind>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to_kind: Option<Kind>,
+    /// The site and living state at acceptance for each body endpoint, in
+    /// source/destination order. Later moves in the same tick can change both.
+    #[serde(default, skip_serializing_if = "no_body_locations")]
+    pub body_locations: [Option<(Id, bool)>; 2],
     /// What the move carried, by material, where its maker says.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub composition: Option<Composition>,
+}
+
+fn no_body_locations(pair: &[Option<(Id, bool)>; 2]) -> bool {
+    pair == &[None, None]
+}
+
+fn location(population: &crate::population::Population, holder: Holder) -> Option<(Id, bool)> {
+    let e = population.get(holder.body()?)?;
+    Some((e.place, e.alive))
 }
 
 /// A body's lineage and kingdom, by key.
@@ -303,23 +316,26 @@ impl Simulation {
         }
         let tick = self.state.tick;
         let population = &self.state.population;
-        let kind = |h: Holder| {
-            let e = population.get(h.body()?)?;
-            Some(Kind {
-                lineage: e.lineage.clone(),
-                kingdom: e.kingdom.clone(),
-            })
+        let body = |h: Holder| {
+            let e = h.body().and_then(|id| population.get(id));
+            (e.map(|e| Kind { lineage: e.lineage.clone(), kingdom: e.kingdom.clone() }),
+                e.map(|e| (e.place, e.alive)))
         };
-        self.flows.flows.extend(legs.into_iter().map(|leg| Flow {
-            tick,
-            made_by: made_by.clone(),
-            from_kind: kind(leg.from.0),
-            to_kind: kind(leg.to.0),
-            from: leg.from,
-            to: leg.to,
-            amount: leg.amount,
-            count,
-            composition: None,
+        self.flows.flows.extend(legs.into_iter().map(|leg| {
+            let (from_kind, from_location) = body(leg.from.0);
+            let (to_kind, to_location) = body(leg.to.0);
+            Flow {
+                tick,
+                made_by: made_by.clone(),
+                from_kind,
+                to_kind,
+                body_locations: [from_location, to_location],
+                from: leg.from,
+                to: leg.to,
+                amount: leg.amount,
+                count,
+                composition: None,
+            }
         }));
     }
 
@@ -330,9 +346,11 @@ impl Simulation {
             return;
         }
         let tick = self.state.tick;
+        let population = &self.state.population;
         self.flows.flows.extend(moves.into_iter().map(|m| Flow {
             tick,
             made_by: m.made_by,
+            body_locations: [location(population, m.leg.from.0), location(population, m.leg.to.0)],
             from_kind: m.kinds[0].clone(),
             to_kind: m.kinds[1].clone(),
             from: m.leg.from,

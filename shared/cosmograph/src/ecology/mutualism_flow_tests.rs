@@ -156,3 +156,48 @@ fn the_rule_is_the_same_in_both_executions() {
     };
     assert_eq!(hash(Execution::Individuals), hash(Execution::Grouped));
 }
+
+#[test]
+fn generated_exchange_finds_the_local_provider_by_its_live_exports() {
+    use crate::repertoire::Repertoire;
+
+    let f = Founding {
+        repertoire: Some(Repertoire { generative_ecology: true, ..Default::default() }),
+        nutrients: Some(Nutrients::default()),
+        ..founding(Some(Mutualism::default()))
+    };
+    let mut g = f.generate().unwrap();
+    let site = *g.sites.keys().next().unwrap();
+    for group in g.population.groups.values_mut() {
+        group.entity_mut().place = site;
+    }
+    assert!(g.rules.processes["mutualism:exchange-0"].target.as_ref().unwrap().among.is_empty());
+    assert!(!g.rules.processes.contains_key("mutualism:nutrient-2-0"));
+    g = equip(g, "lineage:0", &[Trade::GivesSugar]);
+
+    // The ordinary grazer, line 1, can supply a fixer if it develops the
+    // right ports. The historical decomposer, line 2, has none.
+    let sees_payment = |provider: &[Trade]| {
+        let mut s = Session::new(equip(g.clone(), "lineage:1", provider), Execution::Grouped).unwrap();
+        let total = s.sim.budget().total();
+        let mut payment = false;
+        let mut nutrient = false;
+        let mut consumed = false;
+        for _ in 0..12 {
+            for flow in s.advance_tick_with_flows().unwrap().flows {
+                if flow.by_process("mutualism:exchange-0") {
+                    if flow.from.1 == "world:exchange-sugar" && !flow.internal() {
+                        assert_eq!(flow.to_kind.as_ref().unwrap().lineage, "lineage:1");
+                        payment = true;
+                    }
+                    nutrient |= flow.from.1 == "world:soil-1" && flow.to.0.body().is_some();
+                }
+                consumed |= flow.by_process("mutualism:assimilate-1");
+            }
+        }
+        assert_eq!(s.sim.budget().total(), total);
+        (payment, nutrient, consumed)
+    };
+    assert_eq!(sees_payment(&[Trade::TakesSugar]), (false, false, false));
+    assert_eq!(sees_payment(&[Trade::GivesNutrient, Trade::TakesSugar]), (true, true, true));
+}

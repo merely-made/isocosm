@@ -79,8 +79,13 @@ pub fn run(config: HostConfig, founding_editor: bool) -> Result<i32, Box<dyn std
                 } else { ctx.leaves.remove(&founding::diagram::LEAF); }
                 drawn = diagram;
             }
-            if ctx.runner.state().founding.as_ref().is_some_and(founding::Panel::playing) {
-                ctx.runner.update(|s| { if let Some(p) = &mut s.founding { p.advance_clock(); } });
+            if ctx.runner.state().founding.as_ref().is_some_and(|p| p.playing() || p.forecasting()) {
+                ctx.runner.update(|s| {
+                    if let Some(p) = &mut s.founding {
+                        p.poll_forecast();
+                        p.advance_clock();
+                    }
+                });
                 return true;
             }
             if ctx.runner.state().refuge.as_ref().is_some_and(refuge::Panel::running) {

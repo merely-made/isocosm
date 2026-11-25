@@ -172,3 +172,68 @@ fn kingdom_draw_world_class_changes_the_generated_geography_at_its_footprint() {
         );
     }
 }
+
+#[test]
+fn generative_founders_grow_different_architectures_with_permitted_organs() {
+    use crate::rules::{Rule, unfold};
+
+    let distribution = KingdomDraw {
+        pool: [
+            FoundingForm::Plant,
+            FoundingForm::Animal,
+            FoundingForm::Fungus,
+        ]
+        .map(|form| form.key().to_owned())
+        .into(),
+        kingdoms: [3, 3],
+        per_kingdom: [6, 6],
+    };
+    let mut found = founding(8307, distribution);
+    let original = found.catalogue_body_maps().unwrap();
+    assert!(original.values().all(|m| {
+        m.grammar
+            .rules
+            .iter()
+            .all(|r| matches!(r, Rule::Repeat { .. }))
+    }));
+    found.repertoire.as_mut().unwrap().generative_ecology = true;
+    let catalogue = crate::catalog::catalog();
+    let mut used_foreign = false;
+    for cross in [false, true] {
+        found.repertoire.as_mut().unwrap().across_kingdoms = cross;
+        let maps = found.catalogue_body_maps().unwrap();
+        let world = found.generate().unwrap();
+        let mut branching = false;
+        let mut radial = false;
+        for (key, map) in &maps {
+            let development = world.lineages[key].development.as_ref().unwrap();
+            assert_eq!(
+                unfold(development.grammar.as_ref().unwrap()).unwrap(),
+                development.recipe.tagmata
+            );
+            let grown = &development.recipe.tagmata;
+            assert!(grown.iter().all(|r| r.segments > 0));
+            assert!(grown.iter().map(|r| u32::from(r.segments)).sum::<u32>() <= 25);
+            branching |= map
+                .grammar
+                .rules
+                .iter()
+                .any(|r| matches!(r, Rule::Branch { .. }))
+                && grown.len() > map.grammar.seed.len();
+            radial |= map
+                .grammar
+                .rules
+                .iter()
+                .any(|r| matches!(r, Rule::Radiate { .. }))
+                && grown.len() > map.grammar.seed.len();
+            for part in map.regions.values().filter(|key| key.starts_with("part:")) {
+                if catalogue.part_by_key(part).unwrap().kingdom != world.lineages[key].kingdom {
+                    assert!(cross);
+                    used_foreign = true;
+                }
+            }
+        }
+        assert!(branching && radial);
+    }
+    assert!(used_foreign);
+}

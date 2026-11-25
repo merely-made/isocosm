@@ -12,6 +12,29 @@ use std::collections::{BTreeMap, BTreeSet};
 pub const GROWTH: &str = "feat:growth";
 pub const SPREAD: &str = "feat:spread";
 pub const ENDURANCE: &str = "feat:endurance";
+pub const SUPPLIERS: &str = "feat:neighbouring-mineral-suppliers";
+pub const EXPORTERS: &str = "feat:neighbouring-sugar-exporters";
+
+/// Other lineages with complementary live organs somewhere in this line's
+/// occupied range. Counts describe opportunities, before price and stock.
+pub(super) fn neighbours(sim: &Simulation, lineage: &str) -> Vec<Reading> {
+    use crate::{ecology::trades, process::Trade};
+    let residents = || sim.state().population.groups.values().map(|g| &g.entity).filter(|e| e.alive);
+    let range: BTreeSet<_> = residents().filter(|e| e.lineage == lineage)
+        .filter_map(|e| e.resident_site()).collect();
+    let mut suppliers = BTreeSet::new();
+    let mut exporters = BTreeSet::new();
+    for e in residents().filter(|e| e.lineage != lineage && e.resident_site().is_some_and(|site| range.contains(&site))) {
+        if trades(e, Trade::GivesNutrient) && trades(e, Trade::TakesSugar) {
+            suppliers.insert(&e.lineage);
+        }
+        if trades(e, Trade::GivesSugar) && crate::trophic::fixing_plate(e).is_some() {
+            exporters.insert(&e.lineage);
+        }
+    }
+    [(SUPPLIERS, suppliers.len()), (EXPORTERS, exporters.len())].into_iter()
+        .map(|(feat, n)| Reading { lineage: lineage.to_owned(), feat: feat.into(), value: n as u128 }).collect()
+}
 
 /// One measurement of one line.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

@@ -49,6 +49,9 @@ fn surfaces(doc: &BodyDocument) -> Vec<Surface> {
 /// Total fixing cells in canopy positions and capture by tissue backed cells.
 pub fn capture(e: &Entity, tissue: &str) -> (u64, u64) {
     let Some(doc) = &e.body else { return (0, 0) };
+    if !e.parts.values().any(|p| p.cells.get(FIX).copied().unwrap_or(0) > 0) {
+        return (0, 0);
+    }
     let boxes = surfaces(doc);
     let mut cells = 0;
     let mut units = 0;

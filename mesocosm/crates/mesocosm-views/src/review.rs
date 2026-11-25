@@ -84,6 +84,11 @@ impl Board {
 }
 
 pub fn reading_words(reading: &Reading) -> String {
+    match reading.feat.as_str() {
+        cosmograph::lineage::reckon::SUPPLIERS => return format!("Mineral suppliers accepting sugar in your range · {} other lineages", reading.value),
+        cosmograph::lineage::reckon::EXPORTERS => return format!("Sugar exporters with living fixing tissue in your range · {} other lineages", reading.value),
+        _ => {}
+    }
     format!(
         "{} of {} — {}",
         reading.feat.trim_start_matches("feat:"),
@@ -170,6 +175,16 @@ pub fn sheet_words(had: &Sheet, offered: &Sheet) -> String {
     let bare = |k: &String| k.trim_start_matches("system:").to_string();
     out.extend(offered.systems.difference(&had.systems).map(|k| format!("gains system {}", bare(k))));
     out.extend(had.systems.difference(&offered.systems).map(|k| format!("loses system {}", bare(k))));
+    let ability = |trade: &cosmograph::process::Trade| {
+        use cosmograph::process::Trade::*;
+        match trade {
+            GivesSugar => "sugar export", GivesNutrient => "mineral supply",
+            TakesSugar => "sugar uptake", Draws => "nutrient uptake",
+            Gives => "partner export", Takes => "partner uptake",
+        }
+    };
+    out.extend(offered.exchange.difference(&had.exchange).map(|t| format!("gains {}", ability(t))));
+    out.extend(had.exchange.difference(&offered.exchange).map(|t| format!("loses {}", ability(t))));
     if had.feeding != offered.feeding {
         out.push(format!("feeds {} -> {}", word(had.feeding), word(offered.feeding)));
     }
@@ -374,6 +389,7 @@ mod tests {
             clutch: 2,
             trophic: Some(Trophic::Consumer),
             feeding: FeedingMode::Grazer,
+            exchange: Default::default(),
             functions: [("function:contract".to_string(), 8), ("function:store".to_string(), 6)].into(),
             systems: ["system:respiration".to_string()].into(),
             upkeep: Some(4),

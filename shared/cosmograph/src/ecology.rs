@@ -173,6 +173,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     // Life history is stated in minutes and read at the world's unit (1072).
     let unit = g.rules.tick_microseconds();
     let minutes = |m: u64| crate::rules::minutes_ticks(m, unit);
+    let body_driven = founding.bodies.is_some()
+        && founding.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
     let producers = (0..founding.lineages).filter(|&i| founding.role(i) == Role::Producer).count();
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
@@ -299,7 +301,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         birth.priority = 40;
         birth.note = true;
         g.rules.processes.insert(birth.id.clone(), birth);
-        if role == Role::Producer {
+        if body_driven || role == Role::Producer {
             let mut grow = process(
                 &format!("ecology:produce-{i}"),
                 Causation::Transition,
@@ -321,7 +323,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     Effect::Transform {
                         who: Binding::Actor,
                         take: BTreeMap::from([("world:soil".into(), 2)]),
-                        give: BTreeMap::from([(body, 2)]),
+                        give: BTreeMap::from([(body.clone(), 2)]),
                         conversion: None,
                     },
                     // The light is spent in the synthesis, in an effect of
@@ -337,14 +339,15 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             grow.requires.extend([
                 Query::Trait {
                     who: Binding::Actor,
-                    key: own,
+                    key: own.clone(),
                 },
                 Query::Condition {
                     key: "world:habitable".into(),
                     at_least: 1,
                 },
             ]);
-            grow.requires.extend(canopy_requirement(founding, i, minutes(2)));
+            let canopy = canopy_requirement(founding, i, minutes(2));
+            grow.requires.extend(canopy.or_else(|| body_driven.then_some(Query::FixingCanopy)));
             if sensing {
                 // A plant grows on what it senses (1071): its share of its
                 // site's light and soil, crowded by the plants beside it,
@@ -358,11 +361,12 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             grow.priority = 0;
             // Producers that share ground take turns at it: no lineage's
             // index decides who eats first. A lone producer has none to share with.
-            if producers > 1 {
+            if producers > 1 || (body_driven && founding.lineages > 1) {
                 grow.turn = Some(SOIL_TURNS.into());
             }
             g.rules.processes.insert(grow.id.clone(), grow);
-        } else {
+        }
+        if role != Role::Producer {
             // One feeding process per consumer (ruling 287), choosing among
             // its prey by a draw weighted by what each holds: consumers eat
             // the living of the roles their diet admits, decomposers the dead
