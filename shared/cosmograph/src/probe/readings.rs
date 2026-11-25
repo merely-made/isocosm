@@ -181,7 +181,7 @@ fn threshold(selector: &[Key], q: &Query) -> Option<Probe> {
         }
         | Query::Age { .. }
         | Query::Mood { .. }
-        | Query::MoodBelow { .. }
+        | Query::MoodBelow { .. } | Query::MigrationMotive { .. }
         | Query::Holds {
             who: Binding::Actor,
             ..
@@ -373,7 +373,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::SoilContact(_) => "spatial:soil".into(),
             Query::PocketVacant => format!("relation:{}", crate::ecology::pocket::CONTACT),
             Query::Related { kind } => format!("relation:{kind}"),
-            Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),
+            Query::Mood { .. } | Query::MoodBelow { .. } | Query::MigrationMotive { .. } => "mood".into(),
             Query::Members { .. } | Query::MembersBelow { .. } | Query::MembersPer { .. } | Query::MembersPerHead { .. } => "members".into(),
             Query::Sensed { reading, .. } => reading.clone(),
             Query::FoodPerHead { .. } => "food-members".into(),

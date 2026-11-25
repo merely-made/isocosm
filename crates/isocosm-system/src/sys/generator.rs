@@ -311,7 +311,7 @@ impl GeneratorRuntime {
                 Ok(ctx.stash(Executor::start(ctx, closure.into(), ())))
             })
             .map_err(|e| format!("load generator script: {e}"))?;
-        execute_bounded::<()>(&mut lua, &ex, limits.fuel)?;
+        execute_bounded::<()>(&mut lua, &ex, limits.fuel, limits.max_heap_bytes)?;
         Ok(Self { lua, limits })
     }
 
@@ -348,6 +348,7 @@ impl GeneratorRuntime {
             &mut self.lua,
             &ex,
             self.limits.fuel,
+            self.limits.max_heap_bytes,
             self.limits.max_value_depth,
         )?;
         let output_bytes = serde_json::to_vec(&value)

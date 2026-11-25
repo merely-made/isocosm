@@ -63,7 +63,7 @@ fn framed(p: &Process) -> bool {
                 ..
             } | Query::Condition { .. }
                 | Query::Mood { .. }
-                | Query::MoodBelow { .. }
+                | Query::MoodBelow { .. } | Query::MigrationMotive { .. }
         ) || matches!(q, Query::Computed(x) if at_site(x))
     }) || effects.iter().any(|e| computes(e));
     let writes_site = effects.iter().any(|e| {

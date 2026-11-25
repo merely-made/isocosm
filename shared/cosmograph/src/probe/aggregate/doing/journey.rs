@@ -23,6 +23,7 @@ impl Doing<'_> {
         crate::inherit::rebody(self.rules, self.lineages.and_then(|l| l.get(&child.lineage)), &mut child)?;
         child.born = self.tick;
         child.arrived = self.tick;
+        child.places = None;
         child.visits.clear();
         child.skills.clear();
         child.provenance = Provenance::Born(child.lineage.clone());

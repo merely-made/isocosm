@@ -13,9 +13,8 @@
 //! cargo run -p mesocosm-genet -- --scenario <scenario>
 //! ```
 //!
-//! The player directs and never drives (wing rulings 671, 679): E nudges the
-//! critter to attend to its site or the picked body, Q chooses a current
-//! suggestion, S speciates its line. Click attends; right click chooses a hint.
+//! E or a click points out a site or a body. Right click or Q opens directions
+//! and the critter's current alternative acts. S speciates its line.
 //! At a checkpoint the keys narrow to Enter
 //! (carry on) and T (take the body on offer); at the boundary the board's Tab
 //! and R pick and commit an offer. See `--help` for the rest.
@@ -536,10 +535,10 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
 <Code>/testing/mesocosm/, never the golden ps1_played.* fixture.
 --no-trace omits the save output; it cannot be combined with --trace.
 
-controls: click or E/Space attend, right click or Q choose a current hint,
+controls: click or E/Space point out, right click or Q direct the creature,
   S speciate, arrows pan, Z/V rotate, C surface/section, Esc quit
-in the hint panel: Up/Down select, Enter or click the panel sends the hint,
-  Escape closes it; each hint shows its actual body/site topic
+in the direction panel: Up/Down select, Enter or click the panel confirms,
+  Escape closes it. Suggest an act shows the creature's available alternatives.
 at a checkpoint the keys narrow:
   Enter  carry on (keep the parent, take the first heir, close the boundary)
   T      take the body on offer

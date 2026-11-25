@@ -228,6 +228,14 @@ pub fn compare(nudge: bool, receive: impl FnMut(Pair) -> bool) -> Result<(), Str
 pub fn compare_at(
     when: MeadowChange,
     nudge: bool,
+    receive: impl FnMut(Pair) -> bool,
+) -> Result<(), String> {
+    compare_request_at(when, nudge.then_some(NudgeMeaning::Attend), receive)
+}
+
+pub fn compare_request_at(
+    when: MeadowChange,
+    request: Option<NudgeMeaning>,
     mut receive: impl FnMut(Pair) -> bool,
 ) -> Result<(), String> {
     let saved = serde_json::from_slice(OPENING).map_err(|e| e.to_string())?;
@@ -280,7 +288,7 @@ pub fn compare_at(
         }) {
             break;
         }
-        if nudge && tick == start {
+        if tick == start && let Some(meaning) = &request {
             let envelope = MesocosmIntentEnvelope {
                 participant: ParticipantHandle(participant),
                 tick: Tick(trial.session.sim.state().tick),
@@ -288,7 +296,7 @@ pub fn compare_at(
                     grazer,
                     REFUGE,
                     None,
-                    NudgeMeaning::Attend,
+                    meaning.clone(),
                 )),
             };
             crate::borrowed::submit(&mut trial.session, participant, 0, &envelope)

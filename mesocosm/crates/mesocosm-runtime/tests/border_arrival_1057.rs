@@ -50,7 +50,7 @@ fn trip() -> Trip {
     let mut acts = Vec::new();
     for (side, mut p) in routes {
         p.id = format!("test:route-{side}");
-        p.requires.retain(|q| !matches!(q, Query::MoodBelow { .. }));
+        p.requires.retain(|q| !matches!(q, Query::MoodBelow { .. } | Query::MigrationMotive { .. }));
         let enters = g.sites[&from].routes.iter().find(|r| r.to == to && r.border.is_some_and(|b| b.side == side))
             .unwrap().border.unwrap().enters;
         g.rules.processes.insert(p.id.clone(), p);

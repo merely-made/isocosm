@@ -296,11 +296,11 @@ impl Simulation {
             let place = self
                 .body_at_start(actor)
                 .map_or(super::PLACELESS, |e| e.place);
-            let answers = self
-                .live_nudges(actor, tick)
-                .into_iter()
+            let live = self.live_nudges(actor, tick);
+            let mut answers = live.iter().copied()
                 .filter(|&i| self.answers(&self.state.nudges[i], process, place, target))
-                .collect();
+                .collect::<Vec<_>>();
+            super::Guidance::new(self, &live).score(self, process, place, &mut answers);
             let c = self
                 .chosen
                 .by
@@ -333,7 +333,7 @@ impl Simulation {
 
     /// Scoring reads the same pass-start body and site as feasibility (454).
     /// Wellbeing keeps its live before/after readings for bond accounting.
-    fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
+    pub(super) fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
         let e = self.body_at_start(actor);
         self.minded_in(e, e.and_then(|e| e.resident_site().and_then(|site| self.site_at_start(site))))
     }
@@ -370,14 +370,14 @@ impl Simulation {
         (self.minded(actor).0, held)
     }
 
-    fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
-        self.infeasible(actor, target, p, place).is_none()
-    }
-
     /// Whether an act of `p` at `place` on `target` answers `n`.
     fn answers(&self, n: &Nudge, p: &Process, place: Id, target: Option<Id>) -> bool {
-        if n.act.as_ref().is_some_and(|act| *act != p.id) {
+        if n.aim.is_direction() || n.act.as_ref().is_some_and(|act| *act != p.id) {
             return false;
+        }
+        if n.aim == Aim::ActHere {
+            return p.target.is_none() && n.toward == Toward::Site(place)
+                && self.body_at_start(n.critter).and_then(Entity::resident_site) == Some(place);
         }
         let site = match n.toward {
             Toward::Thing(t) if n.aim == Aim::Act => return target == Some(t),
@@ -418,12 +418,13 @@ impl Simulation {
     pub(crate) fn consider(&self, actor: Id, due_only: bool) -> Choice {
         let tick = self.state.tick;
         let rules = &self.genesis.rules;
-        let directing = rules.directing();
+        let directing = rules.directing_ref();
         let Some(place) = self.body_at_start(actor).map(|e| e.place) else {
             return Choice::default();
         };
         let live = self.live_nudges(actor, tick);
         let (mood, pressing) = self.choice_minded(actor);
+        let guidance = super::Guidance::for_actor(self, actor, &live, Some(&pressing));
         let waiting = self.foraging_wait_score(actor);
         // A lineage policy scores in the hand-written score's place (M3.5).
         let policy = self.expressed(actor, directing.policy.expression);
@@ -444,17 +445,17 @@ impl Simulation {
                 continue;
             }
             let (nudged, target) = self.aim(actor, p, &live, place);
-            if !self.feasible(actor, target, p, place) {
+            if self.infeasible_guided(actor, target, p, place, Some(&guidance)).is_some() {
                 continue;
             }
             let serves = self.foraging_policy(&p.id).and_then(|f| rules.processes.get(&f.feed)).unwrap_or(p);
             let needs = need_score(serves, mood, &pressing);
-            let answers: Vec<usize> = live
+            let mut answers: Vec<usize> = live
                 .iter()
                 .copied()
                 .filter(|&i| self.answers(&self.state.nudges[i], p, place, target))
                 .collect();
-            let sway: i64 = answers
+            let ordinary_sway: i64 = answers
                 .iter()
                 .map(|&i| {
                     let n = &self.state.nudges[i];
@@ -462,6 +463,8 @@ impl Simulation {
                     directing.sway * bond / directing.most
                 })
                 .sum();
+            let direction = guidance.score(self, p, place, &mut answers);
+            let sway = ordinary_sway + direction;
             let hand = needs + sway + i64::from(p.priority);
             let score = match &policy {
                 Some(policy) => policy.score(&terms(rules, serves, p, mood, &pressing, target)) + sway + learnt.get(&p.id).copied().unwrap_or(0),
@@ -474,6 +477,8 @@ impl Simulation {
                 continue;
             }
             best.options.insert(p.id.clone(), (score, target));
+            // Wait if the cost of this direction outweighs the reasons to act.
+            if direction < 0 && score < 0 { continue; }
             candidates.push((score, p.id.clone(), target, nudged.is_some(), answers.clone()));
             if score > top {
                 top = score;
@@ -535,6 +540,7 @@ impl Simulation {
             j.nudges(&self.state.nudges);
         }
         for &i in answers {
+            if self.state.nudges[i].answer.is_some() { continue; }
             let participant = self.state.nudges[i].participant;
             let bond = self.bond(participant, actor).unwrap_or(0);
             let step = if served { d.step } else { -d.step };

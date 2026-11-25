@@ -4,6 +4,14 @@
 use super::*;
 
 impl Doing<'_> {
+    fn remember_bite(&mut self) {
+        use crate::directing::Encounter;
+        self.member.remember(self.rules, self.site_id, self.tick, Encounter::Meal);
+        if let Some(prey) = &mut self.prey {
+            prey.remember(self.rules, self.site_id, self.tick, Encounter::Hurt);
+        }
+    }
+
     fn admitted(&self, holdings: &Ledger, alive: crate::mosaic::ports::admission::Eaten) -> Result<Ledger> {
         let Some(feeding) = &self.port_feeding else { return Ok(holdings.clone()) };
         let intake = feeding.intake(&self.member, self.intake.ok_or("no intake is bound")?)?;
@@ -33,7 +41,11 @@ impl Doing<'_> {
             };
             holdings.iter().filter(|(_, n)| **n > 0).all(|(k, n)| all.get(k) == Some(n))
         } else { true };
-        if whole && whole_admitted && self.whole(of, &portion)? { return Ok(true); }
+        let had_matter = whole && holdings.values().any(|&n| n > 0);
+        if whole && whole_admitted && self.whole(of, &portion)? {
+            if had_matter { self.remember_bite(); }
+            return Ok(true);
+        }
         let prey = self.prey.as_mut().ok_or("the crowd eats only in a hunt")?;
         let held = match self.bitten.and_then(|id| prey.part_mut(&id)) {
             Some(part) => &mut part.matter,
@@ -55,6 +67,7 @@ impl Doing<'_> {
         if dung > 0 {
             self.give(Binding::Place, crate::ecology::DUNG, dung)?;
         }
+        if total > 0 { self.remember_bite(); }
         self.took = Some(Took::Bite(taken));
         Ok(true)
     }

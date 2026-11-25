@@ -1214,16 +1214,20 @@ Mark's word ("Ages to Record").*
 ### Record 7. Epochs and deep time
 
 An epoch ends by a timed rule (a year by default), a gated one or a player's
-call, and checkpoints fall on its boundaries. Deep time's span counts epochs,
-so under the default year a century is a hundred.
+call, and checkpoints fall on its boundaries. Played rounds stay short; where
+nobody plays, deep time steps on a coarser rung whose epoch grows with
+distance from play, thousands then millions of years, lineage boundaries read
+per step. Deep time is where lineages remake the world (algae, forests, a
+world-eater), reshuffling the board and the resources a line can reach, over
+an ecological span of billions of years.
 
-*Not yet built:* the gated rule, which is named only.
+*Not yet built:* the gated rule, which is named only; the lengthening rung.
 
-Links: draws on 451, 452, 1199, 1212 · summary An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs.
+Links: draws on 451, 452, 1199, 1212, 1246, 1250 · summary An epoch ends by a timed (a year by default), gated or player-called rule; unplayed deep time steps on epochs that lengthen with distance from play, to millions of years, over an ecological span in which lineages remake the world.
 
-*Applied 2026-11-09 by cases 1199 and 1212, Mesocosm's rounds as epochs
-(Mesocosm 3): "agreement among players after a pre agreed span of world time
-has passed, or conditions (get x resources first!)".*
+*Refined 2026-11-25 from cases 1246 and 1250 (Mark: "according to simearth,
+you got at least about 10 billion years or so to work with"; "Epochs
+lengthen (Recommended)"), rewritten at his word: "Yes, rewrite them".*
 
 ## World generation
 
@@ -2019,31 +2023,30 @@ Links: draws on 923, 924, 959, 960, 962, record.1 · summary isonetry is the fam
 
 ### Mesocosm 1. What the player plays
 
-The player plays a critter of its lineage, and how the rest of the lineage
-relates depends on its traits: competitors, a cohort, or extensions of one
-organism (a fungal monocreature, a swarm). Mesocosm directs its critter,
-which lives by its own instinct under the nudge (Mesocosm 2), and drives one
-only once it is sapient (Directing 3). At a birth the player keeps the parent
-by default and may take the offspring, reversibly; at a death they continue
-as its offspring, else its nearest kin left in the round, else the nearest
-living member of the line however far (Mesocosm 3). Players may share a
-lineage or each play their own. A world-class lineage is played from the
-aggregate view between rounds: managing the world's time flow and cycles,
-and a stream of holistic and specific events its conditions raise. A
-microbe lineage is played by gene switches its population carries out and a
-draft of one-shot plasmids from contact, any strain free to decompose,
-infect, aid, join or leave a host; its choices fall due at host and patch
-events, its spread watchable live between them. Speciating (splitting the line and naming it; "the name is the doing") is
-the player's act; expressing a candidate is the critter's own development.
+The player is the lineage's continuity: they play one critter of it at a time,
+and at larger scales act only through what the line has gathered (regard, what
+members learned, what selection kept). How the rest of the lineage relates
+depends on its traits: competitors, a cohort, or extensions of one organism (a
+fungal monocreature, a swarm). The critter lives by its own instinct under the
+nudge (Mesocosm 2) and is driven only once sapient (Directing 3). At a birth
+the player keeps the parent or takes the offspring, reversibly; at a death
+they continue as its offspring, else its nearest kin in the round, else the
+nearest living member however far (Mesocosm 3). Players may share a lineage or
+each play their own. A world-class lineage, the world itself the top one, is
+held by regard (the world's read from its web's health) and played from the
+aggregate view between rounds: time's flow, cycles and the events its
+conditions raise. A microbe lineage is played by gene switches and one-shot
+plasmids from contact, any strain free to decompose, infect, aid, join or
+leave a host, its choices due at host and patch events, its spread watchable
+between. Speciating (splitting the line and naming it; "the name is the
+doing") is the player's act; expressing a candidate is the critter's own
+development.
 
-Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204, 1216, 1217, 1221, 1223, 1224, 1225, 1226 · summary The player plays a critter whose lineage relates by its traits, living by instinct under the nudge until it is sapient; continues as offspring, kin or the nearest member at a death; world-class is played between rounds, a microbe by switches and plasmids at host events; speciating is the player's act.
+Links: draws on 155, 175, 183, 202, 671, 682, 1056, 1198, 1204, 1216, 1217, 1221, 1223, 1224, 1225, 1226, 1244, 1248 · summary The player is the lineage's continuity, one critter at a time and otherwise acting through regard, learning and selection; a critter lives by instinct under the nudge until sapient; succession runs offspring, kin, nearest member; world-class lines, the world the top one, are held by regard and played between rounds; a microbe by switches and plasmids; speciating is the player's act.
 
-*Refined 2026-11-09 from cases 1198, 1204, 1216, 1217, 1221 and 1223 to 1226
-(Mark: "you could watch where your microbes are if you wanted, to observe the
-ecology and think about what to do when the event pops up"), drafted without a
-card round at his word: "Brief, cases, doctrine (Recommended)".*
-
-
+*Refined 2026-11-25 from cases 1244 and 1248 (Mark: "agreed"; "Top
+world-class line (Recommended)"), rewritten at his word: "Yes, rewrite
+them".*
 
 ### Mesocosm 2. The only directive is a nudge
 
@@ -2118,16 +2121,20 @@ Links: draws on 833, 841, 842, 848, method.8 · summary Mesocosm owns its spatia
 
 Mesocosm defaults to the named A1 preset (the shared generator stays Stock)
 and to statistical agreement: far sites run as the crowd, the played critter
-and every noted member as individuals (Processes 6). Its tempo follows the
-measured tick: 2 ticks a second, with 10 as the aim once scheduling allows.
+and every noted member as individuals (Processes 6). Its tempo is 10 ticks a
+second at the head (sim-execution D21), and time runs at that speed only while
+something attended needs the foreground (an encounter, a meal, a birth, a
+nudge under way); otherwise it passes faster over the coarse step, aiming at a
+round of an hour or two, a measured bar beside the speed bars.
 
 *Not yet built:* the crowd in the core (the execution plan's E4), so far sites
-still run exactly.
+still run exactly; the faster passage and its bar.
 
-Links: draws on 961, 978, sim-execution D2 · summary Mesocosm defaults to A1, to statistical agreement and to 2 ticks a second, following measurement.
+Links: draws on 961, 978, 1249, sim-execution D2, sim-execution D21 · summary Mesocosm defaults to A1 and statistical agreement at 10 ticks a second; time runs at play speed only while the foreground needs it, aiming at a round of an hour or two.
 
-*Refined 2026-10-22 from the execution plan's D2 (Mark: "Also name it in
-Mesocosm 5").*
+*Refined 2026-11-25 from case 1249 (Mark: "Fast when unattended
+(Recommended)"), the tempo corrected to sim-execution D21's 10 ticks a
+second; rewritten at his word: "Yes, rewrite them".*
 
 ### Mesocosm 6. The edit and its sheet
 

@@ -3,7 +3,7 @@ settle 3
 remember original
 click role:button Meadow and refuge
 click role:button Wait until day 6
-click role:button Nudge toward refuge
+click role:button Point out refuge
 wait 20000
 assert snap refuge-tick == 17280
 assert snap refuge-alone == 9d1fcd04cab9afc2

@@ -73,6 +73,7 @@ impl Staged<'_> {
         }
         child.born = tick;
         child.arrived = tick;
+        child.places = None;
         child.visits.clear();
         child.skills.clear();
         child.provenance = Provenance::Born(child.lineage.clone());

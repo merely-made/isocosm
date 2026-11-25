@@ -3,6 +3,7 @@
 
 use super::{Bench, Child, sim::button};
 use cambium::{el, text};
+use cosmograph_overlay::mesocosm::NudgeMeaning;
 use mesocosm_runtime::refuge::{self, DAY, MeadowChange, Observation, Pair, Patch};
 use std::sync::mpsc::{self, Receiver, TryRecvError};
 
@@ -17,7 +18,7 @@ pub(super) struct Panel {
     samples: Vec<Pair>,
     selected: usize,
     when: MeadowChange,
-    nudge: bool,
+    request: Option<&'static str>,
     error: Option<String>,
 }
 
@@ -26,21 +27,22 @@ impl Panel {
         self.worker.is_some()
     }
 
-    fn start(bench: &mut Bench, nudge: bool) {
+    fn start(bench: &mut Bench, request: Option<(&'static str, NudgeMeaning)>) {
         let Some(when) = bench.refuge.as_ref().map(|panel| panel.when) else { return };
+        let label = request.as_ref().map(|(label, _)| *label);
         let (send, receive) = mpsc::channel();
         let worker = std::thread::Builder::new()
             .name("meadow-comparison".into())
             .spawn(move || {
                 let result =
-                    refuge::compare_at(when, nudge, |pair| send.send(Message::Sample(pair)).is_ok());
+                    refuge::compare_request_at(when, request.map(|(_, meaning)| meaning), |pair| send.send(Message::Sample(pair)).is_ok());
                 let _ = send.send(Message::Finished(result));
             });
         bench.refuge = Some(match worker {
             Ok(_) => Self {
                 worker: Some(receive),
                 when,
-                nudge,
+                request: label,
                 ..Self::default()
             },
             Err(e) => Self {
@@ -158,8 +160,15 @@ pub(super) fn view(panel: &Panel) -> Child {
                 *p = Panel { when, ..Panel::default() };
             }
         }));
-        controls.push(button("Nudge toward refuge", |s| Panel::start(s, true)));
-        controls.push(button("Leave both alone", |s| Panel::start(s, false)));
+        for (label, meaning) in [
+            ("Move toward refuge", NudgeMeaning::MoveToward),
+            ("Move away from refuge", NudgeMeaning::MoveAway),
+            ("Stay near refuge", NudgeMeaning::StayNear),
+            ("Point out refuge", NudgeMeaning::Attend),
+        ] {
+            controls.push(button(label, move |s| Panel::start(s, Some((label, meaning.clone())))));
+        }
+        controls.push(button("Leave both alone", |s| Panel::start(s, None)));
     }
     if panel.selected > 0 {
         controls.push(button("Earlier observation", |s| {
@@ -201,14 +210,15 @@ pub(super) fn view(panel: &Panel) -> Child {
         rows.push(Box::new(el(
             "p",
             text(format!(
-                "Grazer {} · Alone {} · Trial {} · Nudge {}",
+                "Grazer {} · Alone {} · Trial {} · {} [{}]",
                 p.grazer,
                 location(&p.alone),
                 location(&p.trial),
+                panel.request.unwrap_or("Leave alone"),
                 p.trial.nudge
             )),
         )));
-        if panel.nudge {
+        if panel.request.is_some() {
             for (reason, minutes) in &p.trial.blocked_route_minutes {
                 let reason = if reason == "missing requirement: MoodBelow { amount: 0 } = 0" {
                     "travel needs mood below zero and the grazer's mood was zero"

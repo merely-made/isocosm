@@ -99,6 +99,7 @@ impl Panel {
         draft.map=Some(cosmograph::map::Layout::Grid(grid));
         draft.lineages=draft.repertoire.as_ref().unwrap().kingdom_draw.as_ref().unwrap()
             .draw(seed).expect("valid default draw").iter().map(|(_,n)|n).sum();
+        draft.place_memory = Some(Default::default());
         draft.played = Some(cosmograph::directing::Played {
             lineage: 1,
             region_sites: 1,

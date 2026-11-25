@@ -251,6 +251,7 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         spent: None,
         learned: None,
         died: None,
+        places: None,
         switched: Vec::new(),
     }
 }

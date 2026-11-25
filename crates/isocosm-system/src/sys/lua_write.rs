@@ -259,26 +259,37 @@ pub(crate) fn lua_string<'gc>(ctx: piccolo::Context<'gc>, value: &str) -> piccol
     piccolo::String::from_slice(&ctx, value.as_bytes())
 }
 
-/// Drive one executor with a finite total fuel budget. `Lua::execute` refuels
-/// internally, which is appropriate for rules formulas but not untrusted pack
-/// generators, so this path intentionally steps the executor itself.
+/// Drive a generator executor to completion on a finite total fuel budget and
+/// a heap ceiling, via `piccolo::drive`. Unlike `Lua::execute` it never
+/// refuels, so untrusted pack generators cannot run unbounded.
+pub(crate) fn drive_generator(
+    lua: &mut Lua,
+    executor: &StashedExecutor,
+    total_fuel: i32,
+    max_heap_bytes: usize,
+) -> Result<(), String> {
+    let limits = piccolo::DriveLimits {
+        max_ops: Some(u64::try_from(total_fuel).unwrap_or(0)),
+        max_heap_bytes,
+    };
+    piccolo::drive(lua, executor, limits)
+        .map(|_| ())
+        .map_err(|e| match e {
+            piccolo::DriveError::OutOfFuel { .. } => "generator exhausted fuel".to_owned(),
+            piccolo::DriveError::OverHeap { max_heap_bytes } => {
+                format!("generator exceeded its heap ceiling of {max_heap_bytes} bytes")
+            }
+            piccolo::DriveError::Runtime(e) => format!("run generator: {e}"),
+        })
+}
+
 pub(crate) fn execute_bounded<R: for<'gc> piccolo::FromMultiValue<'gc>>(
     lua: &mut Lua,
     executor: &StashedExecutor,
     total_fuel: i32,
+    max_heap_bytes: usize,
 ) -> Result<R, String> {
-    let mut fuel = Fuel::with(total_fuel);
-    loop {
-        let complete = lua
-            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut fuel))
-            .map_err(|e| format!("run generator: {e}"))?;
-        if complete {
-            break;
-        }
-        if !fuel.should_continue() {
-            return Err("generator exhausted fuel".to_owned());
-        }
-    }
+    drive_generator(lua, executor, total_fuel, max_heap_bytes)?;
     lua.try_enter(|ctx| ctx.fetch(executor).take_result::<R>(ctx)?)
         .map_err(|e| format!("run generator: {e}"))
 }

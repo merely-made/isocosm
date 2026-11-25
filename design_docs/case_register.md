@@ -64,7 +64,7 @@ three design docs that cite it. The record holds the words.
 | 769 | Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills. | none |
 | 834 | A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately. | none |
 | 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | none |
-| 886 | The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately. | none |
+| 886 | The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md) |
 | 893 | The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 975 | The core's tick cost is cut by sharing cohorts behind an Arc, copying on write, with serialisation and hashes unchanged. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 979 | The sun's parameters are an optional Rules.sun: Option<SunRules>, set by presets at founding; absent means the default. | none |
@@ -226,6 +226,7 @@ three design docs that cite it. The record holds the words.
 | 1180 | The two-year bar runs on today's hazard draws after the exact speed-ups; drawing death once at maturity waits. | none |
 | 1181 | E7b first: death drawn once at maturity, redrawn when its odds change, checked in distribution; the comparator and the bar then rerun on the new draws. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1184 | Death is drawn once where its odds can't change; any hazard that could need a redraw keeps the per-tick draw. | none |
+| 1245 | Mesocosm's fantastical systems are the ruled ones: composed effects, collected glyphs and earned divinity, the world's shapes and kinds, and the editions a world may lead with. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Ecology
 
@@ -284,7 +285,7 @@ three design docs that cite it. The record holds the words.
 | 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
@@ -496,6 +497,8 @@ three design docs that cite it. The record holds the words.
 | 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [DOC README](DOC_README.md) |
 | 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [DOC README](DOC_README.md) |
 | 1073 | A world's identity hashes its rules' content, not their version; life history in world time is a save-format bump. | [vtt overlay](2026-11-02_vtt_overlay_plan.md) |
+| 1246 | Deep time develops lineages until they change the world, reshuffling the board and its resources; its span is ecological, billions of years. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1250 | Played rounds stay short; unplayed deep time steps on a coarser rung whose epoch grows with distance from play, to millions of years. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## World generation
 
@@ -638,6 +641,7 @@ three design docs that cite it. The record holds the words.
 | 1167 | Travel crosses site borders map by map first, the lift hidden in the crossing; seamless later as a world setting. | none |
 | 1168 | The rendered area, and so the near tier, is bounded by the largest window measured inside 16.7 ms on the matched fixture. | none |
 | 1227 | A player's persona is their dramatis identity, minted if absent; bonds and regard key to it across worlds. | [sim host](2026-11-12_sim_host_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md), [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_plan.md) |
+| 1247 | Mesocosm runs to sapience and culture; civilisations are Eponym's and the VTT's, reached by inheritance. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Presentation
 
@@ -685,10 +689,10 @@ three design docs that cite it. The record holds the words.
 | 1178 | Bodies and terrain share exact sRGB; a look is configuration chosen per class of thing; the class key and wider per-type styles are still to be designed. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
 | 1182 | Looks key on a style tag declared in pack data, mapped by a table that may match kingdom, lineage or role. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
 | 1183 | Style tags reach bodies now; per-type styles for terrain, marks and projections wait on a brief. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1185 | A style tag may pin a type to the live or sprite rung. | [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md) |
-| 1186 | Per-material terrain styles wait on a measured tracer cost. | none |
-| 1187 | 2D comes first from sprite-pinned types under the orthographic camera, no new renderer. | none |
-| 1188 | An optional [presentation] table in pack data sets scene defaults; player flags override. | none |
+| 1185 | A style tag may pin a type to the live or sprite rung. | [per type styles](../mesocosm/design_docs/2026-11-08_per_type_styles_brief.md), [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md) |
+| 1186 | Per-material terrain styles wait on a measured tracer cost. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md) |
+| 1187 | 2D comes first from sprite-pinned types under the orthographic camera, no new renderer. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md) |
+| 1188 | An optional [presentation] table in pack data sets scene defaults; player flags override. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md) |
 
 ## Stack and engine
 
@@ -861,6 +865,10 @@ three design docs that cite it. The record holds the words.
 | 1229 | A colony is steered by pheromone trails, caste shares, short-lived calls that ride the trail network until they expire, and what its nest accretes. | [lineage rounds](../mesocosm/design_docs/2026-11-09_lineage_rounds_brief.md) |
 | 1230 | Only a colony's reproductives breed; losing the queen is a crisis; daughter colonies from nuptial flights are the lineage's critters for succession. | none |
 | 1231 | A colony plays live, ridden or watched, and its colony-level choices also fall due at colony events, whichever view the player holds. | none |
+| 1244 | The player is the lineage's continuity: in one body at a moment, and at larger scales acting only through regard, learning and selection; world-scale levers are earned. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1248 | The world itself is the top world-class lineage, held by regard read from the web's health, its levers the bounded offsets, time's flow and cycles. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1249 | Time runs at play speed only while something attended needs it and otherwise passes over the coarse step, aiming at a round of an hour or two as a measured bar. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1251 | Mesocosm's v1 is the middle scale's solo loop with members learning, the world map read-only between rounds, at 1249's tempo; the other kingdoms and levers after. | [game spine](../mesocosm/design_docs/2026-11-25_game_spine_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Eponym
 

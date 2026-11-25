@@ -373,10 +373,10 @@ impl IntentSink for IsocosmEndpoint {
         if intent.observed_epoch != snapshot.scene.epoch
             || intent.observed_revision != snapshot.scene.revision
         {
-            return Ok(IntentResult::Stale {
-                current_epoch: snapshot.scene.epoch,
-                current_revision: snapshot.scene.revision,
-            });
+            return Ok(IntentResult::stale(
+                snapshot.scene.epoch,
+                snapshot.scene.revision,
+            ));
         }
         if !self.intent_was_advertised(&intent) {
             return Ok(IntentResult::Rejected {

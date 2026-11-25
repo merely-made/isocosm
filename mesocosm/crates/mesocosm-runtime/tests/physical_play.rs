@@ -252,7 +252,7 @@ fn generated_route_arrivals_keep_full_body_support_and_replay() {
         .get_mut(&key)
         .unwrap()
         .requires
-        .retain(|q| !matches!(q, Query::MoodBelow { .. } | Query::Age { .. }));
+        .retain(|q| !matches!(q, Query::MoodBelow { .. } | Query::MigrationMotive { .. } | Query::Age { .. }));
     let mut session = Session::new(founded.genesis, Execution::Grouped).unwrap();
     let mut game = Game::default();
     game.found_generated(&mut session).unwrap();
@@ -304,7 +304,7 @@ fn a_refused_birth_keeps_its_biology_and_can_gain_a_pose_on_native_arrival() {
     movement.period = None;
     movement
         .requires
-        .retain(|q| !matches!(q, Query::MoodBelow { .. } | Query::Age { .. }));
+        .retain(|q| !matches!(q, Query::MoodBelow { .. } | Query::MigrationMotive { .. } | Query::Age { .. }));
     founded
         .genesis
         .rules

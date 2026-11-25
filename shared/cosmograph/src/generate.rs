@@ -41,6 +41,9 @@ pub struct Founding {
     /// Absent in foundings without one, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub played: Option<crate::directing::Played>,
+    /// How this world's deliberative individuals weigh their own feeding and injury sites.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub place_memory: Option<crate::rules::PlaceMemory>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub affinity: Option<Affinity>,
     /// The rates a generated ecology runs at (ruling 907). Stock unless a
@@ -453,6 +456,7 @@ impl Founding {
                     spent: None,
                     learned: None,
                     died: None,
+                    places: None,
                     switched: Vec::new(),
                 },
                 1,
@@ -529,6 +533,7 @@ impl Founding {
                     spent: None,
                     learned: None,
                     died: None,
+                    places: None,
                     switched: Vec::new(),
                 },
                 count,
@@ -584,6 +589,9 @@ impl Founding {
         }
         if let Some(played) = self.played {
             crate::directing::found::found(self, &mut genesis, played)?;
+        }
+        if let Some(memory) = self.place_memory {
+            genesis.rules.directing.get_or_insert_with(Default::default).place_memory = Some(memory);
         }
         crate::ecology::finish(self, &mut genesis)?;
         crate::spatial::Templates::declare(&mut genesis)?;

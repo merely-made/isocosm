@@ -120,7 +120,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
 }
 
 /// Members migrate (753): a move process per route, open to a member at
-/// the route's site while its mood is low. A site names itself by the
+/// the route's site when mood, experience or a trusted request motivates it. A site names itself by the
 /// condition `site:<id>`, so a move asks where its actor is.
 fn migrate(g: &mut Genesis) -> Result<()> {
     let mut moves = Vec::new();
@@ -150,7 +150,7 @@ fn migrate(g: &mut Genesis) -> Result<()> {
                     key: here.clone(),
                     at_least: 1,
                 },
-                Query::MoodBelow { amount: 0 },
+                Query::MigrationMotive { amount: 0 },
             ]);
             p.period = Some(route.travel.max(1));
             moves.push(p);

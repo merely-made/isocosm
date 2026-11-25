@@ -212,6 +212,9 @@ pub(crate) fn hurt(
             e.body_revision = e.body_revision.saturating_add(1);
         }
     }
+    if wounded.lost.values().any(|&cells| cells > 0) {
+        e.remember(rules, e.place, tick, crate::directing::Encounter::Hurt);
+    }
     Ok(Hit { wounded, fragment })
 }
 

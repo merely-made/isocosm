@@ -8,7 +8,7 @@
 //!
 //! One script, one entrypoint, one call, and a fixed budget for all of it.
 
-use piccolo::{Closure, Executor, Fuel, IntoValue, Lua, StashedExecutor, Value};
+use piccolo::{Closure, DriveError, DriveLimits, Executor, IntoValue, Lua, StashedExecutor, Value};
 
 use super::marshal::{entropy_table, proposal_of, request_table, string};
 use super::{Entropy, Policy, Proposal, Refused, Request};
@@ -64,7 +64,7 @@ impl Runner {
             })?;
         // The chunk itself runs inside the same budget: a script whose top
         // level never finishes is exhausted fuel, not a hung host.
-        run(&mut lua, &executor, policy.fuel)?;
+        run(&mut lua, &executor, policy)?;
         lua.try_enter(|ctx| {
             ctx.fetch(&executor).take_result::<()>(ctx)??;
             Ok(())
@@ -111,7 +111,7 @@ impl Runner {
             })
             .map_err(|_| Refused::NoEntrypoint)?;
 
-        run(&mut self.lua, &executor, policy.fuel)?;
+        run(&mut self.lua, &executor, policy)?;
 
         let proposal = self
             .lua
@@ -139,22 +139,71 @@ impl Runner {
     }
 }
 
-/// Steps one executor to completion on a finite total budget.
+/// Drives one executor to completion on a finite total budget and a heap
+/// ceiling, through `piccolo::drive`.
 ///
 /// `Lua::execute` refuels internally, which is right for host formulas and
-/// wrong for authored content: this steps the executor itself so the budget is
-/// the whole of what a call may spend.
-fn run(lua: &mut Lua, executor: &StashedExecutor, fuel: i32) -> Result<(), Refused> {
-    let mut budget = Fuel::with(fuel);
-    loop {
-        let complete = lua
-            .enter(|ctx| ctx.fetch(executor).step(ctx, &mut budget))
-            .map_err(|e| Refused::Script { why: e.to_string() })?;
-        if complete {
-            return Ok(());
+/// wrong for authored content: the budget is the whole of what a call may spend.
+fn run(lua: &mut Lua, executor: &StashedExecutor, policy: Policy) -> Result<(), Refused> {
+    let limits = DriveLimits {
+        max_ops: Some(u64::try_from(policy.fuel).unwrap_or(0)),
+        max_heap_bytes: policy.max_heap_bytes,
+    };
+    piccolo::drive(lua, executor, limits)
+        .map(|_| ())
+        .map_err(|e| match e {
+            DriveError::OutOfFuel { .. } => Refused::Fuel { limit: policy.fuel },
+            DriveError::OverHeap { max_heap_bytes } => Refused::Heap {
+                limit: max_heap_bytes,
+            },
+            DriveError::Runtime(why) => Refused::Script { why },
+        })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const GROW: &str = "local t = {} local i = 0 while true do i = i + 1 t[i] = {} end";
+
+    fn refusal(script: &str, policy: Policy) -> Refused {
+        match Runner::load(script, policy) {
+            Err(refused) => refused,
+            Ok(_) => panic!("script was not refused"),
         }
-        if !budget.should_continue() {
-            return Err(Refused::Fuel { limit: fuel });
-        }
+    }
+
+    #[test]
+    fn growing_table_is_refused_for_fuel_when_fuel_is_tiny() {
+        let policy = Policy::default();
+        assert_eq!(
+            refusal(GROW, policy),
+            Refused::Fuel { limit: policy.fuel }
+        );
+    }
+
+    #[test]
+    fn growing_table_is_refused_for_heap_with_large_fuel() {
+        let policy = Policy {
+            fuel: i32::MAX,
+            ..Policy::default()
+        };
+        assert_eq!(
+            refusal(GROW, policy),
+            Refused::Heap {
+                limit: policy.max_heap_bytes
+            }
+        );
+        assert_eq!(policy.max_heap_bytes, 16 * 1024 * 1024);
+    }
+
+    #[test]
+    fn heap_ceiling_is_settable() {
+        let policy = Policy {
+            fuel: i32::MAX,
+            max_heap_bytes: 1024 * 1024,
+            ..Policy::default()
+        };
+        assert_eq!(refusal(GROW, policy), Refused::Heap { limit: 1024 * 1024 });
     }
 }

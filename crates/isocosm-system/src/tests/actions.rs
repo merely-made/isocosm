@@ -359,3 +359,30 @@ fn a_spawned_goblin_arrives_statted() {
     assert_eq!(sheet.int("ac"), Some(15));
     assert_eq!(sheet.text("name"), Some("Goblin"));
 }
+
+#[test]
+fn rules_formula_runaway_is_refused_not_hung() {
+    let script = r#"
+        function ok(c) return 7 end
+        function spin(c) while true do end end
+        function grow(c) local t = {} local i = 0 while true do i = i + 1 t[i] = {} end end
+    "#;
+    let sheet = srd_5e().default_sheet();
+    let mut sys =
+        System::load("t", "t", vec![], vec![], vec![], script).unwrap();
+    assert_eq!(sys.call_int("ok", &sheet), Some(7));
+    assert_eq!(sys.call_int("spin", &sheet), None);
+    // Fuel (1,000,000) is spent long before 16 MiB; raise it to reach the heap.
+    assert_eq!(sys.call_int("grow", &sheet), None);
+    assert_eq!(sys.call_int("ok", &sheet), Some(7));
+
+    let limits = RulesLimits {
+        fuel: u64::MAX,
+        ..RulesLimits::default()
+    };
+    assert_eq!(limits.max_heap_bytes, 16 * 1024 * 1024);
+    let mut sys = System::load_with_limits("t", "t", vec![], vec![], vec![], script, limits)
+        .unwrap();
+    assert_eq!(sys.call_int("grow", &sheet), None);
+    assert_eq!(sys.call_int("ok", &sheet), Some(7));
+}

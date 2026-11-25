@@ -19,6 +19,20 @@ impl System {
         actions: Vec<ActionDef>,
         script: &str,
     ) -> Result<Self, String> {
+        Self::load_with_limits(id, name, fields, derived, actions, script, RulesLimits::default())
+    }
+
+    /// [`System::load`] with the host's own rules limits, which also bound the
+    /// script's top level.
+    pub fn load_with_limits(
+        id: impl Into<String>,
+        name: impl Into<String>,
+        fields: Vec<FieldDef>,
+        derived: Vec<DerivedDef>,
+        actions: Vec<ActionDef>,
+        script: &str,
+        rules_limits: RulesLimits,
+    ) -> Result<Self, String> {
         let mut lua = Lua::core();
         let ex = lua
             .try_enter(|ctx| {
@@ -26,7 +40,8 @@ impl System {
                 Ok(ctx.stash(Executor::start(ctx, closure.into(), ())))
             })
             .map_err(|e| format!("load system script: {e}"))?;
-        lua.execute::<()>(&ex)
+        drive_rules(&mut lua, &ex, rules_limits).map_err(|e| format!("run system script: {e}"))?;
+        lua.try_enter(|ctx| ctx.fetch(&ex).take_result::<()>(ctx)?)
             .map_err(|e| format!("run system script: {e}"))?;
         Ok(Self {
             id: id.into(),
@@ -42,8 +57,15 @@ impl System {
             encounter_func: None,
             map_read_func: None,
             forage_func: None,
+            rules_limits,
             lua,
         })
+    }
+
+    /// Replace the limits every rules formula runs under.
+    pub fn with_rules_limits(mut self, limits: RulesLimits) -> Self {
+        self.rules_limits = limits;
+        self
     }
 
     /// Declare the system's out-of-play rule: a Lua `f(c) -> 1|0`. Systems
@@ -348,7 +370,27 @@ impl System {
                 Ok(ctx.stash(Executor::start(ctx, f, (table, t, n, m))))
             })
             .ok()?;
-        self.lua.execute::<i64>(&ex).ok()
+        // A refused (runaway) formula is `None`, like a failing one.
+        drive_rules(&mut self.lua, &ex, self.rules_limits).ok()?;
+        self.lua
+            .try_enter(|ctx| ctx.fetch(&ex).take_result::<i64>(ctx)?)
+            .ok()
     }
 
+}
+
+/// Run a rules executor under `limits`, refusing it past fuel or heap.
+fn drive_rules(
+    lua: &mut Lua,
+    executor: &StashedExecutor,
+    limits: RulesLimits,
+) -> Result<u64, piccolo::DriveError> {
+    piccolo::drive(
+        lua,
+        executor,
+        piccolo::DriveLimits {
+            max_ops: Some(limits.fuel),
+            max_heap_bytes: limits.max_heap_bytes,
+        },
+    )
 }

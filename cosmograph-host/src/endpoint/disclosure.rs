@@ -218,8 +218,7 @@ impl Disclosure {
         self.catch_up()?;
         let snapshot = self.snapshot.as_ref().expect("checked above");
         if intent.observed_epoch != snapshot.scene.epoch || intent.observed_revision.0 != self.revision {
-            return Ok(Err(IntentResult::Stale { current_epoch: snapshot.scene.epoch,
-                current_revision: Revision(self.revision) }));
+            return Ok(Err(IntentResult::stale(snapshot.scene.epoch, Revision(self.revision))));
         }
         let advertised = (|| {
             let item = snapshot.scene.active_item(intent.target)?;

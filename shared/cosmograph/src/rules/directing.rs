@@ -33,6 +33,20 @@ pub enum MovementTies {
     Seeded,
 }
 
+/// How long personal experience influences a choice and how much each site counts.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PlaceMemory {
+    pub span: Tick,
+    pub meal: u16,
+    pub hurt: u16,
+}
+
+impl Default for PlaceMemory {
+    fn default() -> Self {
+        Self { span: 60, meal: 100, hurt: 600 }
+    }
+}
+
 /// A world's directing rules. Absent means these defaults.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Directing {
@@ -45,8 +59,14 @@ pub struct Directing {
     pub most: i64,
     /// How far one answered nudge moves the bond.
     pub step: i64,
-    /// How long a nudge stays live, unanswered.
+    /// Maximum lifetime of a request, including an ongoing spatial direction.
     pub span: Tick,
+    /// Radius of StayNear, in directed route hops to the named body or site.
+    #[serde(default = "one_hop", skip_serializing_if = "is_one_hop")]
+    pub near_hops: u32,
+    /// Where set, deliberative individuals remember sites they fed at or were hurt at.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub place_memory: Option<PlaceMemory>,
     /// What a nudge adds to a choice at the strongest bond (683).
     pub sway: i64,
     /// Each trophic level's slot in a region (226, 689): matter, by the
@@ -142,6 +162,9 @@ fn four() -> u32 {
     4
 }
 
+fn one_hop() -> u32 { 1 }
+fn is_one_hop(radius: &u32) -> bool { *radius == one_hop() }
+
 impl Default for Directing {
     fn default() -> Self {
         Self {
@@ -152,6 +175,8 @@ impl Default for Directing {
             most: 1000,
             step: 50,
             span: 60,
+            near_hops: one_hop(),
+            place_memory: None,
             sway: 1000,
             slots: BTreeMap::new(),
             variants: four(),
@@ -183,6 +208,9 @@ impl Directing {
         }
         if !fits(self.step) || self.span == 0 || self.sway < 0 {
             return Err("invalid directing step, span or sway".into());
+        }
+        if self.place_memory.is_some_and(|memory| memory.span == 0) {
+            return Err("place memory needs a positive span".into());
         }
         for level in self.slots.keys() {
             crate::validation::key(level)?;

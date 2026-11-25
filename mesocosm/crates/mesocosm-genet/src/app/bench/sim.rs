@@ -264,7 +264,7 @@ fn parse(input: &TextInput) -> Result<u64, String> {
         .parse()
         .map_err(|_| "Enter a whole nonnegative number.".into())
 }
-pub(super) fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
+pub(super) fn button(label: &'static str, action: impl Fn(&mut Bench) + 'static) -> Child {
     Box::new(focusable(clickable(
         el("button", text(label)).attr("aria-label", label),
         move |s: &mut Bench, _| action(s),

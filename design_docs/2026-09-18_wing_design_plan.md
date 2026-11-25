@@ -14013,6 +14013,97 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1058, 1240 · summary Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching.
 
+1244. **The player is the lineage's continuity.** Ruled by Mark on
+      2026-11-25: "agreed", to "you are the lineage's continuity. You're in
+      a body at the moment scale. At larger scales you act only through what
+      the lineage has gathered: regard, imitation and what survived
+      selection. World-scale levers are earned" (game spine brief §2). The
+      player lives as one critter at a time under the nudge; kin that heed,
+      the line's next form, other lineages and the world's cycles are held
+      only through regard, what members learned and what selection kept.
+
+      Links: area Mesocosm · draws on 1214, 1216, mesocosm.1, mesocosm.2, directing.4, lineage-rounds D18 · summary The player is the lineage's continuity: in one body at a moment, and at larger scales acting only through regard, learning and selection; world-scale levers are earned.
+
+1245. **The fantastical systems are the ones already ruled.** Mark on
+      2026-11-25, correcting a reading that nothing ruled them: "divinity,
+      effects, there was a glyph random effect idea where you'd collect 'em
+      and become divine by getting 'em, ars magica rules, dnd rules,
+      pathfinder rules, etc." Read: Mesocosm's magic, gods and impossible
+      worlds are Processes 17's composed effects, the hagioglyph's glyphs
+      collected and sacrificed for divinity (Organs 1 and 2, parked under
+      279), World 1's and World 4's worlds, and the editions a world's rules
+      may lead with (Schema 8, VTT 5, Licensing 1), not a new mechanism.
+
+      Links: area Processes and rules · draws on processes.17, organs.1, organs.2, schema.8, world.1, world.4, vtt.5, licensing.1, wing-organs D1 · summary Mesocosm's fantastical systems are the ruled ones: composed effects, collected glyphs and earned divinity, the world's shapes and kinds, and the editions a world may lead with.
+
+1246. **Deep time is where lineages remake the world.** Mark on 2026-11-25,
+      asked what deep time is for (game spine brief, question 3): "welp you
+      develop the lineages over time, they might impact the world as they
+      develop (algae, forests, lavos of chrono trigger) and that requires
+      deep time, no? plus it reshuffles the board and changes what
+      resources you have access to, allows you to see how things play out,
+      and according to simearth, you got at least about 10 billion years or
+      so to work with, so deep time feels like no big deal looking at it
+      from the ecological perspective." Deep time develops lineages until
+      they change the world, which reshuffles the board and the resources a
+      line can reach; its span is ecological, billions of years.
+
+      Links: area Record and history · draws on 1119, record.7, ecology.1, world.4 · summary Deep time develops lineages until they change the world, reshuffling the board and its resources; its span is ecological, billions of years.
+
+1247. **Civilisations are Eponym's and the VTT's.** Mark on 2026-11-25 (game
+      spine brief, question 4): "now if you wanna talk civilizations, that's
+      eponym, thats isocosm, etc." Mesocosm runs to sapience and culture
+      (Directing 3, Processes 14); a sapient line's people continue in
+      Eponym or the VTT by inheritance under the pipeline laws, and the
+      society layer stays off for Mesocosm (886).
+
+      Links: area Directing and play · draws on 886, directing.2, directing.3, processes.14 · summary Mesocosm runs to sapience and culture; civilisations are Eponym's and the VTT's, reached by inheritance.
+
+1248. **The world is the top world-class lineage.** Ruled by Mark on
+      2026-11-25: "Top world-class line (Recommended)", over habitat bodies
+      only or the planet shaped only at founding and in creative mode (game
+      spine brief, question 1). A player may come to hold the world itself,
+      by regard as any world-class lineage (lineage-rounds D18). Its regard
+      is read from the web's health (Ecology 3), since its temperament moves
+      by what happens to it and never by its people (World 4); its levers
+      are D19's offsets, time's flow and cycles.
+
+      Links: area Mesocosm · draws on 1216, 1244, mesocosm.1, world.4, ecology.3, lineage-rounds D18, lineage-rounds D19 · summary The world itself is the top world-class lineage, held by regard read from the web's health, its levers the bounded offsets, time's flow and cycles.
+
+1249. **Time runs at play speed only while the foreground needs it.** Ruled
+      by Mark on 2026-11-25: "Fast when unattended (Recommended)", over a
+      season-long epoch, a coarser tick, or rounds spanning sittings (game
+      spine brief, question 2). A year at the minute tick is about 14.6
+      hours at 10 ticks a second and 73 at 2. Time runs at play speed while
+      something attended needs the foreground (an encounter, a meal, a
+      birth, a nudge under way) and otherwise passes faster over the coarse
+      step, aiming at a round of an hour or two, a measured bar set beside
+      the speed bars.
+
+      Links: area Mesocosm · draws on 1163, mesocosm.5, record.7, directing.5, sim-execution D21 · plans sim-execution · summary Time runs at play speed only while something attended needs it and otherwise passes over the coarse step, aiming at a round of an hour or two as a measured bar.
+
+1250. **Epochs lengthen with distance from play.** Ruled by Mark on
+      2026-11-25: "Epochs lengthen (Recommended)", over running the long
+      span once at founding or keeping a year per epoch as far as the coarse
+      step runs, asked because 1246's billions of years are billions of
+      year-long epochs (Record 7). Played rounds stay short; unplayed deep
+      time steps on a coarser rung whose epoch grows with distance from
+      play, thousands then millions of years. Lineage boundaries are read
+      per step, and world-changing lines alter fields at that rung.
+
+      Links: area Record and history · draws on 1163, 1246, record.7, ecology.1 · summary Played rounds stay short; unplayed deep time steps on a coarser rung whose epoch grows with distance from play, to millions of years.
+
+1251. **Mesocosm's v1 is the solo loop with members learning.** Ruled by
+      Mark on 2026-11-25: "Solo loop + learning (Recommended)", over LR1 to
+      LR4 only or adding the colony (game spine brief, question 5). The
+      middle scale's three lifestyles, the solo loop (lineage-rounds LR1 to
+      LR4) with members learning (mesocosm-overlay M3.6), the world map as a
+      read-only view between rounds, and 1249's tempo; microbes, colonies,
+      shared lineages, world-class levers, magic and gods after. It widens
+      lineage-rounds D1 by M3.6.
+
+      Links: area Mesocosm · draws on 1249, mesocosm.1, mesocosm.6, lineage-rounds D1 · plans lineage-rounds, mesocosm-overlay · summary Mesocosm's v1 is the middle scale's solo loop with members learning, the world map read-only between rounds, at 1249's tempo; the other kingdoms and levers after.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

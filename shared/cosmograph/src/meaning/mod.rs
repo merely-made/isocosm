@@ -324,7 +324,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = mood(s)?;
             (v >= *at_least, v.to_string())
         },
-        Query::MoodBelow { amount } => {
+        Query::MoodBelow { amount } | Query::MigrationMotive { amount } => {
             let v = mood(s)?;
             (v < *amount, v.to_string())
         },

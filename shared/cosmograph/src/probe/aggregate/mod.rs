@@ -168,7 +168,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 Query::Age { .. }
                 | Query::Condition { .. }
                 | Query::Mood { .. }
-                | Query::MoodBelow { .. }
+                | Query::MoodBelow { .. } | Query::MigrationMotive { .. }
                 | Query::Expresses { .. } => false,
                 Query::EmptyBody | Query::FixingCanopy | Query::FixingShare { .. } => false,
                 Query::Computed(x) => x.reads().iter().any(|u| target(&u.body())),
@@ -213,7 +213,7 @@ fn reads_site(q: &Query) -> bool {
             ..
         } | Query::Condition { .. }
             | Query::Mood { .. }
-            | Query::MoodBelow { .. }
+            | Query::MoodBelow { .. } | Query::MigrationMotive { .. }
     )
 }
 
