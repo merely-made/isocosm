@@ -14,6 +14,7 @@ use crate::lift::Materials;
 use crate::{Atlas, Result, SiteId};
 use isometer_core::ground::{BRICK, Ground, Terrain};
 use std::sync::Arc;
+pub mod chart;
 mod paged;
 use paged::Paged;
 
@@ -30,6 +31,7 @@ pub struct Volume {
     extent: i32,
     ground: Ground,
     columns: Option<Arc<Paged>>,
+    pub chart: Option<Arc<chart::Chart>>,
 }
 
 /// The window's columns as `Ground::grow_with` reads them.
@@ -121,6 +123,7 @@ impl Volume {
             extent,
             ground,
             columns: None,
+            chart: None,
         };
         let cells = touched(&reaching(a, site, edits), m, min, max, 1);
         volume.write(cells.into_iter().map(|(([x, z], y), m)| ([x, y, z], m)))?;
@@ -236,7 +239,9 @@ impl Volume {
         if frame(self) != frame(other) {
             return false;
         }
-        if self.columns.is_some() || other.columns.is_some() { return self.columns == other.columns; }
+        if self.columns.is_some() || other.columns.is_some() {
+            return self.columns == other.columns && self.chart == other.chart;
+        }
         let air = [isometer_core::ground::AIR; (BRICK * BRICK * BRICK) as usize];
         fn raw<'a>(v: &'a Volume, k: [i16; 3], air: &'a [u8]) -> &'a [u8] {
             v.ground.brick_materials(k).map_or(air, |(b, _)| b.raw())

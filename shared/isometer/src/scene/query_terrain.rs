@@ -22,7 +22,7 @@ struct CachedTerrain {
 }
 
 impl TerrainQueryCache {
-    fn capture(&self, map: Option<&BrickMap>) -> (Option<Arc<BrickMap>>, bool) {
+    pub(super) fn capture(&self, map: Option<&BrickMap>) -> (Option<Arc<BrickMap>>, bool) {
         let Some(map) = map else {
             return (None, false);
         };
@@ -52,13 +52,25 @@ impl Scene {
         let frame = self.presented?;
         let terrain = self.map.as_ref().filter(|_| frame.terrain);
         let (terrain, copied) = self.query_terrain.capture(terrain);
+        let mut maps: Vec<_> = terrain
+            .into_iter()
+            .map(|m| (m, self.terrain_cell))
+            .collect();
+        let mut copied = copied;
+        if frame.terrain
+            && self.outer_drawn
+            && let Some(outer) = &self.outer
+        {
+            let (held, changed) = outer.query.capture(outer.map.as_ref());
+            maps.extend(held.map(|m| (m, outer.cell)));
+            copied |= changed;
+        }
         Some(crate::QuerySnapshot::new(
             frame,
             [self.width, self.height],
             self.bodies.query_snapshot(),
-            terrain,
+            maps,
             copied,
-            self.terrain_cell,
             self.bodies.stats.fallback_bodies != 0,
         ))
     }

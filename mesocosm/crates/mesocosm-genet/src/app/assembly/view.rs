@@ -250,7 +250,7 @@ pub(super) fn root(state: &State) -> Child {
                     el(
                         "div",
                         text(if state.watching {
-                            format!("Watching · tick {} · + / − zoom · O overview · Z / V turn", state.tick_reading)
+                            format!("Watching · tick {} · ← → / Shift ↑ ↓ pan · + / − zoom · O overview · Z / V turn", state.tick_reading)
                         } else {
                             format!("tick {} · E / Space attend · S speciate · Z / V turn · Y view",
                                 state.tick_reading)

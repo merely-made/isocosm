@@ -106,6 +106,11 @@ impl SectionProducer {
                 return Err("pointed body geometry is stale".into());
             }
         }
-        Ok((pick, revision, input.site()))
+        let mut site=input.site();
+        if let Some(isometer::Pick::Terrain(hit))=pick && let Some(chart)=&input.scene.window.chart {
+            site=chart.ground_site([hit.voxel[0],hit.voxel[2]].map(i64::from))
+                .ok_or("terrain hit outside the presented chart")?;
+        }
+        Ok((pick, revision, site))
     }
 }

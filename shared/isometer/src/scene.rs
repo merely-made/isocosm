@@ -27,11 +27,14 @@ use crate::query::PresentedFrame;
 
 #[cfg(test)]
 mod palette_tests;
+mod bands;
+mod columns;
+mod outer;
 mod body_pass;
 mod query_terrain;
 mod residency;
 mod terrain;
-mod columns;
+pub use bands::{BandStats, TerrainBands};
 mod coordinates;
 pub use columns::ColumnTerrain;
 pub use residency::{
@@ -176,6 +179,8 @@ pub struct Scene {
     terrain_upload_pending: bool,
     terrain_diagnostics: Option<BrickDiagnostics>,
     terrain_cell: f32,
+    outer: Option<outer::OuterTerrain>,
+    outer_drawn: bool,
     bodies: BodyLayer,
     hybrid: body_pass::HybridFrame,
     /// The scene's own chrome, on the scene's own depth. Built on first use,
@@ -222,6 +227,8 @@ impl Scene {
             terrain_upload_pending: true,
             terrain_diagnostics: None,
             terrain_cell: 1.0,
+            outer: None,
+            outer_drawn: false,
             bodies,
             hybrid: Default::default(),
             glyphs: None,
@@ -240,6 +247,9 @@ impl Scene {
         self.width = width.max(1);
         self.height = height.max(1);
         self.tracer.resize(self.width, self.height);
+        if let Some(outer) = &mut self.outer {
+            outer.tracer.resize(self.width, self.height);
+        }
         self.bodies.resize(&self.device, self.width, self.height);
         (self.traced, self.traced_view) = target(
             &self.device,
@@ -349,7 +359,15 @@ impl Scene {
         direction: [f32; 3],
         far: f32,
     ) -> Result<Option<isometer_lens::BrickRayHit>, isometer_lens::BrickRayError> {
-        crate::query::snapshot::terrain_ray(self.map.as_ref(), self.terrain_cell, origin, direction, far)
+        crate::query::snapshot::nearest_terrain(
+            self.map
+                .iter()
+                .map(|m| (m, self.terrain_cell))
+                .chain(self.outer_map()),
+            origin,
+            direction,
+            far,
+        )
     }
 
     /// Encodes one frame into the tenant-owned display texture.
@@ -369,7 +387,18 @@ impl Scene {
         frame: SceneFrame<'_>,
         host: &mut dyn SceneHost,
     ) -> Result<SceneStats, String> {
-        let result = self.render_frame(encoder, frame, host);
+        self.render_with_outer(encoder, frame, host, None)
+    }
+
+    /// Encode disjoint terrain bands against a common native-world depth.
+    pub fn render_with_outer(
+        &mut self,
+        encoder: &mut wgpu::CommandEncoder,
+        frame: SceneFrame<'_>,
+        host: &mut dyn SceneHost,
+        outer: Option<&dyn TerrainSource>,
+    ) -> Result<SceneStats, String> {
+        let result = self.render_frame(encoder, frame, host, outer);
         if result.is_err() {
             self.abandon_frame();
         }
@@ -383,6 +412,9 @@ impl Scene {
         self.terrain_diagnostics = None;
         self.terrain_upload_pending = true;
         self.hybrid.inactive(&self.queue);
+        if let Some(outer) = &mut self.outer {
+            outer.pending = true;
+        }
     }
 
     fn render_frame(
@@ -390,7 +422,9 @@ impl Scene {
         encoder: &mut wgpu::CommandEncoder,
         frame: SceneFrame<'_>,
         host: &mut dyn SceneHost,
+        outer: Option<&dyn TerrainSource>,
     ) -> Result<SceneStats, String> {
+        self.outer_drawn = false;
         // A partial encode may have changed terrain or body projections. It
         // cannot retain a query receipt from a different completed frame.
         self.invalidate_query();
@@ -482,6 +516,7 @@ impl Scene {
             let Self {
                 tracer,
                 map,
+                bodies,
                 traced_view,
                 terrain_palette,
                 light,
@@ -501,11 +536,34 @@ impl Scene {
             if let Some(pose) = &played {
                 input = input.with_pose(pose);
             }
-            self.terrain_diagnostics = Some(
-                tracer
-                    .encode(encoder, traced_view, input)
-                    .map_err(|error| error.to_string())?,
-            );
+            let diagnostics = if outer.is_some() {
+                drop(encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                    label: Some("clear capsule terrain depth"),
+                    color_attachments: &[],
+                    depth_stencil_attachment: Some(wgpu::RenderPassDepthStencilAttachment {
+                        view: &bodies.depth_view,
+                        depth_ops: Some(wgpu::Operations {
+                            load: wgpu::LoadOp::Clear(1.),
+                            store: wgpu::StoreOp::Store,
+                        }),
+                        stencil_ops: None,
+                    }),
+                    ..Default::default()
+                }));
+                tracer.encode_with_depth(
+                    encoder,
+                    traced_view,
+                    &bodies.depth_view,
+                    input.with_clip_from_world(scaled.clip_from_world()),
+                )
+            } else {
+                tracer.encode(encoder, traced_view, input)
+            };
+            self.terrain_diagnostics = Some(diagnostics.map_err(|e| e.to_string())?);
+        }
+        if let Some(source) = outer {
+            self.draw_outer(encoder, source, &frame)?;
+            self.outer_drawn = true;
         }
         self.terrain_upload_pending = false;
         if frame.capsules.is_none() {

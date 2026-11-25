@@ -178,6 +178,8 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         "down" => Some(Key::Named(NamedKey::ArrowDown)),
         "left" => Some(Key::Named(NamedKey::ArrowLeft)),
         "right" => Some(Key::Named(NamedKey::ArrowRight)),
+        "pageup" => Some(Key::Named(NamedKey::PageUp)),
+        "pagedown" => Some(Key::Named(NamedKey::PageDown)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
         // The round: D call, A extend, H forfeit. A held lineage: 1 to 4 steer, 9 and 0 turn.

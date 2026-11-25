@@ -30,9 +30,8 @@ struct Data {
     frame: PresentedFrame,
     extent: [u32; 2],
     bodies: BodyQueries,
-    map: Option<Arc<BrickMap>>,
+    maps: Vec<(Arc<BrickMap>, f32)>,
     terrain_payload_copied: bool,
-    terrain_cell: f32,
     fallback: bool,
 }
 
@@ -41,32 +40,27 @@ impl QuerySnapshot {
         frame: PresentedFrame,
         extent: [u32; 2],
         bodies: BodyQueries,
-        map: Option<Arc<BrickMap>>,
+        maps: Vec<(Arc<BrickMap>, f32)>,
         terrain_payload_copied: bool,
-        terrain_cell: f32,
         fallback: bool,
     ) -> Self {
         Self(Arc::new(Data {
             frame,
             extent,
             bodies,
-            map,
+            maps,
             terrain_payload_copied,
-            terrain_cell,
             fallback,
         }))
     }
     pub fn capture_stats(&self) -> QuerySnapshotStats {
         let (placed_bodies, surfaces) = self.0.bodies.record_counts();
-        let (terrain_pointer_words, terrain_atlas_bytes) = self
-            .0
-            .map
-            .as_ref()
-            .map_or((0, 0), |map| (map.pointers().len(), map.atlas().len()));
+        let terrain_pointer_words = self.0.maps.iter().map(|(m, _)| m.pointers().len()).sum();
+        let terrain_atlas_bytes = self.0.maps.iter().map(|(m, _)| m.atlas().len()).sum();
         QuerySnapshotStats {
             placed_bodies,
             surfaces,
-            terrain_present: self.0.map.is_some(),
+            terrain_present: !self.0.maps.is_empty(),
             terrain_payload_copied: self.0.terrain_payload_copied,
             terrain_pointer_words,
             terrain_atlas_bytes,
@@ -128,9 +122,8 @@ impl QuerySnapshot {
             .pick(origin, direction, camera.far(), self.camera().clip())
             .map_err(BodyPickError::Body)?;
         let terrain = if self.0.frame.terrain {
-            terrain_ray(
-                self.0.map.as_deref(),
-                self.0.terrain_cell,
+            nearest_terrain(
+                self.0.maps.iter().map(|(m, c)| (m.as_ref(), *c)),
                 origin,
                 direction,
                 camera.far(),
@@ -163,4 +156,21 @@ pub(crate) fn terrain_ray(
             }),
         None => Ok(None),
     }
+}
+
+pub(crate) fn nearest_terrain<'a>(
+    maps: impl IntoIterator<Item = (&'a BrickMap, f32)>,
+    origin: [f32; 3],
+    direction: [f32; 3],
+    far: f32,
+) -> Result<Option<BrickRayHit>, BrickRayError> {
+    let mut best: Option<BrickRayHit> = None;
+    for (map, cell) in maps {
+        if let Some(hit) = terrain_ray(Some(map), cell, origin, direction, far)?
+            && best.as_ref().is_none_or(|b| hit.distance < b.distance)
+        {
+            best = Some(hit);
+        }
+    }
+    Ok(best)
 }

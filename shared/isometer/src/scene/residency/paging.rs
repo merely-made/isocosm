@@ -46,6 +46,8 @@ pub enum Rebuild {
 /// What the last change did to a residency.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct ResidencyStats {
+    /// Detail bands in the displayed chart, when the host combines two residencies.
+    pub bands: crate::BandStats,
     /// Bricks the map holds.
     pub resident: usize,
     /// Bricks the atlas can hold.
@@ -212,6 +214,7 @@ impl Residency {
         .map_err(|error| format!("paged brick map: {error}"))?;
         let resident: BTreeSet<_> = framed.keys.iter().copied().collect();
         self.stats = ResidencyStats {
+            bands: Default::default(),
             resident: resident.len(),
             capacity: self.capacity(),
             loaded: resident.len(),

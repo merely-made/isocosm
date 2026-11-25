@@ -397,6 +397,7 @@ fn camera_ray(ndc: vec2<f32>) -> Ray {
 struct TraceSample {
     colour: vec4<f32>,
     world: vec3<f32>,
+    hit: bool,
 };
 
 fn shade_body(normal: vec3<f32>, tint: vec3<f32>, direction: vec3<f32>) -> vec3<f32> {
@@ -441,7 +442,7 @@ fn trace_sample(in: VsOut) -> TraceSample {
             base = base * 0.12;
         }
         let lit = shade_body(normal, base, ray.direction);
-        return TraceSample(vec4(grade(lit, body_t, pixel, false, false), 1.0), point);
+        return TraceSample(vec4(grade(lit, body_t, pixel, false, false), 1.0), point, true);
     }
 
     if (!hit.found) {
@@ -461,7 +462,7 @@ fn trace_sample(in: VsOut) -> TraceSample {
             sky,
             params.terrain[0].x > 0.5,
         );
-        return TraceSample(vec4(colour, 1.0), ray.origin + ray.direction * params.camera.far);
+        return TraceSample(vec4(colour, 1.0), ray.origin + ray.direction * params.camera.far, false);
     }
     let sun = normalize(params.light[0].xyz);
     let light = vec3(params.light[0].w) + params.light[1].xyz * max(0.0, dot(hit.normal, sun));
@@ -497,11 +498,11 @@ fn trace_sample(in: VsOut) -> TraceSample {
         let encoded = select(1.055 * pow(max(linear, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055,
             12.92 * linear, linear <= vec3(0.0031308));
         return TraceSample(vec4(grade(encoded, hit.t, pixel, from_above, true), 1.0),
-            ray.origin + ray.direction * hit.t);
+            ray.origin + ray.direction * hit.t, true);
     }
     return TraceSample(
         vec4(grade(material_colour(hit.material) * light, hit.t, pixel, from_above, true), 1.0),
-        ray.origin + ray.direction * hit.t,
+        ray.origin + ray.direction * hit.t, true,
     );
 }
 
@@ -521,9 +522,20 @@ struct DepthOut {
 @fragment
 fn fs_depth(in: VsOut) -> DepthOut {
     let sample = trace_sample(in);
+    return surface_depth(sample);
+}
+
+@fragment
+fn fs_depth_hits(in: VsOut) -> DepthOut {
+    let sample = trace_sample(in);
+    if (!sample.hit) { discard; }
+    return surface_depth(sample);
+}
+
+fn surface_depth(sample: TraceSample) -> DepthOut {
     let clip = params.clip_from_world * vec4(sample.world, 1.0);
     var out: DepthOut;
     out.colour = sample.colour;
-    out.depth = clamp(clip.z / max(clip.w, 1e-6), 0.0, 1.0);
+    out.depth = select(1.0, clamp(clip.z / max(clip.w, 1e-6), 0.0, 1.0), sample.hit);
     return out;
 }

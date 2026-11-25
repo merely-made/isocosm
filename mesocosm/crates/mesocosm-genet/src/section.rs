@@ -145,6 +145,9 @@ pub struct Section {
     scene: Scene,
     residency: std::cell::RefCell<Residency>,
     columns: Option<isometer::ColumnTerrain>,
+    bands: Option<isometer::TerrainBands>,
+    outer_residency: std::cell::RefCell<Residency>,
+    band_stats: isometer::BandStats,
     column_half: f32,
     body_tenant: tenant::BodyTenant,
     grade: Grade,
@@ -191,6 +194,10 @@ impl Section {
             ResidencySettings::default(),
             scene.atlas_limits(),
         ));
+        let mut band_limits = scene.atlas_limits();
+        band_limits.max_atlas_bytes /= 2;
+        let outer_residency =
+            std::cell::RefCell::new(Residency::new(ResidencySettings::default(), band_limits));
         scene.bodies_mut().preview_depth = SLAB_DEPTH;
         Ok(Self {
             device,
@@ -198,6 +205,9 @@ impl Section {
             scene,
             residency,
             columns: None,
+            bands: None,
+            outer_residency,
+            band_stats: Default::default(),
             column_half: 0.0,
             body_tenant: tenant::BodyTenant::new(host, [width, height]),
             grade: Grade::retro(PALETTE),
@@ -219,6 +229,9 @@ impl Section {
     /// Rebinds the terrain to another lifted Ground: a new site, or new edits.
     pub fn set_ground(&mut self, _ground: &Ground) -> Result<(), String> {
         self.columns = None;
+        self.bands = None;
+        self.band_stats = Default::default();
+        self.outer_residency.borrow_mut().rebuild();
         self.residency.borrow_mut().rebuild();
         self.invalidate_query();
         Ok(())
@@ -271,11 +284,27 @@ impl Section {
     }
 
     pub fn terrain_stats(&self) -> isometer::ResidencyStats {
-        self.residency.borrow().stats()
+        let mut stats = self.residency.borrow().stats();
+        if self.bands.is_some() {
+            let outer = self.outer_residency.borrow().stats();
+            stats.resident += outer.resident;
+            stats.capacity += outer.capacity;
+            stats.loaded += outer.loaded;
+            stats.evicted += outer.evicted;
+            stats.refreshed += outer.refreshed;
+            stats.overflow += outer.overflow;
+            stats.rebuilt = stats.rebuilt.or(outer.rebuilt);
+            stats.bands = self.band_stats;
+        }
+        stats
     }
 
-    pub(crate) fn terrain_diagnostics(&self) -> Option<isometer::lens::BrickDiagnostics> { self.scene.terrain_diagnostics() }
-    pub(crate) fn terrain_changes(&self) -> u64 { self.residency.borrow().changes() }
+    pub(crate) fn terrain_diagnostics(&self) -> Option<isometer::lens::BrickDiagnostics> {
+        self.scene.terrain_diagnostics()
+    }
+    pub(crate) fn terrain_changes(&self) -> u64 {
+        self.residency.borrow().changes() + self.outer_residency.borrow().changes()
+    }
 
     pub fn set_body_light(&mut self, intensity: f32) {
         self.body_tenant.set_light(intensity);
@@ -346,29 +375,72 @@ impl Section {
         self.register_palettes(frame.scene);
         let camera = self.view(frame.centre);
         let ground_source = GroundTerrain(&frame.scene.ground);
-        let paged=frame.scene.window.is_paged();
-        if paged && (self.columns.is_none() || self.column_half!=self.half_height) {
-            self.columns = Some(isometer::ColumnTerrain::new(frame.scene.window.clone(),terrain_cell(self.half_height)));
-            self.column_half=self.half_height;
+        let paged = frame.scene.window.is_paged();
+        if paged
+            && frame.scene.window.chart.is_none()
+            && (self.columns.is_none() || self.column_half != self.half_height)
+        {
+            self.columns = Some(isometer::ColumnTerrain::new(
+                frame.scene.window.clone(),
+                terrain_cell(self.half_height),
+            ));
+            self.column_half = self.half_height;
             self.residency.borrow_mut().rebuild();
         }
-        let framed=if paged {
-            let source=self.columns.as_mut().expect("column source");
-            let cell=source.cell;
-            let framed=source.frame(camera,8.0,self.residency.borrow().capacity());
-            if source.cell!=cell {self.residency.borrow_mut().rebuild();}
-            framed
-        } else {framed_bricks(camera,8.0,&ground_source,self.residency.borrow().capacity())};
-        let source: &dyn isometer::BrickSource = if paged {
-            self.columns.as_ref().expect("column source")
-        } else { &ground_source };
-        let cell=source.cell_size();
         let voxels = self.body_mode != BodyMode::Capsules;
         let scene_bodies = if voxels {
             self.scene_bodies(frame.scene)
         } else {
             Vec::new()
         };
+        let charted = frame.scene.window.chart.is_some();
+        let mut limits = self.scene.atlas_limits();
+        if charted {
+            limits.max_atlas_bytes /= 2;
+        }
+        self.residency.borrow_mut().set_limits(limits);
+        let capacity = self.residency.borrow().capacity();
+        let both;
+        let single;
+        let (source, framed): (&dyn isometer::BrickSource, &isometer::FramedBricks);
+        let mut outer = None;
+        if charted {
+            let bands = self
+                .bands
+                .get_or_insert_with(|| isometer::TerrainBands::new(frame.scene.window.clone()));
+            both = bands.frame(
+                camera,
+                terrain_cell(self.half_height),
+                [capacity, self.outer_residency.borrow().capacity()],
+            )?;
+            if both.2.cell != self.band_stats.cell {
+                self.residency.borrow_mut().rebuild();
+                self.outer_residency.borrow_mut().rebuild();
+            }
+            self.band_stats = both.2;
+            source = &both.0[0];
+            framed = &both.1[0];
+            outer = Some(PagedTerrain::new(
+                &self.outer_residency,
+                &both.0[1],
+                &both.1[1],
+                frame.scene.ground.revision(),
+            ));
+        } else if paged {
+            let columns = self.columns.as_mut().expect("paged terrain");
+            let previous = columns.cell;
+            single = columns.frame(camera, 8., capacity);
+            if previous != columns.cell {
+                self.residency.borrow_mut().rebuild();
+            }
+            source = columns;
+            framed = &single;
+        } else {
+            single = framed_bricks(camera, 8., &ground_source, capacity);
+            source = &ground_source;
+            framed = &single;
+        }
+        let cell = source.cell_size();
         let (grade, appearance, budget) = (self.grade, self.terrain_appearance, self.body_budget);
         let Self {
             scene,
@@ -378,7 +450,7 @@ impl Section {
             ..
         } = self;
         let framing_us = profile_start.elapsed().as_micros();
-        let terrain = PagedTerrain::new(residency, source, &framed, frame.scene.ground.revision());
+        let terrain = PagedTerrain::new(residency, source, framed, frame.scene.ground.revision());
         let mut host = SectionHost {
             bodies: host_bodies,
             scene: frame.scene,
@@ -395,7 +467,7 @@ impl Section {
         } else {
             &frame.scene.volumes
         };
-        scene.render(
+        scene.render_with_outer(
             encoder,
             SceneFrame {
                 camera,
@@ -412,6 +484,7 @@ impl Section {
                 }),
             },
             &mut host,
+            outer.as_ref().map(|s| s as &dyn isometer::TerrainSource),
         )?;
         if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v=="1") {
             eprintln!("[mesocosm-terrain] cell={cell} bricks={} overflow={} framing={}us encode={}us",

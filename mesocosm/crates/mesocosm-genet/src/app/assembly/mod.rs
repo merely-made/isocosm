@@ -206,7 +206,7 @@ impl State {
                 mode: host.config.camera,
                 depth: host.config.view_depth,
                 forward: host.config.camera.forward(),
-                centre: crate::section::centre_on(at, host.pan, half, host.config.camera),
+                centre: host.view_centre(scene, at, half),
                 half_height: half,
                 bodies: host.config.body_mode,
                 budget: host.config.body_budget,
@@ -329,6 +329,8 @@ impl State {
             * crate::section::half_height_or_default(self.host.config.slab_half_height)
             / crate::section::SLAB_HALF_HEIGHT;
         match key {
+            Key::Named(NamedKey::PageUp) => self.host.pan.y += pan_step,
+            Key::Named(NamedKey::PageDown) => self.host.pan.y -= pan_step,
             Key::Named(NamedKey::ArrowLeft) => self.host.pan.x -= pan_step,
             Key::Named(NamedKey::ArrowRight) => self.host.pan.x += pan_step,
             Key::Named(NamedKey::ArrowUp)
@@ -470,7 +472,8 @@ impl Product for WindowProduct {
         if press.repeat {
             use cambium_genet_winit_host::{Key as K, NamedKey as N};
             let host = &runner.state().host;
-            let pan = matches!(press.key, K::Named(N::ArrowLeft | N::ArrowRight))
+            let pan = matches!(press.key, K::Named(N::ArrowLeft | N::ArrowRight | N::PageUp | N::PageDown))
+                || (press.modifiers.shift && matches!(press.key,K::Named(N::ArrowUp | N::ArrowDown)))
                 || (matches!(press.key, K::Named(N::ArrowUp | N::ArrowDown))
                     && !host.continuation_open()
                     && !host.directing_open());
@@ -487,6 +490,10 @@ impl Product for WindowProduct {
                     N::Enter => NamedKey::Enter,
                     N::Tab => NamedKey::Tab,
                     N::Escape => NamedKey::Escape,
+                    N::PageUp => NamedKey::PageUp,
+                    N::PageDown => NamedKey::PageDown,
+                    N::ArrowUp if press.modifiers.shift => NamedKey::PageUp,
+                    N::ArrowDown if press.modifiers.shift => NamedKey::PageDown,
                     N::ArrowUp => NamedKey::ArrowUp,
                     N::ArrowDown => NamedKey::ArrowDown,
                     N::ArrowLeft => NamedKey::ArrowLeft,

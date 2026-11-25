@@ -64,6 +64,7 @@ pub struct BrickTracer {
     /// `Depth32Float` attachment. Built on first use so plain tracing pays
     /// nothing for it.
     depth_pipeline: Option<wgpu::RenderPipeline>,
+    hits_only: bool,
     shader: wgpu::ShaderModule,
     pipeline_layout: wgpu::PipelineLayout,
     layout: wgpu::BindGroupLayout,
@@ -205,6 +206,7 @@ impl BrickTracer {
             height: height.max(1),
             pipeline,
             depth_pipeline: None,
+            hits_only: false,
             shader,
             pipeline_layout,
             layout,
@@ -375,6 +377,13 @@ impl BrickTracer {
         self.last_roster = roster;
     }
 
+    /// Composite an additional map onto depth and colour supplied by a first pass.
+    pub fn hits_only(mut self) -> Self {
+        self.hits_only = true;
+        self.depth_pipeline = None;
+        self
+    }
+
     fn create_depth_pipeline(&self) -> wgpu::RenderPipeline {
         self.device
             .create_render_pipeline(&wgpu::RenderPipelineDescriptor {
@@ -388,7 +397,11 @@ impl BrickTracer {
                 },
                 fragment: Some(wgpu::FragmentState {
                     module: &self.shader,
-                    entry_point: Some("fs_depth"),
+                    entry_point: Some(if self.hits_only {
+                        "fs_depth_hits"
+                    } else {
+                        "fs_depth"
+                    }),
                     targets: &[Some(wgpu::ColorTargetState {
                         format: self.format,
                         blend: None,

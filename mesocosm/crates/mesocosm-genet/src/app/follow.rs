@@ -32,6 +32,27 @@ impl Host {
             .unwrap_or_else(|| crate::played::layout::centre(&scene.window))
     }
 
+    /// Pan a chart along its ground plane. In section views the vertical
+    /// control still raises or lowers the cut.
+    pub(super) fn view_centre(
+        &self,
+        scene: &crate::section::SiteScene,
+        at: [i32; 3],
+        half: f32,
+    ) -> [f32; 3] {
+        let camera = self.config.camera;
+        if scene.window.chart.is_some() && camera.is_surface() {
+            let [right, up, _] = camera.basis();
+            let along = up[0].hypot(up[2]);
+            return [
+                at[0] as f32 + right[0] * self.pan.x + up[0] / along * self.pan.y,
+                at[1] as f32,
+                at[2] as f32 + right[2] * self.pan.x + up[2] / along * self.pan.y,
+            ];
+        }
+        crate::section::centre_on(at, self.pan, half, camera)
+    }
+
     pub(super) fn follow_key(&mut self, action: input::DevKey) {
         let sim = self.runtime.sim();
         let from = self.followed();

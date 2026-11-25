@@ -58,7 +58,9 @@ impl Host {
                     let [right, up, _] = self.config.camera.basis();
                     self.pan = crate::section::Pan {
                         x: (0..3).map(|i| delta[i] * right[i]).sum(),
-                        y: (0..3).map(|i| delta[i] * up[i]).sum(),
+                        y: if v.chart.is_some() {
+                            (delta[0]*up[0]+delta[2]*up[2])/up[0].hypot(up[2])
+                        } else {(0..3).map(|i| delta[i] * up[i]).sum()},
                     };
                     self.config.slab_half_height =
                         ((v.max[0] - v.min[0]).max(v.max[1] - v.min[1]) as f32 * 0.8)

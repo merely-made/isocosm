@@ -50,9 +50,8 @@ pub(crate) fn site_scene_at(sim: &Simulation, site: Id, played: Option<Id>, visi
 pub(crate) fn watched_site(sim: &Simulation, site: Id, played: Option<Id>, visible: &View)
     -> Result<SiteScene, String> {
     let atlas = sim.atlas()?;
-    let side = i64::try_from(atlas.footprint.side).map_err(|_| "site side exceeds terrain coordinates")?;
     let edits: Vec<_> = sim.state().edits.iter().map(|e| (e.site, e.edit.clone())).collect();
-    let volume = isometer::space::volume::Volume::paged(&atlas, site, [0; 2], [side; 2], DEPTH, &edits)?;
+    let volume = isometer::space::volume::Volume::charted(&atlas, site, DEPTH, &edits)?;
     in_volume(sim, site, played, Some(visible), volume)
 }
 

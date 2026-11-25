@@ -43,10 +43,9 @@ pub use producer::{
 };
 pub use query::{BodyPick, BodyPickError, Pick, QuerySnapshot, QuerySnapshotStats, TerrainHit};
 pub use scene::{
-    ColumnTerrain,
-    BRICK_BYTES, BrickSource, CapsuleFrame, FramedBricks, GroundTerrain, HostTerrain, PagedTerrain,
-    Rebuild, Residency, ResidencySettings, ResidencyStats, Scene, SceneFrame, SceneHost,
-    SceneStats, TerrainRefresh, TerrainSource, framed_bricks,
+    BRICK_BYTES, BandStats, BrickSource, CapsuleFrame, ColumnTerrain, FramedBricks, GroundTerrain,
+    HostTerrain, PagedTerrain, Rebuild, Residency, ResidencySettings, ResidencyStats, Scene,
+    SceneFrame, SceneHost, SceneStats, TerrainBands, TerrainRefresh, TerrainSource, framed_bricks,
 };
 pub use tokens::{
     MissingLayer, Silhouette, TokenBody, material_colours, mesh_silhouette, scene_volumes,

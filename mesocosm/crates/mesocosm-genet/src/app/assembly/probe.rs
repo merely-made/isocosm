@@ -235,6 +235,29 @@ impl mandrake::Product for Probe {
                     "hybrid-bake-upload-bytes",
                     counter("hybrid_bake_upload_bytes"),
                 ),
+                (
+                    "terrain-grains",
+                    format!(
+                        "{},{}",
+                        terrain_stats.bands.cell[0], terrain_stats.bands.cell[1]
+                    ),
+                ),
+                (
+                    "terrain-near-bricks",
+                    terrain_stats.bands.bricks[0].to_string(),
+                ),
+                (
+                    "terrain-far-bricks",
+                    terrain_stats.bands.bricks[1].to_string(),
+                ),
+                ("terrain-sites", terrain_stats.bands.sites.to_string()),
+                (
+                    "terrain-centre-site",
+                    terrain_stats
+                        .bands
+                        .centre_site
+                        .map_or_else(|| "none".into(), |id| id.to_string()),
+                ),
                 ("terrain-bricks", terrain_stats.resident.to_string()),
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
                 (

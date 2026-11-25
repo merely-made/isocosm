@@ -95,6 +95,17 @@ impl Volume {
     /// `ground()` is an empty projection; consumers page its materials on demand.
     pub fn paged<A: Atlas + ?Sized>(a:&A, site:SiteId, min:[i64;2],max:[i64;2],depth:i64,
         edits:&[(SiteId,Edit)]) -> Result<Self> {
+        Self::paged_with(a, site, min, max, depth, edits, true)
+    }
+    pub(super) fn paged_with<A: Atlas + ?Sized>(
+        a: &A,
+        site: SiteId,
+        min: [i64; 2],
+        max: [i64; 2],
+        depth: i64,
+        edits: &[(SiteId, Edit)],
+        cache_heights: bool,
+    ) -> Result<Self> {
         let side = a.footprint().side as i64;
         if (0..2).any(|k| min[k]<0 || min[k]>=max[k] || max[k]>side) {
             return Err("a window outside its site".into());
@@ -109,23 +120,72 @@ impl Volume {
         let count = width.checked_mul((max[1] - min[1]) as usize);
         // Fine physical windows keep one height per column, never all the
         // water/rock voxels beneath it. Wider display windows remain procedural.
-        let (columns, [low, high]) = if let Some(count) = count.filter(|n| *n <= 256 * 256) {
-            let mut tops = Vec::with_capacity(count);
-            for z in min[1]..max[1] { for x in min[0]..max[0] { tops.push(rule.top(x,z)); } }
-            let bounds = [*tops.iter().min().unwrap(), *tops.iter().max().unwrap()];
-            (Some((min, width, tops)), bounds)
-        } else { (None, rule.heights(min, max)) };
-        let edits:Vec<_> = reaching(a,site,edits).into_iter().filter(|e| {
-            let [lo,hi]=e.shape.extent();
-            lo[0]<max[0] && hi[0]>min[0] && lo[2]<max[1] && hi[2]>min[1]
-        }).collect();
-        let datum = low-rule.soil-depth.max(0);
-        let extent = ((max[0]-min[0]).max(max[1]-min[1])/2) as i32;
-        let ground = Ground::empty(extent,(rule.water-datum) as i32);
+        let (columns, [low, high]) =
+            if let Some(count) = count.filter(|n| cache_heights && *n <= 256 * 256) {
+                let mut tops = Vec::with_capacity(count);
+                for z in min[1]..max[1] {
+                    for x in min[0]..max[0] {
+                        tops.push(rule.top(x, z));
+                    }
+                }
+                let bounds = [*tops.iter().min().unwrap(), *tops.iter().max().unwrap()];
+                (Some((min, width, tops)), bounds)
+            } else {
+                (None, rule.heights(min, max))
+            };
+        let edits: Vec<_> = reaching(a, site, edits)
+            .into_iter()
+            .filter(|e| {
+                let [lo, hi] = e.shape.extent();
+                lo[0] < max[0] && hi[0] > min[0] && lo[2] < max[1] && hi[2] > min[1]
+            })
+            .collect();
+        let datum = low - rule.soil - depth.max(0);
+        let extent = ((max[0] - min[0]).max(max[1] - min[1]) / 2) as i32;
+        let ground = Ground::empty(extent, (rule.water - datum) as i32);
         let high = high.max(rule.water);
         let mut paged = Paged { rule, edits, ceiling: 0, columns };
         paged.ceiling = paged.replay_ceiling(min, max, datum, high)?;
-        Ok(Self {site,min,max,datum,materials,extent,ground, columns:Some(Arc::new(paged)) })
+        Ok(Self {
+            site,
+            min,
+            max,
+            datum,
+            materials,
+            extent,
+            ground,
+            chart: None,
+            columns: Some(Arc::new(paged)),
+        })
+    }
+
+    /// One displayed brick column, sampling the highest occupied material in
+    /// each interval. An unedited column evaluates its lattice just once.
+    pub fn brick_column(&self, x: i64, z: i64, bottom: i64, cell: i64) -> [u8; 8] {
+        debug_assert!(cell > 0 && self.holds(x, z));
+        if let Some(p) = &self.columns
+            && p.edits.is_empty()
+        {
+            let solid = p.top(x, z);
+            let surface = solid.max(p.rule.water);
+            return std::array::from_fn(|i| {
+                let lo = bottom + i as i64 * cell;
+                let y = (lo + cell - 1).min(surface);
+                if y >= lo.max(self.datum) {
+                    p.rule.rule(solid, y)
+                } else {
+                    self.materials.air
+                }
+            });
+        }
+        let mut result = [self.materials.air; 8];
+        for ([lo, hi], material) in self.column(x, z, [bottom.max(self.datum), bottom + 8 * cell]) {
+            if material != self.materials.air {
+                result[((lo - bottom) / cell) as usize..=((hi - 1 - bottom) / cell) as usize]
+                    .fill(material);
+            }
+        }
+        result
     }
 
     /// Highest occupied cell, including water and edits, in site coordinates.
