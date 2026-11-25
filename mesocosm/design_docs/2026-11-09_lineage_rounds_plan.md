@@ -510,7 +510,7 @@ the largest; when it starts it may be cut into the bodies plan.
   branch and allocate; a function dear to a kingdom costs more and is never
   refused; a planted ingredient adds a rule at a step and a shift in when a
   rule fires changes the grown body.
-- Needs: `bodies`; World 8's founding draws; the Questions' operators item
+- Needs: `bodies` and World 8's founding draws. D29 names the eight operators. The remaining operator work and its open numeric bounds are listed below under Questions for Mark.
 - Rulings: 1202, 1206, 1232; Bodies 1, Bodies 3, Bodies 6
 
 **Grammar and drift (2026-11-11, proposed design).** For a lineage with a
@@ -579,7 +579,11 @@ templates and drawn ones.
   selected native tick. New World now opens the native founding bench. The
   [native editor](../README.md#found-a-world-in-mesocosm) edits or imports a
   lineage map, projects it under selected world conditions, and enters at the
-  watched site and tick. The original plant comparison can also start
+  watched site and tick. A founder can keep the original projection, edit the
+  same seed, and inspect both worlds as the clock advances or rewinds. The
+  catalogue and body grammar determine which edits a lineage can express.
+  S10.4 owns allocation by ecological role. Case 1166 governs advancing
+  regions with coarse rates. The original plant comparison can also start
   Mesocosm watching at that tick, recording Join as the first new command.
   A fresh watcher starts at the first founding site and may take an available
   deliberative grazer there. The mapped world and its directing rules are

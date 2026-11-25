@@ -138,7 +138,14 @@ seat. Graphshell serves its projections and announces revisions. Murm's
 `JoinedSpace` carries the single-host World log for an explicitly invited
 replica. K0 covers multi-writer campaigns. Packaged grants, a session on two
 physical devices and recovery after power loss remain open here.
-- Done when: not stated; owed
+- First VTT release check (2026-11-23). Two people use separately installed
+  copies on two physical machines. The host opens a saved world and invites
+  the player. The player joins the granted seat and takes a legal encounter
+  action that injures an identified creature. Both close and reopen. The
+  same player rejoins the same seat with its permissions, and both see the
+  same creature, location and recorded injury. Record the accepted action and
+  the native state after rejoin.
+- Durability also requires a separate power-loss recovery check.
 - The archived plan also tracks K0 and H7c. The single-host, two-seat
   encounter already runs while those migrations remain open.
 - Rulings: -
