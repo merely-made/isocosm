@@ -6603,6 +6603,64 @@ area = "Ecology"
 summary = "Grown abilities are heritable, borrowed ones last while held, learned ones pass by teaching."
 draws_on = ["1058", "1240"]
 
+[cases."1244"]
+title = "The player is the lineage's continuity"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "The player is the lineage's continuity: in one body at a moment, and at larger scales acting only through regard, learning and selection; world-scale levers are earned."
+draws_on = ["1214", "1216", "lineage-rounds D18", "directing.4", "mesocosm.1", "mesocosm.2"]
+
+[cases."1245"]
+title = "The fantastical systems are the ones already ruled"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Mesocosm's fantastical systems are the ruled ones: composed effects, collected glyphs and earned divinity, the world's shapes and kinds, and the editions a world may lead with."
+draws_on = ["wing-organs D1", "licensing.1", "organs.1", "organs.2", "processes.17", "schema.8", "vtt.5", "world.1", "world.4"]
+
+[cases."1246"]
+title = "Deep time is where lineages remake the world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Record and history"
+summary = "Deep time develops lineages until they change the world, reshuffling the board and its resources; its span is ecological, billions of years."
+draws_on = ["1119", "ecology.1", "record.7", "world.4"]
+
+[cases."1247"]
+title = "Civilisations are Eponym's and the VTT's"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Mesocosm runs to sapience and culture; civilisations are Eponym's and the VTT's, reached by inheritance."
+draws_on = ["886", "directing.2", "directing.3", "processes.14"]
+
+[cases."1248"]
+title = "The world is the top world-class lineage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "The world itself is the top world-class lineage, held by regard read from the web's health, its levers the bounded offsets, time's flow and cycles."
+draws_on = ["1216", "1244", "lineage-rounds D18", "lineage-rounds D19", "ecology.3", "mesocosm.1", "world.4"]
+
+[cases."1249"]
+title = "Time runs at play speed only while the foreground needs it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Time runs at play speed only while something attended needs it and otherwise passes over the coarse step, aiming at a round of an hour or two as a measured bar."
+draws_on = ["1163", "sim-execution D21", "directing.5", "mesocosm.5", "record.7"]
+plans = ["sim-execution"]
+
+[cases."1250"]
+title = "Epochs lengthen with distance from play"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Record and history"
+summary = "Played rounds stay short; unplayed deep time steps on a coarser rung whose epoch grows with distance from play, to millions of years."
+draws_on = ["1163", "1246", "ecology.1", "record.7"]
+
+[cases."1251"]
+title = "Mesocosm's v1 is the solo loop with members learning"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Mesocosm"
+summary = "Mesocosm's v1 is the middle scale's solo loop with members learning, the world map read-only between rounds, at 1249's tempo; the other kingdoms and levers after."
+draws_on = ["1249", "lineage-rounds D1", "mesocosm.1", "mesocosm.6"]
+plans = ["lineage-rounds", "mesocosm-overlay"]
+
 [decisions."eponym-overlay D1"]
 title = "combat is one system: what the player does by hand becomes what the character does alone (2026-11-12), applies 1056"
 source = "eponym/design_docs/2026-10-28_eponym_overlay_plan.md"

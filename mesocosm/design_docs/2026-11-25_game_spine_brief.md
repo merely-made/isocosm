@@ -4,7 +4,10 @@
 after he named four games as Mesocosm's inspirations. It is not a plan and
 changes no code. It holds no rules of its own: it reads the doctrine as one
 game, says what each timescale of play is and lacks, and asks what the
-doctrine leaves open (§10). Mark's words are quoted with their date.
+doctrine leaves open (§10). Its questions were answered on 2026-11-25 as
+cases 1244 to 1251, under §10; the doctrine statements they refine
+(Mesocosm 1 and 5, Record 7) are not yet rewritten. Mark's words are quoted
+with their date.
 
 **For:** one place that says what Mesocosm is to play, from a moment to deep
 time, so building can be judged against a whole game rather than a phase.
@@ -142,8 +145,9 @@ default (Record 7). The default tick is a minute of world time
 (`rules::DEFAULT_TICK_MICROSECONDS`), so a year is 525,960 ticks
 (`rules::year_ticks`): about 14.6 hours of play at the head's 10 ticks a
 second (sim-execution D21), 73 hours at Mesocosm 5's 2. Nothing in the
-records says what a round takes in wall time or how time passes when
-nothing attended needs the foreground (§10, question 2).
+records said what a round takes in wall time or how time passes when
+nothing attended needs the foreground. Case 1249: time runs at play speed
+only while the foreground needs it, aiming at a round of an hour or two.
 
 ## 6. Goals and failure
 
@@ -155,10 +159,12 @@ nothing attended needs the foreground (§10, question 2).
 | Deep time | The world's web, the lines you made | Regional collapse (migration), total collapse (watchable, not playable) | Mesocosm 3, Ecology 3 |
 
 Near aims are ruled: verified goals offered per round (EB3), speciation's
-reward ladder (EB4, top rungs unspecified), significance (EB5). **The long
-aim is not**: what a world is for once a player has lived in it for a
-hundred epochs, and whether sapience is a milestone, an ending or a handoff
-(§10, questions 3 and 4).
+reward ladder (EB4, top rungs unspecified), significance (EB5). The long
+aim is case 1246: deep time develops lineages until they change the world
+("algae, forests, lavos of chrono trigger"), which reshuffles the board and
+the resources a line can reach, over an ecological span of billions of
+years (unplayed epochs lengthening, 1250). Civilisations are Eponym's and
+the VTT's (1247).
 
 ## 7. The view follows the grain
 
@@ -175,7 +181,9 @@ not built (Presentation 1, denizen P1). Nothing here needs ruling.
 
 ## 8. Fantastical worlds
 
-More of this is ruled than it looks:
+All of it is ruled (case 1245, Mark: "divinity, effects, there was a glyph
+random effect idea where you'd collect 'em and become divine by getting 'em,
+ars magica rules, dnd rules, pathfinder rules, etc."):
 
 - **Physically impossible worlds**: a world map in any shape, "a sphere, a
   ring, a world resting on a critter", the critter's acts reaching the world
@@ -187,15 +195,17 @@ More of this is ruled than it looks:
 - **Magic**: composed cantrips under equivalent exchange, scripts joining
   other generators' characteristics (Processes 17); six axes and composition
   in the functional generation plan, parked.
-- **Gods**: divinity earned by the journey, power by the frequency of the
-  domain's process (Organs 1 and 2), parked under 279.
+- **Gods**: the hagioglyph's glyphs, collected and sacrificed for
+  divinity, its tier by the journey and its power by the frequency of the
+  domain's process (Organs 1 and 2; the wing organs plan), parked under 279.
 - **Rules**: one binding language for world rules and rulesets, each world
-  choosing whether the sim leads (Schema 8).
+  choosing whether the sim leads (Schema 8); the editions played faithfully
+  (VTT 5), the 5e SRD, Pathfinder 2e and Ars Magica's open text among those
+  that qualify (Licensing 1).
 
-What is missing is only where these meet Mesocosm's play: whether the world
-entity of World 4 is itself a world-class lineage a player can hold (§10,
-question 1). Magic and gods are reasonably last: they add verbs to a loop
-that must hold without them.
+Where they meet Mesocosm's play: the world itself is the top world-class
+lineage a player may hold (1248). Magic and gods come after v1 (1251): they
+add verbs to a loop that must hold without them.
 
 ## 9. What each timescale stands on
 
@@ -209,7 +219,8 @@ that must hold without them.
 Lineage-rounds D1 already orders the first slice (LR1 to LR4, solo, on
 today's bodies). Read against §3, M3.6 belongs in that slice too: without
 it a played round leaves no trace in the next generation, and the loop
-plays as SimLife with a camera rather than as one game.
+plays as SimLife with a camera rather than as one game. Case 1251 adds it to
+v1.
 
 ## 10. Questions for Mark
 
@@ -256,6 +267,23 @@ plays as SimLife with a camera rather than as one game.
      shared lineages, world-class levers, magic and gods after.
    - LR1 to LR4 exactly as D1 ruled, M3.6 after.
    - That slice plus one candidate kingdom, the colony first.
+
+**Answered 2026-11-25** (cases in the design record), each as recommended
+where a recommendation was offered:
+
+- **1244:** the player is the lineage's continuity (§2). Mark: "agreed".
+- **1245:** the fantastical systems are the ruled ones (§8).
+- **1246:** question 3, the long aim: deep time develops lineages until they
+  change the world, over an ecological span (§6).
+- **1247:** question 4: civilisations are Eponym's and the VTT's.
+- **1248:** question 1: the world is the top world-class lineage, held by
+  regard read from the web's health.
+- **1249:** question 2: time runs at play speed only while the foreground
+  needs it, aiming at a round of an hour or two as a measured bar.
+- **1250:** asked from 1246: epochs lengthen with distance from play,
+  thousands then millions of years where nobody plays.
+- **1251:** question 5: v1 is the middle scale's solo loop with members
+  learning, the world map read-only between rounds, at 1249's tempo.
 
 ## 11. Surfaced, not edited
 
