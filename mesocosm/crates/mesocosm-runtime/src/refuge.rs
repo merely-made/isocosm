@@ -12,7 +12,7 @@ use cosmograph_overlay::{
 use serde::Serialize;
 use std::collections::BTreeMap;
 
-const OPENING: &[u8] = include_bytes!("../../../packs/mesocosm/fixtures/refuge-opening.json");
+const OPENING: &[u8] = include_bytes!("../fixtures/refuge-opening.json");
 pub const DAY: u64 = 1440;
 const LEAN: u64 = 6 * DAY;
 const REFUGE: Id = 1;

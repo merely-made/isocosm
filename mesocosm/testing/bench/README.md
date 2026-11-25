@@ -6,7 +6,7 @@ From the Mesocosm workspace, run `cargo run --release -p mesocosm-genet -- --ben
 
 Choose **Wait until day 6** to leave the same bonded grazer alone until the meadow goes lean. Then choose **Nudge toward refuge** or **Leave both alone**. Grazing, emerged seedlings and minutes resident in each patch accumulate from the selected start. Plant tissue and grazing use native matter units.
 
-The saved opening in `packs/mesocosm/fixtures/refuge-opening.json` includes the native history through the player's bond with grazer 15. Cosmograph replays that history when it opens the save. The bench computes each subsequent observation live.
+The saved opening in `crates/mesocosm-runtime/fixtures/refuge-opening.json` includes the native history through the player's bond with grazer 15. Cosmograph replays that history when it opens the save. The bench computes each subsequent observation live.
 
 On seed 9, grazer 15 stayed in the meadow for all 8,640 minutes after the day-6 fork under both choices. Its mood stayed at zero throughout the nudge's 60 minutes. Travel required mood below zero. During the two lean days the meadow supplied 26 units of grazing and the refuge 38. By day 12 the totals since the fork were 89 and 94. The focal grazer ate 25 of the meadow units. Both choices gave the same patch readings at all eight observations.
 
