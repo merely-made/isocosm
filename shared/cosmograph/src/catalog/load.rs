@@ -12,7 +12,7 @@ use serde::Deserialize;
 
 use super::refs::is_proposed;
 use super::types::{EffectRow, PartRow, TraitRow};
-use super::{Catalog, Effect, Mechanic, Origin, Part, ProposedProcess, Status, Trait, generate};
+use super::{Catalog, Effect, Good, Kingdom, Mechanic, Origin, Part, ProposedProcess, Status, Trait, generate};
 
 macro_rules! sheet {
     ($name:literal) => {
@@ -20,7 +20,7 @@ macro_rules! sheet {
     };
 }
 
-const SHEETS: [(&str, &str); 11] = [
+const SHEETS: [(&str, &str); 13] = [
     ("mechanics", sheet!("mechanics")),
     ("traits_structure", sheet!("traits_structure")),
     ("traits_chemistry", sheet!("traits_chemistry")),
@@ -32,6 +32,8 @@ const SHEETS: [(&str, &str); 11] = [
     ("parts_fauna", sheet!("parts_fauna")),
     ("parts_myco", sheet!("parts_myco")),
     ("parts_micro", sheet!("parts_micro")),
+    ("goods", sheet!("goods")),
+    ("kingdoms", sheet!("kingdoms")),
 ];
 
 #[derive(Deserialize)]
@@ -55,6 +57,10 @@ struct Sheet {
     mechanics: Vec<Mechanic>,
     #[serde(default, rename = "proposed_process")]
     proposed: Vec<ProposedProcess>,
+    #[serde(default, rename = "good")]
+    goods: Vec<Good>,
+    #[serde(default, rename = "kingdom")]
+    kingdoms: Vec<Kingdom>,
 }
 
 fn trait_status(process: &str, via: &[String], needs: &Option<String>) -> Status {
@@ -114,6 +120,7 @@ pub(super) fn derive(part: &Part, traits: &[Trait], effects: &[Effect]) -> (Stat
 pub(super) fn build() -> Result<Catalog, String> {
     let (mut trait_rows, mut effect_rows, mut part_rows) = (vec![], vec![], vec![]);
     let (mut mechanics, mut proposed) = (vec![], vec![]);
+    let (mut goods, mut kingdoms) = (vec![], vec![]);
     for (name, text) in SHEETS {
         let sheet: Sheet = toml::from_str(text).map_err(|e| format!("catalog sheet {name}: {e}"))?;
         if sheet.schema != 1 {
@@ -124,6 +131,8 @@ pub(super) fn build() -> Result<Catalog, String> {
         part_rows.extend(sheet.parts);
         mechanics.extend(sheet.mechanics);
         proposed.extend(sheet.proposed);
+        goods.extend(sheet.goods);
+        kingdoms.extend(sheet.kingdoms);
     }
     let mut traits = Vec::new();
     for r in trait_rows {
@@ -218,5 +227,5 @@ pub(super) fn build() -> Result<Catalog, String> {
         parts[i].status = status;
         parts[i].waits_on = waits;
     }
-    Ok(Catalog { traits, effects, parts, mechanics, proposed, dropped })
+    Ok(Catalog { traits, effects, parts, mechanics, proposed, goods, kingdoms, dropped })
 }

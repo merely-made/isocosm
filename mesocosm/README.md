@@ -52,7 +52,20 @@ launch is `mesocosm-genet --founding-editor --seed 104`.
 
 **World conditions** sets the seed, population, cohort size, starting stock
 range, climate preset and water level. The seed draws the map, its outline,
-the starting lineages and their growth instructions. **Find a persistent ecology**
+the starting lineages and their growth instructions.
+
+What a seed draws is weighted, never fixed. A lineage's kingdom is what it
+was drawn as: its tissue, the organs it most likely carries and the growth
+rules it favours. How it makes its living is drawn too, so a fungus may fix
+light and a plant may hunt, and every world is given enough founders that fix
+to feed the rest. Each founder then draws its organs and one to three further
+growth rules, and a draw is kept only if the grown body could make that
+living. Founders start in a few communities, each a short run of sites, so
+the map begins as several different ecologies with empty ground between. The
+weights are data: `shared/cosmograph/datasheets/catalog/kingdoms.toml` for
+kingdoms and `goods.toml` for what bodies can trade.
+
+**Find a persistent ecology**
 compares the current seed with two other draws using your settings. It
 shortlists two using a regional estimate, then simulates the finalists in
 detail for 96 ticks. **Open suggested world** opens the finalist with the
@@ -69,8 +82,10 @@ Select a site and **Watch time pass**, or advance and rewind by one or twelve
 ticks. Select a joint on the developed specimen to inspect its tissue.
 The population rows group the inhabitants by their realized segment counts
 and omitted organs. The matter readings come from native process transfers. Select a specimen to
-see its functional tissues and any sugar it exchanged with a local partner on
-the displayed tick. **Forecast this ecology** samples twelve unattended ticks
+see its functional tissues, the lineages at its site it could trade with and
+in what, and anything it paid or was paid on the displayed tick. A lineage's
+body map opens with what a grown body of it does: whether it fixes light, what
+it eats, what it gives off and takes up. **Forecast this ecology** samples twelve unattended ticks
 and projects regional stocks and populations 96 ticks ahead. Use **Visit selected lineage** to jump to a site it occupies and read
 its projected numbers and biomass. Your playable world stays at the tick you
 selected.

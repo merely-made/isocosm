@@ -72,56 +72,11 @@ pub(super) struct Panel {
 
 impl Panel {
     fn starter(seed: u64) -> Founding {
-        let mut draft = Founding {
-            seed,
-            web: cosmograph::ecology::Web::Diets,
-            population: 90,
-            cohort_size: 2,
-            stock_max: 16,
-            ecology: true,
-            ecology_rates: cosmograph::ecology::Rates::A1,
-            bodies: Some(cosmograph::bodied::Bodies {
-                canopy_growth: true,
-                fixing_budget: 16,
-                ..Default::default()
-            }),
-            inherit: true,
-            guard: Some(Default::default()),
-            categories: Some(Default::default()),
-            nutrients: Some(Default::default()),
-            mutualism: Some(Default::default()),
-            detritus: Some(Default::default()),
-            repertoire: Some(cosmograph::repertoire::Repertoire {
-                founders: true,
-                generative_ecology: true,
-                across_kingdoms: true,
-                kingdom_draw: Some(Default::default()),
-                ..Default::default()
-            }),
-            ..Default::default()
-        };
-        let grid=Self::world_grid(seed);
-        draft.sites=grid.width*grid.height;
-        draft.map=Some(cosmograph::map::Layout::Grid(grid));
-        draft.lineages=draft.repertoire.as_ref().unwrap().kingdom_draw.as_ref().unwrap()
-            .draw(seed).expect("valid default draw").iter().map(|(_,n)|n).sum();
-        draft.place_memory = Some(Default::default());
-        draft.played = Some(cosmograph::directing::Played {
-            lineage: 1,
-            region_sites: 1,
-        });
-        draft
+        Founding::starter(seed)
     }
 
     fn world_grid(seed: u64) -> cosmograph::map::Grid {
-        let mut grid=cosmograph::map::Grid::drawn(seed);
-        if cosmograph::draw(seed,"world-outline",&[]) % 4 == 0 {
-            let face=1+(cosmograph::draw(seed,"world-face",&[])%6) as u32;
-            grid.width=3*face;
-            grid.height=2*face;
-            grid.shape="shape:sphere".into();
-        }
-        grid
+        Founding::starter_grid(seed)
     }
 
     fn new(draft: Founding) -> Result<Self, String> {
@@ -526,7 +481,7 @@ impl Panel {
 }
 
 /// Abilities supported by this specimen's living tissue now.
-fn organ_reading(port: cosmograph::process::IntakePort) -> Vec<String> {
+fn organ_reading(port: cosmograph::process::IntakePort, goods: &[cosmograph::process::Good]) -> Vec<String> {
     use cosmograph::process::{NisKind, Trade};
     let mut words = Vec::new();
     for (kind, food) in [
@@ -545,9 +500,6 @@ fn organ_reading(port: cosmograph::process::IntakePort) -> Vec<String> {
             "Draws the scarcest soil nutrient",
         ),
         (port.trades(Trade::Gives), "Can supply a trading partner"),
-        (port.trades(Trade::GivesSugar), "Offers sugar or exudate"),
-        (port.trades(Trade::GivesNutrient), "Supplies mineral nutrients"),
-        (port.trades(Trade::TakesSugar), "Accepts sugar or exudate"),
         (
             port.trades(Trade::Takes),
             "Can receive from a trading partner",
@@ -555,6 +507,15 @@ fn organ_reading(port: cosmograph::process::IntakePort) -> Vec<String> {
     ] {
         if enabled {
             words.push(label.into());
+        }
+    }
+    // What it gives off and takes up is whatever the world's table names.
+    for (index, good) in goods.iter().enumerate() {
+        if port.emitted() & (1 << index) != 0 {
+            words.push(format!("Gives off {}", good.key));
+        }
+        if port.admitted() & (1 << index) != 0 {
+            words.push(format!("Takes up {}", good.key));
         }
     }
     let strength = port.strength();

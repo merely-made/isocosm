@@ -113,6 +113,59 @@ impl KingdomDraw {
     }
 }
 
+/// The ways of making a living a kingdom may weigh, with the role each
+/// founds: the paces the sim's ecology has.
+pub const LIVINGS: [&str; 5] = ["fix", "graze", "hunt", "forage", "rot"];
+const ROLES: [Role; 5] = [Role::Producer, Role::Grazer, Role::Predator, Role::Omnivore, Role::Decomposer];
+
+/// Of a world's bodied founders, the share that must fix, as a fraction:
+/// tissue enters a world only through fixing, so one drawn with too few
+/// fixers has nothing under what eats.
+const FIXERS: [usize; 2] = [2, 5];
+
+/// The living each of `forms` founds, by lineage index. Each is drawn by its
+/// kingdom's weights. Where fewer than [`FIXERS`] of them fix, founders are
+/// turned to fixing in a drawn order, those whose kingdom weighs fixing at
+/// all first, until enough do: a world of fungi alone gets its lichens.
+pub(crate) fn livings(seed: u64, forms: &[FoundingForm]) -> Vec<Role> {
+    let catalog = crate::catalog::catalog();
+    let weight = |form: FoundingForm, living: &str| {
+        catalog.kingdom(form.key()).and_then(|k| k.living.get(living)).copied().map_or(0, u64::from)
+    };
+    let mut roles: Vec<Role> = forms
+        .iter()
+        .enumerate()
+        .map(|(i, form)| {
+            let total: u64 = LIVINGS.iter().map(|l| weight(*form, l)).sum();
+            let mut at = draw(seed, "founder-living", &[i as u64]) % total.max(1);
+            let found = LIVINGS.iter().position(|l| {
+                let w = weight(*form, l);
+                if at < w {
+                    return true;
+                }
+                at -= w;
+                false
+            });
+            found.map_or(Role::Decomposer, |at| ROLES[at])
+        })
+        .collect();
+    let needed = (forms.len() * FIXERS[0]).div_ceil(FIXERS[1]).max(usize::from(!forms.is_empty()));
+    let mut turn: Vec<usize> = (0..forms.len()).filter(|i| roles[*i] != Role::Producer).collect();
+    turn.sort_by_key(|i| (weight(forms[*i], "fix") == 0, draw(seed, "founder-fixes", &[*i as u64]), *i));
+    let fixing = roles.iter().filter(|r| **r == Role::Producer).count();
+    for i in turn.into_iter().take(needed.saturating_sub(fixing)) {
+        roles[i] = Role::Producer;
+    }
+    // A mouth for living plant tissue has nothing to eat in a world drawn
+    // without plants: such a founder hunts what is there.
+    if !forms.contains(&FoundingForm::Plant) {
+        for role in roles.iter_mut().filter(|r| **r == Role::Grazer) {
+            *role = Role::Predator;
+        }
+    }
+    roles
+}
+
 impl Founding {
     /// Project an editor draft into a different draw without assigning an
     /// authored plant map to a fungus that now has its old numeric key.
@@ -198,31 +251,34 @@ impl Founding {
         }
         Ok(Some((f, roster)))
     }
+    /// The form each bodied lineage was drawn as, by lineage index; empty
+    /// where the founding draws no kingdoms.
+    pub(crate) fn forms(&self) -> Vec<FoundingForm> {
+        let Some(r) = &self.repertoire else { return Vec::new() };
+        if !r.bodied_kingdoms.is_empty() {
+            return r.bodied_kingdoms.clone();
+        }
+        let roster = r.kingdom_draw.as_ref().and_then(|d| d.draw(self.seed).ok()).unwrap_or_default();
+        let bodied = roster.into_iter().filter(|(form, _)| form.bodied());
+        bodied.flat_map(|(form, n)| std::iter::repeat_n(form, n as usize)).collect()
+    }
+
+    /// The kingdom lineage `i` is of: the one it was drawn as, which is its
+    /// tissue and its weights and says nothing of how it lives (case 1219),
+    /// or, where the founding draws none, the one its role is generated in.
+    pub(crate) fn kingdom_key(&self, i: u32) -> &'static str {
+        self.forms().get(i as usize).map_or_else(|| self.role(i).kingdom(), |form| form.key())
+    }
+
+    /// How lineage `i`'s founder makes its living. Where kingdoms are drawn
+    /// it is drawn too, by the weights its kingdom gives each way
+    /// (`catalog::Kingdom::living`), so any kingdom may found any living;
+    /// then held to what a world needs to run at all ([`livings`]).
     pub(crate) fn role(&self, i: u32) -> Role {
-        let k = self.repertoire.as_ref().and_then(|r| {
-            if let Some(k) = r.bodied_kingdoms.get(i as usize) {
-                return Some(*k);
-            }
-            let mut offset = i;
-            for (k, count) in r.kingdom_draw.as_ref()?.draw(self.seed).ok()? {
-                if k.bodied() {
-                    if offset < count {
-                        return Some(k);
-                    }
-                    offset -= count;
-                }
-            }
-            None
-        });
-        match k {
-            Some(FoundingForm::Plant) => Role::Producer,
-            Some(FoundingForm::Fungus) => Role::Decomposer,
-            Some(FoundingForm::Animal) if self.web == Web::Diets => {
-                [Role::Grazer, Role::Predator, Role::Omnivore]
-                    [(draw(self.seed, "animal-diet", &[i.into()]) % 3) as usize]
-            },
-            Some(FoundingForm::Animal) => Role::Grazer,
-            _ => Role::of(self.web, i),
+        let forms = self.forms();
+        match forms.get(i as usize) {
+            Some(_) => livings(self.seed, &forms)[i as usize],
+            None => Role::of(self.web, i),
         }
     }
 }

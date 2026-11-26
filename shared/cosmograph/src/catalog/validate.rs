@@ -37,6 +37,43 @@ pub(super) fn problems(c: &Catalog) -> Vec<String> {
     for k in duplicates(c.mechanics.iter().map(|m| &m.key)) {
         out.push(format!("duplicate mechanic key {k}"));
     }
+    for k in duplicates(c.goods.iter().map(|g| &g.key)) {
+        out.push(format!("duplicate good {k}"));
+    }
+    for g in c.goods.iter().filter(|g| !FLOWS.contains(&g.key.as_str())) {
+        out.push(format!("good {} is no flow a part may name", g.key));
+    }
+    if c.goods.len() > crate::process::MOST_GOODS {
+        out.push(format!("{} goods, more than a port can name", c.goods.len()));
+    }
+    for k in duplicates(c.kingdoms.iter().map(|k| &k.key)) {
+        out.push(format!("duplicate kingdom row {k}"));
+    }
+    for k in &c.kingdoms {
+        if !KINGDOMS.contains(&k.key.as_str()) {
+            out.push(format!("a row for unknown kingdom {}", k.key));
+        }
+        if k.rules[0] > k.rules[1] {
+            out.push(format!("{} draws from {} to {} rules", k.key, k.rules[0], k.rules[1]));
+        }
+        if k.living.values().all(|w| *w == 0) {
+            out.push(format!("{} gives its founders no way of living", k.key));
+        }
+        for name in k.living.keys().filter(|n| !crate::generate::LIVINGS.contains(&n.as_str())) {
+            out.push(format!("{} weighs {name}, which is no way of living", k.key));
+        }
+        for name in k.operators.keys().filter(|n| !crate::bodied::GROWTH_OPERATORS.contains(&n.as_str())) {
+            out.push(format!("{} weighs {name}, which is no growth operator", k.key));
+        }
+        for (name, [least, most]) in &k.bounds {
+            if !crate::bodied::GROWTH_BOUNDS.iter().any(|(n, _)| n == name) {
+                out.push(format!("{} bounds {name}, which is no growth number", k.key));
+            }
+            if least > most {
+                out.push(format!("{} bounds {name} from {least} to {most}", k.key));
+            }
+        }
+    }
 
     let process_ok = |process: &str, shape: &str, who: &str, out: &mut Vec<String>| {
         if is_proposed(process) {

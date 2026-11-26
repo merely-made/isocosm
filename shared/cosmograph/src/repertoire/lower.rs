@@ -202,17 +202,16 @@ fn exchange(part: &Part) -> IntakePort {
     if goods(&part.admits) { port.trading(Trade::Takes) } else { port }
 }
 
-/// Keep the direction and identity of the world catalogue's actual goods.
-pub(super) fn exchange_goods(mut port: IntakePort, part: &Part) -> IntakePort {
-    let sugar = |flow: &String| matches!(flow.as_str(), "sugar" | "exudate");
-    if part.emits.iter().any(sugar) {
-        port = port.trading(Trade::GivesSugar);
-    }
-    if part.emits.iter().any(|flow| flow == "soil:nutrient") {
-        port = port.trading(Trade::GivesNutrient);
-    }
-    if part.admits.iter().any(sugar) {
-        port = port.trading(Trade::TakesSugar);
+/// `port`, giving off and taking up each good of `table` the part emits and
+/// admits. The table decides what is a good; the part only names flows.
+pub(super) fn trading(mut port: IntakePort, part: &Part, table: &[crate::catalog::Good]) -> IntakePort {
+    for (index, good) in table.iter().enumerate() {
+        if part.emits.contains(&good.key) {
+            port = port.emitting(index);
+        }
+        if part.admits.contains(&good.key) {
+            port = port.admitting(index);
+        }
     }
     port
 }

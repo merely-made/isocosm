@@ -174,58 +174,29 @@ fn kingdom_draw_world_class_changes_the_generated_geography_at_its_footprint() {
 }
 
 #[test]
-fn generative_founders_grow_different_architectures_with_permitted_organs() {
+fn founders_grow_by_drawn_rules_and_live_as_their_bodies_allow() {
     use crate::rules::{Rule, unfold};
 
     let distribution = KingdomDraw {
-        pool: [
-            FoundingForm::Plant,
-            FoundingForm::Animal,
-            FoundingForm::Fungus,
-        ]
-        .map(|form| form.key().to_owned())
-        .into(),
+        pool: [FoundingForm::Plant, FoundingForm::Animal, FoundingForm::Fungus].map(|form| form.key().to_owned()).into(),
         kingdoms: [3, 3],
         per_kingdom: [6, 6],
     };
     let mut found = founding(8307, distribution);
-    let original = found.catalogue_body_maps().unwrap();
-    assert!(original.values().all(|m| {
-        m.grammar
-            .rules
-            .iter()
-            .all(|r| matches!(r, Rule::Repeat { .. }))
-    }));
-    found.repertoire.as_mut().unwrap().generative_ecology = true;
     let catalogue = crate::catalog::catalog();
     let mut used_foreign = false;
     for cross in [false, true] {
         found.repertoire.as_mut().unwrap().across_kingdoms = cross;
         let maps = found.catalogue_body_maps().unwrap();
         let world = found.generate().unwrap();
-        let mut branching = false;
-        let mut radial = false;
+        let mut operators = std::collections::HashSet::new();
         for (key, map) in &maps {
+            // The editor's map and the founded world's grammar are one draw.
             let development = world.lineages[key].development.as_ref().unwrap();
-            assert_eq!(
-                unfold(development.grammar.as_ref().unwrap()).unwrap(),
-                development.recipe.tagmata
-            );
-            let grown = &development.recipe.tagmata;
-            assert!(grown.iter().all(|r| r.segments > 0));
-            assert!(grown.iter().map(|r| u32::from(r.segments)).sum::<u32>() <= 25);
-            branching |= map
-                .grammar
-                .rules
-                .iter()
-                .any(|r| matches!(r, Rule::Branch { .. }))
-                && grown.len() > map.grammar.seed.len();
-            radial |= map
-                .grammar
-                .rules
-                .iter()
-                .any(|r| matches!(r, Rule::Radiate { .. }))
-                && grown.len() > map.grammar.seed.len();
+            assert_eq!(unfold(development.grammar.as_ref().unwrap()).unwrap(), development.recipe.tagmata);
+            assert!(development.recipe.tagmata.iter().map(|r| u32::from(r.segments)).sum::<u32>() <= 32);
+            operators.extend(map.grammar.rules.iter().map(std::mem::discriminant));
+            assert!(matches!(map.grammar.rules.last(), Some(Rule::Allocate { .. })), "{key} has no budget");
             for part in map.regions.values().filter(|key| key.starts_with("part:")) {
                 if catalogue.part_by_key(part).unwrap().kingdom != world.lineages[key].kingdom {
                     assert!(cross);
@@ -233,7 +204,29 @@ fn generative_founders_grow_different_architectures_with_permitted_organs() {
                 }
             }
         }
-        assert!(branching && radial);
+        // Eighteen founders reach well past repeat and the closing budget.
+        assert!(operators.len() >= 6, "only {} operators drawn", operators.len());
+        // A kingdom is what a line was drawn as, never what it does: the
+        // three kingdoms are all still here, and enough of the world fixes.
+        let kingdoms: BTreeSet<_> = (0..18).map(|i| world.lineages[&format!("lineage:{i}")].kingdom.as_str()).collect();
+        assert_eq!(kingdoms.len(), 3);
+        let fixers = (0..18).filter(|i| found.role(*i) == crate::ecology::Role::Producer).count();
+        assert!(fixers >= 8, "{fixers} of 18 founders fix");
     }
     assert!(used_foreign);
+}
+
+#[test]
+fn a_world_drawn_without_plants_still_has_founders_that_fix() {
+    let fungi = KingdomDraw { pool: [FoundingForm::Fungus.key().to_owned()].into(), kingdoms: [1, 1], per_kingdom: [5, 5] };
+    let found = founding(11, fungi);
+    let fixers: Vec<u32> = (0..5).filter(|i| found.role(*i) == crate::ecology::Role::Producer).collect();
+    assert!(fixers.len() >= 2);
+    let world = found.generate().unwrap();
+    for i in fixers {
+        let line = &world.lineages[&format!("lineage:{i}")];
+        assert_eq!(line.kingdom, "kingdom:myco");
+        let sheet = crate::lineage::sheet::of(&world.rules, &world.lineages, &format!("lineage:{i}"), line.development.as_ref().unwrap()).unwrap();
+        assert!(sheet.functions.get("function:fix").is_some_and(|cells| *cells > 0));
+    }
 }

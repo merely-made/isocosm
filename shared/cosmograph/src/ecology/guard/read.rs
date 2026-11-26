@@ -88,7 +88,8 @@ impl Guard {
             .living()
             .map(|(_, p)| {
                 // An exchange organ (the mutualism rule) secretes sugar, not toxin.
-                if p.port.is_some_and(|port| port.trade_bits() != 0 && port.strength().toxin == 0) {
+                let exchanges = |port: IntakePort| port.trade_bits() != 0 || port.emitted() != 0 || port.admitted() != 0;
+                if p.port.is_some_and(|port| exchanges(port) && port.strength().toxin == 0) {
                     return 0;
                 }
                 let cells = u64::from(p.cells.get(SECRETE).copied().unwrap_or(0));

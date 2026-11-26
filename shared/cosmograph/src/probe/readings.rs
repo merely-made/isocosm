@@ -359,6 +359,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             | Query::Expresses { .. }
             | Query::Pocket { .. }
             | Query::Trades { .. }
+            | Query::Supplies { .. }
             | Query::Takes { .. }
             | Query::Routes { .. } => "parts".into(),
             Query::Computed(_) => "computed".into(),

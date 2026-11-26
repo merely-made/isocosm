@@ -72,6 +72,39 @@ pub struct IntakePort {
     resprouting: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     light_response: Option<LightResponse>,
+    /// The goods the organ's tissue gives off and takes up, as bits over the
+    /// world's table of goods (`repertoire::Lowered::goods`). What a good is
+    /// and how it moves is that table's; the port only says which.
+    #[serde(default, skip_serializing_if = "is_no_good")]
+    emits: u16,
+    #[serde(default, skip_serializing_if = "is_no_good")]
+    admits: u16,
+}
+
+fn is_no_good(bits: &u16) -> bool {
+    *bits == 0
+}
+
+/// The most goods a world's table holds: a port names them by bit.
+pub const MOST_GOODS: usize = 16;
+
+/// How a good passes from the body that gives it to the body that takes it.
+/// A carrier is a mechanism the exchange knows how to settle; a good is a
+/// row of data that names one.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum Carried {
+    /// Paid out of the giver's own tissue.
+    Tissue,
+    /// Drawn by the giver's organ from the ground both bodies stand on.
+    Ground,
+}
+
+/// One good a world's organs may give off or take up.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Good {
+    pub key: String,
+    pub carried: Carried,
 }
 
 /// What an organ does in a trade under the mutualism rule (lineage-rounds
@@ -86,12 +119,6 @@ pub enum Trade {
     /// tissue (the nutrient rule, `crate::ecology::Nutrients`): no partner
     /// is needed, so it is no trade, but it is read where one is.
     Draws,
-    /// Exports photosynthate or exudate to a partner.
-    GivesSugar,
-    /// Carries mineral nutrients from the substrate to a partner.
-    GivesNutrient,
-    /// Can take up a partner's sugar or exudate.
-    TakesSugar,
 }
 
 impl Trade {
@@ -100,9 +127,6 @@ impl Trade {
             Self::Gives => 1,
             Self::Takes => 2,
             Self::Draws => 4,
-            Self::GivesSugar => 8,
-            Self::GivesNutrient => 16,
-            Self::TakesSugar => 32,
         }
     }
 }
@@ -233,6 +257,8 @@ impl IntakePort {
             trade: 0,
             resprouting: false,
             light_response: None,
+            emits: 0,
+            admits: 0,
         }
     }
 
@@ -269,6 +295,8 @@ impl IntakePort {
             trade: 0,
             resprouting: false,
             light_response: None,
+            emits: 0,
+            admits: 0,
         }
     }
 
@@ -333,8 +361,30 @@ impl IntakePort {
     }
 
     pub const fn with_trade_bits(mut self, bits: u8) -> Self {
-        self.trade |= bits & 63;
+        self.trade |= bits & 7;
         self
+    }
+
+    /// This organ, also giving off the good at `index` of the world's table.
+    pub const fn emitting(mut self, index: usize) -> Self {
+        self.emits |= 1 << index;
+        self
+    }
+
+    /// This organ, also taking up the good at `index` of the world's table.
+    pub const fn admitting(mut self, index: usize) -> Self {
+        self.admits |= 1 << index;
+        self
+    }
+
+    /// The goods it gives off, as bits over the world's table.
+    pub const fn emitted(self) -> u16 {
+        self.emits
+    }
+
+    /// The goods it takes up, as bits over the world's table.
+    pub const fn admitted(self) -> u16 {
+        self.admits
     }
 
     /// Whether this port is a mouth: it admits living or dead matter.

@@ -111,7 +111,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     }
     migrate(g)?;
     let rules = &mut g.rules;
-    let generated = f.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
+    let generated = f.composed();
     rules.directing = Some(Directing {
         slots,
         draft: generated.then(Draft::default),

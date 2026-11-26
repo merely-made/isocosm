@@ -306,7 +306,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     rule.validate()?;
     let every = crate::rules::minutes_ticks(rule.period, g.rules.tick_microseconds());
-    let body_driven = founding.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
+    let body_driven = founding.composed();
     let drawers = (0..founding.lineages).filter(|&i| body_driven || matches!(founding.role(i), Role::Producer | Role::Decomposer));
     let mut made: Vec<Process> = (1..rule.axes).flat_map(|a| CHUNKS.map(|c| sort(a, c))).collect();
     made.extend(drawers.flat_map(|i| (0..rule.axes).map(move |a| (i, a))).map(|(i, a)| tuned(&rule, i, a, every)));

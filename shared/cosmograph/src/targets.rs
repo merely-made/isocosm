@@ -33,7 +33,7 @@ pub(crate) struct Targets {
 /// Whether a requirement can read the prey: it binds the target, reads a
 /// relation to it, or is one whose reading the search does not know. The
 /// rest read the actor, its part, its site or the tick.
-fn reads_prey(q: &Query) -> bool {
+pub(crate) fn reads_prey(q: &Query) -> bool {
     match q {
         Query::Alive(who)
         | Query::Trait { who, .. }
@@ -56,6 +56,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Sensed { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         Query::SoilContact(kind) => *kind == crate::ecology::soil::Contact::Root,
+        Query::Supplies { from, to, .. } => [from, to].contains(&&Binding::Target),
         Query::PocketVacant | Query::Related { .. }
         | Query::Project { .. }
         | Query::ProjectDecision

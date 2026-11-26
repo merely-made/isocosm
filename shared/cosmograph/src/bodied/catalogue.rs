@@ -5,9 +5,72 @@
 //! Draw a native capability first: many catalogue names for the same active
 //! port must not make that strategy more likely.
 use super::*;
-use crate::{Founding, ecology::Role, process::IntakePort, repertoire::Lowered};
+use crate::{Founding, ecology::Role, process::{Carried, IntakePort, NisKind, Trade}, repertoire::Lowered};
 
-mod growth;
+pub(super) mod growth;
+
+/// The least light a founder that fixes for its living must catch when
+/// grown, in the units of `trophic::canopy_light`: four cells' worth in the
+/// open, a quarter of the full rate at the starting recipe's budget.
+const LEAST_LIGHT: u64 = 4 * 64;
+
+/// Whether a body grown from `tagmata` could make the living `role` asks of
+/// it: read off the grown body, as the sim will read it. A founder that
+/// fixes must hold fixing tissue its own parts leave in the light; one that
+/// eats must hold its mouth under its head. What else it can do is free.
+fn lives(tagmata: Vec<Tagma>, kinds: &BTreeMap<Key, Template>, role: Role) -> bool {
+    let soma = crate::development::Soma { segments: tagmata.iter().map(|t| t.segments).collect(), absent: vec![], seed: 0 };
+    let d = Development {
+        lexicon: BTreeSet::new(),
+        recipe: Recipe { tagmata, variance: 0, absence: [0, 1], riff: [0, 1], vary: [0, 1] },
+        policy: Policy::default(),
+        domain: 0,
+        clutch: 1,
+        anamorphic: false,
+        tracts: vec![],
+        systems: Default::default(),
+        comfort: 0,
+        grammar: None,
+    };
+    let Ok(body) = crate::development::develop_of(kinds, &d, &soma) else { return false };
+    match role {
+        Role::Producer => crate::trophic::canopy_light::exposure(&body) >= LEAST_LIGHT,
+        Role::Decomposer => true,
+        _ => crate::trophic::mouth_part(&body.doc).is_some(),
+    }
+}
+
+/// Whether `grammar`, with `map`'s bindings, unfolds to a body the world
+/// accepts in every stage its switches can bring about, and one that could
+/// make the living `role` asks of it.
+fn grows(map: &BodyMap, grammar: &Grammar, kinds: &BTreeMap<Key, Template>, lowered: &Lowered, kingdom: &str, role: Role) -> bool {
+    let probe = BodyMap { grammar: grammar.clone(), ..map.clone() };
+    let Ok(source) = probe.resolve(kinds, Some(lowered), kingdom) else { return false };
+    let held = source.rules.iter().flat_map(|rule| match rule {
+        Rule::Switch { rules, .. } => rules.iter().collect(),
+        rule => vec![rule],
+    });
+    let laid = held.filter_map(|rule| match rule {
+        Rule::Accrete { how: Accretion::Harden { kind, .. } | Accretion::Cover { kind, .. }, .. } => Some(kind),
+        _ => None,
+    });
+    if laid.into_iter().any(|kind| !kinds.contains_key(kind)) {
+        return false;
+    }
+    let switches: Vec<usize> = crate::rules::switches(&source).into_iter().map(|(i, _)| i).collect();
+    let mut stages: Vec<Vec<usize>> = vec![vec![]];
+    stages.extend(switches.iter().map(|i| vec![*i]));
+    if switches.len() > 1 {
+        stages.push(switches);
+    }
+    stages.iter().all(|on| {
+        crate::rules::unfold_on(&source, on).is_ok_and(|body| {
+            crate::validation::tagmata(&body).is_none()
+                && body.iter().map(|run| usize::from(run.segments)).sum::<usize>() <= growth::MOST_SEGMENTS
+                && lives(body, kinds, role)
+        })
+    })
+}
 
 type Pool<'a> = BTreeMap<IntakePort, Vec<&'a str>>;
 
@@ -17,8 +80,13 @@ pub(crate) fn maps(
     kinds: &BTreeMap<Key, Template>,
 ) -> Result<BTreeMap<Key, BodyMap>> {
     let mut pools: BTreeMap<(&str, bool), Pool> = BTreeMap::new();
-    let generative = f.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
-    let share_parts = generative && lowered.across_kingdoms;
+    let share_parts = lowered.across_kingdoms;
+    // An organ that takes from the ground hangs below its run.
+    let ground = lowered.goods.iter().enumerate().filter(|(_, good)| good.carried == Carried::Ground);
+    let ground = ground.fold(0u16, |bits, (i, _)| bits | 1 << i);
+    let rooted = |port: &IntakePort| {
+        port.trades(Trade::Draws) || port.trades(Trade::Takes) || (port.emitted() | port.admitted()) & ground != 0
+    };
     // Keep the native pool and the world's whole pool indexed by capability.
     // A draw can favor natal forms without making the kingdom a hard boundary.
     let mut common: BTreeMap<bool, Pool> = BTreeMap::new();
@@ -59,7 +127,18 @@ pub(crate) fn maps(
     let mut seen: BTreeMap<&str, Vec<BodyMap>> = BTreeMap::new();
     for i in 0..f.lineages {
         let role = f.role(i);
-        let kingdom = role.kingdom();
+        let kingdom = f.kingdom_key(i);
+        // A mouth that suits the living drawn, where the pool holds one.
+        let suits = |port: &IntakePort| {
+            let plants = port.admits_live(NisKind::Producer);
+            let flesh = port.admits_live(NisKind::Consumer) || port.admits_live(NisKind::Decomposer);
+            match role {
+                Role::Grazer => plants && !flesh,
+                Role::Predator => flesh && !plants,
+                Role::Omnivore => plants && flesh,
+                Role::Producer | Role::Decomposer => true,
+            }
+        };
         let mut accepted = false;
         for attempt in 0..256 {
             let seed = if attempt == 0 {
@@ -86,9 +165,13 @@ pub(crate) fn maps(
             };
             let pick = |mouth: bool, domain: &str| -> Option<Key> {
                 let pool = pool_for(mouth)?;
+                let mut fitting: Vec<_> = pool.iter().filter(|(port, _)| suits(port)).map(|(_, parts)| parts).collect();
+                if fitting.is_empty() {
+                    fitting = pool.values().collect();
+                }
                 let n = draw(domain);
-                let entries = pool.values().nth((n % pool.len() as u64) as usize)?;
-                Some(entries[((n / pool.len() as u64) % entries.len() as u64) as usize].to_string())
+                let entries = fitting.get((n % fitting.len().max(1) as u64) as usize)?;
+                Some(entries[((n / fitting.len() as u64) % entries.len() as u64) as usize].to_string())
             };
             let mut map = BodyMap::single_run();
             let root = &mut map.grammar.seed[0];
@@ -117,7 +200,7 @@ pub(crate) fn maps(
                 .into_iter()
                 .flat_map(|pool| pool.iter())
                 .collect();
-            let count = usize::from(generative) + (draw("founder-organ-count") % 3) as usize;
+            let count = 1 + (draw("founder-organ-count") % 3) as usize;
             let right = draw("founder-facing") % 2 == 0;
             for slot in 0..count.min(organs.len()) {
                 let n = crate::draw(seed, "founder-organ", &[i.into(), slot as u64]);
@@ -132,13 +215,7 @@ pub(crate) fn maps(
                 } else {
                     Facing::Left
                 };
-                run.socket = if port.trades(crate::process::Trade::Draws)
-                    || port.trades(crate::process::Trade::Takes)
-                {
-                    Facing::Below
-                } else {
-                    Facing::Above
-                };
+                run.socket = if rooted(port) { Facing::Below } else { Facing::Above };
                 run.bears = Some(region.clone());
                 run.per_segment = 1;
                 map.regions.insert(region, name.to_owned());
@@ -160,8 +237,17 @@ pub(crate) fn maps(
                 axis.facing = [Facing::Front, Facing::Right, Facing::Left, Facing::Above]
                     [(draw("founder-axis-facing") % 4) as usize];
             }
-            if generative {
-                growth::compose(&mut map.grammar, seed, i, grown);
+            if let Some(weights) = crate::catalog::catalog().kingdom(kingdom) {
+                let mut grammar = std::mem::replace(&mut map.grammar, Grammar { seed: Vec::new(), rules: Vec::new() });
+                let valid = |g: &Grammar| grows(&map, g, kinds, lowered, kingdom, role);
+                let draw = |domain: &str, slot: u64| crate::draw(seed, domain, &[i.into(), slot]);
+                growth::attach(&mut grammar, &draw, &valid);
+                growth::Sampler { kingdom: weights, draw, valid, seasons: false }.compose(&mut grammar);
+                map.grammar = grammar;
+            }
+            // A draw whose body could not make its living is drawn again.
+            if !grows(&map, &map.grammar, kinds, lowered, kingdom, role) {
+                continue;
             }
             if roster {
                 let mut signature = map.clone();
@@ -192,14 +278,27 @@ pub(crate) fn maps(
     Ok(out)
 }
 impl Founding {
+    /// Whether founders are composed from the world's catalogue organs, so
+    /// that what a line does for a living is read from its body: any body
+    /// with fixing tissue fixes, any with a fitting organ trades.
+    #[must_use]
+    pub fn composed(&self) -> bool {
+        self.bodies.is_some() && self.repertoire.as_ref().is_some_and(|r| r.founders)
+    }
+
     /// Generated, editable defaults. Explicit entries in `body_maps` take
     /// precedence; the original seed is sufficient to recover the defaults.
     pub fn catalogue_body_maps(&self) -> Result<BTreeMap<Key, BodyMap>> {
         if !self.repertoire.as_ref().is_some_and(|r| r.founders) {
             return Ok(BTreeMap::new());
         }
-        let mut kinds = BTreeMap::new();
+        // The kinds a founding of this recipe declares before it composes.
+        let mut kinds = match self.bodies.as_ref().and_then(|b| b.founding.as_ref()) {
+            Some(name) => crate::datasheet::native::kinds(&crate::datasheet::sheets().founding(name)?.palette)?,
+            None => default_kinds(),
+        };
         let lowered = crate::repertoire::declare(self, &mut kinds)?.ok_or("missing repertoire")?;
+        growth::inert(&mut kinds);
         let prepared = self.drawn_founding()?;
         maps(prepared.as_ref().map_or(self, |(f, _)| f), &lowered, &kinds)
     }

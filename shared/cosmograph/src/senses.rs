@@ -113,9 +113,27 @@ impl Simulation {
         }
         let site = body.resident_site()?;
         let form = form(&body.kingdom)?;
+        // A body reads what its tissue can use, whatever kingdom it is of:
+        // one with fixing tissue its share of light and soil, one whose
+        // lineage smells its radius.
+        let fixes = || body.parts.values().any(|p| p.cells.get("function:fix").copied().unwrap_or(0) > 0);
+        let shares = matches!(reading, "sense:light" | "sense:soil" | "sense:crowding" | "sense:light-share" | "sense:soil-share");
+        let smells = self.genesis.rules.senses.as_ref().is_some_and(|s| s.smell.contains_key(&body.lineage));
         match (form, reading) {
             (Form::Animal, "sense:smell") => Some(self.smell_radius(actor)),
+            (_, "sense:smell") if smells => Some(self.smell_radius(actor)),
             (Form::Plant, _) => {
+                let [light, soil, crowding] = self.plant_readings(site)?;
+                match reading {
+                    "sense:light" => Some(light),
+                    "sense:soil" => Some(soil),
+                    "sense:crowding" => Some(crowding),
+                    "sense:light-share" => Some(light / crowding),
+                    "sense:soil-share" => Some(soil / crowding),
+                    _ => None,
+                }
+            }
+            (_, _) if shares && fixes() => {
                 let [light, soil, crowding] = self.plant_readings(site)?;
                 match reading {
                     "sense:light" => Some(light),

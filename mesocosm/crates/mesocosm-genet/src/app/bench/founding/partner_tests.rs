@@ -12,7 +12,7 @@ fn ordinary_world_finds_exchange_partners() {
         let tick = session.advance_tick_with_flows().unwrap();
         if let Some(flow) = tick.flows.iter().find(|flow| {
             matches!(&flow.made_by, MadeBy::Process(p) if p.starts_with("mutualism:exchange-"))
-                && flow.from.1 == "world:exchange-sugar"
+                && flow.from.1 == cosmograph::ecology::IN_PASSAGE
                 && flow.to.1 == flow.from.1
                 && !flow.internal()
         }) {

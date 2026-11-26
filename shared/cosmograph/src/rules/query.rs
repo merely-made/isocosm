@@ -143,6 +143,14 @@ pub enum Query {
         at_least: u64,
         per_members: u64,
     },
+    /// A living organ of `from` gives off a good, carried so, that a living
+    /// organ of `to` takes up (`ecology::mutualism::partners`): which good
+    /// is the world's table's, not the rule's.
+    Supplies {
+        from: Binding,
+        to: Binding,
+        carried: crate::process::Carried,
+    },
     /// A body has a living organ, its tissue held, whose port does `what` in
     /// a trade (`ecology::mutualism`, D39 model 5).
     Trades {

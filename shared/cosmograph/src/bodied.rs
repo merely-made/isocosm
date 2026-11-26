@@ -27,6 +27,7 @@ mod rooted;
 mod tips;
 pub use tips::tips;
 pub use map::BodyMap;
+pub(crate) use catalogue::growth::{BOUNDS as GROWTH_BOUNDS, OPERATORS as GROWTH_OPERATORS, Sampler as GrowthSampler};
 
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
@@ -393,6 +394,9 @@ pub(crate) fn embody_within(
         if compose || !founding.body_maps.is_empty() {
             g.rules.repertoire=crate::repertoire::declare(founding,&mut kinds)?;
         }
+        if compose {
+            catalogue::growth::inert(&mut kinds);
+        }
         if compose && let Some(lowered)=&g.rules.repertoire {
             generated=catalogue::maps(founding,lowered,&kinds)?;
         }
@@ -411,14 +415,20 @@ pub(crate) fn embody_within(
             key.strip_prefix("lineage:").and_then(|n|n.parse().ok()).unwrap_or(index as u64)
         } else { index as u64 };
         let map = maps.and_then(|maps| maps.get(key)).or_else(||generated.get(key));
-        let producer = match lineage.kingdom.as_str() {
-            "kingdom:flora" => true,
-            "kingdom:fauna" if plants.is_none() => false,
-            "kingdom:myco" if plants.is_none() && map.is_some() => false,
+        // Where kingdoms are drawn a line's living is drawn too, and its
+        // body is founded for that living whatever kingdom it is of.
+        let living = g.founding.as_ref().filter(|f| !f.forms().is_empty()).map(|f| f.role(index as u32));
+        let producer = match (living, lineage.kingdom.as_str()) {
+            (Some(role), "kingdom:flora" | "kingdom:fauna" | "kingdom:myco") if plants.is_none() && map.is_some() => {
+                role == crate::ecology::Role::Producer
+            },
+            (_, "kingdom:flora") => true,
+            (_, "kingdom:fauna") if plants.is_none() => false,
+            (_, "kingdom:myco") if plants.is_none() && map.is_some() => false,
             _ => continue,
         };
         bodied.insert(key.clone());
-        let animal = lineage.kingdom == "kingdom:fauna";
+        let animal = living.map_or(lineage.kingdom == "kingdom:fauna", crate::ecology::Role::consumer);
         if b.sensing && animal {
             // An animal's smell reaches a radius its lineage draws (1071).
             let [s0, s1] = b.smell;

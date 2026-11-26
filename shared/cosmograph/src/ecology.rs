@@ -70,7 +70,7 @@ pub use rot::{DECOMPOSER_BITES, Rot};
 pub use categories::{Categories, tough};
 pub use detritus::{DUNG, Detritus, left_by, takes};
 pub use guard::{Guard, Ward};
-pub use mutualism::{Mutualism, trades};
+pub use mutualism::{IN_PASSAGE, Mutualism, bargain, goods, supplies, trades};
 pub use nutrients::{Nutrients, axis};
 pub use spoilage::{Flesh, Spoilage};
 pub use budget::Budget;
@@ -165,7 +165,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             .insert(format!("matter:{i}-0"), founding.stock_min + 2);
         let level = founding.role(i).level();
         let role = LEVELS[level];
-        e.kingdom = KINGDOMS[level].into();
+        e.kingdom = founding.kingdom_key(i).into();
         e.traits.insert(role.into());
         g.rules.traits.insert(role.into());
     }
@@ -173,8 +173,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     // Life history is stated in minutes and read at the world's unit (1072).
     let unit = g.rules.tick_microseconds();
     let minutes = |m: u64| crate::rules::minutes_ticks(m, unit);
-    let body_driven = founding.bodies.is_some()
-        && founding.repertoire.as_ref().is_some_and(|r| r.generative_ecology);
+    let body_driven = founding.composed();
     let producers = (0..founding.lineages).filter(|&i| founding.role(i) == Role::Producer).count();
     let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
@@ -403,8 +402,16 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 among: prey,
                 weighted: true,
             });
-            feed.period = Some(rates.feed_period(role));
-            feed.priority = rates.feed_priority(role);
+            // And its meal is due at each decision, so a hungry one leaves
+            // only where there is nothing for it: between meals it would
+            // otherwise spend its hunger in transit, where nothing eats.
+            feed.period = Some(rates.feed_period(if body_driven { Role::Decomposer } else { role }));
+            // Where a site has several ways out, some move is due at nearly
+            // every decision, and a move runs before a meal at its ordinary
+            // place in the tick: a hungry animal standing on food would leave
+            // it, as A1's decomposers once did. In a composed world every
+            // feeder eats first and moves when there is nothing to eat.
+            feed.priority = if body_driven { rates.feed_priority(Role::Decomposer) } else { rates.feed_priority(role) };
             g.rules.processes.insert(feed.id.clone(), feed);
         }
         g.lineages
@@ -412,7 +419,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             .unwrap()
             .traits
             .insert(LEVELS[role.level()].into());
-        g.lineages.get_mut(&lineage).unwrap().kingdom = KINGDOMS[role.level()].into();
+        g.lineages.get_mut(&lineage).unwrap().kingdom = founding.kingdom_key(i).into();
     }
     if rates == Rates::WorldTime {
         world_time::configure(founding, g)?;

@@ -352,6 +352,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let parts = crate::ecology::pocket::opening(s.body(*who)?, *run);
             (parts.is_some(), format!("{parts:?}"))
         }
+        Query::Supplies { from, to, carried } => {
+            let goods = crate::ecology::supplies(s.rules, s.body(*from)?, s.body(*to)?, *carried);
+            (!goods.is_empty(), goods.join(", "))
+        },
         Query::Trades { who, what } => {
             let v = crate::ecology::trades(s.body(*who)?, *what);
             (v, v.to_string())

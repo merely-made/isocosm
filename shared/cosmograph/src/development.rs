@@ -134,11 +134,17 @@ pub fn flush(parent: [i32; 3], child: [i32; 3], facing: Facing) -> [i32; 3] {
 
 /// The body `soma` develops into, root first, holding nothing.
 pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
+    develop_of(&rules.kinds, d, soma)
+}
+
+/// As [`develop`], from the kinds alone: what a founding has before it has
+/// rules, so a founder can be grown and read while it is still being drawn.
+pub fn develop_of(kinds: &std::collections::BTreeMap<Key, Template>, d: &Development, soma: &Soma) -> Result<Body> {
     let recipe = &d.recipe;
     if soma.segments.len() != recipe.tagmata.len() {
         return Err("a soma drawn from another recipe".into());
     }
-    let kind = |k: &Key| rules.kinds.get(k).ok_or(format!("unknown kind {k}"));
+    let kind = |k: &Key| kinds.get(k).ok_or(format!("unknown kind {k}"));
     // Each part in id order, its id its index.
     let mut parts: Vec<(Frame, Part)> = vec![];
     // Each tagma's segments, by part id, for later tagmata to branch from.

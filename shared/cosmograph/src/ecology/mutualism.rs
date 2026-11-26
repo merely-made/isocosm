@@ -9,11 +9,11 @@
 //! other does"; `rules::hosting`'s `leak` gives one way only, which is no
 //! trade).
 //!
-//! Foundings using the generative repertoire install local, body-driven
-//! exchange through `partners`. A fixer pays sugar to a resident organ
-//! supplying mineral nutrients. The goods each organ can emit or receive
-//! come from the catalogue and require living tissue at the encounter.
-//! The lineage-pair model below serves existing worlds and authored pockets.
+//! Where bodies carry catalogue organs (a repertoire), exchange is theirs:
+//! any two bodies whose living organs fit trade, whatever their lineages
+//! (`partners`). The lineage-pair model below is what remains for a world
+//! with no such organs to read and for an authored pocket, which still names
+//! its two lines.
 //!
 //! **The two goods.** The world has one soil (`world:soil`) and a tissue
 //! account for each line, but the two are not alike to a producer and a
@@ -60,7 +60,8 @@
 //! execution runs them as the individual one does. Unset, no process, count or
 //! declared condition is added and the world founds, hashes and runs as before.
 
-mod partners;
+pub(crate) mod partners;
+pub use partners::{IN_PASSAGE, bargain, goods, supplies};
 
 use super::{Rates, Role};
 use crate::{
@@ -259,7 +260,7 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
         return Err("mutualism layers on the stock and A1 rates, not world time".into());
     }
     rule.validate()?;
-    if founding.pocket.is_none() && founding.repertoire.as_ref().is_some_and(|r| r.generative_ecology) {
+    if founding.pocket.is_none() && founding.repertoire.is_some() {
         return partners::install(founding, g, rule);
     }
     let lines = |role| (0..founding.lineages).filter(move |&i| founding.role(i) == role).collect::<Vec<_>>();

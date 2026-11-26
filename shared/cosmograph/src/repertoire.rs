@@ -47,9 +47,6 @@ pub struct Repertoire {
     /// Compose founder lineage grammars from this world's runnable organs.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub founders: bool,
-    /// Compose growth rules at founding and admit local exchange by living organs.
-    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
-    pub generative_ecology: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub kingdom_draw: Option<crate::generate::KingdomDraw>,
     /// Authored world-class recipes by ordinal within their kingdom.
@@ -94,6 +91,10 @@ pub struct Entry {
 pub struct Lowered {
     pub across_kingdoms: bool,
     pub kinds: BTreeMap<Key, Entry>,
+    /// The goods this world's organs exchange, in the order their ports name
+    /// them: the catalogue's, where the world sets the mutualism rule.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub goods: Vec<crate::process::Good>,
 }
 
 impl Lowered {
@@ -159,14 +160,15 @@ pub(crate) fn declare(
             return Err(format!("repertoire cannot lower {key}: {why}"));
         }
     }
+    // Without the mutualism rule nothing settles an exchange, so no port
+    // names a good and the world keeps no table.
+    let goods = if mutual { catalog.goods() } else { &[] };
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
         let Ok(Lowering { mut template, mut root }) = lowering_full(part, cats, guard, mutual, rules) else { continue };
-        if rule.generative_ecology && needs_mutualism(part) {
-            for organ in std::iter::once(&mut template).chain(root.as_mut()) {
-                if let Some(port) = &mut organ.port {
-                    *port = lower::exchange_goods(*port, part);
-                }
+        for organ in std::iter::once(&mut template).chain(root.as_mut()) {
+            if let Some(port) = &mut organ.port {
+                *port = lower::trading(*port, part, goods);
             }
         }
         let key = kind_key(&part.key);
@@ -191,7 +193,8 @@ pub(crate) fn declare(
         }
         kinds.insert(key, entry);
     }
-    Ok(Some(Lowered { across_kingdoms: rule.across_kingdoms, kinds }))
+    let goods = goods.iter().map(|g| crate::process::Good { key: g.key.clone(), carried: g.carried }).collect();
+    Ok(Some(Lowered { across_kingdoms: rule.across_kingdoms, kinds, goods }))
 }
 
 /// Each founded ordinary feed admits what its bound mouth's port admits, of

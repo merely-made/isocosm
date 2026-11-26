@@ -125,7 +125,8 @@ mod kingdom_draw;
 #[cfg(test)]
 mod kingdom_draw_tests;
 mod habitats;
-pub use kingdom_draw::{FoundingForm, KingdomDraw};
+mod starter;
+pub use kingdom_draw::{FoundingForm, KingdomDraw, LIVINGS};
 pub use habitats::WorldBody;
 mod helpers;
 pub(crate) use helpers::process;
@@ -501,7 +502,7 @@ impl Founding {
                     scale: "scale:meso".into(),
                     provenance: Provenance::Born(lineage.clone()),
                     method: Method::Reactive,
-                    place: random("habitat", group) % u64::from(self.sites),
+                    place: self.founder_site(i, group),
                     arrived: 0,
                     visits: vec![],
                     journey: None,

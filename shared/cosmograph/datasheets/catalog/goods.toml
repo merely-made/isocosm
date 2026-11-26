@@ -1,0 +1,42 @@
+# The goods bodies exchange: flows the parts sheets already name, each with
+# how it is carried between two bodies. A row here makes every runnable part
+# that emits or admits the flow a trader in it; the exchange itself
+# (`ecology::mutualism::partners`) knows carriers, never goods.
+#
+# PROVISIONAL, a prototype. Every key is a plain working word, not a
+# player-facing name; a naming round is the owner's.
+#
+# carried = "tissue": the giver pays it out of its own tissue.
+# carried = "ground": the giver's organ draws it from the ground both stand on.
+#
+# A world's ports name goods by their place in this list, sixteen at most.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::repertoire (a lowered part's port), cosmograph::ecology::mutualism::partners"
+status = "provisional"
+
+[[good]]
+key = "sugar"
+carried = "tissue"
+summary = "Fixed matter a body hands on: a root's sugar, a fruit's flesh, a store's fat."
+
+[[good]]
+key = "exudate"
+carried = "tissue"
+summary = "What a body leaks or secretes into the ground or onto a neighbour."
+
+[[good]]
+key = "nectar"
+carried = "tissue"
+summary = "Fixed matter set out to be taken."
+
+[[good]]
+key = "soil:nutrient"
+carried = "ground"
+summary = "The minerals of the ground an organ reaches, drawn for another body."
+
+[[good]]
+key = "soil:scarce"
+carried = "ground"
+summary = "The mineral the ground holds least of, won for another body."

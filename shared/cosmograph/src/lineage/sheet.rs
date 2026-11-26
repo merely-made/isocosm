@@ -35,9 +35,12 @@ pub struct Sheet {
     pub trophic: Option<Trophic>,
     /// What it does with matter, read from its ports.
     pub feeding: FeedingMode,
-    /// Exchange functions expressed by the adult's living organs.
+    /// The goods the adult's living organs give off, by key.
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
-    pub exchange: BTreeSet<crate::process::Trade>,
+    pub emits: BTreeSet<Key>,
+    /// The goods they take up.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub admits: BTreeSet<Key>,
     /// Cells by function over the whole body.
     pub functions: BTreeMap<Key, u32>,
     /// The systems the body realises.
@@ -56,6 +59,12 @@ pub struct Sheet {
     /// world has a climate: fixing cells set it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub light: Option<i64>,
+}
+
+/// The goods `bits` name in the world's table, by key.
+fn named(rules: &Rules, bits: u16) -> BTreeSet<Key> {
+    let table = rules.repertoire.iter().flat_map(|r| r.goods.iter().enumerate());
+    table.filter(|(i, _)| bits & (1 << i) != 0).map(|(_, good)| good.key.clone()).collect()
 }
 
 /// The sheet of a fully grown body of `lineage` under `d`. The adult is
@@ -139,11 +148,8 @@ pub fn of(
         clutch: d.clutch,
         trophic: trophic::of(&e),
         feeding: crate::mosaic::ports::feeding(&e),
-        exchange: [
-            crate::process::Trade::GivesSugar,
-            crate::process::Trade::GivesNutrient,
-            crate::process::Trade::TakesSugar,
-        ].into_iter().filter(|&what| crate::ecology::trades(&e, what)).collect(),
+        emits: named(rules, crate::ecology::goods(&e)[0]),
+        admits: named(rules, crate::ecology::goods(&e)[1]),
         functions,
         systems: carried
             .iter()

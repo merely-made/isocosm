@@ -10,6 +10,23 @@ use crate::{
 };
 
 impl Simulation {
+    /// Why `actor` cannot now do `process` on its own account: each of the
+    /// requirements that read only the actor, its part, its place or the
+    /// tick, and does not hold. Empty where all hold, though a target may
+    /// still be wanting. A reading for whoever tunes a world; no rule uses it.
+    #[must_use]
+    pub fn unmet(&self, actor: Id, process: &str) -> Vec<String> {
+        let Some(p) = self.genesis.rules.processes.get(process) else {
+            return vec![format!("{process} is no process of this world")];
+        };
+        let Some(place) = self.body_at_start(actor).map(|e| e.place) else {
+            return vec!["the actor is absent".into()];
+        };
+        let part = self.bind_part(actor, p);
+        let own = p.requires.iter().filter(|q| !crate::targets::reads_prey(q));
+        own.filter_map(|q| self.query(actor, None, place, part, q).err()).collect()
+    }
+
     pub(crate) fn bound(&self, actor: Id, target: Option<Id>, binding: Binding) -> Result<Id> {
         match binding {
             Binding::Actor => Ok(actor),

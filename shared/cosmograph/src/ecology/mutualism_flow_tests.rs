@@ -157,12 +157,27 @@ fn the_rule_is_the_same_in_both_executions() {
     assert_eq!(hash(Execution::Individuals), hash(Execution::Grouped));
 }
 
+/// `equip`, for the goods at `gives` and `takes` of the world's table.
+fn equip_goods(g: Genesis, line: &str, gives: &[&str], takes: &[&str]) -> Genesis {
+    let table = g.rules.repertoire.as_ref().unwrap().goods.clone();
+    let at = |key: &str| table.iter().position(|good| good.key == key).unwrap();
+    let mut g = equip(g, line, &[]);
+    for group in g.population.groups.values_mut().filter(|g| g.entity.lineage == line) {
+        let e: &mut Entity = group.entity_mut();
+        let id = *e.parts.iter().find(|(_, p)| p.port.is_some_and(|port| port.support().is_some() && !port.is_mouth())).map(|(id, _)| id).unwrap();
+        let part = e.part_mut(&id).unwrap();
+        let port = gives.iter().fold(part.port.unwrap(), |p, key| p.emitting(at(key)));
+        part.port = Some(takes.iter().fold(port, |p, key| p.admitting(at(key))));
+    }
+    g
+}
+
 #[test]
-fn generated_exchange_finds_the_local_provider_by_its_live_exports() {
+fn bodies_trade_wherever_what_one_gives_the_other_takes() {
     use crate::repertoire::Repertoire;
 
     let f = Founding {
-        repertoire: Some(Repertoire { generative_ecology: true, ..Default::default() }),
+        repertoire: Some(Repertoire::default()),
         nutrients: Some(Nutrients::default()),
         ..founding(Some(Mutualism::default()))
     };
@@ -171,33 +186,35 @@ fn generated_exchange_finds_the_local_provider_by_its_live_exports() {
     for group in g.population.groups.values_mut() {
         group.entity_mut().place = site;
     }
+    // One act per lineage, open to every other, and no pair is founded.
     assert!(g.rules.processes["mutualism:exchange-0"].target.as_ref().unwrap().among.is_empty());
     assert!(!g.rules.processes.contains_key("mutualism:nutrient-2-0"));
-    g = equip(g, "lineage:0", &[Trade::GivesSugar]);
+    // The plant pays in nectar and takes what the ground's scarce nutrient
+    // brings: neither is a good the old pair knew.
+    g = equip_goods(g, "lineage:0", &["nectar"], &["soil:scarce"]);
 
-    // The ordinary grazer, line 1, can supply a fixer if it develops the
-    // right ports. The historical decomposer, line 2, has none.
-    let sees_payment = |provider: &[Trade]| {
-        let mut s = Session::new(equip(g.clone(), "lineage:1", provider), Execution::Grouped).unwrap();
+    // The ordinary grazer, line 1, can supply it if its organs fit.
+    let sees_payment = |gives: &[&str], takes: &[&str]| {
+        let mut s = Session::new(equip_goods(g.clone(), "lineage:1", gives, takes), Execution::Grouped).unwrap();
         let total = s.sim.budget().total();
-        let mut payment = false;
-        let mut nutrient = false;
-        let mut consumed = false;
+        let (mut payment, mut drawn, mut kept) = (false, false, false);
         for _ in 0..12 {
             for flow in s.advance_tick_with_flows().unwrap().flows {
                 if flow.by_process("mutualism:exchange-0") {
-                    if flow.from.1 == "world:exchange-sugar" && !flow.internal() {
+                    if flow.from.1 == IN_PASSAGE && !flow.internal() {
                         assert_eq!(flow.to_kind.as_ref().unwrap().lineage, "lineage:1");
                         payment = true;
                     }
-                    nutrient |= flow.from.1 == "world:soil-1" && flow.to.0.body().is_some();
+                    drawn |= flow.from.1 == "world:soil-1" && flow.to.0.body().is_some();
                 }
-                consumed |= flow.by_process("mutualism:assimilate-1");
+                kept |= flow.by_process("mutualism:assimilate-1");
             }
         }
         assert_eq!(s.sim.budget().total(), total);
-        (payment, nutrient, consumed)
+        (payment, drawn, kept)
     };
-    assert_eq!(sees_payment(&[Trade::TakesSugar]), (false, false, false));
-    assert_eq!(sees_payment(&[Trade::GivesNutrient, Trade::TakesSugar]), (true, true, true));
+    // It takes the nectar but gives nothing wanted; it gives but takes sugar, not nectar; it fits.
+    assert_eq!(sees_payment(&[], &["nectar"]), (false, false, false));
+    assert_eq!(sees_payment(&["soil:scarce"], &["sugar"]), (false, false, false));
+    assert_eq!(sees_payment(&["soil:scarce"], &["nectar"]), (true, true, true));
 }

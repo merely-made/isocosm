@@ -303,6 +303,34 @@ pub struct Mechanic {
     pub cites: Vec<String>,
 }
 
+/// A good an organ may give off or take up in an exchange between bodies:
+/// one of the flows parts already name, with how it is carried. Adding a
+/// row makes every part that emits or admits the flow a trader in it.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Good {
+    pub key: String,
+    pub carried: crate::process::Carried,
+    pub summary: String,
+}
+
+/// What a kingdom is to founding (cases 1206, 1219): the weight of each way
+/// of making a living among its founders, how many further growth rules a
+/// founder draws, the weight of each growth operator in that draw, and the
+/// bounds its numbers are drawn within. A way or an operator unnamed weighs
+/// nothing; a number unnamed takes the grammar's own bounds.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Kingdom {
+    pub key: String,
+    pub living: std::collections::BTreeMap<String, u32>,
+    /// Least and most further rules.
+    pub rules: [u8; 2],
+    pub operators: std::collections::BTreeMap<String, u32>,
+    #[serde(default)]
+    pub bounds: std::collections::BTreeMap<String, [u16; 2]>,
+}
+
 /// A verb the registry does not hold, proposed for the catalog (D38 lifts
 /// the stop rule on new processes).
 #[derive(Clone, Debug, Deserialize)]

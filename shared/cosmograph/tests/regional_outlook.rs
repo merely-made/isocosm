@@ -45,7 +45,6 @@ fn generated(seed: u64) -> Founding {
         detritus: Some(Default::default()),
         repertoire: Some(cosmograph::repertoire::Repertoire {
             founders: true,
-            generative_ecology: true,
             across_kingdoms: true,
             kingdom_draw: Some(cosmograph::generate::KingdomDraw {
                 pool: [

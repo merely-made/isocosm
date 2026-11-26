@@ -136,11 +136,15 @@ pub(crate) fn apply(founding: &Founding, g: &mut Genesis) -> Result<()> {
     for i in (0..founding.lineages).filter(|&i| limited(founding.role(i))) {
         let decomposer = founding.role(i) == Role::Decomposer;
         let lineage: Key = format!("lineage:{i}");
-        let founded: u64 = g.population.groups.values()
-            .filter(|c| c.entity.alive && c.entity.lineage == lineage)
-            .map(|c| c.count)
-            .sum();
-        let share = founded.div_ceil(sites).max(1);
+        let founders = || g.population.groups.values().filter(|c| c.entity.alive && c.entity.lineage == lineage);
+        let founded: u64 = founders().map(|c| c.count).sum();
+        // A composed world founds each lineage in a community, not across
+        // the map, so its share per site is over the sites it stands on:
+        // over the whole map the ceiling would sit below its own founders
+        // and it would never breed.
+        let stood = founders().map(|c| c.entity.place).collect::<BTreeSet<_>>().len() as u64;
+        let across = if founding.composed() { stood.clamp(1, sites) } else { sites };
+        let share = founded.div_ceil(across).max(1);
         let most = if decomposer { limits.decomposer_most(share) } else { limits.most(share) };
         // Matter one member asks over `k` feeding periods, read before the
         // fullness gate lands on the feed (it changes no amount).

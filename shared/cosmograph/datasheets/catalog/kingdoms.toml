@@ -1,0 +1,91 @@
+# What a kingdom is to founding: weights, and nothing else (cases 1206, 1219).
+# A kingdom gates no way of living and no growth operator. A weight makes one
+# common or rare among its founders; one a row leaves out its founders do not
+# draw, though a lineage may come to it later.
+#
+# `living` weighs how a founder makes its living, over the ways the sim has:
+# fix (light and ground into tissue), graze (living plant tissue), hunt
+# (living flesh), forage (both), rot (the dead). A body may hold more than
+# one: any founder may also draw a fixing organ or a mouth among its organs.
+#
+# `operators` weighs the growth operators (case 1206: "one set of growth
+# operators, weighted and bounded per class"); a founder draws `rules`
+# further rules, each number within `bounds` (`bodied::catalogue::growth`).
+# Operators: repeat, branch, radiate, symmetry, differentiate, harden, cover,
+# fuse, partner, switch. Numbers: by, every, depth, taper, arms, oldest,
+# crowd, total (the body's segment budget).
+#
+# PROVISIONAL first cut, each line to tune in play. Every key is a plain
+# working word; a naming round is the owner's.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::generate::kingdom_draw (living), cosmograph::bodied::catalogue::growth (operators)"
+status = "provisional"
+
+[[kingdom]]
+key = "kingdom:flora"
+rules = [1, 3]
+[kingdom.living]
+fix = 16
+hunt = 1
+rot = 1
+[kingdom.operators]
+branch = 6
+repeat = 3
+differentiate = 3
+harden = 3
+switch = 3
+radiate = 2
+symmetry = 2
+fuse = 2
+cover = 1
+partner = 1
+[kingdom.bounds]
+arms = [3, 6]
+total = [8, 18]
+
+[[kingdom]]
+key = "kingdom:fauna"
+rules = [1, 3]
+[kingdom.living]
+graze = 6
+forage = 4
+hunt = 3
+rot = 2
+fix = 1
+[kingdom.operators]
+symmetry = 5
+repeat = 4
+differentiate = 3
+cover = 3
+switch = 2
+branch = 1
+radiate = 1
+harden = 1
+fuse = 1
+partner = 1
+[kingdom.bounds]
+depth = [1, 1]
+total = [6, 12]
+
+[[kingdom]]
+key = "kingdom:myco"
+rules = [1, 3]
+[kingdom.living]
+rot = 10
+fix = 2
+graze = 1
+hunt = 1
+[kingdom.operators]
+branch = 6
+fuse = 5
+radiate = 3
+switch = 3
+repeat = 2
+differentiate = 2
+partner = 2
+cover = 1
+[kingdom.bounds]
+arms = [2, 4]
+total = [6, 14]

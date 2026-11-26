@@ -125,6 +125,20 @@ pub(super) fn offered_borne(
         .filter(|(_, v)| session.sim.revisable(lineage, v).is_ok())
         .take(most);
     out.extend(edits.map(|(name, v)| (name, v, true)));
+    // A composed world's lines go on drawing growth rules as their founders
+    // did: one offer for each operator their kingdom weighs, on a run that
+    // moves with the line's revision.
+    let sim = &session.sim;
+    if sim.genesis().founding.as_ref().is_some_and(crate::Founding::composed)
+        && let Some(line) = sim.state().lineages.get(lineage)
+    {
+        let seed = crate::draw(sim.genesis().seed, "growth-offer", &[u64::from(line.revision)]);
+        let grown = super::grammar::additions(d, &line.kingdom, seed)
+            .into_iter()
+            .filter(|(_, v)| sim.revisable(lineage, v).is_ok())
+            .take(most);
+        out.extend(grown.map(|(name, v)| (name, v, true)));
+    }
     out.extend(super::repertoire::offers(session, lineage, d, most).into_iter().map(|(name, v)| (name, v, true)));
     out
 }

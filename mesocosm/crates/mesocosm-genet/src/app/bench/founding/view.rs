@@ -69,7 +69,7 @@ pub(in crate::app::bench) fn view(p: &Panel) -> Child {
 
 fn world(p: &Panel, out: &mut Vec<Child>) {
     out.push(heading("World conditions"));
-    if p.draft.repertoire.as_ref().is_some_and(|r| r.generative_ecology) {
+    if p.draft.composed() {
         out.push(row(vec![action("Find a persistent ecology", Panel::search)]));
         if let Some(summary) = p.candidate() {
             out.push(words(summary));
@@ -241,6 +241,28 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
         return;
     };
     out.push(heading(format!("{} · body map", p.lineage)));
+    // What a grown body of this recipe does, read off the body: its
+    // kingdom is what it was drawn as and decides none of it.
+    if let Some(line) = genesis.lineages.get(&p.lineage)
+        && let Some(development) = &line.development
+        && let Ok(sheet) = cosmograph::lineage::sheet::of(&genesis.rules, &genesis.lineages, &p.lineage, development)
+    {
+        use cosmograph::process::FeedingMode;
+        let mut does = Vec::new();
+        if sheet.functions.get("function:fix").is_some_and(|cells| *cells > 0) {
+            does.push("fixes light".to_owned());
+        }
+        does.extend(match sheet.feeding {
+            FeedingMode::Grazer => Some("eats living plants".to_owned()),
+            FeedingMode::Predator => Some("eats living flesh".to_owned()),
+            FeedingMode::Omnivore => Some("eats living plants and flesh".to_owned()),
+            FeedingMode::Scavenger => Some("eats the dead".to_owned()),
+            FeedingMode::Producer => None,
+        });
+        does.extend(sheet.emits.iter().map(|good| format!("gives off {good}")));
+        does.extend(sheet.admits.iter().map(|good| format!("takes up {good}")));
+        out.push(words(format!("{} · {} mg grown · {}", small(&line.kingdom), sheet.mass, does.join(" · "))));
+    }
     for rule in &map.grammar.rules {
         out.push(words(growth::describe(rule)));
     }
@@ -420,6 +442,7 @@ fn next_facing(facing: Facing) -> Facing {
 
 fn watch(p: &Panel, out: &mut Vec<Child>) {
     let state = p.session.sim.state();
+    let rules = &p.session.sim.genesis().rules;
     out.push(heading(format!(
         "Seed {} · tick {}",
         p.session.sim.genesis().seed,
@@ -572,15 +595,23 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
             let cosmograph::flows::MadeBy::Process(key) = &flow.made_by else {
                 continue;
             };
-            // The sugar leg is the single payment identifying both partners.
-            if key.starts_with("mutualism:exchange-")
-                && flow.from.1 == "world:exchange-sugar" && flow.to.1 == flow.from.1
+            // The tissue in passage is the one leg that names both partners.
+            if flow.from.1 == cosmograph::ecology::IN_PASSAGE && flow.to.1 == flow.from.1
                 && !flow.internal()
-                && let (Some(buyer), Some(carrier)) = (flow.from.0.body(), flow.to.0.body())
-                && (id == buyer || id == carrier)
+                && let (Some(payer), Some(drawer)) = (flow.from.0.body(), flow.to.0.body())
+                && (id == payer || id == drawer)
             {
+                let bodies = (state.population.get(payer), state.population.get(drawer));
+                let terms = match bodies {
+                    (Some(a), Some(b)) => cosmograph::ecology::bargain(rules, a, b),
+                    _ => None,
+                };
+                let [paid, drawn] = terms.map_or_else(
+                    || ["tissue".to_owned(), "what the ground holds".to_owned()],
+                    |legs| legs.map(|goods| goods.join(" or ")),
+                );
                 out.push(words(format!(
-                    "#{buyer} paid #{carrier} {} mg of sugar for mineral nutrients at tick {}",
+                    "#{payer} paid #{drawer} {} mg in {paid} for {drawn} at tick {}",
                     flow.amount, flow.tick,
                 )));
             }
@@ -595,6 +626,26 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
         }
         for ((key, direction), amount) in processes {
             out.push(words(format!("#{id} · {key} · {amount} mg {direction}")));
+        }
+        // Who this body could trade with where it stands, read from the
+        // organs each has now; one line for each other lineage.
+        let mut partners = std::collections::BTreeMap::new();
+        for group in state.population.groups.values() {
+            let other = &group.entity;
+            if !other.alive || other.lineage == body.lineage || other.resident_site() != Some(p.site) {
+                continue;
+            }
+            if let Some([paid, drawn]) = cosmograph::ecology::bargain(rules, body, other) {
+                partners.entry((&other.lineage, true)).or_insert_with(|| format!(
+                    "Could pay {} in {} for {}", other.lineage, paid.join(" or "), drawn.join(" or ")));
+            }
+            if let Some([paid, drawn]) = cosmograph::ecology::bargain(rules, other, body) {
+                partners.entry((&other.lineage, false)).or_insert_with(|| format!(
+                    "Could draw {} for {}, paid in {}", drawn.join(" or "), other.lineage, paid.join(" or ")));
+            }
+        }
+        for line in partners.into_values() {
+            out.push(words(line));
         }
         if let Some(id) = p.part_id.and_then(|n| u32::try_from(n).ok())
             && let Some(part) = body.parts.get(&cosmograph::schema::PartId(id))
@@ -621,7 +672,8 @@ fn watch(p: &Panel, out: &mut Vec<Child>) {
             }
             if body.lives(part_id)
                 && let Some(port)=cosmograph::mosaic::ports::active(part) {
-                let abilities=super::organ_reading(port);
+                let goods=rules.repertoire.as_ref().map_or(&[][..],|r|&r.goods);
+                let abilities=super::organ_reading(port,goods);
                 if !abilities.is_empty(){out.push(words(abilities.join(" · ")));}
             }
         }

@@ -52,16 +52,26 @@ pub fn capture(e: &Entity, tissue: &str) -> (u64, u64) {
     if !e.parts.values().any(|p| p.cells.get(FIX).copied().unwrap_or(0) > 0) {
         return (0, 0);
     }
+    lit(doc, |id| e.parts.get(&id).map(|p| &**p), |p, fixed| fixed.min(p.matter.get(tissue).copied().unwrap_or(0)))
+}
+
+/// What a grown body of this shape would capture with every fixing cell
+/// backed: its geometry's light, before any ledger. Units as [`capture`]'s.
+pub fn exposure(body: &crate::geometry::Body) -> u64 {
+    lit(&body.doc, |id| body.parts.get(&id), |_, fixed| fixed).1
+}
+
+fn lit<'p>(doc: &BodyDocument, part: impl Fn(PartId) -> Option<&'p Part>, backing: impl Fn(&Part, u64) -> u64) -> (u64, u64) {
     let boxes = surfaces(doc);
     let mut cells = 0;
     let mut units = 0;
     for leaf in boxes.iter().filter(|b| b.upright_plate) {
-        let Some(p) = e.parts.get(&leaf.id) else {
+        let Some(p) = part(leaf.id) else {
             continue;
         };
         let fixed = u64::from(p.cells.get(FIX).copied().unwrap_or(0));
         cells += fixed;
-        let backed = fixed.min(p.matter.get(tissue).copied().unwrap_or(0));
+        let backed = backing(p, fixed);
         if backed == 0 {
             continue;
         }

@@ -48,6 +48,40 @@ pub(super) fn candidates(d: &Development, only: Option<&BTreeSet<Key>>) -> Vec<(
         .collect()
 }
 
+/// The developments `d` could take by one further growth rule (case 1206):
+/// for each operator its kingdom weighs, a rule of it on a run drawn by
+/// `seed`, placed before the closing budget. The operators and their bounds
+/// are the ones its founders drew from (`bodied::catalogue::growth`), so a
+/// line goes on generating its body after founding by the same means; not
+/// yet held to the world's rules.
+pub(super) fn additions(d: &Development, kingdom: &str, seed: u64) -> Vec<(Key, Development)> {
+    let (Some(grammar), Some(weights)) = (&d.grammar, crate::catalog::catalog().kingdom(kingdom)) else {
+        return vec![];
+    };
+    let Ok(body) = unfold(grammar) else { return vec![] };
+    let sampler = crate::bodied::GrowthSampler {
+        kingdom: weights,
+        draw: |domain: &str, slot: u64| crate::draw(seed, domain, &[slot]),
+        valid: |_: &crate::rules::Grammar| true,
+        seasons: false,
+    };
+    let weighed = crate::bodied::GROWTH_OPERATORS.iter().filter(|name| weights.operators.get(**name).is_some_and(|w| *w > 0));
+    let mut out = vec![];
+    for (slot, operator) in weighed.enumerate() {
+        let Some(rule) = sampler.propose(operator, &body, slot as u64) else { continue };
+        let mut edited = d.clone();
+        if let Some(g) = edited.grammar.as_mut() {
+            let closing = |r: &Rule| matches!(r, Rule::Allocate { .. } | Rule::Partition(_));
+            let at = g.rules.iter().position(closing).unwrap_or(g.rules.len());
+            g.rules.insert(at, rule);
+        }
+        out.push((format!("revision:rule-add-{operator}"), edited));
+    }
+    out.into_iter()
+        .filter_map(|(name, v)| regrown(&v).ok().filter(|r| r != d).map(|r| (name, r)))
+        .collect()
+}
+
 /// The edits differentiating the last run of `d`'s grammar to each of `kinds`
 /// its body does not name, a kind outside the lexicon joining it (the
 /// repertoire's, D37); not yet held to the world's rules.
