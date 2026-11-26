@@ -44,7 +44,7 @@ Mark's ask to Massif Press on Discord (Lancer is Massif Press's) is not done, an
 - From: `mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md:864-869`
 
 ### CP5. Publishing `isocosm-system`
-The authoring tool's optional git dependencies (`mere-source-edit` on branch main, and the `merely-made/taplo` fork by revision) are outside `isocosm-native`'s closure but would block publishing `isocosm-system` itself. Nothing is owed unless `isocosm-system` is ever published.
+The authoring tool's optional git dependencies (`mere-source-edit` on branch main, and the `mark-ik/taplo` fork by revision) are outside `isocosm-native`'s closure but would block publishing `isocosm-system` itself. Nothing is owed unless `isocosm-system` is ever published.
 - Done when: not stated; owed (only if `isocosm-system` is to be published).
 - Needs: `campaign-retirement` R4
 - Rulings: 917 (publishable crates)
