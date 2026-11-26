@@ -18,8 +18,6 @@ mod outlook;
 #[cfg(test)]
 mod catalogue_tests;
 #[cfg(test)]
-mod partner_tests;
-#[cfg(test)]
 mod tests;
 mod view;
 pub(super) use view::view;

@@ -3,10 +3,7 @@
 
 //! A founding distribution. Kingdoms are drawn without replacement. Each
 //! kingdom independently draws its richness; no lineage has a founding parent.
-use crate::{
-    Founding, Result, draw,
-    ecology::{Role, Web},
-};
+use crate::{Founding, Result, draw, ecology::Role};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
