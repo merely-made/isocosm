@@ -103,48 +103,50 @@ impl Simulation {
     }
 
     /// What `actor` reads of `reading` as the pass began, or nothing where
-    /// the world does not sense, the reading is not its form's, or it has no
-    /// site to read.
+    /// the world does not sense, the reading is not one its body can take,
+    /// or it has no site to read.
     pub fn sensed(&self, actor: Id, reading: &str) -> Option<u64> {
-        self.genesis.rules.senses.as_ref()?;
+        let site = self.body_at_start(actor)?.resident_site()?;
+        self.sensed_at(actor, site, reading)
+    }
+
+    /// How many sites off `actor` senses: its own, and its neighbours where
+    /// its lineage smells or its body carries living sense cells.
+    pub fn sense_reach(&self, actor: Id) -> u32 {
+        let Some(body) = self.body_at_start(actor) else { return 0 };
+        let organ = body.parts.values().any(|p| p.cells.get("function:sense").copied().unwrap_or(0) > 0);
+        u32::from(organ || self.smell_radius(actor) > 0)
+    }
+
+    /// What `actor` would read of `reading` standing at `site`. A body reads
+    /// what its tissue can use, whatever kingdom it is of: one with fixing
+    /// tissue its share of light and soil, one whose lineage smells its
+    /// radius, any body its lineage's matter against the places around.
+    pub fn sensed_at(&self, actor: Id, site: Id, reading: &str) -> Option<u64> {
+        let senses = self.genesis.rules.senses.as_ref()?;
         let body = self.body_at_start(actor)?;
         if !body.alive {
             return None;
         }
-        let site = body.resident_site()?;
-        let form = form(&body.kingdom)?;
-        // A body reads what its tissue can use, whatever kingdom it is of:
-        // one with fixing tissue its share of light and soil, one whose
-        // lineage smells its radius.
+        let form = form(&body.kingdom);
         let fixes = || body.parts.values().any(|p| p.cells.get("function:fix").copied().unwrap_or(0) > 0);
-        let shares = matches!(reading, "sense:light" | "sense:soil" | "sense:crowding" | "sense:light-share" | "sense:soil-share");
-        let smells = self.genesis.rules.senses.as_ref().is_some_and(|s| s.smell.contains_key(&body.lineage));
         match (form, reading) {
-            (Form::Animal, "sense:smell") => Some(self.smell_radius(actor)),
-            (_, "sense:smell") if smells => Some(self.smell_radius(actor)),
-            (Form::Plant, _) => {
+            (Some(Form::Animal), "sense:smell") => Some(self.smell_radius(actor)),
+            (_, "sense:smell") => senses.smell.contains_key(&body.lineage).then(|| self.smell_radius(actor)),
+            (_, "sense:light" | "sense:soil" | "sense:crowding" | "sense:light-share" | "sense:soil-share") => {
+                if form != Some(Form::Plant) && !fixes() {
+                    return None;
+                }
                 let [light, soil, crowding] = self.plant_readings(site)?;
                 match reading {
                     "sense:light" => Some(light),
                     "sense:soil" => Some(soil),
                     "sense:crowding" => Some(crowding),
                     "sense:light-share" => Some(light / crowding),
-                    "sense:soil-share" => Some(soil / crowding),
-                    _ => None,
+                    _ => Some(soil / crowding),
                 }
             }
-            (_, _) if shares && fixes() => {
-                let [light, soil, crowding] = self.plant_readings(site)?;
-                match reading {
-                    "sense:light" => Some(light),
-                    "sense:soil" => Some(soil),
-                    "sense:crowding" => Some(crowding),
-                    "sense:light-share" => Some(light / crowding),
-                    "sense:soil-share" => Some(soil / crowding),
-                    _ => None,
-                }
-            }
-            (Form::Territory, "sense:here" | "sense:downhill") => {
+            (_, "sense:here" | "sense:downhill") => {
                 let here = self.matter_at(site, &body.lineage);
                 if reading == "sense:here" {
                     return Some(u64::try_from(here).unwrap_or(u64::MAX));
@@ -154,7 +156,7 @@ impl Simulation {
                     .filter(|to| self.matter_at(*to, &body.lineage) < here).collect();
                 Some(below.len() as u64)
             }
-            (Form::World, "sense:births" | "sense:deaths") => {
+            (Some(Form::World), "sense:births" | "sense:deaths") => {
                 let last = self.state.tick.checked_sub(1)?;
                 let effect = |e: &Effect| match reading {
                     "sense:births" => matches!(e, Effect::Birth { .. }),

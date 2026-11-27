@@ -160,6 +160,7 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Below { who, .. }
                 | Query::Part { who, .. }
                 | Query::Holds { who, .. }
+                | Query::HoldsBelow { who, .. }
                 | Query::Wounded { who, .. }
                 | Query::Pocket { who, .. }
         | Query::Trades { who, .. }
@@ -189,6 +190,7 @@ pub(super) fn binds_target(q: &Query) -> bool {
         | Query::Below { who, .. }
         | Query::Part { who, .. }
         | Query::Holds { who, .. }
+        | Query::HoldsBelow { who, .. }
         | Query::Wounded { who, .. }
         | Query::Pocket { who, .. }
         | Query::Trades { who, .. }

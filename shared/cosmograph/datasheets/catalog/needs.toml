@@ -1,0 +1,29 @@
+# Needs: what a body may feel. While a row's `when` holds of a body, its mood
+# falls by the row's weight, and its mind weighs each act by which pressing
+# needs the act serves. A lineage's drives scale the rows, in this order, so
+# a row added here is a need every lineage inherits a drive for.
+#
+# `when` is a requirement in the rules' own words, read of the body alone.
+# What serves a need is not written here: an act serves it by what the act
+# does (a meal fills what hunger reads, healing what a wound reads), and a
+# move serves it where the body senses such an act would work.
+#
+# Hunger's level is in the ledger's units, the stock a starter founder holds;
+# it belongs with the rates and moves to the body's own scale when they do.
+
+schema = 1
+owner = "cosmograph catalog"
+consumer = "cosmograph::directing::found (a composed world's mind)"
+status = "provisional"
+
+[[need]]
+key = "need:hunger"
+weight = -10
+when = { HoldsBelow = { who = "Actor", amount = 10 } }
+summary = "Holding less than a founder is founded with."
+
+[[need]]
+key = "need:wound"
+weight = -10
+when = { Wounded = { who = "Actor", at_least = 25 } }
+summary = "A quarter of its cells lost."

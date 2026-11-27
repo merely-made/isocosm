@@ -30,8 +30,12 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     }
     let i = played.lineage;
     let lineage = format!("lineage:{i}");
+    // Where founders are composed every member weighs its acts by its own
+    // lineage's mind (cases 1051, 1052); elsewhere only the played line's.
+    let composed = f.composed();
     for group in g.population.groups.values_mut() {
-        if group.entity.lineage == lineage {
+        let of = &group.entity.lineage;
+        if *of == lineage || (composed && of.starts_with("lineage:")) {
             group.entity_mut().method = Method::Deliberative;
         }
     }
@@ -62,17 +66,26 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         stake: 0,
         rate: None,
     });
-    mind.needs.extend((0..f.lineages).map(hunger));
-    // A body that has lost a quarter of its cells is wounded (the 2026-10-18
-    // note to ruling 227); paid healing serves it, and eating does not.
-    mind.needs.push(Need {
-        traits: BTreeSet::new(),
-        query: Query::Wounded {
-            who: Binding::Actor,
-            at_least: WOUNDED,
-        },
-        weight: -10,
-    });
+    if composed {
+        // The catalogue's needs, each read of any body: one list for the
+        // world, which every lineage's drives weigh in the same order.
+        let rows = crate::catalog::catalog().needs().iter();
+        mind.needs.extend(rows.map(|n| Need { traits: BTreeSet::new(), query: n.when.clone(), weight: n.weight }));
+    } else {
+        mind.needs.extend((0..f.lineages).map(hunger));
+        // A body that has lost a quarter of its cells is wounded (the
+        // 2026-10-18 note to ruling 227); paid healing serves it, and eating
+        // does not.
+        mind.needs.push(Need {
+            traits: BTreeSet::new(),
+            query: Query::Wounded {
+                who: Binding::Actor,
+                at_least: WOUNDED,
+            },
+            weight: -10,
+        });
+    }
+    let needs = mind.needs.len();
     // Strain builds while mood stays low and eases when it recovers, as a
     // probe mind's does, from the same ranges and draws.
     let pick = |domain: &str, r: [u64; 2]| r[0] + crate::draw(f.seed, domain, &[0]) % (r[1] - r[0] + 1);
@@ -110,14 +123,23 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         }
     }
     migrate(g)?;
+    // Each composed lineage chooses by a policy of its own, founded as the
+    // written score, and its members learn from what their acts did for
+    // them (cases 1051, 1058).
+    if composed {
+        for l in g.lineages.values_mut().filter(|l| l.decides.is_some() && l.policy.is_none()) {
+            l.policy = Some(super::policy::LineagePolicy::founding(needs));
+        }
+    }
     let rules = &mut g.rules;
-    let generated = f.composed();
     rules.directing = Some(Directing {
         slots,
-        draft: generated.then(Draft::default),
-        sheet: generated,
-        drift: generated,
+        draft: composed.then(Draft::default),
+        sheet: composed,
+        drift: composed,
         movement_ties: MovementTies::Seeded,
+        policy: if composed { PolicyVariation { founding: 0, expression: 0, candidates: 1 } } else { Default::default() },
+        learning: composed.then(Learning::default),
         ..Directing::default()
     });
     Ok(())

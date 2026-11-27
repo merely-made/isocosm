@@ -314,6 +314,19 @@ pub struct Good {
     pub summary: String,
 }
 
+/// A need a body may feel: while `when` holds of it, its mood moves by
+/// `weight`. `when` is a requirement in the rules' own words, read of the
+/// body as its actor, so a row is a need and nothing in the code names one.
+/// A lineage's drives weigh the rows in their order here.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Need {
+    pub key: String,
+    pub weight: i64,
+    pub when: crate::rules::Query,
+    pub summary: String,
+}
+
 /// What a kingdom is to founding (cases 1206, 1219): the weight of each way
 /// of making a living among its founders, how many further growth rules a
 /// founder draws, the weight of each growth operator in that draw, and the

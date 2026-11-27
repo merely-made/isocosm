@@ -84,7 +84,7 @@ mod tests;
 
 pub use generate::{Dropped, generate};
 pub use types::{
-    Affected, Gate, Kind, Role, Stacking, Strength, Timing, Category, Class, Effect, Good, Kingdom, Mechanic, Model, Origin, Part, ProposedProcess, Site, Status, Trait,
+    Affected, Gate, Kind, Role, Stacking, Strength, Timing, Category, Class, Effect, Good, Kingdom, Mechanic, Need, Model, Origin, Part, ProposedProcess, Site, Status, Trait,
 };
 
 /// The whole catalog, loaded once.
@@ -97,6 +97,7 @@ pub struct Catalog {
     proposed: Vec<ProposedProcess>,
     goods: Vec<Good>,
     kingdoms: Vec<Kingdom>,
+    needs: Vec<Need>,
     dropped: Dropped,
 }
 
@@ -104,6 +105,11 @@ impl Catalog {
     /// The goods bodies exchange, in the order ports name them.
     pub fn goods(&self) -> &[Good] {
         &self.goods
+    }
+
+    /// The needs a body may feel, in the order a lineage's drives weigh them.
+    pub fn needs(&self) -> &[Need] {
+        &self.needs
     }
 
     /// What `key` weighs for its founders, where the catalog says.

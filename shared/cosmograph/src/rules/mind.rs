@@ -59,6 +59,7 @@ impl Mind {
                 Query::Below { who: Binding::Actor, .. }
                     | Query::Account { who: Binding::Actor, .. }
                     | Query::Wounded { who: Binding::Actor, .. }
+                    | Query::HoldsBelow { who: Binding::Actor, .. }
             )
         })
     }

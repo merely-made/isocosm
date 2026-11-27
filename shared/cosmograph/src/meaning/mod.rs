@@ -332,6 +332,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = s.matter(*who)?;
             (v >= u128::from(*at_least), v.to_string())
         },
+        Query::HoldsBelow { who, amount } => {
+            let v = s.matter(*who)?;
+            (v < u128::from(*amount), v.to_string())
+        },
         Query::Wounded { who, at_least } => {
             let v = crate::harm::wound_share(s.body(*who)?);
             (v >= *at_least, v.to_string())

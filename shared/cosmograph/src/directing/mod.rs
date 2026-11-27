@@ -19,6 +19,7 @@ pub(crate) use guidance::Guidance;
 mod holding;
 mod infeasible;
 mod learn;
+mod offers;
 pub mod found;
 pub mod interim;
 pub mod policy;

@@ -17,9 +17,8 @@
 //! rule's `horizon` credits that one as well, and one that waits out the
 //! horizon is marked down.
 
-use super::choice::Choice;
 use crate::{
-    rules::{Learning, Need, Rules},
+    rules::{Learning, Rules},
     schema::*,
     simulation::Simulation,
 };
@@ -114,20 +113,6 @@ impl Simulation {
         let unit = crate::meaning::needs(rules).iter().map(|n| -n.weight.min(0)).max().unwrap_or(0).max(1) * 100;
         let one = i64::from(super::policy::UNIT);
         learned.acts.into_iter().map(|(k, w)| (k, i64::from(w) * unit / one)).collect()
-    }
-
-    /// The needs the chosen act's terms scored, which learning moves.
-    pub(super) fn pressed_by(&self, best: &Choice, mood: i64, pressing: &[&Need]) -> Vec<usize> {
-        let rules = &self.genesis.rules;
-        let Some(p) = best.process.as_ref().and_then(|id| rules.processes.get(id)) else {
-            return vec![];
-        };
-        let serves = self.foraging_policy(&p.id).and_then(|f| rules.processes.get(&f.feed)).unwrap_or(p);
-        super::choice::terms(rules, serves, p, mood, pressing, best.target)
-            .needs
-            .into_iter()
-            .map(|(k, _)| k)
-            .collect()
     }
 
     /// Moves `actor`'s delta by an act that `served` it or did not, on the

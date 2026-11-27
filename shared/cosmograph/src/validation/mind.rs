@@ -41,6 +41,10 @@ pub(super) fn mind(rules: &Rules) -> Result<()> {
                     who: Binding::Actor,
                     ..
                 }
+                | Query::HoldsBelow {
+                    who: Binding::Actor,
+                    ..
+                }
                 | Query::Wounded {
                     who: Binding::Actor,
                     ..

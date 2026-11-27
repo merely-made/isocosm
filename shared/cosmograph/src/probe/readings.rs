@@ -382,7 +382,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::EmptyBody => "matter".into(),
             Query::Project { .. } | Query::ProjectDecision => "project".into(),
             Query::InstitutionDecision | Query::Institution { .. } => "institution".into(),
-            Query::Holds { who, .. } => match who {
+            Query::Holds { who, .. } | Query::HoldsBelow { who, .. } => match who {
                 Binding::Place => "site:matter".into(),
                 _ => "matter".into(),
             },

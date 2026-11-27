@@ -37,6 +37,12 @@ pub(super) fn problems(c: &Catalog) -> Vec<String> {
     for k in duplicates(c.mechanics.iter().map(|m| &m.key)) {
         out.push(format!("duplicate mechanic key {k}"));
     }
+    for k in duplicates(c.needs.iter().map(|n| &n.key)) {
+        out.push(format!("duplicate need {k}"));
+    }
+    for n in c.needs.iter().filter(|n| n.weight >= 0) {
+        out.push(format!("need {} weighs nothing on a mood", n.key));
+    }
     for k in duplicates(c.goods.iter().map(|g| &g.key)) {
         out.push(format!("duplicate good {k}"));
     }

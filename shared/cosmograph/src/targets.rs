@@ -41,6 +41,7 @@ pub(crate) fn reads_prey(q: &Query) -> bool {
         | Query::Below { who, .. }
         | Query::Part { who, .. }
         | Query::Holds { who, .. }
+        | Query::HoldsBelow { who, .. }
         | Query::Wounded { who, .. }
         | Query::Pocket { who, .. }
         | Query::Trades { who, .. }
@@ -255,6 +256,48 @@ impl Simulation {
         filed
     }
 
+    /// Whether an act of `p` by `actor` would find what it draws on at
+    /// `site`, as far as a body can tell of a place it may not stand on:
+    /// the site's accounts, conditions and sensed readings the act
+    /// requires, and, where it acts on another body, one there that its
+    /// selector and its requirements of a target accept. What the act
+    /// requires of the actor alone is the same wherever it stands, and is
+    /// not asked here.
+    pub(crate) fn works_at(&self, actor: Id, p: &Process, site: Id) -> bool {
+        let (Some(body), Some(there)) = (self.body_at_start(actor), self.site_at_start(site)) else {
+            return false;
+        };
+        let ground = p.requires.iter().all(|q| match q {
+            Query::Account { who: Binding::Place, key, at_least } => {
+                there.accounts.get(key).copied().unwrap_or(0) >= *at_least
+            },
+            Query::Condition { key, at_least } => there.conditions.get(key).copied().unwrap_or(0) >= *at_least,
+            Query::Sensed { reading, at_least } => self.sensed_at(actor, site, reading).is_some_and(|v| v >= *at_least),
+            _ => true,
+        });
+        let Some(selector) = p.target.as_ref().filter(|_| ground) else {
+            return ground;
+        };
+        let part = self.bind_part(actor, p);
+        self.searched(selector, site).into_iter().any(|first| {
+            let (Some((_, count)), Some(other)) = (self.target_span(first), self.body_at_start(first)) else {
+                return false;
+            };
+            let candidate = if first == actor { first + 1 } else { first };
+            candidate < first + count
+                && !self.genesis.rules.dormant(other)
+                && !crate::directing::is_participant(other)
+                && selector.alive.is_none_or(|alive| alive == other.alive)
+                && selector.lineage.as_ref().is_none_or(|lineage| lineage == &other.lineage)
+                && (selector.among.is_empty() || selector.among.contains(&other.lineage))
+                && p.admits_meal_with(body, other, &self.genesis.rules, &self.state.lineages, || {
+                    self.books_at_start(candidate).expect("target body exists")
+                })
+                && p.requires.iter().filter(|q| reads_prey(q)).all(|q| {
+                    self.process_query(actor, Some(candidate), body.place, part, p, q).is_ok()
+                })
+        })
+    }
     /// The prey matter an act of `p` by `actor` could draw from: the weight
     /// the ordinary search shares among the groups it accepts, so read by the
     /// actor's own intake (D35, D37).

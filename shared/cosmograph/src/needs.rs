@@ -44,6 +44,13 @@ pub fn account(query: &Query) -> Option<&Key> {
     }
 }
 
+/// Whether a need is a hunger: it reads the matter the body holds, in one
+/// account or over all of them, so a meal serves it.
+pub fn hunger(rules: &Rules, query: &Query) -> bool {
+    matches!(query, Query::HoldsBelow { who: Binding::Actor, .. })
+        || account(query).is_some_and(|key| crate::meaning::matter(rules, key))
+}
+
 /// Every need of the world's mind that reads a level of `e`'s own account
 /// and whose traits `e` carries, in declared order.
 pub fn wants(rules: &Rules, e: &Entity) -> Vec<Want> {

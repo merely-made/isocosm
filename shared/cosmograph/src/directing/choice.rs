@@ -6,6 +6,7 @@
 //! nudges and the bond each came by; its receipt's `foregone` lists the rest.
 //! An answered nudge moves its bond by how the act served the critter (688).
 
+use super::offers::{Elsewhere, served};
 use super::{Aim, Answer, Nudge, Toward};
 use crate::{
     meaning::{Named, Scene},
@@ -153,24 +154,24 @@ fn feeds(e: &Effect, need: &Serves) -> bool {
     }
 }
 
-fn serves_need(process: &Process, n: &Need) -> bool {
+pub(super) fn serves_need(process: &Process, n: &Need) -> bool {
     process.commitments.iter().chain(&process.effects).any(|e| feeds(e, &serves(&n.query)))
 }
 
-fn need_score(process: &Process, mood: i64, pressing: &[&Need]) -> i64 {
-    let needs: i64 = pressing.iter().filter(|n| serves_need(process, n))
-        .map(|n| -n.weight.min(0)).sum();
+fn need_score(served: &[usize], mood: i64, pressing: &[&Need]) -> i64 {
+    let needs: i64 = served.iter().map(|&k| -pressing[k].weight.min(0)).sum();
     needs * 100 * (100 + (-mood).max(0)) / 100
 }
 
-/// What a lineage policy reads of `process`, its needs as `serves` feeds
-/// them: each the hand-written score's own term, which sum to it exactly.
-pub(super) fn terms(rules: &Rules, serves: &Process, process: &Process, mood: i64, pressing: &[&Need],
+/// What a lineage policy reads of `process`, the pressing needs it serves
+/// being `served`: each the hand-written score's own term, which sum to it
+/// exactly.
+pub(super) fn terms(rules: &Rules, served: &[usize], process: &Process, mood: i64, pressing: &[&Need],
     target: Option<Id>) -> super::policy::Terms {
     let all = crate::meaning::needs(rules);
     let lift = 100 + (-mood).max(0);
-    let needs = pressing.iter().filter(|n| serves_need(serves, n)).filter_map(|n| {
-        let k = all.iter().position(|m| std::ptr::eq(m, *n))?;
+    let needs = served.iter().map(|&k| pressing[k]).filter_map(|n| {
+        let k = all.iter().position(|m| std::ptr::eq(m, n))?;
         Some((k, -n.weight.min(0) * lift))
     }).collect();
     super::policy::Terms {
@@ -410,9 +411,8 @@ impl Simulation {
 
     pub(crate) fn food_need_score(&self, actor: Id, process: &Process) -> i64 {
         let (mood, pressing) = self.choice_minded(actor);
-        need_score(process, mood, &pressing)
+        need_score(&served(process, &pressing, &Elsewhere::new()), mood, &pressing)
     }
-
     /// What `actor` weighs: the Choice processes due now, or all of them
     /// where `due_only` is false, as readings ask.
     pub(crate) fn consider(&self, actor: Id, due_only: bool) -> Choice {
@@ -424,6 +424,8 @@ impl Simulation {
         };
         let live = self.live_nudges(actor, tick);
         let (mood, pressing) = self.choice_minded(actor);
+        let elsewhere = self.elsewhere(actor, place, &pressing);
+        let (traits, standing) = (self.body_at_start(actor).map(|e| &e.traits), self.site_at_start(place));
         let guidance = super::Guidance::for_actor(self, actor, &live, Some(&pressing));
         let waiting = self.foraging_wait_score(actor);
         // A lineage policy scores in the hand-written score's place (M3.5).
@@ -432,6 +434,7 @@ impl Simulation {
         let learnt = if policy.is_some() && directing.learning.is_some() { self.act_bonuses(actor) } else { Default::default() };
         let mut written = BTreeMap::new();
         let mut best = Choice::default();
+        let mut best_served = Vec::new();
         let mut top = i64::MIN;
         let mut candidates = Vec::new();
         let born = self.body_at_start(actor).map_or(0, |e| e.born);
@@ -440,7 +443,20 @@ impl Simulation {
             .processes
             .values()
             .filter(|p| p.causation == Causation::Choice);
-        for p in choices.filter(|p| !due_only || due(p)) {
+        // A trait the body lacks or a condition its site does not meet
+        // refuses an act as its requirements would, before anything costly
+        // is asked: most acts in a world are another lineage's or another
+        // site's.
+        let open = |p: &&Process| {
+            p.requires.iter().all(|q| match q {
+                Query::Trait { who: Binding::Actor, key } => traits.is_none_or(|t| t.contains(key)),
+                Query::Condition { key, at_least } if key.starts_with("site:") => {
+                    standing.is_none_or(|s| s.conditions.get(key).copied().unwrap_or(0) >= *at_least)
+                },
+                _ => true,
+            })
+        };
+        for p in choices.filter(open).filter(|p| !due_only || due(p)) {
             if self.satisfied(actor, p) {
                 continue;
             }
@@ -449,7 +465,8 @@ impl Simulation {
                 continue;
             }
             let serves = self.foraging_policy(&p.id).and_then(|f| rules.processes.get(&f.feed)).unwrap_or(p);
-            let needs = need_score(serves, mood, &pressing);
+            let offered = served(serves, &pressing, &elsewhere);
+            let needs = need_score(&offered, mood, &pressing);
             let mut answers: Vec<usize> = live
                 .iter()
                 .copied()
@@ -467,7 +484,7 @@ impl Simulation {
             let sway = ordinary_sway + direction;
             let hand = needs + sway + i64::from(p.priority);
             let score = match &policy {
-                Some(policy) => policy.score(&terms(rules, serves, p, mood, &pressing, target)) + sway + learnt.get(&p.id).copied().unwrap_or(0),
+                Some(policy) => policy.score(&terms(rules, &offered, p, mood, &pressing, target)) + sway + learnt.get(&p.id).copied().unwrap_or(0),
                 None => hand,
             };
             if policy.is_some() && !(waiting > 0 && movement_only(p) && hand < waiting) {
@@ -486,6 +503,7 @@ impl Simulation {
                 best.target = target;
                 best.explicit_target = nudged.is_some();
                 best.answers = answers;
+                best_served = offered;
             }
         }
         let ties: Vec<_> = candidates.iter().filter(|(score, _, _, _, _)| *score == top).collect();
@@ -502,13 +520,19 @@ impl Simulation {
                 .expect("digest begins with hexadecimal digits");
             let draw = crate::draw(self.genesis.dynamics_seed(), "directing:movement-tie", &[actor, tick, set_key]);
             let (_, process, target, explicit_target, answers) = ties[(draw % ties.len() as u64) as usize];
+            if best.process.as_ref() != Some(process) {
+                best_served = rules.processes.get(process).map(|p| served(p, &pressing, &elsewhere)).unwrap_or_default();
+            }
             best.process = Some(process.clone());
             best.target = *target;
             best.explicit_target = *explicit_target;
             best.answers = answers.clone();
         }
         if policy.is_some() && directing.learning.is_some() {
-            best.pressed = self.pressed_by(&best, mood, &pressing);
+            // The needs the chosen act's terms scored, by place in the
+            // world's list: what learning moves.
+            let all = crate::meaning::needs(rules);
+            best.pressed = best_served.iter().filter_map(|&k| all.iter().position(|m| std::ptr::eq(m, pressing[k]))).collect();
             best.learns = true;
         }
         if policy.is_some() {

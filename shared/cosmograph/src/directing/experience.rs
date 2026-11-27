@@ -119,9 +119,7 @@ impl Simulation {
             .and_then(|meal| {
                 let hungry = |needs: &[&Need]| {
                     needs.iter().any(|n| {
-                        n.weight < 0
-                            && crate::needs::account(&n.query)
-                                .is_some_and(|key| crate::meaning::matter(rules, key))
+                        n.weight < 0 && crate::needs::hunger(rules, &n.query)
                     })
                 };
                 let hungry = needs.map_or_else(|| hungry(&self.choice_minded(actor).1), hungry);

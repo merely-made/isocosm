@@ -50,6 +50,12 @@ pub enum Query {
         who: Binding,
         at_least: u64,
     },
+    /// A body holds less than `amount` matter, over every matter account
+    /// it keeps: `Holds` read the other way, as a need reads it.
+    HoldsBelow {
+        who: Binding,
+        amount: u64,
+    },
     /// A body's wound share, out of a hundred, is at least `at_least`
     /// (`harm::wound_share`; the 2026-10-18 note to ruling 227).
     Wounded {
