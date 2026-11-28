@@ -27,6 +27,7 @@ pub mod dev;
 pub mod held;
 pub mod held_map;
 pub mod leaf;
+pub mod mind;
 pub mod minimap;
 pub mod review;
 pub mod succession;
@@ -44,6 +45,7 @@ pub use dev::{
 pub use held::{held_ended_words, held_words, kingdom_word, raised_words, short_key, surfaced_words};
 pub use held_map::{SiteHold, banked_words, carries_held, held_surfaces, hold_legend_words, mark_strength, site_holds};
 pub use leaf::{HoldMark, MinimapLeaf};
+pub use mind::{mind_change_words, mind_words};
 pub use minimap::{
     MINIMAP_ADAPTER, minimap_score_of, dominant_lineages, hold_marks, lineage_tint, minimap_leaf, minimap_leaf_holding, minimap_scene, minimap_score,
     site_points,

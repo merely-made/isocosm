@@ -266,6 +266,10 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
         does.extend(sheet.admits.iter().map(|good| format!("takes up {good}")));
         out.push(words(format!("{} · {} mg grown · {}", small(&line.kingdom), sheet.mass, does.join(" · "))));
     }
+    if let Some(policy) = genesis.lineages.get(&p.lineage).and_then(|line| line.policy.as_ref()) {
+        let mind = cosmograph::directing::policy::Leaning::of(&genesis.rules, policy);
+        out.push(words(format!("Mind · {}", mesocosm_views::mind_words(&mind))));
+    }
     for rule in &map.grammar.rules {
         out.push(words(growth::describe(rule)));
     }

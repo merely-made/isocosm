@@ -9,6 +9,7 @@
 
 use super::{draft, program, reckon, sheet::{self, Sheet}};
 use crate::directing::interim::boundary::{self, Candidate, Score};
+use crate::directing::policy::Leaning;
 use crate::{Result, Session, history::Command, schema::*};
 use serde::{Deserialize, Serialize};
 
@@ -29,6 +30,9 @@ pub struct Offer {
     /// `sheet` rule is set (case 1215).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sheet: Option<Sheet>,
+    /// The mind the line would choose by, where the offer is a policy.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leaning: Option<Leaning>,
 }
 
 impl Offer {
@@ -55,6 +59,9 @@ pub struct Review {
     /// `sheet` rule is set (case 1215).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sheet: Option<Sheet>,
+    /// The mind the line chooses by, where it has a policy.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leaning: Option<Leaning>,
 }
 
 impl Review {
@@ -90,6 +97,7 @@ impl Review {
             offers: offers_draft_using(session, lineage, scoring, draft, score)?,
             budget,
             sheet: own_sheet(session, lineage)?,
+            leaning: policy_of(session, lineage).map(|p| Leaning::of(&session.sim.genesis().rules, p)),
         })
     }
 
@@ -134,11 +142,32 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
         why_not: None,
         cost: None,
         sheet: None,
+        leaning: None,
     }];
     let living = boundary::standing(session, lineage).1 > 0;
     let most = sim.genesis().rules.directing().variants as usize;
     let line = sim.state().lineages.get(lineage);
+    // The minds its prospering members express (M3.5; case 1094): each a
+    // policy the line could take as its own, with no body to pay for.
+    let minds = crate::directing::policy::candidates(session, lineage);
+    let mut minded = Vec::new();
+    for candidate in minds.into_iter().filter(|_| living) {
+        let leaning = candidate.commands.iter().find_map(|c| match c {
+            Command::Policy { policy, .. } => Some(Leaning::of(&sim.genesis().rules, policy)),
+            _ => None,
+        });
+        minded.push(Offer {
+            score: score(session, lineage, &candidate, scoring)?,
+            name: candidate.name,
+            commands: candidate.commands,
+            why_not: None,
+            cost: None,
+            sheet: None,
+            leaning,
+        });
+    }
     let Some(d) = line.and_then(|l| l.development.as_ref()) else {
+        out.extend(minded);
         return Ok(out);
     };
     let budget = draft.and_then(|_| draft::budget(session, lineage));
@@ -185,9 +214,15 @@ pub fn offers_draft_using(session: &Session, lineage: &str, scoring: Tick,
             why_not,
             cost,
             sheet,
+            leaning: None,
         });
     }
+    out.extend(minded);
     Ok(out)
+}
+
+fn policy_of<'a>(session: &'a Session, lineage: &str) -> Option<&'a crate::directing::policy::LineagePolicy> {
+    session.sim.state().lineages.get(lineage)?.policy.as_ref()
 }
 
 /// The sheet of the line's current recipe, where the world's `sheet` rule

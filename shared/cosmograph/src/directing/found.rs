@@ -21,6 +21,13 @@ pub struct Played {
 /// weigh on its mood.
 const WOUNDED: u64 = 25;
 
+/// How far minds vary where founders are composed, in the policy's own
+/// units: a lineage's founding draw, each member's expression of it, and
+/// the members' variants a played line's review offers. First cuts to
+/// tune: a founding lean comes to about a tenth of a pressing need and a
+/// drive moves by an eighth. Doubling them changed choices no more often.
+const MINDS: PolicyVariation = PolicyVariation { founding: 8, expression: 4, candidates: 2 };
+
 /// The trophic levels generated ecologies name (ruling 39).
 pub const LEVELS: [&str; 3] = ["life:producer", "life:consumer", "life:decomposer"];
 
@@ -123,12 +130,22 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         }
     }
     migrate(g)?;
-    // Each composed lineage chooses by a policy of its own, founded as the
-    // written score, and its members learn from what their acts did for
-    // them (cases 1051, 1058).
+    // Each composed lineage chooses by a policy of its own: the written
+    // score moved by the lineage's own draw (D2), which each member
+    // expresses moved again by its own, so lines differ in temper from
+    // their founding and a boundary has minds to choose among. Members
+    // learn from what their acts did for them (cases 1051, 1058).
     if composed {
-        for l in g.lineages.values_mut().filter(|l| l.decides.is_some() && l.policy.is_none()) {
-            l.policy = Some(super::policy::LineagePolicy::founding(needs));
+        let seed = g.dynamics_seed();
+        for (key, l) in g.lineages.iter_mut().filter(|(_, l)| l.decides.is_some() && l.policy.is_none()) {
+            let drawn = crate::draw(seed, &format!("policy:founding:{key}"), &[]);
+            l.policy = Some(super::policy::LineagePolicy::founding(needs).varied(drawn, MINDS.founding));
+        }
+        for (&first, cohort) in &mut g.population.groups {
+            let of = &cohort.entity.lineage;
+            if cohort.entity.drawn.is_none() && g.lineages.get(of).is_some_and(|l| l.policy.is_some()) {
+                cohort.entity_mut().drawn = Some(crate::draw(seed, "policy:expression", &[first]));
+            }
         }
     }
     let rules = &mut g.rules;
@@ -138,7 +155,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         sheet: composed,
         drift: composed,
         movement_ties: MovementTies::Seeded,
-        policy: if composed { PolicyVariation { founding: 0, expression: 0, candidates: 1 } } else { Default::default() },
+        policy: if composed { MINDS } else { Default::default() },
         learning: composed.then(Learning::default),
         ..Directing::default()
     });

@@ -272,13 +272,25 @@ fn found(seed: u64, ticks: u64) -> Result<(usize, usize), String> {
     println!("  members · {}", census.join(" · "));
     let acts: Vec<_> = acts.iter().map(|(k, n)| format!("{k} {n}")).collect();
     println!("  moves · {}", acts.join(" · "));
-    // Of each lineage's choices, the moves taken toward something sensed.
-    let minds: Vec<_> = cosmograph::directing::policy::readout(&mut session)
+    // Of each lineage's choices, the moves taken toward something sensed
+    // and the choices its mind made that the written score would not have;
+    // then each mind as a reader weighs it: its drives in per mille of the
+    // written score's, and its lean toward each shape of act in per mille
+    // of a pressing need.
+    let read = cosmograph::directing::policy::readout(&mut session);
+    let minds: Vec<_> = read
         .iter()
         .filter(|r| r.tally.decisions > 0)
-        .map(|r| format!("{} {}/{}", r.lineage.trim_start_matches("lineage:"), r.tally.led, r.tally.decisions))
+        .map(|r| format!("{} {}/{}/{}", r.lineage.trim_start_matches("lineage:"), r.tally.led, r.tally.otherwise, r.tally.decisions))
         .collect();
-    println!("  led by sense, of choices · {}", minds.join(" · "));
+    println!("  led by sense / its own way / choices · {}", minds.join(" · "));
+    let rules = &session.sim.genesis().rules;
+    let leanings: Vec<_> = session.sim.state().lineages.iter().filter_map(|(key, l)| {
+        let mind = cosmograph::directing::policy::Leaning::of(rules, l.policy.as_ref()?);
+        let drives: Vec<i32> = mind.drives.iter().map(|(_, mille)| *mille).collect();
+        Some(format!("{} {drives:?}{:?}", key.trim_start_matches("lineage:"), mind.shapes))
+    }).collect();
+    println!("  minds, drives then leans · {}", leanings.join(" · "));
     let webs: Vec<_> = pairs.iter().map(|(a, b)| format!("{a}>{b}")).collect();
     println!("  between lineages · {}", webs.join(" · "));
     Ok((start.keys().filter(|k| end.get(*k).copied().unwrap_or(0) > 0).count(), start.len()))

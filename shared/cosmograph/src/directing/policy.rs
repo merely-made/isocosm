@@ -130,6 +130,42 @@ impl LineagePolicy {
     }
 }
 
+/// A policy in terms a reader can weigh (case 1215's sheet, of a mind):
+/// how hard it drives toward each of the world's needs, and how far it
+/// leans toward an act for its shape alone.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Leaning {
+    /// Each need, by its catalogue key where it is one of the catalogue's
+    /// rows, with the drive toward it in per mille of the written score's.
+    pub drives: Vec<(Key, i32)>,
+    /// What the policy adds to an act that moves, hunts, acts on the ground
+    /// or has a target, nothing pressing and mood even, in per mille of
+    /// what the world's strongest need presses.
+    pub shapes: [i32; 4],
+}
+
+impl Leaning {
+    /// `policy` read under `rules`.
+    pub fn of(rules: &crate::rules::Rules, policy: &LineagePolicy) -> Self {
+        let needs = crate::meaning::needs(rules);
+        let rows = crate::catalog::catalog().needs();
+        let named = |k: usize| {
+            let row = needs.get(k).and_then(|n| rows.iter().find(|r| r.when == n.query));
+            row.map_or_else(|| format!("need:{k}"), |r| r.key.clone())
+        };
+        let mille = |w: i64, of: i64| (w * 1000 / of.max(1)) as i32;
+        let drives = policy.drives.iter().enumerate().map(|(k, &w)| (named(k), mille(w.into(), UNIT.into()))).collect();
+        let pressing = needs.iter().map(|n| -n.weight.min(0)).max().unwrap_or(0) * 100;
+        let rest = policy.score(&Terms::default());
+        let shapes = std::array::from_fn(|i| {
+            let mut shape = [false; 4];
+            shape[i] = true;
+            mille(policy.score(&Terms { shape, ..Terms::default() }) - rest, pressing)
+        });
+        Self { drives, shapes }
+    }
+}
+
 /// How a lineage's choices went since a reader last took the count: how
 /// many a policy made, and how many the hand-written score would not have
 /// made, its best not among the chosen act's equals.

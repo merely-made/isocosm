@@ -118,6 +118,7 @@ pub fn evidence_words(readings: &[Reading], lineage: &str) -> Vec<String> {
 fn offer_name(offer: &Offer) -> String {
     match offer.name.as_str() {
         "candidate:stay" => "the status quo".into(),
+        name if name.starts_with("policy:member-") => format!("the mind of member {}", &name["policy:member-".len()..]),
         name => name.trim_start_matches("candidate:").replace('-', " "),
     }
 }
@@ -479,6 +480,7 @@ mod tests {
             why_not: None,
             cost,
             sheet: with,
+            leaning: None,
         }
     }
 

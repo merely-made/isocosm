@@ -59,8 +59,9 @@ pub(super) fn borne(
 }
 
 /// The boundary's candidates for `lineage`: its recipe's variants, each the
-/// command that commits it, those the world would refuse left out; then
-/// the policy variants its prospering members express (M3.5).
+/// command that commits it, those the world would refuse left out; then,
+/// where lines do not drift, the policy variants its prospering members
+/// express (M3.5).
 pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candidate> {
     let sim = &session.sim;
     let most = sim.genesis().rules.directing().variants as usize;
@@ -82,7 +83,12 @@ pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candi
             }],
         })
         .collect();
-    out.extend(crate::directing::policy::candidates(session, lineage));
+    // Where lines drift, a line's mind has already moved to what bred
+    // (case 1208); weighing single members' minds as well would grow a copy
+    // of the world for each, to select again on the same variation.
+    if !sim.genesis().rules.directing().drift {
+        out.extend(crate::directing::policy::candidates(session, lineage));
+    }
     out
 }
 

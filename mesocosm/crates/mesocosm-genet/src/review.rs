@@ -66,6 +66,9 @@ pub fn board_of(
         review.program.as_deref(),
         trend,
     );
+    if let Some(mind) = &review.leaning {
+        board.facts.push(("its mind".into(), mesocosm_views::mind_words(mind)));
+    }
     board.readings = mesocosm_views::evidence_words(&review.readings, &review.lineage);
     board.rows = review
         .offers
@@ -73,6 +76,9 @@ pub fn board_of(
         .enumerate()
         .map(|(index, offer)| {
             let mut row = mesocosm_views::row_words_of(offer, index == selected, review.sheet.as_ref(), review.budget);
+            if let (Some(had), Some(offered)) = (&review.leaning, &offer.leaning) {
+                row.preview = mesocosm_views::mind_change_words(had, offered);
+            }
             let mine = proposed.iter().filter(|p| p.offer == index);
             let authored: Vec<String> = mine.map(mesocosm_views::authored_words).collect();
             if !authored.is_empty() {
