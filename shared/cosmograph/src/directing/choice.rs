@@ -74,6 +74,8 @@ pub(crate) struct Choice {
     pub pressed: Vec<usize>,
     /// Whether a policy chose it under a world that learns (M3.6).
     pub learns: bool,
+    /// Whether it is a move toward what the body sensed there.
+    pub led: bool,
 }
 
 /// What the methodology says of one actor's act in a pass.
@@ -118,20 +120,21 @@ fn serves(q: &Query) -> Serves<'_> {
 
 /// Whether `e` serves a need: gives the actor its account, or any matter
 /// where it names none, or heals where the need is a wound. A meal does not
-/// heal, so eating alone never serves a wound.
-fn feeds(e: &Effect, need: &Serves) -> bool {
+/// heal, so eating alone never serves a wound. What the act hands on
+/// (`passed`) is no matter gained: upkeep turns tissue to soil and drops it.
+fn feeds(e: &Effect, need: &Serves, passed: &dyn Fn(&Key) -> bool) -> bool {
     let key = match need {
         Serves::Account(key) => Some(*key),
         Serves::Healing => {
             return match e {
                 Effect::Heal { .. } => true,
-                Effect::When { .. } => e.branches().any(|b| feeds(b, need)),
+                Effect::When { .. } => e.branches().any(|b| feeds(b, need, passed)),
                 _ => false,
             };
         },
         Serves::Matter => None,
     };
-    let is = |k: &Key| key.is_none_or(|key| key == k);
+    let is = |k: &Key| key.map_or_else(|| !passed(k), |key| key == k);
     match e {
         Effect::Transform {
             who: Binding::Actor,
@@ -149,13 +152,17 @@ fn feeds(e: &Effect, need: &Serves) -> bool {
             to,
             ..
         } => is(to),
-        Effect::When { .. } => e.branches().any(|b| feeds(b, need)),
+        Effect::When { .. } => e.branches().any(|b| feeds(b, need, passed)),
         _ => false,
     }
 }
 
 pub(super) fn serves_need(process: &Process, n: &Need) -> bool {
-    process.commitments.iter().chain(&process.effects).any(|e| feeds(e, &serves(&n.query)))
+    let effects = || process.commitments.iter().chain(&process.effects);
+    let passed = |k: &Key| {
+        effects().any(|e| matches!(e, Effect::Transfer { from: Binding::Actor, account, .. } if account == k))
+    };
+    effects().any(|e| feeds(e, &serves(&n.query), &passed))
 }
 
 fn need_score(served: &[usize], mood: i64, pressing: &[&Need]) -> i64 {
@@ -277,7 +284,7 @@ impl Simulation {
             #[cfg(test)]
             self.record_choice_attempt(actor, &process.id, &choice);
             if let Some(otherwise) = choice.otherwise {
-                self.tally_choice(actor, otherwise);
+                self.tally_choice(actor, otherwise, choice.led);
             }
             self.chosen.by.insert(actor, choice);
         }
@@ -540,6 +547,8 @@ impl Simulation {
             let chosen = best.process.as_ref().and_then(|p| written.get(p).copied());
             best.otherwise = Some(chosen.is_some_and(|c| most.is_some_and(|m| c < m)));
         }
+        let gone = best.process.as_ref().and_then(|p| rules.processes.get(p)).map(moves).unwrap_or_default();
+        best.led = gone.iter().any(|to| elsewhere.contains_key(to));
         best
     }
 

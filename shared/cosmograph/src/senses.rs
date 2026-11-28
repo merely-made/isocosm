@@ -110,12 +110,12 @@ impl Simulation {
         self.sensed_at(actor, site, reading)
     }
 
-    /// How many sites off `actor` senses: its own, and its neighbours where
-    /// its lineage smells or its body carries living sense cells.
+    /// How many sites off `actor` senses. Its baseline sense reads its own
+    /// site; an organ extends its range (Bodies 15), so a body holding
+    /// living sense cells reads its neighbours too.
     pub fn sense_reach(&self, actor: Id) -> u32 {
         let Some(body) = self.body_at_start(actor) else { return 0 };
-        let organ = body.parts.values().any(|p| p.cells.get("function:sense").copied().unwrap_or(0) > 0);
-        u32::from(organ || self.smell_radius(actor) > 0)
+        u32::from(body.living().any(|(_, p)| p.cells.get("function:sense").copied().unwrap_or(0) > 0))
     }
 
     /// What `actor` would read of `reading` standing at `site`. A body reads

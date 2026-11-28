@@ -39,7 +39,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod lower;
-pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, lowering_all, lowering_full, needs_categories, needs_detritus, needs_guard, needs_mutualism, needs_nutrients};
+pub use lower::{Lowering, lowering, lowering_for, lowering_in, lowering_with, lowering_all, lowering_full, needs_categories, needs_detritus, needs_guard, needs_mutualism, needs_nutrients, runs_through, tissue};
 
 /// The founding rule. Working names.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -154,9 +154,18 @@ pub(crate) fn declare(
     let catalog = crate::catalog::catalog();
     let (cats, guard, mutual) = (founding.categories.is_some(), founding.guard.is_some(), founding.mutualism.is_some());
     let rules = (founding.detritus.is_some(), founding.nutrients.is_some());
+    // Where bodies sense, a part that runs through the senses rule lowers as
+    // the tissue it is: the world reads its cells off the body that holds it.
+    let senses = founding.bodies.as_ref().is_some_and(|b| b.sensing);
+    let lower = |part: &crate::catalog::Part| {
+        lowering_full(part, cats, guard, mutual, rules).or_else(|why| match senses && runs_through(part, "rule:senses") {
+            true => tissue(part, why),
+            false => Err(why),
+        })
+    };
     for key in &rule.only {
         let part = catalog.part_by_key(key).ok_or_else(|| format!("repertoire names {key}, which the catalog lacks"))?;
-        if let Err(why) = lowering_full(part, cats, guard, mutual, rules) {
+        if let Err(why) = lower(part) {
             return Err(format!("repertoire cannot lower {key}: {why}"));
         }
     }
@@ -165,7 +174,7 @@ pub(crate) fn declare(
     let goods = if mutual { catalog.goods() } else { &[] };
     let mut kinds: BTreeMap<Key, Entry> = BTreeMap::new();
     for part in catalog.parts().iter().filter(|p| rule.only.is_empty() || rule.only.contains(&p.key)) {
-        let Ok(Lowering { mut template, mut root }) = lowering_full(part, cats, guard, mutual, rules) else { continue };
+        let Ok(Lowering { mut template, mut root }) = lower(part) else { continue };
         for organ in std::iter::once(&mut template).chain(root.as_mut()) {
             if let Some(port) = &mut organ.port {
                 *port = lower::trading(*port, part, goods);

@@ -137,6 +137,8 @@ impl LineagePolicy {
 pub struct Tally {
     pub decisions: u64,
     pub otherwise: u64,
+    /// Moves chosen toward what the member sensed at the other end.
+    pub led: u64,
 }
 
 /// One lineage at a reading: its tally, standing and drives.
@@ -195,13 +197,14 @@ impl Simulation {
     }
 
     /// Counts a choice a policy made for `actor`'s lineage.
-    pub(super) fn tally_choice(&mut self, actor: Id, otherwise: bool) {
+    pub(super) fn tally_choice(&mut self, actor: Id, otherwise: bool, led: bool) {
         let Some(lineage) = self.body_at_start(actor).map(|e| e.lineage.clone()) else {
             return;
         };
         let t = self.chosen.tally.entry(lineage).or_default();
         t.decisions += 1;
         t.otherwise += u64::from(otherwise);
+        t.led += u64::from(led);
     }
 }
 

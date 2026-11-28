@@ -259,6 +259,9 @@ fn anatomy(p: &Panel, out: &mut Vec<Child>) {
             FeedingMode::Scavenger => Some("eats the dead".to_owned()),
             FeedingMode::Producer => None,
         });
+        if sheet.functions.get("function:sense").is_some_and(|cells| *cells > 0) {
+            does.push("senses the sites around it".to_owned());
+        }
         does.extend(sheet.emits.iter().map(|good| format!("gives off {good}")));
         does.extend(sheet.admits.iter().map(|good| format!("takes up {good}")));
         out.push(words(format!("{} · {} mg grown · {}", small(&line.kingdom), sheet.mass, does.join(" · "))));

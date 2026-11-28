@@ -24,7 +24,9 @@
 //! the dung class. Parts that take the nutrient the ground is scarcest in lower
 //! only where the world sets the nutrient rule (`ecology::nutrients`), as an
 //! organ whose port draws. A resprouting store can refill a grazed fixing
-//! organ with matching tissue already held in that store.
+//! organ with matching tissue already held in that store. Parts that sense
+//! lower only where bodies sense, as tissue behind a port that carries
+//! nothing ([`tissue`]): the world reads their cells off the body.
 
 use crate::{
     catalog::{Catalog, Part, Role, Site, Status, Kind, refs},
@@ -216,22 +218,28 @@ pub(super) fn trading(mut port: IntakePort, part: &Part, table: &[crate::catalog
     port
 }
 
+/// Whether `part` is runnable and names `rule` among those it runs through.
+#[must_use]
+pub fn runs_through(part: &Part, rule: &str) -> bool {
+    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == rule))
+}
+
 /// Whether `part` runs only through the mutualism rule.
 #[must_use]
 pub fn needs_mutualism(part: &Part) -> bool {
-    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:mutualism"))
+    runs_through(part, "rule:mutualism")
 }
 
 /// Whether `part` runs only through the guard rule.
 #[must_use]
 pub fn needs_guard(part: &Part) -> bool {
-    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:guard"))
+    runs_through(part, "rule:guard")
 }
 
 /// Whether `part` runs only through the categories rule.
 #[must_use]
 pub fn needs_categories(part: &Part) -> bool {
-    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:categories"))
+    runs_through(part, "rule:categories")
 }
 
 /// Lowers `part` for a world without the categories rule.
@@ -297,13 +305,13 @@ pub fn lowering_full(part: &Part, cats: bool, guard: bool, mutual: bool, rules: 
 /// Whether `part` runs only through the nutrient rule.
 #[must_use]
 pub fn needs_nutrients(part: &Part) -> bool {
-    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:nutrients"))
+    runs_through(part, "rule:nutrients")
 }
 
 /// Whether `part` runs only through the detritus rule.
 #[must_use]
 pub fn needs_detritus(part: &Part) -> bool {
-    matches!(&part.status, Status::Expressible { via } if via.iter().any(|v| v == "rule:detritus"))
+    runs_through(part, "rule:detritus")
 }
 
 /// Lowers `part`; with `cats`, as a world with the categories rule has it.
@@ -316,10 +324,26 @@ pub fn lowering_with(part: &Part, cats: bool) -> Result<Lowering, String> {
     lowering_for(part, cats, false)
 }
 
-fn lowered(part: &Part, cats: bool, guard: bool) -> Result<Lowering, String> {
-    if needs_categories(part) && !cats {
-        return Err("it needs the categories rule".into());
+/// Why a part that names no matter is left.
+const NO_PORT: &str = "it names no matter or tolerance an intake port can carry";
+
+/// Lowers `part` as tissue that works where it is: every cell given to its
+/// process, and a port that carries nothing and rests on that process. For a
+/// part [`lowering_full`] leaves only because it names no matter, in a world
+/// that sets a rule reading such tissue off the body (`rule:senses`).
+///
+/// # Errors
+/// `why` where the part was left for another reason, and as [`lowering_with`].
+pub fn tissue(part: &Part, why: String) -> Result<Lowering, String> {
+    if why != NO_PORT {
+        return Err(why);
     }
+    let (half_extent, shape, d) = held(part)?;
+    Ok(built(half_extent, shape, d, IntakePort::none().supported_by(d.reference())))
+}
+
+/// The box `part` lowers to and the process its cells hold.
+fn held(part: &Part) -> Result<([i32; 3], &'static str, &'static ProcessDef), String> {
     if !matches!(part.status, Status::Expressible { .. }) {
         return Err(format!("it is not runnable ({})", part.status.word()));
     }
@@ -328,9 +352,21 @@ fn lowered(part: &Part, cats: bool, guard: bool) -> Result<Lowering, String> {
     if !d.admits(classify(half_extent)) || !refs::fits(&part.process, &part.shape) {
         return Err(format!("{} cannot hold {}", part.shape, part.process));
     }
+    Ok((half_extent, shape, d))
+}
+
+fn lowered(part: &Part, cats: bool, guard: bool) -> Result<Lowering, String> {
+    if needs_categories(part) && !cats {
+        return Err("it needs the categories rule".into());
+    }
+    let (half_extent, shape, d) = held(part)?;
     let Some(port) = port(part, crate::catalog::catalog(), cats, guard)? else {
-        return Err("it names no matter or tolerance an intake port can carry".into());
+        return Err(NO_PORT.into());
     };
+    Ok(built(half_extent, shape, d, port))
+}
+
+fn built(half_extent: [i32; 3], shape: &str, d: &ProcessDef, port: IntakePort) -> Lowering {
     let function = format!("function:{}", d.id.name);
     let capacity = crate::anatomy::capacity(half_extent);
     let make = |cells: BTreeMap<Key, u32>| Template { half_extent, cells, shape: shape.into(), port: Some(port) };
@@ -338,7 +374,7 @@ fn lowered(part: &Part, cats: bool, guard: bool) -> Result<Lowering, String> {
     let root = (port.admits_deadstock() && capacity >= 2).then(|| {
         make(BTreeMap::from([(function, capacity - 1), (crate::anatomy::REPRODUCE.into(), 1)]))
     });
-    Ok(Lowering { template, root })
+    Lowering { template, root }
 }
 
 /// The function the kind's port rests on.

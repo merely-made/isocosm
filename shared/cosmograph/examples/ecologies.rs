@@ -272,6 +272,13 @@ fn found(seed: u64, ticks: u64) -> Result<(usize, usize), String> {
     println!("  members · {}", census.join(" · "));
     let acts: Vec<_> = acts.iter().map(|(k, n)| format!("{k} {n}")).collect();
     println!("  moves · {}", acts.join(" · "));
+    // Of each lineage's choices, the moves taken toward something sensed.
+    let minds: Vec<_> = cosmograph::directing::policy::readout(&mut session)
+        .iter()
+        .filter(|r| r.tally.decisions > 0)
+        .map(|r| format!("{} {}/{}", r.lineage.trim_start_matches("lineage:"), r.tally.led, r.tally.decisions))
+        .collect();
+    println!("  led by sense, of choices · {}", minds.join(" · "));
     let webs: Vec<_> = pairs.iter().map(|(a, b)| format!("{a}>{b}")).collect();
     println!("  between lineages · {}", webs.join(" · "));
     Ok((start.keys().filter(|k| end.get(*k).copied().unwrap_or(0) > 0).count(), start.len()))
